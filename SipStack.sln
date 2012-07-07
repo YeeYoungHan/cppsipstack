@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SipStack", "SipStack\SipStack.vcproj", "{A74D7687-3A0C-46C8-AC3D-304A68C7C635}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SipParser", "SipParser\SipParser.vcproj", "{11E19CA3-F409-41E3-BD62-E1CEA134B7DB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSipParser", "TestSipParser\TestSipParser.vcproj", "{D2C62A94-8A92-4103-B803-B3FD6412F7CA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB} = {11E19CA3-F409-41E3-BD62-E1CEA134B7DB}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A74D7687-3A0C-46C8-AC3D-304A68C7C635}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A74D7687-3A0C-46C8-AC3D-304A68C7C635}.Debug|Win32.Build.0 = Debug|Win32
+		{A74D7687-3A0C-46C8-AC3D-304A68C7C635}.Release|Win32.ActiveCfg = Release|Win32
+		{A74D7687-3A0C-46C8-AC3D-304A68C7C635}.Release|Win32.Build.0 = Release|Win32
+		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB}.Debug|Win32.Build.0 = Debug|Win32
+		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB}.Release|Win32.ActiveCfg = Release|Win32
+		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB}.Release|Win32.Build.0 = Release|Win32
+		{D2C62A94-8A92-4103-B803-B3FD6412F7CA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D2C62A94-8A92-4103-B803-B3FD6412F7CA}.Debug|Win32.Build.0 = Debug|Win32
+		{D2C62A94-8A92-4103-B803-B3FD6412F7CA}.Release|Win32.ActiveCfg = Release|Win32
+		{D2C62A94-8A92-4103-B803-B3FD6412F7CA}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
