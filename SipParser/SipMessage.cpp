@@ -168,7 +168,7 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 		return iTextLen;
 	}
 
-	return iPos;
+	return iCurPos;
 }
 
 int CSipMessage::ToString( char * pszText, int iTextSize )

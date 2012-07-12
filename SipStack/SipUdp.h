@@ -47,8 +47,8 @@ int poll( struct pollfd *fds, unsigned int nfds, int timeout );
 #include <poll.h>
 
 typedef int Socket;
-#define INVALID_SOCKET	-1;
-#define SOCKET_ERROR		-1;
+#define INVALID_SOCKET	-1
+#define SOCKET_ERROR		-1
 
 inline int closesocket( Socket fd ) { return close(fd); };
 inline int GetError() { return errno; }
