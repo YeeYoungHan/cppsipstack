@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SipStack", "SipStack\SipStack.vcproj", "{A74D7687-3A0C-46C8-AC3D-304A68C7C635}"
+	ProjectSection(ProjectDependencies) = postProject
+		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB} = {11E19CA3-F409-41E3-BD62-E1CEA134B7DB}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SipParser", "SipParser\SipParser.vcproj", "{11E19CA3-F409-41E3-BD62-E1CEA134B7DB}"
 EndProject

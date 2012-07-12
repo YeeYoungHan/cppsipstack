@@ -41,6 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="../SipParser"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -104,6 +105,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="../SipParser"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -144,16 +146,148 @@
 	</References>
 	<Files>
 		<Filter
-			Name="소스 파일"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name="Transaction"
 			>
+			<File
+				RelativePath=".\SipInviteTransaction.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipInviteTransaction.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipNonInviteTransaction.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipNonInviteTransaction.h"
+				>
+			</File>
 		</Filter>
 		<Filter
-			Name="헤더 파일"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			Name="TransactionList"
 			>
+			<File
+				RelativePath=".\SipICTList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipICTList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipISTList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipISTList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipNICTList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipNICTList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipNISTList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipNISTList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipTransactionList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipTransactionList.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Utility"
+			>
+			<File
+				RelativePath=".\SipMutex.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipMutex.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUdp.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUdp.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="SipStack"
+			>
+			<File
+				RelativePath=".\SipCreateMessage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipCreateMessage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipDeleteQueue.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipDeleteQueue.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipStack.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipStack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipStack.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipStackCallBack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipStackDefine.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipStackSetup.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipStackSetup.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipStackThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipStackThread.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUdpThread.cpp"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
