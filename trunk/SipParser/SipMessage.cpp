@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "SipDefine.h"
+#include "SipParserDefine.h"
 #include "SipMessage.h"
 
 CSipMessage::CSipMessage(void) : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(-1), m_iMaxForwards(-1)
@@ -389,6 +389,17 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 	return iLen;
 }
 
+bool CSipMessage::MakePacket()
+{
+	char	szPacket[SIP_MESSAGE_MAX_LEN];
+
+	if( ToString( szPacket, sizeof(szPacket) ) == -1 ) return false;
+
+	m_strPacket = szPacket;
+
+	return true;
+}
+
 void CSipMessage::Clear()
 {
 	m_strSipMethod.clear();
@@ -430,6 +441,78 @@ void CSipMessage::Clear()
 	m_strUserAgent.clear();  
 	m_strBody.clear();
 }
+
+bool CSipMessage::IsRequest()
+{
+	if( m_strSipMethod.empty() ) return false;
+
+	return true;
+}
+
+bool CSipMessage::IsMethod( const char * pszMethod )
+{
+	if( pszMethod == NULL ) return false;
+
+	if( m_strSipMethod.empty() == false )
+	{
+		if( !strcmp( m_strSipMethod.c_str(), pszMethod ) ) return true;
+	}
+	else
+	{
+		if( !strcmp( m_clsCSeq.m_strMethod.c_str(), pszMethod ) ) return true;
+	}
+
+	return false;
+}
+
+bool CSipMessage::IsEqualCallId( CSipMessage * pclsMessage )
+{
+	if( pclsMessage == NULL ) return false;
+
+	return m_clsCallId.IsEqual( &pclsMessage->m_clsCallId );
+}
+
+bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort )
+{
+	SIP_VIA_LIST::iterator itViaList = m_clsViaList.begin();
+	if( itViaList == m_clsViaList.end() ) return false;
+
+	SIP_PARAMETER_LIST::iterator	itList;
+	bool bRport = false, bReceived = false;
+
+	char	szNum[11];
+
+	snprintf( szNum, sizeof(szNum), "%d", iPort );
+
+	for( itList = itViaList->m_clsParamList.begin(); itList != itViaList->m_clsParamList.end(); ++itList )
+	{
+		if( !strcmp( itList->m_strName.c_str(), "rport" ) )
+		{
+			itList->m_strValue = szNum;
+			bRport = true;
+		}
+		else if( !strcmp( itList->m_strName.c_str(), "received" ) )
+		{
+			itList->m_strValue = pszIp;
+			bReceived = true;
+		}
+
+		if( bRport && bReceived ) break;
+	}
+
+	if( bRport == false && itViaList->m_iPort != iPort )
+	{
+		AddSipParameter( itViaList->m_clsParamList, "rport", szNum );
+	}
+
+	if( bReceived == false && strcmp( itViaList->m_strHost.c_str(), pszIp ) )
+	{
+		AddSipParameter( itViaList->m_clsParamList, "received", pszIp );
+	}
+
+	return true;
+}
+
 
 int CSipMessage::ParseStatusLine( const char * pszText, int iTextLen )
 {

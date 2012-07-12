@@ -227,10 +227,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SipDefine.h"
-				>
-			</File>
-			<File
 				RelativePath=".\SipFrom.h"
 				>
 			</File>
@@ -244,6 +240,14 @@
 			</File>
 			<File
 				RelativePath=".\SipParameter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipParserDefine.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipStatusCode.h"
 				>
 			</File>
 			<File

@@ -34,6 +34,7 @@ public:
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
 	bool Empty();
+	bool IsEqual( CSipCallId * pclsCallId );
 };
 
 #endif
