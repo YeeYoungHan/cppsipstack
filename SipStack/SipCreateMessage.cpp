@@ -26,7 +26,6 @@ CSipMessage * SipCreateResponse( CSipStackSetup * pclsSipStackSetup, CSipMessage
 	CSipMessage * pclsResponse = new CSipMessage();
 	if( pclsResponse == NULL ) return NULL;
 
-	pclsResponse->m_strSipVersion = "SIP/2.0";
 	pclsResponse->m_iStatusCode = iStatus;
 	pclsResponse->m_clsTo = pclsRequest->m_clsTo;
 	pclsResponse->m_clsFrom = pclsRequest->m_clsFrom;
