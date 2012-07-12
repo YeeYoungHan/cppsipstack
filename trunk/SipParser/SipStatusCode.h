@@ -37,16 +37,20 @@
 #define SIP_FORBIDDEN                     403
 #define SIP_NOT_FOUND                     404
 #define SIP_METHOD_NOT_ALLOWED            405
-#define SIP_406_NOT_ACCEPTABLE            406
+#define SIP_NOT_ACCEPTABLE								406
 #define SIP_PROXY_AUTHENTICATION_REQUIRED 407
 #define SIP_REQUEST_TIME_OUT              408
+#define SIP_CONFLICT											409
 #define SIP_GONE                          410
+#define SIP_LENGTH_REQUIRED								411
+#define SIP_CONDITIONAL_REQUEST_FAILED		412
 #define SIP_REQUEST_ENTITY_TOO_LARGE      413
 #define SIP_REQUEST_URI_TOO_LARGE         414
 #define SIP_UNSUPPORTED_MEDIA_TYPE        415
 #define SIP_UNSUPPORTED_URI_SCHEME        416
 #define SIP_BAD_EXTENSION                 420
 #define SIP_EXTENSION_REQUIRED            421
+#define SIP_SESSION_INTERVAL_TOO_SMALL		422
 #define SIP_INTERVAL_TOO_BRIEF            423
 #define SIP_TEMPORARILY_UNAVAILABLE       480
 #define SIP_CALL_TRANSACTION_DOES_NOT_EXIST 481
@@ -70,7 +74,7 @@
 #define SIP_BUSY_EVRYWHERE                600
 #define SIP_DECLINE                       603
 #define SIP_DOES_NOT_EXIST_ANYWHERE       604
-#define SIP_606_NOT_ACCEPTABLE            606
 
+const char * GetReasonPhrase( int iSipCode );
 
 #endif

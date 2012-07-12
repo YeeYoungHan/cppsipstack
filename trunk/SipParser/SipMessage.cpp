@@ -18,6 +18,7 @@
 
 #include "SipParserDefine.h"
 #include "SipMessage.h"
+#include "SipStatusCode.h"
 
 CSipMessage::CSipMessage(void) : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(-1), m_iMaxForwards(-1)
 {
@@ -177,9 +178,15 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 
 	int iLen, n;
 
+	if( m_strSipVersion.empty() ) m_strSipVersion = "SIP/2.0";
+
 	if( m_iStatusCode > 0 )
 	{
-		if( m_strSipVersion.empty() || m_strReasonPhrase.empty() ) return -1;
+		if( m_strReasonPhrase.empty() )
+		{
+			m_strReasonPhrase = GetReasonPhrase( m_iStatusCode );
+		}
+
 		iLen = snprintf( pszText, iTextSize, "%s %d %s\r\n", m_strSipVersion.c_str(), m_iStatusCode, m_strReasonPhrase.c_str() );
 	}
 	else

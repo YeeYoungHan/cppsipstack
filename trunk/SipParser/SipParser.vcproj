@@ -189,6 +189,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipStatusCode.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipUri.cpp"
 				>
 			</File>
