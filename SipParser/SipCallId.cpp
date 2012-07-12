@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "SipDefine.h"
+#include "SipParserDefine.h"
 #include "SipCallId.h"
 
 CSipCallId::CSipCallId(void)
@@ -75,4 +75,13 @@ void CSipCallId::Clear()
 bool CSipCallId::Empty()
 {
 	return m_strName.empty();
+}
+
+bool CSipCallId::IsEqual( CSipCallId * pclsCallId )
+{
+	if( pclsCallId == NULL ) return false;
+
+	if( !strcmp( m_strName.c_str(), pclsCallId->m_strName.c_str() ) && !strcmp( m_strHost.c_str(), pclsCallId->m_strHost.c_str() ) ) return true;
+
+	return false;
 }

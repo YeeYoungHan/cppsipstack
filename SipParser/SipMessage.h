@@ -74,9 +74,17 @@ public:
 	std::string			m_strUserAgent;
 	std::string			m_strBody;
 
+	std::string			m_strPacket;
+
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
+	bool MakePacket();
 	void Clear();
+
+	bool IsRequest();
+	bool IsMethod( const char * pszMethod );
+	bool IsEqualCallId( CSipMessage * pclsMessage );
+	bool AddIpPortToTopVia( const char * pszIp, int iPort );
 
 private:
 	int ParseStatusLine( const char * pszText, int iTextLen );

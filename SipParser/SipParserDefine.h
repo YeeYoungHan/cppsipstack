@@ -33,4 +33,6 @@
 #define strcasecmp	_stricmp
 #endif
 
+#define SIP_MESSAGE_MAX_LEN		8192
+
 #endif

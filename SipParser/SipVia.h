@@ -40,6 +40,8 @@ public:
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
 
+	const char * GetParamValue( const char * pszName );
+
 private:
 	int ParseSentProtocol( const char * pszText, int iTextLen );
 	int ParseSentBy( const char * pszText, int iTextLen );

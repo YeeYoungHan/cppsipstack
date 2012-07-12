@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "SipDefine.h"
+#include "SipParserDefine.h"
 #include "SipVia.h"
 
 CSipVia::CSipVia(void) : m_iPort(-1)
@@ -92,6 +92,21 @@ void CSipVia::Clear()
 	m_iPort = -1;
 
 	m_clsParamList.clear();
+}
+
+const char * CSipVia::GetParamValue( const char * pszName )
+{
+	SIP_PARAMETER_LIST::iterator	itList;
+
+	for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
+	{
+		if( !strcmp( itList->m_strName.c_str(), pszName ) )
+		{
+			return itList->m_strValue.c_str();
+		}
+	}
+
+	return NULL;
 }
 
 int CSipVia::ParseSentProtocol( const char * pszText, int iTextLen )
