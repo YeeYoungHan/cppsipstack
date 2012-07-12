@@ -33,7 +33,6 @@ int CSipFrom::Parse( const char * pszText, int iTextLen )
 	if( pszText == NULL || iTextLen <= 0 ) return -1;
 
 	int		iPos, iDisplayNamePos = -1, iUriStartPos = -1, iUriEndPos = -1, iLen;
-	char	cType = 0;
 
 	for( iPos = 0; iPos < iTextLen; ++iPos )
 	{
