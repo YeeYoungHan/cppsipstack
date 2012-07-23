@@ -112,6 +112,8 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 {
 	if( pclsMessage == NULL ) return false;
 
+	++pclsMessage->m_iUseCount;
+
 	if( pclsMessage->IsRequest() )
 	{
 		if( pclsMessage->IsMethod( "INVITE" ) || pclsMessage->IsMethod( "ACK" ) )
@@ -119,6 +121,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 			if( m_clsICT.Insert( pclsMessage ) )
 			{
 				Send( pclsMessage );
+				--pclsMessage->m_iUseCount;
 				return true;
 			}
 		}
@@ -127,6 +130,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 			if( m_clsNICT.Insert( pclsMessage ) )
 			{
 				Send( pclsMessage );
+				--pclsMessage->m_iUseCount;
 				return true;
 			}
 		}
@@ -138,6 +142,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 			if( m_clsIST.Insert( pclsMessage ) )
 			{
 				Send( pclsMessage );
+				--pclsMessage->m_iUseCount;
 				return true;
 			}
 		}
@@ -146,6 +151,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 			if( m_clsNIST.Insert( pclsMessage ) )
 			{
 				Send( pclsMessage );
+				--pclsMessage->m_iUseCount;
 				return true;
 			}
 		}
@@ -163,6 +169,8 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
  */
 bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 {
+	++pclsMessage->m_iUseCount;
+
 	if( pclsMessage->IsRequest() )
 	{
 		if( pclsMessage->IsMethod( "INVITE" ) || pclsMessage->IsMethod( "ACK" ) )
@@ -170,6 +178,7 @@ bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 			if( m_clsIST.Insert( pclsMessage ) )
 			{
 				RecvRequest( iThreadId, pclsMessage );
+				--pclsMessage->m_iUseCount;
 				return true;
 			}
 		}
@@ -178,6 +187,7 @@ bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 			if( m_clsNIST.Insert( pclsMessage ) )
 			{
 				RecvRequest( iThreadId, pclsMessage );
+				--pclsMessage->m_iUseCount;
 				return true;
 			}
 		}
@@ -195,6 +205,7 @@ bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 			if( m_clsICT.Insert( pclsMessage ) )
 			{
 				RecvResponse( iThreadId, pclsMessage );
+				--pclsMessage->m_iUseCount;
 				return true;
 			}
 		}
@@ -203,6 +214,7 @@ bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 			if( m_clsNICT.Insert( pclsMessage ) )
 			{
 				RecvResponse( iThreadId, pclsMessage );
+				--pclsMessage->m_iUseCount;
 				return true;
 			}
 		}
