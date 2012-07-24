@@ -87,6 +87,10 @@ public:
 	bool IsMethod( const char * pszMethod );
 	bool IsEqualCallId( CSipMessage * pclsMessage );
 	bool AddIpPortToTopVia( const char * pszIp, int iPort );
+	bool AddVia( const char * pszIp, int iPort );
+	bool AddRoute( const char * pszIp, int iPort );
+
+	CSipMessage * CreateResponse( int iStatus );
 
 private:
 	int ParseStatusLine( const char * pszText, int iTextLen );

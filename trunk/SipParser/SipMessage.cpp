@@ -19,6 +19,7 @@
 #include "SipParserDefine.h"
 #include "SipMessage.h"
 #include "SipStatusCode.h"
+#include "SipUtility.h"
 
 CSipMessage::CSipMessage(void) : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(-1), m_iMaxForwards(-1), m_iUseCount(0)
 {
@@ -520,6 +521,59 @@ bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort )
 	return true;
 }
 
+bool CSipMessage::AddVia( const char * pszIp, int iPort )
+{
+	CSipVia clsVia;
+
+	clsVia.m_strProtocolName = "SIP";
+	clsVia.m_strProtocolVersion = "2.0";
+	clsVia.m_strTransport = "UDP";
+	clsVia.m_strHost = pszIp;
+	clsVia.m_iPort = iPort;
+
+	AddSipParameter( clsVia.m_clsParamList, "rport", NULL );
+
+	char	szBranch[SIP_BRANCH_MAX_SIZE];
+
+	SipMakeBranch( szBranch, sizeof(szBranch) );
+	AddSipParameter( clsVia.m_clsParamList, "branch", szBranch );
+
+	m_clsViaList.push_front( clsVia );
+
+	return true;
+}
+
+bool CSipMessage::AddRoute( const char * pszIp, int iPort )
+{
+	CSipFrom clsFrom;
+
+	clsFrom.m_clsUri.m_strProtocol = "sip";
+	clsFrom.m_clsUri.m_strHost = pszIp;
+	clsFrom.m_clsUri.m_iPort = iPort;
+
+	AddSipParameter( clsFrom.m_clsUri.m_clsUriParamList, "lr", NULL );
+
+	m_clsRouteList.push_front( clsFrom );
+
+	return true;
+}
+
+CSipMessage * CSipMessage::CreateResponse( int iStatus )
+{
+	if( IsRequest() == false ) return NULL;
+
+	CSipMessage * pclsResponse = new CSipMessage();
+	if( pclsResponse == NULL ) return NULL;
+
+	pclsResponse->m_iStatusCode = iStatus;
+	pclsResponse->m_clsTo = m_clsTo;
+	pclsResponse->m_clsFrom = m_clsFrom;
+	pclsResponse->m_clsViaList = m_clsViaList;
+	pclsResponse->m_clsCallId = m_clsCallId;
+	pclsResponse->m_clsCSeq = m_clsCSeq;
+
+	return pclsResponse;
+}
 
 int CSipMessage::ParseStatusLine( const char * pszText, int iTextLen )
 {

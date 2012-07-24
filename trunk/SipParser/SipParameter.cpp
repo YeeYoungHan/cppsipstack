@@ -122,14 +122,18 @@ bool SearchSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, std
 	return false;
 }
 
-void AddSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, const char * pszValue )
+bool AddSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, const char * pszValue )
 {
+	if( pszName == NULL ) return false;
+
 	CSipParameter clsParam;
 
 	clsParam.m_strName = pszName;
-	clsParam.m_strValue = pszValue;
+	if( pszValue ) clsParam.m_strValue = pszValue;
 
 	clsList.push_back( clsParam );
+
+	return true;
 }
 
 int MakeSipParameterString( SIP_PARAMETER_LIST & clsList, char * pszText, int iTextSize )

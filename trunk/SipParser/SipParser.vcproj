@@ -263,6 +263,26 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Utility"
+			>
+			<File
+				RelativePath=".\SipMutex.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipMutex.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUtility.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUtility.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

@@ -18,6 +18,7 @@
 
 #include "SipParserDefine.h"
 #include "SipFrom.h"
+#include "SipUtility.h"
 
 CSipFrom::CSipFrom(void)
 {
@@ -140,6 +141,15 @@ int CSipFrom::ToString( char * pszText, int iTextSize )
 void CSipFrom::AddParam( const char * pszName, const char * pszValue )
 {
 	AddSipParameter( m_clsParamList, pszName, pszValue );
+}
+
+void CSipFrom::AddTag()
+{
+	char szTag[SIP_TAG_MAX_SIZE];
+
+	SipMakeTag( szTag, sizeof(szTag) );
+
+	AddParam( "tag", szTag );
 }
 
 void CSipFrom::Clear()

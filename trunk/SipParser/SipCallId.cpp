@@ -18,6 +18,7 @@
 
 #include "SipParserDefine.h"
 #include "SipCallId.h"
+#include "SipUtility.h"
 
 CSipCallId::CSipCallId(void)
 {
@@ -84,4 +85,15 @@ bool CSipCallId::IsEqual( CSipCallId * pclsCallId )
 	if( !strcmp( m_strName.c_str(), pclsCallId->m_strName.c_str() ) && !strcmp( m_strHost.c_str(), pclsCallId->m_strHost.c_str() ) ) return true;
 
 	return false;
+}
+
+void CSipCallId::Make( const char * pszHost )
+{
+	char	szName[SIP_CALL_ID_NAME_MAX_SIZE];
+
+	SipMakeCallIdName( szName, sizeof(szName) );
+
+	m_strName = szName;
+
+	if( pszHost ) m_strHost = pszHost;
 }

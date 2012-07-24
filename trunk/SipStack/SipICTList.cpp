@@ -18,7 +18,6 @@
 
 #include "SipICTList.h"
 #include "SipStack.h"
-#include "SipCreateMessage.h"
 #include "SipDeleteQueue.h"
 
 CSipICTList::CSipICTList()
@@ -152,7 +151,7 @@ DELETE_TRANSACTION:
 				{
 					if( itMap->second->m_pclsResponse == NULL )
 					{
-						CSipMessage * psttResponse = SipCreateResponse( &m_pclsSipStack->m_clsSetup, itMap->second->m_pclsRequest, SIP_REQUEST_TIME_OUT );
+						CSipMessage * psttResponse = itMap->second->m_pclsRequest->CreateResponse( SIP_REQUEST_TIME_OUT );
 						if( psttResponse )
 						{
 							clsResponseList.push_back( psttResponse );

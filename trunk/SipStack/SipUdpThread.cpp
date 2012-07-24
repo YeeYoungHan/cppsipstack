@@ -17,7 +17,6 @@
  */
 
 #include "SipStackThread.h"
-#include "SipCreateMessage.h"
 
 /**
  * @brief SIP 메시지를 파싱하여서 SIP stack 에 입력한다.
@@ -64,7 +63,7 @@ void * SipUdpThread( void * lpParameter )
 	CSipStack * pclsSipStack = (CSipStack *)lpParameter;
 	struct pollfd arrPoll[1];
 	int		iThreadId, n, iPacketSize;
-	char	szPacket[SIP_MAX_PACKET_SIZE], szIp[16];
+	char	szPacket[SIP_PACKET_MAX_SIZE], szIp[16];
 	unsigned short sPort;
 	bool	bRes;
 
@@ -83,7 +82,7 @@ void * SipUdpThread( void * lpParameter )
 
 			if( bRes )
 			{
-				if( iPacketSize < SIP_MIN_PACKET_SIZE || szPacket[0] == '\0' ) continue;
+				if( iPacketSize < SIP_PACKET_MIN_SIZE || szPacket[0] == '\0' || szPacket[0] == '\r' || szPacket[0] == '\n' ) continue;
 
 				SipMessageProcess( pclsSipStack, iThreadId, szPacket, iPacketSize, szIp, sPort );
 			}

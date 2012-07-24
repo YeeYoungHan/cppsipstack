@@ -35,6 +35,8 @@ public:
 	void Clear();
 	bool Empty();
 	bool IsEqual( CSipCallId * pclsCallId );
+
+	void Make( const char * pszHost );
 };
 
 #endif

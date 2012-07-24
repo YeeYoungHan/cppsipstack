@@ -190,13 +190,20 @@ bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, unsigned int iIp, un
 /** 네트워크 API 를 초기화시킨다. */
 void InitNetwork()
 {
-#ifdef WIN32 
-	WORD 		wVersionRequested = MAKEWORD( 2, 2 );
-	WSADATA wsaData;
-	
-	if( WSAStartup( wVersionRequested, &wsaData ) != 0 ) 
+#ifdef WIN32
+	static bool bInitNetwork = false;
+
+	if( bInitNetwork == false )
 	{
-		return;
+		WORD 		wVersionRequested = MAKEWORD( 2, 2 );
+		WSADATA wsaData;
+		
+		if( WSAStartup( wVersionRequested, &wsaData ) != 0 ) 
+		{
+			return;
+		}
+
+		bInitNetwork = true;
 	}
 #endif
 }

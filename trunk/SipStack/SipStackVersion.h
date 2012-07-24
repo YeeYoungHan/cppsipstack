@@ -16,49 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_MUTEX_H_
-#define _SIP_MUTEX_H_
+#ifndef _SIP_STACK_VERSION_H_
+#define _SIP_STACK_VERSION_H_
 
-#ifdef WIN32
-#include <windows.h>
-#else
-#include <pthread.h>
-#endif
-
-/** @brief mutex 기능을 수행하는 클래스 */
-
-class CSipMutex
-{
-public:
-	CSipMutex( const char * pszName = "" );
-	~CSipMutex();
-	
-	bool acquire();
-	bool release();
-
-protected:
-#ifdef WIN32
-	CRITICAL_SECTION m_sttMutex;
-#else
-	pthread_mutex_t	 m_sttMutex;
-#endif
-};
-
-class CSipMutexSignal : public CSipMutex
-{
-public:
-	CSipMutexSignal( const char * pszName );
-	~CSipMutexSignal();
-	
-	bool wait();
-	bool signal();
-	bool broadcast();
-
-private:
-#ifdef WIN32
-#else
-	pthread_cond_t		m_sttCond;
-#endif
-};
+#define SIP_STACK_VERSION "0.01"
 
 #endif

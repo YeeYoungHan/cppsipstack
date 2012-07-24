@@ -16,39 +16,37 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_STACK_DEFINE_H_
+#include "SipUserAgent.h"
 
-#include "SipParserDefine.h"
-#include "SipStackVersion.h"
+int main( int argc, char * argv[] )
+{
+	if( argc != 4 )
+	{
+		printf( "[Usage] %s {sip server ip} {user id} {password}\n", argv[0] );
+		return 0;
+	}
 
-#define SIP_PACKET_MIN_SIZE	100
-#define SIP_PACKET_MAX_SIZE	8192
-#define SIP_RING_TIMEOUT		300000
+	char * pszServerIp = argv[1];
+	char * pszUserId = argv[2];
+	char * pszPassWord = argv[3];
+	CSipUserAgent clsUserAgent;
+	CSipServerInfo clsServerInfo;
+	CSipStackSetup clsSetup;
 
-#define SIP_USER_AGENT	"CppSipStack_" SIP_STACK_VERSION
+	clsServerInfo.m_strIp = pszServerIp;
+	clsServerInfo.m_strUserId = pszUserId;
+	clsServerInfo.m_strPassWord = pszPassWord;
 
-#ifdef WIN32
-#include <winsock2.h>
-#else
-#include <sys/time.h>
-#endif
+	// QQQ: 
+	clsSetup.m_strLocalIp = "127.0.0.1";
 
-#include "SipMessage.h"
+	clsUserAgent.AddRegisterInfo( clsServerInfo );
+	clsUserAgent.Start( clsSetup );
 
-#include <map>
+	while( 1 )
+	{
+		sleep(1);
+	}
 
-#ifdef WIN32
-int gettimeofday( struct timeval *tv, struct timezone *tz );
-#endif
-
-int DiffTimeval( struct timeval * psttOld, struct timeval * psttNew );
-
-#ifdef WIN32
-bool StartThread( const char * pszName, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter );
-#else
-bool StartThread( const char * pszName, void *(*lpStartAddress)(void*), void * lpParameter );
-#endif
-
-void MiliSleep( int iMiliSecond );
-
-#endif
+	return 0;
+}

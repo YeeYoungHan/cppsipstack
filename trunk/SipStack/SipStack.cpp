@@ -19,7 +19,6 @@
 #include "SipStack.h"
 #include "SipStackThread.h"
 #include "SipStack.hpp"
-#include "SipCreateMessage.h"
 
 /**
  * @brief 생성자 - 내부 변수를 초기화시키고 transaction list 와 SIP stack 을 연결시킨다.
@@ -53,6 +52,8 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	if( clsSetup.Check() == false ) return false;
 
 	m_clsSetup.Copy( clsSetup );
+
+	InitNetwork();
 
 	m_iUdpSocket = UdpListen( m_clsSetup.m_iLocalUdpPort, NULL );
 	if( m_iUdpSocket == INVALID_SOCKET ) return false;
@@ -126,6 +127,28 @@ bool CSipStack::AddCallBack( ISipStackCallBack * pclsCallBack )
 bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 {
 	if( pclsMessage == NULL ) return false;
+
+	if( pclsMessage->m_clsViaList.size() == 0 )
+	{
+		pclsMessage->AddVia( m_clsSetup.m_strLocalIp.c_str(), m_clsSetup.m_iLocalUdpPort );
+	}
+
+	if( pclsMessage->m_clsContactList.size() == 0 )
+	{
+		CSipFrom clsContact;
+
+		clsContact.m_clsUri.m_strProtocol = "sip";
+		clsContact.m_clsUri.m_strUser = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
+		clsContact.m_clsUri.m_strHost = m_clsSetup.m_strLocalIp;
+		clsContact.m_clsUri.m_iPort = m_clsSetup.m_iLocalUdpPort;
+
+		pclsMessage->m_clsContactList.push_back( clsContact );
+	}
+
+	if( pclsMessage->m_strUserAgent.empty() )
+	{
+		pclsMessage->m_strUserAgent = SIP_USER_AGENT;
+	}
 
 	++pclsMessage->m_iUseCount;
 
@@ -321,7 +344,7 @@ void CSipStack::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 
 	if( bSendResponse == false )
 	{
-		CSipMessage * psttResponse = SipCreateResponse( &m_clsSetup, pclsMessage, SIP_NOT_IMPLEMENTED );
+		CSipMessage * psttResponse = pclsMessage->CreateResponse( SIP_NOT_IMPLEMENTED );
 		if( psttResponse )
 		{
 			SendSipMessage( psttResponse );

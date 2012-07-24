@@ -213,14 +213,6 @@
 			Name="Utility"
 			>
 			<File
-				RelativePath=".\SipMutex.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SipMutex.h"
-				>
-			</File>
-			<File
 				RelativePath=".\SipUdp.cpp"
 				>
 			</File>
@@ -232,14 +224,6 @@
 		<Filter
 			Name="SipStack"
 			>
-			<File
-				RelativePath=".\SipCreateMessage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SipCreateMessage.h"
-				>
-			</File>
 			<File
 				RelativePath=".\SipDeleteQueue.cpp"
 				>
@@ -282,6 +266,10 @@
 			</File>
 			<File
 				RelativePath=".\SipStackThread.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipStackVersion.h"
 				>
 			</File>
 			<File

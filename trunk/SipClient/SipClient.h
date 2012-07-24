@@ -16,14 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_CREATE_MESSAGE_H_
-#define _SIP_CREATE_MESSAGE_H_
+#ifndef _SIP_CLIENT_H_
+#define _SIP_CLIENT_H_
 
-#include "SipStackSetup.h"
-#include "SipMessage.h"
-
-CSipMessage * SipCreateResponse( CSipStackSetup * pclsSipStackSetup, CSipMessage * pclsRequest, int iStatus );
-void SipMakeTag( char * pszTag, int iTagSize );
-void SipMakeBranch( char * pszBranch, int iBranchSize );
 
 #endif
