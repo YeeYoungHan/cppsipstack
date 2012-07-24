@@ -13,6 +13,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSipParser", "TestSipPar
 		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB} = {11E19CA3-F409-41E3-BD62-E1CEA134B7DB}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SipClient", "SipClient\SipClient.vcproj", "{95E8B525-7095-452B-9CF1-531936013A93}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SipUserAgent", "SipUserAgent\SipUserAgent.vcproj", "{372B4708-6047-480E-8A4E-98E80CC8AC66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,6 +35,14 @@ Global
 		{D2C62A94-8A92-4103-B803-B3FD6412F7CA}.Debug|Win32.Build.0 = Debug|Win32
 		{D2C62A94-8A92-4103-B803-B3FD6412F7CA}.Release|Win32.ActiveCfg = Release|Win32
 		{D2C62A94-8A92-4103-B803-B3FD6412F7CA}.Release|Win32.Build.0 = Release|Win32
+		{95E8B525-7095-452B-9CF1-531936013A93}.Debug|Win32.ActiveCfg = Debug|Win32
+		{95E8B525-7095-452B-9CF1-531936013A93}.Debug|Win32.Build.0 = Debug|Win32
+		{95E8B525-7095-452B-9CF1-531936013A93}.Release|Win32.ActiveCfg = Release|Win32
+		{95E8B525-7095-452B-9CF1-531936013A93}.Release|Win32.Build.0 = Release|Win32
+		{372B4708-6047-480E-8A4E-98E80CC8AC66}.Debug|Win32.ActiveCfg = Debug|Win32
+		{372B4708-6047-480E-8A4E-98E80CC8AC66}.Debug|Win32.Build.0 = Debug|Win32
+		{372B4708-6047-480E-8A4E-98E80CC8AC66}.Release|Win32.ActiveCfg = Release|Win32
+		{372B4708-6047-480E-8A4E-98E80CC8AC66}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
