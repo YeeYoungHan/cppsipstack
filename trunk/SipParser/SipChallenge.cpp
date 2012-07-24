@@ -93,7 +93,7 @@ int CSipChallenge::Parse( const char * pszText, int iTextLen )
 		}
 		else if( !strcmp( pszName, "qop" ) )
 		{
-			m_strQop = itList->m_strValue;
+			DeQuoteString( itList->m_strValue, m_strQop );
 		}
 		else
 		{

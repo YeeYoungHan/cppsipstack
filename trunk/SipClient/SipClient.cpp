@@ -16,7 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "SipUserAgent.h"
+#include "SipClient.h"
+
+void CSipClient::EventRegister( CSipServerInfo clsInfo, int iStatus )
+{
+	printf( "REGISTER(%s) : %d\n", clsInfo.m_strUserId.c_str(), iStatus );
+}
 
 int main( int argc, char * argv[] )
 {
@@ -32,6 +37,7 @@ int main( int argc, char * argv[] )
 	CSipUserAgent clsUserAgent;
 	CSipServerInfo clsServerInfo;
 	CSipStackSetup clsSetup;
+	CSipClient clsSipClient;
 
 	clsServerInfo.m_strIp = pszServerIp;
 	clsServerInfo.m_strUserId = pszUserId;
@@ -40,6 +46,7 @@ int main( int argc, char * argv[] )
 	// QQQ: 
 	clsSetup.m_strLocalIp = "127.0.0.1";
 
+	clsUserAgent.m_pclsCallBack = &clsSipClient;
 	clsUserAgent.AddRegisterInfo( clsServerInfo );
 	clsUserAgent.Start( clsSetup );
 

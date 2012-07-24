@@ -42,4 +42,7 @@
 #define VIA_PREFIX						"z9hG4bK"
 #define VIA_PREFIX_LEN				7
 
+#define SIP_PROTOCOL					"sip"
+#define SIP_VERSION						"SIP/2.0"
+
 #endif

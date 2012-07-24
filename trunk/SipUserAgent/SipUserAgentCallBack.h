@@ -26,7 +26,7 @@ class ISipUserAgentCallBack
 public:
 	virtual ~ISipUserAgentCallBack(){};
 
-	virtual bool EventRegister( ) = 0;
+	virtual void EventRegister( CSipServerInfo clsInfo, int iStatus ) = 0;
 };
 
 #endif

@@ -128,28 +128,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 {
 	if( pclsMessage == NULL ) return false;
 
-	if( pclsMessage->m_clsViaList.size() == 0 )
-	{
-		pclsMessage->AddVia( m_clsSetup.m_strLocalIp.c_str(), m_clsSetup.m_iLocalUdpPort );
-	}
-
-	if( pclsMessage->m_clsContactList.size() == 0 )
-	{
-		CSipFrom clsContact;
-
-		clsContact.m_clsUri.m_strProtocol = "sip";
-		clsContact.m_clsUri.m_strUser = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
-		clsContact.m_clsUri.m_strHost = m_clsSetup.m_strLocalIp;
-		clsContact.m_clsUri.m_iPort = m_clsSetup.m_iLocalUdpPort;
-
-		pclsMessage->m_clsContactList.push_back( clsContact );
-	}
-
-	if( pclsMessage->m_strUserAgent.empty() )
-	{
-		pclsMessage->m_strUserAgent = SIP_USER_AGENT;
-	}
-
+	CheckSipMessage( pclsMessage );
 	++pclsMessage->m_iUseCount;
 
 	if( pclsMessage->IsRequest() )
@@ -286,6 +265,8 @@ bool CSipStack::Send( CSipMessage * pclsMessage )
 {
 	const char * pszIp = NULL;
 	int iPort = -1;
+
+	CheckSipMessage( pclsMessage );
 
 	if( pclsMessage->IsRequest() )
 	{
@@ -437,4 +418,37 @@ bool CSipStack::_Stop( )
 	m_bStopEvent = false;
 
 	return true;
+}
+
+void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
+{
+	if( pclsMessage->IsRequest() )
+	{
+		if( pclsMessage->m_clsViaList.size() == 0 )
+		{
+			pclsMessage->AddVia( m_clsSetup.m_strLocalIp.c_str(), m_clsSetup.m_iLocalUdpPort );
+		}
+	}
+
+	if( pclsMessage->m_strSipVersion.empty() )
+	{
+		pclsMessage->m_strSipVersion = SIP_VERSION;
+	}
+
+	if( pclsMessage->m_clsContactList.size() == 0 )
+	{
+		CSipFrom clsContact;
+
+		clsContact.m_clsUri.m_strProtocol = "sip";
+		clsContact.m_clsUri.m_strUser = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
+		clsContact.m_clsUri.m_strHost = m_clsSetup.m_strLocalIp;
+		clsContact.m_clsUri.m_iPort = m_clsSetup.m_iLocalUdpPort;
+
+		pclsMessage->m_clsContactList.push_back( clsContact );
+	}
+
+	if( pclsMessage->m_strUserAgent.empty() )
+	{
+		pclsMessage->m_strUserAgent = SIP_USER_AGENT;
+	}
 }

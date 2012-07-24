@@ -16,13 +16,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipUserAgent.h"
 #include "SipServerInfo.h"
 #include "SipUtility.h"
-#include "SipUserAgent.h"
+#include "Md5.h"
 
 CSipServerInfo::CSipServerInfo(void) : m_iPort(5060), m_iLoginTimeout(3600), m_iSeqNo(0)
 {
 	ClearLogin();
+
+#ifdef _DEBUG
+	m_iLoginTimeout = 60;
+#endif
 }
 
 CSipServerInfo::~CSipServerInfo(void)
@@ -34,25 +39,20 @@ void CSipServerInfo::ClearLogin()
 	m_bLogin = false;
 	m_iLoginTime = 0;
 	m_iSendTime = 0;
-	m_strCallId.clear();
+	m_clsCallId.Clear();
 }
 
-CSipMessage * CSipServerInfo::GetRegisterMessage( CSipMessage * pclsResponse )
+CSipMessage * CSipServerInfo::GetRegisterMessage( const CSipMessage * pclsResponse )
 {
 	CSipMessage * pclsRequest = new CSipMessage();
 	if( pclsRequest == NULL ) return NULL;
 
 	// REGISTER sip:127.0.0.1 SIP/2.0
-	pclsRequest->m_clsReqUri.m_strProtocol = "sip";
-	pclsRequest->m_clsReqUri.m_strHost = m_strDomain;
-
 	pclsRequest->m_strSipMethod = "REGISTER";
-	pclsRequest->m_strSipVersion = "SIP/2.0";
+	pclsRequest->m_clsReqUri.Set( "sip", NULL, m_strDomain.c_str(), m_iPort );
 
 	// To
-	pclsRequest->m_clsTo.m_clsUri.m_strProtocol = "sip";
-	pclsRequest->m_clsTo.m_clsUri.m_strUser = m_strUserId;
-	pclsRequest->m_clsTo.m_clsUri.m_strHost = m_strDomain;
+	pclsRequest->m_clsTo.m_clsUri.Set( "sip", m_strUserId.c_str(), m_strDomain.c_str(), m_iPort );
 
 	// From
 	pclsRequest->m_clsFrom = pclsRequest->m_clsTo;
@@ -70,7 +70,96 @@ CSipMessage * CSipServerInfo::GetRegisterMessage( CSipMessage * pclsResponse )
 	pclsRequest->AddRoute( m_strIp.c_str(), m_iPort );
 
 	// Call-Id
-	pclsRequest->m_clsCallId.Make( gclsSipStack.m_clsSetup.m_strLocalIp.c_str() );
+	if( m_clsCallId.Empty() )
+	{
+		pclsRequest->m_clsCallId.Make( gclsSipStack.m_clsSetup.m_strLocalIp.c_str() );
+		m_clsCallId = pclsRequest->m_clsCallId;
+	}
+	else
+	{
+		pclsRequest->m_clsCallId = m_clsCallId;
+	}
+
+	if( pclsResponse )
+	{
+		AddAuth( pclsRequest, pclsResponse );
+	}
 
 	return pclsRequest;
+}
+
+bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, const CSipMessage * pclsResponse )
+{
+	SIP_CHALLENGE_LIST::const_iterator itAT;
+	CSipCredential clsCredential;
+
+	if( pclsResponse->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
+	{
+		if( pclsResponse->m_clsProxyAuthenticateList.size() == 0 ) return false;
+		itAT = pclsResponse->m_clsProxyAuthenticateList.begin();
+	}
+	else
+	{
+		if( pclsResponse->m_clsWwwAuthenticateList.size() == 0 ) return false;
+		itAT = pclsResponse->m_clsWwwAuthenticateList.begin();
+	}
+
+	clsCredential.m_strType = itAT->m_strType;
+	clsCredential.m_strUserName = m_strUserId;
+	clsCredential.m_strRealm = itAT->m_strRealm;
+	clsCredential.m_strNonce = itAT->m_strNonce;
+	clsCredential.m_strAlgorithm = itAT->m_strAlgorithm;
+
+	clsCredential.m_strUri = "sip:";
+	clsCredential.m_strUri.append( gclsSipStack.m_clsSetup.m_strLocalIp );
+
+	char	szA1[1024], szA2[1024], szMd5[33], szResponse[1024];
+
+	if( itAT->m_strQop.empty() == false && ( !strcmp( itAT->m_strQop.c_str(), "auth" ) || !strcmp( itAT->m_strQop.c_str(), "auth-int" ) ) )
+	{
+		clsCredential.m_strQop = itAT->m_strQop;
+		clsCredential.m_strNonceCount = "00000001";
+		clsCredential.m_strCnonce = "1";
+
+		snprintf( szA1, sizeof(szA1), "%s:%s:%s", clsCredential.m_strUserName.c_str(), clsCredential.m_strRealm.c_str(), m_strPassWord.c_str() );
+		Md5String( szA1, szMd5 );
+		snprintf( szA1, sizeof(szA1), "%s", szMd5 );
+		
+		snprintf( szA2, sizeof(szA2), "%s:%s", pclsRequest->m_strSipMethod.c_str(), clsCredential.m_strUri.c_str() );
+		Md5String( szA2, szMd5 );
+		snprintf( szA2, sizeof(szA2), "%s", szMd5 );
+		
+		snprintf( szResponse, sizeof(szResponse), "%s:%s:%s:%s:%s:%s", szA1, clsCredential.m_strNonce.c_str(), clsCredential.m_strNonceCount.c_str()
+			, clsCredential.m_strCnonce.c_str(), clsCredential.m_strQop.c_str(), szA2 );
+		Md5String( szResponse, szMd5 );
+		snprintf( szResponse, sizeof(szResponse), "%s", szMd5 );
+
+		clsCredential.m_strResponse = szMd5;
+	}
+	else
+	{
+		snprintf( szA1, sizeof(szA1), "%s:%s:%s", clsCredential.m_strUserName.c_str(), clsCredential.m_strRealm.c_str(), m_strPassWord.c_str() );
+		Md5String( szA1, szMd5 );
+		snprintf( szA1, sizeof(szA1), "%s", szMd5 );
+		
+		snprintf( szA2, sizeof(szA2), "%s:%s", pclsRequest->m_strSipMethod.c_str(), clsCredential.m_strUri.c_str() );
+		Md5String( szA2, szMd5 );
+		snprintf( szA2, sizeof(szA2), "%s", szMd5 );
+		
+		snprintf( szResponse, sizeof(szResponse), "%s:%s:%s", szA1, clsCredential.m_strNonce.c_str(), szA2 );
+		Md5String( szResponse, szMd5 );
+
+		clsCredential.m_strResponse = szMd5;
+	}
+
+	if( pclsResponse->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
+	{
+		pclsRequest->m_clsProxyAuthorizationList.push_front( clsCredential );
+	}
+	else
+	{
+		pclsRequest->m_clsAuthorizationList.push_front( clsCredential );
+	}
+
+	return true;
 }

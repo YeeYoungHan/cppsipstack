@@ -19,10 +19,11 @@
 #ifndef _SIP_USER_AGENT_H_
 #define _SIP_USER_AGENT_H_
 
-#include "SipServerInfo.h"
 #include "SipStack.h"
+#include "SipServerInfo.h"
+#include "SipUserAgentCallBack.h"
 
-class CSipUserAgent : ISipStackCallBack
+class CSipUserAgent : public ISipStackCallBack
 {
 public:
 	CSipUserAgent(void);
@@ -37,6 +38,10 @@ public:
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 
 	SIP_SERVER_INFO_LIST	m_clsRegisterList;
+	ISipUserAgentCallBack * m_pclsCallBack;
+
+private:
+	bool RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessage );
 };
 
 extern CSipStack	gclsSipStack;
