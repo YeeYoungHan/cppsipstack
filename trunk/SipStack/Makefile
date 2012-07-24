@@ -14,12 +14,12 @@ INC=-I../SipParser
 
 all: libsipstack.a
 
-LIB_OBJ=SipCreateMessage.o SipDeleteQueue.o \
+LIB_OBJ=SipDeleteQueue.o \
 	SipICTList.o SipISTList.o SipNICTList.o SipNISTList.o \
 	SipInviteTransaction.o SipNonInviteTransaction.o SipTransactionList.o \
 	SipStack.o SipStackSetup.o \
 	SipStackThread.o SipUdpThread.o \
-	SipMutex.o SipUdp.o
+	SipUdp.o
 
 libsipstack.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)
