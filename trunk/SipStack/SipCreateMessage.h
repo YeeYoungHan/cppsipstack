@@ -23,5 +23,7 @@
 #include "SipMessage.h"
 
 CSipMessage * SipCreateResponse( CSipStackSetup * pclsSipStackSetup, CSipMessage * pclsRequest, int iStatus );
+void SipMakeTag( char * pszTag, int iTagSize );
+void SipMakeBranch( char * pszBranch, int iBranchSize );
 
 #endif

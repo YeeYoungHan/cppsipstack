@@ -18,6 +18,12 @@
 
 #include "SipStackDefine.h"
 #include "SipCreateMessage.h"
+#include "SipMutex.h"
+#include "SipTransactionList.h"
+
+static CSipMutex gclsMutex;
+static int	giTag;
+static int	giBranch;
 
 CSipMessage * SipCreateResponse( CSipStackSetup * pclsSipStackSetup, CSipMessage * pclsRequest, int iStatus )
 {
@@ -43,4 +49,44 @@ CSipMessage * SipCreateResponse( CSipStackSetup * pclsSipStackSetup, CSipMessage
 	pclsResponse->m_clsContactList.push_back( clsContact );
 
 	return pclsResponse;
+}
+
+void SipMakeTag( char * pszTag, int iTagSize )
+{
+	int		iTag;
+
+	gclsMutex.acquire();
+	if( giTag <= 0 || giTag > 2000000000 )
+	{
+		giTag = 1;
+	}
+	else
+	{
+		++giTag;
+	}
+
+	iTag = giTag;
+	gclsMutex.release();
+
+	snprintf( pszTag, iTagSize, "%d", iTag );
+}
+
+void SipMakeBranch( char * pszBranch, int iBranchSize )
+{
+	int		iBranch;
+
+	gclsMutex.acquire();
+	if( giBranch <= 0 || giBranch > 2000000000 )
+	{
+		giBranch = 1;
+	}
+	else
+	{
+		++giBranch;
+	}
+
+	iBranch = giBranch;
+	gclsMutex.release();
+
+	snprintf( pszBranch, iBranchSize, "%s-WCSS-%d", VIA_PREFIX, iBranch );
 }

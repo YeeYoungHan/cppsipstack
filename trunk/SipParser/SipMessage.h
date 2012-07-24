@@ -76,6 +76,8 @@ public:
 
 	std::string			m_strPacket;
 
+	int							m_iUseCount;
+
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
 	bool MakePacket();

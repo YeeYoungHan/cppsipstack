@@ -20,7 +20,7 @@
 #include "SipMessage.h"
 #include "SipStatusCode.h"
 
-CSipMessage::CSipMessage(void) : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(-1), m_iMaxForwards(-1)
+CSipMessage::CSipMessage(void) : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(-1), m_iMaxForwards(-1), m_iUseCount(0)
 {
 }
 

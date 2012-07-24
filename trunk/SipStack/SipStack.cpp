@@ -98,7 +98,22 @@ bool CSipStack::AddCallBack( ISipStackCallBack * pclsCallBack )
 {
 	if( pclsCallBack == NULL ) return false;
 
-	m_clsCallBackList.push_back( pclsCallBack );
+	SIP_STACK_CALLBACK_LIST::iterator	it;
+	bool	bFound = false;
+
+	for( it = m_clsCallBackList.begin(); it != m_clsCallBackList.end(); ++it )
+	{
+		if( *it == pclsCallBack )
+		{
+			bFound = true;
+			break;
+		}
+	}
+
+	if( bFound == false )
+	{
+		m_clsCallBackList.push_back( pclsCallBack );
+	}
 
 	return true;
 }

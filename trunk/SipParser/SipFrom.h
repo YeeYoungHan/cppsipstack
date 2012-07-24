@@ -35,6 +35,7 @@ public:
 
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
+	void AddParam( const char * pszName, const char * pszValue );
 	void Clear();
 	bool Empty();
 };

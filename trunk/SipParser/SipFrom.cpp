@@ -137,6 +137,11 @@ int CSipFrom::ToString( char * pszText, int iTextSize )
 	return iLen;
 }
 
+void CSipFrom::AddParam( const char * pszName, const char * pszValue )
+{
+	AddSipParameter( m_clsParamList, pszName, pszValue );
+}
+
 void CSipFrom::Clear()
 {
 	m_strDisplayName.clear();

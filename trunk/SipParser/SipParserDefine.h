@@ -31,6 +31,7 @@
 
 #define snprintf		_snprintf
 #define strcasecmp	_stricmp
+#define sleep(x)		Sleep(x*1000)
 #endif
 
 #define SIP_MESSAGE_MAX_LEN		8192
