@@ -40,6 +40,8 @@ public:
 	void Clear();
 	bool Empty();
 
+	void Set( const char * pszProtocol, const char * pszUser, const char * pszHost, int iPort = 0 );
+
 private:
 	int ParseProtocol( const char * pszText, int iTextLen );
 	int ParseUser( const char * pszText, int iTextLen );

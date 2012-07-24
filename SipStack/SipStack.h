@@ -80,7 +80,7 @@ private:
 	SIP_STACK_CALLBACK_LIST	m_clsCallBackList;
 
 	bool _Stop( );
-	int SipMessageToString( CSipMessage * sip );
+	void CheckSipMessage( CSipMessage * pclsMessage );
 };
 
 #endif

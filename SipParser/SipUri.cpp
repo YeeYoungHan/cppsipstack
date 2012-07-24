@@ -145,6 +145,37 @@ bool CSipUri::Empty()
 	return false;
 }
 
+void CSipUri::Set( const char * pszProtocol, const char * pszUser, const char * pszHost, int iPort )
+{
+	if( pszProtocol )
+	{
+		m_strProtocol = pszProtocol;
+	}
+	else
+	{
+		m_strProtocol = "sip";
+	}
+
+	if( pszUser )
+	{
+		m_strUser = pszUser;
+	}
+
+	if( pszHost )
+	{
+		m_strHost = pszHost;
+	}
+
+	if( iPort == 5060 )
+	{
+		m_iPort = 0;
+	}
+	else
+	{
+		m_iPort = iPort;
+	}
+}
+
 int CSipUri::ParseProtocol( const char * pszText, int iTextLen )
 {
 	for( int iPos = 0; iPos < iTextLen; ++iPos )

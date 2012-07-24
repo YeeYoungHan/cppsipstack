@@ -16,38 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_REGISTER_INFO_H_
-#define _SIP_REGISTER_INFO_H_
+#ifndef _MD5_H_
+#define _MD5_H_
 
-#include "SipMessage.h"
-
-class CSipServerInfo
-{
-public:
-	CSipServerInfo(void);
-	~CSipServerInfo(void);
-
-	void ClearLogin();
-
-	std::string		m_strIp;
-	int						m_iPort;
-
-	std::string		m_strDomain;
-	std::string		m_strUserId;
-	std::string		m_strPassWord;
-
-	int						m_iLoginTimeout;
-
-	bool					m_bLogin;
-	time_t				m_iLoginTime;
-	time_t				m_iSendTime;
-	CSipCallId		m_clsCallId;
-	int						m_iSeqNo;
-
-	CSipMessage * GetRegisterMessage( const CSipMessage * pclsResponse );
-	bool AddAuth( CSipMessage * pclsRequest, const CSipMessage * pclsResponse );
-};
-
-typedef std::list< CSipServerInfo > SIP_SERVER_INFO_LIST;
+void Md5String( char * string, char result[33] );
 
 #endif

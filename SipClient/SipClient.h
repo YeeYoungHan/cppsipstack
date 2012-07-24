@@ -19,5 +19,13 @@
 #ifndef _SIP_CLIENT_H_
 #define _SIP_CLIENT_H_
 
+#include "SipUserAgent.h"
+
+class CSipClient : public ISipUserAgentCallBack
+{
+public:
+	virtual ~CSipClient(){}
+	virtual void EventRegister( CSipServerInfo clsInfo, int iStatus );
+};
 
 #endif

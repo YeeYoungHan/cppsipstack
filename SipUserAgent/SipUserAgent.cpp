@@ -18,10 +18,13 @@
 
 #include "SipUserAgent.h"
 #include "SipRegisterThread.h"
+#include <time.h>
 
 CSipStack	gclsSipStack;
 
-CSipUserAgent::CSipUserAgent(void)
+#include "SipUserAgentRegister.hpp"
+
+CSipUserAgent::CSipUserAgent(void) : m_pclsCallBack(NULL)
 {
 }
 
@@ -75,7 +78,10 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 {
 	if( pclsMessage->IsMethod( "REGISTER" ) )
 	{
-
+		if( pclsMessage->IsRequest() == false )
+		{
+			return RecvRegisterResponse( iThreadId, pclsMessage );
+		}
 	}
 
 	return false;

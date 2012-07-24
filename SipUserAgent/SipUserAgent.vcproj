@@ -191,6 +191,22 @@
 				RelativePath=".\SipUserAgentCallBack.h"
 				>
 			</File>
+			<File
+				RelativePath=".\SipUserAgentRegister.hpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Utility"
+			>
+			<File
+				RelativePath=".\Md5.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Md5.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
