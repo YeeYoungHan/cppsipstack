@@ -30,4 +30,12 @@ public:
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage ) = 0;
 };
 
+class ISipNetworkLog
+{
+public:
+	virtual ~ISipNetworkLog(){};
+
+	virtual void SipLog( bool bSend, const char * pszPacket ) = 0;
+};
+
 #endif

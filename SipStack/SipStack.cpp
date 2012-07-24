@@ -119,6 +119,30 @@ bool CSipStack::AddCallBack( ISipStackCallBack * pclsCallBack )
 	return true;
 }
 
+bool CSipStack::AddNetworkLog( ISipNetworkLog * pclsLog )
+{
+	if( pclsLog == NULL ) return false;
+
+	SIP_NETWORK_LOG_LIST::iterator it;
+	bool	bFound = false;
+
+	for( it = m_clsNetLogList.begin(); it != m_clsNetLogList.end(); ++it )
+	{
+		if( *it == pclsLog )
+		{
+			bFound = true;
+			break;
+		}
+	}
+
+	if( bFound == false )
+	{
+		m_clsNetLogList.push_back( pclsLog );
+	}
+
+	return true;
+}
+
 /**
  * @brief SIP stack 에 SIP 메시지가 존재하지 않으면 SIP stack 에 SIP 메시지를 저장하고 SIP 메시지를 네트워크로 전송한다.
  * @param pclsMessage SIP 메시지 저장 구조체
@@ -300,6 +324,8 @@ bool CSipStack::Send( CSipMessage * pclsMessage )
 	bool bRes = UdpSend( m_iUdpSocket, pclsMessage->m_strPacket.c_str(), pclsMessage->m_strPacket.length(), pszIp, iPort );
 	m_clsUdpSendMutex.release();
 
+	NetworkLog( true, pclsMessage->m_strPacket.c_str() );
+
 	return bRes;
 }
 
@@ -382,6 +408,16 @@ void CSipStack::GetString( std::string & strBuf )
 void CSipStack::GetICTString( std::string & strBuf )
 {
 	m_clsICT.GetString( strBuf );
+}
+
+void CSipStack::NetworkLog( bool bSend, const char * pszPacket )
+{
+	SIP_NETWORK_LOG_LIST::iterator	itList;
+
+	for( itList = m_clsNetLogList.begin(); itList != m_clsNetLogList.end(); ++itList )
+	{
+		(*itList)->SipLog( bSend, pszPacket );
+	}
 }
 
 /**

@@ -17,10 +17,27 @@
  */
 
 #include "SipClient.h"
+#include <time.h>
 
 void CSipClient::EventRegister( CSipServerInfo clsInfo, int iStatus )
 {
 	printf( "REGISTER(%s) : %d\n", clsInfo.m_strUserId.c_str(), iStatus );
+}
+
+void CSipClient::SipLog( bool bSend, const char * pszPacket )
+{
+	struct timeval sttTime;
+	struct tm	sttTm;
+
+	gettimeofday( &sttTime, NULL );
+
+#ifdef WIN32
+	_localtime32_s( &sttTm, &sttTime.tv_sec );
+#else
+	localtime_r( &sttTime.tv_sec, &sttTm );	
+#endif
+
+	printf( "[%02d:%02d:%02d.%03d] %s [%s]\n", sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec, sttTime.tv_usec / 1000, bSend ? "Send" : "Recv", pszPacket );
 }
 
 int main( int argc, char * argv[] )
@@ -48,6 +65,8 @@ int main( int argc, char * argv[] )
 
 	clsUserAgent.m_pclsCallBack = &clsSipClient;
 	clsUserAgent.AddRegisterInfo( clsServerInfo );
+	gclsSipStack.AddNetworkLog( &clsSipClient );
+
 	clsUserAgent.Start( clsSetup );
 
 	while( 1 )
