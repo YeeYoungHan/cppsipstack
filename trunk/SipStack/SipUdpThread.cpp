@@ -27,6 +27,8 @@
  */
 bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort )
 {
+	pclsSipStack->NetworkLog( false, pszBuf );
+
 	CSipMessage	* pclsMessage = new CSipMessage();
 	if( pclsMessage == NULL ) return false;
 

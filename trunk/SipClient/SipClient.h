@@ -21,11 +21,13 @@
 
 #include "SipUserAgent.h"
 
-class CSipClient : public ISipUserAgentCallBack
+class CSipClient : public ISipUserAgentCallBack, public ISipNetworkLog
 {
 public:
 	virtual ~CSipClient(){}
 	virtual void EventRegister( CSipServerInfo clsInfo, int iStatus );
+
+	virtual void SipLog( bool bSend, const char * pszPacket );
 };
 
 #endif
