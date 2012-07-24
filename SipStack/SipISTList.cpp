@@ -18,7 +18,6 @@
 
 #include "SipISTList.h"
 #include "SipStack.h"
-#include "SipCreateMessage.h"
 #include "SipDeleteQueue.h"
 
 CSipISTList::CSipISTList()
@@ -88,7 +87,7 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 					itMap = m_clsMap.find( strKey );
 					bRes = true;
 
-					CSipMessage * psttResponse = SipCreateResponse( &m_pclsSipStack->m_clsSetup, itMap->second->m_pclsRequest, SIP_TRYING );
+					CSipMessage * psttResponse = itMap->second->m_pclsRequest->CreateResponse( SIP_TRYING );
 					if( psttResponse )
 					{
 						itMap->second->m_pclsResponse = psttResponse;

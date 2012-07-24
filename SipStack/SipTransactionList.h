@@ -23,8 +23,6 @@
 #include "SipMutex.h"
 
 #define MAX_ICT_RESEND_COUNT	11
-#define VIA_PREFIX						"z9hG4bK"
-#define VIA_PREFIX_LEN				7
 
 class CSipStack;
 

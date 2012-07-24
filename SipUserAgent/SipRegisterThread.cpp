@@ -1,3 +1,21 @@
+/* 
+ * Copyright (C) 2012 Yee Young Han <websearch@naver.com> (http://blog.naver.com/websearch)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
+
 #include "SipRegisterThread.h"
 #include <time.h>
 
@@ -11,7 +29,7 @@ void * SipRegisterThread( void * lpParameter )
 	SIP_SERVER_INFO_LIST::iterator itList;
 	time_t	iTime;
 
-	while( pclsSipUserAgent->m_clsSipStack.m_bStopEvent == false )
+	while( gclsSipStack.m_bStopEvent == false )
 	{
 		time( &iTime );
 
@@ -19,13 +37,26 @@ void * SipRegisterThread( void * lpParameter )
 		{
 			if( itList->m_bLogin == false )
 			{
+				if( itList->m_iSendTime == 0 )
+				{
+					CSipMessage * pclsRequest = itList->GetRegisterMessage( NULL );
+					if( pclsRequest )
+					{
+						gclsSipStack.SendSipMessage( pclsRequest );
+					}
 
+					itList->m_iSendTime = iTime;
+				}
 			}
 			else
 			{
 				if( ( iTime - itList->m_iLoginTime ) > ( itList->m_iLoginTimeout / 2 ) )
 				{
-					
+					CSipMessage * pclsRequest = itList->GetRegisterMessage( NULL );
+					if( pclsRequest )
+					{
+						gclsSipStack.SendSipMessage( pclsRequest );
+					}
 				}
 			}
 		}
