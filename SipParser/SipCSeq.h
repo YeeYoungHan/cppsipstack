@@ -24,8 +24,8 @@
 class CSipCSeq
 {
 public:
-	CSipCSeq(void);
-	~CSipCSeq(void);
+	CSipCSeq();
+	~CSipCSeq();
 
 	int					m_iDigit;
 	std::string	m_strMethod;

@@ -24,8 +24,8 @@
 class CSipFrom
 {
 public:
-	CSipFrom(void);
-	~CSipFrom(void);
+	CSipFrom();
+	~CSipFrom();
 
 	std::string m_strDisplayName;
 

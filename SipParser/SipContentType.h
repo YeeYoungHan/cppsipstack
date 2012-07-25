@@ -24,8 +24,8 @@
 class CSipContentType
 {
 public:
-	CSipContentType(void);
-	~CSipContentType(void);
+	CSipContentType();
+	~CSipContentType();
 
 	std::string	m_strType;
 	std::string	m_strSubType;

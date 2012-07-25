@@ -24,8 +24,8 @@
 class CSipUri
 {
 public:
-	CSipUri(void);
-	~CSipUri(void);
+	CSipUri();
+	~CSipUri();
 
 	std::string	m_strProtocol;
 	std::string	m_strUser;

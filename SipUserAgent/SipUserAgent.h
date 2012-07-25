@@ -26,8 +26,8 @@
 class CSipUserAgent : public ISipStackCallBack
 {
 public:
-	CSipUserAgent(void);
-	~CSipUserAgent(void);
+	CSipUserAgent();
+	~CSipUserAgent();
 
 	bool AddRegisterInfo( CSipServerInfo & clsInfo );
 

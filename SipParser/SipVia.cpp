@@ -19,11 +19,11 @@
 #include "SipParserDefine.h"
 #include "SipVia.h"
 
-CSipVia::CSipVia(void) : m_iPort(-1)
+CSipVia::CSipVia() : m_iPort(-1)
 {
 }
 
-CSipVia::~CSipVia(void)
+CSipVia::~CSipVia()
 {
 }
 

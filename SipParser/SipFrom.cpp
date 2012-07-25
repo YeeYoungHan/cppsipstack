@@ -20,11 +20,11 @@
 #include "SipFrom.h"
 #include "SipUtility.h"
 
-CSipFrom::CSipFrom(void)
+CSipFrom::CSipFrom()
 {
 }
 
-CSipFrom::~CSipFrom(void)
+CSipFrom::~CSipFrom()
 {
 }
 

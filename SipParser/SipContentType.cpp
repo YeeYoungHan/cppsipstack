@@ -19,11 +19,11 @@
 #include "SipParserDefine.h"
 #include "SipContentType.h"
 
-CSipContentType::CSipContentType(void)
+CSipContentType::CSipContentType()
 {
 }
 
-CSipContentType::~CSipContentType(void)
+CSipContentType::~CSipContentType()
 {
 }
 

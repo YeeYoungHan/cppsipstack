@@ -19,11 +19,11 @@
 #include "SipParserDefine.h"
 #include "SipCSeq.h"
 
-CSipCSeq::CSipCSeq(void) : m_iDigit(-1)
+CSipCSeq::CSipCSeq() : m_iDigit(-1)
 {
 }
 
-CSipCSeq::~CSipCSeq(void)
+CSipCSeq::~CSipCSeq()
 {
 }
 

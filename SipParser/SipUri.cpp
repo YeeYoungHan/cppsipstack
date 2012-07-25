@@ -19,11 +19,11 @@
 #include "SipParserDefine.h"
 #include "SipUri.h"
 
-CSipUri::CSipUri(void) : m_iPort(0)
+CSipUri::CSipUri() : m_iPort(0)
 {
 }
 
-CSipUri::~CSipUri(void)
+CSipUri::~CSipUri()
 {
 }
 

@@ -20,11 +20,11 @@
 #include "SipCredential.h"
 #include "SipChallenge.h"
 
-CSipCredential::CSipCredential(void)
+CSipCredential::CSipCredential()
 {
 }
 
-CSipCredential::~CSipCredential(void)
+CSipCredential::~CSipCredential()
 {
 }
 

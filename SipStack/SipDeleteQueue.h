@@ -37,8 +37,8 @@ typedef std::list< CSipDeleteInfo > SIP_DELETE_QUEUE;
 class CSipDeleteQueue
 {
 public:
-	CSipDeleteQueue(void);
-	~CSipDeleteQueue(void);
+	CSipDeleteQueue();
+	~CSipDeleteQueue();
 
 	void Insert( CSipMessage * pclsMessage );
 	void DeleteTimeout( );

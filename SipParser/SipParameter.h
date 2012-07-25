@@ -25,8 +25,8 @@
 class CSipParameter
 {
 public:
-	CSipParameter(void);
-	~CSipParameter(void);
+	CSipParameter();
+	~CSipParameter();
 
 	std::string	m_strName;
 	std::string	m_strValue;

@@ -19,11 +19,11 @@
 #include "SipParserDefine.h"
 #include "SipHeader.h"
 
-CSipHeader::CSipHeader(void)
+CSipHeader::CSipHeader()
 {
 }
 
-CSipHeader::~CSipHeader(void)
+CSipHeader::~CSipHeader()
 {
 }
 

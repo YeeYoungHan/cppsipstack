@@ -24,11 +24,11 @@ CSipStack	gclsSipStack;
 
 #include "SipUserAgentRegister.hpp"
 
-CSipUserAgent::CSipUserAgent(void) : m_pclsCallBack(NULL)
+CSipUserAgent::CSipUserAgent() : m_pclsCallBack(NULL)
 {
 }
 
-CSipUserAgent::~CSipUserAgent(void)
+CSipUserAgent::~CSipUserAgent()
 {
 }
 

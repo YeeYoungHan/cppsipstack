@@ -19,11 +19,11 @@
 #include "SipParserDefine.h"
 #include "SipChallenge.h"
 
-CSipChallenge::CSipChallenge(void)
+CSipChallenge::CSipChallenge()
 {
 }
 
-CSipChallenge::~CSipChallenge(void)
+CSipChallenge::~CSipChallenge()
 {
 }
 
