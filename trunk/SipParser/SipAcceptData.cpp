@@ -19,11 +19,11 @@
 #include "SipParserDefine.h"
 #include "SipAcceptData.h"
 
-CSipAcceptData::CSipAcceptData(void)
+CSipAcceptData::CSipAcceptData()
 {
 }
 
-CSipAcceptData::~CSipAcceptData(void)
+CSipAcceptData::~CSipAcceptData()
 {
 }
 

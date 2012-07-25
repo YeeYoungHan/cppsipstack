@@ -19,11 +19,11 @@
 #include "SipParserDefine.h"
 #include "SipParameter.h"
 
-CSipParameter::CSipParameter(void)
+CSipParameter::CSipParameter()
 {
 }
 
-CSipParameter::~CSipParameter(void)
+CSipParameter::~CSipParameter()
 {
 }
 

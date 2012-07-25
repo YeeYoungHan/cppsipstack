@@ -24,8 +24,8 @@
 class CSipCredential
 {
 public:
-	CSipCredential(void);
-	~CSipCredential(void);
+	CSipCredential();
+	~CSipCredential();
 
 	std::string	m_strType;
 	std::string	m_strUserName;

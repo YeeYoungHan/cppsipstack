@@ -18,10 +18,10 @@
 
 #include "SipDialog.h"
 
-CSipDialog::CSipDialog(void)
+CSipDialog::CSipDialog()
 {
 }
 
-CSipDialog::~CSipDialog(void)
+CSipDialog::~CSipDialog()
 {
 }

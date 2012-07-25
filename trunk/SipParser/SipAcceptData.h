@@ -24,8 +24,8 @@
 class CSipAcceptData
 {
 public:
-	CSipAcceptData(void);
-	~CSipAcceptData(void);
+	CSipAcceptData();
+	~CSipAcceptData();
 
 	std::string		m_strName;
 

@@ -25,8 +25,8 @@
 class CSipHeader
 {
 public:
-	CSipHeader(void);
-	~CSipHeader(void);
+	CSipHeader();
+	~CSipHeader();
 
 	std::string	m_strName;
 	std::string	m_strValue;

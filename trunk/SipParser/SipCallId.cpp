@@ -20,11 +20,11 @@
 #include "SipCallId.h"
 #include "SipUtility.h"
 
-CSipCallId::CSipCallId(void)
+CSipCallId::CSipCallId()
 {
 }
 
-CSipCallId::~CSipCallId(void)
+CSipCallId::~CSipCallId()
 {
 }
 

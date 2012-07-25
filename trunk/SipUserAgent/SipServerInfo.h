@@ -24,8 +24,8 @@
 class CSipServerInfo
 {
 public:
-	CSipServerInfo(void);
-	~CSipServerInfo(void);
+	CSipServerInfo();
+	~CSipServerInfo();
 
 	void ClearLogin();
 

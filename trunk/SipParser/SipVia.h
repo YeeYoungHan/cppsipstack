@@ -24,8 +24,8 @@
 class CSipVia
 {
 public:
-	CSipVia(void);
-	~CSipVia(void);
+	CSipVia();
+	~CSipVia();
 
 	std::string	m_strProtocolName;
 	std::string	m_strProtocolVersion;

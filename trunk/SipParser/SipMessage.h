@@ -32,8 +32,8 @@
 class CSipMessage
 {
 public:
-	CSipMessage(void);
-	~CSipMessage(void);
+	CSipMessage();
+	~CSipMessage();
 
 	std::string		m_strSipMethod;
 	CSipUri				m_clsReqUri;

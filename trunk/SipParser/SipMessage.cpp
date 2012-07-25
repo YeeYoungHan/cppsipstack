@@ -21,11 +21,11 @@
 #include "SipStatusCode.h"
 #include "SipUtility.h"
 
-CSipMessage::CSipMessage(void) : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(-1), m_iMaxForwards(-1), m_iUseCount(0)
+CSipMessage::CSipMessage() : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(-1), m_iMaxForwards(-1), m_iUseCount(0)
 {
 }
 
-CSipMessage::~CSipMessage(void)
+CSipMessage::~CSipMessage()
 {
 }
 

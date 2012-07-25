@@ -21,11 +21,11 @@
 CSipDeleteQueue gclsSipDeleteQueue;
 extern time_t giTime;
 
-CSipDeleteQueue::CSipDeleteQueue(void)
+CSipDeleteQueue::CSipDeleteQueue()
 {
 }
 
-CSipDeleteQueue::~CSipDeleteQueue(void)
+CSipDeleteQueue::~CSipDeleteQueue()
 {
 }
 

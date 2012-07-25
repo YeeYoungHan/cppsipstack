@@ -22,8 +22,8 @@
 class CSipDialog
 {
 public:
-	CSipDialog(void);
-	~CSipDialog(void);
+	CSipDialog();
+	~CSipDialog();
 
 
 };

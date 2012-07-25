@@ -24,8 +24,8 @@
 class CSipCallId
 {
 public:
-	CSipCallId(void);
-	~CSipCallId(void);
+	CSipCallId();
+	~CSipCallId();
 
 	std::string m_strName;
 	std::string m_strHost;

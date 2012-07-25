@@ -24,8 +24,8 @@
 class CSipChallenge
 {
 public:
-	CSipChallenge(void);
-	~CSipChallenge(void);
+	CSipChallenge();
+	~CSipChallenge();
 
 	std::string	m_strType;
 	std::string	m_strRealm;
