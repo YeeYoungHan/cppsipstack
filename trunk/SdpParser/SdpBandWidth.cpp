@@ -39,14 +39,14 @@ int CSdpBandWidth::Parse( const char * pszText, int iTextLen )
 		if( pszText[iPos] == ':' )
 		{
 			m_strType.append( pszText, iPos );
-			m_strBandWidth.append( pszText + iPos + 1 );
+			m_strBandWidth.append( pszText + iPos + 1, iTextLen - ( iPos + 1 ) );
 			break;
 		}
 	}
 
 	if( m_strType.empty() )
 	{
-		m_strType = pszText;
+		m_strType.append( pszText, iTextLen );
 	}
 
 	return iTextLen;

@@ -40,6 +40,7 @@ int CSdpConnection::Parse( const char * pszText, int iTextLen )
 		{
 			SetData( pszText + iStartPos, iPos - iStartPos, iType );
 			++iType;
+			iStartPos = iPos + 1;
 		}
 	}
 
