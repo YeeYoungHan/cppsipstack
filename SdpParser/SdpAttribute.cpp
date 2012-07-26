@@ -39,14 +39,14 @@ int CSdpAttribute::Parse( const char * pszText, int iTextLen )
 		if( pszText[iPos] == ':' )
 		{
 			m_strName.append( pszText, iPos );
-			m_strValue.append( pszText + iPos + 1 );
+			m_strValue.append( pszText + iPos + 1, iTextLen - ( iPos + 1 ) );
 			break;
 		}
 	}
 
 	if( m_strName.empty() )
 	{
-		m_strName = pszText;
+		m_strName.append( pszText, iTextLen );
 	}
 
 	return iTextLen;
