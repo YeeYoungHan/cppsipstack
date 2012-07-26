@@ -51,6 +51,7 @@ int main( int argc, char * argv[] )
 	char * pszServerIp = argv[1];
 	char * pszUserId = argv[2];
 	char * pszPassWord = argv[3];
+	
 	CSipUserAgent clsUserAgent;
 	CSipServerInfo clsServerInfo;
 	CSipStackSetup clsSetup;
@@ -60,7 +61,7 @@ int main( int argc, char * argv[] )
 	clsServerInfo.m_strUserId = pszUserId;
 	clsServerInfo.m_strPassWord = pszPassWord;
 
-	// QQQ: 
+	// QQQ: 클라이언트가 현재 사용하는 IP 주소를 넣어 주세요.
 	clsSetup.m_strLocalIp = "127.0.0.1";
 
 	clsUserAgent.m_pclsCallBack = &clsSipClient;
