@@ -22,6 +22,7 @@ bool TestSipUri();
 bool TestSipFrom();
 bool TestSipVia();
 bool TestSipMessage();
+bool TestSdp();
 
 int main( int argc, char * argv[] )
 {
@@ -29,6 +30,7 @@ int main( int argc, char * argv[] )
 	if( TestSipFrom() == false ) goto FUNC_END;
 	if( TestSipVia() == false ) goto FUNC_END;
 	if( TestSipMessage() == false ) goto FUNC_END;
+	if( TestSdp() == false ) goto FUNC_END;
 
 	printf( "All test is O.K.\n" );
 
