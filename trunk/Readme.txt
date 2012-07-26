@@ -21,13 +21,16 @@ C++ SIP stack 프로젝트
    - C++ SIP stack 을 테스트하기 위한 SIP 클라이언트 프로그램
 
  * SipParser
-   - SIP 메시지 파서 라이브러리
+   - SIP 메시지 파서/생성 라이브러리
 
  * SipStack
    - SIP stack 라이브러리
 
  * SipUserAgent
    - SIP 로그인 / 통화 관리 라이브러리
+
+ * SdpParser
+   - SDP 메시지 파서/생성 라이브러리
 
  * TestSipParser
    - SipParser 라이브러리 테스트 프로그램
