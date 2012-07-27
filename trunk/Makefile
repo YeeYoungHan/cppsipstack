@@ -7,6 +7,7 @@
 all:
 	cd SipParser && make
 	cd SipStack && make
+	cd SdpParser && make
 	cd SipUserAgent && make
 	cd TestSipParser && make
 	cd SipClient && make
@@ -14,6 +15,7 @@ all:
 clean:
 	cd SipParser && make clean
 	cd SipStack && make clean
+	cd SdpParser && make clean
 	cd SipUserAgent && make clean
 	cd TestSipParser && make clean
 	cd SipClient && make clean
