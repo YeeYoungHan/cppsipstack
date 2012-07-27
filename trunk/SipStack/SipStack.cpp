@@ -487,4 +487,9 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 	{
 		pclsMessage->m_strUserAgent = SIP_USER_AGENT;
 	}
+
+	if( pclsMessage->m_iMaxForwards == -1 )
+	{
+		pclsMessage->m_iMaxForwards = SIP_MAX_FORWARDS;
+	}
 }

@@ -16,9 +16,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipStackDefine.h"
 #include "SipDialog.h"
+#include "SipUserAgent.h"
 
-CSipDialog::CSipDialog() : m_iKey(-1), m_iSeq(0), m_iContactPort(-1), m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1)
+CSipDialog::CSipDialog() : m_iSeq(0), m_iContactPort(-1), m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1)
 {
 	memset( &m_sttInviteTime, 0, sizeof(m_sttInviteTime) );
 	memset( &m_sttCancelTime, 0, sizeof(m_sttCancelTime) );
@@ -28,4 +30,76 @@ CSipDialog::CSipDialog() : m_iKey(-1), m_iSeq(0), m_iContactPort(-1), m_iLocalRt
 
 CSipDialog::~CSipDialog()
 {
+}
+
+CSipMessage * CSipDialog::CreateInvite( )
+{
+	CSipMessage * pclsMessage = new CSipMessage();
+	if( pclsMessage == NULL ) return NULL;
+
+	if( pclsMessage->m_clsCallId.Parse( m_strCallId.c_str(), m_strCallId.length() ) == -1 )
+	{
+		delete pclsMessage;
+		return NULL;
+	}
+
+	pclsMessage->m_strSipMethod = "INVITE";
+	pclsMessage->m_clsReqUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
+
+	++m_iSeq;
+	pclsMessage->m_clsCSeq.Set( m_iSeq, "INVITE" );
+
+	pclsMessage->m_clsFrom.m_clsUri.Set( "sip", m_strFromId.c_str(), gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort );
+	pclsMessage->m_clsFrom.AddParam( "tag", m_strFromTag.c_str() );
+
+	pclsMessage->m_clsTo.m_clsUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
+	if( m_strToTag.empty() == false )
+	{
+		pclsMessage->m_clsTo.AddParam( "tag", m_strToTag.c_str() );
+	}
+
+	AddSdp( pclsMessage );
+
+	return pclsMessage;
+}
+
+bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
+{
+	char	szSdp[1024];
+	int		iLen = 0;
+
+	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "v=0\r\n"
+					"o=CSS 4 2 IN IP4 %s\r\n"
+					"s=CSS\r\n", m_strLocalRtpIp.c_str() );
+
+	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "c=IN IP4 %s\r\n", m_strLocalRtpIp.c_str() );
+	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "t=0 0\r\n" );
+
+	switch( m_iCodec )
+	{
+	case 0:
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 0 101\r\n", m_iLocalRtpPort );
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:0 PCMU/8000\r\n" );
+		break;
+	case 8:
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 8 101\r\n", m_iLocalRtpPort );
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:8 PCMA/8000\r\n" );
+		break;
+	case 3:
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 3 101\r\n", m_iLocalRtpPort );
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:3 GSM/8000\r\n" );
+		break;
+	case 18:
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 18 101\r\n", m_iLocalRtpPort );
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:18 G729/8000\r\n" );
+		break;
+	}
+
+	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:101 telephone-event/8000\r\n"
+		"a=fmtp:101 0-15\r\n"
+		"a=sendrecv\r\n" );
+
+	pclsMessage->m_strBody = szSdp;
+	
+	return true;
 }

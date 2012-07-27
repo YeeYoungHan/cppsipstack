@@ -18,6 +18,7 @@
 
 #include "SipUserAgent.h"
 #include "SipRegisterThread.h"
+#include "SipDialogMap.h"
 #include <time.h>
 
 CSipStack	gclsSipStack;
@@ -67,19 +68,36 @@ bool CSipUserAgent::Stop( )
 	return false;
 }
 
-int StartCall( const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute )
+bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId )
 {
+	if( pszFrom == NULL || pszTo == NULL ) return false;
+	if( pclsRtp == NULL || pclsRoute == NULL ) return false;
 
-	return 0;
+	CSipDialog	clsDialog;
+
+	clsDialog.m_strFromId = pszFrom;
+	clsDialog.m_strToId = pszTo;
+
+	clsDialog.m_strLocalRtpIp = pclsRtp->m_strIp;
+	clsDialog.m_iLocalRtpPort = pclsRtp->m_iPort;
+	clsDialog.m_iCodec = pclsRtp->m_iCodec;
+
+	clsDialog.m_strContactIp = pclsRoute->m_strDestIp;
+	clsDialog.m_iContactPort = pclsRoute->m_iDestPort;
+
+	if( gclsSipDialogMap.Insert( clsDialog ) == false ) return false;
+	strCallId = clsDialog.m_strCallId;
+
+	return true;
 }
 
-bool StopCall( int iCallKey )
+bool CSipUserAgent::StopCall( const char * pszCallId )
 {
 
 	return true;
 }
 
-bool AcceptCall( int iCallKey )
+bool CSipUserAgent::AcceptCall( const char * pszCallId )
 {
 
 	return true;
