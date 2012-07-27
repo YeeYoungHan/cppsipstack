@@ -1,4 +1,4 @@
-# Makefile for SipStack
+# Makefile for TestSipParser
 #
 # programmer : yee young han ( websearch@naver.com )
 #            : http://blog.naver.com/websearch
@@ -6,8 +6,8 @@
 
 CC=g++
 CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
-INC=-I../SipParser
-LIB=-L../SipParser -lsipparser
+INC=-I../SipParser -I../SdpParser
+LIB=-L../SipParser -lsipparser -L../SdpParser -lsdpparser
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
@@ -16,6 +16,7 @@ LIB=-L../SipParser -lsipparser
 all: TestSipParser.exe
 
 SRV_OBJ=TestSipFrom.o TestSipMessage.o TestSipUri.o TestSipVia.o \
+	TestSdp.o \
 	TestSipParser.o
 
 TestSipParser.exe: $(SRV_OBJ)
