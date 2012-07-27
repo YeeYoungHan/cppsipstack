@@ -23,6 +23,13 @@
 #include "SipServerInfo.h"
 #include "SipUserAgentCallBack.h"
 
+class CSipCallRoute
+{
+public:
+	std::string	m_strDestIp;
+	int					m_iDestPort;
+};
+
 class CSipUserAgent : public ISipStackCallBack
 {
 public:
@@ -31,14 +38,16 @@ public:
 
 	bool AddRegisterInfo( CSipServerInfo & clsInfo );
 
+	// 로그인 관련
 	bool Start( CSipStackSetup & clsSetup );
 	bool Stop( );
 
-	/*
-	int Call( const char * pszTo );
-	bool Hangup( int iCallKey );
-	*/
+	// 통화 관련
+	int StartCall( const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute );
+	bool StopCall( int iCallKey );
+	bool AcceptCall( int iCallKey );
 
+	// ISipStackCallBack
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 

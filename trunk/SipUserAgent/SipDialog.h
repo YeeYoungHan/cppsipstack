@@ -28,6 +28,8 @@ public:
 	CSipDialog();
 	~CSipDialog();
 
+	int					m_iKey;
+
 	std::string	m_strFromId;
 	std::string	m_strFromTag;
 	std::string	m_strToId;

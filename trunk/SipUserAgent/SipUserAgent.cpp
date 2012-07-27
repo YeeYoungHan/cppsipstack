@@ -67,7 +67,23 @@ bool CSipUserAgent::Stop( )
 	return false;
 }
 
+int StartCall( const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute )
+{
 
+	return 0;
+}
+
+bool StopCall( int iCallKey )
+{
+
+	return true;
+}
+
+bool AcceptCall( int iCallKey )
+{
+
+	return true;
+}
 
 bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {

@@ -21,6 +21,14 @@
 
 #include "SipStackDefine.h"
 
+class CSipCallRtp
+{
+public:
+	std::string	m_strIp;
+	int					m_iPort;
+	int					m_iCodec;
+};
+
 class ISipUserAgentCallBack
 {
 public:
