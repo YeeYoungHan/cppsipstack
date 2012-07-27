@@ -34,6 +34,11 @@ public:
 	bool Start( CSipStackSetup & clsSetup );
 	bool Stop( );
 
+	/*
+	int Call( const char * pszTo );
+	bool Hangup( int iCallKey );
+	*/
+
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 

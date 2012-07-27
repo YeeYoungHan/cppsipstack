@@ -27,6 +27,10 @@ public:
 	virtual ~ISipUserAgentCallBack(){};
 
 	virtual void EventRegister( CSipServerInfo clsInfo, int iStatus ) = 0;
+	virtual void EventIncomingCall( int iCallKey, const char * pszFrom ) = 0;
+	virtual void EventCallRing( int iCallKey, int iSipStatus ) = 0;
+	virtual void EventCallStart( int iCallKey ) = 0;
+	virtual void EventCallEnd( int iCallKey, int iSipStatus ) = 0;
 };
 
 #endif

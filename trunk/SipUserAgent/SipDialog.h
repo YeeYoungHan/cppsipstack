@@ -19,13 +19,38 @@
 #ifndef _SIP_DIALOG_H_
 #define _SIP_DIALOG_H_
 
+#include <string>
+#include "SipUdp.h"
+
 class CSipDialog
 {
 public:
 	CSipDialog();
 	~CSipDialog();
 
+	std::string	m_strFromId;
+	std::string	m_strFromTag;
+	std::string	m_strToId;
+	std::string	m_strToTag;
+	std::string m_strCallId;
+	std::string m_strViaBranch;
+	int					m_iSeq;
 
+	std::string	m_strContactIp;
+	int					m_iContactPort;
+
+	std::string	m_strLocalRtpIp;
+	int					m_iLocalRtpPort;
+
+	std::string	m_strRemoteRtpIp;
+	int					m_iRemoteRtpPort;
+
+	int					m_iCodec;
+
+	struct timeval m_sttInviteTime;
+	struct timeval m_sttCancelTime;
+	struct timeval m_sttStartTime;
+	struct timeval m_sttEndTime;
 };
 
 #endif
