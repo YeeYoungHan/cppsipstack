@@ -18,8 +18,12 @@
 
 #include "SipDialog.h"
 
-CSipDialog::CSipDialog()
+CSipDialog::CSipDialog() : m_iSeq(0), m_iContactPort(-1), m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1)
 {
+	memset( &m_sttInviteTime, 0, sizeof(m_sttInviteTime) );
+	memset( &m_sttCancelTime, 0, sizeof(m_sttCancelTime) );
+	memset( &m_sttStartTime, 0, sizeof(m_sttStartTime) );
+	memset( &m_sttEndTime, 0, sizeof(m_sttEndTime) );
 }
 
 CSipDialog::~CSipDialog()

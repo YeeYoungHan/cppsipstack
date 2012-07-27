@@ -21,7 +21,27 @@
 
 void CSipClient::EventRegister( CSipServerInfo clsInfo, int iStatus )
 {
-	printf( "REGISTER(%s) : %d\n", clsInfo.m_strUserId.c_str(), iStatus );
+	printf( "EventRegister(%s) : %d\n", clsInfo.m_strUserId.c_str(), iStatus );
+}
+
+void CSipClient::EventIncomingCall( int iCallKey, const char * pszFrom )
+{
+	printf( "EventIncomingCall(%d,%s)\n", iCallKey, pszFrom );
+}
+
+void CSipClient::EventCallRing( int iCallKey, int iSipStatus )
+{
+	printf( "EventCallRing(%d,%d)\n", iCallKey, iSipStatus );
+}
+
+void CSipClient::EventCallStart( int iCallKey )
+{
+	printf( "EventCallStart(%d)\n", iCallKey );
+}
+
+void CSipClient::EventCallEnd( int iCallKey, int iSipStatus )
+{
+	printf( "EventCallEnd(%d,%d)\n", iCallKey, iSipStatus );
 }
 
 void CSipClient::SipLog( bool bSend, const char * pszPacket )
@@ -70,9 +90,14 @@ int main( int argc, char * argv[] )
 
 	clsUserAgent.Start( clsSetup );
 
-	while( 1 )
+	char	szCommand[1024];
+
+	memset( szCommand, 0, sizeof(szCommand) );
+	while( fgets( szCommand, sizeof(szCommand), stdin ) )
 	{
-		sleep(1);
+		if( szCommand[0] == 'Q' || szCommand[0] == 'q' || szCommand[0] == 'E' || szCommand[0] == 'e' ) break;
+	
+		memset( szCommand, 0, sizeof(szCommand) );
 	}
 
 	return 0;

@@ -67,6 +67,8 @@ bool CSipUserAgent::Stop( )
 	return false;
 }
 
+
+
 bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
 	
