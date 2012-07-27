@@ -176,6 +176,14 @@
 				RelativePath=".\SipDialog.h"
 				>
 			</File>
+			<File
+				RelativePath=".\SipDialogMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipDialogMap.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="UserAgent"
