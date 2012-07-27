@@ -1,3 +1,21 @@
+/* 
+ * Copyright (C) 2012 Yee Young Han <websearch@naver.com> (http://blog.naver.com/websearch)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
+
 #ifndef _SIP_DIALOG_MAP_H_
 #define _SIP_DIALOG_MAP_H_
 
@@ -6,7 +24,6 @@
 #include <map>
 
 typedef std::map< std::string, CSipDialog > SIP_DIALOG_MAP;
-typedef std::map< int, std::string > SIP_DIALOG_KEY_MAP;
 
 class CSipDialogMap
 {
@@ -14,14 +31,14 @@ public:
 	CSipDialogMap();
 	~CSipDialogMap();
 
-	bool Insert( CSipDialog & clsDialog, int & iKey );
-	bool Delete( int iKey );
+	bool Insert( CSipDialog & clsDialog );
+	bool Delete( const char * pszCallId );
 
 private:
-	int		m_iLastKey;
 	SIP_DIALOG_MAP			m_clsMap;
-	SIP_DIALOG_KEY_MAP	m_clsKeyMap;
 	CSipMutex						m_clsMutex;
 };
+
+extern CSipDialogMap gclsSipDialogMap;
 
 #endif

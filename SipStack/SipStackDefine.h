@@ -26,6 +26,7 @@
 #define SIP_RING_TIMEOUT		300000
 
 #define SIP_USER_AGENT	"CppSipStack_" SIP_STACK_VERSION
+#define SIP_MAX_FORWARDS	70
 
 #ifdef WIN32
 #include <winsock2.h>

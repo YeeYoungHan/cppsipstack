@@ -1,8 +1,29 @@
+/* 
+ * Copyright (C) 2012 Yee Young Han <websearch@naver.com> (http://blog.naver.com/websearch)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
+
 #include "SipParserDefine.h"
 #include "SipDialogMap.h"
 #include "SipUtility.h"
+#include "SipUserAgent.h"
 
-CSipDialogMap::CSipDialogMap() : m_iLastKey(0)
+CSipDialogMap gclsSipDialogMap;
+
+CSipDialogMap::CSipDialogMap()
 {
 }
 
@@ -10,42 +31,69 @@ CSipDialogMap::~CSipDialogMap()
 {
 }
 
-bool CSipDialogMap::Insert( CSipDialog & clsDialog, int & iKey )
+bool CSipDialogMap::Insert( CSipDialog & clsDialog )
 {
 	if( clsDialog.m_strFromId.empty() || clsDialog.m_strToId.empty() ) return false;
 	
-	SIP_DIALOG_KEY_MAP::iterator	itKey;
+	SIP_DIALOG_MAP::iterator			itMap;
 	char	szTag[SIP_TAG_MAX_SIZE], szBranch[SIP_BRANCH_MAX_SIZE], szCallIdName[SIP_CALL_ID_NAME_MAX_SIZE];
+	bool	bInsert = false;
 
 	SipMakeTag( szTag, sizeof(szTag) );
 	SipMakeBranch( szBranch, sizeof(szBranch) );
-	SipMakeCallIdName( szCallIdName, sizeof(szCallIdName) );
 
 	clsDialog.m_strFromTag = szTag;
 	clsDialog.m_strViaBranch = szBranch;
 
-	m_clsMutex.acquire();
+	gettimeofday( &clsDialog.m_sttInviteTime, NULL );
+
 	while( 1 )
 	{
-		++m_iLastKey;
-		if( m_iLastKey > 2000000000 ) m_iLastKey = 1;
+		SipMakeCallIdName( szCallIdName, sizeof(szCallIdName) );
 
-		itKey = m_clsKeyMap.find( m_iLastKey );
-		if( itKey == m_clsKeyMap.end() )
+		clsDialog.m_strCallId = szCallIdName;
+		clsDialog.m_strCallId.append( "@" );
+		clsDialog.m_strCallId.append( gclsSipStack.m_clsSetup.m_strLocalIp );
+
+		m_clsMutex.acquire();
+		itMap = m_clsMap.find( clsDialog.m_strCallId );
+		if( itMap == m_clsMap.end() )
 		{
-			break;
+			m_clsMap.insert( SIP_DIALOG_MAP::value_type( clsDialog.m_strCallId, clsDialog ) );
+			bInsert = true;
 		}
+		m_clsMutex.release();
+
+		if( bInsert ) break;
 	}
 
-	m_clsMutex.release();
+	CSipMessage * pclsMessage = clsDialog.CreateInvite();
+	if( pclsMessage == NULL )
+	{
+		Delete( clsDialog.m_strCallId.c_str() );
+		return false;
+	}
+
+	if( gclsSipStack.SendSipMessage( pclsMessage ) == false )
+	{
+		delete pclsMessage;
+		Delete( clsDialog.m_strCallId.c_str() );
+		return false;
+	}
 
 	return true;
 }
 
-bool CSipDialogMap::Delete( int iKey )
+bool CSipDialogMap::Delete( const char * pszCallId )
 {
-	m_clsMutex.acquire();
+	SIP_DIALOG_MAP::iterator			itMap;
 
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		m_clsMap.erase( itMap );
+	}
 	m_clsMutex.release();
 
 	return true;

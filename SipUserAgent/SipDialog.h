@@ -21,14 +21,13 @@
 
 #include <string>
 #include "SipUdp.h"
+#include "SipMessage.h"
 
 class CSipDialog
 {
 public:
 	CSipDialog();
 	~CSipDialog();
-
-	int					m_iKey;
 
 	std::string	m_strFromId;
 	std::string	m_strFromTag;
@@ -53,6 +52,9 @@ public:
 	struct timeval m_sttCancelTime;
 	struct timeval m_sttStartTime;
 	struct timeval m_sttEndTime;
+
+	CSipMessage * CreateInvite( );
+	bool AddSdp( CSipMessage * pclsMessage );
 };
 
 #endif

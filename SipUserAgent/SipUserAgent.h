@@ -43,9 +43,9 @@ public:
 	bool Stop( );
 
 	// 통화 관련
-	int StartCall( const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute );
-	bool StopCall( int iCallKey );
-	bool AcceptCall( int iCallKey );
+	bool StartCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId );
+	bool StopCall( const char * pszCallId );
+	bool AcceptCall( const char * pszCallId );
 
 	// ISipStackCallBack
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
