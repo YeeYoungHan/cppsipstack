@@ -18,7 +18,10 @@
 
 #include "SipMutex.h"
 
-CSipMutex::CSipMutex( const char * pszName )
+/**
+ * @brief 생성자
+ */
+CSipMutex::CSipMutex( )
 {
 #ifdef WIN32
 	InitializeCriticalSection( &m_sttMutex );
@@ -27,6 +30,9 @@ CSipMutex::CSipMutex( const char * pszName )
 #endif
 }
 
+/**
+ * @brief 소멸자
+ */
 CSipMutex::~CSipMutex()
 {
 #ifdef WIN32
@@ -36,6 +42,10 @@ CSipMutex::~CSipMutex()
 #endif
 }
 
+/**
+ * @brief mutex lock 한다.
+ * @return true 를 리턴한다.
+ */
 bool CSipMutex::acquire()
 {
 #ifdef WIN32
@@ -50,6 +60,10 @@ bool CSipMutex::acquire()
 	return true;
 }
 
+/**
+ * @brief mutex unlock 한다.
+ * @return true 를 리턴한다.
+ */
 bool CSipMutex::release()
 {
 #ifdef WIN32
@@ -64,7 +78,10 @@ bool CSipMutex::release()
 	return true;
 }
 
-CSipMutexSignal::CSipMutexSignal( const char * pszName ) : CSipMutex( pszName )
+/**
+ * @brief 생성자
+ */
+CSipMutexSignal::CSipMutexSignal()
 {
 #ifdef WIN32
 #else
@@ -72,6 +89,9 @@ CSipMutexSignal::CSipMutexSignal( const char * pszName ) : CSipMutex( pszName )
 #endif
 }
 
+/**
+ * @brief 소멸자
+ */
 CSipMutexSignal::~CSipMutexSignal()
 {
 #ifdef WIN32
@@ -80,6 +100,10 @@ CSipMutexSignal::~CSipMutexSignal()
 #endif
 }
 
+/**
+ * @brief signal 또는 broadcast 메소드가 호출될 때까지 대기한다.
+ * @return true 를 리턴한다.
+ */
 bool CSipMutexSignal::wait()
 {
 #ifdef WIN32
@@ -95,6 +119,10 @@ bool CSipMutexSignal::wait()
 	return true;
 }
 
+/**
+ * @brief signal 또는 broadcast 메소드가 호출될 때까지 대기하는 쓰레드 1개를 대기 중지시킨다.
+ * @return true 를 리턴한다.
+ */
 bool CSipMutexSignal::signal()
 {
 #ifdef WIN32
@@ -109,6 +137,10 @@ bool CSipMutexSignal::signal()
 	return true;
 }
 
+/**
+ * @brief signal 또는 broadcast 메소드가 호출될 때까지 대기하는 모든 쓰레드를 대기 중지시킨다.
+ * @return true 를 리턴한다.
+ */
 bool CSipMutexSignal::broadcast()
 {
 #ifdef WIN32

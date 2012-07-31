@@ -26,6 +26,11 @@ static int	giTag;
 static int	giBranch;
 static int	giCallId;
 
+/**
+ * @brief SIP From/To tag 에 사용할 문자열을 작성한다.
+ * @param pszTag		SIP From/To tag 에 사용할 문자열을 저장할 변수
+ * @param iTagSize	pszTag 변수의 크기
+ */
 void SipMakeTag( char * pszTag, int iTagSize )
 {
 	int		iTag;
@@ -46,6 +51,11 @@ void SipMakeTag( char * pszTag, int iTagSize )
 	snprintf( pszTag, iTagSize, "%d", iTag );
 }
 
+/**
+ * @brief SIP Via branch 에 사용할 문자열을 작성한다.
+ * @param pszBranch		SIP Via branch 에 사용할 문자열을 저장할 변수
+ * @param iBranchSize	pszBranch 변수의 크기
+ */
 void SipMakeBranch( char * pszBranch, int iBranchSize )
 {
 	int		iBranch;
@@ -66,6 +76,11 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 	snprintf( pszBranch, iBranchSize, "%s-WCSS-%d", VIA_PREFIX, iBranch );
 }
 
+/**
+ * @brief SIP Call-ID 에 사용할 name 문자열을 작성한다.
+ * @param pszCallId		SIP Call-ID 에 사용할 name 문자열을 저장할 변수
+ * @param iCallIdSize	pszCallId 변수의 크기
+ */
 void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 {
 	int		iCallId;
