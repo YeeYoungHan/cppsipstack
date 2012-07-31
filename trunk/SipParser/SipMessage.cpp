@@ -29,6 +29,12 @@ CSipMessage::~CSipMessage()
 {
 }
 
+/**
+ * @brief SIP 헤더 문자열을 파싱하여 CSipMessage 클래스의 멤버 변수에 저장한다.
+ * @param pszText		SIP 헤더의 값을 저장한 문자열
+ * @param iTextLen	pszText 문자열의 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSipMessage::Parse( const char * pszText, int iTextLen )
 {
 	if( pszText == NULL || iTextLen <= 4 ) return -1;
@@ -173,6 +179,12 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 	return iCurPos;
 }
 
+/**
+ * @brief SIP 메시지 문자열을 작성한다.
+ * @param pszText		SIP 메시지 문자열을 저장할 문자열 변수
+ * @param iTextSize	pszText 변수의 크기
+ * @returns 성공하면 작성한 문자열 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSipMessage::ToString( char * pszText, int iTextSize )
 {
 	if( pszText == NULL || iTextSize <= 0 ) return -1;
@@ -408,6 +420,9 @@ bool CSipMessage::MakePacket()
 	return true;
 }
 
+/**
+ * @brief 멤버 변수를 초기화시킨다.
+ */
 void CSipMessage::Clear()
 {
 	m_strSipMethod.clear();

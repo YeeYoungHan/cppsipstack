@@ -26,11 +26,10 @@
 #endif
 
 /** @brief mutex 기능을 수행하는 클래스 */
-
 class CSipMutex
 {
 public:
-	CSipMutex( const char * pszName = "" );
+	CSipMutex();
 	~CSipMutex();
 	
 	bool acquire();
@@ -44,10 +43,11 @@ protected:
 #endif
 };
 
+/** @brief mutex 기능 및 wait/signal 기능을 수행하는 클래스 */
 class CSipMutexSignal : public CSipMutex
 {
 public:
-	CSipMutexSignal( const char * pszName );
+	CSipMutexSignal();
 	~CSipMutexSignal();
 	
 	bool wait();
