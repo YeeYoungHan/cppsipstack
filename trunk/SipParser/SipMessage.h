@@ -86,6 +86,8 @@ public:
 	bool IsRequest();
 	bool IsMethod( const char * pszMethod );
 	bool IsEqualCallId( CSipMessage * pclsMessage );
+	bool GetCallId( std::string & strCallId );
+
 	bool AddIpPortToTopVia( const char * pszIp, int iPort );
 	bool AddVia( const char * pszIp, int iPort, const char * pszBranch = NULL );
 	bool AddRoute( const char * pszIp, int iPort );

@@ -480,6 +480,16 @@ bool CSipMessage::IsEqualCallId( CSipMessage * pclsMessage )
 	return m_clsCallId.IsEqual( &pclsMessage->m_clsCallId );
 }
 
+bool CSipMessage::GetCallId( std::string & strCallId )
+{
+	strCallId.clear();
+
+	if( m_clsCallId.Empty() ) return false;
+	m_clsCallId.ToString( strCallId );
+
+	return true;
+}
+
 bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort )
 {
 	SIP_VIA_LIST::iterator itViaList = m_clsViaList.begin();

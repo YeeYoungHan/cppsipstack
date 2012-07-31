@@ -136,3 +136,45 @@ bool CSipDialogMap::Delete( const char * pszCallId )
 
 	return true;
 }
+
+bool CSipDialogMap::SetInviteResponse( CSipMessage * pclsMessage )
+{
+	std::string	strCallId;
+
+	if( pclsMessage->GetCallId( strCallId ) == false ) return false;
+
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bFound = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( strCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		if( pclsMessage->m_iStatusCode > 100 && pclsMessage->m_iStatusCode < 200 )
+		{
+			pclsMessage->m_clsTo.GetParam( "tag", itMap->second.m_strToTag );
+		}
+		else
+		{
+			if( pclsMessage->m_iStatusCode >= 200 && pclsMessage->m_iStatusCode < 300 )
+			{
+				gettimeofday( &itMap->second.m_sttStartTime, NULL );
+			}
+			else
+			{
+				gettimeofday( &itMap->second.m_sttEndTime, NULL );
+			}
+
+			CSipMessage * pclsAck = itMap->second.CreateAck();
+			if( pclsAck )
+			{
+				gclsSipStack.SendSipMessage( pclsAck );
+			}
+		}
+
+		bFound = true;
+	}
+	m_clsMutex.release();
+
+	return bFound;
+}

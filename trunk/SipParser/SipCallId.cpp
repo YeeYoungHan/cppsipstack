@@ -67,6 +67,17 @@ int CSipCallId::ToString( char * pszText, int iTextSize )
 	}
 }
 
+void CSipCallId::ToString( std::string & strText )
+{
+	strText = m_strName;
+
+	if( m_strHost.empty() == false )
+	{
+		strText.append( "@" );
+		strText.append( m_strHost );
+	}
+}
+
 void CSipCallId::Clear()
 {
 	m_strName.clear();

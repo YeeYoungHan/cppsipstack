@@ -32,6 +32,8 @@ public:
 
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
+	void ToString( std::string & strText );
+
 	void Clear();
 	bool Empty();
 	bool IsEqual( CSipCallId * pclsCallId );
