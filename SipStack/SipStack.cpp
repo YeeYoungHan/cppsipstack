@@ -295,11 +295,20 @@ bool CSipStack::Send( CSipMessage * pclsMessage )
 	if( pclsMessage->IsRequest() )
 	{
 		SIP_FROM_LIST::iterator itList = pclsMessage->m_clsRouteList.begin();
-		if( itList == pclsMessage->m_clsRouteList.end() ) return false;
+		if( itList == pclsMessage->m_clsRouteList.end() )
+		{
+			if( pclsMessage->m_clsReqUri.m_strHost.empty() ) return false;
 
-		pszIp = itList->m_clsUri.m_strHost.c_str();
-		iPort = itList->m_clsUri.m_iPort;
-		if( iPort == -1 ) iPort = 5060;
+			pszIp = pclsMessage->m_clsReqUri.m_strHost.c_str();
+			iPort = pclsMessage->m_clsReqUri.m_iPort;
+		}
+		else
+		{
+			pszIp = itList->m_clsUri.m_strHost.c_str();
+			iPort = itList->m_clsUri.m_iPort;
+		}
+
+		if( iPort <= 0 ) iPort = 5060;
 	}
 	else
 	{
