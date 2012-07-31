@@ -39,6 +39,11 @@ void * SipRegisterThread( void * lpParameter )
 			{
 				if( itList->m_iSendTime == 0 )
 				{
+					if( itList->m_iNextSendTime != 0 )
+					{
+						if( itList->m_iNextSendTime > iTime ) continue;
+					}
+
 					CSipMessage * pclsRequest = itList->GetRegisterMessage( NULL );
 					if( pclsRequest )
 					{

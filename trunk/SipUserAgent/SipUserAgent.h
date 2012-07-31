@@ -22,6 +22,7 @@
 #include "SipStack.h"
 #include "SipServerInfo.h"
 #include "SipUserAgentCallBack.h"
+#include "SipDialog.h"
 
 class CSipCallRoute
 {
@@ -29,6 +30,8 @@ public:
 	std::string	m_strDestIp;
 	int					m_iDestPort;
 };
+
+typedef std::map< std::string, CSipDialog > SIP_DIALOG_MAP;
 
 class CSipUserAgent : public ISipStackCallBack
 {
@@ -56,8 +59,19 @@ public:
 
 private:
 	bool RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessage );
+
+	bool RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage );
 	bool RecvInviteResponse( int iThreadId, CSipMessage * pclsMessage );
+	
 	bool RecvByeRequest( int iThreadId, CSipMessage * pclsMessage );
+
+	bool SendInvite( CSipDialog & clsDialog );
+	bool Delete( const char * pszCallId );
+
+	bool SetInviteResponse( CSipMessage * pclsMessage );
+
+	SIP_DIALOG_MAP			m_clsMap;
+	CSipMutex						m_clsMutex;
 };
 
 extern CSipStack	gclsSipStack;

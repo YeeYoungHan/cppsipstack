@@ -43,7 +43,7 @@ CSipMessage * CSipDialog::CreateInvite( )
 	SipMakeBranch( szBranch, sizeof(szBranch) );
 	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, szBranch );
 	m_strViaBranch = szBranch;
-	
+
 	AddSdp( pclsMessage );
 
 	return pclsMessage;
@@ -132,7 +132,10 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	pclsMessage->m_strSipMethod = pszSipMethod;
 	pclsMessage->m_clsReqUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
 
-	++m_iSeq;
+	if( strcmp( pszSipMethod, "ACK" ) && strcmp( pszSipMethod, "CANCEL" ) )
+	{
+		++m_iSeq;
+	}
 	pclsMessage->m_clsCSeq.Set( m_iSeq, pszSipMethod );
 
 	pclsMessage->m_clsFrom.m_clsUri.Set( "sip", m_strFromId.c_str(), gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort );
@@ -143,6 +146,9 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	{
 		pclsMessage->m_clsTo.AddParam( "tag", m_strToTag.c_str() );
 	}
+
+	// Route
+	pclsMessage->AddRoute( m_strContactIp.c_str(), m_iContactPort );
 
 	return pclsMessage;
 }

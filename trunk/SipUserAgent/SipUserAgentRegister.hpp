@@ -49,6 +49,8 @@ bool CSipUserAgent::RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessa
 			else
 			{
 				itSL->ClearLogin();
+				time( &itSL->m_iNextSendTime );
+				itSL->m_iNextSendTime += 60;
 				if( m_pclsCallBack ) m_pclsCallBack->EventRegister( *itSL, iStatusCode );
 			}
 

@@ -91,13 +91,51 @@ int main( int argc, char * argv[] )
 	clsUserAgent.Start( clsSetup );
 
 	char	szCommand[1024];
+	int		iLen;
+	std::string	strInviteId;
 
 	memset( szCommand, 0, sizeof(szCommand) );
 	while( fgets( szCommand, sizeof(szCommand), stdin ) )
 	{
 		if( szCommand[0] == 'Q' || szCommand[0] == 'q' || szCommand[0] == 'E' || szCommand[0] == 'e' ) break;
+
+		iLen = strlen(szCommand);
+		if( iLen >= 2 && szCommand[iLen-2] == '\r' )
+		{
+			szCommand[iLen-2] = '\0';
+		}
+		else if( iLen >= 1 && szCommand[iLen-1] == '\n' )
+		{
+			szCommand[iLen-1] = '\0';
+		}
+
+		if( szCommand[0] == 'c' )
+		{
+			CSipCallRtp clsRtp;
+			CSipCallRoute	clsRoute;
+
+			// QQQ: RTP 수신 IP/Port/Codec 를 넣어 주세요.
+			clsRtp.m_strIp = "127.0.0.1";
+			clsRtp.m_iPort = 2000;
+			clsRtp.m_iCodec = 0;
+
+			clsRoute.m_strDestIp = pszServerIp;
+			clsRoute.m_iDestPort = 5060;
+
+			clsUserAgent.StartCall( pszUserId, szCommand + 2, &clsRtp, &clsRoute, strInviteId );
+		}
+		else if( szCommand[0] == 'e' || szCommand[0] == 's' )
+		{
+			clsUserAgent.StopCall( strInviteId.c_str() );
+			strInviteId.clear();
+		}
 	
 		memset( szCommand, 0, sizeof(szCommand) );
+	}
+
+	if( strInviteId.empty() == false )
+	{
+		clsUserAgent.StopCall( strInviteId.c_str() );
 	}
 
 	return 0;
