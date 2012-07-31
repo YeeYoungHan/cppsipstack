@@ -521,7 +521,7 @@ bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort )
 	return true;
 }
 
-bool CSipMessage::AddVia( const char * pszIp, int iPort )
+bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch )
 {
 	CSipVia clsVia;
 
@@ -533,10 +533,17 @@ bool CSipMessage::AddVia( const char * pszIp, int iPort )
 
 	AddSipParameter( clsVia.m_clsParamList, "rport", NULL );
 
-	char	szBranch[SIP_BRANCH_MAX_SIZE];
+	if( pszBranch == NULL )
+	{
+		char	szBranch[SIP_BRANCH_MAX_SIZE];
 
-	SipMakeBranch( szBranch, sizeof(szBranch) );
-	AddSipParameter( clsVia.m_clsParamList, "branch", szBranch );
+		SipMakeBranch( szBranch, sizeof(szBranch) );
+		AddSipParameter( clsVia.m_clsParamList, "branch", szBranch );
+	}
+	else
+	{
+		AddSipParameter( clsVia.m_clsParamList, "branch", pszBranch );
+	}
 
 	m_clsViaList.push_front( clsVia );
 

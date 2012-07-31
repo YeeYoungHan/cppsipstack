@@ -31,7 +31,8 @@ public:
 	CSipDialogMap();
 	~CSipDialogMap();
 
-	bool Insert( CSipDialog & clsDialog );
+	bool SendInvite( CSipDialog & clsDialog );
+	bool SendEnd( const char * pszCallId );
 	bool Delete( const char * pszCallId );
 
 private:

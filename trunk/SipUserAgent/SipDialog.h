@@ -54,7 +54,13 @@ public:
 	struct timeval m_sttEndTime;
 
 	CSipMessage * CreateInvite( );
+	CSipMessage * CreateAck( );
+	CSipMessage * CreateCancel( );
+	CSipMessage * CreateBye( );
 	bool AddSdp( CSipMessage * pclsMessage );
+
+private:
+	CSipMessage * CreateMessage( const char * pszSipMethod );
 };
 
 #endif
