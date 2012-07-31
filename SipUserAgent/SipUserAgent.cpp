@@ -85,7 +85,7 @@ bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCal
 	clsDialog.m_strContactIp = pclsRoute->m_strDestIp;
 	clsDialog.m_iContactPort = pclsRoute->m_iDestPort;
 
-	if( gclsSipDialogMap.Insert( clsDialog ) == false ) return false;
+	if( gclsSipDialogMap.SendInvite( clsDialog ) == false ) return false;
 	strCallId = clsDialog.m_strCallId;
 
 	return true;
@@ -93,8 +93,7 @@ bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCal
 
 bool CSipUserAgent::StopCall( const char * pszCallId )
 {
-
-	return true;
+	return gclsSipDialogMap.SendEnd( pszCallId );
 }
 
 bool CSipUserAgent::AcceptCall( const char * pszCallId )
@@ -114,10 +113,11 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 {
 	if( pclsMessage->IsMethod( "REGISTER" ) )
 	{
-		if( pclsMessage->IsRequest() == false )
-		{
-			return RecvRegisterResponse( iThreadId, pclsMessage );
-		}
+		return RecvRegisterResponse( iThreadId, pclsMessage );
+	}
+	else if( pclsMessage->IsMethod( "INVITE" ) )
+	{
+
 	}
 
 	return false;

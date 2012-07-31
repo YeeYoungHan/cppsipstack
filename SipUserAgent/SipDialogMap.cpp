@@ -31,7 +31,7 @@ CSipDialogMap::~CSipDialogMap()
 {
 }
 
-bool CSipDialogMap::Insert( CSipDialog & clsDialog )
+bool CSipDialogMap::SendInvite( CSipDialog & clsDialog )
 {
 	if( clsDialog.m_strFromId.empty() || clsDialog.m_strToId.empty() ) return false;
 	
@@ -82,6 +82,44 @@ bool CSipDialogMap::Insert( CSipDialog & clsDialog )
 	}
 
 	return true;
+}
+
+bool CSipDialogMap::SendEnd( const char * pszCallId )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+	CSipMessage * pclsMessage = NULL;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		if( itMap->second.m_sttStartTime.tv_sec != 0 )
+		{
+			if( itMap->second.m_sttEndTime.tv_sec == 0 )
+			{
+				pclsMessage = itMap->second.CreateBye();
+				gettimeofday( &itMap->second.m_sttEndTime, NULL );
+			}
+		}
+		else
+		{
+			if( itMap->second.m_sttCancelTime.tv_sec == 0 )
+			{
+				pclsMessage = itMap->second.CreateCancel();
+				gettimeofday( &itMap->second.m_sttCancelTime, NULL );
+			}
+		}
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	if( pclsMessage )
+	{
+		gclsSipStack.SendSipMessage( pclsMessage );
+	}
+
+	return bRes;
 }
 
 bool CSipDialogMap::Delete( const char * pszCallId )

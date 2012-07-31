@@ -19,6 +19,7 @@
 #include "SipStackDefine.h"
 #include "SipDialog.h"
 #include "SipUserAgent.h"
+#include "SipUtility.h"
 
 CSipDialog::CSipDialog() : m_iSeq(0), m_iContactPort(-1), m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1)
 {
@@ -34,31 +35,44 @@ CSipDialog::~CSipDialog()
 
 CSipMessage * CSipDialog::CreateInvite( )
 {
-	CSipMessage * pclsMessage = new CSipMessage();
+	CSipMessage * pclsMessage = CreateMessage( "INVITE" );
 	if( pclsMessage == NULL ) return NULL;
 
-	if( pclsMessage->m_clsCallId.Parse( m_strCallId.c_str(), m_strCallId.length() ) == -1 )
-	{
-		delete pclsMessage;
-		return NULL;
-	}
+	char	szBranch[SIP_BRANCH_MAX_SIZE];
 
-	pclsMessage->m_strSipMethod = "INVITE";
-	pclsMessage->m_clsReqUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
-
-	++m_iSeq;
-	pclsMessage->m_clsCSeq.Set( m_iSeq, "INVITE" );
-
-	pclsMessage->m_clsFrom.m_clsUri.Set( "sip", m_strFromId.c_str(), gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort );
-	pclsMessage->m_clsFrom.AddParam( "tag", m_strFromTag.c_str() );
-
-	pclsMessage->m_clsTo.m_clsUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
-	if( m_strToTag.empty() == false )
-	{
-		pclsMessage->m_clsTo.AddParam( "tag", m_strToTag.c_str() );
-	}
-
+	SipMakeBranch( szBranch, sizeof(szBranch) );
+	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, szBranch );
+	m_strViaBranch = szBranch;
+	
 	AddSdp( pclsMessage );
+
+	return pclsMessage;
+}
+
+CSipMessage * CSipDialog::CreateAck( )
+{
+	CSipMessage * pclsMessage = CreateMessage( "ACK" );
+	if( pclsMessage == NULL ) return NULL;
+
+	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, m_strViaBranch.c_str() );
+
+	return pclsMessage;
+}
+
+CSipMessage * CSipDialog::CreateCancel( )
+{
+	CSipMessage * pclsMessage = CreateMessage( "CANCEL" );
+	if( pclsMessage == NULL ) return NULL;
+
+	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, m_strViaBranch.c_str() );
+
+	return pclsMessage;
+}
+
+CSipMessage * CSipDialog::CreateBye( )
+{
+	CSipMessage * pclsMessage = CreateMessage( "BYE" );
+	if( pclsMessage == NULL ) return NULL;
 
 	return pclsMessage;
 }
@@ -102,4 +116,33 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 	pclsMessage->m_strBody = szSdp;
 	
 	return true;
+}
+
+CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
+{
+	CSipMessage * pclsMessage = new CSipMessage();
+	if( pclsMessage == NULL ) return NULL;
+
+	if( pclsMessage->m_clsCallId.Parse( m_strCallId.c_str(), m_strCallId.length() ) == -1 )
+	{
+		delete pclsMessage;
+		return NULL;
+	}
+
+	pclsMessage->m_strSipMethod = pszSipMethod;
+	pclsMessage->m_clsReqUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
+
+	++m_iSeq;
+	pclsMessage->m_clsCSeq.Set( m_iSeq, pszSipMethod );
+
+	pclsMessage->m_clsFrom.m_clsUri.Set( "sip", m_strFromId.c_str(), gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort );
+	pclsMessage->m_clsFrom.AddParam( "tag", m_strFromTag.c_str() );
+
+	pclsMessage->m_clsTo.m_clsUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
+	if( m_strToTag.empty() == false )
+	{
+		pclsMessage->m_clsTo.AddParam( "tag", m_strToTag.c_str() );
+	}
+
+	return pclsMessage;
 }
