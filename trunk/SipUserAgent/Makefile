@@ -17,7 +17,7 @@ all: libsipuseragent.a
 LIB_OBJ=SipDialog.o \
 	SipRegisterThread.o SipServerInfo.o \
 	SipUserAgent.o \
-	SipDialog.o SipDialogMap.o \
+	SipDialog.o \
 	Md5.o
 
 libsipuseragent.a: $(LIB_OBJ)

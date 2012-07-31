@@ -117,5 +117,5 @@ void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 	iCallId = giCallId;
 	gclsMutex.release();
 
-	snprintf( pszCallId, iCallIdSize, "WCSS-%d-%d-%d", iCallId, sttTime.tv_sec, sttTime.tv_usec );
+	snprintf( pszCallId, iCallIdSize, "WCSS-%d-%d-%d", iCallId, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
 }
