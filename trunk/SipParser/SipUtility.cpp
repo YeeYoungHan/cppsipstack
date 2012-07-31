@@ -26,6 +26,22 @@ static int	giTag;
 static int	giBranch;
 static int	giCallId;
 
+#ifdef WIN32
+#include <sys/timeb.h>
+
+int gettimeofday(struct timeval *tv, struct timezone *tz)
+{
+  struct _timeb timebuffer;
+
+  _ftime( &timebuffer );
+  tv->tv_sec = (long) timebuffer.time;
+  tv->tv_usec = timebuffer.millitm * 1000;
+
+  return 0;
+}
+
+#endif
+
 /**
  * @brief SIP From/To tag 에 사용할 문자열을 작성한다.
  * @param pszTag		SIP From/To tag 에 사용할 문자열을 저장할 변수
@@ -84,6 +100,9 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 {
 	int		iCallId;
+	struct timeval sttTime;
+
+	gettimeofday( &sttTime, NULL );
 
 	gclsMutex.acquire();
 	if( giCallId <= 0 || giCallId > 2000000000 )
@@ -98,5 +117,5 @@ void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 	iCallId = giCallId;
 	gclsMutex.release();
 
-	snprintf( pszCallId, iCallIdSize, "WCSS-%d", iCallId );
+	snprintf( pszCallId, iCallIdSize, "WCSS-%d-%d-%d", iCallId, sttTime.tv_sec, sttTime.tv_usec );
 }

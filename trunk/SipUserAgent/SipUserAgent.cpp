@@ -258,9 +258,20 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage )
 				{
 					gettimeofday( &itMap->second.m_sttStartTime, NULL );
 				}
+
+				SIP_FROM_LIST::iterator	itContact = pclsMessage->m_clsContactList.begin();
+				if( itContact != pclsMessage->m_clsContactList.end() )
+				{
+					char	szUri[255];
+
+					itContact->m_clsUri.ToString( szUri, sizeof(szUri) );
+					itMap->second.m_strContactUri = szUri;
+				}
 			}
 			else if( pclsMessage->m_iStatusCode == SIP_UNAUTHORIZED || pclsMessage->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
 			{
+				itMap->second.m_strToTag.clear();
+
 				CSipMessage * pclsInvite = itMap->second.CreateInvite();
 				if( pclsInvite )
 				{

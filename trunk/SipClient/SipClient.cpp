@@ -97,7 +97,7 @@ int main( int argc, char * argv[] )
 	memset( szCommand, 0, sizeof(szCommand) );
 	while( fgets( szCommand, sizeof(szCommand), stdin ) )
 	{
-		if( szCommand[0] == 'Q' || szCommand[0] == 'q' || szCommand[0] == 'E' || szCommand[0] == 'e' ) break;
+		if( szCommand[0] == 'Q' || szCommand[0] == 'q' ) break;
 
 		iLen = strlen(szCommand);
 		if( iLen >= 2 && szCommand[iLen-2] == '\r' )

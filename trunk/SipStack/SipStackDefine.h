@@ -28,19 +28,9 @@
 #define SIP_USER_AGENT	"CppSipStack_" SIP_STACK_VERSION
 #define SIP_MAX_FORWARDS	70
 
-#ifdef WIN32
-#include <winsock2.h>
-#else
-#include <sys/time.h>
-#endif
-
 #include "SipMessage.h"
 
 #include <map>
-
-#ifdef WIN32
-int gettimeofday( struct timeval *tv, struct timezone *tz );
-#endif
 
 int DiffTimeval( struct timeval * psttOld, struct timeval * psttNew );
 
