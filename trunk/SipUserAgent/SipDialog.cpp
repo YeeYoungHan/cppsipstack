@@ -114,6 +114,7 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 		"a=sendrecv\r\n" );
 
 	pclsMessage->m_strBody = szSdp;
+	pclsMessage->m_iContentLength = iLen;
 	
 	return true;
 }
