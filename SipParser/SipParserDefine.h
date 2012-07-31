@@ -45,4 +45,14 @@
 #define SIP_PROTOCOL					"sip"
 #define SIP_VERSION						"SIP/2.0"
 
+#ifdef WIN32
+#include <winsock2.h>
+#else
+#include <sys/time.h>
+#endif
+
+#ifdef WIN32
+int gettimeofday( struct timeval *tv, struct timezone *tz );
+#endif
+
 #endif

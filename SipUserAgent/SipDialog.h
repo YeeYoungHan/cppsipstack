@@ -48,6 +48,8 @@ public:
 
 	int					m_iCodec;
 
+	std::string	m_strContactUri;
+
 	struct timeval m_sttInviteTime;
 	struct timeval m_sttCancelTime;
 	struct timeval m_sttStartTime;

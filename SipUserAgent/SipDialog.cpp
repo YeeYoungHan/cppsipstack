@@ -131,7 +131,15 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	}
 
 	pclsMessage->m_strSipMethod = pszSipMethod;
-	pclsMessage->m_clsReqUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
+
+	if( m_strContactUri.empty() == false )
+	{
+		pclsMessage->m_clsReqUri.Parse( m_strContactUri.c_str(), m_strContactUri.length() );
+	}
+	else
+	{
+		pclsMessage->m_clsReqUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
+	}
 
 	if( strcmp( pszSipMethod, "ACK" ) && strcmp( pszSipMethod, "CANCEL" ) )
 	{
