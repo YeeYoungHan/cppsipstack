@@ -18,7 +18,7 @@
 
 #include "SipUserAgent.h"
 #include "SipRegisterThread.h"
-#include "SipDialogMap.h"
+#include "SipUtility.h"
 #include <time.h>
 
 CSipStack	gclsSipStack;
@@ -87,7 +87,7 @@ bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCal
 	clsDialog.m_strContactIp = pclsRoute->m_strDestIp;
 	clsDialog.m_iContactPort = pclsRoute->m_iDestPort;
 
-	if( gclsSipDialogMap.SendInvite( clsDialog ) == false ) return false;
+	if( SendInvite( clsDialog ) == false ) return false;
 	strCallId = clsDialog.m_strCallId;
 
 	return true;
@@ -95,7 +95,40 @@ bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCal
 
 bool CSipUserAgent::StopCall( const char * pszCallId )
 {
-	return gclsSipDialogMap.SendEnd( pszCallId );
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+	CSipMessage * pclsMessage = NULL;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		if( itMap->second.m_sttStartTime.tv_sec != 0 )
+		{
+			if( itMap->second.m_sttEndTime.tv_sec == 0 )
+			{
+				pclsMessage = itMap->second.CreateBye();
+				gettimeofday( &itMap->second.m_sttEndTime, NULL );
+			}
+		}
+		else
+		{
+			if( itMap->second.m_sttCancelTime.tv_sec == 0 )
+			{
+				pclsMessage = itMap->second.CreateCancel();
+				gettimeofday( &itMap->second.m_sttCancelTime, NULL );
+			}
+		}
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	if( pclsMessage )
+	{
+		gclsSipStack.SendSipMessage( pclsMessage );
+	}
+
+	return bRes;
 }
 
 bool CSipUserAgent::AcceptCall( const char * pszCallId )
@@ -106,7 +139,10 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId )
 
 bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
-	
+	if( pclsMessage->IsMethod( "INVITE" ) )
+	{
+		return RecvInviteRequest( iThreadId, pclsMessage );
+	}
 
 	return false;
 }
@@ -123,4 +159,136 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	}
 
 	return false;
+}
+
+bool CSipUserAgent::SendInvite( CSipDialog & clsDialog )
+{
+	if( clsDialog.m_strFromId.empty() || clsDialog.m_strToId.empty() ) return false;
+	
+	SIP_DIALOG_MAP::iterator			itMap;
+	char	szTag[SIP_TAG_MAX_SIZE], szBranch[SIP_BRANCH_MAX_SIZE], szCallIdName[SIP_CALL_ID_NAME_MAX_SIZE];
+	bool	bInsert = false;
+	CSipMessage * pclsMessage = NULL;
+
+	SipMakeTag( szTag, sizeof(szTag) );
+	SipMakeBranch( szBranch, sizeof(szBranch) );
+
+	clsDialog.m_strFromTag = szTag;
+	clsDialog.m_strViaBranch = szBranch;
+
+	gettimeofday( &clsDialog.m_sttInviteTime, NULL );
+
+	while( 1 )
+	{
+		SipMakeCallIdName( szCallIdName, sizeof(szCallIdName) );
+
+		clsDialog.m_strCallId = szCallIdName;
+		clsDialog.m_strCallId.append( "@" );
+		clsDialog.m_strCallId.append( gclsSipStack.m_clsSetup.m_strLocalIp );
+
+		m_clsMutex.acquire();
+		itMap = m_clsMap.find( clsDialog.m_strCallId );
+		if( itMap == m_clsMap.end() )
+		{
+			pclsMessage = clsDialog.CreateInvite();
+			if( pclsMessage )
+			{
+				m_clsMap.insert( SIP_DIALOG_MAP::value_type( clsDialog.m_strCallId, clsDialog ) );
+				bInsert = true;
+			}
+		}
+		m_clsMutex.release();
+
+		if( bInsert ) break;
+	}
+
+	if( gclsSipStack.SendSipMessage( pclsMessage ) == false )
+	{
+		delete pclsMessage;
+		Delete( clsDialog.m_strCallId.c_str() );
+		return false;
+	}
+
+	return true;
+}
+
+bool CSipUserAgent::Delete( const char * pszCallId )
+{
+	SIP_DIALOG_MAP::iterator			itMap;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		m_clsMap.erase( itMap );
+	}
+	m_clsMutex.release();
+
+	return true;
+}
+
+bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage )
+{
+	std::string	strCallId;
+
+	if( pclsMessage->GetCallId( strCallId ) == false ) return false;
+
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bFound = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( strCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		pclsMessage->m_clsTo.GetParam( "tag", itMap->second.m_strToTag );
+
+		if( pclsMessage->m_iStatusCode >= 200 )
+		{
+			pclsMessage->m_clsTo.GetParam( "tag", itMap->second.m_strToTag );
+
+			CSipMessage * pclsAck = itMap->second.CreateAck();
+			if( pclsAck )
+			{
+				gclsSipStack.SendSipMessage( pclsAck );
+			}
+
+			if( pclsMessage->m_iStatusCode >= 200 && pclsMessage->m_iStatusCode < 300 )
+			{
+				if( itMap->second.m_sttStartTime.tv_sec == 0 )
+				{
+					gettimeofday( &itMap->second.m_sttStartTime, NULL );
+				}
+			}
+			else if( pclsMessage->m_iStatusCode == SIP_UNAUTHORIZED || pclsMessage->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
+			{
+				CSipMessage * pclsInvite = itMap->second.CreateInvite();
+				if( pclsInvite )
+				{
+					SIP_SERVER_INFO_LIST::iterator itSL;
+					const char * pszUserId = pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str();
+
+					for( itSL = m_clsRegisterList.begin(); itSL != m_clsRegisterList.end(); ++itSL )
+					{
+						if( !strcmp( itSL->m_strUserId.c_str(), pszUserId ) )
+						{
+							itSL->AddAuth( pclsInvite, pclsMessage );
+							break;
+						}
+					}
+
+					gclsSipStack.SendSipMessage( pclsInvite );
+				}
+			}
+			else
+			{
+				gettimeofday( &itMap->second.m_sttEndTime, NULL );
+				m_clsMap.erase( itMap );
+			}
+		}
+
+		bFound = true;
+	}
+	m_clsMutex.release();
+
+	return bFound;
 }

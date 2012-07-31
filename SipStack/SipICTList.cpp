@@ -49,14 +49,17 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 		itMap = m_clsMap.find( strKey );
 		if( itMap == m_clsMap.end() )
 		{
-			CSipInviteTransaction * psttTransaction = new CSipInviteTransaction();
-			if( psttTransaction )
+			if( pclsMessage->IsMethod( "ACK" ) == false )
 			{
-				psttTransaction->m_pclsRequest = pclsMessage;
-				gettimeofday( &psttTransaction->m_sttStartTime, NULL );
+				CSipInviteTransaction * psttTransaction = new CSipInviteTransaction();
+				if( psttTransaction )
+				{
+					psttTransaction->m_pclsRequest = pclsMessage;
+					gettimeofday( &psttTransaction->m_sttStartTime, NULL );
 
-				m_clsMap.insert( INVITE_TRANSACTION_MAP::value_type( strKey, psttTransaction ) );
-				bRes = true;
+					m_clsMap.insert( INVITE_TRANSACTION_MAP::value_type( strKey, psttTransaction ) );
+					bRes = true;
+				}
 			}
 		}
 		else if( pclsMessage->IsMethod( "ACK" ) )

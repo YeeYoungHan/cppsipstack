@@ -21,7 +21,7 @@
 #include "SipUtility.h"
 #include "Md5.h"
 
-CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_iLoginTimeout(3600), m_iSeqNo(0)
+CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_iLoginTimeout(3600), m_iNextSendTime(0), m_iSeqNo(0)
 {
 	ClearLogin();
 

@@ -16,9 +16,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage )
+{
+
+	return false;
+}
+
 bool CSipUserAgent::RecvInviteResponse( int iThreadId, CSipMessage * pclsMessage )
 {
-	if( gclsSipDialogMap.SetInviteResponse( pclsMessage ) )
+	if( SetInviteResponse( pclsMessage ) )
 	{
 		std::string	strCallId;
 
@@ -31,6 +37,10 @@ bool CSipUserAgent::RecvInviteResponse( int iThreadId, CSipMessage * pclsMessage
 		else if( pclsMessage->m_iStatusCode >= 200 && pclsMessage->m_iStatusCode < 300 )
 		{
 			m_pclsCallBack->EventCallStart( strCallId.c_str() );
+		}
+		else if( pclsMessage->m_iStatusCode == SIP_UNAUTHORIZED || pclsMessage->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
+		{
+			
 		}
 		else
 		{
