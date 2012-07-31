@@ -56,6 +56,8 @@ public:
 
 private:
 	bool RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessage );
+	bool RecvInviteResponse( int iThreadId, CSipMessage * pclsMessage );
+	bool RecvByeRequest( int iThreadId, CSipMessage * pclsMessage );
 };
 
 extern CSipStack	gclsSipStack;

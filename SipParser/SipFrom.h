@@ -37,6 +37,8 @@ public:
 	int ToString( char * pszText, int iTextSize );
 	void AddParam( const char * pszName, const char * pszValue );
 	void AddTag();
+	bool GetParam( const char * pszName, std::string & strValue );
+
 	void Clear();
 	bool Empty();
 };

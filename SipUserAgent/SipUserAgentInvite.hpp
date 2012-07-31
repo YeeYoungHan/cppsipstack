@@ -16,32 +16,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_DIALOG_MAP_H_
-#define _SIP_DIALOG_MAP_H_
-
-#include "SipDialog.h"
-#include "SipMutex.h"
-#include <map>
-
-typedef std::map< std::string, CSipDialog > SIP_DIALOG_MAP;
-
-class CSipDialogMap
+bool CSipUserAgent::RecvInviteResponse( int iThreadId, CSipMessage * pclsMessage )
 {
-public:
-	CSipDialogMap();
-	~CSipDialogMap();
+	if( gclsSipDialogMap.SetInviteResponse( pclsMessage ) )
+	{
+		std::string	strCallId;
 
-	bool SendInvite( CSipDialog & clsDialog );
-	bool SendEnd( const char * pszCallId );
-	bool Delete( const char * pszCallId );
+		pclsMessage->GetCallId( strCallId );
 
-	bool SetInviteResponse( CSipMessage * pclsMessage );
+		if( pclsMessage->m_iStatusCode > 100 && pclsMessage->m_iStatusCode < 200 )
+		{
+			m_pclsCallBack->EventCallRing( strCallId.c_str(), pclsMessage->m_iStatusCode );
+		}
+		else if( pclsMessage->m_iStatusCode >= 200 && pclsMessage->m_iStatusCode < 300 )
+		{
+			m_pclsCallBack->EventCallStart( strCallId.c_str() );
+		}
+		else
+		{
+			m_pclsCallBack->EventCallEnd( strCallId.c_str(), pclsMessage->m_iStatusCode );
+		}
+	}
 
-private:
-	SIP_DIALOG_MAP			m_clsMap;
-	CSipMutex						m_clsMutex;
-};
-
-extern CSipDialogMap gclsSipDialogMap;
-
-#endif
+	return true;
+}

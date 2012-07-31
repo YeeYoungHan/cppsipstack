@@ -24,24 +24,24 @@ void CSipClient::EventRegister( CSipServerInfo clsInfo, int iStatus )
 	printf( "EventRegister(%s) : %d\n", clsInfo.m_strUserId.c_str(), iStatus );
 }
 
-void CSipClient::EventIncomingCall( int iCallKey, const char * pszFrom )
+void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom )
 {
-	printf( "EventIncomingCall(%d,%s)\n", iCallKey, pszFrom );
+	printf( "EventIncomingCall(%s,%s)\n", pszCallId, pszFrom );
 }
 
-void CSipClient::EventCallRing( int iCallKey, int iSipStatus )
+void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus )
 {
-	printf( "EventCallRing(%d,%d)\n", iCallKey, iSipStatus );
+	printf( "EventCallRing(%s,%d)\n", pszCallId, iSipStatus );
 }
 
-void CSipClient::EventCallStart( int iCallKey )
+void CSipClient::EventCallStart( const char * pszCallId )
 {
-	printf( "EventCallStart(%d)\n", iCallKey );
+	printf( "EventCallStart(%s)\n", pszCallId );
 }
 
-void CSipClient::EventCallEnd( int iCallKey, int iSipStatus )
+void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
-	printf( "EventCallEnd(%d,%d)\n", iCallKey, iSipStatus );
+	printf( "EventCallEnd(%s,%d)\n", pszCallId, iSipStatus );
 }
 
 void CSipClient::SipLog( bool bSend, const char * pszPacket )

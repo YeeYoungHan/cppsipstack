@@ -152,6 +152,11 @@ void CSipFrom::AddTag()
 	AddParam( "tag", szTag );
 }
 
+bool CSipFrom::GetParam( const char * pszName, std::string & strValue )
+{
+	return SearchSipParameter( m_clsParamList, pszName, strValue );
+}
+
 void CSipFrom::Clear()
 {
 	m_strDisplayName.clear();

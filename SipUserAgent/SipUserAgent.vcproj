@@ -197,7 +197,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipUserAgentBye.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipUserAgentCallBack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUserAgentInvite.hpp"
 				>
 			</File>
 			<File

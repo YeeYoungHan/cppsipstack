@@ -16,32 +16,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_DIALOG_MAP_H_
-#define _SIP_DIALOG_MAP_H_
-
-#include "SipDialog.h"
-#include "SipMutex.h"
-#include <map>
-
-typedef std::map< std::string, CSipDialog > SIP_DIALOG_MAP;
-
-class CSipDialogMap
+bool CSipUserAgent::RecvByeRequest( int iThreadId, CSipMessage * pclsMessage )
 {
-public:
-	CSipDialogMap();
-	~CSipDialogMap();
+	std::string strCallId;
 
-	bool SendInvite( CSipDialog & clsDialog );
-	bool SendEnd( const char * pszCallId );
-	bool Delete( const char * pszCallId );
+	if( pclsMessage->GetCallId( strCallId ) == false ) return false;
 
-	bool SetInviteResponse( CSipMessage * pclsMessage );
+	CSipMessage * pclsResponse = pclsMessage->CreateResponse( SIP_OK );
+	if( pclsResponse )
+	{
+		gclsSipStack.SendSipMessage( pclsResponse );
+	}
 
-private:
-	SIP_DIALOG_MAP			m_clsMap;
-	CSipMutex						m_clsMutex;
-};
+	if( gclsSipDialogMap.Delete( strCallId.c_str() ) )
+	{
+		m_pclsCallBack->EventCallEnd( strCallId.c_str(), SIP_OK );
+	}
 
-extern CSipDialogMap gclsSipDialogMap;
-
-#endif
+	return true;
+}

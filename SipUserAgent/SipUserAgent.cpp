@@ -24,6 +24,8 @@
 CSipStack	gclsSipStack;
 
 #include "SipUserAgentRegister.hpp"
+#include "SipUserAgentInvite.hpp"
+#include "SipUserAgentBye.hpp"
 
 CSipUserAgent::CSipUserAgent() : m_pclsCallBack(NULL)
 {
@@ -117,7 +119,7 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	}
 	else if( pclsMessage->IsMethod( "INVITE" ) )
 	{
-
+		return RecvInviteResponse( iThreadId, pclsMessage );
 	}
 
 	return false;
