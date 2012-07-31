@@ -84,6 +84,9 @@ int main( int argc, char * argv[] )
 	// QQQ: 클라이언트가 현재 사용하는 IP 주소를 넣어 주세요.
 	clsSetup.m_strLocalIp = "127.0.0.1";
 
+	// QQQ: 클라이언트가 SIP 통신에 사용할 포트 번호를 넣어 주세요.
+	clsSetup.m_iLocalUdpPort = 10000;
+
 	clsUserAgent.m_pclsCallBack = &clsSipClient;
 	clsUserAgent.AddRegisterInfo( clsServerInfo );
 	gclsSipStack.AddNetworkLog( &clsSipClient );
