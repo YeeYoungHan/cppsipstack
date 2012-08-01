@@ -19,6 +19,7 @@
 #include "SipUserAgent.h"
 #include "SipRegisterThread.h"
 #include "SipUtility.h"
+#include "SdpMessage.h"
 #include <time.h>
 
 CSipStack	gclsSipStack;
@@ -239,6 +240,7 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage )
 
 	SIP_DIALOG_MAP::iterator		itMap;
 	bool	bFound = false;
+	CSipMessage *pclsAck = NULL, *pclsInvite = NULL;
 
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( strCallId );
@@ -249,12 +251,7 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage )
 		if( pclsMessage->m_iStatusCode >= 200 )
 		{
 			pclsMessage->m_clsTo.GetParam( "tag", itMap->second.m_strToTag );
-
-			CSipMessage * pclsAck = itMap->second.CreateAck();
-			if( pclsAck )
-			{
-				gclsSipStack.SendSipMessage( pclsAck );
-			}
+			pclsAck = itMap->second.CreateAck();
 
 			if( pclsMessage->m_iStatusCode >= 200 && pclsMessage->m_iStatusCode < 300 )
 			{
@@ -276,7 +273,7 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage )
 			{
 				itMap->second.m_strToTag.clear();
 
-				CSipMessage * pclsInvite = itMap->second.CreateInvite();
+				pclsInvite = itMap->second.CreateInvite();
 				if( pclsInvite )
 				{
 					SIP_SERVER_INFO_LIST::iterator itSL;
@@ -290,8 +287,6 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage )
 							break;
 						}
 					}
-
-					gclsSipStack.SendSipMessage( pclsInvite );
 				}
 			}
 			else
@@ -305,5 +300,41 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage )
 	}
 	m_clsMutex.release();
 
+	if( pclsAck )
+	{
+		gclsSipStack.SendSipMessage( pclsAck );
+	}
+
+	if( pclsInvite )
+	{
+		gclsSipStack.SendSipMessage( pclsInvite );
+	}
+
 	return bFound;
+}
+
+bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsRtp )
+{
+	if( pclsMessage->m_clsContentType.IsEqual( "application", "sdp" ) && pclsMessage->m_strBody.empty() == false )
+	{
+		CSdpMessage clsSdp;
+
+		if( clsSdp.Parse( pclsMessage->m_strBody.c_str(), pclsMessage->m_strBody.length() ) == -1 ) return false;
+
+		clsRtp.m_strIp = clsSdp.m_clsConnection.m_strAddr;
+
+		SDP_MEDIA_LIST::iterator itMedia = clsSdp.m_clsMediaList.begin();
+		if( itMedia == clsSdp.m_clsMediaList.end() ) return false;
+
+		clsRtp.m_iPort = itMedia->m_iPort;
+
+		SDP_FMT_LIST::iterator itFmt = itMedia->m_clsFmtList.begin();
+		if( itFmt == itMedia->m_clsFmtList.end() ) return false;
+
+		clsRtp.m_iCodec = atoi( itFmt->c_str() );
+		
+		return true;
+	}
+
+	return false;
 }

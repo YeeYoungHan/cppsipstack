@@ -27,8 +27,8 @@ public:
 	virtual ~CSipClient(){}
 	virtual void EventRegister( CSipServerInfo clsInfo, int iStatus );
 	virtual void EventIncomingCall( const char * pszCallId, const char * pszFrom );
-	virtual void EventCallRing( const char * pszCallId, int iSipStatus );
-	virtual void EventCallStart( const char * pszCallId );
+	virtual void EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
+	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
 
 	virtual void SipLog( bool bSend, const char * pszPacket );

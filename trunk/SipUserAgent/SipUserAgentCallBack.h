@@ -36,8 +36,8 @@ public:
 
 	virtual void EventRegister( CSipServerInfo clsInfo, int iStatus ) = 0;
 	virtual void EventIncomingCall( const char * pszCallId, const char * pszFrom ) = 0;
-	virtual void EventCallRing( const char * pszCallId, int iSipStatus ) = 0;
-	virtual void EventCallStart( const char * pszCallId ) = 0;
+	virtual void EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp ) = 0;
+	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp ) = 0;
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus ) = 0;
 };
 

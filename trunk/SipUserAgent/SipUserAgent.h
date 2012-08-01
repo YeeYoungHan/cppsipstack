@@ -69,6 +69,7 @@ private:
 	bool Delete( const char * pszCallId );
 
 	bool SetInviteResponse( CSipMessage * pclsMessage );
+	bool GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsRtp );
 
 	SIP_DIALOG_MAP			m_clsMap;
 	CSipMutex						m_clsMutex;

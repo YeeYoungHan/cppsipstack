@@ -30,17 +30,35 @@ bool CSipUserAgent::RecvInviteResponse( int iThreadId, CSipMessage * pclsMessage
 
 		pclsMessage->GetCallId( strCallId );
 
-		if( pclsMessage->m_iStatusCode > 100 && pclsMessage->m_iStatusCode < 200 )
+		if( pclsMessage->m_iStatusCode == SIP_TRYING || pclsMessage->m_iStatusCode == SIP_UNAUTHORIZED || pclsMessage->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
 		{
-			m_pclsCallBack->EventCallRing( strCallId.c_str(), pclsMessage->m_iStatusCode );
+			
+		}
+		else if( pclsMessage->m_iStatusCode > 100 && pclsMessage->m_iStatusCode < 200 )
+		{
+			CSipCallRtp clsRtp;
+
+			if( GetSipCallRtp( pclsMessage, clsRtp ) )
+			{
+				m_pclsCallBack->EventCallRing( strCallId.c_str(), pclsMessage->m_iStatusCode, &clsRtp );
+			}
+			else
+			{
+				m_pclsCallBack->EventCallRing( strCallId.c_str(), pclsMessage->m_iStatusCode, NULL );
+			}
 		}
 		else if( pclsMessage->m_iStatusCode >= 200 && pclsMessage->m_iStatusCode < 300 )
 		{
-			m_pclsCallBack->EventCallStart( strCallId.c_str() );
-		}
-		else if( pclsMessage->m_iStatusCode == SIP_UNAUTHORIZED || pclsMessage->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
-		{
-			
+			CSipCallRtp clsRtp;
+
+			if( GetSipCallRtp( pclsMessage, clsRtp ) )
+			{
+				m_pclsCallBack->EventCallStart( strCallId.c_str(), &clsRtp );
+			}
+			else
+			{
+				m_pclsCallBack->EventCallStart( strCallId.c_str(), NULL );
+			}
 		}
 		else
 		{

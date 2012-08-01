@@ -36,6 +36,9 @@ public:
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
 	bool Empty();
+
+	void Set( const char * pszType, const char * pszSubType );
+	bool IsEqual( const char * pszType, const char * pszSubType );
 };
 
 typedef std::list< CSipContentType > SIP_CONTENT_TYPE_LIST;
