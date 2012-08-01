@@ -143,6 +143,10 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return RecvInviteRequest( iThreadId, pclsMessage );
 	}
+	else if( pclsMessage->IsMethod( "BYE" ) )
+	{
+		return RecvByeRequest( iThreadId, pclsMessage );
+	}
 
 	return false;
 }
