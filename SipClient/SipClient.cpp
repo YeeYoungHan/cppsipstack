@@ -81,8 +81,9 @@ int main( int argc, char * argv[] )
 	clsServerInfo.m_strUserId = pszUserId;
 	clsServerInfo.m_strPassWord = pszPassWord;
 
-	// QQQ: 클라이언트가 현재 사용하는 IP 주소를 넣어 주세요.
-	clsSetup.m_strLocalIp = "127.0.0.1";
+	// QQQ: N개의 IP주소를 사용하는 호스트에서는 SIP 프로토콜로 사용할 IP주소를 직접 입력해 주세요.
+	//    : Vmware 등을 사용하는 경우 N개의 IP주소가 호스트에 존재합니다.
+	GetLocalIp( clsSetup.m_strLocalIp );
 
 	// QQQ: 클라이언트가 SIP 통신에 사용할 포트 번호를 넣어 주세요.
 	clsSetup.m_iLocalUdpPort = 10000;
