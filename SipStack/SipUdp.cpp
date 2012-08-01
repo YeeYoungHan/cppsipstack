@@ -316,7 +316,11 @@ bool GetLocalIp( std::string & strIp )
 		struct ifreq * ifr = (struct ifreq *)ptr;
 		int si;
 		
+#ifdef __APPLE__
+		si = sizeof(ifr->ifr_name) + sizeof(ifr->ifr_addr);
+#else
 		si = sizeof(ifr->ifr_name) + sizeof(ifr->ifr_map);
+#endif
 
 		tl -= si;
 		ptr += si;
