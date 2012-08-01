@@ -21,6 +21,11 @@
 #include <string.h>
 #include "SipUdp.h"
 
+#ifndef WIN32
+#include <sys/ioctl.h>
+#include <net/if.h>
+#endif
+
 /** UDP 소켓을 생성한다.
  *
  *	@return	성공하면 socket handle 을 리턴한다. 그렇지 않으면 INVALID_SOCKET 를 리턴한다.
