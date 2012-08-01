@@ -307,8 +307,6 @@ bool CSipStack::Send( CSipMessage * pclsMessage )
 			pszIp = itList->m_clsUri.m_strHost.c_str();
 			iPort = itList->m_clsUri.m_iPort;
 		}
-
-		if( iPort <= 0 ) iPort = 5060;
 	}
 	else
 	{
@@ -316,8 +314,9 @@ bool CSipStack::Send( CSipMessage * pclsMessage )
 		if( itList == pclsMessage->m_clsViaList.end() ) return false;
 
 		pszIp = itList->m_strHost.c_str();
-		iPort = itList->m_iPort;
 	}
+
+	if( iPort <= 0 ) iPort = 5060;
 
 	if( pszIp[0] == '\0' ) return false;
 

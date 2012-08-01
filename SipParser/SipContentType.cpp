@@ -138,6 +138,23 @@ bool CSipContentType::Empty()
 	return false;
 }
 
+void CSipContentType::Set( const char * pszType, const char * pszSubType )
+{
+	if( pszType == NULL || pszSubType == NULL ) return;
+
+	m_strType = pszType;
+	m_strSubType = pszSubType;
+}
+
+bool CSipContentType::IsEqual( const char * pszType, const char * pszSubType )
+{
+	if( pszType == NULL || pszSubType == NULL ) return false;
+
+	if( !strcmp( m_strType.c_str(), pszType ) && !strcmp( m_strSubType.c_str(), pszSubType ) ) return true;
+
+	return false;
+}
+
 int ParseSipContentType( SIP_CONTENT_TYPE_LIST & clsList, const char * pszText, int iTextLen )
 {
 	int iPos, iCurPos = 0;

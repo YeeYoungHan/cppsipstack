@@ -29,14 +29,24 @@ void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	printf( "EventIncomingCall(%s,%s)\n", pszCallId, pszFrom );
 }
 
-void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus )
+void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
 {
 	printf( "EventCallRing(%s,%d)\n", pszCallId, iSipStatus );
+
+	if( pclsRtp )
+	{
+		printf( "=> RTP(%s:%d) codec(%d)\n", pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort, pclsRtp->m_iCodec );
+	}
 }
 
-void CSipClient::EventCallStart( const char * pszCallId )
+void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
 	printf( "EventCallStart(%s)\n", pszCallId );
+
+	if( pclsRtp )
+	{
+		printf( "=> RTP(%s:%d) codec(%d)\n", pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort, pclsRtp->m_iCodec );
+	}
 }
 
 void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
