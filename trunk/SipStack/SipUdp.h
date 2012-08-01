@@ -66,4 +66,6 @@ bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, unsigned int iIp, un
 void TcpSetPollIn( struct pollfd & sttPollFd, Socket hSocket );
 void InitNetwork();
 
+bool GetLocalIp( std::string & strIp );
+
 #endif

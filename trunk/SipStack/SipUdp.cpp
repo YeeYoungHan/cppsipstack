@@ -257,3 +257,93 @@ int poll( struct pollfd *fds, unsigned int nfds, int timeout )
 	return iCount;
 }
 #endif
+
+/** localhost IP 주소를 제외한 호스트에 연결된 IP 주소를 가져온다. 
+ *
+ *	@param	strIp	IP 주소를 저장할 변수
+ *	@return	성공하면 true 를 리턴한다. 실패하면 false 를 리턴한다.
+ */
+bool GetLocalIp( std::string & strIp )
+{
+#ifdef WIN32
+	char szHostName[128], szIpAddr[16];
+	struct sockaddr_in sttAddr;
+	struct hostent     *psttHost = NULL;
+
+	InitNetwork();
+
+	memset( szHostName, 0, sizeof(szHostName) );
+	if( gethostname(szHostName, sizeof(szHostName)) )	return false;
+
+	psttHost = gethostbyname( szHostName );
+	if( !psttHost ) return false;
+	
+	for( int i = 0; psttHost->h_addr_list[i]; i++ )
+	{
+		memcpy( &sttAddr.sin_addr, psttHost->h_addr_list[i], psttHost->h_length );
+		snprintf( szIpAddr, sizeof(szIpAddr), "%s", inet_ntoa(sttAddr.sin_addr) );
+		if( strcmp( szIpAddr, "127.0.0.1" ) )
+		{
+			strIp = szIpAddr;
+			break;
+		}
+	}
+#else
+	struct ifconf ifc;
+	
+	int hSocket = socket( AF_INET, SOCK_DGRAM, 0 );
+	int len = 100 * sizeof(struct ifreq);
+	
+	char buf[ len ];
+	
+	ifc.ifc_len = len;
+	ifc.ifc_buf = buf;
+	
+	int e = ioctl( hSocket, SIOCGIFCONF, &ifc );
+	if( e == -1 ) return false;
+
+	char *ptr = buf;
+	int tl = ifc.ifc_len;
+	char	szIpAddr[16];
+	
+	while ( tl > 0 )
+	{
+		struct ifreq * ifr = (struct ifreq *)ptr;
+		int si;
+		
+		si = sizeof(ifr->ifr_name) + sizeof(ifr->ifr_map);
+
+		tl -= si;
+		ptr += si;
+		
+		struct ifreq ifr2;
+		ifr2 = *ifr;
+		
+		e = ioctl( hSocket, SIOCGIFADDR, &ifr2 );
+		if( e == -1 )
+		{
+			printf( "ioctl error(%d) - %s\n", errno, strerror(errno) );
+			continue;
+		}
+		
+		struct sockaddr a = ifr2.ifr_addr;
+		struct sockaddr_in* addr = (struct sockaddr_in*) &a;
+		
+		unsigned int ai = ntohl( addr->sin_addr.s_addr );
+
+		// 127.0.0.1 주소는 출력하지 않는다.
+		if( int((ai>>24)&0xFF) == 127 ) continue;
+
+		snprintf( szIpAddr, sizeof(szIpAddr), "%d.%d.%d.%d", int((ai>>24)&0xFF)
+			, int((ai>>16)&0xFF)
+			, int((ai>> 8)&0xFF) 
+		  , int((ai    )&0xFF) );
+		strIp = szIpAddr;
+		break;
+	}
+	
+	close(hSocket);
+#endif
+
+	return true;
+}
