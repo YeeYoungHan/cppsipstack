@@ -25,6 +25,13 @@
 #include "SipDialog.h"
 
 /**
+ * @defgroup SipUserAgent SipUserAgent
+ * SIP User Agent 라이브러리
+ * SIP 로그인/통화 관리 라이브러리
+ */
+
+/**
+ * @ingroup SipUserAgent
  * @brief SIP 메시지 목적지 주소 저장 클래스
  */
 class CSipCallRoute
@@ -37,6 +44,7 @@ public:
 typedef std::map< std::string, CSipDialog > SIP_DIALOG_MAP;
 
 /**
+ * @ingroup SipUserAgent
  * @brief SIP UserAgent 클래스
  */
 class CSipUserAgent : public ISipStackCallBack

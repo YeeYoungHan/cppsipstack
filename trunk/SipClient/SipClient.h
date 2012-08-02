@@ -21,6 +21,17 @@
 
 #include "SipUserAgent.h"
 
+/**
+ * @defgroup SipClient SipClient
+ * SIP Stack 을 이용한 SIP 클라이언트 예제 프로그램
+ * SipUserAgent 라이브러리를 이용하여서 SIP stack 을 간접적으로 사용한다.
+ * SIP 서버에 로그인하여 통화 요청/취소, 통화 종료, 통화 수신/수락/거절 기능을 수행한다.
+ */
+
+/**
+ * @ingroup SipClient
+ * @brief 
+ */
 class CSipClient : public ISipUserAgentCallBack, public ISipNetworkLog
 {
 public:

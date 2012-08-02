@@ -26,6 +26,15 @@
 typedef std::list< std::string > SDP_EMAIL_LIST;
 typedef std::list< std::string > SDP_PHONE_LIST;
 
+/**
+ * @defgroup SdpParser SdpParser
+ * SDP 메시지 파싱/생성 라이브러리
+ */
+
+/**
+ * @ingroup SdpParser
+ * @brief 
+ */
 class CSdpMessage
 {
 public:

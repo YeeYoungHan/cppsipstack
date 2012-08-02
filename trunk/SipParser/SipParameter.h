@@ -22,6 +22,10 @@
 #include <string>
 #include <list>
 
+/**
+ * @ingroup SipParser
+ * @brief 
+ */
 class CSipParameter
 {
 public:

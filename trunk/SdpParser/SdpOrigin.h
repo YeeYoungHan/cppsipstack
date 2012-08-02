@@ -21,6 +21,10 @@
 
 #include <string>
 
+/**
+ * @ingroup SdpParser
+ * @brief 
+ */
 class CSdpOrigin
 {
 public:

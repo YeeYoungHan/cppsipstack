@@ -43,3 +43,15 @@ bool StartThread( const char * pszName, void *(*lpStartAddress)(void*), void * l
 void MiliSleep( int iMiliSecond );
 
 #endif
+
+/**
+@mainpage C++ SIP Stack
+@section intro 소개
+	- C++ STL 을 사용한 SIP Stack 라이브러리
+	- 프로젝트의 최종 목표는 IP-PBX 개발
+	- 프로젝트 홈페이지 : http://dev.naver.com/projects/sipstack
+@section  CREATEINFO 작성정보
+  - 작성자 : 이영한
+	- 홈페이지 : http://blog.naver.com/websearch
+*/
+

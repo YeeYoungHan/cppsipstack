@@ -21,6 +21,10 @@
 
 #include "SipUri.h"
 
+/**
+ * @ingroup SipParser
+ * @brief 
+ */
 class CSipFrom
 {
 public:

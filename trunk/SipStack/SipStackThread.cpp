@@ -22,6 +22,7 @@
 time_t giTime = 0;
 
 /**
+ * @ingroup SipStack
  * @brief 주기적으로 SIP stack 을 실행하는 쓰레드
  * @param lpParameter SIP stack 객체
  * @returns 0 을 리턴한다.
@@ -57,6 +58,12 @@ void * SipStackThread( void * lpParameter )
 	return 0;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 
+ * @param pclsSipStack 
+ * @returns 
+ */
 bool StartSipStackThread( CSipStack * pclsSipStack )
 {
 	return StartThread( "SipStackThread", SipStackThread, pclsSipStack );

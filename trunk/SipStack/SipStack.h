@@ -33,6 +33,12 @@ typedef std::list< ISipStackCallBack * > SIP_STACK_CALLBACK_LIST;
 typedef std::list< ISipNetworkLog * > SIP_NETWORK_LOG_LIST;
 
 /**
+ * @defgroup SipStack SipStack
+ * SIP Stack 라이브러리
+ */
+
+/**
+ * @ingroup SipStack
  * @brief SIP stack 클래스
  */
 class CSipStack

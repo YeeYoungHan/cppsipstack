@@ -23,6 +23,7 @@
 #include "SipTransactionList.h"
 
 /**
+ * @ingroup SipStack
  * @brief NON INVITE SERVER TRANSACTION List Å¬·¡½º
  */
 class CSipNISTList : public CSipTransactionList

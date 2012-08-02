@@ -406,8 +406,7 @@ void CSipStack::DecreateUdpThreadCount()
 
 /**
  * @brief Transaction List 의 크기를 문자열에 저장한다.
- * @param pszBuf		문자열 변수
- * @param iBufSize	문자열 변수의 크기
+ * @param strBuf		문자열 변수
  */
 void CSipStack::GetString( std::string & strBuf )
 {

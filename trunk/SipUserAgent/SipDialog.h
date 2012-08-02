@@ -24,6 +24,7 @@
 #include "SipMessage.h"
 
 /**
+ * @ingroup SipUserAgent
  * @brief SIP Dialog 정보를 저장하는 클래스
  */
 class CSipDialog

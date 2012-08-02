@@ -21,6 +21,10 @@
 
 #include <string>
 
+/**
+ * @ingroup SipParser
+ * @brief 
+ */
 class CSipCSeq
 {
 public:

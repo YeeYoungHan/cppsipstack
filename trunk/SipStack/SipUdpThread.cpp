@@ -19,10 +19,14 @@
 #include "SipStackThread.h"
 
 /**
+ * @ingroup SipStack
  * @brief SIP 메시지를 파싱하여서 SIP stack 에 입력한다.
- * @param pclsSipStack	SIP stack
- * @param pszBuf				네트워크에서 수신된 SIP 메시지
- * @param iBufLen				네트워크에서 수신된 SIP 메시지의 길이
+ * @param pclsSipStack SIP stack
+ * @param iThreadId 
+ * @param pszBuf			네트워크에서 수신된 SIP 메시지
+ * @param iBufLen			네트워크에서 수신된 SIP 메시지의 길이
+ * @param pszIp 
+ * @param iPort 
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort )
@@ -52,6 +56,7 @@ bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const char * ps
 }
 
 /** 
+ * @ingroup SipStack
  * @brief UDP 프로토콜로 SIP 메시지 수신 및 SIP 수신 이벤트를 처리하는 쓰레드 함수
  * @param lpParameter SIP stack 포인터
  * @returns 0 을 리턴한다.
@@ -101,6 +106,7 @@ void * SipUdpThread( void * lpParameter )
 }
 
 /**
+ * @ingroup SipStack
  * @brief UDP 프로토콜로 SIP 메시지 수신 및 SIP 수신 이벤트를 처리하는 Thread Pool 을 시작한다.
  * @param pclsSipStack SIP stack 포인터
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.

@@ -26,9 +26,10 @@
 #include <net/if.h>
 #endif
 
-/** UDP 소켓을 생성한다.
- *
- *	@return	성공하면 socket handle 을 리턴한다. 그렇지 않으면 INVALID_SOCKET 를 리턴한다.
+/** 
+ * @ingroup SipStack
+ * @brief		UDP 소켓을 생성한다.
+ * @return	성공하면 socket handle 을 리턴한다. 그렇지 않으면 INVALID_SOCKET 를 리턴한다.
  */
 Socket UdpSocket()
 {
@@ -43,11 +44,12 @@ Socket UdpSocket()
 	return iFd;
 }
 
-/** UDP listen 소켓을 생성한다. 
- *
- *	@param	iPort
- *	@param	pszIp
- *	@return	성공하면 socket handle 을 리턴한다. 그렇지 않으면 INVALID_SOCKET 를 리턴한다.
+/** 
+ * @ingroup SipStack
+ * @brief UDP listen 소켓을 생성한다. 
+ * @param	iPort
+ * @param	pszIp
+ * @return	성공하면 socket handle 을 리턴한다. 그렇지 않으면 INVALID_SOCKET 를 리턴한다.
  */
 Socket UdpListen( unsigned short iPort, const char * pszIp )
 {
@@ -87,7 +89,17 @@ Socket UdpListen( unsigned short iPort, const char * pszIp )
 	return iFd;
 }
 
-/** UDP 메시지를 수신한다. */
+/**
+ * @ingroup SipStack
+ * @brief UDP 메시지를 수신한다.
+ * @param iFd 
+ * @param pszBuf 
+ * @param piLen 
+ * @param pszIp 
+ * @param iIpSize 
+ * @param piPort 
+ * @returns 
+ */
 bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, char * pszIp, int iIpSize, unsigned short* piPort )
 {
 	if( iFd == INVALID_SOCKET ) return false;
@@ -123,7 +135,16 @@ bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, char * pszIp, int iIpSize,
 	return true;
 }
 
-/** UDP 메시지를 수신한다. */
+/**
+ * @ingroup SipStack
+ * @brief UDP 메시지를 수신한다.
+ * @param iFd 
+ * @param pszBuf 
+ * @param piLen 
+ * @param piIp 
+ * @param piPort 
+ * @returns 
+ */
 bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, unsigned int * piIp, unsigned short* piPort )
 {
 	if( iFd == INVALID_SOCKET ) return false;
@@ -152,7 +173,16 @@ bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, unsigned int * piIp, unsig
 	return true;
 }
 
-/** UDP 메시지를 전송한다. */
+/**
+ * @ingroup SipStack
+ * @brief UDP 메시지를 전송한다.
+ * @param iFd 
+ * @param pszBuf 
+ * @param iBufLen 
+ * @param pszIp 
+ * @param iPort 
+ * @returns 
+ */
 bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort )
 {
 	if( iFd == INVALID_SOCKET || pszBuf == NULL || iBufLen <= 0 || pszIp == NULL || iPort <= 0 ) return false;
@@ -172,7 +202,16 @@ bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, const char * pszIp, 
 	return true;
 }
 
-/** UDP 메시지를 전송한다. */
+/**
+ * @ingroup SipStack
+ * @brief UDP 메시지를 전송한다.
+ * @param iFd 
+ * @param pszBuf 
+ * @param iBufLen 
+ * @param iIp 
+ * @param iPort 
+ * @returns 
+ */
 bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, unsigned int iIp, unsigned short iPort )
 {
 	if( iFd == INVALID_SOCKET || pszBuf == NULL || iBufLen <= 0 || iPort <= 0 ) return false;
@@ -192,7 +231,10 @@ bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, unsigned int iIp, un
 	return true;
 }
 
-/** 네트워크 API 를 초기화시킨다. */
+/**
+ * @ingroup SipStack
+ * @brief 네트워크 API 를 초기화시킨다.
+ */
 void InitNetwork()
 {
 #ifdef WIN32

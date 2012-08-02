@@ -25,6 +25,10 @@
 
 #define SIP_DELETE_TIME	30
 
+/**
+ * @ingroup SipStack
+ * @brief 
+ */
 class CSipDeleteInfo
 {
 public:
@@ -34,6 +38,10 @@ public:
 
 typedef std::list< CSipDeleteInfo > SIP_DELETE_QUEUE;
 
+/**
+ * @ingroup SipStack
+ * @brief 
+ */
 class CSipDeleteQueue
 {
 public:

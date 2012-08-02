@@ -29,6 +29,10 @@
 #include "SipCallId.h"
 #include "SipContentType.h"
 
+/**
+ * @ingroup SipParser
+ * @brief 
+ */
 class CSipMessage
 {
 public:

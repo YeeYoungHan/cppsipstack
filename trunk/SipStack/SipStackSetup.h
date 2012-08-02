@@ -22,6 +22,7 @@
 #include <string>
 
 /**
+ * @ingroup SipStack
  * @brief SIP stack 설정 클래스
  */
 class CSipStackSetup
