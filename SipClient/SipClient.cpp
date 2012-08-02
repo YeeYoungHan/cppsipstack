@@ -19,14 +19,23 @@
 #include "SipClient.h"
 #include <time.h>
 
+std::string	gstrInviteId;
+
 void CSipClient::EventRegister( CSipServerInfo clsInfo, int iStatus )
 {
 	printf( "EventRegister(%s) : %d\n", clsInfo.m_strUserId.c_str(), iStatus );
 }
 
-void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom )
+void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom, CSipCallRtp * pclsRtp )
 {
 	printf( "EventIncomingCall(%s,%s)\n", pszCallId, pszFrom );
+
+	gstrInviteId = pszCallId;
+
+	if( pclsRtp )
+	{
+		printf( "=> RTP(%s:%d) codec(%d)\n", pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort, pclsRtp->m_iCodec );
+	}
 }
 
 void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
@@ -52,6 +61,16 @@ void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
 	printf( "EventCallEnd(%s,%d)\n", pszCallId, iSipStatus );
+}
+
+void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
+{
+	printf( "EventReInvite(%s)\n", pszCallId );
+
+	if( pclsRtp )
+	{
+		printf( "=> RTP(%s:%d) codec(%d)\n", pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort, pclsRtp->m_iCodec );
+	}
 }
 
 void CSipClient::SipLog( bool bSend, const char * pszPacket )
@@ -106,7 +125,6 @@ int main( int argc, char * argv[] )
 
 	char	szCommand[1024];
 	int		iLen;
-	std::string	strInviteId;
 
 	memset( szCommand, 0, sizeof(szCommand) );
 	while( fgets( szCommand, sizeof(szCommand), stdin ) )
@@ -123,33 +141,44 @@ int main( int argc, char * argv[] )
 			szCommand[iLen-1] = '\0';
 		}
 
-		if( szCommand[0] == 'c' )
+		if( szCommand[0] == 'C' || szCommand[0] == 'c' )
 		{
 			CSipCallRtp clsRtp;
 			CSipCallRoute	clsRoute;
 
 			// QQQ: RTP 수신 IP/Port/Codec 를 넣어 주세요.
-			clsRtp.m_strIp = "127.0.0.1";
+			clsRtp.m_strIp = clsSetup.m_strLocalIp;
 			clsRtp.m_iPort = 2000;
 			clsRtp.m_iCodec = 0;
 
 			clsRoute.m_strDestIp = pszServerIp;
 			clsRoute.m_iDestPort = 5060;
 
-			clsUserAgent.StartCall( pszUserId, szCommand + 2, &clsRtp, &clsRoute, strInviteId );
+			clsUserAgent.StartCall( pszUserId, szCommand + 2, &clsRtp, &clsRoute, gstrInviteId );
 		}
 		else if( szCommand[0] == 'e' || szCommand[0] == 's' )
 		{
-			clsUserAgent.StopCall( strInviteId.c_str() );
-			strInviteId.clear();
+			clsUserAgent.StopCall( gstrInviteId.c_str() );
+			gstrInviteId.clear();
+		}
+		else if( szCommand[0] == 'a' )
+		{
+			CSipCallRtp clsRtp;
+
+			// QQQ: RTP 수신 IP/Port/Codec 를 넣어 주세요.
+			clsRtp.m_strIp = clsSetup.m_strLocalIp;
+			clsRtp.m_iPort = 2000;
+			clsRtp.m_iCodec = 0;
+
+			clsUserAgent.AcceptCall( gstrInviteId.c_str(), &clsRtp );
 		}
 	
 		memset( szCommand, 0, sizeof(szCommand) );
 	}
 
-	if( strInviteId.empty() == false )
+	if( gstrInviteId.empty() == false )
 	{
-		clsUserAgent.StopCall( strInviteId.c_str() );
+		clsUserAgent.StopCall( gstrInviteId.c_str() );
 	}
 
 	return 0;

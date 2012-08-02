@@ -48,7 +48,7 @@ public:
 	// 통화 관련
 	bool StartCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId );
 	bool StopCall( const char * pszCallId );
-	bool AcceptCall( const char * pszCallId );
+	bool AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp );
 
 	// ISipStackCallBack
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
@@ -65,10 +65,12 @@ private:
 	
 	bool RecvByeRequest( int iThreadId, CSipMessage * pclsMessage );
 
+	bool RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage );
+
 	bool SendInvite( CSipDialog & clsDialog );
 	bool Delete( const char * pszCallId );
 
-	bool SetInviteResponse( CSipMessage * pclsMessage );
+	bool SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * pclsRtp );
 	bool GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsRtp );
 
 	SIP_DIALOG_MAP			m_clsMap;

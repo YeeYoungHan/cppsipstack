@@ -27,6 +27,7 @@ CSipStack	gclsSipStack;
 #include "SipUserAgentRegister.hpp"
 #include "SipUserAgentInvite.hpp"
 #include "SipUserAgentBye.hpp"
+#include "SipUserAgentCancel.hpp"
 
 CSipUserAgent::CSipUserAgent() : m_pclsCallBack(NULL)
 {
@@ -114,7 +115,13 @@ bool CSipUserAgent::StopCall( const char * pszCallId )
 		}
 		else
 		{
-			if( itMap->second.m_sttCancelTime.tv_sec == 0 )
+			if( itMap->second.m_pclsInvite )
+			{
+				pclsMessage = itMap->second.m_pclsInvite->CreateResponse( SIP_DECLINE );
+				gettimeofday( &itMap->second.m_sttEndTime, NULL );
+				m_clsMap.erase( itMap );
+			}
+			else if( itMap->second.m_sttCancelTime.tv_sec == 0 )
 			{
 				pclsMessage = itMap->second.CreateCancel();
 				gettimeofday( &itMap->second.m_sttCancelTime, NULL );
@@ -132,8 +139,39 @@ bool CSipUserAgent::StopCall( const char * pszCallId )
 	return bRes;
 }
 
-bool CSipUserAgent::AcceptCall( const char * pszCallId )
+bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+	CSipMessage * pclsMessage = NULL;
+
+	if( pclsRtp == NULL ) return false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		if( itMap->second.m_sttStartTime.tv_sec == 0 )
+		{
+			itMap->second.m_strLocalRtpIp = pclsRtp->m_strIp;
+			itMap->second.m_iLocalRtpPort = pclsRtp->m_iPort;
+			itMap->second.m_iCodec = pclsRtp->m_iCodec;
+
+			pclsMessage = itMap->second.m_pclsInvite->CreateResponse( SIP_OK );
+			gettimeofday( &itMap->second.m_sttStartTime, NULL );
+
+			itMap->second.AddSdp( pclsMessage );
+
+			delete itMap->second.m_pclsInvite;
+			itMap->second.m_pclsInvite = NULL;
+		}
+	}
+	m_clsMutex.release();
+
+	if( pclsMessage )
+	{
+		gclsSipStack.SendSipMessage( pclsMessage );
+	}
 
 	return true;
 }
@@ -147,6 +185,10 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	else if( pclsMessage->IsMethod( "BYE" ) )
 	{
 		return RecvByeRequest( iThreadId, pclsMessage );
+	}
+	else if( pclsMessage->IsMethod( "CANCEL" ) )
+	{
+		return RecvCancelRequest( iThreadId, pclsMessage );
 	}
 
 	return false;
@@ -232,7 +274,7 @@ bool CSipUserAgent::Delete( const char * pszCallId )
 	return true;
 }
 
-bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage )
+bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * pclsRtp )
 {
 	std::string	strCallId;
 
@@ -247,6 +289,13 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage )
 	if( itMap != m_clsMap.end() )
 	{
 		pclsMessage->m_clsTo.GetParam( "tag", itMap->second.m_strToTag );
+
+		if( pclsRtp )
+		{
+			itMap->second.m_strRemoteRtpIp = pclsRtp->m_strIp;
+			itMap->second.m_iRemoteRtpPort = pclsRtp->m_iPort;
+			itMap->second.m_iCodec = pclsRtp->m_iCodec;
+		}
 
 		if( pclsMessage->m_iStatusCode >= 200 )
 		{

@@ -21,7 +21,7 @@
 #include "SipUserAgent.h"
 #include "SipUtility.h"
 
-CSipDialog::CSipDialog() : m_iSeq(0), m_iContactPort(-1), m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1)
+CSipDialog::CSipDialog() : m_iSeq(0), m_iContactPort(-1), m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1), m_pclsInvite(NULL)
 {
 	memset( &m_sttInviteTime, 0, sizeof(m_sttInviteTime) );
 	memset( &m_sttCancelTime, 0, sizeof(m_sttCancelTime) );
@@ -31,6 +31,7 @@ CSipDialog::CSipDialog() : m_iSeq(0), m_iContactPort(-1), m_iLocalRtpPort(-1), m
 
 CSipDialog::~CSipDialog()
 {
+	if( m_pclsInvite ) delete m_pclsInvite;
 }
 
 CSipMessage * CSipDialog::CreateInvite( )

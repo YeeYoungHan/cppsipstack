@@ -197,6 +197,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipUserAgentCancel.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipUserAgentInvite.hpp"
 				>
 			</File>
