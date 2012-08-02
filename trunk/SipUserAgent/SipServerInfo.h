@@ -21,6 +21,9 @@
 
 #include "SipMessage.h"
 
+/**
+ * @brief SIP 로그인 정보를 저장하는 클래스
+ */
 class CSipServerInfo
 {
 public:
@@ -45,7 +48,7 @@ public:
 	CSipCallId		m_clsCallId;
 	int						m_iSeqNo;
 
-	CSipMessage * GetRegisterMessage( const CSipMessage * pclsResponse );
+	CSipMessage * CreateRegister( const CSipMessage * pclsResponse );
 	bool AddAuth( CSipMessage * pclsRequest, const CSipMessage * pclsResponse );
 };
 

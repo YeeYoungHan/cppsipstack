@@ -19,6 +19,11 @@
 #include "SipRegisterThread.h"
 #include <time.h>
 
+/**
+ * @brief SIP 서버에 주기적으로 REGISTER 메시지를 전송하는 쓰레드
+ * @param lpParameter CSipUserAgent 객체의 포인터
+ * @returns 0 을 리턴한다.
+ */
 #ifdef WIN32
 DWORD WINAPI SipRegisterThread( LPVOID lpParameter )
 #else
@@ -44,7 +49,7 @@ void * SipRegisterThread( void * lpParameter )
 						if( itList->m_iNextSendTime > iTime ) continue;
 					}
 
-					CSipMessage * pclsRequest = itList->GetRegisterMessage( NULL );
+					CSipMessage * pclsRequest = itList->CreateRegister( NULL );
 					if( pclsRequest )
 					{
 						gclsSipStack.SendSipMessage( pclsRequest );
@@ -57,7 +62,7 @@ void * SipRegisterThread( void * lpParameter )
 			{
 				if( ( iTime - itList->m_iLoginTime ) > ( itList->m_iLoginTimeout / 2 ) )
 				{
-					CSipMessage * pclsRequest = itList->GetRegisterMessage( NULL );
+					CSipMessage * pclsRequest = itList->CreateRegister( NULL );
 					if( pclsRequest )
 					{
 						gclsSipStack.SendSipMessage( pclsRequest );
@@ -72,6 +77,11 @@ void * SipRegisterThread( void * lpParameter )
 	return 0;
 }
 
+/**
+ * @brief SIP 서버에 주기적으로 REGISTER 메시지를 전송하는 쓰레드를 시작한다.
+ * @param pclsSipUserAgent CSipUserAgent 객체의 포인터
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool StartSipRegisterThread( CSipUserAgent * pclsSipUserAgent )
 {
 	return StartThread( "SipRegisterThread", SipRegisterThread, pclsSipUserAgent );

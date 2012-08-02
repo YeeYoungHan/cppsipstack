@@ -314,13 +314,11 @@ static void MD5Final( unsigned char digest[16], MD5_CTX * context )
 	MD5_memset ((unsigned char *)context, 0, sizeof (*context));
 }
 
-/** encrypt MD5 string from plain text
- *
- *	@param	string	[in] plain text
- *	@param	result	[out] variable to save MD5
- *	@result	nothing.
+/**
+ * @brief 평문을 MD5 문자열로 변환한다.
+ * @param string 평문
+ * @param result MD5 문자열 저장 변수
  */
-
 void Md5String( char * string, char result[33] )
 {
 	MD5_CTX context;

@@ -29,14 +29,25 @@ CSipStack	gclsSipStack;
 #include "SipUserAgentBye.hpp"
 #include "SipUserAgentCancel.hpp"
 
+/**
+ * @brief 생성자
+ */
 CSipUserAgent::CSipUserAgent() : m_pclsCallBack(NULL)
 {
 }
 
+/**
+ * @brief 소멸자
+ */
 CSipUserAgent::~CSipUserAgent()
 {
 }
 
+/**
+ * @brief SIP 로그인 정보를 추가한다.
+ * @param clsInfo SIP 로그인 정보 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::AddRegisterInfo( CSipServerInfo & clsInfo )
 {
 	if( clsInfo.m_strIp.empty() ) return false;
@@ -52,6 +63,11 @@ bool CSipUserAgent::AddRegisterInfo( CSipServerInfo & clsInfo )
 	return true;
 }
 
+/**
+ * @brief SIP stack 을 시작하고 SIP 로그인 쓰레드를 시작한다.
+ * @param clsSetup	SIP stack 설정 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::Start( CSipStackSetup & clsSetup )
 {
 	if( m_clsRegisterList.size() == 0 ) return false;
@@ -65,13 +81,28 @@ bool CSipUserAgent::Start( CSipStackSetup & clsSetup )
 	return true;
 }
 
+/**
+ * @brief SIP stack 을 종료하고 SIP 로그인 쓰레드를 종료한다.
+ * @returns true 를 리턴한다.
+ */
 bool CSipUserAgent::Stop( )
 {
+	// QQQ: SIP 로그아웃하여야 한다.
+
 	gclsSipStack.Stop();
 
-	return false;
+	return true;
 }
 
+/**
+ * @brief SIP 통화 요청 메시지를 전송한다.
+ * @param pszFrom		발신자 아이디
+ * @param pszTo			수신자 아이디
+ * @param pclsRtp		local RTP 정보 저장 객체
+ * @param pclsRoute SIP 메시지 목적지 주소 저장 객체
+ * @param strCallId 생성된 INVITE 메시지의 Call-ID 가 저장될 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId )
 {
 	if( pszFrom == NULL || pszTo == NULL ) return false;
@@ -95,6 +126,14 @@ bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCal
 	return true;
 }
 
+/**
+ * @brief 통화를 종료한다. 
+ *				통화 요청을 보내고 연결되지 않으면 통화 취소 메시지를 전송한다.
+ *				통화 연결되었으면 통화 종료 메시지를 전송한다.
+ *				통화 수락인 경우 통화 거절 응답 메시지를 전송한다.
+ * @param pszCallId SIP Call-ID
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::StopCall( const char * pszCallId )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
@@ -139,6 +178,12 @@ bool CSipUserAgent::StopCall( const char * pszCallId )
 	return bRes;
 }
 
+/**
+ * @brief 수신된 통화를 수락한다.
+ * @param pszCallId SIP Call-ID
+ * @param pclsRtp		local RTP 정보 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
@@ -178,6 +223,12 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 	return bRes;
 }
 
+/**
+ * @brief SIP 요청 메시지 수신 callback method
+ * @param iThreadId		SIP stack 의 UDP 쓰레드 아이디
+ * @param pclsMessage 수신된 SIP 요청 메시지
+ * @returns SIP 요청 메시지를 처리한 경우 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
 	if( pclsMessage->IsMethod( "INVITE" ) )
@@ -196,6 +247,12 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	return false;
 }
 
+/**
+ * @brief SIP 응답 메시지 수신 callback method
+ * @param iThreadId		SIP stack 의 UDP 쓰레드 아이디
+ * @param pclsMessage 수신된 SIP 응답 메시지
+ * @returns SIP 응답 메시지를 처리한 경우 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 {
 	if( pclsMessage->IsMethod( "REGISTER" ) )
@@ -210,6 +267,11 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	return false;
 }
 
+/**
+ * @brief CSipDialog 에서 SIP INVITE 메시지를 생성하여 전송한다.
+ * @param clsDialog 통화 정보 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::SendInvite( CSipDialog & clsDialog )
 {
 	if( clsDialog.m_strFromId.empty() || clsDialog.m_strToId.empty() ) return false;
@@ -261,6 +323,11 @@ bool CSipUserAgent::SendInvite( CSipDialog & clsDialog )
 	return true;
 }
 
+/**
+ * @brief SIP Dialog 를 삭제한다.
+ * @param pszCallId SIP Call-ID
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::Delete( const char * pszCallId )
 {
 	SIP_DIALOG_MAP::iterator			itMap;
@@ -276,6 +343,12 @@ bool CSipUserAgent::Delete( const char * pszCallId )
 	return true;
 }
 
+/**
+ * @brief SIP INVITE 응답 메시지에 포함된 정보를 CSipDialog 에 저장한다.
+ * @param pclsMessage SIP INVITE 응답 메시지
+ * @param pclsRtp			remote RTP 정보 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * pclsRtp )
 {
 	std::string	strCallId;
@@ -364,6 +437,12 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 	return bFound;
 }
 
+/**
+ * @brief SIP 메시지에서 RTP 정보를 가져온다.
+ * @param pclsMessage SIP 메시지
+ * @param clsRtp			RTP 정보 저장 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsRtp )
 {
 	if( pclsMessage->m_clsContentType.IsEqual( "application", "sdp" ) && pclsMessage->m_strBody.empty() == false )

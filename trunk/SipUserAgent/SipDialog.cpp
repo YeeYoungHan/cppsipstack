@@ -21,6 +21,9 @@
 #include "SipUserAgent.h"
 #include "SipUtility.h"
 
+/**
+ * @brief 생성자
+ */
 CSipDialog::CSipDialog() : m_iSeq(0), m_iContactPort(-1), m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1), m_pclsInvite(NULL)
 {
 	memset( &m_sttInviteTime, 0, sizeof(m_sttInviteTime) );
@@ -29,11 +32,18 @@ CSipDialog::CSipDialog() : m_iSeq(0), m_iContactPort(-1), m_iLocalRtpPort(-1), m
 	memset( &m_sttEndTime, 0, sizeof(m_sttEndTime) );
 }
 
+/**
+ * @brief 소멸자.
+ */
 CSipDialog::~CSipDialog()
 {
 	if( m_pclsInvite ) delete m_pclsInvite;
 }
 
+/**
+ * @brief INVITE 메시지를 생성한다.
+ * @returns 성공하면 INVITE 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
 CSipMessage * CSipDialog::CreateInvite( )
 {
 	CSipMessage * pclsMessage = CreateMessage( "INVITE" );
@@ -50,6 +60,10 @@ CSipMessage * CSipDialog::CreateInvite( )
 	return pclsMessage;
 }
 
+/**
+ * @brief ACK 메시지를 생성한다.
+ * @returns 성공하면 ACK 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
 CSipMessage * CSipDialog::CreateAck( )
 {
 	CSipMessage * pclsMessage = CreateMessage( "ACK" );
@@ -60,6 +74,10 @@ CSipMessage * CSipDialog::CreateAck( )
 	return pclsMessage;
 }
 
+/**
+ * @brief CANCEL 메시지를 생성한다.
+ * @returns 성공하면 CANCEL 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
 CSipMessage * CSipDialog::CreateCancel( )
 {
 	CSipMessage * pclsMessage = CreateMessage( "CANCEL" );
@@ -70,6 +88,10 @@ CSipMessage * CSipDialog::CreateCancel( )
 	return pclsMessage;
 }
 
+/**
+ * @brief BYE 메시지를 생성한다.
+ * @returns 성공하면 BYE 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
 CSipMessage * CSipDialog::CreateBye( )
 {
 	CSipMessage * pclsMessage = CreateMessage( "BYE" );
@@ -78,6 +100,11 @@ CSipMessage * CSipDialog::CreateBye( )
 	return pclsMessage;
 }
 
+/**
+ * @brief SIP 메시지에 SDP 메시지를 추가한다.
+ * @param pclsMessage SDP 메시지를 추가할 SIP 메시지 객체
+ * @returns true 를 리턴한다.
+ */
 bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 {
 	char	szSdp[1024];
@@ -121,6 +148,11 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 	return true;
 }
 
+/**
+ * @brief SIP 요청 메시지를 생성한다.
+ * @param pszSipMethod SIP 메소드
+ * @returns 성공하면 SIP 요청 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
 CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 {
 	CSipMessage * pclsMessage = new CSipMessage();
