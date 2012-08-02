@@ -23,6 +23,9 @@
 #include "SipUdp.h"
 #include "SipMessage.h"
 
+/**
+ * @brief SIP Dialog 정보를 저장하는 클래스
+ */
 class CSipDialog
 {
 public:

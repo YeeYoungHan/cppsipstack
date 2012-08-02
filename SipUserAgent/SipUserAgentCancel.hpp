@@ -16,6 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+/**
+ * @brief SIP CANCEL 요청 메시지 수신 이벤트 핸들러
+ * @param iThreadId		SIP stack 의 UDP 쓰레드 아이디
+ * @param pclsMessage 수신된 SIP 요청 메시지
+ * @returns 정상적으로 처리하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage )
 {
 	std::string strCallId;

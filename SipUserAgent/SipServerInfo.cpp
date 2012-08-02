@@ -21,6 +21,9 @@
 #include "SipUtility.h"
 #include "Md5.h"
 
+/**
+ * @brief 생성자
+ */
 CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_iLoginTimeout(3600), m_iNextSendTime(0), m_iSeqNo(0)
 {
 	ClearLogin();
@@ -30,10 +33,16 @@ CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_iLoginTimeout(3600), m_iNext
 #endif
 }
 
+/**
+ * @brief 소멸자
+ */
 CSipServerInfo::~CSipServerInfo()
 {
 }
 
+/**
+ * @brief 로그인된 정보를 초기화시킨다.
+ */
 void CSipServerInfo::ClearLogin()
 {
 	m_bLogin = false;
@@ -42,7 +51,12 @@ void CSipServerInfo::ClearLogin()
 	m_clsCallId.Clear();
 }
 
-CSipMessage * CSipServerInfo::GetRegisterMessage( const CSipMessage * pclsResponse )
+/**
+ * @brief SIP REGISTER 메시지를 생성한다.
+ * @param pclsResponse SIP REGISTER 요청에 대한 응답 메시지
+ * @returns 성공하면 REGISTER 메시지를 리턴하고 실패하면 NULL 을 리턴한다.
+ */
+CSipMessage * CSipServerInfo::CreateRegister( const CSipMessage * pclsResponse )
 {
 	CSipMessage * pclsRequest = new CSipMessage();
 	if( pclsRequest == NULL ) return NULL;
@@ -88,6 +102,12 @@ CSipMessage * CSipServerInfo::GetRegisterMessage( const CSipMessage * pclsRespon
 	return pclsRequest;
 }
 
+/**
+ * @brief SIP 요청 메시지에 인증 정보를 추가한다.
+ * @param pclsRequest		SIP 요청 메시지
+ * @param pclsResponse	SIP 응답 메시지
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, const CSipMessage * pclsResponse )
 {
 	SIP_CHALLENGE_LIST::const_iterator itAT;
