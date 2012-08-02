@@ -56,3 +56,9 @@ int gettimeofday( struct timeval *tv, struct timezone *tz );
 #endif
 
 #endif
+
+/**
+ * @defgroup SipParser SipParser
+ * SIP 메시지 파서/생성 라이브러리
+ */
+

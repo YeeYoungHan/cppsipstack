@@ -22,6 +22,10 @@
 #include <string>
 #include <list>
 
+/**
+ * @ingroup SdpParser
+ * @brief 
+ */
 class CSdpAttribute
 {
 public:

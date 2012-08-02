@@ -18,6 +18,12 @@
 
 #include "SipStatusCode.h"
 
+/**
+ * @ingroup SipParser
+ * @brief 
+ * @param iSipCode 
+ * @returns 
+ */
 const char * GetReasonPhrase( int iSipCode )
 {
 	switch( iSipCode )

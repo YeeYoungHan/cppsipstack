@@ -18,12 +18,24 @@
 
 #include <stdio.h>
 
+/**
+ * @defgroup TestSipParser TestSipParser
+ * SipParser 및 SdpParser 라이브러리 기능을 테스트한다.
+ */
+
 bool TestSipUri();
 bool TestSipFrom();
 bool TestSipVia();
 bool TestSipMessage();
 bool TestSdp();
 
+/**
+ * @ingroup TestSipParser
+ * @brief 
+ * @param argc 
+ * @param argv 
+ * @returns 
+ */
 int main( int argc, char * argv[] )
 {
 	if( TestSipUri() == false ) goto FUNC_END;

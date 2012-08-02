@@ -25,6 +25,10 @@
 
 typedef std::list< std::string > SDP_FMT_LIST;
 
+/**
+ * @ingroup SdpParser
+ * @brief 
+ */
 class CSdpMedia
 {
 public:

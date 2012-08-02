@@ -21,6 +21,10 @@
 
 #include "SipParameter.h"
 
+/**
+ * @ingroup SipParser
+ * @brief 
+ */
 class CSipUri
 {
 public:

@@ -22,6 +22,7 @@
 #include "SipStackDefine.h"
 
 /**
+ * @ingroup SipStack
  * @brief SIP INVITE TRANSACTION Å¬·¡½º
  */
 class CSipInviteTransaction

@@ -43,6 +43,7 @@ int gettimeofday(struct timeval *tv, struct timezone *tz)
 #endif
 
 /**
+ * @ingroup SipParser
  * @brief SIP From/To tag 에 사용할 문자열을 작성한다.
  * @param pszTag		SIP From/To tag 에 사용할 문자열을 저장할 변수
  * @param iTagSize	pszTag 변수의 크기
@@ -68,6 +69,7 @@ void SipMakeTag( char * pszTag, int iTagSize )
 }
 
 /**
+ * @ingroup SipParser
  * @brief SIP Via branch 에 사용할 문자열을 작성한다.
  * @param pszBranch		SIP Via branch 에 사용할 문자열을 저장할 변수
  * @param iBranchSize	pszBranch 변수의 크기
@@ -93,6 +95,7 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 }
 
 /**
+ * @ingroup SipParser
  * @brief SIP Call-ID 에 사용할 name 문자열을 작성한다.
  * @param pszCallId		SIP Call-ID 에 사용할 name 문자열을 저장할 변수
  * @param iCallIdSize	pszCallId 변수의 크기

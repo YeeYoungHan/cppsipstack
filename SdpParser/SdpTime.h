@@ -24,6 +24,10 @@
 
 typedef std::list< std::string > SDP_REPEAT_TIME_LIST;
 
+/**
+ * @ingroup SdpParser
+ * @brief 
+ */
 class CSdpTime
 {
 public:

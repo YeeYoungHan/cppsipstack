@@ -22,6 +22,7 @@
 #include "SipMessage.h"
 
 /**
+ * @ingroup SipUserAgent
  * @brief SIP 로그인 정보를 저장하는 클래스
  */
 class CSipServerInfo

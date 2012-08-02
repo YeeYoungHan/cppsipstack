@@ -25,7 +25,10 @@
 #include <pthread.h>
 #endif
 
-/** @brief mutex 기능을 수행하는 클래스 */
+/** 
+ * @ingroup SipParser
+ * @brief mutex 기능을 수행하는 클래스
+ */
 class CSipMutex
 {
 public:
@@ -43,7 +46,10 @@ protected:
 #endif
 };
 
-/** @brief mutex 기능 및 wait/signal 기능을 수행하는 클래스 */
+/** 
+ * @ingroup SipParser
+ * @brief mutex 기능 및 wait/signal 기능을 수행하는 클래스. 리눅스에 최적화되어 있고 윈도우에는 최적화되어 있지 않음.
+ */
 class CSipMutexSignal : public CSipMutex
 {
 public:
