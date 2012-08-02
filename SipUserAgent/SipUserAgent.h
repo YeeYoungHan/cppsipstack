@@ -24,6 +24,9 @@
 #include "SipUserAgentCallBack.h"
 #include "SipDialog.h"
 
+/**
+ * @brief SIP 메시지 목적지 주소 저장 클래스
+ */
 class CSipCallRoute
 {
 public:
@@ -33,6 +36,9 @@ public:
 
 typedef std::map< std::string, CSipDialog > SIP_DIALOG_MAP;
 
+/**
+ * @brief SIP UserAgent 클래스
+ */
 class CSipUserAgent : public ISipStackCallBack
 {
 public:

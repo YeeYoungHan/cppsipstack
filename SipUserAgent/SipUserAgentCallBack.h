@@ -21,6 +21,9 @@
 
 #include "SipStackDefine.h"
 
+/**
+ * @brief RTP 정보 저장 클래스
+ */
 class CSipCallRtp
 {
 public:
@@ -29,6 +32,9 @@ public:
 	int					m_iCodec;
 };
 
+/**
+ * @brief CSipUserAgent 의 이벤트를 응용 프로그램으로 전달하는 callback 인터페이스
+ */
 class ISipUserAgentCallBack
 {
 public:
