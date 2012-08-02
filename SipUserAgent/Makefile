@@ -6,7 +6,7 @@
 
 CC=g++
 CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
-INC=-I../SipStack -I../SipParser
+INC=-I../SipStack -I../SipParser -I../SdpParser
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp

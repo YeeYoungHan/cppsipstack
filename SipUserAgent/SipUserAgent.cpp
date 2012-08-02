@@ -164,6 +164,8 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 			delete itMap->second.m_pclsInvite;
 			itMap->second.m_pclsInvite = NULL;
+
+			bRes = true;
 		}
 	}
 	m_clsMutex.release();
@@ -173,7 +175,7 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 		gclsSipStack.SendSipMessage( pclsMessage );
 	}
 
-	return true;
+	return bRes;
 }
 
 bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
