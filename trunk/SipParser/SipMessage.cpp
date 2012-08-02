@@ -590,7 +590,7 @@ bool CSipMessage::AddRoute( const char * pszIp, int iPort )
 	return true;
 }
 
-CSipMessage * CSipMessage::CreateResponse( int iStatus )
+CSipMessage * CSipMessage::CreateResponse( int iStatus, const char * pszToTag )
 {
 	if( IsRequest() == false ) return NULL;
 
@@ -604,7 +604,38 @@ CSipMessage * CSipMessage::CreateResponse( int iStatus )
 	pclsResponse->m_clsCallId = m_clsCallId;
 	pclsResponse->m_clsCSeq = m_clsCSeq;
 
+	if( pszToTag )
+	{
+		pclsResponse->m_clsTo.AddParam( "tag", pszToTag );
+	}
+
 	return pclsResponse;
+}
+
+bool CSipMessage::GetTopViaIpPort( std::string & strIp, int & iPort )
+{
+	strIp.clear();
+	iPort = 0;
+
+	SIP_VIA_LIST::iterator itViaList = m_clsViaList.begin();
+	if( itViaList == m_clsViaList.end() ) return false;
+
+	std::string strTemp;
+
+	if( SearchSipParameter( itViaList->m_clsParamList, "rport", strTemp ) )
+	{
+		iPort = atoi( strTemp.c_str() );
+	}
+
+	if( SearchSipParameter( itViaList->m_clsParamList, "received", strTemp ) )
+	{
+		strIp = strTemp;
+	}
+
+	if( iPort == 0 ) iPort = itViaList->m_iPort;
+	if( strIp.empty() ) strIp = itViaList->m_strHost;
+
+	return true;
 }
 
 int CSipMessage::ParseStatusLine( const char * pszText, int iTextLen )

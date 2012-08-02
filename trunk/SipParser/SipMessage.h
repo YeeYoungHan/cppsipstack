@@ -92,7 +92,9 @@ public:
 	bool AddVia( const char * pszIp, int iPort, const char * pszBranch = NULL );
 	bool AddRoute( const char * pszIp, int iPort );
 
-	CSipMessage * CreateResponse( int iStatus );
+	bool GetTopViaIpPort( std::string & strIp, int & iPort );
+
+	CSipMessage * CreateResponse( int iStatus, const char * pszToTag = NULL );
 
 private:
 	int ParseStatusLine( const char * pszText, int iTextLen );

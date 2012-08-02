@@ -26,10 +26,11 @@ class CSipClient : public ISipUserAgentCallBack, public ISipNetworkLog
 public:
 	virtual ~CSipClient(){}
 	virtual void EventRegister( CSipServerInfo clsInfo, int iStatus );
-	virtual void EventIncomingCall( const char * pszCallId, const char * pszFrom );
+	virtual void EventIncomingCall( const char * pszCallId, const char * pszFrom, CSipCallRtp * pclsRtp );
 	virtual void EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
 	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
+	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
 
 	virtual void SipLog( bool bSend, const char * pszPacket );
 };

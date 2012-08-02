@@ -55,6 +55,8 @@ public:
 	struct timeval m_sttStartTime;
 	struct timeval m_sttEndTime;
 
+	CSipMessage * m_pclsInvite;
+
 	CSipMessage * CreateInvite( );
 	CSipMessage * CreateAck( );
 	CSipMessage * CreateCancel( );
