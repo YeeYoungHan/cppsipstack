@@ -140,6 +140,21 @@ bool SearchSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, std
 	return false;
 }
 
+const char * SearchSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName )
+{
+	SIP_PARAMETER_LIST::iterator	itList;
+
+	for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+	{
+		if( !strcmp( itList->m_strName.c_str(), pszName ) )
+		{
+			return itList->m_strValue.c_str();
+		}
+	}
+
+	return NULL;
+}
+
 bool AddSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, const char * pszValue )
 {
 	if( pszName == NULL ) return false;
