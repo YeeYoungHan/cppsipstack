@@ -94,6 +94,13 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 					pclsRequest->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, strBranch.c_str() );
 					pclsRequest->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
 
+					SIP_FROM_LIST::iterator itContact = pclsRequest->m_clsContactList.begin();
+					if( itContact != pclsRequest->m_clsContactList.end() )
+					{
+						itContact->m_clsUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
+						itContact->m_clsUri.m_iPort = gclsSipStack.m_clsSetup.m_iLocalUdpPort;
+					}
+
 					if( gclsSipStack.SendSipMessage( pclsRequest ) == false )
 					{
 						delete pclsRequest;
@@ -116,6 +123,13 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	{
 		*pclsResponse = *pclsMessage;
 		pclsResponse->m_clsViaList.pop_front();
+
+		SIP_FROM_LIST::iterator itContact = pclsResponse->m_clsContactList.begin();
+		if( itContact != pclsResponse->m_clsContactList.end() )
+		{
+			itContact->m_clsUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
+			itContact->m_clsUri.m_iPort = gclsSipStack.m_clsSetup.m_iLocalUdpPort;
+		}
 
 		if( gclsSipStack.SendSipMessage( pclsResponse ) == false )
 		{
