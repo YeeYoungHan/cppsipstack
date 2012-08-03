@@ -19,14 +19,29 @@
 #include "SipParserDefine.h"
 #include "SdpConnection.h"
 
+/**
+ * @ingroup SdpParser
+ * @brief 생성자
+ */
 CSdpConnection::CSdpConnection() : m_MulticastTtl(-1), m_MulticastNum(-1)
 {
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 소멸자
+ */
 CSdpConnection::~CSdpConnection()
 {
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief SDP connection 의 value 문자열을 파싱한다.
+ * @param pszText		SDP connection 의 value 문자열
+ * @param iTextLen	SDP connection 의 value 문자열 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1를 리턴한다.
+ */
 int CSdpConnection::Parse( const char * pszText, int iTextLen )
 {
 	Clear();
@@ -52,6 +67,13 @@ int CSdpConnection::Parse( const char * pszText, int iTextLen )
 	return iTextLen;
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief SDP connection 의 value 문자열을 저장한다.
+ * @param pszText		SDP connection 의 value 문자열을 저장할 변수
+ * @param iTextSize pszText 변수의 크기
+ * @returns 성공하면 저장된 문자열 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSdpConnection::ToString( char * pszText, int iTextSize )
 {
 	if( pszText == NULL || iTextSize <= 0 ) return -1;
@@ -74,6 +96,10 @@ int CSdpConnection::ToString( char * pszText, int iTextSize )
 	return iLen;
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 멤버 변수를 초기화시킨다.
+ */
 void CSdpConnection::Clear()
 {
 	m_strNetType.clear();
@@ -83,6 +109,10 @@ void CSdpConnection::Clear()
 	m_MulticastNum = -1;
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 데이터가 존재하면 false 를 리턴하고 그렇지 않으면 true 를 리턴한다.
+ */
 bool CSdpConnection::Empty()
 {
 	if( m_strNetType.empty() || m_strAddrType.empty() || m_strAddr.empty() ) return true;

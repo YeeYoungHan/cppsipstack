@@ -263,7 +263,9 @@ void TcpSetPollIn( struct pollfd & sttPollFd, Socket hSocket )
 }
 
 #ifdef WIN32
-/** 윈도우용 poll 메소드
+/** 
+ * @ingroup SipStack
+ * @brief 윈도우용 poll 메소드
  *	- 현재는 read event 만 처리할 수 있다.
  */
 int poll( struct pollfd *fds, unsigned int nfds, int timeout )
@@ -305,10 +307,11 @@ int poll( struct pollfd *fds, unsigned int nfds, int timeout )
 }
 #endif
 
-/** localhost IP 주소를 제외한 호스트에 연결된 IP 주소를 가져온다. 
- *
- *	@param	strIp	IP 주소를 저장할 변수
- *	@return	성공하면 true 를 리턴한다. 실패하면 false 를 리턴한다.
+/**  
+ * @ingroup SipStack
+ * @brief localhost IP 주소를 제외한 호스트에 연결된 IP 주소를 가져온다.
+ * @param	strIp	IP 주소를 저장할 변수
+ * @return 성공하면 true 를 리턴한다. 실패하면 false 를 리턴한다.
  */
 bool GetLocalIp( std::string & strIp )
 {
