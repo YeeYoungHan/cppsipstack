@@ -310,10 +310,26 @@ bool CSipStack::Send( CSipMessage * pclsMessage )
 	}
 	else
 	{
-		SIP_VIA_LIST::iterator itList = pclsMessage->m_clsViaList.begin();
-		if( itList == pclsMessage->m_clsViaList.end() ) return false;
+		SIP_VIA_LIST::iterator itViaList = pclsMessage->m_clsViaList.begin();
+		if( itViaList == pclsMessage->m_clsViaList.end() ) return false;
 
-		pszIp = itList->m_strHost.c_str();
+		const char * pszTemp;
+
+		pszTemp = SearchSipParameter( itViaList->m_clsParamList, "rport" );
+		if( pszTemp )
+		{
+			iPort = atoi( pszTemp );
+		}
+		else
+		{
+			iPort = itViaList->m_iPort;
+		}
+
+		pszIp = SearchSipParameter( itViaList->m_clsParamList, "received" );
+		if( pszIp == NULL )
+		{
+			pszIp = itViaList->m_strHost.c_str();
+		}
 	}
 
 	if( iPort <= 0 ) iPort = 5060;
