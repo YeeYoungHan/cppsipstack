@@ -559,7 +559,7 @@ bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch 
 
 	AddSipParameter( clsVia.m_clsParamList, "rport", NULL );
 
-	if( pszBranch == NULL )
+	if( pszBranch == NULL || strlen(pszBranch) == 0 )
 	{
 		char	szBranch[SIP_BRANCH_MAX_SIZE];
 
