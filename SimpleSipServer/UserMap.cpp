@@ -28,6 +28,12 @@ CUserMap::~CUserMap()
 {
 }
 
+/**
+ * @ingroup SimpleSipServer
+ * @brief 로그인된 클라이언트 정보를 저장한다.
+ * @param pclsMessage SIP REGISTER 메시지
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CUserMap::Insert( CSipMessage * pclsMessage )
 {
 	CUserInfo			clsInfo;
@@ -54,6 +60,13 @@ bool CUserMap::Insert( CSipMessage * pclsMessage )
 	return true;
 }
 
+/**
+ * @ingroup SimpleSipServer
+ * @brief 사용자 ID 에 해당하는 정보를 검색한다.
+ * @param pszUserId 사용자 ID
+ * @param clsInfo		사용자 정보를 저장할 변수
+ * @returns 사용자 ID 가 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CUserMap::Select( const char * pszUserId, CUserInfo & clsInfo )
 {
 	bool bRes = false;

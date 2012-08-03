@@ -31,6 +31,12 @@ CSipServer::~CSipServer()
 {
 }
 
+/**
+ * @ingroup SimpleSipServer
+ * @brief SIP 서버를 시작한다.
+ * @param clsSetup SIP stack 설정 항목을 저장한 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipServer::Start( CSipStackSetup & clsSetup )
 {
 	gclsSipStack.AddCallBack( this );
@@ -40,11 +46,18 @@ bool CSipServer::Start( CSipStackSetup & clsSetup )
 	return true;
 }
 
+/**
+ * @ingroup SimpleSipServer
+ * @brief SIP 요청 메시지 수신 이벤트 핸들러
+ * @param iThreadId		쓰레드 아이디
+ * @param pclsMessage SIP 요청 메시지
+ * @returns SIP 요청 메시지를 처리하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
 	if( pclsMessage->IsMethod( "REGISTER" ) )
 	{
-		// 모든 클라이언트의 로그인을 허용합니다.
+		// 모든 클라이언트의 로그인을 허용한다.
 		gclsUserMap.Insert( pclsMessage );
 
 		char szToTag[SIP_TAG_MAX_SIZE];
@@ -53,7 +66,13 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 		CSipMessage * pclsResponse = pclsMessage->CreateResponse( SIP_OK, szToTag );
 		if( pclsResponse )
 		{
-			return gclsSipStack.SendSipMessage( pclsResponse );
+			if( gclsSipStack.SendSipMessage( pclsResponse ) == false )
+			{
+				delete pclsResponse;
+				return false;
+			}
+
+			return true;
 		}
 	}
 	else
@@ -63,17 +82,25 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 
 		if( gclsUserMap.Select( strToId.c_str(), clsUserInfo ) == false )
 		{
+			// TO 사용자가 존재하지 않으면 404 NOT FOUND 로 응답한다.
 			char szToTag[SIP_TAG_MAX_SIZE];
 
 			SipMakeTag( szToTag, sizeof(szToTag) );
 			CSipMessage * pclsResponse = pclsMessage->CreateResponse( SIP_NOT_FOUND, szToTag );
 			if( pclsResponse )
 			{
-				return gclsSipStack.SendSipMessage( pclsResponse );
+				if( gclsSipStack.SendSipMessage( pclsResponse ) == false )
+				{
+					delete pclsResponse;
+					return false;
+				}
+
+				return true;
 			}
 		}
 		else
 		{
+			// TO 사용자로 SIP 요청 메시지를 전달한다.
 			SIP_VIA_LIST::iterator itVia = pclsMessage->m_clsViaList.begin();
 			if( itVia != pclsMessage->m_clsViaList.end() )
 			{
@@ -116,11 +143,19 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	return false;
 }
 
+/**
+ * @ingroup SimpleSipServer
+ * @brief SIP 응답 메시지 수신 이벤트 핸들러
+ * @param iThreadId		쓰레드 아이디
+ * @param pclsMessage SIP 응답 메시지
+ * @returns SIP 응답 메시지를 처리하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 {
 	CSipMessage * pclsResponse = new CSipMessage();
 	if( pclsResponse )
 	{
+		// SIP 요청 메시지를 전송한 호스트로 전달한다.
 		*pclsResponse = *pclsMessage;
 		pclsResponse->m_clsViaList.pop_front();
 

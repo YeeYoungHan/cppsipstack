@@ -117,12 +117,14 @@ int main( int argc, char * argv[] )
 	clsServerInfo.m_strUserId = pszUserId;
 	clsServerInfo.m_strPassWord = pszPassWord;
 
-	// QQQ: N개의 IP주소를 사용하는 호스트에서는 SIP 프로토콜로 사용할 IP주소를 직접 입력해 주세요.
-	//    : Vmware 등을 사용하는 경우 N개의 IP주소가 호스트에 존재합니다.
+	// N개의 IP주소를 사용하는 호스트에서는 SIP 프로토콜로 사용할 IP주소를 직접 입력해 주세요.
+	// Vmware 등을 사용하는 경우 N개의 IP주소가 호스트에 존재합니다.
 	GetLocalIp( clsSetup.m_strLocalIp );
 
-	// QQQ: 클라이언트가 SIP 통신에 사용할 포트 번호를 넣어 주세요.
+	// 클라이언트가 SIP 통신에 사용할 포트 번호를 넣어 주세요.
 	clsSetup.m_iLocalUdpPort = 10000;
+
+	// UDP 수신 쓰레드의 기본 개수는 1개이다. 이를 수정하려면 CSipStackSetup.m_iUdpThreadCount 를 수정하면 된다.
 
 	clsUserAgent.m_pclsCallBack = &clsSipClient;
 	clsUserAgent.AddRegisterInfo( clsServerInfo );

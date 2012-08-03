@@ -21,6 +21,15 @@
 
 #include "SipStack.h"
 
+/**
+ * @defgroup SimpleSipServer SimpleSipServer
+ * SIP Stack 을 이용한 초간단 SIP 서버 예제 프로그램
+ */
+
+/**
+ * @ingroup SimpleSipServer
+ * @brief SIP Stack 을 이용한 초간단 SIP 서버 클래스
+ */
 class CSipServer : public ISipStackCallBack
 {
 public:

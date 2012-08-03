@@ -23,6 +23,10 @@
 #include "SipMessage.h"
 #include <map>
 
+/**
+ * @ingroup SimpleSipServer
+ * @brief SIP 클라이언트 정보 저장 클래스
+ */
 class CUserInfo
 {
 public:
@@ -32,6 +36,10 @@ public:
 
 typedef std::map< std::string, CUserInfo > USER_MAP;
 
+/**
+ * @ingroup SimpleSipServer
+ * @brief 로그인한 사용자들의 정보를 저장하는 클래스
+ */
 class CUserMap
 {
 public:
