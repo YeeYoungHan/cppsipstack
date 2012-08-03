@@ -19,14 +19,29 @@
 #include "SipParserDefine.h"
 #include "SdpTime.h"
 
+/**
+ * @ingroup SdpParser
+ * @brief 생성자
+ */
 CSdpTime::CSdpTime()
 {
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 소멸자
+ */
 CSdpTime::~CSdpTime()
 {
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief SDP time 의 value 문자열을 파싱한다.
+ * @param pszText		SDP time 의 value 문자열
+ * @param iTextLen	SDP time 의 value 문자열 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1를 리턴한다.
+ */
 int CSdpTime::Parse( const char * pszText, int iTextLen )
 {
 	Clear();
@@ -55,6 +70,13 @@ int CSdpTime::Parse( const char * pszText, int iTextLen )
 	return iTextLen;
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief SDP time 의 value 문자열을 저장한다.
+ * @param pszText		SDP time 의 value 문자열을 저장할 변수
+ * @param iTextSize pszText 변수의 크기
+ * @returns 성공하면 저장된 문자열 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSdpTime::ToString( char * pszText, int iTextSize )
 {
 	if( pszText == NULL || iTextSize <= 0 ) return -1;
@@ -77,6 +99,10 @@ int CSdpTime::ToString( char * pszText, int iTextSize )
 	return iLen;
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 멤버 변수를 초기화시킨다.
+ */
 void CSdpTime::Clear()
 {
 	m_strStartTime.clear();
@@ -84,6 +110,10 @@ void CSdpTime::Clear()
 	m_clsRepeatTimeList.clear();
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 데이터가 존재하면 false 를 리턴하고 그렇지 않으면 true 를 리턴한다.
+ */
 bool CSdpTime::Empty()
 {
 	if( m_strStartTime.empty() || m_strStopTime.empty() ) return true;

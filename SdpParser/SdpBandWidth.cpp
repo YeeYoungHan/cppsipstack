@@ -19,14 +19,29 @@
 #include "SipParserDefine.h"
 #include "SdpBandWidth.h"
 
+/**
+ * @ingroup SdpParser
+ * @brief 생성자
+ */
 CSdpBandWidth::CSdpBandWidth()
 {
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 소멸자
+ */
 CSdpBandWidth::~CSdpBandWidth()
 {
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief SDP bandwitdh 의 value 문자열을 파싱한다.
+ * @param pszText		SDP bandwitdh 의 value 문자열
+ * @param iTextLen	SDP bandwitdh 의 value 문자열 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1를 리턴한다.
+ */
 int CSdpBandWidth::Parse( const char * pszText, int iTextLen )
 {
 	Clear();
@@ -52,6 +67,13 @@ int CSdpBandWidth::Parse( const char * pszText, int iTextLen )
 	return iTextLen;
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief SDP bandwitdh 의 value 문자열을 저장한다.
+ * @param pszText		SDP bandwitdh 의 value 문자열을 저장할 변수
+ * @param iTextSize pszText 변수의 크기
+ * @returns 성공하면 저장된 문자열 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSdpBandWidth::ToString( char * pszText, int iTextSize )
 {
 	if( pszText == NULL || iTextSize <= 0 ) return -1;
@@ -60,12 +82,20 @@ int CSdpBandWidth::ToString( char * pszText, int iTextSize )
 	return snprintf( pszText, iTextSize, "%s:%s", m_strType.c_str(), m_strBandWidth.c_str() );
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 멤버 변수를 초기화시킨다.
+ */
 void CSdpBandWidth::Clear()
 {
 	m_strType.clear();
 	m_strBandWidth.clear();
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 데이터가 존재하면 false 를 리턴하고 그렇지 않으면 true 를 리턴한다.
+ */
 bool CSdpBandWidth::Empty()
 {
 	if( m_strType.empty() || m_strBandWidth.empty() ) return true;

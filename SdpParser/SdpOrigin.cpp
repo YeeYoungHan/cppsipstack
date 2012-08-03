@@ -19,14 +19,29 @@
 #include "SipParserDefine.h"
 #include "SdpOrigin.h"
 
+/**
+ * @ingroup SdpParser
+ * @brief 생성자
+ */
 CSdpOrigin::CSdpOrigin()
 {
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 소멸자
+ */
 CSdpOrigin::~CSdpOrigin()
 {
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief SDP origin 의 value 문자열을 파싱한다.
+ * @param pszText		SDP origin 의 value 문자열
+ * @param iTextLen	SDP origin 의 value 문자열 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1를 리턴한다.
+ */
 int CSdpOrigin::Parse( const char * pszText, int iTextLen )
 {
 	Clear();
@@ -55,6 +70,13 @@ int CSdpOrigin::Parse( const char * pszText, int iTextLen )
 	return iTextLen;
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief SDP origin 의 value 문자열을 저장한다.
+ * @param pszText		SDP origin 의 value 문자열을 저장할 변수
+ * @param iTextSize pszText 변수의 크기
+ * @returns 성공하면 저장된 문자열 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSdpOrigin::ToString( char * pszText, int iTextSize )
 {
 	if( pszText == NULL || iTextSize <= 0 ) return -1;
@@ -68,6 +90,10 @@ int CSdpOrigin::ToString( char * pszText, int iTextSize )
 	return iLen;
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 멤버 변수를 초기화시킨다.
+ */
 void CSdpOrigin::Clear()
 {
 	m_strUserName.clear();
@@ -78,6 +104,10 @@ void CSdpOrigin::Clear()
 	m_strUnicastAddress.clear();
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 데이터가 존재하면 false 를 리턴하고 그렇지 않으면 true 를 리턴한다.
+ */
 bool CSdpOrigin::Empty()
 {
 	if( m_strUserName.empty() || m_strSessId.empty() || m_strSessVersion.empty() ) return true;

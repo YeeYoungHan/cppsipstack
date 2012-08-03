@@ -19,14 +19,29 @@
 #include "SipParserDefine.h"
 #include "SdpMedia.h"
 
+/**
+ * @ingroup SdpParser
+ * @brief 생성자
+ */
 CSdpMedia::CSdpMedia() : m_iPort(-1), m_iNumOfPort(-1)
 {
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 소멸자
+ */
 CSdpMedia::~CSdpMedia()
 {
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief SDP media 의 value 문자열을 파싱한다.
+ * @param pszText		SDP media 의 value 문자열
+ * @param iTextLen	SDP media 의 value 문자열 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1를 리턴한다.
+ */
 int CSdpMedia::Parse( const char * pszText, int iTextLen )
 {
 	Clear();
@@ -55,6 +70,13 @@ int CSdpMedia::Parse( const char * pszText, int iTextLen )
 	return iTextLen;
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief SDP media 의 value 문자열을 저장한다.
+ * @param pszText		SDP media 의 value 문자열을 저장할 변수
+ * @param iTextSize pszText 변수의 크기
+ * @returns 성공하면 저장된 문자열 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSdpMedia::ToString( char * pszText, int iTextSize )
 {
 	if( pszText == NULL || iTextSize <= 0 ) return -1;
@@ -127,6 +149,10 @@ int CSdpMedia::ToString( char * pszText, int iTextSize )
 	return iLen;
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 멤버 변수를 초기화시킨다.
+ */
 void CSdpMedia::Clear()
 {
 	m_strMedia.clear();
