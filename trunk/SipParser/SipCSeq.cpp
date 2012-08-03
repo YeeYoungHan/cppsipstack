@@ -28,6 +28,7 @@ CSipCSeq::~CSipCSeq()
 }
 
 /**
+ * @ingroup SipParser
  * @brief SIP 헤더 문자열을 파싱하여 CSipCSeq 클래스의 멤버 변수에 저장한다.
  * @param pszText		SIP 헤더의 값을 저장한 문자열
  * @param iTextLen	pszText 문자열의 길이
@@ -69,6 +70,7 @@ int CSipCSeq::Parse( const char * pszText, int iTextLen )
 }
 
 /**
+ * @ingroup SipParser
  * @brief SIP 메시지에 포함된 문자열을 작성한다.
  * @param pszText		SIP 헤더의 값을 저장할 문자열 변수
  * @param iTextSize	pszText 변수의 크기
@@ -93,6 +95,7 @@ bool CSipCSeq::Set( int iDigit, const char * pszMethod )
 }
 
 /**
+ * @ingroup SipParser
  * @brief 멤버 변수를 초기화시킨다.
  */
 void CSipCSeq::Clear()

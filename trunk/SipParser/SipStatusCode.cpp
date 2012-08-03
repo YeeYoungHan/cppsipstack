@@ -20,9 +20,9 @@
 
 /**
  * @ingroup SipParser
- * @brief 
- * @param iSipCode 
- * @returns 
+ * @brief SIP status code 에 해당하는 문자열을 리턴한다.
+ * @param iSipCode SIP status code
+ * @returns SIP status code 에 해당하는 문자열을 리턴한다.
  */
 const char * GetReasonPhrase( int iSipCode )
 {

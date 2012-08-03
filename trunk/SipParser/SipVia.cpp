@@ -28,6 +28,7 @@ CSipVia::~CSipVia()
 }
 
 /**
+ * @ingroup SipParser
  * @brief SIP 헤더 문자열을 파싱하여 CSipVia 클래스의 멤버 변수에 저장한다.
  * @param pszText		SIP 헤더의 값을 저장한 문자열
  * @param iTextLen	pszText 문자열의 길이
@@ -69,6 +70,7 @@ int CSipVia::Parse( const char * pszText, int iTextLen )
 }
 
 /**
+ * @ingroup SipParser
  * @brief SIP 메시지에 포함된 문자열을 작성한다.
  * @param pszText		SIP 헤더의 값을 저장할 문자열 변수
  * @param iTextSize	pszText 변수의 크기
@@ -96,6 +98,7 @@ int CSipVia::ToString( char * pszText, int iTextSize )
 }
 
 /**
+ * @ingroup SipParser
  * @brief 멤버 변수를 초기화시킨다.
  */
 void CSipVia::Clear()
@@ -109,6 +112,12 @@ void CSipVia::Clear()
 	m_clsParamList.clear();
 }
 
+/**
+ * @ingroup SipParser
+ * @brief parameter 리스트를 검색하여서 입력된 이름에 대한 값을 리턴한다.
+ * @param pszName parameter 이름
+ * @returns 입력된 이름이 parameter 리스트에 존재하면 해당 값을 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
 const char * CSipVia::GetParamValue( const char * pszName )
 {
 	SIP_PARAMETER_LIST::iterator	itList;

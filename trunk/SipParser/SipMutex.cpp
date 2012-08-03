@@ -19,6 +19,7 @@
 #include "SipMutex.h"
 
 /**
+ * @ingroup SipParser
  * @brief 생성자
  */
 CSipMutex::CSipMutex( )
@@ -31,6 +32,7 @@ CSipMutex::CSipMutex( )
 }
 
 /**
+ * @ingroup SipParser
  * @brief 소멸자
  */
 CSipMutex::~CSipMutex()
@@ -43,6 +45,7 @@ CSipMutex::~CSipMutex()
 }
 
 /**
+ * @ingroup SipParser
  * @brief mutex lock 한다.
  * @return true 를 리턴한다.
  */
@@ -61,6 +64,7 @@ bool CSipMutex::acquire()
 }
 
 /**
+ * @ingroup SipParser
  * @brief mutex unlock 한다.
  * @return true 를 리턴한다.
  */
@@ -79,6 +83,7 @@ bool CSipMutex::release()
 }
 
 /**
+ * @ingroup SipParser
  * @brief 생성자
  */
 CSipMutexSignal::CSipMutexSignal()
@@ -90,6 +95,7 @@ CSipMutexSignal::CSipMutexSignal()
 }
 
 /**
+ * @ingroup SipParser
  * @brief 소멸자
  */
 CSipMutexSignal::~CSipMutexSignal()
@@ -101,6 +107,7 @@ CSipMutexSignal::~CSipMutexSignal()
 }
 
 /**
+ * @ingroup SipParser
  * @brief signal 또는 broadcast 메소드가 호출될 때까지 대기한다.
  * @return true 를 리턴한다.
  */
@@ -120,6 +127,7 @@ bool CSipMutexSignal::wait()
 }
 
 /**
+ * @ingroup SipParser
  * @brief signal 또는 broadcast 메소드가 호출될 때까지 대기하는 쓰레드 1개를 대기 중지시킨다.
  * @return true 를 리턴한다.
  */
@@ -138,6 +146,7 @@ bool CSipMutexSignal::signal()
 }
 
 /**
+ * @ingroup SipParser
  * @brief signal 또는 broadcast 메소드가 호출될 때까지 대기하는 모든 쓰레드를 대기 중지시킨다.
  * @return true 를 리턴한다.
  */

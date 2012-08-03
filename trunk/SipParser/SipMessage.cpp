@@ -421,6 +421,7 @@ bool CSipMessage::MakePacket()
 }
 
 /**
+ * @ingroup SipParser
  * @brief 멤버 변수를 초기화시킨다.
  */
 void CSipMessage::Clear()
