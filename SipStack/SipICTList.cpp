@@ -49,7 +49,33 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 		itMap = m_clsMap.find( strKey );
 		if( itMap == m_clsMap.end() )
 		{
-			if( pclsMessage->IsMethod( "ACK" ) == false )
+			if( pclsMessage->IsMethod( "ACK" ) )
+			{
+				for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+				{
+					if( itMap->second->m_pclsRequest->IsEqualCallId( pclsMessage ) )
+					{
+						if( itMap->second->m_pclsAck == NULL )
+						{
+							if( itMap->second->m_pclsResponse && itMap->second->m_pclsResponse->m_iStatusCode == SIP_UNAUTHORIZED )
+							{
+								// INVITE 에 대한 응답 메시지가 401 인 ACK 메시지를 수신하면 Transaction 을 바로 삭제한다.
+								delete itMap->second;
+								m_clsMap.erase( itMap );
+							}
+							else
+							{
+								itMap->second->m_pclsAck = pclsMessage;
+								gettimeofday( &itMap->second->m_sttStopTime, NULL );
+							}
+							
+							bRes = true;
+							break;
+						}
+					}
+				}
+			}
+			else
 			{
 				CSipInviteTransaction * psttTransaction = new CSipInviteTransaction();
 				if( psttTransaction )
