@@ -33,7 +33,7 @@ typedef std::list< std::string > SDP_PHONE_LIST;
 
 /**
  * @ingroup SdpParser
- * @brief 
+ * @brief SDP message 를 저장하는 클래스
  */
 class CSdpMessage
 {

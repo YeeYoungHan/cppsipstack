@@ -24,7 +24,7 @@
 
 /**
  * @ingroup SdpParser
- * @brief 
+ * @brief SDP attribute 를 저장하는 클래스.
  */
 class CSdpAttribute
 {
@@ -32,8 +32,11 @@ public:
 	CSdpAttribute();
 	~CSdpAttribute();
 
-	std::string	m_strName;
-	std::string	m_strValue;
+	/** 이름 */
+	std::string	m_strName;		
+
+	/** 값 */
+	std::string	m_strValue;		
 
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );

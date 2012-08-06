@@ -107,6 +107,7 @@ void CSdpOrigin::Clear()
 /**
  * @ingroup SdpParser
  * @brief 데이터가 존재하면 false 를 리턴하고 그렇지 않으면 true 를 리턴한다.
+ * @return 데이터가 존재하면 false 를 리턴하고 그렇지 않으면 true 를 리턴한다.
  */
 bool CSdpOrigin::Empty()
 {

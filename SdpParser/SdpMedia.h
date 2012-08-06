@@ -27,7 +27,7 @@ typedef std::list< std::string > SDP_FMT_LIST;
 
 /**
  * @ingroup SdpParser
- * @brief 
+ * @brief SDP media 를 저장하는 클래스
  */
 class CSdpMedia
 {
