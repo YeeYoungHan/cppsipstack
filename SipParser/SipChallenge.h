@@ -23,7 +23,7 @@
 
 /**
  * @ingroup SipParser
- * @brief 
+ * @brief WWW-Authenticate, Proxy-Authenticate 헤더를 저장하는 클래스
  */
 class CSipChallenge
 {

@@ -32,10 +32,10 @@ public:
 	CSdpAttribute();
 	~CSdpAttribute();
 
-	/** 이름 */
+	/** attribute 이름 */
 	std::string	m_strName;		
 
-	/** 값 */
+	/** attribute 값 */
 	std::string	m_strValue;		
 
 	int Parse( const char * pszText, int iTextLen );

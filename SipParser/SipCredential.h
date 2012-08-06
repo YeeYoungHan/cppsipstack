@@ -23,7 +23,7 @@
 
 /**
  * @ingroup SipParser
- * @brief 
+ * @brief Authorization, Proxy-Authorization 헤더를 저장하는 클래스
  */
 class CSipCredential
 {

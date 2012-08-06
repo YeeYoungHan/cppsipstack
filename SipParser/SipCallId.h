@@ -23,7 +23,7 @@
 
 /**
  * @ingroup SipParser
- * @brief 
+ * @brief Call-ID 헤더를 저장하는 클래스
  */
 class CSipCallId
 {
