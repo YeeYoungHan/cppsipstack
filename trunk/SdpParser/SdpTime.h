@@ -26,7 +26,7 @@ typedef std::list< std::string > SDP_REPEAT_TIME_LIST;
 
 /**
  * @ingroup SdpParser
- * @brief 
+ * @brief SDP time 을 저장하는 클래스
  */
 class CSdpTime
 {

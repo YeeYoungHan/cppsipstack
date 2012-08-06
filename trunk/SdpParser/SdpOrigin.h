@@ -23,7 +23,7 @@
 
 /**
  * @ingroup SdpParser
- * @brief 
+ * @brief SDP origin 을 저장하는 클래스
  */
 class CSdpOrigin
 {
