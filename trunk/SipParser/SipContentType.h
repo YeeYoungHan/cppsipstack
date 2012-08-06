@@ -23,7 +23,7 @@
 
 /**
  * @ingroup SipParser
- * @brief 
+ * @brief Content-Type 을 저장하는 클래스
  */
 class CSipContentType
 {
