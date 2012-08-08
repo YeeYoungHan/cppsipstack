@@ -31,13 +31,22 @@ public:
 	CSipVia();
 	~CSipVia();
 
+	/** 프로토콜 이름 ( SIP ) */
 	std::string	m_strProtocolName;
+
+	/** 프로토콜 버전 ( 2.0 ) */
 	std::string	m_strProtocolVersion;
+
+	/** transport ( UDP ) */
 	std::string	m_strTransport;
 
+	/** 호스트 이름 또는 IP 주소 */
 	std::string	m_strHost;
+
+	/** 호스트 포트 번호 */
 	int					m_iPort;
 
+	/** Via parameter 리스트 */
 	SIP_PARAMETER_LIST m_clsParamList;
 
 	int Parse( const char * pszText, int iTextLen );

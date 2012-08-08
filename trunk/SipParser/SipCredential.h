@@ -50,6 +50,7 @@ public:
 	void Clear();
 };
 
+/** SIP Authorization/Proxy-Authorization 헤더 리스트 */
 typedef std::list< CSipCredential > SIP_CREDENTIAL_LIST;
 
 int ParseSipCredential( SIP_CREDENTIAL_LIST & clsList, const char * pszText, int iTextLen );

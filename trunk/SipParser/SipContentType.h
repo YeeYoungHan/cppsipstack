@@ -31,7 +31,10 @@ public:
 	CSipContentType();
 	~CSipContentType();
 
+	/** type */
 	std::string	m_strType;
+
+	/** subtype */
 	std::string	m_strSubType;
 
 	SIP_PARAMETER_LIST m_clsParamList;

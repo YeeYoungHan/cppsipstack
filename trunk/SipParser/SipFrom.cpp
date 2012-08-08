@@ -152,11 +152,21 @@ int CSipFrom::ToString( char * pszText, int iTextSize )
 	return iLen;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief parameter 리스트에 parameter 를 추가한다.
+ * @param pszName		parameter 이름
+ * @param pszValue	parameter 값
+ */
 void CSipFrom::AddParam( const char * pszName, const char * pszValue )
 {
 	AddSipParameter( m_clsParamList, pszName, pszValue );
 }
 
+/**
+ * @ingroup SipParser
+ * @brief tag 를 추가한다.
+ */
 void CSipFrom::AddTag()
 {
 	char szTag[SIP_TAG_MAX_SIZE];
@@ -166,12 +176,20 @@ void CSipFrom::AddTag()
 	AddParam( "tag", szTag );
 }
 
+/**
+ * @ingroup SipParser
+ * @brief parameter 리스트를 검색하여서 parameter 이름에 대한 값을 가져온다.
+ * @param pszName		parameter 이름
+ * @param strValue	parameter 값을 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipFrom::GetParam( const char * pszName, std::string & strValue )
 {
 	return SearchSipParameter( m_clsParamList, pszName, strValue );
 }
 
 /**
+ * @ingroup SipParser
  * @brief 멤버 변수를 초기화시킨다.
  */
 void CSipFrom::Clear()
@@ -181,6 +199,11 @@ void CSipFrom::Clear()
 	m_clsParamList.clear();
 }
 
+/**
+ * @ingroup SipParser
+ * @brief 멤버변수가 저장되어 있지 않으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ * @returns 멤버변수가 저장되어 있지 않으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipFrom::Empty()
 {
 	return m_clsUri.Empty();

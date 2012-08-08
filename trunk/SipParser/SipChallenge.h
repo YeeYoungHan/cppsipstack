@@ -51,6 +51,7 @@ public:
 	static bool SetQuoteString( char * pszText, int & iTextPos, int iTextSize, const char * pszName, std::string & strValue );
 };
 
+/** WWW-Authenticate/Proxy-Authenticate 헤더 리스트 */
 typedef std::list< CSipChallenge > SIP_CHALLENGE_LIST;
 
 int ParseSipChallenge( SIP_CHALLENGE_LIST & clsList, const char * pszText, int iTextLen );

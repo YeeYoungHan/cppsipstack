@@ -23,7 +23,7 @@
 
 /**
  * @ingroup SipParser
- * @brief Accept-Encoding, Accept-Language 헤더를 저장하는 클래스
+ * @brief SIP Accept-Encoding, Accept-Language 헤더를 저장하는 클래스
  */
 class CSipAcceptData
 {
@@ -31,8 +31,10 @@ public:
 	CSipAcceptData();
 	~CSipAcceptData();
 
+	/** 이름 */
 	std::string		m_strName;
 
+	/** parameter 리스트 */
 	SIP_PARAMETER_LIST m_clsParamList;
 
 	int Parse( const char * pszText, int iTextLen );
@@ -40,6 +42,7 @@ public:
 	void Clear();
 };
 
+/** Accept-Encoding/Accept-Language 헤더 리스트 */
 typedef std::list< CSipAcceptData > SIP_ACCEPT_DATA_LIST;
 
 int ParseSipAcceptData( SIP_ACCEPT_DATA_LIST & clsList, const char * pszText, int iTextLen );

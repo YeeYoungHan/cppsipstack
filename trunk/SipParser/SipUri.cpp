@@ -156,6 +156,11 @@ void CSipUri::Clear()
 	m_clsHeaderList.clear();
 }
 
+/**
+ * @ingroup SipParser
+ * @brief 멤버변수가 저장되어 있지 않으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ * @returns 멤버변수가 저장되어 있지 않으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipUri::Empty()
 {
 	if( m_strProtocol.empty() || m_strHost.empty() ) return true;

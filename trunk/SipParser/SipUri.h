@@ -23,7 +23,7 @@
 
 /**
  * @ingroup SipParser
- * @brief 
+ * @brief SIP URI 정보를 저장하는 클래스
  */
 class CSipUri
 {
@@ -31,12 +31,22 @@ public:
 	CSipUri();
 	~CSipUri();
 
+	/** 프로토콜 이름 */
 	std::string	m_strProtocol;
+
+	/** 사용자 아이디 또는 전화번호 */
 	std::string	m_strUser;
+
+	/** 호스트 이름 또는 IP 주소 */
 	std::string	m_strHost;
+
+	/** 호스트 포트 번호 */
 	int					m_iPort;
 
+	/** SIP URI parameter 리스트 */
 	SIP_PARAMETER_LIST m_clsUriParamList;
+
+	/** Header 리스트. ? 이후에 저장된 parameter 리스트 */
 	SIP_PARAMETER_LIST m_clsHeaderList;
 
 	int Parse( const char * pszText, int iTextLen );

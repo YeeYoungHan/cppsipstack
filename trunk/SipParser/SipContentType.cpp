@@ -134,6 +134,11 @@ void CSipContentType::Clear()
 	m_clsParamList.clear();
 }
 
+/**
+ * @ingroup SipParser
+ * @brief 멤버변수가 저장되어 있지 않으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ * @returns 멤버변수가 저장되어 있지 않으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipContentType::Empty()
 {
 	if( m_strType.empty() || m_strSubType.empty() ) return true;
@@ -141,6 +146,12 @@ bool CSipContentType::Empty()
 	return false;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief Content-Type 을 설정한다.
+ * @param pszType			type
+ * @param pszSubType	subtype
+ */
 void CSipContentType::Set( const char * pszType, const char * pszSubType )
 {
 	if( pszType == NULL || pszSubType == NULL ) return;
@@ -149,6 +160,13 @@ void CSipContentType::Set( const char * pszType, const char * pszSubType )
 	m_strSubType = pszSubType;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief Content-Type 이 동일한지 검사한다. 
+ * @param pszType			type
+ * @param pszSubType	subtype
+ * @returns Content-Type 이 동일하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipContentType::IsEqual( const char * pszType, const char * pszSubType )
 {
 	if( pszType == NULL || pszSubType == NULL ) return false;

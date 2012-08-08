@@ -31,7 +31,10 @@ public:
 	CSipCSeq();
 	~CSipCSeq();
 
+	/** SEQ 번호 */
 	int					m_iDigit;
+
+	/** SIP 메소드 */
 	std::string	m_strMethod;
 
 	int Parse( const char * pszText, int iTextLen );

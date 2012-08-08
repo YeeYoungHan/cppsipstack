@@ -23,7 +23,7 @@
 
 /**
  * @ingroup SipParser
- * @brief Call-ID 헤더를 저장하는 클래스
+ * @brief SIP Call-ID 헤더를 저장하는 클래스
  */
 class CSipCallId
 {
@@ -31,7 +31,10 @@ public:
 	CSipCallId();
 	~CSipCallId();
 
+	/** 사용자 아이디 */
 	std::string m_strName;
+
+	/** 호스트 이름 또는 IP 주소 */
 	std::string m_strHost;
 
 	int Parse( const char * pszText, int iTextLen );
