@@ -24,7 +24,7 @@
 
 /**
  * @ingroup SipParser
- * @brief 
+ * @brief parameter 정보를 저장하는 클래스
  */
 class CSipParameter
 {
@@ -32,7 +32,10 @@ public:
 	CSipParameter();
 	~CSipParameter();
 
+	/** 이름 */
 	std::string	m_strName;
+
+	/** 값 */
 	std::string	m_strValue;
 
 	int Parse( const char * pszText, int iTextLen );
@@ -40,6 +43,7 @@ public:
 	void Clear();
 };
 
+/** parameter 리스트 */
 typedef std::list< CSipParameter > SIP_PARAMETER_LIST;
 
 int ParseSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszText, int iTextLen );

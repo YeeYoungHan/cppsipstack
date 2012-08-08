@@ -24,7 +24,7 @@
 
 /**
  * @ingroup SipParser
- * @brief 
+ * @brief SIP 헤더 정보를 저장하는 클래스
  */
 class CSipHeader
 {
@@ -32,7 +32,10 @@ public:
 	CSipHeader();
 	~CSipHeader();
 
+	/** 이름 */
 	std::string	m_strName;
+
+	/** 값 */
 	std::string	m_strValue;
 
 	int Parse( const char * pszText, int iTextLen );

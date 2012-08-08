@@ -112,6 +112,14 @@ void CSipParameter::Clear()
 	m_strValue.clear();
 }
 
+/**
+ * @ingroup SipParser
+ * @brief parameter 리스트 문자열을 파싱하여서 parameter 리스트 객체에 저장한다.
+ * @param clsList		parameter 리스트 객체
+ * @param pszText		parameter 리스트 문자열
+ * @param iTextLen	parameter 리스트 문자열의 길이
+ * @returns 성공하면 파싱한 문자열의 길이를 리턴하고 그렇지 않으면 -1 을 리턴한다.
+ */
 int ParseSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszText, int iTextLen )
 {
 	CSipParameter clsParam;
@@ -124,6 +132,14 @@ int ParseSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszText, int i
 	return iPos;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief parameter 리스트에서 parameter 이름에 대한 값을 검색한다.
+ * @param clsList		parameter 리스트 객체
+ * @param pszName		parameter 이름
+ * @param strValue	parameter 값을 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool SearchSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, std::string & strValue )
 {
 	SIP_PARAMETER_LIST::iterator	itList;
@@ -140,6 +156,13 @@ bool SearchSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, std
 	return false;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief parameter 리스트에서 parameter 이름에 대한 값을 검색한다.
+ * @param clsList		parameter 리스트 객체
+ * @param pszName		parameter 이름
+ * @returns 성공하면 parameter 값을 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
 const char * SearchSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName )
 {
 	SIP_PARAMETER_LIST::iterator	itList;
@@ -155,6 +178,14 @@ const char * SearchSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszN
 	return NULL;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief parameter 리스트에 paramter 를 저장한다.
+ * @param clsList		parameter 리스트 객체
+ * @param pszName		parameter 이름
+ * @param pszValue	parameter 값
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool AddSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, const char * pszValue )
 {
 	if( pszName == NULL ) return false;
@@ -169,6 +200,14 @@ bool AddSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, const 
 	return true;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief parameter 리스트 객체를 parameter 리스트 문자열로 제작한다.
+ * @param clsList		parameter 리스트 객체
+ * @param pszText		parameter 리스트 문자열을 저장할 변수
+ * @param iTextSize parameter 리스트 문자열의 크기
+ * @returns parameter 리스트 문자열의 길이를 리턴한다.
+ */
 int MakeSipParameterString( SIP_PARAMETER_LIST & clsList, char * pszText, int iTextSize )
 {
 	SIP_PARAMETER_LIST::iterator	itList;

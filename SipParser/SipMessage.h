@@ -39,47 +39,91 @@ public:
 	CSipMessage();
 	~CSipMessage();
 
+	/** SIP 메소드 ( INVITE, CANCEL, ACK, BYE, REFER 등 ) */
 	std::string		m_strSipMethod;
+
+	/** SIP request URI */
 	CSipUri				m_clsReqUri;
+
+	/** SIP version ( SIP/2.0 ) */
 	std::string		m_strSipVersion;
 
+	/** SIP 응답 코드. SIP 응답 메시지인 경우에만 0 보다 큰 값을 가지고 있다. */
 	int						m_iStatusCode;
+
+	/** SIP 응답 메시지 */
 	std::string		m_strReasonPhrase;
 
+	/** SIP From 헤더 */
 	CSipFrom			m_clsFrom;
+
+	/** SIP To 헤더 */
 	CSipFrom			m_clsTo;
 
+	/** SIP Via 헤더 리스트 */
 	SIP_VIA_LIST	m_clsViaList;
+
+	/** SIP Contact 헤더 리스트 */
 	SIP_FROM_LIST	m_clsContactList;
+
+	/** SIP Record-Route 헤더 리스트 */
 	SIP_FROM_LIST	m_clsRecordRouteList;
+
+	/** SIP Route 헤더 리스트 */
 	SIP_FROM_LIST	m_clsRouteList;
 
+	/** SIP Accept 헤더 리스트 */
 	SIP_CONTENT_TYPE_LIST	m_clsAcceptList;
 
+	/** SIP Accept-Encoding 헤더 리스트 */
 	SIP_ACCEPT_DATA_LIST	m_clsAcceptEncodingList;
+
+	/** SIP Accept-Language 헤더 리스트 */
 	SIP_ACCEPT_DATA_LIST	m_clsAcceptLanguageList;
 
+	/** SIP Authorization 헤더 리스트 */
 	SIP_CREDENTIAL_LIST		m_clsAuthorizationList;
+
+	/** SIP Proxy-Authorization 헤더 리스트 */
 	SIP_CREDENTIAL_LIST		m_clsProxyAuthorizationList;
 
+	/** SIP Www-Authenticate 헤더 리스트 */
 	SIP_CHALLENGE_LIST		m_clsWwwAuthenticateList;
+
+	/** SIP Proxy-Authenticate 헤더 리스트 */
 	SIP_CHALLENGE_LIST		m_clsProxyAuthenticateList;
 
+	/** SIP 헤더 리스트. CSipMessage 에서 구분하여서 정의한 헤더에 저장되지 않는 헤더들을 저장한다. */
 	SIP_HEADER_LIST				m_clsHeaderList;
 
+	/** SIP CSeq 헤더 */
 	CSipCSeq				m_clsCSeq;
+
+	/** SIP Call-ID 헤더 */
 	CSipCallId			m_clsCallId;
+
+	/** SIP Content-Type 헤더 */
 	CSipContentType	m_clsContentType;
+
+	/** SIP Content-Length 헤더의 값 */
 	int							m_iContentLength;
 
+	/** SIP Expires 헤더의 값 */
 	int							m_iExpires;
+
+	/** SIP Max-Forwards 헤더의 값 */
 	int							m_iMaxForwards;
 
+	/** SIP User-Agent 헤더 */
 	std::string			m_strUserAgent;
+
+	/** SIP body 메시지 */
 	std::string			m_strBody;
 
+	/** 네트워크로 전송할 SIP 메시지 */
 	std::string			m_strPacket;
 
+	/** 객체 사용 개수 */
 	int							m_iUseCount;
 
 	int Parse( const char * pszText, int iTextLen );

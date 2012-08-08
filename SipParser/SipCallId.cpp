@@ -109,14 +109,20 @@ void CSipCallId::Clear()
 
 /**
  * @ingroup SipParser
- * @brief 
- * @return 
+ * @brief 멤버변수가 저장되어 있지 않으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ * @return 멤버변수가 저장되어 있지 않으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
 bool CSipCallId::Empty()
 {
 	return m_strName.empty();
 }
 
+/**
+ * @ingroup SipParser
+ * @brief Call-ID 가 동일한지 검사한다.
+ * @param pclsCallId 비교할 Call-ID
+ * @returns Call-ID 가 동일하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipCallId::IsEqual( CSipCallId * pclsCallId )
 {
 	if( pclsCallId == NULL ) return false;
@@ -126,6 +132,11 @@ bool CSipCallId::IsEqual( CSipCallId * pclsCallId )
 	return false;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief 새로운 Call-ID 를 생성한다.
+ * @param pszHost 호스트 이름 또는 IP 주소
+ */
 void CSipCallId::Make( const char * pszHost )
 {
 	char	szName[SIP_CALL_ID_NAME_MAX_SIZE];

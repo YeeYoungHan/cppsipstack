@@ -23,7 +23,7 @@
 
 /**
  * @ingroup SipParser
- * @brief 
+ * @brief SIP From/To/Contact/Route/Record-Route 헤더 정보 저장 클래스
  */
 class CSipFrom
 {
@@ -31,10 +31,13 @@ public:
 	CSipFrom();
 	~CSipFrom();
 
+	/** display name */
 	std::string m_strDisplayName;
 
+	/** SIP Uri */
 	CSipUri	m_clsUri;
 
+	/** parameter 리스트 */
 	SIP_PARAMETER_LIST m_clsParamList;
 
 	int Parse( const char * pszText, int iTextLen );
@@ -47,6 +50,7 @@ public:
 	bool Empty();
 };
 
+/** SIP From 헤더 리스트 */
 typedef std::list< CSipFrom > SIP_FROM_LIST;
 
 int ParseSipFrom( SIP_FROM_LIST & clsList, const char * pszText, int iTextLen );
