@@ -32,6 +32,9 @@ C++ SIP stack 프로젝트
  * SdpParser
    - SDP 메시지 파서/생성 라이브러리
 
+ * XmlParser
+   - XML 문자열을 파서/생성 라이브러리
+
  * TestSipParser
    - SipParser 라이브러리 테스트 프로그램
 
@@ -39,6 +42,9 @@ C++ SIP stack 프로젝트
    - C++ SIP stack 을 이용하여서 초간단 SIP 서버 프로그램을 개발한 것입니다.
    - C++ SIP stack 을 이용하여 간단하게 SIP 서버를 개발할 수 있다는 것을 보여주기 위한 예제 프로그램이오니 
      C++ SIP stack 의 사용법이 궁금하신 분은 소스 코드를 꼭 읽어 보세요.
+
+ * KSipServer
+   - 한국형 SIP 서버 프로그램
 
 3. 컴파일 방법
 
