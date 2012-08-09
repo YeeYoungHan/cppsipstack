@@ -29,7 +29,7 @@ CXmlElement::~CXmlElement()
 
 int CXmlElement::Parse( const char * pszText, int iTextLen )
 {
-	int		iPos, iStartPos, iLen;
+	int		iPos, iStartPos = -1, iLen;
 	char	cType = 0;
 	std::string	strName, strValue;
 
@@ -192,4 +192,69 @@ void CXmlElement::Clear( )
 	m_strData.clear();
 	m_clsAttributeMap.clear();
 	m_clsElementList.clear();
+}
+
+const char * CXmlElement::SelectAttribute( const char * pszName )
+{
+	XML_ATTRIBUTE_MAP::iterator	itAM;
+
+	itAM = m_clsAttributeMap.find( pszName );
+	if( itAM != m_clsAttributeMap.end() )
+	{
+		return itAM->second.c_str();
+	}
+
+	return NULL;
+}
+
+CXmlElement * CXmlElement::SelectElement( const char * pszName, int iIndex )
+{
+	XML_ELEMENT_LIST::iterator	itEL;
+	int iCount = 0;
+
+	if( iIndex < 0 ) iIndex = 0;
+
+	for( itEL = m_clsElementList.begin(); itEL != m_clsElementList.end(); ++itEL )
+	{
+		if( !strcmp( pszName, itEL->m_strName.c_str() ) )
+		{
+			if( iCount == iIndex )
+			{
+				return &(*itEL);
+			}
+
+			++iCount;
+		}
+	}
+
+	return NULL;
+}
+
+bool CXmlElement::SelectElementList( const char * pszName, XML_ELEMENT_LIST & clsList )
+{
+	XML_ELEMENT_LIST::iterator	itEL;
+
+	clsList.clear();
+
+	for( itEL = m_clsElementList.begin(); itEL != m_clsElementList.end(); ++itEL )
+	{
+		if( !strcmp( pszName, itEL->m_strName.c_str() ) )
+		{
+			clsList.push_back( *itEL );
+		}
+	}
+
+	if( clsList.empty() == false ) return true;
+
+	return false;
+}
+
+const char * CXmlElement::GetName()
+{
+	return m_strName.c_str();
+}
+
+const char * CXmlElement::GetData()
+{
+	return m_strData.c_str();
 }

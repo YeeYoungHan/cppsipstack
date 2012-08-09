@@ -77,5 +77,74 @@ bool TestXml()
 		"<user id=\"1001\" password=\"4321\"/>\n"
 		"</userlist>\n" ) == false ) return false;
 
+	if( Test( 
+		"<setup>\n"
+		"	<sip ip=\"127.0.0.1\" port=\"5060\" udp_thread_count=\"10\" />\n"
+		"	<log folder=\"/usr/local/bin/log\" max_size=\"4321\" />\n"
+		"</setup>\n",
+		"<setup>\n"
+		"<sip ip=\"127.0.0.1\" port=\"5060\" udp_thread_count=\"10\"/>\n"
+		"<log folder=\"/usr/local/bin/log\" max_size=\"4321\"/>\n"
+		"</setup>\n" ) == false ) return false;
+
+	char * pszXml = "<userlist>\r\n"
+		"  <user id=\"1000\">\r\n"
+		"    <password>1234</password>\r\n"
+		"  </user>\r\n"
+		"</userlist>\r\n";
+	CXmlElement	clsXml;
+
+	if( clsXml.Parse( pszXml, strlen(pszXml) ) == -1 )
+	{
+		printf( "xml(%s) parser error\n", pszXml );
+		return false;
+	}
+
+	if( strcmp( clsXml.GetName(), "userlist" ) )
+	{
+		printf( "xml root name error\n" );
+		return false;
+	}
+
+	CXmlElement * pclsElement = clsXml.SelectElement( "user" );
+	if( pclsElement == NULL )
+	{
+		printf( "xml SelectElement error\n" );
+		return false;
+	}
+
+	const char * pszId = pclsElement->SelectAttribute( "id" );
+	if( pszId == NULL )
+	{
+		printf( "xml SelectAttribute error\n" );
+		return false;
+	}
+
+	if( strcmp( pszId, "1000" ) )
+	{
+		printf( "xml attribute id error\n" );
+		return false;
+	}
+
+	pclsElement = pclsElement->SelectElement( "password" );
+	if( pclsElement == NULL )
+	{
+		printf( "xml password SelectElement error\n" );
+		return false;
+	}
+
+	const char * pszData = pclsElement->GetData();
+	if( pszData == NULL )
+	{
+		printf( "xml GetData error\n" );
+		return false;
+	}
+
+	if( strcmp( pszData, "1234" ) )
+	{
+		printf( "xml password error\n" );
+		return false;
+	}
+
 	return true;
 }

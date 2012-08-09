@@ -6,19 +6,23 @@
 
 all:
 	cd SipParser && make
-	cd SipStack && make
 	cd SdpParser && make
+	cd XmlParser && make
+	cd SipStack && make
 	cd SipUserAgent && make
 	cd TestSipParser && make
 	cd SipClient && make
+	cd SimpleSipServer && make
 
 clean:
 	cd SipParser && make clean
-	cd SipStack && make clean
 	cd SdpParser && make clean
+	cd XmlParser && make clean
+	cd SipStack && make clean
 	cd SipUserAgent && make clean
 	cd TestSipParser && make clean
 	cd SipClient && make clean
+	cd SimpleSipServer && make clean
 
 install:
 
