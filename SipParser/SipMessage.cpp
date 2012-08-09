@@ -409,6 +409,11 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 	return iLen;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief 네트워크로 전송할 수 있는 SIP 메시지 문자열을 작성한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipMessage::MakePacket()
 {
 	char	szPacket[SIP_MESSAGE_MAX_LEN];
@@ -466,6 +471,11 @@ void CSipMessage::Clear()
 	m_strBody.clear();
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP 요청 메시지인지 검사한다.
+ * @returns SIP 요청 메시지이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipMessage::IsRequest()
 {
 	if( m_strSipMethod.empty() ) return false;
@@ -473,6 +483,12 @@ bool CSipMessage::IsRequest()
 	return true;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP 메소드가 입력한 메소드와 같은지 검사한다.
+ * @param pszMethod SIP 메소드
+ * @returns SIP 메소드가 입력한 메소드와 같으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipMessage::IsMethod( const char * pszMethod )
 {
 	if( pszMethod == NULL ) return false;
@@ -489,6 +505,12 @@ bool CSipMessage::IsMethod( const char * pszMethod )
 	return false;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief Call-ID 가 동일한지 검사한다.
+ * @param pclsMessage SIP 메시지 저장 객체
+ * @returns Call-ID 가 동일하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipMessage::IsEqualCallId( CSipMessage * pclsMessage )
 {
 	if( pclsMessage == NULL ) return false;
@@ -496,6 +518,12 @@ bool CSipMessage::IsEqualCallId( CSipMessage * pclsMessage )
 	return m_clsCallId.IsEqual( &pclsMessage->m_clsCallId );
 }
 
+/**
+ * @ingroup SipParser
+ * @brief Call-ID 문자열을 가져온다.
+ * @param strCallId Call-ID 문자열을 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipMessage::GetCallId( std::string & strCallId )
 {
 	strCallId.clear();
@@ -506,6 +534,13 @@ bool CSipMessage::GetCallId( std::string & strCallId )
 	return true;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief Top Via 헤더에 발신 IP 주소와 포트 번호를 추가한다.
+ * @param pszIp SIP 메시지 발신 IP 주소
+ * @param iPort SIP 메시지 발신 포트 번호
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort )
 {
 	SIP_VIA_LIST::iterator itViaList = m_clsViaList.begin();
@@ -547,6 +582,14 @@ bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort )
 	return true;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief Via 헤더를 추가한다.
+ * @param pszIp			Via 헤더에 저장할 IP 주소
+ * @param iPort			Via 헤더에 저장할 포트 번호
+ * @param pszBranch Via branch tag 문자열
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch )
 {
 	CSipVia clsVia;
@@ -576,6 +619,13 @@ bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch 
 	return true;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief Route 헤더를 추가한다.
+ * @param pszIp		Route 헤더에 저장할 IP 주소
+ * @param iPort		Route 헤더에 저장할 포트 번호
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipMessage::AddRoute( const char * pszIp, int iPort )
 {
 	CSipFrom clsFrom;
@@ -591,6 +641,13 @@ bool CSipMessage::AddRoute( const char * pszIp, int iPort )
 	return true;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP 응답 메시지 객체를 생성한다.
+ * @param iStatus		SIP 응답 코드
+ * @param pszToTag	To 헤더의 tag
+ * @returns 성공하면 SIP 응답 메시지 객체의 포인터를 리턴하고 실패하면 NULL 을 리턴한다.
+ */
 CSipMessage * CSipMessage::CreateResponse( int iStatus, const char * pszToTag )
 {
 	if( IsRequest() == false ) return NULL;
@@ -613,6 +670,13 @@ CSipMessage * CSipMessage::CreateResponse( int iStatus, const char * pszToTag )
 	return pclsResponse;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief Top Via 헤더의 IP 주소와 포트 번호를 가져온다.
+ * @param strIp		IP 주소를 저장할 변수
+ * @param iPort		포트 번호를 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipMessage::GetTopViaIpPort( std::string & strIp, int & iPort )
 {
 	strIp.clear();

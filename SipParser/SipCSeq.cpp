@@ -84,6 +84,13 @@ int CSipCSeq::ToString( char * pszText, int iTextSize )
 	return snprintf( pszText, iTextSize, "%d %s", m_iDigit, m_strMethod.c_str() );
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP CSeq 헤더 정보를 저장한다.
+ * @param iDigit		CSeq 숫자
+ * @param pszMethod SIP 메소드
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipCSeq::Set( int iDigit, const char * pszMethod )
 {
 	if( iDigit < 0 || pszMethod == NULL ) return false;
