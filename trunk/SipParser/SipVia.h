@@ -23,7 +23,7 @@
 
 /**
  * @ingroup SipParser
- * @brief 
+ * @brief SIP Via 헤더 저장 클래스
  */
 class CSipVia
 {

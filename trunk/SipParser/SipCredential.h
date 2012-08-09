@@ -31,18 +31,40 @@ public:
 	CSipCredential();
 	~CSipCredential();
 
+	/** type */
 	std::string	m_strType;
+
+	/** username */
 	std::string	m_strUserName;
+
+	/** realm */
 	std::string	m_strRealm;
+
+	/** nonce */
 	std::string	m_strNonce;
+
+	/** uri */
 	std::string	m_strUri;
+
+	/** response */
 	std::string	m_strResponse;
+
+	/** algorithm */
 	std::string	m_strAlgorithm;
+
+	/** cnonce */
 	std::string	m_strCnonce;
+
+	/** opaque */
 	std::string	m_strOpaque;
+
+	/** qop */
 	std::string	m_strQop;
+
+	/** nc */
 	std::string	m_strNonceCount;
 
+	/** parameter ¸®½ºÆ® */
 	SIP_PARAMETER_LIST m_clsParamList;
 
 	int Parse( const char * pszText, int iTextLen );

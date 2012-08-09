@@ -31,15 +31,31 @@ public:
 	CSipChallenge();
 	~CSipChallenge();
 
+	/** type */
 	std::string	m_strType;
+
+	/** realm */
 	std::string	m_strRealm;
+
+	/** domain */
 	std::string	m_strDomain;
+
+	/** nonce */
 	std::string	m_strNonce;
+
+	/** opaque */
 	std::string	m_strOpaque;
+
+	/** stale */
 	std::string	m_strStale;
+
+	/** algorithm */
 	std::string	m_strAlgorithm;
+
+	/** qop */
 	std::string	m_strQop;
 
+	/** parameter ¸®½ºÆ® */
 	SIP_PARAMETER_LIST m_clsParamList;
 
 	int Parse( const char * pszText, int iTextLen );

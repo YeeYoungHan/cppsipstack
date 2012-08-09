@@ -31,7 +31,7 @@
 
 /**
  * @ingroup SipParser
- * @brief 
+ * @brief SIP 메시지 정보를 저장하는 클래스
  */
 class CSipMessage
 {
