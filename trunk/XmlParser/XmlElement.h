@@ -16,38 +16,34 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include <stdio.h>
+#ifndef _XML_ELEMENT_H_
+#define _XML_ELEMENT_H_
 
-/**
- * @defgroup TestSipParser TestSipParser
- * SipParser 및 SdpParser 라이브러리 기능을 테스트한다.
- */
+#include <string>
+#include <list>
+#include <map>
 
-bool TestSipUri();
-bool TestSipFrom();
-bool TestSipVia();
-bool TestSipMessage();
-bool TestSdp();
-bool TestXml();
+class CXmlElement;
 
-/**
- * @ingroup TestSipParser
- * @brief 
- * @param argc 
- * @param argv 
- * @returns 
- */
-int main( int argc, char * argv[] )
+typedef std::map< std::string, std::string > XML_ATTRIBUTE_MAP;
+typedef std::list< CXmlElement > XML_ELEMENT_LIST;
+
+class CXmlElement
 {
-	if( TestSipUri() == false ) goto FUNC_END;
-	if( TestSipFrom() == false ) goto FUNC_END;
-	if( TestSipVia() == false ) goto FUNC_END;
-	if( TestSipMessage() == false ) goto FUNC_END;
-	if( TestSdp() == false ) goto FUNC_END;
-	if( TestXml() == false ) goto FUNC_END;
+public:
+	CXmlElement();
+	~CXmlElement();
 
-	printf( "All test is O.K.\n" );
+	int Parse( const char * pszText, int iTextLen );
+	int ToString( char * pszText, int iTextSize );
+	void Clear( );
 
-FUNC_END:
-	return 0;
-}
+private:
+	std::string	m_strName;
+	std::string m_strData;
+
+	XML_ATTRIBUTE_MAP	m_clsAttributeMap;
+	XML_ELEMENT_LIST	m_clsElementList;
+};
+
+#endif
