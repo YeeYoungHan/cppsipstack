@@ -38,6 +38,13 @@ public:
 	int ToString( char * pszText, int iTextSize );
 	void Clear( );
 
+	const char * SelectAttribute( const char * pszName );
+	CXmlElement * SelectElement( const char * pszName, int iIndex = 0 );
+	bool SelectElementList( const char * pszName, XML_ELEMENT_LIST & clsList );
+
+	const char * GetName();
+	const char * GetData();
+
 private:
 	std::string	m_strName;
 	std::string m_strData;

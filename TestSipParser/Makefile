@@ -6,8 +6,9 @@
 
 CC=g++
 CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
-INC=-I../SipParser -I../SdpParser
-LIB=-L../SipParser -lsipparser -L../SdpParser -lsdpparser
+INC=-I../SipParser -I../SdpParser -I../XmlParser
+LIB=-L../SipParser -lsipparser -L../SdpParser -lsdpparser \
+	-L../XmlParser -lxmlparser
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
@@ -17,6 +18,7 @@ all: TestSipParser.exe
 
 SRV_OBJ=TestSipFrom.o TestSipMessage.o TestSipUri.o TestSipVia.o \
 	TestSdp.o \
+	TestXml.o \
 	TestSipParser.o
 
 TestSipParser.exe: $(SRV_OBJ)
