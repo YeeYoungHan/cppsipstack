@@ -1,0 +1,86 @@
+/* 
+ * Copyright (C) 2012 Yee Young Han <websearch@naver.com> (http://blog.naver.com/websearch)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
+
+#ifndef _LOG_H_
+#define _LOG_H_
+
+#include <stdio.h>
+#include "SipMutex.h"
+
+#define LOG_MAX_SIZE								1024*8
+#define FULLPATH_FILENAME_MAX_SIZE	1024
+#define MIN_LOG_FILE_SIZE						1024*1024
+#define MAX_LOG_FILE_SIZE						1024*1024*1024
+
+/** 로그 레벨 관련 ENUM
+ *
+ *	CLog 에서 사용하는 ENUM 이다.
+ */
+
+enum EnumLogLevel
+{
+	/** 에러 로그 */
+	LOG_ERROR = 0x0001,
+	/** 정보 로그 */
+	LOG_INFO  = 0x0010,
+	/** 디버그 로그 */
+	LOG_DEBUG = 0x0100,
+	/** 네트워크 데이타 디버그 로그 */
+	LOG_NETWORK = 0x0200,
+	/** 시스템 로그 */
+	LOG_SYSTEM = 0x400,
+	/** SQL 로그 */
+	LOG_SQL = 0x800,
+	/** SQL 로그 2 */
+	LOG_SQL2 = 0x1000,
+	/** SIP stack 로그 */
+	LOG_SIP_STACK = 0x2000
+};
+
+/** @brief 로그 관련 클래스
+ *
+ */
+
+class CLog
+{
+private:
+	static char				* m_pszDirName;		// 로그 파일을 저장할 디렉토리 이름
+	static char				m_szDate[9];		// 현재 저장중인 로그 파일 이름
+	static FILE				* m_sttFd;			// 로그 파일 지정자
+
+	static CSipMutex	* m_pThreadMutex;	// Thread Mutex
+	
+	static int				m_iLevel;				// 로그 파일에 저장할 레벨
+	static int				m_iMaxLogSize;	// 하나의 로그 파일에 저장할 수 있는 최대 크기
+	static int				m_iLogSize;			// 현재까지 저장된 로그 크기
+	static int				m_iIndex;				// 로그 파일 인덱스
+
+public:
+	static int SetDirectory( const char * pszDirName );
+	static int Release();
+	static int Print( EnumLogLevel iLevel, const char * fmt, ... );
+	static int SetLevel( int iLevel );
+	static int SetNullLevel();
+
+	static int SetDebugLevel( );
+	static bool IsPrintLogLevel( EnumLogLevel iLevel );
+	static void SetMaxLogSize( int iSize );
+	static int GetLogIndex();
+};
+
+#endif

@@ -21,7 +21,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser"
+				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -94,7 +94,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -116,7 +116,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser"
+				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -178,6 +178,14 @@
 				RelativePath=".\KSipServer.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\SipServerSetup.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipServerSetup.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="자료구조"
@@ -200,6 +208,34 @@
 			</File>
 			<File
 				RelativePath=".\SipServer.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="유틸리티"
+			>
+			<File
+				RelativePath=".\Directory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Directory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Log.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Log.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ServerUtility.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ServerUtility.h"
 				>
 			</File>
 		</Filter>
