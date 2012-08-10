@@ -43,6 +43,7 @@ public:
 	const char * SelectAttribute( const char * pszName );
 	bool SelectAttribute( const char * pszName, std::string & strValue );
 	bool SelectAttribute( const char * pszName, int & iValue );
+	bool SelectAttribute( const char * pszName, bool & bValue );
 
 	CXmlElement * SelectElement( const char * pszName, int iIndex = 0 );
 	bool SelectElementList( const char * pszName, XML_ELEMENT_LIST & clsList );

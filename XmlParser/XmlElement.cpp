@@ -232,6 +232,8 @@ bool CXmlElement::SelectAttribute( const char * pszName, std::string & strValue 
 {
 	XML_ATTRIBUTE_MAP::iterator	itAM;
 
+	strValue.clear();
+
 	itAM = m_clsAttributeMap.find( pszName );
 	if( itAM != m_clsAttributeMap.end() )
 	{
@@ -246,10 +248,32 @@ bool CXmlElement::SelectAttribute( const char * pszName, int & iValue )
 {
 	XML_ATTRIBUTE_MAP::iterator	itAM;
 
+	iValue = -1;
+
 	itAM = m_clsAttributeMap.find( pszName );
 	if( itAM != m_clsAttributeMap.end() )
 	{
 		iValue = atoi( itAM->second.c_str() );
+		return true;
+	}
+
+	return false;
+}
+
+bool CXmlElement::SelectAttribute( const char * pszName, bool & bValue )
+{
+	XML_ATTRIBUTE_MAP::iterator	itAM;
+
+	bValue = false;
+
+	itAM = m_clsAttributeMap.find( pszName );
+	if( itAM != m_clsAttributeMap.end() )
+	{
+		if( !strcasecmp( itAM->second.c_str(), "true" ) )
+		{
+			bValue = true;
+		}
+
 		return true;
 	}
 
@@ -300,6 +324,8 @@ bool CXmlElement::SelectElementList( const char * pszName, XML_ELEMENT_LIST & cl
 
 bool CXmlElement::SelectElementData( const char * pszName, std::string & strData )
 {
+	strData.clear();
+
 	CXmlElement * pclsElement = SelectElement( pszName );
 	if( pclsElement )
 	{
@@ -312,6 +338,8 @@ bool CXmlElement::SelectElementData( const char * pszName, std::string & strData
 
 bool CXmlElement::SelectElementData( const char * pszName, int & iData )
 {
+	iData = -1;
+
 	CXmlElement * pclsElement = SelectElement( pszName );
 	if( pclsElement )
 	{
