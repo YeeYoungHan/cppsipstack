@@ -17,6 +17,8 @@
  */
 
 #include "SipServer.h"
+#include "SipServerSetup.h"
+#include "Log.h"
 
 /**
  * @ingroup SimpleSipServer
@@ -27,16 +29,31 @@
  */
 int main( int argc, char * argv[] )
 {
+	if( argc != 2 )
+	{
+		printf( "[Usage] %s {config filename}\n", argv[0] );
+		return -1;
+	}
+
+	const char * pszConfigFileName = argv[1];
+
+	if( gclsSetup.Read( pszConfigFileName ) == false )
+	{
+		printf( "config filename(%s) read error\n", pszConfigFileName );
+		return -1;
+	}
+
 	CSipStackSetup clsSetup;
 
-	// N개의 IP주소를 사용하는 호스트에서는 SIP 프로토콜로 사용할 IP주소를 직접 입력해 주세요.
-	// Vmware 등을 사용하는 경우 N개의 IP주소가 호스트에 존재합니다.
-	GetLocalIp( clsSetup.m_strLocalIp );
+	if( gclsSetup.m_strLocalIp.empty() )
+	{
+		// N개의 IP주소를 사용하는 호스트에서는 SIP 프로토콜로 사용할 IP주소를 직접 입력해 주세요.
+		// Vmware 등을 사용하는 경우 N개의 IP주소가 호스트에 존재합니다.
+		GetLocalIp( clsSetup.m_strLocalIp );
+	}
 
-	// SIP 서버의 listen port 로 사용할 UDP 포트 번호를 넣어주세요.
-	clsSetup.m_iLocalUdpPort = 5060;
-
-	// UDP 수신 쓰레드의 기본 개수는 1개이다. 이를 수정하려면 CSipStackSetup.m_iUdpThreadCount 를 수정하면 된다.
+	clsSetup.m_iLocalUdpPort = gclsSetup.m_iUdpPort;
+	clsSetup.m_iUdpThreadCount = gclsSetup.m_iUdpThreadCount;
 
 	if( gclsSipServer.Start( clsSetup ) == false )
 	{

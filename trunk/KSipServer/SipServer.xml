@@ -1,0 +1,13 @@
+<Setup>
+	<Sip>
+		<LocalIp></LocalIp>
+		<UdpPort>5060</UdpPort>
+		<UdpThreadCount>10</UdpThreadCount>
+	</Sip>
+	<Log>
+		<Folder>d:\temp\sipserver</Folder>
+	</Log>
+	<XmlFolder>
+		<User>D:\OpenProject\CppSipStack\trunk\KSipServer\UserXml</User>
+	</XmlFolder>
+</Setup>
