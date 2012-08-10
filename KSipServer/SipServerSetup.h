@@ -32,9 +32,13 @@ public:
 	int					m_iUdpThreadCount;
 
 	std::string	m_strUserXmlFolder;
+
 	std::string	m_strLogFolder;
+	int					m_iLogLevel;
+	int					m_iLogMaxSize;
 
 	bool Read( const char * pszFileName );
+	bool IsUserXml();
 };
 
 extern CSipServerSetup gclsSetup;
