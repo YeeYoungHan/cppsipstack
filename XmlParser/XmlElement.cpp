@@ -194,6 +194,27 @@ void CXmlElement::Clear( )
 	m_clsElementList.clear();
 }
 
+bool CXmlElement::ParseFile( const char * pszFileName )
+{
+	FILE * fd;
+	char	szBuf[1024];
+	std::string	strBuf;
+
+	fd = fopen( pszFileName, "r" );
+	if( fd == NULL ) return false;
+
+	memset( szBuf, 0, sizeof(szBuf) );
+	while( fgets( szBuf, sizeof(szBuf)-1, fd ) )
+	{
+		strBuf.append( szBuf );
+	}
+	fclose( fd );
+
+	if( Parse( strBuf.c_str(), strBuf.length() ) == -1 ) return false;
+
+	return true;
+}
+
 const char * CXmlElement::SelectAttribute( const char * pszName )
 {
 	XML_ATTRIBUTE_MAP::iterator	itAM;
@@ -205,6 +226,34 @@ const char * CXmlElement::SelectAttribute( const char * pszName )
 	}
 
 	return NULL;
+}
+
+bool CXmlElement::SelectAttribute( const char * pszName, std::string & strValue )
+{
+	XML_ATTRIBUTE_MAP::iterator	itAM;
+
+	itAM = m_clsAttributeMap.find( pszName );
+	if( itAM != m_clsAttributeMap.end() )
+	{
+		strValue = itAM->second;
+		return true;
+	}
+
+	return false;
+}
+
+bool CXmlElement::SelectAttribute( const char * pszName, int & iValue )
+{
+	XML_ATTRIBUTE_MAP::iterator	itAM;
+
+	itAM = m_clsAttributeMap.find( pszName );
+	if( itAM != m_clsAttributeMap.end() )
+	{
+		iValue = atoi( itAM->second.c_str() );
+		return true;
+	}
+
+	return false;
 }
 
 CXmlElement * CXmlElement::SelectElement( const char * pszName, int iIndex )
@@ -245,6 +294,30 @@ bool CXmlElement::SelectElementList( const char * pszName, XML_ELEMENT_LIST & cl
 	}
 
 	if( clsList.empty() == false ) return true;
+
+	return false;
+}
+
+bool CXmlElement::SelectElementData( const char * pszName, std::string & strData )
+{
+	CXmlElement * pclsElement = SelectElement( pszName );
+	if( pclsElement )
+	{
+		strData = pclsElement->m_strData;
+		return true;
+	}
+
+	return false;
+}
+
+bool CXmlElement::SelectElementData( const char * pszName, int & iData )
+{
+	CXmlElement * pclsElement = SelectElement( pszName );
+	if( pclsElement )
+	{
+		iData = atoi( pclsElement->m_strData.c_str() );
+		return true;
+	}
 
 	return false;
 }

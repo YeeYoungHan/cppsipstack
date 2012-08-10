@@ -38,9 +38,17 @@ public:
 	int ToString( char * pszText, int iTextSize );
 	void Clear( );
 
+	bool ParseFile( const char * pszFileName );
+
 	const char * SelectAttribute( const char * pszName );
+	bool SelectAttribute( const char * pszName, std::string & strValue );
+	bool SelectAttribute( const char * pszName, int & iValue );
+
 	CXmlElement * SelectElement( const char * pszName, int iIndex = 0 );
 	bool SelectElementList( const char * pszName, XML_ELEMENT_LIST & clsList );
+
+	bool SelectElementData( const char * pszName, std::string & strData );
+	bool SelectElementData( const char * pszName, int & iData );
 
 	const char * GetName();
 	const char * GetData();
