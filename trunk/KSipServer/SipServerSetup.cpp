@@ -18,10 +18,11 @@
 
 #include "SipServerSetup.h"
 #include "XmlElement.h"
+#include "Log.h"
 
 CSipServerSetup gclsSetup;
 
-CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10)
+CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10), m_iLogLevel(0), m_iLogMaxSize(20000000)
 {
 }
 
@@ -31,7 +32,7 @@ CSipServerSetup::~CSipServerSetup()
 
 bool CSipServerSetup::Read( const char * pszFileName )
 {
-	CXmlElement clsXml, * pclsElement;
+	CXmlElement clsXml, * pclsElement, * pclsClient;
 
 	if( clsXml.ParseFile( pszFileName ) == false ) return false;
 
@@ -46,6 +47,25 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	if( pclsElement == NULL ) return false;
 
 	pclsElement->SelectElementData( "Folder", m_strLogFolder );
+	pclsClient = pclsElement->SelectElement( "Level" );
+	if( pclsClient )
+	{
+		bool bTemp;
+
+		pclsClient->SelectAttribute( "Debug", bTemp );
+		if( bTemp ) m_iLogLevel |= LOG_DEBUG;
+
+		pclsClient->SelectAttribute( "Info", bTemp );
+		if( bTemp ) m_iLogLevel |= LOG_INFO;
+
+		pclsClient->SelectAttribute( "Network", bTemp );
+		if( bTemp ) m_iLogLevel |= LOG_NETWORK;
+
+		pclsClient->SelectAttribute( "Sql", bTemp );
+		if( bTemp ) m_iLogLevel |= LOG_SQL;
+	}
+
+	pclsElement->SelectElementData( "MaxSize", m_iLogMaxSize );
 
 	pclsElement = clsXml.SelectElement( "XmlFolder" );
 	if( pclsElement == NULL ) return false;
@@ -53,4 +73,11 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "User", m_strUserXmlFolder );
 
 	return true;
+}
+
+bool CSipServerSetup::IsUserXml()
+{
+	if( m_strUserXmlFolder.empty() == false ) return true;
+
+	return false;
 }

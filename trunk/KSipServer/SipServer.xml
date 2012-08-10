@@ -6,6 +6,8 @@
 	</Sip>
 	<Log>
 		<Folder>d:\temp\sipserver</Folder>
+		<Level Debug="true" Info="true" Network="true" />
+		<MaxSize>10000000</MaxSize>
 	</Log>
 	<XmlFolder>
 		<User>D:\OpenProject\CppSipStack\trunk\KSipServer\UserXml</User>

@@ -43,6 +43,9 @@ int main( int argc, char * argv[] )
 		return -1;
 	}
 
+	CLog::SetDirectory( gclsSetup.m_strLogFolder.c_str() );
+	CLog::SetLevel( gclsSetup.m_iLogLevel );
+
 	CSipStackSetup clsSetup;
 
 	if( gclsSetup.m_strLocalIp.empty() )

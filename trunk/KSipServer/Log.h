@@ -45,11 +45,7 @@ enum EnumLogLevel
 	/** 시스템 로그 */
 	LOG_SYSTEM = 0x400,
 	/** SQL 로그 */
-	LOG_SQL = 0x800,
-	/** SQL 로그 2 */
-	LOG_SQL2 = 0x1000,
-	/** SIP stack 로그 */
-	LOG_SIP_STACK = 0x2000
+	LOG_SQL = 0x800
 };
 
 /** @brief 로그 관련 클래스
