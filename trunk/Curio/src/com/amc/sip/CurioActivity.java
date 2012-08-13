@@ -23,14 +23,11 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.app.Activity;
 
-/**
- * @author  ohara4u
- */
+
 public class CurioActivity extends Activity implements UIInterface{
 	
-	private static final String TAG = "SMV";
+	private static final String TAG = "SIP";
 		
-//	private static MediaPlayer mMediaPlay = null;
 	private static AudioManager mAudioManager = null;
 	
 	private static WifiManager wifiMgr = null;
@@ -39,10 +36,7 @@ public class CurioActivity extends Activity implements UIInterface{
 	static Ringtone mRingtone = null;
 	static Vibrator mVib;
 	
-	/**
-	 * @uml.property  name="sipManager"
-	 * @uml.associationEnd  
-	 */
+
 	public static SipManager sipManager = null;
 	
 	//20120307 bk: added	
