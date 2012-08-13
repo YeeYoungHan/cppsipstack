@@ -73,7 +73,7 @@ void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 	}
 }
 
-void CSipClient::SipLog( bool bSend, const char * pszPacket )
+void CSipClient::SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort )
 {
 	struct timeval sttTime;
 	struct tm	sttTm;

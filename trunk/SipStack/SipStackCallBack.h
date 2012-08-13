@@ -35,7 +35,7 @@ class ISipNetworkLog
 public:
 	virtual ~ISipNetworkLog(){};
 
-	virtual void SipLog( bool bSend, const char * pszPacket ) = 0;
+	virtual void SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort ) = 0;
 };
 
 #endif
