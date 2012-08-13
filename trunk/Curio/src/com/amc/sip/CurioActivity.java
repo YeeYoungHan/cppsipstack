@@ -39,7 +39,6 @@ public class CurioActivity extends Activity implements UIInterface{
 
 	public static SipManager sipManager = null;
 	
-	//20120307 bk: added	
 	private static Object syncUIObj = new Object();
 
 	public static CheckBox chkCID01;
@@ -55,14 +54,6 @@ public class CurioActivity extends Activity implements UIInterface{
 	static int m_nProto = 0;	
 	static int m_nMyDTMF = Global.DTMF_RFC2833;
 	public static Context mContext = null;
-	
-//	public static Spinner spinner01;
-//	public static Spinner spinner02;
-//	public static Spinner spinner03;
-//	public static Spinner spinner04;
-//	
-// 	public static ArrayList<String> arGeneral;
-// 	public static ArrayAdapter<String> arryAdpt;
 
 	public String strCallID = "";
 	
@@ -111,9 +102,9 @@ public class CurioActivity extends Activity implements UIInterface{
    
 		//TEST
 		{
-			edtUID.setText("5143");//"0264650452");//"6145");//"0022");//3702
-			edtPwd.setText("0000");//"password");//
-			edtSvrIP.setText("192.168.200.172");//"proxy.ccwide.com");//"123.34.1.20");//"123.34.1.20");//"123.34.3.20");//"10.254.168.158");//"211.189.132.54");//"10.254.168.158");//
+			edtUID.setText("5143");
+			edtPwd.setText("0000");
+			edtSvrIP.setText("192.168.200.172");
 			edtRcvPort.setText("5060");
 			edtPeerID.setText("5144");
 			edtPID.setText("5145");
