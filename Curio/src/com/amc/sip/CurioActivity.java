@@ -699,9 +699,6 @@ public class CurioActivity extends Activity implements UIInterface{
 	
 	public void SetMasterVolumeLevel(int nVolLevel)
 	{
-		Log.d(TAG, "[InCallScreen] SetMasterVolumeLevel() [S]");
-		
-		Log.d(TAG, "[InCallScreen] SetMasterVolumeLevel() [E]");
 	}
 	
 	public void setUriString(String strUri)
@@ -713,8 +710,6 @@ public class CurioActivity extends Activity implements UIInterface{
 		Log.d(TAG, "[InCallScreen] setUriString() [E]");
 	}
 	
-//    Ringtone mRingtone;
-
 	private final static Object syncObj1 = new Object();
 
 	class RingtoneThread extends Thread 
