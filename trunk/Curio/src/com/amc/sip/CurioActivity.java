@@ -677,34 +677,6 @@ public class CurioActivity extends Activity implements UIInterface{
 	
 	public boolean SetWaveOutPath(boolean bOut)
 	{
-//		Log.d(TAG, "[InCallScreen] SetWaveOutPath [S] bOut:"+bOut);
-//
-////		if (bOut == true)
-////			setMode(AudioManager.MODE_NORMAL);
-////		else
-////		{
-//////			setMode(AudioManager.MODE_IN_CALL);
-////			setMode(4);
-////		}
-//
-//		if (mAudioManager != null)
-//		{
-//			try
-//			{
-////				setMode(4);
-//				mAudioManager.setSpeakerphoneOn(bOut);
-//			}
-//			catch (NullPointerException e) 
-//			{
-//				Log.d(TAG, "[InCallScreen] NullPointerException [mAudioManager]");
-//				e.printStackTrace();
-////				setMode(4);
-//				mAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);				
-//				mAudioManager.setSpeakerphoneOn(bOut);
-//			}
-//		}
-//
-//		Log.d(TAG, "[InCallScreen] SetWaveOutPath [E]");
 		return true;
 	}
 	
@@ -721,13 +693,7 @@ public class CurioActivity extends Activity implements UIInterface{
 	
 	public int GetMasterVolumeLevel()
 	{
-		Log.d(TAG, "[InCallScreen] GetMasterVolumeLevel() [S]");
-
 		int nVolume = -1;
-//		nVolume = GIPSVEAndroid_GetSpeakerVolume();
-		
-		Log.d(TAG, "[InCallScreen] GetMasterVolumeLevel() [E]");
-		
 		return nVolume;
 	}
 	
