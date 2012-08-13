@@ -226,7 +226,6 @@ public class CurioActivity extends Activity implements UIInterface{
     	});
        	
     	final Button buttonRegister = (Button) findViewById(R.id.Button01);
-//    	buttonRegister.setWidth(100);
     	buttonRegister.setText("Register");
     	buttonRegister.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
@@ -256,7 +255,6 @@ public class CurioActivity extends Activity implements UIInterface{
     	});
     	
     	final Button btnKeepAlive = (Button) findViewById(R.id.Button20);
-//    	btnKeepAlive.setWidth(90);
     	btnKeepAlive.setText("KeepAlive");
     	btnKeepAlive.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
@@ -269,7 +267,6 @@ public class CurioActivity extends Activity implements UIInterface{
     	});
         
        	final Button buttonRequest = (Button) findViewById(R.id.Button02);
-//       	buttonRequest.setWidth(150);
        	buttonRequest.setText("RequestCall");
        	buttonRequest.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
@@ -291,7 +288,6 @@ public class CurioActivity extends Activity implements UIInterface{
        	
       	
      	chkCID01 = (CheckBox)findViewById(R.id.checkBox7);
-     	//chkCID01.setWidth(210);
      	chkCID01.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
@@ -303,7 +299,6 @@ public class CurioActivity extends Activity implements UIInterface{
 		});
       	
      	chkCID02 = (CheckBox)findViewById(R.id.checkBox8);
-     	//chkCID02.setWidth(210);
      	chkCID02.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
@@ -326,27 +321,6 @@ public class CurioActivity extends Activity implements UIInterface{
     			
     			chkCID01.setChecked(false);
     			chkCID02.setChecked(false);
-    			/*
-    			if (SipManager.callInfoLst.size() > 2)
-    			{
-    				Log.e(TAG, "There are too many call-ids. Size:"+SipManager.callInfoLst.size());
-    				return;
-    			}
-    			
-    			for (int nCnt=0; nCnt<SipManager.callInfoLst.size(); nCnt++)
-    			{
-    				if (nCnt==0)
-    				{
-    					CallInfo callInfo = SipManager.callInfoLst.getCallInfo(nCnt);
-    					chkCID01.setText(callInfo.strCallID);
-    				}
-    				else if (nCnt==1)
-    				{
-    					CallInfo callInfo = SipManager.callInfoLst.getCallInfo(nCnt);
-    					chkCID02.setText(callInfo.strCallID);
-    				}
-    			}
-    			*/
     		}
 		});
     			
@@ -371,7 +345,6 @@ public class CurioActivity extends Activity implements UIInterface{
     	});
        	
        	final Button buttonReject = (Button) findViewById(R.id.Button07);
-//       	buttonReject.setWidth(100);
        	buttonReject.setText("RejectCall");
        	buttonReject.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
@@ -391,7 +364,6 @@ public class CurioActivity extends Activity implements UIInterface{
         
         
        	final Button buttonTerminate = (Button) findViewById(R.id.Button04);
-//       	buttonTerminate.setWidth(100);
        	buttonTerminate.setText("Terminate");
        	buttonTerminate.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
@@ -406,19 +378,14 @@ public class CurioActivity extends Activity implements UIInterface{
        				strCallID = "";
         			
        			sipManager.TerminateCall(strCallID, null);
-//       			//20120203 bk: for testing to add a reason text to sip header
-//       			sipManager.TerminateCall(strCallID, "Move completed");
        			
-	         	//20101006 bk
 	        	m_is183 = false;
 	        	m_isCallReq = false;
 	        	m_isStopGips = true;
-//	        	amct.m_isDuplicatedAudioInfo = false;
     		}
     	}); 
        	       	
        	final Button buttonHoldOn = (Button) findViewById(R.id.Button05);
-//       	buttonHoldOn.setWidth(100);
        	buttonHoldOn.setText("Hold On");
        	buttonHoldOn.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
@@ -438,7 +405,6 @@ public class CurioActivity extends Activity implements UIInterface{
     	}); 
        	
        	final Button buttonHoldOff = (Button) findViewById(R.id.Button17);
-//       	buttonHoldOff.setWidth(100);
        	buttonHoldOff.setText("Hold Off");
        	buttonHoldOff.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
@@ -458,7 +424,6 @@ public class CurioActivity extends Activity implements UIInterface{
     	}); 
         
        	final Button btnCancel = (Button) findViewById(R.id.Button19);
-//       	btnCancel.setWidth(100);
        	btnCancel.setText("CancelCall");
        	btnCancel.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
@@ -474,7 +439,6 @@ public class CurioActivity extends Activity implements UIInterface{
         			
        			sipManager.CancelCall(strCallID);
        			
-	         	//20101006 bk
 	        	m_is183 = false;
 	        	m_isCallReq = false;
 	        	m_isStopGips = true;
@@ -482,7 +446,6 @@ public class CurioActivity extends Activity implements UIInterface{
     	}); 
 
      	final Button buttonTransfer = (Button) findViewById(R.id.Button06);
-       	//buttonTransfer.setWidth(100);
        	buttonTransfer.setText("Blind Transfer");
        	buttonTransfer.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
@@ -505,7 +468,6 @@ public class CurioActivity extends Activity implements UIInterface{
 		
 		//One Step Transfer
 		final Button btnOneStepTransf = (Button) findViewById(R.id.Button15);
-		//btnOneStepTransf.setWidth(100);
 		btnOneStepTransf.setText("One Step Transfer");
 		
 		btnOneStepTransf.setOnClickListener(new View.OnClickListener() {
@@ -515,7 +477,6 @@ public class CurioActivity extends Activity implements UIInterface{
 		});    
      	
        	final Button buttonConferenceCall = (Button) findViewById(R.id.Button40);
-       	//buttonConferenceCall.setWidth(100);
        	buttonConferenceCall.setText("Conference");
        	buttonConferenceCall.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
@@ -655,40 +616,6 @@ public class CurioActivity extends Activity implements UIInterface{
 	public int Initialize()
 	{
 		int nRet = 0;
-		m_bInit = false;
-		if (m_bInit == false)
-		{
-			//---------------------------------------------------------------------------
-	        // Initialize Gips 
-	        //---------------------------------------------------------------------------
-	        String authKey = "====YUtFWRAAAAADBtIHgAAAAAEAAAAcAAAAAQBHU0dsb2JhbCBJUCBTb3VuZAACAAAADwAAAHNhbXN1bmcAAAAARQAAAPiSjImR5zusy5N4vzfPP78hPvChn3Q4iOQXvE5HTuat5Yx3yjjF39KFq0anyFV9xkjd/bL1YdiOd3uemVMEAJ7x7+Vx4RCQ40hh1U3Y26bqjrK1Iq7ZbuotW1jDsBo2T1Dgbe2FJ62+iOYvOVnz7ffbYpXiEUYaGHm0nfOrEAN7V65BdYhwPzZ1Ll1RYbSNHi2GOM5oArDVJdKQ31TZiXk/qzE3US0If7qO/FtAGXb0+usKtU+8+zkIcZChsH0u=bEZI"; // PASTE AUTHENTICATION KEY FOR GIPSVE HERE!!
-			
-//			nRet = GIPSVEAndroid_Initialize(0,0,0,authKey,true);
-			
-			if (nRet == 0)
-			{
-				Log.d(TAG, "[InCallScreen] GIPS Initialze Successful");
-				m_bInit = true;
-			}
-			else if (nRet == -1)
-				Log.d(TAG, "[InCallScreen] GIPS Initialze Fail");
-		}
-		
-		//temp
-		if (m_bInit == true)
-		{
-			try
-			{
-//				GIPSVEAndroid_SetAGC(false, 0);
-//				GIPSVEAndroid_SetEC(false, 0, 0);
-//				GIPSVEAndroid_SetNSLevel(false, 0);
-//				SetSpeakerVolume(255);
-			}
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
-		}
 
 		return nRet;
 	}
@@ -702,29 +629,7 @@ public class CurioActivity extends Activity implements UIInterface{
 	
 	public void setMode(int nMode)
 	{
-		if (mAudioManager != null)
-		{
-			try
-			{
-				int nCurMode = mAudioManager.getMode();
-				
-				Log.d(TAG, "[InCallScreen] ####### getMode " + nCurMode);
-				
-				if (nCurMode != nMode)
-				{
-					Log.d(TAG, "[InCallScreen] ####### setMode " + nMode);
-					mAudioManager.setMode(nMode);
-				}					
-			}
-			catch (NullPointerException e) 
-			{
 
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
 	}
 	
 	static boolean m_bCallDupOption = false;
