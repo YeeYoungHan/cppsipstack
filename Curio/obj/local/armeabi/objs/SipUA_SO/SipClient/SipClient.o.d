@@ -222,7 +222,8 @@
  /home/jonghwan/android-ndk-r8/samples/Curio/jni/SipClient/../sipuseragent/../sipstack/SipStackDefine.h \
  /home/jonghwan/android-ndk-r8/samples/Curio/jni/SipClient/../sipuseragent/SipDialog.h \
  /home/jonghwan/android-ndk-r8/samples/Curio/jni/SipClient/../sipuseragent/../sipstack/SipUdp.h \
- /home/jonghwan/android-ndk-r8/samples/Curio/jni/SipClient/../sipuseragent/../sipparser/SipMessage.h
+ /home/jonghwan/android-ndk-r8/samples/Curio/jni/SipClient/../sipuseragent/../sipparser/SipMessage.h \
+ /home/jonghwan/android-ndk-r8/platforms/android-8/arch-arm/usr/include/android/log.h
 
 /home/jonghwan/android-ndk-r8/samples/Curio/jni/SipClient/SipClient.h:
 
@@ -669,3 +670,5 @@
 /home/jonghwan/android-ndk-r8/samples/Curio/jni/SipClient/../sipuseragent/../sipstack/SipUdp.h:
 
 /home/jonghwan/android-ndk-r8/samples/Curio/jni/SipClient/../sipuseragent/../sipparser/SipMessage.h:
+
+/home/jonghwan/android-ndk-r8/platforms/android-8/arch-arm/usr/include/android/log.h:

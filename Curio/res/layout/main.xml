@@ -1,12 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
-</LinearLayout>
+	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/ScrollView01" android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+	<LinearLayout android:id="@+id/linearLayout1" android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="fill_parent">
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
+			<TextView android:id="@+id/TextView01" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@+id/TextView01" android:layout_weight="6"></TextView>
+			<TextView android:id="@+id/TextView03" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@+id/TextView03" android:layout_weight="4"></TextView>
+		</LinearLayout>
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
+			<EditText android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/EditText01" android:text="@+id/EditText01" android:inputType="number" android:layout_weight="6"></EditText>
+			<EditText android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/EditText03" android:text="@+id/EditText03" android:inputType="number" android:layout_weight="4"></EditText>
+		</LinearLayout>
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
+			<TextView android:id="@+id/TextView02" android:layout_height="wrap_content" android:layout_width="0dip" android:text="@+id/TextView02" android:layout_weight="6"></TextView>
+			<TextView android:id="@+id/TextView04" android:layout_height="wrap_content" android:layout_width="0dip" android:text="@+id/TextView04" android:layout_weight="4"></TextView>
+		</LinearLayout>
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
+			<EditText android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/EditText02" android:text="@+id/EditText02" android:inputType="textUri" android:layout_weight="6"></EditText>
+			<EditText android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/EditText05" android:text="@+id/EditText05" android:inputType="number" android:layout_weight="4"></EditText>
+		</LinearLayout>
+
+		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent">  		
+			<EditText android:layout_height="wrap_content" android:id="@+id/EditText07" android:text="@+id/EditText07" android:layout_width="match_parent" android:inputType="textUri"></EditText>
+		</LinearLayout>
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button16" android:text="@+id/Button16" android:layout_weight="1"></Button>
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button10" android:text="@+id/Button10" android:layout_weight="1"></Button>
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button18" android:text="@+id/Button18" android:layout_weight="1"></Button>
+		</LinearLayout>
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button13" android:text="@+id/Button13" android:layout_weight="1"></Button>
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button01" android:text="@+id/Button01" android:layout_weight="1"></Button>
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button21" android:text="@+id/Button21" android:layout_weight="1"></Button>
+		</LinearLayout>
+ 		
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
+			<EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/EditText04" android:text="@+id/EditText04" android:inputType="number" android:layout_weight="1"></EditText>
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/Button02" android:text="@+id/Button02" android:layout_weight="1"></Button>
+		</LinearLayout>
+		
+ <!--      
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+			<CheckBox android:text="CheckBox" android:id="@+id/checkBox7" android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
+			<Button android:text="Button" android:id="@+id/button1" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		</LinearLayout>
+ -->
+ 
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
+			<CheckBox android:text="call id" android:id="@+id/checkBox7" android:layout_width="0dip" android:layout_height="wrap_content" android:layout_weight="6"></CheckBox>
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/button1" android:text="@+id/button1" android:layout_weight="4"></Button>
+		</LinearLayout>
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+			<CheckBox android:text="call id" android:id="@+id/checkBox8" android:layout_width="0dip" android:layout_height="wrap_content" android:layout_weight="6"></CheckBox>
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button20" android:text="@+id/Button20" android:layout_weight="4"></Button>
+		</LinearLayout>
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button03" android:text="@+id/Button03" android:layout_weight="1"></Button>
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button07" android:text="@+id/Button07" android:layout_weight="1"></Button>
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button04" android:text="@+id/Button04" android:layout_weight="1"></Button>
+		</LinearLayout>
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button05" android:text="@+id/Button05" android:layout_weight="1"></Button>
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button17" android:text="@+id/Button17" android:layout_weight="1"></Button>
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button19" android:text="@+id/Button19" android:layout_weight="1"></Button>
+		</LinearLayout>
+  
+		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/EditText06" android:text="@+id/EditText06" android:inputType="number" android:layout_weight="1"></EditText>       
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button06" android:text="@+id/Button06" android:layout_weight="1"></Button>
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button15" android:text="@+id/Button15" android:layout_weight="1"></Button>
+		</LinearLayout>
+
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
+			<EditText android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/EditText10" android:text="@+id/EditText10" android:inputType="number|text" android:layout_weight="2"></EditText>
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button40" android:text="@+id/Button40" android:layout_weight="1"></Button>
+		</LinearLayout>
+       
+    </LinearLayout>
+</ScrollView>
