@@ -348,7 +348,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage )
 	bool bRes = UdpSend( m_iUdpSocket, pclsMessage->m_strPacket.c_str(), pclsMessage->m_strPacket.length(), pszIp, iPort );
 	m_clsUdpSendMutex.release();
 
-	NetworkLog( true, pclsMessage->m_strPacket.c_str() );
+	NetworkLog( true, pclsMessage->m_strPacket.c_str(), pszIp, iPort );
 
 	return bRes;
 }
@@ -433,13 +433,13 @@ void CSipStack::GetICTString( std::string & strBuf )
 	m_clsICT.GetString( strBuf );
 }
 
-void CSipStack::NetworkLog( bool bSend, const char * pszPacket )
+void CSipStack::NetworkLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort )
 {
 	SIP_NETWORK_LOG_LIST::iterator	itList;
 
 	for( itList = m_clsNetLogList.begin(); itList != m_clsNetLogList.end(); ++itList )
 	{
-		(*itList)->SipLog( bSend, pszPacket );
+		(*itList)->SipLog( bSend, pszPacket, pszIp, iPort );
 	}
 }
 

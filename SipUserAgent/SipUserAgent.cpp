@@ -70,8 +70,6 @@ bool CSipUserAgent::AddRegisterInfo( CSipServerInfo & clsInfo )
  */
 bool CSipUserAgent::Start( CSipStackSetup & clsSetup )
 {
-	if( m_clsRegisterList.size() == 0 ) return false;
-
 	gclsSipStack.AddCallBack( this );
 
 	if( gclsSipStack.Start( clsSetup ) == false ) return false;

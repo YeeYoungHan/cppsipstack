@@ -43,7 +43,7 @@ public:
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
 	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
 
-	virtual void SipLog( bool bSend, const char * pszPacket );
+	virtual void SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort );
 };
 
 #endif
