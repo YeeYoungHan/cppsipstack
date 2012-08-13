@@ -642,13 +642,7 @@ public class CurioActivity extends Activity implements UIInterface{
 	
 	public boolean SetMute(boolean bUse)
 	{
-		Log.d(TAG, "[InCallScreen] SetMute() [S]");
-		
 		boolean bRes = false;
-		
-//		bRes = GIPSVEAndroid_SetMute(bUse);
-		
-		Log.d(TAG, "[InCallScreen] SetMute() [E]");
 		
 		return bRes;
 	}
