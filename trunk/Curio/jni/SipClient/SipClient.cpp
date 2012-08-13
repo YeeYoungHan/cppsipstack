@@ -21,6 +21,21 @@
 
 std::string	gstrInviteId;
 
+#ifdef ANDROID
+#include <android/log.h>
+#define LOG_TAG "SIP"
+void LOG(char *szLog)
+{
+	if (strlen(szLog) >= 1024)
+		return;
+
+	char szLogger[1024] = {0,};
+	sprintf(szLogger, "[SIP] %s", szLog);
+	__android_log_write(ANDROID_LOG_DEBUG, LOG_TAG, szLogger);
+}
+#endif
+
+
 void CSipClient::EventRegister( CSipServerInfo clsInfo, int iStatus )
 {
 	printf( "EventRegister(%s) : %d\n", clsInfo.m_strUserId.c_str(), iStatus );
