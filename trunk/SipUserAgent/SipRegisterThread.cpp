@@ -74,6 +74,11 @@ void * SipRegisterThread( void * lpParameter )
 		}
 		pclsSipUserAgent->m_clsRegisterMutex.release();
 
+		if( pclsSipUserAgent->m_pclsCallBack )
+		{
+			pclsSipUserAgent->m_pclsCallBack->EventTimer();
+		}
+
 		sleep(1);
 	}
 

@@ -42,6 +42,7 @@ public:
 	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
 	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
+	virtual void EventTimer( ){};
 
 	virtual void SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort );
 };
