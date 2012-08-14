@@ -46,6 +46,8 @@ int main( int argc, char * argv[] )
 	CLog::SetDirectory( gclsSetup.m_strLogFolder.c_str() );
 	CLog::SetLevel( gclsSetup.m_iLogLevel );
 
+	CLog::Print( LOG_SYSTEM, "KSipServer is started" );
+
 	CSipStackSetup clsSetup;
 
 	if( gclsSetup.m_strLocalIp.empty() )
@@ -60,7 +62,7 @@ int main( int argc, char * argv[] )
 
 	if( gclsSipServer.Start( clsSetup ) == false )
 	{
-		printf( "SipServer start error\n" );
+		CLog::Print( LOG_ERROR, "SipServer start error\n" );
 		return -1;
 	}
 

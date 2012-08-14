@@ -19,6 +19,8 @@
 #ifndef _DIRECTORY_H_
 #define _DIRECTORY_H_
 
+#include <string>
+
 #ifdef WIN32
 # include <windows.h>
 # define DIR_SEP	'\\'
@@ -37,6 +39,7 @@ class CDirectory
 public:
 	static int Create( const char * szDirName );
 	static int IsDirectory( const char * szDirName );
+	static void AppendName( std::string & strFileName, const char * pszAppend );
 };
 
 #endif

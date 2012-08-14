@@ -17,6 +17,7 @@
  */
 
 #include "UserMap.h"
+#include "Log.h"
 
 CUserMap gclsUserMap;
 
@@ -50,6 +51,7 @@ bool CUserMap::Insert( CSipMessage * pclsMessage )
 	if( itMap == m_clsMap.end() )
 	{
 		m_clsMap.insert( USER_MAP::value_type( strUserId, clsInfo ) );
+		CLog::Print( LOG_DEBUG, "user(%s) is inserted", strUserId.c_str() );
 	}
 	else
 	{
@@ -77,6 +79,24 @@ bool CUserMap::Select( const char * pszUserId, CUserInfo & clsInfo )
 	if( itMap != m_clsMap.end() )
 	{
 		clsInfo = itMap->second;
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+bool CUserMap::Delete( const char * pszUserId )
+{
+	bool bRes = false;
+	USER_MAP::iterator	itMap;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszUserId );
+	if( itMap != m_clsMap.end() )
+	{
+		m_clsMap.erase( itMap );
+		CLog::Print( LOG_DEBUG, "user(%s) is deleted", pszUserId );
 		bRes = true;
 	}
 	m_clsMutex.release();

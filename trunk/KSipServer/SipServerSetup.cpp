@@ -42,6 +42,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "LocalIp", m_strLocalIp );
 	pclsElement->SelectElementData( "UdpPort", m_iUdpPort );
 	pclsElement->SelectElementData( "UdpThreadCount", m_iUdpThreadCount );
+	pclsElement->SelectElementData( "Realm", m_strRealm );
 
 	pclsElement = clsXml.SelectElement( "Log" );
 	if( pclsElement == NULL ) return false;
