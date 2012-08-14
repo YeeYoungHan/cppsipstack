@@ -25,9 +25,28 @@
 
 class CXmlElement;
 
+/**
+ * @ingroup XmlParser
+ * @brief XML attribute map. key 는 attribute 이름이고 value 는 attribute 값이다.
+ */
 typedef std::map< std::string, std::string > XML_ATTRIBUTE_MAP;
+
+/**
+ * @ingroup XmlParser
+ * @brief CXmlElement 객체 리스트
+ */
 typedef std::list< CXmlElement > XML_ELEMENT_LIST;
 
+/**
+ * @defgroup XmlParser XmlParser
+ * Xml 파싱/생성 라이브러리
+ * Xml 파싱/생성 라이브러리
+ */
+
+/**
+ * @ingroup XmlParser
+ * @brief XML 정보 저장 클래스
+ */
 class CXmlElement
 {
 public:
