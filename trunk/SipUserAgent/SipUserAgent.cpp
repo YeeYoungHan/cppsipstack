@@ -58,7 +58,9 @@ bool CSipUserAgent::AddRegisterInfo( CSipServerInfo & clsInfo )
 		clsInfo.m_strDomain = clsInfo.m_strIp;
 	}
 
+	m_clsRegisterMutex.acquire();
 	m_clsRegisterList.push_back( clsInfo );
+	m_clsRegisterMutex.release();
 
 	return true;
 }
@@ -401,6 +403,7 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 					SIP_SERVER_INFO_LIST::iterator itSL;
 					const char * pszUserId = pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str();
 
+					m_clsRegisterMutex.acquire();
 					for( itSL = m_clsRegisterList.begin(); itSL != m_clsRegisterList.end(); ++itSL )
 					{
 						if( !strcmp( itSL->m_strUserId.c_str(), pszUserId ) )
@@ -409,6 +412,7 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 							break;
 						}
 					}
+					m_clsRegisterMutex.release();
 				}
 			}
 			else
