@@ -664,7 +664,29 @@ CSipMessage * CSipMessage::CreateResponse( int iStatus, const char * pszToTag )
 
 	if( pszToTag )
 	{
-		pclsResponse->m_clsTo.AddParam( "tag", pszToTag );
+		pclsResponse->m_clsTo.InsertParam( "tag", pszToTag );
+	}
+
+	return pclsResponse;
+}
+
+CSipMessage * CSipMessage::CreateResponseWithToTag( int iStatus )
+{
+	if( IsRequest() == false ) return NULL;
+
+	CSipMessage * pclsResponse = new CSipMessage();
+	if( pclsResponse == NULL ) return NULL;
+
+	pclsResponse->m_iStatusCode = iStatus;
+	pclsResponse->m_clsTo = m_clsTo;
+	pclsResponse->m_clsFrom = m_clsFrom;
+	pclsResponse->m_clsViaList = m_clsViaList;
+	pclsResponse->m_clsCallId = m_clsCallId;
+	pclsResponse->m_clsCSeq = m_clsCSeq;
+
+	if( pclsResponse->m_clsTo.SelectParam( "tag" ) == false )
+	{
+		pclsResponse->m_clsTo.InsertTag();
 	}
 
 	return pclsResponse;

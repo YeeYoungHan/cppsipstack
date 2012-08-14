@@ -25,12 +25,10 @@
 bool CSipUserAgent::RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage )
 {
 	std::string strCallId;
-	char	szTag[SIP_TAG_MAX_SIZE];
 
 	if( pclsMessage->GetCallId( strCallId ) == false ) return false;
-	SipMakeTag( szTag, sizeof(szTag) );
 
-	CSipMessage * pclsResponse = pclsMessage->CreateResponse( SIP_OK, szTag );
+	CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );
 	if( pclsResponse )
 	{
 		gclsSipStack.SendSipMessage( pclsResponse );

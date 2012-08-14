@@ -70,7 +70,7 @@ CSipMessage * CSipServerInfo::CreateRegister( const CSipMessage * pclsResponse )
 
 	// From
 	pclsRequest->m_clsFrom = pclsRequest->m_clsTo;
-	pclsRequest->m_clsFrom.AddTag();
+	pclsRequest->m_clsFrom.InsertTag();
 
 	// Expires: 300
 	pclsRequest->m_iExpires = m_iLoginTimeout;

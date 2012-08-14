@@ -60,10 +60,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 		// 모든 클라이언트의 로그인을 허용한다.
 		gclsUserMap.Insert( pclsMessage );
 
-		char szToTag[SIP_TAG_MAX_SIZE];
-
-		SipMakeTag( szToTag, sizeof(szToTag) );
-		CSipMessage * pclsResponse = pclsMessage->CreateResponse( SIP_OK, szToTag );
+		CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );
 		if( pclsResponse )
 		{
 			if( gclsSipStack.SendSipMessage( pclsResponse ) == false )
@@ -83,10 +80,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 		if( gclsUserMap.Select( strToId.c_str(), clsUserInfo ) == false )
 		{
 			// TO 사용자가 존재하지 않으면 404 NOT FOUND 로 응답한다.
-			char szToTag[SIP_TAG_MAX_SIZE];
-
-			SipMakeTag( szToTag, sizeof(szToTag) );
-			CSipMessage * pclsResponse = pclsMessage->CreateResponse( SIP_NOT_FOUND, szToTag );
+			CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_NOT_FOUND );
 			if( pclsResponse )
 			{
 				if( gclsSipStack.SendSipMessage( pclsResponse ) == false )

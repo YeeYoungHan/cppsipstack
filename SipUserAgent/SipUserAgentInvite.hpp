@@ -58,7 +58,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 		clsDialog.m_strFromTag = szTag;
 
 		clsDialog.m_strToId = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
-		pclsMessage->m_clsFrom.GetParam( "tag", clsDialog.m_strToTag );
+		pclsMessage->m_clsFrom.SelectParam( "tag", clsDialog.m_strToTag );
 
 		clsDialog.m_strCallId = strCallId;
 
@@ -85,7 +85,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 		{
 			itMap->second.m_pclsInvite = new CSipMessage();
 			*itMap->second.m_pclsInvite = *pclsMessage;
-			itMap->second.m_pclsInvite->m_clsTo.AddParam( "tag", szTag );
+			itMap->second.m_pclsInvite->m_clsTo.InsertParam( "tag", szTag );
 		}
 	}
 	m_clsMutex.release();

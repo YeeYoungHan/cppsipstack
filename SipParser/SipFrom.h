@@ -42,9 +42,10 @@ public:
 
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
-	void AddParam( const char * pszName, const char * pszValue );
-	void AddTag();
-	bool GetParam( const char * pszName, std::string & strValue );
+	void InsertParam( const char * pszName, const char * pszValue );
+	void InsertTag();
+	bool SelectParam( const char * pszName, std::string & strValue );
+	bool SelectParam( const char * pszName );
 
 	void Clear();
 	bool Empty();

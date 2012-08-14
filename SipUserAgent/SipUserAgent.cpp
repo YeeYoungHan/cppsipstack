@@ -361,7 +361,7 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 	itMap = m_clsMap.find( strCallId );
 	if( itMap != m_clsMap.end() )
 	{
-		pclsMessage->m_clsTo.GetParam( "tag", itMap->second.m_strToTag );
+		pclsMessage->m_clsTo.SelectParam( "tag", itMap->second.m_strToTag );
 
 		if( pclsRtp )
 		{
@@ -372,7 +372,7 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 
 		if( pclsMessage->m_iStatusCode >= 200 )
 		{
-			pclsMessage->m_clsTo.GetParam( "tag", itMap->second.m_strToTag );
+			pclsMessage->m_clsTo.SelectParam( "tag", itMap->second.m_strToTag );
 			pclsAck = itMap->second.CreateAck();
 
 			if( pclsMessage->m_iStatusCode >= 200 && pclsMessage->m_iStatusCode < 300 )
