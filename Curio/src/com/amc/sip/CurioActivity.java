@@ -97,20 +97,25 @@ public class CurioActivity extends Activity implements UIInterface{
      	edtPeerID = (EditText) findViewById(R.id.EditText04);
      	final EditText edtRcvPort = (EditText) findViewById(R.id.EditText05);
      	final EditText edtDomain = (EditText) findViewById(R.id.EditText07);
-     	final EditText edtPID = (EditText) findViewById(R.id.EditText06);
-		final EditText edtConference = (EditText) findViewById(R.id.EditText10);
+     	
    
 		//TEST
+		edtUID.setText("");
+		edtPwd.setText("");
+		edtSvrIP.setText("");
+		edtRcvPort.setText("");
+		edtPeerID.setText("");
+		edtDomain.setText("");
+     	/*
 		{
 			edtUID.setText("5143");
 			edtPwd.setText("0000");
 			edtSvrIP.setText("192.168.200.172");
 			edtRcvPort.setText("5060");
 			edtPeerID.setText("5144");
-			edtPID.setText("5145");
 			edtDomain.setText("ug2.scm.com");
-			edtConference.setText("*815145");
 		}
+		*/
      	
 
 		final Button buttonTLS = (Button) findViewById(R.id.Button16);
@@ -253,18 +258,6 @@ public class CurioActivity extends Activity implements UIInterface{
     			
     		}
     	});
-    	
-    	final Button btnKeepAlive = (Button) findViewById(R.id.Button20);
-    	btnKeepAlive.setText("KeepAlive");
-    	btnKeepAlive.setOnClickListener(new View.OnClickListener() {
-    		public void onClick(View v) {
-     			
-    			Log.i(TAG, "onClick - KeepAlive button");
-    			
-    			boolean ret = sipManager.Register(Global.STACK_PRIMARY, true);
-    			Log.w(TAG, "SIPRegister:"+ret);
-    		}
-    	});
         
        	final Button buttonRequest = (Button) findViewById(R.id.Button02);
        	buttonRequest.setText("RequestCall");
@@ -285,46 +278,6 @@ public class CurioActivity extends Activity implements UIInterface{
     		}
     	});
        	
-       	
-      	
-     	chkCID01 = (CheckBox)findViewById(R.id.checkBox7);
-     	chkCID01.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				chkCID02.setChecked(!chkCID01.isChecked());
-				
-				Log.d(TAG, "Selected Call ID:"+chkCID01.getText());
-			}
-		});
-      	
-     	chkCID02 = (CheckBox)findViewById(R.id.checkBox8);
-     	chkCID02.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				chkCID01.setChecked(!chkCID02.isChecked());
-				
-				Log.d(TAG, "Selected Call ID:"+chkCID02.getText());
-			}
-		});
-       	
-		final Button btnRefresh = (Button) findViewById(R.id.button1);
-		btnRefresh.setText("Refresh");
-		btnRefresh.setOnClickListener(new View.OnClickListener() {
-    		public void onClick(View v) 
-    		{     			
-    			Log.i(TAG, "onClick - btnRefresh button");   
-    			
-    			chkCID01.setText("call id");
-    			chkCID02.setText("call id");
-    			
-    			chkCID01.setChecked(false);
-    			chkCID02.setChecked(false);
-    		}
-		});
-    			
-        
        	buttonAccept = (Button) findViewById(R.id.Button03);
        	buttonAccept.setText("AcceptCall");
        	buttonAccept.setOnClickListener(new View.OnClickListener() {
@@ -442,58 +395,6 @@ public class CurioActivity extends Activity implements UIInterface{
 	        	m_is183 = false;
 	        	m_isCallReq = false;
 	        	m_isStopGips = true;
-    		}
-    	}); 
-
-     	final Button buttonTransfer = (Button) findViewById(R.id.Button06);
-       	buttonTransfer.setText("Blind Transfer");
-       	buttonTransfer.setOnClickListener(new View.OnClickListener() {
-    		public void onClick(View v) {
-    			
-       			Log.i(TAG, "onClick - Transfer button");
-       			
-       			if (chkCID01.isChecked() == true)
-       				strCallID = chkCID01.getText().toString();
-       			else if (chkCID02.isChecked() == true)
-       				strCallID = chkCID02.getText().toString();
-       			else
-       				strCallID = "";
-       			
-       			String strPeerID = edtPeerID.getText().toString();
-       			Log.d(TAG, "Peer ID:"+strPeerID);
-       		
-       			m_bTransfer = true;
-    		}
-    	}); 
-		
-		//One Step Transfer
-		final Button btnOneStepTransf = (Button) findViewById(R.id.Button15);
-		btnOneStepTransf.setText("One Step Transfer");
-		
-		btnOneStepTransf.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
-			}
-		});    
-     	
-       	final Button buttonConferenceCall = (Button) findViewById(R.id.Button40);
-       	buttonConferenceCall.setText("Conference");
-       	buttonConferenceCall.setOnClickListener(new View.OnClickListener() {
-    		public void onClick(View v) {
-    			
-       			Log.i(TAG, "onClick - Conference Call");
-       			
-       			String pID = edtConference.getText().toString();
-       			
-       			Log.i(TAG, pID);
-       			
-       			int nRet = sipManager.RequestCall(Global.STACK_PRIMARY, pID);
-       			
-       			if (nRet == Global.ERR_SIP_UA_FTN_CALL_FAIL)
-       			{
-       				Toast toast = Toast.makeText(mContext, "ERR_SIP_UA_FTN_CALL_FAIL", Toast.LENGTH_SHORT);
-       				toast.show();
-       			}
     		}
     	}); 
     }
