@@ -496,8 +496,6 @@ public class CurioActivity extends Activity implements UIInterface{
        			}
     		}
     	}); 
-
-		Log.d(TAG, "[InCallScreen] InCallScreen onCreate [E]");		
     }
 	
     @Override
@@ -546,14 +544,10 @@ public class CurioActivity extends Activity implements UIInterface{
 	
 	public void getServices()
 	{
-		Log.d(TAG, "[InCallScreen] getServices [S]");
-
 		mAudioManager = (AudioManager)this.getSystemService(this.AUDIO_SERVICE);
 		mVib = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
 			
      	RegPhoneListener();
-     	
-		Log.d(TAG, "[InCallScreen] getServices [E]");
 	}
 	
 	public static void SetButtonEnable(boolean bEnable)
@@ -635,9 +629,7 @@ public class CurioActivity extends Activity implements UIInterface{
 	static boolean m_bCallDupOption = false;
 	public void setCallDupOption(boolean bCallDupOption)
 	{
-		Log.d(TAG, "[InCallScreen] setCallDupOption() [S] [bCallDupOption:"+bCallDupOption+"]");
 		m_bCallDupOption = bCallDupOption;
-		Log.d(TAG, "[InCallScreen] setCallDupOption() [E]");
 	}
 	
 	public boolean SetMute(boolean bUse)
@@ -648,9 +640,7 @@ public class CurioActivity extends Activity implements UIInterface{
 	}
 		
 	public boolean isSpeakerOn()
-	{
-		Log.d(TAG, "[InCallScreen] isSpeakerOn() [S]");
-		
+	{	
 		boolean isSpkOn = false;
 		
 		try
@@ -659,7 +649,6 @@ public class CurioActivity extends Activity implements UIInterface{
 		}
 		catch (NullPointerException e) 
 		{
-			Log.d(TAG, "[InCallScreen] NullPointerException [mAudioManager]");
 			e.printStackTrace();
 
 			mAudioManager = (AudioManager)this.getSystemService(this.AUDIO_SERVICE);			
@@ -669,8 +658,6 @@ public class CurioActivity extends Activity implements UIInterface{
 		{
 			e.printStackTrace();
 		}
-		
-		Log.d(TAG, "[InCallScreen] isSpeakerOn() [E] SpeakerphoneOn:" + isSpkOn);
 		
 		return isSpkOn;
 	}
@@ -702,12 +689,8 @@ public class CurioActivity extends Activity implements UIInterface{
 	}
 	
 	public void setUriString(String strUri)
-	{
-		Log.d(TAG, "[InCallScreen] setUriString() [S] "+strUri);
-		
-		muri = Uri.parse(strUri);
-		
-		Log.d(TAG, "[InCallScreen] setUriString() [E]");
+	{	
+		muri = Uri.parse(strUri);	
 	}
 	
 	private final static Object syncObj1 = new Object();
@@ -721,10 +704,7 @@ public class CurioActivity extends Activity implements UIInterface{
 		}
 		
 		public void run()
-		{
-			Log.d(TAG, "[InCallScreen] RingtoneThread run() [S]");
-			// Thread가 동작하는 방식을 이 메소드에서 구현을 한다.			
-			
+		{		
 			setMode(AudioManager.MODE_RINGTONE);
 			
 			long StartedTime = SystemClock.elapsedRealtime();
@@ -755,7 +735,6 @@ public class CurioActivity extends Activity implements UIInterface{
 			 		
 					if (mRingtone.isPlaying() == false)
 					{
-						Log.d(TAG, "[InCallScreen] RingtoneThread Ringtone.play()");
 						if (m_bStopThread == false)
 						{
 							mRingtone.play();
@@ -764,12 +743,9 @@ public class CurioActivity extends Activity implements UIInterface{
 					
 					sleep(200);
 			 	}
-			 	
-		 		Log.d(TAG, "[InCallScreen] ********* m_bStopThread: "+m_bStopThread);
 
 		 		if (mRingtone.isPlaying() == true)
 			 	{
-					Log.d(TAG, "[InCallScreen] RingtoneThread Ringtone.stop()");
 			 		mRingtone.stop();			 		
 			 		
 			 		int CurVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
@@ -787,8 +763,6 @@ public class CurioActivity extends Activity implements UIInterface{
 	   		{
 				e.printStackTrace();
 	   		}
-	   		
-			Log.d(TAG, "[InCallScreen] RingtoneThread run() [E]");
 		 }
 	}
 	
@@ -797,16 +771,13 @@ public class CurioActivity extends Activity implements UIInterface{
 	static final int INIT_VOLUME = 1;
 	
     public void playRingtone()
-	{
-		Log.d(TAG, "[InCallScreen] playRingtone() [S]");
-		
+	{	
 		try
 		{	
 		    mRingtone = RingtoneManager.getRingtone(this, muri);
 		}
 		catch(Exception e)
 		{
-			Log.d(TAG, "[InCallScreen] RingtoneThread [E]");
 			e.printStackTrace();
 		}
 		    
@@ -823,7 +794,6 @@ public class CurioActivity extends Activity implements UIInterface{
 		{
 			e.printStackTrace();
 		}
-		Log.d(TAG, "[InCallScreen] playRingtone() [E]");
 	}
 	
     /**
@@ -834,47 +804,11 @@ public class CurioActivity extends Activity implements UIInterface{
     static boolean m_bStopThread = false;
     
 	public void stopRingtone()
-	{
-		Log.d(TAG, "[InCallScreen] stopRingtone() [S]");	
-		
-		m_bStopThread = true;
-		
-		if (mRingtone != null)
-		{
-			try
-			{
-//				if (ringtonThread != null)
-//					ringtonThread.stop();
-
-				Log.d(TAG, "[InCallScreen] stop ringtoneThread !!");	
-
-				if (mRingtone.isPlaying())
-				{
-			 		mRingtone.stop();	
-			 		
-				    mAudioManager.setStreamVolume(AudioManager.STREAM_RING, OrgVolume, 0);
-				    Log.w(TAG, "Set volume level "+OrgVolume);
-			 		
-			 		setMode(AudioManager.MODE_NORMAL);
-					m_bStopRingtone = true;
-				}
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}			
-		}
-		
-// 		Log.d(TAG, "[InCallScreen] @@@@@@@@@ m_bStopThread: "+m_bStopThread);
-
-    	Log.d(TAG, "[InCallScreen] stopRingtone() [E]");
+	{	
 	}
 		
 	public void playRingtoneVibrator()
 	{
-		Log.d(TAG, "[InCallScreen] playRingtoneVibrator() [S]");
-		
-		
 		int rm = 0;
 		int vs = 0;
 		long[] vibratePattern = {0,1000,1000};
@@ -899,7 +833,6 @@ public class CurioActivity extends Activity implements UIInterface{
 		default:
 			strMode = "RINGER_MODE_UNKNOWN:"+rm; break;			
 		}
-		Log.d(TAG, "[InCallScreen] ## RingerMode:"+strMode);
 		
 		switch (vs)
 		{
@@ -912,7 +845,6 @@ public class CurioActivity extends Activity implements UIInterface{
 		default:
 			strMode = "VIBRATE_SETTING_UNKNOWN:"+vs; break;
 		}
-		Log.d(TAG, "[InCallScreen] ## VibrateMode:"+strMode);
 		
 		if ( (rm == AudioManager.RINGER_MODE_VIBRATE) 
 				|| (rm == AudioManager.RINGER_MODE_NORMAL && vs == AudioManager.VIBRATE_SETTING_ON)
@@ -922,7 +854,6 @@ public class CurioActivity extends Activity implements UIInterface{
 			{
 				try
 				{
-					Log.d(TAG, "[InCallScreen] called Vibrator.vibrate()");
 					mVib.vibrate(vibratePattern,1);
 					m_bVib = true;
 				}
@@ -936,15 +867,12 @@ public class CurioActivity extends Activity implements UIInterface{
 		{
 			playRingtone();
 		}
-		
-		Log.d(TAG, "[InCallScreen] playRingtoneVibrator() [E]");
 	}
 	
 	static boolean m_bVib = false;
 	
 	public void stopVibrator()
 	{
-		Log.d(TAG, "[InCallScreen] stopVibrator() [S]");
 		if (mVib != null)
 		{
 			if (m_bVib == true)
@@ -956,55 +884,19 @@ public class CurioActivity extends Activity implements UIInterface{
 				}
 				catch (Exception e)
 				{
-					Log.d(TAG, "[InCallScreen] stopVibrator() ", e);
 					e.printStackTrace();
 				}
 			}
 		}
-		Log.d(TAG, "[InCallScreen] stopVibrator() [E]");	
 	}
 	
 	// stop the music and play new Music 
 	public void play(Context context, int resource)
 	{ 
-		Log.d(TAG, "[InCallScreen] play() [S]");
-
-		//Service에서 setMode() 하도록 수정됨.
-//		setMode(4);
-		
-//		//재생할 음원 지정
-//		MediaPlayerService.m_nResource = resource;
-//		
-//		//서비스 시작
-//		context.startService(new Intent(context,MediaPlayerService.class));
-		
-//		try
-//		{
-////			SetWaveOutPath(false);
-//			setMode(4);
-//
-//			if (mMediaPlay != null)
-//			{
-//				mMediaPlay.release();
-//				mMediaPlay = null;
-//			}
-//			
-//			mMediaPlay = MediaPlayer.create(context, resource);
-//			mMediaPlay.setLooping(true);
-//			mMediaPlay.start();
-//		}
-//		catch(Exception e)
-//		{
-//			Log.e(TAG, "Raised Exception in play function. [E]", e);
-//			e.printStackTrace();
-//		}
-		Log.d(TAG, "[InCallScreen] play() [E]");
 	}
 	
 	public void stop()
-	{
-		Log.d(TAG, "[InCallScreen] stop() [S]");	
-		
+	{	
 		try
 		{
 			stopMedia();			
@@ -1015,162 +907,29 @@ public class CurioActivity extends Activity implements UIInterface{
 		{
 			e.printStackTrace();
 		}		
-		
-		Log.d(TAG, "[InCallScreen] stop() [E]");
 	}
 
 	public void stopMedia()
 	{
-		Log.d(TAG, "[InCallScreen] stopMedia() [S]");
-		
-		//재생 중지
-//		MediaPlayerService.stopMPService();
-//		
-//		//서비스 종료
-//		this.stopService(new Intent(this,MediaPlayerService.class));
-//		
-		Log.d(TAG, "[InCallScreen] stopMedia() [E]");
-		
-//		try
-//		{
-//			if (mMediaPlay != null)
-//			{
-//				if (mMediaPlay.isPlaying())
-//				{
-//					mMediaPlay.stop();
-//				}
-//			}
-//		}
-//		catch(Exception e)
-//		{
-//			Log.e(TAG, "Raised Exception in stop function.", e);			
-//			e.printStackTrace();
-//		}		
 	}
 	
-//	public boolean isOffhook()
-//	{
-//		Log.d(TAG, "[InCallScreen] isOffhook() [s]");
-//
-//		ITelephony mCDMA = ITelephony.Stub.asInterface(ServiceManager.checkService("phone"));
-//		
-//		boolean bOffhook = false;
-//		
-//		try 
-//		{
-//			bOffhook = mCDMA.isOffhook();
-//		}
-//		catch (Exception e)
-//		{
-//			e.printStackTrace();
-//		}
-//		
-//		Log.d(TAG, "[InCallScreen] isOffhook() [E] [return:"+bOffhook+"]");
-//		return bOffhook;
-//	}
-	
-//	public void StartPlayFile(String szFileName)
-//	{
-//		Log.d(TAG, "[InCallScreen] StartPlayFile [S] ["+ szFileName + "]");
-//
-//		if (szFileName.equalsIgnoreCase("RingBack.wav"))
-//		{
-//			play(this, R.raw.ringback);
-////			Log.d(TAG, "[InCallScreen] RingBack.wav");
-//		}
-//		else if (szFileName.equalsIgnoreCase("sound_offering.wav"))
-//		{
-//			//play(this, R.raw.sound_offering);
-//			Log.d(TAG, "[InCallScreen] [m_bCallDupOption:"+m_bCallDupOption+"]");
-//			
-//			try
-//			{
-//				ITelephony mCDMA = ITelephony.Stub.asInterface(ServiceManager.checkService("phone"));
-//				
-//				if (m_bCallDupOption == true)
-//				{
-//					//Rnging 이거나 Dialing 이면 재생 안함.
-//					if (phoneState != TelephonyManager.CALL_STATE_RINGING
-//							&& (mCDMA.isAlerting() == false))
-//					{
-//						if (mCDMA.isOffhook() == true)
-//						{
-//							//beep
-//							play(this, R.raw.sound_offering_pront);
-//						}
-//						else
-//						{
-//							playRingtoneVibrator();
-//						}
-//						Log.d(TAG, "[InCallScreen] isAlerting(): " + mCDMA.isAlerting());
-//					}
-//				}
-//				else
-//				{
-//					if (phoneState == TelephonyManager.CALL_STATE_IDLE)
-//					{
-//						playRingtoneVibrator();
-//					}
-//					else
-//					{
-//						Log.d(TAG, "[InCallScreen] Rejected Sound Play !!!");
-//					}
-//				}
-//			}
-//			catch (Exception e)
-//			{
-//				e.printStackTrace();
-//			}
-//			
-//			
-//			Log.d(TAG, "[InCallScreen] sound_offering.wav");
-//		}
-//		else if (szFileName.equalsIgnoreCase("BusySignal.wav"))
-//		{
-//			play(this, R.raw.busysignal);
-//			Log.d(TAG, "[InCallScreen] BusySignal.wav");
-//		}
-//		
-//		bPlayingWav = true;
-//				
-//		Log.d(TAG, "[InCallScreen] StartPlayFile [E]");	
-//	}
-	
 	public void StopPlayFile()
-	{
-		Log.d(TAG, "[InCallScreen] StopPlayFile() [S]");	
-		
+	{	
 		bPlayingWav = false;
 		
-		stop();
-		
-		Log.d(TAG, "[InCallScreen] StopPlayFile() [E]");	
+		stop();	
 	}
 	
 	static boolean bPlayingWav = false;
 	
 	public boolean IsPlayingFile()
-	{
-		//boolean bPlayingWav = false;
-		
-//		if (mMediaPlay != null)
-//			bPlayingWav = mMediaPlay.isPlaying();
-//		else if (mRingtone != null)
-//			bPlayingWav = mRingtone.isPlaying();
-//		else if (mVib != null)
-//			bPlayingWav = mVib.;
-			
-		Log.d(TAG, "[InCallScreen] IsPlayingFile ["+ bPlayingWav +"]");	
-	
+	{	
 		return bPlayingWav;
 	}
 	
 	public boolean SendDTMF(int nVal, boolean bOutband)
 	{
 		boolean bRes = false;
-		
-//		GIPSVEAndroid_SendDTMF(nVal, bOutband);
-		
 		return bRes;
 	}
 	
@@ -1178,14 +937,12 @@ public class CurioActivity extends Activity implements UIInterface{
 	public boolean StopAudioRecv()
 	{
 		boolean bRes = true;
-//		boolean bRes = GIPSVEAndroid_StopAudioRecv();		
 		return bRes;
 	}
 	
 	public boolean StopAudioSend()
 	{
 		boolean bRes = true;
-//		boolean bRes = GIPSVEAndroid_StopAudioSend();		
 		return bRes;
 	}
 	
@@ -1214,12 +971,9 @@ public class CurioActivity extends Activity implements UIInterface{
 	public static boolean m_isDupAudInfo = false;
 
 	public boolean addMessage(MCS_MSG msg)
-	{
-		Log.w(TAG, "[InCallScreen_Sample] InCallScrees.AddMessage() [S]");
-		
+	{	
     	String strMessage = "Message !!!";
    	
-		
     	try
     	{
         	Toast toast = null;
@@ -1447,14 +1201,11 @@ public class CurioActivity extends Activity implements UIInterface{
     	catch (Exception e)
     	{
     		e.printStackTrace();
-    		Log.w(TAG, "[InCallScreen_Sample] InCallScrees.AddMessage() rised exception [E]");
-   		
     		return false;
     	}
  		
 		Log.e(TAG, strMessage);
 		
-		Log.d(TAG, "[InCallScreen_Sample] InCallScrees.AddMessage() [E]");
 		return true;
 	
 	}//End GetMessage()
