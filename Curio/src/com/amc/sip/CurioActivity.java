@@ -1,8 +1,5 @@
 package com.amc.sip;
 
-
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.media.*;
@@ -17,19 +14,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.SystemClock;
+
 import android.os.Vibrator;
 import android.app.Activity;
 
-
 public class CurioActivity extends Activity implements UIInterface{
 	
-	private static final String TAG = "SIP";
-		
-	private static AudioManager mAudioManager = null;
-	
+	private static final String TAG = "CURIO";
 	private static WifiManager wifiMgr = null;
 	   
 	static Uri muri = null;
@@ -74,22 +65,25 @@ public class CurioActivity extends Activity implements UIInterface{
 		
 		mContext = this;
 		
-		
-		Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-		String strUri = uri.getPath();
-		setUriString(strUri);
-
-      	final TextView myUID = (TextView) findViewById(R.id.TextView01);
+		setButton();
+    }
+	
+	public void setButton()
+	{
+      	final TextView myUID = (TextView) findViewById(R.id.TextViewMyID);
        	myUID.setText("My ID");
        	
-      	final TextView myPwd = (TextView) findViewById(R.id.TextView03);
+      	final TextView myPwd = (TextView) findViewById(R.id.TextViewPassword);
       	myPwd.setText("Password");
 
-      	final TextView mySIPServerIP = (TextView) findViewById(R.id.TextView02);
-      	mySIPServerIP.setText("SIP Server IP");
-
-      	final TextView myRcvPort = (TextView) findViewById(R.id.TextView04);
-      	myRcvPort.setText("SIP Receive Port");
+      	final TextView mySIPServerIP = (TextView) findViewById(R.id.TextViewServerIP);
+      	mySIPServerIP.setText("Server IP");
+      	
+      	final TextView mySIPServerDomain = (TextView) findViewById(R.id.TextViewServerDomain);
+      	mySIPServerDomain.setText("Server Domain");
+      	
+      	final TextView myRcvPort = (TextView) findViewById(R.id.TextViewRcvPort);
+      	myRcvPort.setText("Receive Port");
       	
       	final EditText edtUID = (EditText) findViewById(R.id.EditText01);
      	final EditText edtSvrIP = (EditText) findViewById(R.id.EditText02);
@@ -106,73 +100,6 @@ public class CurioActivity extends Activity implements UIInterface{
 		edtRcvPort.setText("");
 		edtPeerID.setText("");
 		edtDomain.setText("");
-     	/*
-		{
-			edtUID.setText("5143");
-			edtPwd.setText("0000");
-			edtSvrIP.setText("192.168.200.172");
-			edtRcvPort.setText("5060");
-			edtPeerID.setText("5144");
-			edtDomain.setText("ug2.scm.com");
-		}
-		*/
-     	
-
-		final Button buttonTLS = (Button) findViewById(R.id.Button16);
-		buttonTLS.setText("ProtoType");
-		buttonTLS.setOnClickListener(new View.OnClickListener() {
-    		public void onClick(View v) 
-    		{     			
-    			Log.i(TAG, "onClick - Set ProtoType button");   
-    			
-    			if (m_nProto == 2)
-    				m_nProto = 0;
-    			else
-    				m_nProto++;
-    			
-    			String proto = (m_nProto==0)? "UDP" : (m_nProto==1)? "TCP" : "TLS";
-    	    	ShowToast("ProtoType: " + proto);
-    		}
-    	});
-    	
-    	final Button buttonSRTP = (Button) findViewById(R.id.Button10);
-    	buttonSRTP.setText("SRTP Off");
-    	buttonSRTP.setOnClickListener(new View.OnClickListener() {
-    		public void onClick(View v) {
-    			
-    			m_bSRTP = (m_bSRTP)? false : true;
-    			
-       			Log.i(TAG, "onClick - SRTP:"+m_bSRTP);
-       			
-       			if (m_bSRTP)
-       			{
-       				buttonSRTP.setText("SRTP On");
-       				sipManager.setSrtpType(Global.AES_128 | Global.ARIA_128 | Global.ARIA_192);
-       			}
-       			else
-       			{
-       				buttonSRTP.setText("SRTP Off");
-       				sipManager.setSrtpType(Global.NONE_SRTP);
-       			}
-    		}
-    	}); 
-
-		final Button btnDTMF = (Button) findViewById(R.id.Button18);
-		btnDTMF.setText("DTMF");
-		btnDTMF.setOnClickListener(new View.OnClickListener() {
-    		public void onClick(View v) 
-    		{     			
-    			Log.i(TAG, "onClick - Set DTMF button");   
-    			
-    			if (m_nMyDTMF == Global.DTMF_INBAND)
-    				m_nMyDTMF = Global.DTMF_RFC2833;
-    			else
-    				m_nMyDTMF = Global.DTMF_INBAND;
-    			
-    			String dtmf = (m_nMyDTMF==Global.DTMF_INBAND)? "INBAND" : "RFC2833";
-    	    	ShowToast("DTMF Type: " + dtmf);
-    		}
-    	});
 
 		final Button buttonInit = (Button) findViewById(R.id.Button13);
     	buttonInit.setText("Initialize");
@@ -222,11 +149,6 @@ public class CurioActivity extends Activity implements UIInterface{
     	    		sipManager.SetAudioCodecInfo("PCMU;PCMA;G.729", m_nMyDTMF);
     	    		sipManager.SetCurrentVersion("SAMSUNG-SSP-Mobile/SIP stack sample/SHW-M110S/SKTelecom");
     	    	}
-   	
-    	    	
-    	    	
-    	    	
-//    	    	sipManager.SetLoggingEnv(Global.STACK_PRIMARY, keepCount, null);
     		}
     	});
        	
@@ -239,28 +161,11 @@ public class CurioActivity extends Activity implements UIInterface{
     			
     			boolean ret = sipManager.Register(Global.STACK_PRIMARY, false);
     			Log.w(TAG, "SIPRegister:"+ret);
-    			
-//    			ret = sipManager.Register(Global.STACK_SECONDARY);
-//    			Log.w(TAG, "SIPRegister:"+ret);
-    		}
-    	});
-       	
-    	final Button btnUnRegister = (Button) findViewById(R.id.Button21);
-//    	btnUnRegister.setWidth(100);
-    	btnUnRegister.setText("UnRegister");
-    	btnUnRegister.setOnClickListener(new View.OnClickListener() {
-    		public void onClick(View v) {
-     			
-    			Log.i(TAG, "onClick - UnRegister button");
-    			
-    			boolean ret = sipManager.UnRegister(Global.STACK_PRIMARY);
-    			Log.w(TAG, "SIPRegister:"+ret);
-    			
     		}
     	});
         
-       	final Button buttonRequest = (Button) findViewById(R.id.Button02);
-       	buttonRequest.setText("RequestCall");
+       	final Button buttonRequest = (Button) findViewById(R.id.Button_INVITE);
+       	buttonRequest.setText("Invite");
        	buttonRequest.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
     			
@@ -278,8 +183,8 @@ public class CurioActivity extends Activity implements UIInterface{
     		}
     	});
        	
-       	buttonAccept = (Button) findViewById(R.id.Button03);
-       	buttonAccept.setText("AcceptCall");
+       	buttonAccept = (Button) findViewById(R.id.Button_ACCEPT);
+       	buttonAccept.setText("Accept");
        	buttonAccept.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
     			
@@ -297,8 +202,8 @@ public class CurioActivity extends Activity implements UIInterface{
     		}
     	});
        	
-       	final Button buttonReject = (Button) findViewById(R.id.Button07);
-       	buttonReject.setText("RejectCall");
+       	final Button buttonReject = (Button) findViewById(R.id.Button_REJECT);
+       	buttonReject.setText("Reject");
        	buttonReject.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
     			
@@ -316,89 +221,32 @@ public class CurioActivity extends Activity implements UIInterface{
     	});
         
         
-       	final Button buttonTerminate = (Button) findViewById(R.id.Button04);
-       	buttonTerminate.setText("Terminate");
-       	buttonTerminate.setOnClickListener(new View.OnClickListener() {
+       	final Button buttonBye = (Button) findViewById(R.id.Button_BYE);
+       	buttonBye.setText("Bye");
+       	buttonBye.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
-    			
-       			Log.i(TAG, "onClick - Terminate button");
-       			
-       			if (chkCID01.isChecked() == true)
-       				strCallID = chkCID01.getText().toString();
-       			else if (chkCID02.isChecked() == true)
-       				strCallID = chkCID02.getText().toString();
-       			else
-       				strCallID = "";
-        			
        			sipManager.TerminateCall(strCallID, null);
-       			
-	        	m_is183 = false;
-	        	m_isCallReq = false;
-	        	m_isStopGips = true;
     		}
     	}); 
        	       	
-       	final Button buttonHoldOn = (Button) findViewById(R.id.Button05);
-       	buttonHoldOn.setText("Hold On");
+
+       	final Button buttonHoldOn = (Button) findViewById(R.id.Button_HOLD);
+       	buttonHoldOn.setText("Hold");
        	buttonHoldOn.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
-    			
-       			Log.i(TAG, "onClick - Hold On button");
-       			
-       			if (chkCID01.isChecked() == true)
-       				strCallID = chkCID01.getText().toString();
-       			else if (chkCID02.isChecked() == true)
-       				strCallID = chkCID02.getText().toString();
-       			else
-       				strCallID = "";
-        			
-       			m_bHold = true;
-       			sipManager.HoldCall(strCallID, m_bHold, 0);
-    		}
-    	}); 
-       	
-       	final Button buttonHoldOff = (Button) findViewById(R.id.Button17);
-       	buttonHoldOff.setText("Hold Off");
-       	buttonHoldOff.setOnClickListener(new View.OnClickListener() {
-    		public void onClick(View v) {
-    			
-       			Log.i(TAG, "onClick - Hold Off button");
-       			
-       			if (chkCID01.isChecked() == true)
-       				strCallID = chkCID01.getText().toString();
-       			else if (chkCID02.isChecked() == true)
-       				strCallID = chkCID02.getText().toString();
-       			else
-       				strCallID = "";
-        			
-       			m_bHold = false;
        			sipManager.HoldCall(strCallID, m_bHold, 0);
     		}
     	}); 
         
-       	final Button btnCancel = (Button) findViewById(R.id.Button19);
-       	btnCancel.setText("CancelCall");
+       	final Button btnCancel = (Button) findViewById(R.id.Button_CANCEL);
+       	btnCancel.setText("Cancel");
        	btnCancel.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View v) {
-    			
        			Log.i(TAG, "onClick - Cancel button");
-       			
-       			if (chkCID01.isChecked() == true)
-       				strCallID = chkCID01.getText().toString();
-       			else if (chkCID02.isChecked() == true)
-       				strCallID = chkCID02.getText().toString();
-       			else
-       				strCallID = "";
-        			
        			sipManager.CancelCall(strCallID);
-       			
-	        	m_is183 = false;
-	        	m_isCallReq = false;
-	        	m_isStopGips = true;
     		}
     	}); 
-    }
-	
+	}
     @Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
@@ -436,449 +284,18 @@ public class CurioActivity extends Activity implements UIInterface{
 		m_bDestroy = true;
 	}
 	
-	
-	public void initGIPSManager()
-	{
-		getServices();
-		Initialize();
-	}
-	
-	public void getServices()
-	{
-		mAudioManager = (AudioManager)this.getSystemService(this.AUDIO_SERVICE);
-		mVib = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
-			
-     	RegPhoneListener();
-	}
-	
 	public static void SetButtonEnable(boolean bEnable)
 	{
 		Log.i(TAG, "SetButtonEnable");
 
        	buttonAccept.setEnabled(bEnable);
 	}
-	
-	static int phoneState = TelephonyManager.CALL_STATE_IDLE;
-	static TelephonyManager telephonyManager = null;
-	
-	public void RegPhoneListener()
-	{		  
-		//모니터링 할 이벤트를 리스너에 등록한다.
-		telephonyManager = (TelephonyManager)this.getSystemService(this.TELEPHONY_SERVICE); 
-		
-		PhoneStateListener phoneStateListener = new PhoneStateListener() 
-		{
-			public void onCallStateChanged(int state, String incomingNumber) 
-			{
-				// 전화 수신 반응. 
-				// 착신 전화 번호를 받는다. 
-				switch (state)
-				{
-				case TelephonyManager.CALL_STATE_IDLE :
-					if (phoneState == TelephonyManager.CALL_STATE_OFFHOOK
-							&& phoneState != TelephonyManager.CALL_STATE_RINGING)
-					{
-						if (IsPlayingFile() == true)
-						{
-							stopMedia();
-							playRingtoneVibrator();
-						}
-					}
-					break; // 폰이 울리거나 통화중이 아님.
-				case TelephonyManager.CALL_STATE_RINGING:
-					break; // 폰이 울린다.
-				case TelephonyManager.CALL_STATE_OFFHOOK:
-					break; // 폰이 현재 통화 중.
-				default: 
-					break;
-				}
-				
-				int nStat = telephonyManager.getCallState();
-				
-				
-				phoneState = state;
-			} 
-		}; 
-		
-		telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE );
-	}
-	
-	public int m_nRcvPort = 0;
-	public String m_strKey = null;
-	
-	static boolean m_bInit = false;
-	
-	public int Initialize()
-	{
-		int nRet = 0;
-
-		return nRet;
-	}
-	
-	public int getMode()
-	{
-		int nMode = -1;
-		
-		return nMode;
-	}
-	
-	public void setMode(int nMode)
-	{
-
-	}
-	
-	static boolean m_bCallDupOption = false;
-	public void setCallDupOption(boolean bCallDupOption)
-	{
-		m_bCallDupOption = bCallDupOption;
-	}
-	
-	public boolean SetMute(boolean bUse)
-	{
-		boolean bRes = false;
-		
-		return bRes;
-	}
-		
-	public boolean isSpeakerOn()
-	{	
-		boolean isSpkOn = false;
-		
-		try
-		{
-			isSpkOn = mAudioManager.isSpeakerphoneOn();
-		}
-		catch (NullPointerException e) 
-		{
-			e.printStackTrace();
-
-			mAudioManager = (AudioManager)this.getSystemService(this.AUDIO_SERVICE);			
-			isSpkOn = mAudioManager.isSpeakerphoneOn();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		return isSpkOn;
-	}
-	
-	public boolean SetWaveOutPath(boolean bOut)
-	{
-		return true;
-	}
-	
-	public boolean SetWaveOutPath2(boolean bOut)
-	{
-		return true;
-	}
-	
-		
-	public boolean SetSpeakerVolume(int nVal)
-	{
-		return true;
-	}
-	
-	public int GetMasterVolumeLevel()
-	{
-		int nVolume = -1;
-		return nVolume;
-	}
-	
-	public void SetMasterVolumeLevel(int nVolLevel)
-	{
-	}
-	
-	public void setUriString(String strUri)
-	{	
-		muri = Uri.parse(strUri);	
-	}
-	
-	private final static Object syncObj1 = new Object();
-
-	class RingtoneThread extends Thread 
-	{
-		public RingtoneThread(String name) 
-		{
-			super(name);
-			 // TODO Auto-generated constructor stub
-		}
-		
-		public void run()
-		{		
-			setMode(AudioManager.MODE_RINGTONE);
-			
-			long StartedTime = SystemClock.elapsedRealtime();
-			long CurrentTime = -1;
-			boolean isResetOrgVolume = false;
-			
-	   		try{
-				OrgVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
-				Log.w(TAG, "Get volume level "+OrgVolume);
-				mAudioManager.setStreamVolume(AudioManager.STREAM_RING, INIT_VOLUME, 0);
-			    Log.w(TAG, "Set volume level 1");
-			    Log.w(TAG, "Start Time: "+StartedTime);
-
-			 	while (m_bStopThread == false)
-			 	{					    
-		 			CurrentTime = SystemClock.elapsedRealtime();
-				    Log.w(TAG, "Current Time: "+CurrentTime);
-			 		if ((CurrentTime-StartedTime) > 2000 && isResetOrgVolume == false)
-			 		{
-				 		int CurVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
-				 		if (CurVolume != 1)
-				 			mAudioManager.setStreamVolume(AudioManager.STREAM_RING, CurVolume, 0);
-				 		else
-				 			mAudioManager.setStreamVolume(AudioManager.STREAM_RING, OrgVolume, 0);
-					    Log.w(TAG, "Set volume level "+OrgVolume);
-			 			isResetOrgVolume = true;
-			 		}
-			 		
-					if (mRingtone.isPlaying() == false)
-					{
-						if (m_bStopThread == false)
-						{
-							mRingtone.play();
-						}
-					}
-					
-					sleep(200);
-			 	}
-
-		 		if (mRingtone.isPlaying() == true)
-			 	{
-			 		mRingtone.stop();			 		
-			 		
-			 		int CurVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
-			 		if (CurVolume != 1)
-			 			mAudioManager.setStreamVolume(AudioManager.STREAM_RING, CurVolume, 0);
-			 		else
-			 			mAudioManager.setStreamVolume(AudioManager.STREAM_RING, OrgVolume, 0);
-				    Log.w(TAG, "Set volume level "+OrgVolume);
-
-				    setMode(AudioManager.MODE_NORMAL);			 		
-			 		m_bStopRingtone = true;
-			 	}
-			}
-	   		catch(Exception e)
-	   		{
-				e.printStackTrace();
-	   		}
-		 }
-	}
-	
-	static boolean m_bStopRingtone = true;
-	static int OrgVolume = 0;
-	static final int INIT_VOLUME = 1;
-	
-    public void playRingtone()
-	{	
-		try
-		{	
-		    mRingtone = RingtoneManager.getRingtone(this, muri);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		    
-	    m_bStopRingtone = false;
-	    m_bStopThread = false;
-	    
-	    try
-	    {
-	    	ringtonThread = new RingtoneThread("(RingtoneThread)");
-	    	ringtonThread.setPriority(1);
-	    	ringtonThread.start();
-		}
-	    catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-    /**
-	 * @uml.property  name="ringtonThread"
-	 * @uml.associationEnd  
-	 */
-    static RingtoneThread ringtonThread;
-    static boolean m_bStopThread = false;
-    
-	public void stopRingtone()
-	{	
-	}
-		
-	public void playRingtoneVibrator()
-	{
-		int rm = 0;
-		int vs = 0;
-		long[] vibratePattern = {0,1000,1000};
-
-		try
-		{
-			rm = mAudioManager.getRingerMode();
-			vs = mAudioManager.getVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER);
-		}
-		catch (NullPointerException e) 
-		{
-
-		}
-		
-		String strMode;
-		switch (rm)
-		{
-		case AudioManager.RINGER_MODE_VIBRATE:
-			strMode = "RINGER_MODE_VIBRATE"; break;
-		case AudioManager.RINGER_MODE_NORMAL:
-			strMode = "RINGER_MODE_NORMAL"; break;
-		default:
-			strMode = "RINGER_MODE_UNKNOWN:"+rm; break;			
-		}
-		
-		switch (vs)
-		{
-		case AudioManager.VIBRATE_SETTING_ON:
-			strMode = "VIBRATE_SETTING_ON"; break;
-		case AudioManager.VIBRATE_SETTING_OFF:
-			strMode = "VIBRATE_SETTING_OFF"; break;
-		case AudioManager.VIBRATE_SETTING_ONLY_SILENT:
-			strMode = "VIBRATE_SETTING_ONLY_SILENT"; break;
-		default:
-			strMode = "VIBRATE_SETTING_UNKNOWN:"+vs; break;
-		}
-		
-		if ( (rm == AudioManager.RINGER_MODE_VIBRATE) 
-				|| (rm == AudioManager.RINGER_MODE_NORMAL && vs == AudioManager.VIBRATE_SETTING_ON)
-				|| (rm == AudioManager.RINGER_MODE_VIBRATE && vs == AudioManager.VIBRATE_SETTING_ONLY_SILENT))
-		{
-			if (mVib != null)
-			{
-				try
-				{
-					mVib.vibrate(vibratePattern,1);
-					m_bVib = true;
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}		
-		else if (rm == AudioManager.RINGER_MODE_NORMAL && vs != AudioManager.VIBRATE_SETTING_ON)
-		{
-			playRingtone();
-		}
-	}
-	
-	static boolean m_bVib = false;
-	
-	public void stopVibrator()
-	{
-		if (mVib != null)
-		{
-			if (m_bVib == true)
-			{
-				try
-				{
-					mVib.cancel();
-					m_bVib = false;
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	// stop the music and play new Music 
-	public void play(Context context, int resource)
-	{ 
-	}
-	
-	public void stop()
-	{	
-		try
-		{
-			stopMedia();			
-			stopRingtone();
-			stopVibrator();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}		
-	}
-
-	public void stopMedia()
-	{
-	}
-	
-	public void StopPlayFile()
-	{	
-		bPlayingWav = false;
-		
-		stop();	
-	}
-	
-	static boolean bPlayingWav = false;
-	
-	public boolean IsPlayingFile()
-	{	
-		return bPlayingWav;
-	}
-	
-	public boolean SendDTMF(int nVal, boolean bOutband)
-	{
-		boolean bRes = false;
-		return bRes;
-	}
-	
-	
-	public boolean StopAudioRecv()
-	{
-		boolean bRes = true;
-		return bRes;
-	}
-	
-	public boolean StopAudioSend()
-	{
-		boolean bRes = true;
-		return bRes;
-	}
-	
-    Handler m_GipsHandler = new Handler()
-	{ 
-		@SuppressWarnings("unused")
-		@Override
-		public void handleMessage(Message msg) 
-		{ 
-			String strMessage = null;
-			Toast toast = null;
-			
-			if (strMessage != null)
-			{
-				toast = Toast.makeText(CurioActivity.this, strMessage, Toast.LENGTH_SHORT);
-				toast.show();
-			}
-			
-			Log.d(TAG, "GetGipsMessage() [E]");
-		}
-	};
-	
-	public static boolean m_is183 = false;
-	public static boolean m_isCallReq = false;
-	public static boolean m_isStopGips = true;
-	public static boolean m_isDupAudInfo = false;
 
 	public boolean addMessage(MCS_MSG msg)
 	{	
     	String strMessage = "Message !!!";
-   	
     	try
     	{
-        	Toast toast = null;
-
         	switch (msg.nMessageID)
 	    	{
 		    	case Global.MCS_NONE: 
@@ -913,61 +330,7 @@ public class CurioActivity extends Activity implements UIInterface{
 		       	{
 					strMessage = "MCS_SIP_LOGOUT_FAIL";
 			   		break;
-			    }		
-		    	case 100:
-		    		strMessage = "Received Message: " + msg.nMessageID;
-		    		setMode(4);
-		    		break;
-		    	case 180:
-		    		strMessage = "Received Message: " + msg.nMessageID;
-		    		break;
-		    	case 183:
-		    		strMessage = "Received Message: " + msg.nMessageID;
-					Log.d(TAG, strMessage);
-					
-		    		m_is183 = true;
-		    		break;
-		    		
-		    	case Global.MCS_CALL_RCV_INVITE:
-		    	{	
-		    		m_isCallReq = true;
-		    		
-					strMessage = "MCS_CALL_RCV_INVITE";
-					
-					//strCallID = obj.strCallID;
-					
-					Log.d(TAG, "Received Message: "+ strMessage + " CID: " + strCallID);
-					
-			   		break;
-			   	}
-		    	case Global.MCS_CALL_RCV_INVITE_200: 
-		    	case Global.MCS_CALL_SND_INVITE_200:					// 72, 통화 연결 성공									(양쪽)
-		    	{
-		    		//RECEIVED_INVITE_INFO obj = (RECEIVED_INVITE_INFO)msg.param;
-
-					strMessage = "MCS_CALL_CONNECT_OK [S]";
-					Log.d(TAG, strMessage);
-					
-					//strCallID = obj.strCallID;
-					
-					if (m_is183 == true)
-					{
-						setMode(4);
-						m_is183 = false;
-						
-						SetWaveOutPath2(false);
-					}
-					
-					if (m_isCallReq == true)
-					{
-						setMode(4);
-						m_isCallReq = false;
-						
-						SetWaveOutPath2(false);
-					}
-					break;
-		    	}    	
-					
+			    }
 		    	case Global.MCS_CALL_RCV_RE_INVITE:
 					strMessage = "MCS_CALL_RCV_RE_INVITE";
 					Log.d(TAG, "MCS_CALL_RCV_RE_INVITE");
@@ -990,37 +353,9 @@ public class CurioActivity extends Activity implements UIInterface{
 		    		strMessage = "MCS_CALL_CONNECT_FAIL ["+strErr+"]";
 		    		break;
 		    	}
-		    	case Global.MCS_CALL_BYE_REQUEST:					// 74, 통화 종료 요청 수신						(수신측)
-		    	{
-		    		strMessage = "MCS_CALL_BYE_REQUEST";
-		    		
-		    		
-		    		setMode(AudioManager.MODE_NORMAL);
-		    		
-		    		break;
-		    	}
 		    	case Global.MCS_CALL_CANCEL_REQUEST:				// 75, 통화 취소 요청 수신						(수신측)
 		    	{
 		    		strMessage = "MCS_CALL_CANCEL_REQUEST";
-		    		break;
-		    	}
-		    	//
-		    	case Global.MCS_CALL_HOLD_ON:						// 76, 통화 HOLD 설정됨					(요청하는 측)
-		    	{
-		    		strMessage = "MCS_CALL_HOLD_ON";
-		    		
-		    		
-					setMode(AudioManager.MODE_NORMAL);
-		
-		    		break;
-		    	}
-		    	case Global.MCS_CALL_HOLD_OFF:						// 77, 통화 HOLD 해제됨					(요청하는 측)
-		    	{
-		    		strMessage = "MCS_CALL_HOLD_OFF";
-					
-					setMode(4);	    						
-					
-		
 		    		break;
 		    	}
 		    	case Global.MCS_CALL_HOLD_ON_REQUEST:				// 78, 통화 HOLD 설정됨					(요청당하는 측)
@@ -1037,14 +372,6 @@ public class CurioActivity extends Activity implements UIInterface{
 		    	case Global.MCS_CALL_HOLD_FAIL:						// 80, 통화 HOLD 관련 Action 실패
 		    	{
 		    		strMessage = "MCS_CALL_HOLD_FAIL";
-		    		break;
-		    	}
-		    	case Global.MCS_CALL_TRANSFER_READY_OK:			// 85, Call Transfer 준비 완료
-		    	{
-		    		ReceivedHoldOnReq();
-		    		setMode(AudioManager.MODE_NORMAL);
-						
-		    		strMessage = "MCS_CALL_TRANSFER_READY_OK";
 		    		break;
 		    	}
 		    	case Global.MCS_CALL_TRANSFER_READY_FAIL:			// 86, Call Transfer 준비 실패
