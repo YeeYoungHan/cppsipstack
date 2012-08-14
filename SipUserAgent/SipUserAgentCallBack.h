@@ -46,6 +46,8 @@ public:
 	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp ) = 0;
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus ) = 0;
 	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp ) = 0;
+
+	virtual void EventTimer( ) = 0;
 };
 
 #endif
