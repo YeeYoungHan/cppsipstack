@@ -223,6 +223,68 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 	return bRes;
 }
 
+CSipMessage * CSipUserAgent::DeleteIncomingCall( const char * pszCallId )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	CSipMessage * pclsMessage = NULL;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		if( itMap->second.m_sttStartTime.tv_sec == 0 )
+		{
+			if( itMap->second.m_pclsInvite )
+			{
+				pclsMessage = itMap->second.m_pclsInvite;
+				itMap->second.m_pclsInvite = NULL;
+				m_clsMap.erase( itMap );
+			}
+		}
+	}
+	m_clsMutex.release();
+
+	return pclsMessage;
+}
+
+bool CSipUserAgent::RingCall( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	CSipMessage * pclsMessage = NULL;
+	bool	bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		if( itMap->second.m_sttStartTime.tv_sec == 0 )
+		{
+			if( itMap->second.m_pclsInvite )
+			{
+				pclsMessage = itMap->second.m_pclsInvite->CreateResponse( iSipStatus );
+
+				if( pclsRtp )
+				{
+					itMap->second.m_strLocalRtpIp = pclsRtp->m_strIp;
+					itMap->second.m_iLocalRtpPort = pclsRtp->m_iPort;
+					itMap->second.m_iCodec = pclsRtp->m_iCodec;
+					itMap->second.AddSdp( pclsMessage );
+				}
+
+				bRes = true;
+			}
+		}
+	}
+	m_clsMutex.release();
+
+	if( pclsMessage )
+	{
+		gclsSipStack.SendSipMessage( pclsMessage );
+	}
+
+	return bRes;
+}
+
 /**
  * @brief SIP 요청 메시지 수신 callback method
  * @param iThreadId		SIP stack 의 UDP 쓰레드 아이디

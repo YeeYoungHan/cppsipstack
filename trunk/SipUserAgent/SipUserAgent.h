@@ -63,6 +63,10 @@ public:
 	bool StartCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId );
 	bool StopCall( const char * pszCallId );
 	bool AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp );
+	
+	// IP-PBX 에서 사용되는 통화 관련 메소드
+	CSipMessage * DeleteIncomingCall( const char * pszCallId );
+	bool RingCall( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
 
 	// ISipStackCallBack
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );

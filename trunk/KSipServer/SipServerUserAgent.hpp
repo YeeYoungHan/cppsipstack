@@ -23,22 +23,66 @@ void CSipServer::EventRegister( CSipServerInfo clsInfo, int iStatus )
 
 void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
 {
+	if( gclsUserMap.Select( pszFrom ) == false )
+	{
+		CSipMessage * pclsInvite = gclsUserAgent.DeleteIncomingCall( pszCallId );
+		if( pclsInvite )
+		{
+			SendUnAuthorizedResponse( pclsInvite );
+		}
 
+		return;
+	}
+
+	CUserInfo	clsUserInfo;
+
+	if( gclsUserMap.Select( pszTo, clsUserInfo ) == false )
+	{
+		gclsUserAgent.StopCall( pszCallId );
+		return;
+	}
+
+	std::string	strCallId;
+	CSipCallRoute	clsRoute;
+
+	clsRoute.m_strDestIp = clsUserInfo.m_strIp;
+	clsRoute.m_iDestPort = clsUserInfo.m_iPort;
+
+	if( gclsUserAgent.StartCall( pszFrom, pszTo, pclsRtp, &clsRoute, strCallId ) == false )
+	{
+		gclsUserAgent.StopCall( pszCallId );
+		return;
+	}
+
+	gclsCallMap.Insert( pszCallId, strCallId.c_str() );
 }
 
 void CSipServer::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
 {
+	std::string	strCallId;
 
+	if( gclsCallMap.Select( pszCallId, strCallId ) == false ) return;
+
+	gclsUserAgent.RingCall( strCallId.c_str(), iSipStatus, pclsRtp );
 }
 
 void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
+	std::string	strCallId;
 
+	if( gclsCallMap.Select( pszCallId, strCallId ) == false ) return;
+
+	gclsUserAgent.AcceptCall( strCallId.c_str(), pclsRtp );
 }
 
 void CSipServer::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
+	std::string	strCallId;
 
+	if( gclsCallMap.Select( pszCallId, strCallId ) == false ) return;
+
+	gclsUserAgent.StopCall( strCallId.c_str() );
+	gclsCallMap.Delete( pszCallId );
 }
 
 void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )

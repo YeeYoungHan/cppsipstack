@@ -86,6 +86,22 @@ bool CUserMap::Select( const char * pszUserId, CUserInfo & clsInfo )
 	return bRes;
 }
 
+bool CUserMap::Select( const char * pszUserId )
+{
+	bool bRes = false;
+	USER_MAP::iterator	itMap;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszUserId );
+	if( itMap != m_clsMap.end() )
+	{
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
 bool CUserMap::Delete( const char * pszUserId )
 {
 	bool bRes = false;
