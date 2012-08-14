@@ -84,8 +84,11 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 		if( itMap != m_clsMap.end() )
 		{
 			itMap->second.m_pclsInvite = new CSipMessage();
-			*itMap->second.m_pclsInvite = *pclsMessage;
-			itMap->second.m_pclsInvite->m_clsTo.InsertParam( "tag", szTag );
+			if( itMap->second.m_pclsInvite )
+			{
+				*itMap->second.m_pclsInvite = *pclsMessage;
+				itMap->second.m_pclsInvite->m_clsTo.InsertParam( "tag", szTag );
+			}
 		}
 	}
 	m_clsMutex.release();
@@ -98,7 +101,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	}
 	else
 	{
-		m_pclsCallBack->EventIncomingCall( strCallId.c_str(), pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), &clsRtp );
+		m_pclsCallBack->EventIncomingCall( strCallId.c_str(), pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str(), &clsRtp );
 	}
 
 	return true;

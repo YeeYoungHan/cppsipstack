@@ -26,7 +26,7 @@ void CSipClient::EventRegister( CSipServerInfo clsInfo, int iStatus )
 	printf( "EventRegister(%s) : %d\n", clsInfo.m_strUserId.c_str(), iStatus );
 }
 
-void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom, CSipCallRtp * pclsRtp )
+void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
 {
 	printf( "EventIncomingCall(%s,%s)\n", pszCallId, pszFrom );
 

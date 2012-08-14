@@ -44,7 +44,7 @@ public:
 
 	// ISipUserAgentCallBack
 	virtual void EventRegister( CSipServerInfo clsInfo, int iStatus );
-	virtual void EventIncomingCall( const char * pszCallId, const char * pszFrom, CSipCallRtp * pclsRtp );
+	virtual void EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp );
 	virtual void EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
 	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
