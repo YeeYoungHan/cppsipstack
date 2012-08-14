@@ -25,7 +25,6 @@
 #include <time.h>
 #include "NonceMap.h"
 #include "Md5.h"
-#include "Base64.h"
 
 CNonceMap	gclsNonceMap;
 
