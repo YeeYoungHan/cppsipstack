@@ -21,6 +21,7 @@
 #include "SipUtility.h"
 #include "UserMap.h"
 #include "NonceMap.h"
+#include "CallMap.h"
 #include "Log.h"
 #include "Md5.h"
 #include "XmlUser.h"
@@ -28,9 +29,9 @@
 CSipServer gclsSipServer;
 CSipUserAgent gclsUserAgent;
 
+#include "SipServerRegister.hpp"
 #include "SipServerUserAgent.hpp"
 #include "SipServerLog.hpp"
-#include "SipServerRegister.hpp"
 
 CSipServer::CSipServer()
 {

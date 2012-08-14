@@ -16,49 +16,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _USER_MAP_H_
-#define _USER_MAP_H_
+#ifndef _CALL_MAP_H_
+#define _CALL_MAP_H_
 
-#include "SipMutex.h"
-#include "SipMessage.h"
+#include <string>
 #include <map>
+#include "SipMutex.h"
 
-/**
- * @ingroup SimpleSipServer
- * @brief SIP 클라이언트 정보 저장 클래스
- */
-class CUserInfo
+typedef std::map< std::string, std::string > CALL_MAP;
+
+class CCallMap
 {
 public:
-	std::string m_strIp;
-	int					m_iPort;
+	CCallMap();
+	~CCallMap();
 
-	time_t			m_iLoginTime;
-	int					m_iLoginTimeout;
-};
-
-typedef std::map< std::string, CUserInfo > USER_MAP;
-
-/**
- * @ingroup SimpleSipServer
- * @brief 로그인한 사용자들의 정보를 저장하는 클래스
- */
-class CUserMap
-{
-public:
-	CUserMap();
-	~CUserMap();
-
-	bool Insert( CSipMessage * pclsMessage );
-	bool Select( const char * pszUserId, CUserInfo & clsInfo );
-	bool Select( const char * pszUserId );
-	bool Delete( const char * pszUserId );
+	bool Insert( const char * pszRecvCallId, const char * pszSendCallId );
+	bool Select( const char * pszCallId, std::string & strCallId );
+	bool Delete( const char * pszCallId );
 
 private:
-	USER_MAP	m_clsMap;
-	CSipMutex m_clsMutex;
+	CALL_MAP	m_clsMap;
+	CSipMutex	m_clsMutex;
 };
 
-extern CUserMap gclsUserMap;
+extern CCallMap gclsCallMap;
 
 #endif
