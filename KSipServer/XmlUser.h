@@ -16,48 +16,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _USER_MAP_H_
-#define _USER_MAP_H_
+#ifndef _XML_USER_H_
+#define _XML_USER_H_
 
-#include "SipMutex.h"
-#include "SipMessage.h"
-#include <map>
+#include <string>
 
-/**
- * @ingroup SimpleSipServer
- * @brief SIP 클라이언트 정보 저장 클래스
- */
-class CUserInfo
+class CXmlUser
 {
 public:
-	std::string m_strIp;
-	int					m_iPort;
+	CXmlUser();
+	~CXmlUser();
 
-	time_t			m_iLoginTime;
-	int					m_iLoginTimeout;
+	std::string	m_strId;
+	std::string m_strPassWord;
+
+	bool Parse( const char * pszFileName );
+	void Clear();
 };
 
-typedef std::map< std::string, CUserInfo > USER_MAP;
-
-/**
- * @ingroup SimpleSipServer
- * @brief 로그인한 사용자들의 정보를 저장하는 클래스
- */
-class CUserMap
-{
-public:
-	CUserMap();
-	~CUserMap();
-
-	bool Insert( CSipMessage * pclsMessage );
-	bool Select( const char * pszUserId, CUserInfo & clsInfo );
-	bool Delete( const char * pszUserId );
-
-private:
-	USER_MAP	m_clsMap;
-	CSipMutex m_clsMutex;
-};
-
-extern CUserMap gclsUserMap;
+bool SelectUser( const char * pszUserId, CXmlUser & clsUser );
 
 #endif

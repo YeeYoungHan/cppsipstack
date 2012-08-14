@@ -178,18 +178,18 @@
 				RelativePath=".\KSipServer.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\SipServerSetup.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SipServerSetup.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="자료구조"
 			>
+			<File
+				RelativePath=".\NonceMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NonceMap.h"
+				>
+			</File>
 			<File
 				RelativePath=".\UserMap.cpp"
 				>
@@ -210,10 +210,30 @@
 				RelativePath=".\SipServer.h"
 				>
 			</File>
+			<File
+				RelativePath=".\SipServerLog.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipServerRegister.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipServerUserAgent.hpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="유틸리티"
 			>
+			<File
+				RelativePath=".\Base64.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Base64.h"
+				>
+			</File>
 			<File
 				RelativePath=".\Directory.cpp"
 				>
@@ -236,6 +256,26 @@
 			</File>
 			<File
 				RelativePath=".\ServerUtility.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="XML"
+			>
+			<File
+				RelativePath=".\SipServerSetup.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipServerSetup.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XmlUser.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XmlUser.h"
 				>
 			</File>
 		</Filter>

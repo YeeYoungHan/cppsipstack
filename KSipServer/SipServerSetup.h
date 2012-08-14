@@ -30,6 +30,7 @@ public:
 	int					m_iUdpPort;
 	std::string	m_strLocalIp;
 	int					m_iUdpThreadCount;
+	std::string	m_strRealm;
 
 	std::string	m_strUserXmlFolder;
 

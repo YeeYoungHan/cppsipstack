@@ -17,11 +17,20 @@
  */
 
 #include "SipServer.h"
+#include "SipServerSetup.h"
 #include "SipUtility.h"
 #include "UserMap.h"
+#include "NonceMap.h"
+#include "Log.h"
+#include "Md5.h"
+#include "XmlUser.h"
 
-CSipStack	gclsSipStack;
 CSipServer gclsSipServer;
+CSipUserAgent gclsUserAgent;
+
+#include "SipServerUserAgent.hpp"
+#include "SipServerLog.hpp"
+#include "SipServerRegister.hpp"
 
 CSipServer::CSipServer()
 {
@@ -39,9 +48,12 @@ CSipServer::~CSipServer()
  */
 bool CSipServer::Start( CSipStackSetup & clsSetup )
 {
-	gclsSipStack.AddCallBack( this );
+	// QQQ: Call Routeing 할 IP-PBX 정보를 등록해 주어야 한다.
 
-	if( gclsSipStack.Start( clsSetup ) == false ) return false;
+	if( gclsUserAgent.Start( clsSetup ) == false ) return false;
+
+	gclsSipStack.AddCallBack( this );
+	gclsSipStack.AddNetworkLog( this );
 
 	return true;
 }
@@ -57,87 +69,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
 	if( pclsMessage->IsMethod( "REGISTER" ) )
 	{
-		// 모든 클라이언트의 로그인을 허용한다.
-		gclsUserMap.Insert( pclsMessage );
-
-		char szToTag[SIP_TAG_MAX_SIZE];
-
-		SipMakeTag( szToTag, sizeof(szToTag) );
-		CSipMessage * pclsResponse = pclsMessage->CreateResponse( SIP_OK, szToTag );
-		if( pclsResponse )
-		{
-			if( gclsSipStack.SendSipMessage( pclsResponse ) == false )
-			{
-				delete pclsResponse;
-				return false;
-			}
-
-			return true;
-		}
-	}
-	else
-	{
-		std::string strToId = pclsMessage->m_clsTo.m_clsUri.m_strUser;
-		CUserInfo clsUserInfo;
-
-		if( gclsUserMap.Select( strToId.c_str(), clsUserInfo ) == false )
-		{
-			// TO 사용자가 존재하지 않으면 404 NOT FOUND 로 응답한다.
-			char szToTag[SIP_TAG_MAX_SIZE];
-
-			SipMakeTag( szToTag, sizeof(szToTag) );
-			CSipMessage * pclsResponse = pclsMessage->CreateResponse( SIP_NOT_FOUND, szToTag );
-			if( pclsResponse )
-			{
-				if( gclsSipStack.SendSipMessage( pclsResponse ) == false )
-				{
-					delete pclsResponse;
-					return false;
-				}
-
-				return true;
-			}
-		}
-		else
-		{
-			// TO 사용자로 SIP 요청 메시지를 전달한다.
-			SIP_VIA_LIST::iterator itVia = pclsMessage->m_clsViaList.begin();
-			if( itVia != pclsMessage->m_clsViaList.end() )
-			{
-				const char * pszBranch = itVia->GetParamValue( "branch" );
-				std::string strBranch;
-
-				if( pszBranch )
-				{
-					strBranch = pszBranch;
-					strBranch.append( "_copy" );
-				}
-
-				CSipMessage * pclsRequest = new CSipMessage();
-				if( pclsRequest )
-				{
-					*pclsRequest = *pclsMessage;
-					
-					pclsRequest->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, strBranch.c_str() );
-					pclsRequest->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
-
-					SIP_FROM_LIST::iterator itContact = pclsRequest->m_clsContactList.begin();
-					if( itContact != pclsRequest->m_clsContactList.end() )
-					{
-						itContact->m_clsUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
-						itContact->m_clsUri.m_iPort = gclsSipStack.m_clsSetup.m_iLocalUdpPort;
-					}
-
-					if( gclsSipStack.SendSipMessage( pclsRequest ) == false )
-					{
-						delete pclsRequest;
-						return false;
-					}
-
-					return true;
-				}
-			}
-		}
+		return RecvRequestRegister( iThreadId, pclsMessage );
 	}
 
 	return false;
@@ -152,28 +84,19 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
  */
 bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 {
-	CSipMessage * pclsResponse = new CSipMessage();
-	if( pclsResponse )
+	return false;
+}
+
+bool CSipServer::SendResponse( CSipMessage * pclsMessage, int iStatusCode )
+{
+	CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( iStatusCode );
+	if( pclsResponse == NULL ) return false;
+
+	if( gclsSipStack.SendSipMessage( pclsResponse ) == false )
 	{
-		// SIP 요청 메시지를 전송한 호스트로 전달한다.
-		*pclsResponse = *pclsMessage;
-		pclsResponse->m_clsViaList.pop_front();
-
-		SIP_FROM_LIST::iterator itContact = pclsResponse->m_clsContactList.begin();
-		if( itContact != pclsResponse->m_clsContactList.end() )
-		{
-			itContact->m_clsUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
-			itContact->m_clsUri.m_iPort = gclsSipStack.m_clsSetup.m_iLocalUdpPort;
-		}
-
-		if( gclsSipStack.SendSipMessage( pclsResponse ) == false )
-		{
-			delete pclsResponse;
-			return false;
-		}
-
-		return true;
+		delete pclsResponse;
+		return false;
 	}
 
-	return false;
+	return true;
 }

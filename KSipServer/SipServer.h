@@ -19,7 +19,7 @@
 #ifndef _SIP_SERVER_H_
 #define _SIP_SERVER_H_
 
-#include "SipStack.h"
+#include "SipUserAgent.h"
 
 /**
  * @defgroup SimpleSipServer SimpleSipServer
@@ -30,7 +30,7 @@
  * @ingroup SimpleSipServer
  * @brief SIP Stack 을 이용한 초간단 SIP 서버 클래스
  */
-class CSipServer : public ISipStackCallBack
+class CSipServer : public ISipStackCallBack, ISipUserAgentCallBack, ISipNetworkLog
 {
 public:
 	CSipServer();
@@ -41,8 +41,27 @@ public:
 	// ISipStackCallBack
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
+
+	// ISipUserAgentCallBack
+	virtual void EventRegister( CSipServerInfo clsInfo, int iStatus );
+	virtual void EventIncomingCall( const char * pszCallId, const char * pszFrom, CSipCallRtp * pclsRtp );
+	virtual void EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
+	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );
+	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
+	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
+	virtual void EventTimer( );
+
+	// ISipNetworkLog
+	virtual void SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort );
+
+private:
+	bool SendResponse( CSipMessage * pclsMessage, int iStatusCode );
+
+	// SipServerRegister.hpp
+	bool RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage );
 };
 
 extern CSipServer gclsSipServer;
+extern CSipUserAgent gclsUserAgent;
 
 #endif

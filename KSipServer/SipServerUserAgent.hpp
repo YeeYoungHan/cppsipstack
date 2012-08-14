@@ -16,48 +16,37 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _USER_MAP_H_
-#define _USER_MAP_H_
-
-#include "SipMutex.h"
-#include "SipMessage.h"
-#include <map>
-
-/**
- * @ingroup SimpleSipServer
- * @brief SIP 클라이언트 정보 저장 클래스
- */
-class CUserInfo
+void CSipServer::EventRegister( CSipServerInfo clsInfo, int iStatus )
 {
-public:
-	std::string m_strIp;
-	int					m_iPort;
 
-	time_t			m_iLoginTime;
-	int					m_iLoginTimeout;
-};
+}
 
-typedef std::map< std::string, CUserInfo > USER_MAP;
-
-/**
- * @ingroup SimpleSipServer
- * @brief 로그인한 사용자들의 정보를 저장하는 클래스
- */
-class CUserMap
+void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom, CSipCallRtp * pclsRtp )
 {
-public:
-	CUserMap();
-	~CUserMap();
 
-	bool Insert( CSipMessage * pclsMessage );
-	bool Select( const char * pszUserId, CUserInfo & clsInfo );
-	bool Delete( const char * pszUserId );
+}
 
-private:
-	USER_MAP	m_clsMap;
-	CSipMutex m_clsMutex;
-};
+void CSipServer::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
+{
 
-extern CUserMap gclsUserMap;
+}
 
-#endif
+void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
+{
+
+}
+
+void CSipServer::EventCallEnd( const char * pszCallId, int iSipStatus )
+{
+
+}
+
+void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
+{
+
+}
+
+void CSipServer::EventTimer( )
+{
+	gclsNonceMap.DeleteTimeout( 10 );
+}

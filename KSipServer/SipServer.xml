@@ -3,6 +3,7 @@
 		<LocalIp></LocalIp>
 		<UdpPort>5060</UdpPort>
 		<UdpThreadCount>10</UdpThreadCount>
+		<Realm>ksipserver</Realm>
 	</Sip>
 	<Log>
 		<Folder>d:\temp\sipserver</Folder>

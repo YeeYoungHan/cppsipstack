@@ -163,3 +163,14 @@ int CDirectory::IsDirectory( const char * szDirName )
 
 	return 0;
 }
+
+void CDirectory::AppendName( std::string & strFileName, const char * pszAppend )
+{
+#ifdef WIN32
+	strFileName.append( "\\" );
+	strFileName.append( pszAppend );
+#else
+	strFileName.append( "/" );
+	strFileName.append( pszAppend );
+#endif
+}

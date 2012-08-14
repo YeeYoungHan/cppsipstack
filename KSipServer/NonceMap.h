@@ -16,48 +16,45 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _USER_MAP_H_
-#define _USER_MAP_H_
+#ifndef _NONCE_MAP_H_
+#define _NONCE_MAP_H_
 
-#include "SipMutex.h"
-#include "SipMessage.h"
+#include <stdio.h>
 #include <map>
+#include <string>
+#include "SipMutex.h"
 
-/**
- * @ingroup SimpleSipServer
- * @brief SIP 클라이언트 정보 저장 클래스
- */
-class CUserInfo
+#ifndef WIN32
+#include <sys/time.h>
+#endif
+
+#define PRIVATE_KEY	"hotyoungsipserver"
+
+/** @brief nonce 정보를 저장하는 클래스 */
+class CNonceInfo
 {
 public:
-	std::string m_strIp;
-	int					m_iPort;
-
-	time_t			m_iLoginTime;
-	int					m_iLoginTimeout;
+	time_t	m_iTime;	// nonce 저장 시간
 };
 
-typedef std::map< std::string, CUserInfo > USER_MAP;
+typedef std::map< std::string, CNonceInfo >	NONCE_MAP;
 
-/**
- * @ingroup SimpleSipServer
- * @brief 로그인한 사용자들의 정보를 저장하는 클래스
- */
-class CUserMap
+/** @brief nonce 를 관리하는 클래스 */
+class CNonceMap
 {
 public:
-	CUserMap();
-	~CUserMap();
+	CNonceMap();
 
-	bool Insert( CSipMessage * pclsMessage );
-	bool Select( const char * pszUserId, CUserInfo & clsInfo );
-	bool Delete( const char * pszUserId );
+	bool GetNewValue( char * pszNonce, int iNonceSize );
+	bool Select( const char * pszNonce, bool bIsRemove = true );
+	bool DeleteTimeout( int iSecond );
+	int GetCount();
 
 private:
-	USER_MAP	m_clsMap;
-	CSipMutex m_clsMutex;
+	NONCE_MAP	m_clsMap;
+	CSipMutex	m_clsMutex;
 };
 
-extern CUserMap gclsUserMap;
+extern CNonceMap	gclsNonceMap;
 
 #endif
