@@ -26,7 +26,9 @@ bool CSipUserAgent::RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessa
 {
 	SIP_SERVER_INFO_LIST::iterator itSL;
 	const char * pszUserId = pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str();
+	bool bRes = false;
 
+	m_clsRegisterMutex.acquire();
 	for( itSL = m_clsRegisterList.begin(); itSL != m_clsRegisterList.end(); ++itSL )
 	{
 		if( !strcmp( itSL->m_strUserId.c_str(), pszUserId ) )
@@ -60,9 +62,11 @@ bool CSipUserAgent::RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessa
 				if( m_pclsCallBack ) m_pclsCallBack->EventRegister( *itSL, iStatusCode );
 			}
 
-			return true;
+			bRes = true;
+			break;
 		}
 	}
+	m_clsRegisterMutex.release();
 
-	return false;
+	return bRes;
 }

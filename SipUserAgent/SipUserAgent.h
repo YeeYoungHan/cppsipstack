@@ -69,6 +69,8 @@ public:
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 
 	SIP_SERVER_INFO_LIST	m_clsRegisterList;
+	CSipMutex							m_clsRegisterMutex;
+
 	ISipUserAgentCallBack * m_pclsCallBack;
 
 private:

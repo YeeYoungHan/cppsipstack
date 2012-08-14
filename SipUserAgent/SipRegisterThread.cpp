@@ -39,6 +39,7 @@ void * SipRegisterThread( void * lpParameter )
 	{
 		time( &iTime );
 
+		pclsSipUserAgent->m_clsRegisterMutex.acquire();
 		for( itList = pclsSipUserAgent->m_clsRegisterList.begin(); itList != pclsSipUserAgent->m_clsRegisterList.end(); ++itList )
 		{
 			if( itList->m_bLogin == false )
@@ -71,6 +72,7 @@ void * SipRegisterThread( void * lpParameter )
 				}
 			}
 		}
+		pclsSipUserAgent->m_clsRegisterMutex.release();
 
 		sleep(1);
 	}
