@@ -227,14 +227,6 @@
 			Name="유틸리티"
 			>
 			<File
-				RelativePath=".\Base64.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Base64.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Directory.cpp"
 				>
 			</File>
