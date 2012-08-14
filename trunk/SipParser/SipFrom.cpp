@@ -158,7 +158,7 @@ int CSipFrom::ToString( char * pszText, int iTextSize )
  * @param pszName		parameter 이름
  * @param pszValue	parameter 값
  */
-void CSipFrom::AddParam( const char * pszName, const char * pszValue )
+void CSipFrom::InsertParam( const char * pszName, const char * pszValue )
 {
 	AddSipParameter( m_clsParamList, pszName, pszValue );
 }
@@ -167,13 +167,13 @@ void CSipFrom::AddParam( const char * pszName, const char * pszValue )
  * @ingroup SipParser
  * @brief tag 를 추가한다.
  */
-void CSipFrom::AddTag()
+void CSipFrom::InsertTag()
 {
 	char szTag[SIP_TAG_MAX_SIZE];
 
 	SipMakeTag( szTag, sizeof(szTag) );
 
-	AddParam( "tag", szTag );
+	InsertParam( "tag", szTag );
 }
 
 /**
@@ -183,9 +183,22 @@ void CSipFrom::AddTag()
  * @param strValue	parameter 값을 저장할 변수
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CSipFrom::GetParam( const char * pszName, std::string & strValue )
+bool CSipFrom::SelectParam( const char * pszName, std::string & strValue )
 {
 	return SearchSipParameter( m_clsParamList, pszName, strValue );
+}
+
+/**
+ * @ingroup SipParser
+ * @brief parameter 리스트를 검색하여서 parameter 이름에 대한 값이 존재하는지 검사한다.
+ * @param pszName		parameter 이름
+ * @returns parameter 이름에 대한 값이 존재하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipFrom::SelectParam( const char * pszName )
+{
+	if( SearchSipParameter( m_clsParamList, pszName ) == NULL ) return false;
+
+	return true;
 }
 
 /**

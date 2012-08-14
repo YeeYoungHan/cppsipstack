@@ -375,7 +375,7 @@ void CSipStack::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 
 	if( bSendResponse == false )
 	{
-		CSipMessage * psttResponse = pclsMessage->CreateResponse( SIP_NOT_IMPLEMENTED );
+		CSipMessage * psttResponse = pclsMessage->CreateResponseWithToTag( SIP_NOT_IMPLEMENTED );
 		if( psttResponse )
 		{
 			SendSipMessage( psttResponse );

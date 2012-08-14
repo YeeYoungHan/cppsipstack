@@ -143,6 +143,7 @@ public:
 	bool GetTopViaIpPort( std::string & strIp, int & iPort );
 
 	CSipMessage * CreateResponse( int iStatus, const char * pszToTag = NULL );
+	CSipMessage * CreateResponseWithToTag( int iStatus );
 
 private:
 	int ParseStatusLine( const char * pszText, int iTextLen );
