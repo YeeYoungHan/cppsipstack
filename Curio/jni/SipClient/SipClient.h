@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2012 Yee Young Han <websearch@naver.com> (http://blog.naver.com/websearch)
+ * Copyright (C) 2012 Yee Young Han <websearch@naver.com> (http://blog.naver.com/websearch), Jeong Jong Hwan(sosolili@naver.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,26 @@ public:
 	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
 
 	virtual void SipLog( bool bSend, const char * pszPacket );
+};
+
+class CSipWrapper
+{
+public :
+	CSipWrapper();
+	~CSipWrapper();
+
+public:
+	CSipUserAgent clsUserAgent;
+	CSipServerInfo clsServerInfo;
+	CSipStackSetup clsSetup;
+	CSipClient clsSipClient;
+
+public:
+	bool setSipClient();
+	bool setSipServerInfo(char* pszServerIp, char* pszUserId, char* pszPassWord);
+	bool setSipStackSetup(char* strLocalIp, int UdpPort);
+	bool setCallback();
+	bool start();
 };
 
 #endif
