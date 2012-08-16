@@ -37,7 +37,7 @@ bool CSipUserAgent::RecvByeRequest( int iThreadId, CSipMessage * pclsMessage )
 
 	if( Delete( strCallId.c_str() ) )
 	{
-		m_pclsCallBack->EventCallEnd( strCallId.c_str(), SIP_OK );
+		if( m_pclsCallBack ) m_pclsCallBack->EventCallEnd( strCallId.c_str(), SIP_OK );
 	}
 
 	return true;

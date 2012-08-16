@@ -55,7 +55,7 @@ bool CSipUserAgent::RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage 
 	if( pclsResponse )
 	{
 		gclsSipStack.SendSipMessage( pclsResponse );
-		m_pclsCallBack->EventCallEnd( strCallId.c_str(), SIP_OK );
+		if( m_pclsCallBack ) m_pclsCallBack->EventCallEnd( strCallId.c_str(), SIP_OK );
 	}
 
 	return true;
