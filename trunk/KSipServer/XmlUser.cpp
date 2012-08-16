@@ -49,6 +49,8 @@ bool CXmlUser::Parse( const char * pszFileName )
 		}
 	}
 
+	clsXml.SelectElementData( "CallForward", m_strCallForward );
+
 	if( m_strId.empty() ) return false;
 
 	return true;
