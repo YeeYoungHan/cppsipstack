@@ -60,9 +60,9 @@ void * SipStackThread( void * lpParameter )
 
 /**
  * @ingroup SipStack
- * @brief 
- * @param pclsSipStack 
- * @returns 
+ * @brief SIP stack thread 를 시작한다.
+ * @param pclsSipStack SIP stack 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool StartSipStackThread( CSipStack * pclsSipStack )
 {

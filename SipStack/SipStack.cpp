@@ -21,6 +21,7 @@
 #include "SipStack.hpp"
 
 /**
+ * @ingroup SipStack
  * @brief 생성자 - 내부 변수를 초기화시키고 transaction list 와 SIP stack 을 연결시킨다.
  */
 CSipStack::CSipStack()
@@ -37,11 +38,16 @@ CSipStack::CSipStack()
 	m_clsNIST.SetSipStack( this );
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 소멸자
+ */
 CSipStack::~CSipStack()
 {
 }
 
 /**
+ * @ingroup SipStack
  * @brief SIP stack 을 시작한다. SIP stack 쓰레드와 network 수신 쓰레드를 시작한다.
  * @param clsSetup SIP stack 설정 항목 저장 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -76,6 +82,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 }
 
 /**
+ * @ingroup SipStack
  * @brief SIP stack 을 중지시킨다.
  * @returns 성공하면 true 를 리턴하고 SIP stack 이 실행되지 않았거나 종료 이벤트 처리 중이면 false 를 리턴한다.
  */
@@ -91,6 +98,7 @@ bool CSipStack::Stop( )
 }
 
 /**
+ * @ingroup SipStack
  * @brief SIP stack 에 callback 인터페이스를 추가한다.
  * @param pclsCallBack SIP stack 의 callback 인터페이스
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -119,6 +127,12 @@ bool CSipStack::AddCallBack( ISipStackCallBack * pclsCallBack )
 	return true;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SIP 수신/발신 메시지 callback 인터페이스를 추가한다.
+ * @param pclsLog SIP 수신/발신 메시지 callback 인터페이스
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipStack::AddNetworkLog( ISipNetworkLog * pclsLog )
 {
 	if( pclsLog == NULL ) return false;
@@ -144,6 +158,7 @@ bool CSipStack::AddNetworkLog( ISipNetworkLog * pclsLog )
 }
 
 /**
+ * @ingroup SipStack
  * @brief SIP stack 에 SIP 메시지가 존재하지 않으면 SIP stack 에 SIP 메시지를 저장하고 SIP 메시지를 네트워크로 전송한다.
  * @param pclsMessage SIP 메시지 저장 구조체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -202,6 +217,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 }
 
 /**
+ * @ingroup SipStack
  * @brief 네트워크에서 수신된 SIP 메시지를 SIP stack 에 저장하고 callback 메소드를 호출하여 응용에 알려 준다.
  *				본 메소드에서 true 를 리턴하면 내부적으로 CSipMessage 메모리를 관리하고 그렇지 않으면 호출한 부분에서 CSipMessage 메모리를 삭제해 주어야 한다.
  * @param iThreadId		쓰레드 아이디 ( 0 부터 쓰레드 개수 )
@@ -265,6 +281,7 @@ bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 }
 
 /**
+ * @ingroup SipStack
  * @brief SIP stack 을 실행한다.
  *				SIP stack 이 관리하는 Transaction List 를 주기적으로 점검하여서 Re-Transmit 또는 Timeout 등을 처리하기 위해서 본 함수를 20ms 간격으로 호출해 주어야 한다.
  * @param psttTime 현재 시간
@@ -281,6 +298,7 @@ bool CSipStack::Execute( struct timeval * psttTime )
 }
 
 /**
+ * @ingroup SipStack
  * @brief SIP 메시지를 네트워크로 전송한다.
  * @param pclsMessage SIP 메시지 저장 구조체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -354,6 +372,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage )
 }
 
 /**
+ * @ingroup SipStack
  * @brief 수신된 요청 SIP 메시지에 대한 callback 메소드를 호출한다.
  *				만약 요청 SIP 메시지를 처리할 callback 이 존재하지 않으면 501 응답 메시지를 전송한다.
  * @param iThreadId		쓰레드 아이디 ( 0 부터 쓰레드 개수 )
@@ -384,6 +403,7 @@ void CSipStack::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 }
 
 /**
+ * @ingroup SipStack
  * @brief 수신된 응답 SIP 메시지에 대한 callback 메소드를 호출한다.
  * @param iThreadId		쓰레드 아이디 ( 0 부터 쓰레드 개수 )
  * @param pclsMessage SIP 메시지 저장 구조체
@@ -399,6 +419,7 @@ void CSipStack::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 }
 
 /**
+ * @ingroup SipStack
  * @brief UDP SIP 메시지 수신 쓰레드 개수를 증가시킨다.
  * @param iThreadId UDP SIP 메시지 수신 쓰레드 개수를 증가시키기 전에 UDP SIP 메시지 수신 쓰레드 개수를 저장할 변수
  */
@@ -411,6 +432,7 @@ void CSipStack::IncreateUdpThreadCount( int & iThreadId )
 }
 
 /**
+ * @ingroup SipStack
  * @brief UDP SIP 메시지 수신 쓰레드 개수를 감소시킨다.
  */
 void CSipStack::DecreateUdpThreadCount()
@@ -421,18 +443,33 @@ void CSipStack::DecreateUdpThreadCount()
 }
 
 /**
- * @brief Transaction List 의 크기를 문자열에 저장한다.
+ * @ingroup SipStack
+ * @brief Transaction List 의 정보를 문자열에 저장한다.
  * @param strBuf		문자열 변수
  */
 void CSipStack::GetString( std::string & strBuf )
 {
+	// QQQ
 }
 
+/**
+ * @ingroup SipStack
+ * @brief Invite Client Transaction 정보를 문자열에 저장한다.
+ * @param strBuf 문자열 변수
+ */
 void CSipStack::GetICTString( std::string & strBuf )
 {
 	m_clsICT.GetString( strBuf );
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SIP 수신/발신 메시지 callback 인터페이스로 SIP 수신/발신 정보를 전달한다.
+ * @param bSend			발신이면 true, 수신이면 false
+ * @param pszPacket SIP 메시지
+ * @param pszIp			발신 IP 또는 수신 IP
+ * @param iPort			발신 포트 또는 수신 포트
+ */
 void CSipStack::NetworkLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort )
 {
 	SIP_NETWORK_LOG_LIST::iterator	itList;
@@ -444,6 +481,7 @@ void CSipStack::NetworkLog( bool bSend, const char * pszPacket, const char * psz
 }
 
 /**
+ * @ingroup SipStack
  * @brief UDP SIP 메시지 수신 쓰레드에 종료 SIP 메시지를 전송하고 SIP stack 쓰레드에 종료 이벤트를 설정한 후, 모든 쓰레드가 종료할 때까지 대기한 후,
  *				소켓 핸들을 종료시킨다.
  * @returns true 를 리턴한다.
@@ -479,6 +517,11 @@ bool CSipStack::_Stop( )
 	return true;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 전송할 SIP 메시지에서 필요한 헤더가 존재하지 않을 경우 default 헤더를 저장한다.
+ * @param pclsMessage 전송할 SIP 메시지
+ */
 void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 {
 	if( pclsMessage->IsRequest() )

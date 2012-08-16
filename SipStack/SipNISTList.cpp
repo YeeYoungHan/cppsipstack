@@ -20,15 +20,24 @@
 #include "SipStack.h"
 #include "SipDeleteQueue.h"
 
+/**
+ * @ingroup SipStack
+ * @brief 생성자
+ */
 CSipNISTList::CSipNISTList()
 {
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 소멸자
+ */
 CSipNISTList::~CSipNISTList()
 {
 }
 
 /**
+ * @ingroup SipStack
  * @brief Non-Invite Server Transaction List 에 SIP 메시지를 추가한다.
  * @param pclsMessage SIP 메시지 저장 구조체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -103,6 +112,7 @@ bool CSipNISTList::Insert( CSipMessage * pclsMessage )
 }
 
 /**
+ * @ingroup SipStack
  * @brief Non-Invite Server Transaction List 에서 재전송할 항목에서 삭제할 항목을 삭제한다.
  * @param psttTime 실행한 시간
  */
@@ -137,6 +147,7 @@ LOOP_START:
 }
 
 /**
+ * @ingroup SipStack
  * @brief Non-Invite Server Transaction List 의 모든 항목을 삭제한다.
  */
 void CSipNISTList::DeleteAll( )
@@ -154,6 +165,7 @@ void CSipNISTList::DeleteAll( )
 }
 
 /**
+ * @ingroup SipStack
  * @brief Non-Invite Server Transaction List 의 크기를 리턴한다.
  * @returns Non-Invite Server Transaction List 의 크기를 리턴한다.
  */
@@ -162,7 +174,12 @@ int CSipNISTList::GetSize( )
 	return m_clsMap.size();
 }
 
+/**
+ * @ingroup SipStack
+ * @brief NIST 자료구조에 저장된 SIP Call-ID 들을 문자열에 저장한다.
+ * @param strBuf SIP Call-ID 들을 저장할 문자열
+ */
 void CSipNISTList::GetString( std::string & strBuf )
 {
-
+	// QQQ
 }

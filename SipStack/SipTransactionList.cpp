@@ -41,6 +41,7 @@ CSipTransactionList::~CSipTransactionList()
 }
 
 /**
+ * @ingroup SipStack
  * @brief Transaction List 를 포함한 CSipStack 객체의 포인터를 저장한다. 재전송 기능을 위해서 CSipStack 객체가 필요하다.
  * @param pclsSipStack CSipStack 객체의 포인터
  */
@@ -50,6 +51,7 @@ void CSipTransactionList::SetSipStack( CSipStack * pclsSipStack )
 }
 
 /**
+ * @ingroup SipStack
  * @brief Transaction List 에 저장할 키를 가져온다.
  * @param pclsMessage SIP 메시지 저장 구조체
  * @param strKey			Transaction List 에 저장할 키
@@ -100,6 +102,7 @@ bool CSipTransactionList::GetKey( CSipMessage * pclsMessage, std::string & strKe
 }
 
 /**
+ * @ingroup SipStack
  * @brief Transaction List 에 저장할 키를 가져온다.
  * @param pclsMessage SIP 메시지 저장 구조체
  * @param pszMethod		SIP Via branch 로 키를 생성할 경우 사용할 SIP 메소드

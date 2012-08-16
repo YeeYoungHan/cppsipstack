@@ -20,16 +20,25 @@
 #include "SipStack.h"
 #include "SipDeleteQueue.h"
 
+/**
+ * @ingroup SipStack
+ * @brief 생성자
+ */
 CSipICTList::CSipICTList()
 {
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 소멸자
+ */
 CSipICTList::~CSipICTList()
 {
 	DeleteAll();
 }
 
 /**
+ * @ingroup SipStack
  * @brief Invite Client Transaction List 에 SIP 메시지를 추가한다.
  * @param pclsMessage SIP 메시지 저장 구조체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -141,6 +150,7 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 }
 
 /**
+ * @ingroup SipStack
  * @brief Invite Client Transaction List 에서 재전송할 항목은 재전송하고 삭제할 항목은 삭제하고 Timeout 된 항목은 Timeout 처리한다.
  * @param psttTime 실행한 시간
  */
@@ -215,6 +225,7 @@ DELETE_TRANSACTION:
 }
 
 /**
+ * @ingroup SipStack
  * @brief Invite Client Transaction List 의 모든 항목을 삭제한다.
  */
 void CSipICTList::DeleteAll( )
@@ -232,6 +243,7 @@ void CSipICTList::DeleteAll( )
 }
 
 /**
+ * @ingroup SipStack
  * @brief Invite Client Transaction List 의 크기를 리턴한다.
  * @returns Invite Client Transaction List 의 크기를 리턴한다.
  */
@@ -240,6 +252,11 @@ int CSipICTList::GetSize( )
 	return m_clsMap.size();
 }
 
+/**
+ * @ingroup SipStack
+ * @brief ICT 에 저장된 SIP Call-ID 들을 문자열에 저장한다.
+ * @param strBuf SIP Call-ID 들을 저장할 변수
+ */
 void CSipICTList::GetString( std::string & strBuf )
 {
 	INVITE_TRANSACTION_MAP::iterator	itMap;

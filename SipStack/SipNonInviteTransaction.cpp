@@ -19,12 +19,20 @@
 #include "SipNonInviteTransaction.h"
 #include "SipDeleteQueue.h"
 
+/**
+ * @ingroup SipStack
+ * @brief 持失切
+ */
 CSipNonInviteTransaction::CSipNonInviteTransaction() : m_pclsRequest(NULL), m_pclsResponse(NULL), m_iReSendCount(0)
 {
 	memset( &m_sttStartTime, 0, sizeof(m_sttStartTime) );
 	memset( &m_sttStopTime, 0, sizeof(m_sttStopTime) );
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 社瑚切
+ */
 CSipNonInviteTransaction::~CSipNonInviteTransaction()
 {
 	if( m_pclsRequest ) gclsSipDeleteQueue.Insert( m_pclsRequest );
