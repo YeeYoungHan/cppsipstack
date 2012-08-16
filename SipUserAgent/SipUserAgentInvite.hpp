@@ -96,13 +96,16 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	gclsSipStack.SendSipMessage( pclsResponse );
 
-	if( bReINVITE )
+	if( m_pclsCallBack )
 	{
-		m_pclsCallBack->EventReInvite( strCallId.c_str(), &clsRtp );
-	}
-	else
-	{
-		m_pclsCallBack->EventIncomingCall( strCallId.c_str(), pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str(), &clsRtp );
+		if( bReINVITE )
+		{
+			m_pclsCallBack->EventReInvite( strCallId.c_str(), &clsRtp );
+		}
+		else
+		{
+			m_pclsCallBack->EventIncomingCall( strCallId.c_str(), pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str(), &clsRtp );
+		}
 	}
 
 	return true;
@@ -134,15 +137,15 @@ bool CSipUserAgent::RecvInviteResponse( int iThreadId, CSipMessage * pclsMessage
 		}
 		else if( pclsMessage->m_iStatusCode > 100 && pclsMessage->m_iStatusCode < 200 )
 		{
-			m_pclsCallBack->EventCallRing( strCallId.c_str(), pclsMessage->m_iStatusCode, bRtp ? &clsRtp : NULL );
+			if( m_pclsCallBack ) m_pclsCallBack->EventCallRing( strCallId.c_str(), pclsMessage->m_iStatusCode, bRtp ? &clsRtp : NULL );
 		}
 		else if( pclsMessage->m_iStatusCode >= 200 && pclsMessage->m_iStatusCode < 300 )
 		{
-			m_pclsCallBack->EventCallStart( strCallId.c_str(), bRtp ? &clsRtp : NULL );
+			if( m_pclsCallBack ) m_pclsCallBack->EventCallStart( strCallId.c_str(), bRtp ? &clsRtp : NULL );
 		}
 		else
 		{
-			m_pclsCallBack->EventCallEnd( strCallId.c_str(), pclsMessage->m_iStatusCode );
+			if( m_pclsCallBack ) m_pclsCallBack->EventCallEnd( strCallId.c_str(), pclsMessage->m_iStatusCode );
 		}
 	}
 
