@@ -550,10 +550,16 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 
 		clsRtp.m_iPort = itMedia->m_iPort;
 
-		SDP_FMT_LIST::iterator itFmt = itMedia->m_clsFmtList.begin();
-		if( itFmt == itMedia->m_clsFmtList.end() ) return false;
-
-		clsRtp.m_iCodec = atoi( itFmt->c_str() );
+		SDP_FMT_LIST::iterator itFmt;
+		
+		for( itFmt = itMedia->m_clsFmtList.begin(); itFmt != itMedia->m_clsFmtList.end(); ++itFmt )
+		{
+			clsRtp.m_iCodec = atoi( itFmt->c_str() );
+			if( clsRtp.m_iCodec == 0 )
+			{
+				break;
+			}
+		}
 		
 		return true;
 	}
