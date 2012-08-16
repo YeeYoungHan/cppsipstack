@@ -21,17 +21,29 @@ void CSipServer::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 
 }
 
-bool CSipServer::EventIncomingCallAuth( const char * pszCallId, const char * pszFrom, const char * pszTo )
+bool CSipServer::EventIncomingCallAuth( CSipMessage * pclsMessage )
 {
-	if( gclsUserMap.Select( pszFrom ) == false )
+	if( gclsUserMap.Select( pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str() ) == false )
 	{
-		CSipMessage * pclsInvite = gclsUserAgent.DeleteIncomingCall( pszCallId );
-		if( pclsInvite )
+		SIP_CREDENTIAL_LIST::iterator	itCL = pclsMessage->m_clsAuthorizationList.begin();
+
+		if( itCL == pclsMessage->m_clsAuthorizationList.end() )
 		{
-			SendUnAuthorizedResponse( pclsInvite );
+			return SendUnAuthorizedResponse( pclsMessage );
 		}
 
-		return false;
+		ECheckAuthResult eRes = CheckAuthorization( &(*itCL), pclsMessage->m_strSipMethod.c_str() );
+		switch( eRes )
+		{
+		case E_AUTH_NONCE_NOT_FOUND:
+			SendUnAuthorizedResponse( pclsMessage );
+			return false;
+		case E_AUTH_ERROR:
+			SendResponse( pclsMessage, SIP_FORBIDDEN );
+			return false;
+		default:
+			break;
+		}
 	}
 
 	return true;

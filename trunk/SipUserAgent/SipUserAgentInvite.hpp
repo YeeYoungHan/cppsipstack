@@ -35,7 +35,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	if( m_pclsCallBack )
 	{
-		if( m_pclsCallBack->EventIncomingCallAuth( strCallId.c_str(), pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str() ) == false )
+		if( m_pclsCallBack->EventIncomingCallAuth( pclsMessage ) == false )
 		{
 			return true;
 		}

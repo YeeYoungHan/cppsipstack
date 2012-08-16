@@ -55,6 +55,7 @@ int main( int argc, char * argv[] )
 		// N개의 IP주소를 사용하는 호스트에서는 SIP 프로토콜로 사용할 IP주소를 직접 입력해 주세요.
 		// Vmware 등을 사용하는 경우 N개의 IP주소가 호스트에 존재합니다.
 		GetLocalIp( clsSetup.m_strLocalIp );
+		gclsSetup.m_strLocalIp = clsSetup.m_strLocalIp;
 	}
 
 	clsSetup.m_iLocalUdpPort = gclsSetup.m_iUdpPort;
