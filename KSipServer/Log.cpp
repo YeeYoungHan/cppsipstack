@@ -39,31 +39,29 @@ int CLog::m_iMaxLogSize = 0;
 int CLog::m_iLogSize = 0;
 int CLog::m_iIndex = 1;
 
-/** 로그 파일을 저장할 디렉토리를 설정한다.
- *	만약 thread mutex 가 설정되어 있지 않으면 쓰레드 mutex 를 생성한다.
- *
- *	@param	pszDirName	[in] 로그 파일을 저장할 디렉토리
- *	@return	성공하면 0 을 리턴한다.
- *			실패하면 -1 을 리턴한다.
+/** 
+ * @ingroup KSipServer
+ * @brief 로그 파일을 저장할 디렉토리를 설정한다. 만약 thread mutex 가 설정되어 있지 않으면 쓰레드 mutex 를 생성한다.
+ * @param	pszDirName	[in] 로그 파일을 저장할 디렉토리
+ * @return	성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-
-int CLog::SetDirectory( const char * pszDirName )
+bool CLog::SetDirectory( const char * pszDirName )
 {
-	if( pszDirName == NULL ) return -1;
+	if( pszDirName == NULL ) return false;
 
 	if( m_pThreadMutex == NULL )
 	{
 		m_pThreadMutex = new CSipMutex();
-		if( m_pThreadMutex == NULL ) return -1;
+		if( m_pThreadMutex == NULL ) return false;
 	}
 
-	if( m_pThreadMutex->acquire() == false ) return -1;
+	if( m_pThreadMutex->acquire() == false ) return false;
 
 	if( m_pszDirName == NULL )
 	{
 		int	iLen = (int)strlen(pszDirName);
 		m_pszDirName = new char[ iLen + 1 ];
-		if( m_pszDirName == NULL ) return -1;
+		if( m_pszDirName == NULL ) return false;
 
 		sprintf( m_pszDirName, "%s", pszDirName );
 #ifdef WIN32
@@ -78,13 +76,16 @@ int CLog::SetDirectory( const char * pszDirName )
 
 	m_pThreadMutex->release();
 
-	if( CDirectory::Create( m_pszDirName ) != 0 ) return -1;
+	if( CDirectory::Create( m_pszDirName ) != 0 ) return false;
 
-	return 0;
+	return true;
 }
 
-/** 클래스 변수를 초기화시킨다. */
-int CLog::Release()
+/** 
+ * @ingroup KSipServer
+ * @brief 클래스 변수를 초기화시킨다.
+ */
+void CLog::Release()
 {
 	if( CLog::m_pszDirName )
 	{
@@ -97,22 +98,20 @@ int CLog::Release()
 		delete CLog::m_pThreadMutex;
 		CLog::m_pThreadMutex = NULL;
 	}
-
-	return 0;
 }
 
-/** 로그 파일에 로그를 저장한다.
- *
- *	@param	iLevel	[in] 로그 파일 레벨
- *	@param	fmt		[in] 로그 파일에 저장할 포맷 문자열
- *	@param	...		[in] fmt 포맷에 입력할 인자들
- *	@return	입력에 성공하면 0 을 리턴한다.
+/** 
+ * @ingroup KSipServer
+ * @brief 로그 파일에 로그를 저장한다.
+ * @param	iLevel	[in] 로그 파일 레벨
+ * @param	fmt		[in] 로그 파일에 저장할 포맷 문자열
+ * @param	...		[in] fmt 포맷에 입력할 인자들
+ * @return	입력에 성공하면 0 을 리턴한다.
  *			입력값이 잘못된 경우에는 -1을 리턴한다.
  *			mutex lock 에 실패한 경우에는 -1을 리턴한다.
  *			로그 파일 Open 에 실패하면 -1을 리턴한다.
  *			로그 레벨이 설정된 로그 레벨과 일치하지 않는 경우에는 1을 리턴한다.
  */
-
 int CLog::Print( EnumLogLevel iLevel, const char * fmt, ... )
 {
 	if( ( m_iLevel & iLevel ) == 0 ) return 1;
@@ -273,56 +272,45 @@ OPEN_FILE:
 	return iResult;
 }
 
-/**	로그 파일에 저장할 로그 레벨을 설정한다. 
- *
+/**	
+ * @ingroup KSipServer
+ * @brief  로그 파일에 저장할 로그 레벨을 설정한다. 
  *	여러 로그를 저장할 경우, '|' 연산자를 이용하여서 여러 로그 레벨을 설정할 수 있다.
- *
  *	@param	iLevel	[in] 디버그 로그를 저장할 경우, LOG_DEBUG 를 설정한다.
  *					정보 로그를 저장할 경우, LOG_INFO 를 설정한다.
  *					에러 로그를 저장할 경우, LOG_ERROR 를 설정한다.
- *	@return	0 을 리턴한다.
  */
-
-int CLog::SetLevel( int iLevel )
+void CLog::SetLevel( int iLevel )
 {
 	CLog::m_iLevel = LOG_ERROR | LOG_SYSTEM;
 	CLog::m_iLevel |= iLevel;
-
-	return 0;
 }
 
-/** 로그 파일에 저장할 로그 레벨을 모두 삭제한다.
+/** 
+ * @ingroup KSipServer
+ * @brief 로그 파일에 저장할 로그 레벨을 모두 삭제한다.
  *	- 로그 파일에 로그가 저장되지 않는다.
-
- *	@return	0 을 리턴한다.
  */
-
-int CLog::SetNullLevel()
+void CLog::SetNullLevel()
 {
 	CLog::m_iLevel = 0;
-
-	return 0;
 }
 
-/** 디버그 로그 레벨을 설정한다.
- *
- *	@return	0 을 리턴한다.
+/** 
+ * @ingroup KSipServer
+ * @brief 디버그 로그 레벨을 설정한다.
  */
-
-int CLog::SetDebugLevel( )
+void CLog::SetDebugLevel( )
 {
 	CLog::m_iLevel |= LOG_DEBUG;
-
-	return 0;
 }
 
-/** 입력한 로그 레벨이 현재 출력할 수 있는 로그 레벨인지 분석하여 준다.
- *
- *	@param	iLevel	[in] 로그 레벨
- *	@return	현재 출력할 수 있는 로그 레벨인 경우에는 0 을 리턴한다.
- *			그렇지 않으면 -1 을 리턴한다.
+/** 
+ * @ingroup KSipServer
+ * @brief 입력한 로그 레벨이 현재 출력할 수 있는 로그 레벨인지 분석하여 준다.
+ * @param	iLevel	[in] 로그 레벨
+ * @return	현재 출력할 수 있는 로그 레벨인 경우에는 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-
 bool CLog::IsPrintLogLevel( EnumLogLevel iLevel )
 {
 	if( ( CLog::m_iLevel & iLevel ) == 0 ) return false;
@@ -330,7 +318,11 @@ bool CLog::IsPrintLogLevel( EnumLogLevel iLevel )
 	return true;
 }
 
-/** 로그를 저장할 최대 파일 크기를 설정한다. */
+/** 
+ * @ingroup KSipServer
+ * @brief 로그를 저장할 최대 파일 크기를 설정한다. 
+ * @param iSize	로그를 저장할 최대 파일 크기
+ */
 void CLog::SetMaxLogSize( int iSize )
 {
 	if( iSize < MIN_LOG_FILE_SIZE )
@@ -344,7 +336,11 @@ void CLog::SetMaxLogSize( int iSize )
 	m_iMaxLogSize = iSize;
 }
 
-/** 로그파일의 인덱스 번호 */
+/** 
+ * @ingroup KSipServer
+ * @brief 로그파일의 인덱스 번호를 리턴한다.
+ * @return 로그파일의 인덱스 번호를 리턴한다.
+ */
 int CLog::GetLogIndex()
 {
 	return m_iIndex;

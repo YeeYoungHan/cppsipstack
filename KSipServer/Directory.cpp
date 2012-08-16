@@ -19,14 +19,16 @@
 #include <string.h>
 #include "Directory.h"
 
-/** 디렉토리를 생성한다. 
+/** 
+ * @ingroup KSipServer
+ * @brief 디렉토리를 생성한다. 
  *	
  *	이미 디렉토리가 생성되어 있으면 아무런 동작을 하지 않는다.
  *	"c:\temp\test" 와 같은 문자열을 입력하면 다음과 같이 동작하다.
  *	"c:\temp" 디렉토리가 존재하지 않으면 이를 생성한 후, "c:\temp\test" 디렉토리를 생성한다.
  *
- *	@param	szDirName	[in] 생성할 디렉토리의 full pathname
- *	@return	성공하면 0 을 리턴한다. 이미 디렉토리가 존재하여도 0 을 리턴한다.
+ * @param	szDirName	[in] 생성할 디렉토리의 full pathname
+ * @return	성공하면 0 을 리턴한다. 이미 디렉토리가 존재하여도 0 을 리턴한다.
  *			실패하면 -1 을 리턴한다. 
  *			디렉토리 full pathname 중간에 디렉토리가 아닌 항목이 포함된 경우, -1 을 리턴한다.
  */

@@ -30,10 +30,10 @@
 # define DIR_MODE		S_IRWXU
 #endif
 
-/** @brief 디렉토리 관련 연산을 수행하는 클래스
- *
+/** 
+ * @ingroup KSipServer
+ * @brief 디렉토리 관련 연산을 수행하는 클래스
  */
-
 class CDirectory
 {
 public:

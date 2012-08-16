@@ -27,11 +27,11 @@
 #define MIN_LOG_FILE_SIZE						1024*1024
 #define MAX_LOG_FILE_SIZE						1024*1024*1024
 
-/** 로그 레벨 관련 ENUM
- *
+/** 
+ * @ingroup KSipServer
+ * @brief 로그 레벨 관련 ENUM
  *	CLog 에서 사용하는 ENUM 이다.
  */
-
 enum EnumLogLevel
 {
 	/** 에러 로그 */
@@ -48,10 +48,10 @@ enum EnumLogLevel
 	LOG_SQL = 0x800
 };
 
-/** @brief 로그 관련 클래스
- *
+/** 
+ * @ingroup KSipServer
+ * @brief 로그 관련 클래스
  */
-
 class CLog
 {
 private:
@@ -67,13 +67,13 @@ private:
 	static int				m_iIndex;				// 로그 파일 인덱스
 
 public:
-	static int SetDirectory( const char * pszDirName );
-	static int Release();
+	static bool SetDirectory( const char * pszDirName );
+	static void Release();
 	static int Print( EnumLogLevel iLevel, const char * fmt, ... );
-	static int SetLevel( int iLevel );
-	static int SetNullLevel();
+	static void SetLevel( int iLevel );
+	static void SetNullLevel();
 
-	static int SetDebugLevel( );
+	static void SetDebugLevel( );
 	static bool IsPrintLogLevel( EnumLogLevel iLevel );
 	static void SetMaxLogSize( int iSize );
 	static int GetLogIndex();
