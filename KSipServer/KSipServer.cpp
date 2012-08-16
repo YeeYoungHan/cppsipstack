@@ -19,6 +19,7 @@
 #include "SipServer.h"
 #include "SipServerSetup.h"
 #include "Log.h"
+#include "NonceMap.h"
 
 /**
  * @ingroup SimpleSipServer
@@ -70,6 +71,10 @@ int main( int argc, char * argv[] )
 	while( 1 )
 	{
 		sleep(1);
+
+		gclsNonceMap.DeleteTimeout( 10 );
+
+		// QQQ: 설정 파일 수정 여부를 검사한다.
 	}
 
 	return 0;
