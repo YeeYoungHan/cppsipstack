@@ -1,4 +1,4 @@
-# Makefile for SipClient
+# Makefile for SimpleSipServer
 #
 # programmer : yee young han ( websearch@naver.com )
 #            : http://blog.naver.com/websearch
