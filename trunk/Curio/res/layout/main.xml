@@ -41,7 +41,7 @@
 		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
 			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button_ACCEPT" android:text="@+id/Button03" android:layout_weight="1"></Button>
 			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button_REJECT" android:text="@+id/Button07" android:layout_weight="1"></Button>
-			<Button android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="0dip" android:id="@+id/Button_CANCEL" android:text="@+id/Button19"></Button>
+			<Button android:layout_height="wrap_content" android:layout_width="0dip" android:id="@+id/Button_CANCEL" android:text="@+id/Button19" android:layout_weight="1"></Button>
 		</LinearLayout>
 
 		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">  		
