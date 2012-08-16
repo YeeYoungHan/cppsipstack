@@ -33,6 +33,9 @@ public:
 	/** 착신거부 ( Do Not Disturb ) */
 	bool	m_bDnd;
 
+	/** 착신전환 ( Call Forward ) */
+	std::string m_strCallForward;
+
 	bool Parse( const char * pszFileName );
 	void Clear();
 };

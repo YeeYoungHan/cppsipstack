@@ -33,6 +33,14 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	pclsMessage->GetCallId( strCallId );
 	SipMakeTag( szTag, sizeof(szTag) );
 
+	if( m_pclsCallBack )
+	{
+		if( m_pclsCallBack->EventIncomingCallAuth( strCallId.c_str(), pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str() ) == false )
+		{
+			return true;
+		}
+	}
+
 	CSipMessage * pclsResponse = pclsMessage->CreateResponse( SIP_RINGING, szTag );
 	if( pclsResponse == NULL ) return false;
 

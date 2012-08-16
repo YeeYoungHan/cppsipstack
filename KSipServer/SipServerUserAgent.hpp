@@ -21,7 +21,7 @@ void CSipServer::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 
 }
 
-void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
+bool CSipServer::EventIncomingCallAuth( const char * pszCallId, const char * pszFrom, const char * pszTo )
 {
 	if( gclsUserMap.Select( pszFrom ) == false )
 	{
@@ -31,17 +31,14 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 			SendUnAuthorizedResponse( pclsInvite );
 		}
 
-		return;
+		return false;
 	}
 
-	CUserInfo	clsUserInfo;
+	return true;
+}
 
-	if( gclsUserMap.Select( pszTo, clsUserInfo ) == false )
-	{
-		gclsUserAgent.StopCall( pszCallId );
-		return;
-	}
-
+void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
+{
 	CXmlUser	clsXmlUser;
 
 	if( SelectUser( pszTo, clsXmlUser ) == false )
@@ -51,6 +48,40 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	}
 
 	if( clsXmlUser.m_bDnd )
+	{
+		gclsUserAgent.StopCall( pszCallId );
+		return;
+	}
+
+	if( clsXmlUser.m_strCallForward.empty() == false )
+	{
+		CSipMessage * pclsInvite = gclsUserAgent.DeleteIncomingCall( pszCallId );
+		if( pclsInvite )
+		{
+			CSipMessage * pclsResponse = pclsInvite->CreateResponseWithToTag( SIP_MOVED_TEMPORARILY );
+			if( pclsResponse )
+			{
+				CSipFrom clsContact;
+
+				clsContact.m_clsUri.m_strProtocol = "sip";
+				clsContact.m_clsUri.m_strUser = clsXmlUser.m_strCallForward;
+				clsContact.m_clsUri.m_strHost = gclsSetup.m_strLocalIp;
+				clsContact.m_clsUri.m_iPort = gclsSetup.m_iUdpPort;
+
+				pclsResponse->m_clsContactList.push_back( clsContact );
+
+				gclsSipStack.SendSipMessage( pclsResponse );
+				return;
+			}
+		}
+
+		gclsUserAgent.StopCall( pszCallId );
+		return;
+	}
+
+	CUserInfo	clsUserInfo;
+
+	if( gclsUserMap.Select( pszTo, clsUserInfo ) == false )
 	{
 		gclsUserAgent.StopCall( pszCallId );
 		return;
