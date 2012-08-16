@@ -17,6 +17,7 @@
  */
 
 /**
+ * @ingroup SipUserAgent
  * @brief SIP INVITE 요청 메시지 수신 이벤트 핸들러
  * @param iThreadId		SIP stack 의 UDP 쓰레드 아이디
  * @param pclsMessage 수신된 SIP 요청 메시지
@@ -108,6 +109,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 }
 
 /**
+ * @ingroup SipUserAgent
  * @brief SIP INVITE 응답 메시지 수신 이벤트 핸들러
  * @param iThreadId		SIP stack 의 UDP 쓰레드 아이디
  * @param pclsMessage 수신된 SIP 요청 메시지

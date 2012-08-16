@@ -42,7 +42,7 @@ CSipServer::~CSipServer()
 }
 
 /**
- * @ingroup SimpleSipServer
+ * @ingroup KSipServer
  * @brief SIP 서버를 시작한다.
  * @param clsSetup SIP stack 설정 항목을 저장한 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -60,7 +60,7 @@ bool CSipServer::Start( CSipStackSetup & clsSetup )
 }
 
 /**
- * @ingroup SimpleSipServer
+ * @ingroup KSipServer
  * @brief SIP 요청 메시지 수신 이벤트 핸들러
  * @param iThreadId		쓰레드 아이디
  * @param pclsMessage SIP 요청 메시지
@@ -77,7 +77,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 }
 
 /**
- * @ingroup SimpleSipServer
+ * @ingroup KSipServer
  * @brief SIP 응답 메시지 수신 이벤트 핸들러
  * @param iThreadId		쓰레드 아이디
  * @param pclsMessage SIP 응답 메시지
@@ -88,6 +88,13 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	return false;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief SIP 응답 메시지를 생성하여서 전송한다.
+ * @param pclsMessage SIP 요청 메시지
+ * @param iStatusCode SIP 응답 코드
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipServer::SendResponse( CSipMessage * pclsMessage, int iStatusCode )
 {
 	CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( iStatusCode );

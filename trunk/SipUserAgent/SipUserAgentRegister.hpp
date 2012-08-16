@@ -17,6 +17,7 @@
  */
 
 /**
+ * @ingroup SipUserAgent
  * @brief SIP REGISTER 응답 메시지 수신 이벤트 핸들러
  * @param iThreadId		SIP stack 의 UDP 쓰레드 아이디
  * @param pclsMessage 수신된 SIP 요청 메시지
@@ -47,7 +48,7 @@ bool CSipUserAgent::RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessa
 					time( &itSL->m_iLoginTime );
 				}
 
-				if( m_pclsCallBack ) m_pclsCallBack->EventRegister( *itSL, iStatusCode );
+				if( m_pclsCallBack ) m_pclsCallBack->EventRegister( &(*itSL), iStatusCode );
 			}
 			else if( iStatusCode == SIP_UNAUTHORIZED || iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
 			{
@@ -59,7 +60,7 @@ bool CSipUserAgent::RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessa
 				itSL->ClearLogin();
 				time( &itSL->m_iNextSendTime );
 				itSL->m_iNextSendTime += 60;
-				if( m_pclsCallBack ) m_pclsCallBack->EventRegister( *itSL, iStatusCode );
+				if( m_pclsCallBack ) m_pclsCallBack->EventRegister( &(*itSL), iStatusCode );
 			}
 
 			bRes = true;
