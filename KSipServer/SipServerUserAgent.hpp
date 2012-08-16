@@ -42,6 +42,20 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 		return;
 	}
 
+	CXmlUser	clsXmlUser;
+
+	if( SelectUser( pszTo, clsXmlUser ) == false )
+	{
+		gclsUserAgent.StopCall( pszCallId );
+		return;
+	}
+
+	if( clsXmlUser.m_bDnd )
+	{
+		gclsUserAgent.StopCall( pszCallId );
+		return;
+	}
+
 	std::string	strCallId;
 	CSipCallRoute	clsRoute;
 

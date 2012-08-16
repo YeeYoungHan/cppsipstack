@@ -16,12 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipParserDefine.h"
 #include "XmlUser.h"
 #include "XmlElement.h"
 #include "SipServerSetup.h"
 #include "Directory.h"
 
-CXmlUser::CXmlUser()
+CXmlUser::CXmlUser() : m_bDnd(false)
 {
 }
 
@@ -37,6 +38,16 @@ bool CXmlUser::Parse( const char * pszFileName )
 
 	clsXml.SelectElementData( "Id", m_strId );
 	clsXml.SelectElementData( "PassWord", m_strPassWord );
+
+	std::string	strTemp;
+
+	if( clsXml.SelectElementData( "DND", strTemp ) )
+	{
+		if( !strcasecmp( strTemp.c_str(), "true" ) )
+		{
+			m_bDnd = true;
+		}
+	}
 
 	if( m_strId.empty() ) return false;
 

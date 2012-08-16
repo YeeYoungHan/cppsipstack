@@ -30,6 +30,9 @@ public:
 	std::string	m_strId;
 	std::string m_strPassWord;
 
+	/** Âø½Å°ÅºÎ ( Do Not Disturb ) */
+	bool	m_bDnd;
+
 	bool Parse( const char * pszFileName );
 	void Clear();
 };
