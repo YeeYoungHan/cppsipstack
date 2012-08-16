@@ -51,6 +51,7 @@ bool CSipServer::Start( CSipStackSetup & clsSetup )
 {
 	// QQQ: Call Routeing 할 IP-PBX 정보를 등록해 주어야 한다.
 
+	gclsUserAgent.m_pclsCallBack = this;
 	if( gclsUserAgent.Start( clsSetup ) == false ) return false;
 
 	gclsSipStack.AddCallBack( this );
