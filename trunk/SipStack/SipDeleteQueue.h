@@ -27,12 +27,15 @@
 
 /**
  * @ingroup SipStack
- * @brief 
+ * @brief 만료된 SIP 메시지를 저장하는 클래스
  */
 class CSipDeleteInfo
 {
 public:
+	/** 만료된 SIP 메시지 */
 	CSipMessage  * m_pclsMessage;
+
+	/** 삭제전 대기 시간 */
 	time_t				 m_iDeleteTime;
 };
 
@@ -40,7 +43,7 @@ typedef std::list< CSipDeleteInfo > SIP_DELETE_QUEUE;
 
 /**
  * @ingroup SipStack
- * @brief 
+ * @brief 만료된 SIP 메시지를 저장한 후, 일정 시간 후에 삭제하는 클래스
  */
 class CSipDeleteQueue
 {

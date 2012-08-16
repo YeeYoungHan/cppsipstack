@@ -47,8 +47,8 @@ Socket UdpSocket()
 /** 
  * @ingroup SipStack
  * @brief UDP listen 소켓을 생성한다. 
- * @param	iPort
- * @param	pszIp
+ * @param	iPort	UDP 포트
+ * @param	pszIp	UDP IP 주소. NULL 을 입력하면 any ip 주소를 사용한다.
  * @return	성공하면 socket handle 을 리턴한다. 그렇지 않으면 INVALID_SOCKET 를 리턴한다.
  */
 Socket UdpListen( unsigned short iPort, const char * pszIp )
@@ -92,13 +92,13 @@ Socket UdpListen( unsigned short iPort, const char * pszIp )
 /**
  * @ingroup SipStack
  * @brief UDP 메시지를 수신한다.
- * @param iFd 
- * @param pszBuf 
- * @param piLen 
- * @param pszIp 
- * @param iIpSize 
- * @param piPort 
- * @returns 
+ * @param iFd			소켓 핸들
+ * @param pszBuf	수신 버퍼
+ * @param piLen		수신 패킷 크기를 저장할 변수
+ * @param pszIp		IP 주소
+ * @param iIpSize IP 주소 변수 크기
+ * @param piPort	포트 번호
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, char * pszIp, int iIpSize, unsigned short* piPort )
 {
@@ -138,12 +138,12 @@ bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, char * pszIp, int iIpSize,
 /**
  * @ingroup SipStack
  * @brief UDP 메시지를 수신한다.
- * @param iFd 
- * @param pszBuf 
- * @param piLen 
- * @param piIp 
- * @param piPort 
- * @returns 
+ * @param iFd			소켓 핸들
+ * @param pszBuf	수신 버퍼
+ * @param piLen		수신 패킷 크기
+ * @param piIp		IP 주소
+ * @param piPort	포트 번호
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, unsigned int * piIp, unsigned short* piPort )
 {
@@ -176,12 +176,12 @@ bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, unsigned int * piIp, unsig
 /**
  * @ingroup SipStack
  * @brief UDP 메시지를 전송한다.
- * @param iFd 
- * @param pszBuf 
- * @param iBufLen 
- * @param pszIp 
- * @param iPort 
- * @returns 
+ * @param iFd			소캣 핸들
+ * @param pszBuf	전송 버퍼
+ * @param iBufLen 전송 버퍼 길이
+ * @param pszIp		목적지 IP 주소
+ * @param iPort		목적지 포트 번호
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort )
 {
@@ -205,12 +205,12 @@ bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, const char * pszIp, 
 /**
  * @ingroup SipStack
  * @brief UDP 메시지를 전송한다.
- * @param iFd 
- * @param pszBuf 
- * @param iBufLen 
- * @param iIp 
- * @param iPort 
- * @returns 
+ * @param iFd			소캣 핸들
+ * @param pszBuf	발신 버퍼
+ * @param iBufLen 발신 버퍼 길이
+ * @param iIp			목적지 IP 주소
+ * @param iPort		목적지 포트 번호
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, unsigned int iIp, unsigned short iPort )
 {
@@ -255,6 +255,11 @@ void InitNetwork()
 #endif
 }
 
+/**
+ * @brief pollfd 구조체에 수신할 핸들을 저장한다.
+ * @param sttPollFd pollfd 구조체
+ * @param hSocket		수신 이벤트를 위한 소켓
+ */
 void TcpSetPollIn( struct pollfd & sttPollFd, Socket hSocket )
 {
 	sttPollFd.fd = hSocket;

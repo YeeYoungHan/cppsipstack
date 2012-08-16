@@ -21,14 +21,27 @@
 CSipDeleteQueue gclsSipDeleteQueue;
 extern time_t giTime;
 
+/**
+ * @ingroup SipStack
+ * @brief 생성자
+ */
 CSipDeleteQueue::CSipDeleteQueue()
 {
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 소멸자
+ */
 CSipDeleteQueue::~CSipDeleteQueue()
 {
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 일정 시간 후에 삭제할 SIP 메시지를 저장한다.
+ * @param pclsMessage 만료된 SIP 메시지
+ */
 void CSipDeleteQueue::Insert( CSipMessage * pclsMessage )
 {
 	CSipDeleteInfo clsInfo;
@@ -41,6 +54,10 @@ void CSipDeleteQueue::Insert( CSipMessage * pclsMessage )
 	m_clsMutex.release();
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 대기 시간이 초과한 SIP 메시지를 삭제한다.
+ */
 void CSipDeleteQueue::DeleteTimeout( )
 {
 	int			iCount;
@@ -63,6 +80,11 @@ void CSipDeleteQueue::DeleteTimeout( )
 	m_clsMutex.release();
 }
 
+/**
+ * @ingroup SipStack
+ * @brief		자료구조에 저장된 SIP 메시지의 개수를 리턴한다.
+ * @returns 자료구조에 저장된 SIP 메시지의 개수를 리턴한다.
+ */
 int CSipDeleteQueue::GetSize()
 {
 	return m_clsList.size();

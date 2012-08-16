@@ -20,15 +20,24 @@
 #include "SipStack.h"
 #include "SipDeleteQueue.h"
 
+/**
+ * @ingroup SipStack
+ * @brief 생성자
+ */
 CSipNICTList::CSipNICTList()
 {
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 소멸자
+ */
 CSipNICTList::~CSipNICTList()
 {
 }
 
 /**
+ * @ingroup SipStack
  * @brief Non-Invite Client Transaction List 에 SIP 메시지를 추가한다.
  * @param pclsMessage SIP 메시지 저장 구조체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -98,6 +107,7 @@ bool CSipNICTList::Insert( CSipMessage * pclsMessage )
 }
 
 /**
+ * @ingroup SipStack
  * @brief Non-Invite Client Transaction List 에서 재전송할 항목을 재전송하고 timeout 된 항목은 timeout 처리한다.
  * @param psttTime 실행한 시간
  */
@@ -165,6 +175,7 @@ DELETE_TRANSACTION:
 }
 
 /**
+ * @ingroup SipStack
  * @brief Non-Invite Client Transaction List 의 모든 항목을 삭제한다.
  */
 void CSipNICTList::DeleteAll( )
@@ -182,6 +193,7 @@ void CSipNICTList::DeleteAll( )
 }
 
 /**
+ * @ingroup SipStack
  * @brief Non-Invite Client Transaction List 의 크기를 리턴한다.
  * @returns Non-Invite Client Transaction List 의 크기를 리턴한다.
  */
@@ -190,12 +202,18 @@ int CSipNICTList::GetSize( )
 	return m_clsMap.size();
 }
 
+/**
+ * @ingroup SipStack
+ * @brief NICT 자료구조에 저장된 SIP Call-ID 들을 문자열에 저장한다.
+ * @param strBuf SIP Call-ID 들을 저장할 문자열
+ */
 void CSipNICTList::GetString( std::string & strBuf )
 {
-
+	// QQQ
 }
 
 /**
+ * @ingroup SipStack
  * @brief SIP 메시지에 해당하는 CANCEL 메시지를 검색해서 삭제한다.
  * @param pclsMessage		SIP 메시지
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.

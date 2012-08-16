@@ -18,15 +18,24 @@
 
 #include "SipStackSetup.h"
 
+/**
+ * @ingroup SipStack
+ * @brief 생성자
+ */
 CSipStackSetup::CSipStackSetup() : m_iLocalUdpPort(5060), m_iUdpThreadCount(1)
 {
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 소멸자
+ */
 CSipStackSetup::~CSipStackSetup()
 {
 }
 
 /**
+ * @ingroup SipStack
  * @brief 설정 항목을 복사한다.
  * @param clsSetup 설정 항목 저장 객체
  */
@@ -38,6 +47,7 @@ void CSipStackSetup::Copy( CSipStackSetup & clsSetup )
 }
 
 /**
+ * @ingroup SipStack
  * @brief 설정 항목의 유효성을 검사한다.
  * @returns 설정 항목이 유효하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
