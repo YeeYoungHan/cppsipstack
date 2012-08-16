@@ -175,10 +175,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\CallMap.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\KSipServer.cpp"
 				>
 			</File>
@@ -186,6 +182,14 @@
 		<Filter
 			Name="자료구조"
 			>
+			<File
+				RelativePath=".\CallMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CallMap.h"
+				>
+			</File>
 			<File
 				RelativePath=".\NonceMap.cpp"
 				>
@@ -275,10 +279,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\CallMap.h"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
