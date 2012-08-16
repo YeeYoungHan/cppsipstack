@@ -13,6 +13,7 @@ all:
 	cd TestSipParser && make
 	cd SipClient && make
 	cd SimpleSipServer && make
+	cd KSipServer && make
 
 clean:
 	cd SipParser && make clean
@@ -23,6 +24,7 @@ clean:
 	cd TestSipParser && make clean
 	cd SipClient && make clean
 	cd SimpleSipServer && make clean
+	cd KSipServer && make clean
 
 install:
 
