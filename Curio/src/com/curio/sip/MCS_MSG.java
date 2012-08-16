@@ -1,4 +1,4 @@
-package com.amc.sip;
+package com.curio.sip;
 
 /////< ¸Þ½ÃÁö
 public class MCS_MSG {

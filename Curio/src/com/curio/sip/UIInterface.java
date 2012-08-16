@@ -1,6 +1,6 @@
-package com.amc.sip;
+package com.curio.sip;
 
-import com.amc.sip.MCS_MSG;
+import com.curio.sip.MCS_MSG;
 
 public interface UIInterface {
 	public boolean addMessage(MCS_MSG msg);
