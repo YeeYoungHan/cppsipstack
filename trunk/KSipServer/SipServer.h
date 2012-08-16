@@ -22,7 +22,7 @@
 #include "SipUserAgent.h"
 
 /**
- * @defgroup KSipServer SimpleSipServer
+ * @defgroup KSipServer KSipServer
  * C++ SIP Stack 을 이용한 한국형 IP-PBX
  */
 

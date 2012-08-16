@@ -21,6 +21,9 @@
 
 #include <string>
 
+/**
+ * @brief 
+ */
 class CXmlUser
 {
 public:

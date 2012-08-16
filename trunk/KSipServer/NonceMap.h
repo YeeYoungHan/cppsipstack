@@ -30,7 +30,10 @@
 
 #define PRIVATE_KEY	"hotyoungsipserver"
 
-/** @brief nonce 정보를 저장하는 클래스 */
+/** 
+ * @ingroup KSipServer
+ * @brief nonce 정보를 저장하는 클래스
+ */
 class CNonceInfo
 {
 public:
@@ -39,7 +42,10 @@ public:
 
 typedef std::map< std::string, CNonceInfo >	NONCE_MAP;
 
-/** @brief nonce 를 관리하는 클래스 */
+/**
+ * @ingroup KSipServer
+ * @brief nonce 를 관리하는 클래스
+ */
 class CNonceMap
 {
 public:
@@ -47,7 +53,7 @@ public:
 
 	bool GetNewValue( char * pszNonce, int iNonceSize );
 	bool Select( const char * pszNonce, bool bIsRemove = true );
-	bool DeleteTimeout( int iSecond );
+	void DeleteTimeout( int iSecond );
 	int GetCount();
 
 private:

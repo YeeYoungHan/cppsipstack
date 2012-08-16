@@ -30,7 +30,7 @@ CUserMap::~CUserMap()
 }
 
 /**
- * @ingroup SimpleSipServer
+ * @ingroup KSipServer
  * @brief 로그인된 클라이언트 정보를 저장한다.
  * @param pclsMessage SIP REGISTER 메시지
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -63,7 +63,7 @@ bool CUserMap::Insert( CSipMessage * pclsMessage )
 }
 
 /**
- * @ingroup SimpleSipServer
+ * @ingroup KSipServer
  * @brief 사용자 ID 에 해당하는 정보를 검색한다.
  * @param pszUserId 사용자 ID
  * @param clsInfo		사용자 정보를 저장할 변수
@@ -86,6 +86,12 @@ bool CUserMap::Select( const char * pszUserId, CUserInfo & clsInfo )
 	return bRes;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 사용자 아이디가 존재하는지 검색한다.
+ * @param pszUserId 사용자 아이디
+ * @returns 사용자 아이디가 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CUserMap::Select( const char * pszUserId )
 {
 	bool bRes = false;
@@ -102,6 +108,12 @@ bool CUserMap::Select( const char * pszUserId )
 	return bRes;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 사용자 아이디를 자료구조에서 삭제한다.
+ * @param pszUserId 사용자 아이디
+ * @returns 사용자 아이디를 자료구조에서 삭제하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CUserMap::Delete( const char * pszUserId )
 {
 	bool bRes = false;

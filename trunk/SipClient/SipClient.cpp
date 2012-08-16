@@ -21,16 +21,36 @@
 
 std::string	gstrInviteId;
 
+/**
+ * @ingroup SipClient
+ * @brief SIP REGISTER 응답 메시지 수신 이벤트 핸들러
+ * @param pclsInfo	SIP REGISTER 응답 메시지를 전송한 IP-PBX 정보 저장 객체
+ * @param iStatus		SIP REGISTER 응답 코드
+ */
 void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
 	printf( "EventRegister(%s) : %d\n", pclsInfo->m_strUserId.c_str(), iStatus );
 }
 
+/**
+ * @ingroup SipClient
+ * @brief SIP 통화 요청 수신에 대한 인증 확인 이벤트 핸들러
+ * @param pclsMessage	SIP INVITE 요청 메시지
+ * @return 인증에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipClient::EventIncomingCallAuth( CSipMessage * pclsMessage )
 {
 	return true;
 }
 
+/**
+ * @ingroup SipClient
+ * @brief SIP 통화 요청 수신 이벤트 핸들러
+ * @param	pszCallId	SIP Call-ID
+ * @param pszFrom		SIP From 사용자 아이디
+ * @param pszTo			SIP To 사용자 아이디
+ * @param pclsRtp		RTP 정보 저장 객체
+ */
 void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
 {
 	printf( "EventIncomingCall(%s,%s)\n", pszCallId, pszFrom );
@@ -43,6 +63,13 @@ void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	}
 }
 
+/**
+ * @ingroup SipClient
+ * @brief SIP Ring / Session Progress 수신 이벤트 핸들러
+ * @param	pszCallId		SIP Call-ID
+ * @param iSipStatus	SIP 응답 코드
+ * @param pclsRtp			RTP 정보 저장 객체
+ */
 void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
 {
 	printf( "EventCallRing(%s,%d)\n", pszCallId, iSipStatus );
@@ -53,6 +80,12 @@ void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
 	}
 }
 
+/**
+ * @ingroup SipClient
+ * @brief SIP 통화 연결 이벤트 핸들러
+ * @param	pszCallId	SIP Call-ID
+ * @param pclsRtp		RTP 정보 저장 객체
+ */
 void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
 	printf( "EventCallStart(%s)\n", pszCallId );
@@ -63,11 +96,23 @@ void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 	}
 }
 
+/**
+ * @ingroup SipClient
+ * @brief SIP 통화 종료 이벤트 핸들러
+ * @param	pszCallId		SIP Call-ID
+ * @param iSipStatus	SIP 응답 코드. INVITE 에 대한 오류 응답으로 전화가 종료된 경우, INVITE 의 응답 코드를 저장한다.
+ */
 void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
 	printf( "EventCallEnd(%s,%d)\n", pszCallId, iSipStatus );
 }
 
+/**
+ * @ingroup SipClient
+ * @brief SIP ReINVITE 수신 이벤트 핸들러
+ * @param	pszCallId	SIP Call-ID
+ * @param pclsRtp		RTP 정보 저장 객체
+ */
 void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
 	printf( "EventReInvite(%s)\n", pszCallId );

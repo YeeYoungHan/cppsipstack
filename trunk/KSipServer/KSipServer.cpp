@@ -22,8 +22,8 @@
 #include "NonceMap.h"
 
 /**
- * @ingroup SimpleSipServer
- * @brief C++ SIP stack 을 이용한 초간단 SIP 서버
+ * @ingroup KSipServer
+ * @brief C++ SIP stack 을 이용한 한국형 IP-PBX
  * @param argc 
  * @param argv 
  * @returns 정상 종료하면 0 을 리턴하고 오류가 발생하면 -1 를 리턴한다.

@@ -23,8 +23,16 @@
 #include <map>
 #include "SipMutex.h"
 
+/**
+ * @ingroup KSipServer
+ * @brief 연결된 통화 정보를 저장하는 자료구조. key 와 value 는 SIP Call-ID 이다.
+ */
 typedef std::map< std::string, std::string > CALL_MAP;
 
+/**
+ * @ingroup KSipServer
+ * @brief 연결된 통화 정보를 저장하는 자료구조 클래스
+ */
 class CCallMap
 {
 public:

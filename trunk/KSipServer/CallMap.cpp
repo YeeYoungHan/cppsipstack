@@ -28,6 +28,13 @@ CCallMap::~CCallMap()
 {
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 통화 요청 Call-ID 와 전달된 통화 요청 Call-ID 를 자료구조에 저장한다.
+ * @param pszRecvCallId 통화 요청 Call-ID
+ * @param pszSendCallId 전달된 통화 요청 Call-ID
+ * @returns true 를 리턴한다.
+ */
 bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId )
 {
 	CALL_MAP::iterator	itMap;
@@ -49,6 +56,13 @@ bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId )
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief Call-ID 와 연결된 Call-ID 를 검색한다.
+ * @param pszCallId SIP Call-ID
+ * @param strCallId 연결된 SIP Call-ID
+ * @returns 검색되면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CCallMap::Select( const char * pszCallId, std::string & strCallId )
 {
 	CALL_MAP::iterator	itMap;
@@ -68,6 +82,12 @@ bool CCallMap::Select( const char * pszCallId, std::string & strCallId )
 	return bRes;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief Call-ID 와 연결된 Call-ID 를 자료구조에서 삭제한다.
+ * @param pszCallId SIP Call-ID
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CCallMap::Delete( const char * pszCallId )
 {
 	CALL_MAP::iterator	itMap;
