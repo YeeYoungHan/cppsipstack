@@ -149,5 +149,5 @@ void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 void CSipServer::EventTimer( )
 {
-	gclsNonceMap.DeleteTimeout( 10 );
+	
 }
