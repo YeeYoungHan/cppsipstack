@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2012 Yee Young Han <websearch@naver.com> (http://blog.naver.com/websearch)
+ * Copyright (C) 2012 Yee Young Han <websearch@naver.com> (http://blog.naver.com/websearch), Jeong Jong Hwan(sosolili@naver.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -200,3 +200,33 @@ int main( int argc, char * argv[] )
 	return 0;
 }
 #endif
+
+
+bool CSipWrapper::setSipClient()
+{
+}
+
+bool CSipWrapper::setSipServerInfo(char* pszServerIp, char* pszUserId, char* pszPassWord)
+{
+	clsServerInfo.m_strIp = std::string(pszServerIp);
+	clsServerInfo.m_strUserId = std::string(pszUserId);
+	clsServerInfo.m_strPassWord = std::string(pszPassWord);
+}
+
+bool CSipWrapper::setSipStackSetup(char* strLocalIp, int UdpPort)
+{
+	clsSetup.m_strLocalIp = std::string(strLocalIp);
+	clsSetup.m_iLocalUdpPort = UdpPort;//10000;
+}
+
+bool CSipWrapper::setCallback()
+{
+	clsUserAgent.m_pclsCallBack = &clsSipClient;
+}
+
+bool CSipWrapper::start()
+{
+	clsUserAgent.AddRegisterInfo( clsServerInfo );
+	gclsSipStack.AddNetworkLog( &clsSipClient );
+	clsUserAgent.Start( clsSetup );
+}
