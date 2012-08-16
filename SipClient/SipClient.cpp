@@ -21,9 +21,9 @@
 
 std::string	gstrInviteId;
 
-void CSipClient::EventRegister( CSipServerInfo clsInfo, int iStatus )
+void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
-	printf( "EventRegister(%s) : %d\n", clsInfo.m_strUserId.c_str(), iStatus );
+	printf( "EventRegister(%s) : %d\n", pclsInfo->m_strUserId.c_str(), iStatus );
 }
 
 void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )

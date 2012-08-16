@@ -22,6 +22,7 @@
 #include "SipStackDefine.h"
 
 /**
+ * @ingroup SipUserAgent
  * @brief RTP 정보 저장 클래스
  */
 class CSipCallRtp
@@ -33,6 +34,7 @@ public:
 };
 
 /**
+ * @ingroup SipUserAgent
  * @brief CSipUserAgent 의 이벤트를 응용 프로그램으로 전달하는 callback 인터페이스
  */
 class ISipUserAgentCallBack
@@ -40,13 +42,61 @@ class ISipUserAgentCallBack
 public:
 	virtual ~ISipUserAgentCallBack(){};
 
-	virtual void EventRegister( CSipServerInfo clsInfo, int iStatus ) = 0;
+	/**
+   * @ingroup SipUserAgent
+	 * @brief SIP REGISTER 응답 메시지 수신 이벤트 핸들러
+	 * @param pclsInfo	SIP REGISTER 응답 메시지를 전송한 IP-PBX 정보 저장 객체
+	 * @param iStatus		SIP REGISTER 응답 코드
+	 */
+	virtual void EventRegister( CSipServerInfo * pclsInfo, int iStatus ) = 0;
+
+	/**
+   * @ingroup SipUserAgent
+	 * @brief SIP 통화 요청 수신 이벤트 핸들러
+	 * @param	pszCallId	SIP Call-ID
+	 * @param pszFrom		SIP From 사용자 아이디
+	 * @param pszTo			SIP To 사용자 아이디
+	 * @param pclsRtp		RTP 정보 저장 객체
+	 */
 	virtual void EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp ) = 0;
+
+	/**
+   * @ingroup SipUserAgent
+	 * @brief SIP Ring / Session Progress 수신 이벤트 핸들러
+	 * @param	pszCallId		SIP Call-ID
+	 * @param iSipStatus	SIP 응답 코드
+	 * @param pclsRtp			RTP 정보 저장 객체
+	 */
 	virtual void EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp ) = 0;
+
+	/**
+   * @ingroup SipUserAgent
+	 * @brief SIP 통화 연결 이벤트 핸들러
+	 * @param	pszCallId	SIP Call-ID
+	 * @param pclsRtp		RTP 정보 저장 객체
+	 */
 	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp ) = 0;
+
+	/**
+   * @ingroup SipUserAgent
+	 * @brief SIP 통화 종료 이벤트 핸들러
+	 * @param	pszCallId		SIP Call-ID
+	 * @param iSipStatus	SIP 응답 코드. INVITE 에 대한 오류 응답으로 전화가 종료된 경우, INVITE 의 응답 코드를 저장한다.
+	 */
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus ) = 0;
+
+	/**
+   * @ingroup SipUserAgent
+	 * @brief SIP ReINVITE 수신 이벤트 핸들러
+	 * @param	pszCallId	SIP Call-ID
+	 * @param pclsRtp		RTP 정보 저장 객체
+	 */
 	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp ) = 0;
 
+	/**
+   * @ingroup SipUserAgent
+	 * @brief 1초 단위로 실행되는 타이머 이벤트 핸들러
+	 */
 	virtual void EventTimer( ) = 0;
 };
 

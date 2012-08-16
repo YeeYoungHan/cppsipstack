@@ -315,6 +315,7 @@ static void MD5Final( unsigned char digest[16], MD5_CTX * context )
 }
 
 /**
+ * @ingroup SipUserAgent
  * @brief 평문을 MD5 문자열로 변환한다.
  * @param string 평문
  * @param result MD5 문자열 저장 변수

@@ -22,13 +22,13 @@
 #include "SipUserAgent.h"
 
 /**
- * @defgroup SimpleSipServer SimpleSipServer
- * SIP Stack 을 이용한 초간단 SIP 서버 예제 프로그램
+ * @defgroup KSipServer SimpleSipServer
+ * C++ SIP Stack 을 이용한 한국형 IP-PBX
  */
 
 /**
- * @ingroup SimpleSipServer
- * @brief SIP Stack 을 이용한 초간단 SIP 서버 클래스
+ * @ingroup KSipServer
+ * @brief C++ SIP Stack 을 이용한 한국형 IP-PBX 클래스
  */
 class CSipServer : public ISipStackCallBack, ISipUserAgentCallBack, ISipNetworkLog
 {
@@ -43,7 +43,7 @@ public:
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 
 	// ISipUserAgentCallBack
-	virtual void EventRegister( CSipServerInfo clsInfo, int iStatus );
+	virtual void EventRegister( CSipServerInfo * pclsInfo, int iStatus );
 	virtual void EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp );
 	virtual void EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
 	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );

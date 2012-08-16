@@ -22,6 +22,7 @@
 #include "SipUtility.h"
 
 /**
+ * @ingroup SipUserAgent
  * @brief 생성자
  */
 CSipDialog::CSipDialog() : m_iSeq(0), m_iContactPort(-1), m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1), m_pclsInvite(NULL)
@@ -33,6 +34,7 @@ CSipDialog::CSipDialog() : m_iSeq(0), m_iContactPort(-1), m_iLocalRtpPort(-1), m
 }
 
 /**
+ * @ingroup SipUserAgent
  * @brief 소멸자.
  */
 CSipDialog::~CSipDialog()
@@ -41,6 +43,7 @@ CSipDialog::~CSipDialog()
 }
 
 /**
+ * @ingroup SipUserAgent
  * @brief INVITE 메시지를 생성한다.
  * @returns 성공하면 INVITE 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
  */
@@ -61,6 +64,7 @@ CSipMessage * CSipDialog::CreateInvite( )
 }
 
 /**
+ * @ingroup SipUserAgent
  * @brief ACK 메시지를 생성한다.
  * @returns 성공하면 ACK 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
  */
@@ -75,6 +79,7 @@ CSipMessage * CSipDialog::CreateAck( )
 }
 
 /**
+ * @ingroup SipUserAgent
  * @brief CANCEL 메시지를 생성한다.
  * @returns 성공하면 CANCEL 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
  */
@@ -89,6 +94,7 @@ CSipMessage * CSipDialog::CreateCancel( )
 }
 
 /**
+ * @ingroup SipUserAgent
  * @brief BYE 메시지를 생성한다.
  * @returns 성공하면 BYE 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
  */
@@ -101,6 +107,7 @@ CSipMessage * CSipDialog::CreateBye( )
 }
 
 /**
+ * @ingroup SipUserAgent
  * @brief SIP 메시지에 SDP 메시지를 추가한다.
  * @param pclsMessage SDP 메시지를 추가할 SIP 메시지 객체
  * @returns true 를 리턴한다.
@@ -149,6 +156,7 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 }
 
 /**
+ * @ingroup SipUserAgent
  * @brief SIP 요청 메시지를 생성한다.
  * @param pszSipMethod SIP 메소드
  * @returns 성공하면 SIP 요청 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
