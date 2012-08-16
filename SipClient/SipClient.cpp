@@ -26,7 +26,7 @@ void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 	printf( "EventRegister(%s) : %d\n", pclsInfo->m_strUserId.c_str(), iStatus );
 }
 
-bool CSipClient::EventIncomingCallAuth( const char * pszCallId, const char * pszFrom, const char * pszTo )
+bool CSipClient::EventIncomingCallAuth( CSipMessage * pclsMessage )
 {
 	return true;
 }
