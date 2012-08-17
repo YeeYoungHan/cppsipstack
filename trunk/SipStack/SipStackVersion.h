@@ -19,6 +19,6 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.01"
+#define SIP_STACK_VERSION "0.02"
 
 #endif
