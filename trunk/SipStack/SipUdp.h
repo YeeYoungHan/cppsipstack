@@ -19,6 +19,8 @@
 #ifndef _SIP_UDP_H_
 #define _SIP_UDP_H_
 
+#include <string>
+
 #ifdef WIN32
 
 #include <winsock2.h>
