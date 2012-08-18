@@ -16,38 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include <stdio.h>
+#ifndef _K_SIP_SERVER_H_
+#define _K_SIP_SERVER_H_
 
-/**
- * @defgroup TestSipParser TestSipParser
- * SipParser / SdpParser / XmlParser 라이브러리 기능을 테스트한다.
- */
+#define USE_MYSQL
 
-bool TestSipUri();
-bool TestSipFrom();
-bool TestSipVia();
-bool TestSipMessage();
-bool TestSdp();
-bool TestXml();
-
-/**
- * @ingroup TestSipParser
- * @brief SipParser / SdpParser / XmlParser 라이브러리 기능을 테스트한다.
- * @param argc 
- * @param argv 
- * @returns 0 을 리턴한다.
- */
-int main( int argc, char * argv[] )
-{
-	if( TestSipUri() == false ) goto FUNC_END;
-	if( TestSipFrom() == false ) goto FUNC_END;
-	if( TestSipVia() == false ) goto FUNC_END;
-	if( TestSipMessage() == false ) goto FUNC_END;
-	if( TestSdp() == false ) goto FUNC_END;
-	if( TestXml() == false ) goto FUNC_END;
-
-	printf( "All test is O.K.\n" );
-
-FUNC_END:
-	return 0;
-}
+#endif

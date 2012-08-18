@@ -16,13 +16,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "KSipServer.h"
 #include "SipServerSetup.h"
 #include "XmlElement.h"
 #include "Log.h"
 
 CSipServerSetup gclsSetup;
 
-CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10), m_iLogLevel(0), m_iLogMaxSize(20000000)
+CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10), m_iLogLevel(0), m_iLogMaxSize(20000000), m_iDbPort(3306)
 {
 }
 
@@ -69,16 +70,60 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "MaxSize", m_iLogMaxSize );
 
 	pclsElement = clsXml.SelectElement( "XmlFolder" );
-	if( pclsElement == NULL ) return false;
+	if( pclsElement )
+	{
+		pclsElement->SelectElementData( "User", m_strUserXmlFolder );
+	}
 
-	pclsElement->SelectElementData( "User", m_strUserXmlFolder );
+#ifdef USE_MYSQL
+	pclsElement = clsXml.SelectElement( "Db" );
+	if( pclsElement )
+	{
+		int iTemp;
+
+		pclsElement->SelectElementData( "Host", m_strDbHost );
+		pclsElement->SelectElementData( "UserId", m_strDbUserId );
+		pclsElement->SelectElementData( "PassWord", m_strDbPassWord );
+		pclsElement->SelectElementData( "DataBase", m_strDbName );
+
+		if( pclsElement->SelectElementData( "Port", iTemp ) )
+		{
+			m_iDbPort = iTemp;
+		}
+	}
+#endif
+
+	if( m_strUserXmlFolder.empty() == false )
+	{
+		m_eType = E_DT_XML;
+	}
+	else
+	{
+#ifdef USE_MYSQL
+		m_eType = E_DT_MYSQL;
+
+		if( m_strDbHost.empty() )
+		{
+			CLog::Print( LOG_ERROR, "Db.Host data is not found" );
+			return false;
+		}
+
+		if( m_strDbUserId.empty() )
+		{
+			CLog::Print( LOG_ERROR, "Db.UserId data is not found" );
+			return false;
+		}
+
+		if( m_strDbName.empty() )
+		{
+			CLog::Print( LOG_ERROR, "Db.DataBase data is not found" );
+			return false;
+		}
+#else
+		CLog::Print( LOG_ERROR, "XmlFolder.User data is not found" );
+		return false;
+#endif
+	}
 
 	return true;
-}
-
-bool CSipServerSetup::IsUserXml()
-{
-	if( m_strUserXmlFolder.empty() == false ) return true;
-
-	return false;
 }

@@ -16,10 +16,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "KSipServer.h"
 #include "SipServer.h"
 #include "SipServerSetup.h"
 #include "Log.h"
 #include "NonceMap.h"
+#include "ServerUtility.h"
+#include "DbMySQL.h"
+#include "KSipServerVersion.h"
 
 /**
  * @ingroup KSipServer
@@ -37,6 +41,11 @@ int main( int argc, char * argv[] )
 	}
 
 	const char * pszConfigFileName = argv[1];
+	if( !strcmp( pszConfigFileName, "-h" ) || !strcmp( pszConfigFileName, "-v" ) )
+	{
+		printf( "%s version-%s ( build %s %s )\n", argv[0], KSIP_SERVER_VERSION, __DATE__, __TIME__ );
+		return 0;
+	}
 
 	if( gclsSetup.Read( pszConfigFileName ) == false )
 	{
@@ -47,7 +56,7 @@ int main( int argc, char * argv[] )
 	CLog::SetDirectory( gclsSetup.m_strLogFolder.c_str() );
 	CLog::SetLevel( gclsSetup.m_iLogLevel );
 
-	CLog::Print( LOG_SYSTEM, "KSipServer is started" );
+	CLog::Print( LOG_SYSTEM, "KSipServer is started ( version-%s %s %s )", KSIP_SERVER_VERSION, __DATE__, __TIME__ );
 
 	CSipStackSetup clsSetup;
 
@@ -62,6 +71,15 @@ int main( int argc, char * argv[] )
 	clsSetup.m_iLocalUdpPort = gclsSetup.m_iUdpPort;
 	clsSetup.m_iUdpThreadCount = gclsSetup.m_iUdpThreadCount;
 
+	Fork( true );
+
+#ifdef USE_MYSQL
+	if( gclsSetup.m_eType == E_DT_MYSQL )
+	{
+		gclsReadDB.Connect( gclsSetup.m_strDbHost.c_str(), gclsSetup.m_strDbUserId.c_str(), gclsSetup.m_strDbPassWord.c_str(), gclsSetup.m_strDbName.c_str(), gclsSetup.m_iDbPort );
+	}
+#endif
+
 	if( gclsSipServer.Start( clsSetup ) == false )
 	{
 		CLog::Print( LOG_ERROR, "SipServer start error\n" );
@@ -73,6 +91,16 @@ int main( int argc, char * argv[] )
 		sleep(1);
 
 		gclsNonceMap.DeleteTimeout( 10 );
+
+#ifdef USE_MYSQL
+		if( gclsSetup.m_eType == E_DT_MYSQL )
+		{
+			if( gclsReadDB.IsConnected() == false )
+			{
+				gclsReadDB.Connect( gclsSetup.m_strDbHost.c_str(), gclsSetup.m_strDbUserId.c_str(), gclsSetup.m_strDbPassWord.c_str(), gclsSetup.m_strDbName.c_str(), gclsSetup.m_iDbPort );
+			}
+		}
+#endif
 
 		// QQQ: 설정 파일 수정 여부를 검사한다.
 	}

@@ -180,6 +180,14 @@
 				RelativePath=".\KSipServer.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\KSipServer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\KSipServerVersion.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="자료구조"

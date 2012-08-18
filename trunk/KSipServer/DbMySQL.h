@@ -19,6 +19,10 @@
 #ifndef _MYSQL_CLASS_H_
 #define _MYSQL_CLASS_H_
 
+#include "KSipServer.h"
+
+#ifdef USE_MYSQL
+
 #include "SipParserDefine.h"
 #include "SipUdp.h"
 #include "SipMutex.h"
@@ -34,8 +38,8 @@ void FetchRow( void * pclsData, MYSQL_ROW & sttRow );
 class CMySQL
 {
 public:
-	CMySQL(void);
-	~CMySQL(void);
+	CMySQL();
+	~CMySQL();
 
 	bool Connect( const char * pszHost, const char * pszUserId, const char * pszPassWord, const char * pszDbName, int iPort );
 	bool Close( bool bLock = true );
@@ -47,6 +51,7 @@ public:
 	bool FreeResult( );
 
 	void SetLogLevel( EnumLogLevel eLogLevel );
+	bool IsConnected();
 
 private:
 	MYSQL	m_sttMySQL;
@@ -64,5 +69,9 @@ private:
 
 	bool Connect( );
 };
+
+extern CMySQL gclsReadDB;
+
+#endif
 
 #endif
