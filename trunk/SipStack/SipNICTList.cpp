@@ -158,7 +158,7 @@ DELETE_TRANSACTION:
 				}
 				else
 				{
-					m_pclsSipStack->Send( itMap->second->m_pclsRequest );
+					m_pclsSipStack->Send( itMap->second->m_pclsRequest, false );
 				}
 			}
 		}

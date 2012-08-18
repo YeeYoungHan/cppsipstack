@@ -31,12 +31,13 @@ public:
 	CSipStackSetup();
 	~CSipStackSetup();
 
-	void Copy( CSipStackSetup & clsSetup );
 	bool Check( );
 
 	std::string m_strLocalIp;
 	int					m_iLocalUdpPort;
 	int					m_iUdpThreadCount;
+
+	std::string	m_strUserAgent;
 };
 
 #endif

@@ -57,7 +57,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	if( m_bStarted || m_bStopEvent ) return false;
 	if( clsSetup.Check() == false ) return false;
 
-	m_clsSetup.Copy( clsSetup );
+	m_clsSetup = clsSetup;
 
 	InitNetwork();
 
@@ -176,7 +176,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 		{
 			if( m_clsICT.Insert( pclsMessage ) )
 			{
-				Send( pclsMessage );
+				Send( pclsMessage, false );
 				--pclsMessage->m_iUseCount;
 				return true;
 			}
@@ -185,7 +185,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 		{
 			if( m_clsNICT.Insert( pclsMessage ) )
 			{
-				Send( pclsMessage );
+				Send( pclsMessage, false );
 				--pclsMessage->m_iUseCount;
 				return true;
 			}
@@ -197,7 +197,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 		{
 			if( m_clsIST.Insert( pclsMessage ) )
 			{
-				Send( pclsMessage );
+				Send( pclsMessage, false );
 				--pclsMessage->m_iUseCount;
 				return true;
 			}
@@ -206,7 +206,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 		{
 			if( m_clsNIST.Insert( pclsMessage ) )
 			{
-				Send( pclsMessage );
+				Send( pclsMessage, false );
 				--pclsMessage->m_iUseCount;
 				return true;
 			}
@@ -300,15 +300,19 @@ bool CSipStack::Execute( struct timeval * psttTime )
 /**
  * @ingroup SipStack
  * @brief SIP 메시지를 네트워크로 전송한다.
- * @param pclsMessage SIP 메시지 저장 구조체
+ * @param pclsMessage		SIP 메시지 저장 구조체
+ * @param bCheckMessage	SIP 메시지를 검사하여서 필수 헤더를 추가/수정하는가?
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CSipStack::Send( CSipMessage * pclsMessage )
+bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 {
 	const char * pszIp = NULL;
 	int iPort = -1;
 
-	CheckSipMessage( pclsMessage );
+	if( bCheckMessage )
+	{
+		CheckSipMessage( pclsMessage );
+	}
 
 	if( pclsMessage->IsRequest() )
 	{
@@ -549,9 +553,13 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 		pclsMessage->m_clsContactList.push_back( clsContact );
 	}
 
-	if( pclsMessage->m_strUserAgent.empty() )
+	if( m_clsSetup.m_strUserAgent.empty() )
 	{
 		pclsMessage->m_strUserAgent = SIP_USER_AGENT;
+	}
+	else
+	{
+		pclsMessage->m_strUserAgent = m_clsSetup.m_strUserAgent;
 	}
 
 	if( pclsMessage->m_iMaxForwards == -1 )

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipStackDefine.h"
 #include "SipStackSetup.h"
 
 /**
@@ -36,18 +37,6 @@ CSipStackSetup::~CSipStackSetup()
 
 /**
  * @ingroup SipStack
- * @brief 설정 항목을 복사한다.
- * @param clsSetup 설정 항목 저장 객체
- */
-void CSipStackSetup::Copy( CSipStackSetup & clsSetup )
-{
-	m_strLocalIp = clsSetup.m_strLocalIp;
-	m_iLocalUdpPort = clsSetup.m_iLocalUdpPort;
-	m_iUdpThreadCount = clsSetup.m_iUdpThreadCount;
-}
-
-/**
- * @ingroup SipStack
  * @brief 설정 항목의 유효성을 검사한다.
  * @returns 설정 항목이 유효하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
@@ -56,6 +45,12 @@ bool CSipStackSetup::Check( )
 	if( m_strLocalIp.empty() ) return false;
 	if( m_iLocalUdpPort <= 0 || m_iLocalUdpPort > 65535 ) return false;
 	if( m_iUdpThreadCount <= 0 ) return false;
+
+	if( m_strUserAgent.empty() == false )
+	{
+		m_strUserAgent.append( "_" );
+		m_strUserAgent.append( SIP_USER_AGENT );
+	}
 
 	return true;
 }

@@ -124,7 +124,7 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 			}
 			else if( itMap->second->m_pclsResponse )
 			{
-				m_pclsSipStack->Send( itMap->second->m_pclsResponse );
+				m_pclsSipStack->Send( itMap->second->m_pclsResponse, false );
 			}
 		}
 		m_clsMutex.release();
@@ -207,7 +207,7 @@ LOOP_START:
 				}
 				else
 				{
-					m_pclsSipStack->Send( itMap->second->m_pclsResponse );
+					m_pclsSipStack->Send( itMap->second->m_pclsResponse, false );
 				}
 			}
 		}

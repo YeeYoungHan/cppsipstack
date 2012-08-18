@@ -56,7 +56,7 @@ public:
 	bool RecvSipMessage( int iThreadId, CSipMessage * pclsMessage );
 
 	bool Execute( struct timeval * psttTime );
-	bool Send( CSipMessage * pclsMessage );
+	bool Send( CSipMessage * pclsMessage, bool bCheckMessage = true );
 
 	void RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	void RecvResponse( int iThreadId, CSipMessage * pclsMessage );

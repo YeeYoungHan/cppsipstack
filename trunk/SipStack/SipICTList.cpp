@@ -140,7 +140,7 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 
 			if( itMap->second->m_pclsAck )
 			{
-				m_pclsSipStack->Send( itMap->second->m_pclsAck );
+				m_pclsSipStack->Send( itMap->second->m_pclsAck, false );
 			}
 		}
 		m_clsMutex.release();
@@ -201,7 +201,7 @@ DELETE_TRANSACTION:
 				}
 				else
 				{
-					m_pclsSipStack->Send( itMap->second->m_pclsRequest );
+					m_pclsSipStack->Send( itMap->second->m_pclsRequest, false );
 				}
 			}
 		}
