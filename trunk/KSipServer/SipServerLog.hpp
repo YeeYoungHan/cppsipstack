@@ -16,6 +16,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+/**
+ * @ingroup KSipServer
+ * @brief SIP 메시지 전송/수신 이벤트 핸들러
+ * @param bSend			전송/수신 구분
+ * @param pszPacket SIP 메시지
+ * @param pszIp			발신 IP 주소 또는 목적지 IP 주소 
+ * @param iPort			발신 포트 번호 또는 목적지 포트 번호
+ */
 void CSipServer::SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort )
 {
 	CLog::Print( LOG_NETWORK, "%s(%s:%d) [%s]", bSend ? "Send" : "Recv", pszIp, iPort, pszPacket );

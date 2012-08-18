@@ -16,6 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+/**
+ * @ingroup KSipServer
+ * @brief SIP 응답 메시지에 WWW-Authenticate 헤더를 추가한다.
+ * @param psttResponse SIP 응답 메시지
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool AddChallenge( CSipMessage * psttResponse )
 {
 	CSipChallenge clsChallenge;
@@ -37,6 +43,12 @@ bool AddChallenge( CSipMessage * psttResponse )
   return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief SIP 401 응답 메시지를 전송한다.
+ * @param pclsMessage SIP 요청 메시지
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool SendUnAuthorizedResponse( CSipMessage * pclsMessage )
 {
 	CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_UNAUTHORIZED );
@@ -54,15 +66,16 @@ bool SendUnAuthorizedResponse( CSipMessage * pclsMessage )
 }
 
 /** 
- *	@brief	response 가 유효한 값인지 검사한다. 
- *	@param	pszUserName	사용자 아이디
- *	@param	pszRealm		realm
- *	@param	pszNonce		nonce
- *	@param	pszUri			uri
- *	@param	pszResponse	response
- *  @param	pszPassWord	비밀번호
- *	@param	pszMethod		SIP 메소드
- *	@return	response 문자열이 유효하면 true 를 리턴한다. 그렇지 않으면 false 를 리턴한다.
+ * @ingroup KSipServer
+ * @brief	response 가 유효한 값인지 검사한다. 
+ * @param	pszUserName	사용자 아이디
+ * @param	pszRealm		realm
+ * @param	pszNonce		nonce
+ * @param	pszUri			uri
+ * @param	pszResponse	response
+ * @param	pszPassWord	비밀번호
+ * @param	pszMethod		SIP 메소드
+ * @return	response 문자열이 유효하면 true 를 리턴한다. 그렇지 않으면 false 를 리턴한다.
  */
 bool CheckAuthorizationResponse( const char * pszUserName
 		, const char * pszRealm
@@ -95,6 +108,10 @@ bool CheckAuthorizationResponse( const char * pszUserName
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief SIP 인증 결과
+ */
 enum ECheckAuthResult
 {
 	E_AUTH_OK = 0,
@@ -102,6 +119,15 @@ enum ECheckAuthResult
 	E_AUTH_ERROR
 };
 
+/**
+ * @ingroup KSipServer
+ * @brief 
+ * @param pclsCredential	SIP 인증 정보 저장 객체
+ * @param pszMethod				SIP 메소드
+ * @returns 인증에 성공하면 E_AUTH_OK 를 리턴한다.
+ *					존재하지 않는 nonce 인 경우 E_AUTH_NONCE_NOT_FOUND 를 리턴한다.
+ *					그 외의 오류는 E_AUTH_ERROR 를 리턴한다.
+ */
 ECheckAuthResult CheckAuthorization( CSipCredential * pclsCredential, const char * pszMethod )
 {
 	if( pclsCredential->m_strUserName.empty() ) return E_AUTH_ERROR;
@@ -116,6 +142,13 @@ ECheckAuthResult CheckAuthorization( CSipCredential * pclsCredential, const char
 	return E_AUTH_OK;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief SIP REGISTER 요청 메시지 수신 이벤트 핸들러
+ * @param iThreadId		SIP UDP 쓰레드 아이디
+ * @param pclsMessage SIP 요청 메시지
+ * @returns SIP 요청 메시지를 처리하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServer::RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage )
 {
 	SIP_CREDENTIAL_LIST::iterator	itCL = pclsMessage->m_clsAuthorizationList.begin();

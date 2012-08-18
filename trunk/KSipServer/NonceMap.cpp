@@ -34,6 +34,7 @@ CNonceMap::CNonceMap()
 }
 
 /**
+ * @ingroup KSipServer
  * @brief 최신 nonce 값을 가져온다.
  * @param pszNonce		nonce 값을 저장할 변수
  * @param iNonceSize	pszNonce 변수의 크기
@@ -87,6 +88,7 @@ bool CNonceMap::GetNewValue( char * pszNonce, int iNonceSize )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief nonce 값이 존재하는지 검색한다.
  * @param pszNonce	nonce 문자열
  * @param bIsRemove 검색된 nonce 를 자료구조에서 삭제하면 true 를 입력하고 그렇지 않으면 false 를 입력한다.
@@ -109,6 +111,7 @@ bool CNonceMap::Select( const char * pszNonce, bool bIsRemove )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief 입력한 시간 이전에 입력된 nonce 값을 모두 삭제한다.
  * @param iSecond		timeout 시간 (초단위)
  */
@@ -142,6 +145,7 @@ LOOP_START:
 }
 
 /**
+ * @ingroup KSipServer
  * @brief nonce 개수를 리턴한다.
  * @returns nonce 개수를 리턴한다.
  */

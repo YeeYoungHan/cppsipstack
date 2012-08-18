@@ -22,7 +22,8 @@
 #include <string>
 
 /**
- * @brief 
+ * @ingroup KSipServer
+ * @brief SIP 사용자 정보 저장 클래스
  */
 class CXmlUser
 {
@@ -30,7 +31,10 @@ public:
 	CXmlUser();
 	~CXmlUser();
 
+	/** SIP 사용자 아이디 */
 	std::string	m_strId;
+
+	/** SIP 비밀번호 */
 	std::string m_strPassWord;
 
 	/** 착신거부 ( Do Not Disturb ) */
