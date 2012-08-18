@@ -21,8 +21,15 @@
 
 #include <string>
 
+enum EDbType
+{
+	E_DT_XML = 0,
+	E_DT_MYSQL
+};
+
 /**
- * @brief 
+ * @ingroup KSipServer
+ * @brief KSipServer 설정 파일의 내용을 저장하는 클래스
  */
 class CSipServerSetup
 {
@@ -30,19 +37,40 @@ public:
 	CSipServerSetup();
 	~CSipServerSetup();
 
+	/** SIP 통신을 위한 UDP 포트 번호 */
 	int					m_iUdpPort;
+
+	/** SIP 통신을 위한 로컬 IP 주소 */
 	std::string	m_strLocalIp;
+
+	/** SIP 통신을 위한 UDP 수신 쓰레드 개수 */
 	int					m_iUdpThreadCount;
+
+	/** SIP 통신을 위한 realm */
 	std::string	m_strRealm;
 
+	/** 사용자 계정 정보 저장 폴더 */
 	std::string	m_strUserXmlFolder;
 
+	std::string	m_strDbHost;
+	std::string m_strDbUserId;
+	std::string m_strDbPassWord;
+	std::string m_strDbName;
+	int					m_iDbPort;
+
+	/** 로그 폴더 */
 	std::string	m_strLogFolder;
+
+	/** 로그 레벨 */
 	int					m_iLogLevel;
+
+	/** 로그 파일의 최대 크기 */
 	int					m_iLogMaxSize;
 
+	/** SIP 통신을 위한 정보 저장 방법 */
+	EDbType			m_eType;
+
 	bool Read( const char * pszFileName );
-	bool IsUserXml();
 };
 
 extern CSipServerSetup gclsSetup;

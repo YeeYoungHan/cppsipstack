@@ -16,11 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "KSipServer.h"
 #include "SipParserDefine.h"
 #include "XmlUser.h"
 #include "XmlElement.h"
 #include "SipServerSetup.h"
 #include "Directory.h"
+#include "DbMySQL.h"
 
 CXmlUser::CXmlUser() : m_bDnd(false)
 {
@@ -33,6 +35,8 @@ CXmlUser::~CXmlUser()
 bool CXmlUser::Parse( const char * pszFileName )
 {
 	CXmlElement clsXml;
+
+	Clear();
 
 	if( clsXml.ParseFile( pszFileName ) == false ) return false;
 
@@ -60,11 +64,26 @@ void CXmlUser::Clear()
 {
 	m_strId.clear();
 	m_strPassWord.clear();
+	m_bDnd = false;
+	m_strCallForward.clear();
 }
 
-bool SelectUser( const char * pszUserId, CXmlUser & clsUser )
+#ifdef USE_MYSQL
+static bool SipUserFetchRow( void * pclsData, MYSQL_ROW & sttRow )
 {
-	if( gclsSetup.m_strUserXmlFolder.empty() == false )
+	CXmlUser * pclsUser = (CXmlUser *)pclsData;
+
+	if( sttRow[0] ) pclsUser->m_strPassWord = sttRow[0];
+	if( sttRow[1] && sttRow[1][0] == 'Y' ) pclsUser->m_bDnd = true;
+	if( sttRow[2] ) pclsUser->m_strCallForward = sttRow[2];
+
+	return true;
+}
+#endif
+
+bool SelectUser( const char * pszUserId, CXmlUser & clsUser )
+{	
+	if( gclsSetup.m_eType == E_DT_XML )
 	{
 		std::string	strFileName = gclsSetup.m_strUserXmlFolder;
 
@@ -73,6 +92,21 @@ bool SelectUser( const char * pszUserId, CXmlUser & clsUser )
 
 		return clsUser.Parse( strFileName.c_str() );
 	}
+#ifdef USE_MYSQL
+	else if( gclsSetup.m_eType == E_DT_MYSQL )
+	{
+		char szSQL[255];
+
+		clsUser.Clear();
+
+		snprintf( szSQL, sizeof(szSQL), "SELECT PassWord, DND, CallForward FROM SipUser WHERE Id = '%s'", pszUserId );
+		if( gclsReadDB.Query( szSQL, &clsUser, SipUserFetchRow ) )
+		{
+			clsUser.m_strId = pszUserId;
+			return true;
+		}
+	}
+#endif
 	
 	return false;
 }

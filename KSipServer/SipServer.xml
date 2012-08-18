@@ -7,10 +7,16 @@
 	</Sip>
 	<Log>
 		<Folder>d:\temp\sipserver</Folder>
-		<Level Debug="true" Info="true" Network="true" />
+		<Level Debug="true" Info="true" Network="true" Sql="true" />
 		<MaxSize>10000000</MaxSize>
 	</Log>
 	<XmlFolder>
-		<User>D:\OpenProject\CppSipStack\trunk\KSipServer\UserXml</User>
+		<!--<User>D:\OpenProject\CppSipStack\trunk\KSipServer\UserXml</User>-->
 	</XmlFolder>
+	<Db>
+		<Host>127.0.0.1</Host>
+		<UserId>ksipserver</UserId>
+		<PassWord>1234</PassWord>
+		<DataBase>ksipserver</DataBase>
+	</Db>
 </Setup>

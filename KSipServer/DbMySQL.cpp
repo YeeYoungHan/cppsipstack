@@ -17,7 +17,12 @@
  */
 
 #include "DbMySQL.h"
+
+#ifdef USE_MYSQL
+
 #include "errmsg.h"
+
+CMySQL gclsReadDB;
 
 CMySQL::CMySQL(void) : m_psttRes(NULL), m_bConnected(false), m_iPort(0), m_eLogLevel(LOG_SQL)
 {
@@ -332,6 +337,11 @@ void CMySQL::SetLogLevel( EnumLogLevel eLogLevel )
 	m_eLogLevel = eLogLevel;
 }
 
+bool CMySQL::IsConnected()
+{
+	return m_bConnected;
+}
+
 /**
  * @brief MySQL 데이터베이스에 연결한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -360,3 +370,5 @@ bool CMySQL::Connect( )
 
 	return bRes;
 }
+
+#endif
