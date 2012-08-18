@@ -32,15 +32,28 @@ public:
 	~CSipInviteTransaction();
 
 public:
+	/** SIP 요청 메시지 */
 	CSipMessage * m_pclsRequest;
+
+	/** SIP 응답 메시지 */
 	CSipMessage * m_pclsResponse;
+
+	/** ACK 메시지 */
 	CSipMessage * m_pclsAck;
 
+	/** SIP 요청 메시지 전송/수신 시간 */
 	struct timeval m_sttStartTime;
+
+	/** SIP transaction 만료 시간 */
 	struct timeval m_sttStopTime;
+
+	/** 180/183 응답 메시지 수신 시간 */
 	struct timeval m_sttRingTime;
 
+	/** 재전송 개수 */
 	int	m_iReSendCount;
+
+	/** 최종 SIP 응답 코드 */
 	int m_iStatusCode;
 };
 

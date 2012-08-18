@@ -32,12 +32,19 @@ public:
 	~CSipNonInviteTransaction();
 
 public:
+	/** SIP 요청 메시지 */
 	CSipMessage * m_pclsRequest;
+
+	/** SIP 응답 메시지 */
 	CSipMessage * m_pclsResponse;
 
+	/** SIP 요청 메시지 전송/수신 시간 */
 	struct timeval m_sttStartTime;
+
+	/** SIP transaction 만료 시간 */
 	struct timeval m_sttStopTime;
 
+	/** 재전송 개수 */
 	int	m_iReSendCount;
 };
 

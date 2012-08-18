@@ -33,10 +33,16 @@ public:
 
 	bool Check( );
 
+	/** SIP 메시지에 저장되는 로컬 IP 주소 */
 	std::string m_strLocalIp;
+
+	/** SIP 메시지 전송/수신용 UDP 포트 번호 */
 	int					m_iLocalUdpPort;
+
+	/** SIP 메시지 수신용 UDP 쓰레드 개수 */
 	int					m_iUdpThreadCount;
 
+	/** SIP UserAgent 헤더에 저장될 문자열 */
 	std::string	m_strUserAgent;
 };
 

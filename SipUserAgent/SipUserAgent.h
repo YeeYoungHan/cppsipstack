@@ -37,7 +37,10 @@
 class CSipCallRoute
 {
 public:
+	/** 목적지 IP 주소 */
 	std::string	m_strDestIp;
+
+	/** 목적지 포트 번호 */
 	int					m_iDestPort;
 };
 
@@ -72,6 +75,7 @@ public:
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 
+	/** IP-PBX 로그인 정보 저장 자료구조 */
 	SIP_SERVER_INFO_LIST	m_clsRegisterList;
 	CSipMutex							m_clsRegisterMutex;
 
@@ -93,6 +97,7 @@ private:
 	bool SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * pclsRtp );
 	bool GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsRtp );
 
+	/** SIP Dialog 맵 */
 	SIP_DIALOG_MAP			m_clsMap;
 	CSipMutex						m_clsMutex;
 };

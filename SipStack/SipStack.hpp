@@ -16,6 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+/**
+ * @ingroup SipStack
+ * @brief 두 개의 시간의 차이를 리턴한다.
+ * @param psttOld 시작 시간
+ * @param psttNew 종료 시간
+ * @returns 두 개의 시간의 차이를 리턴한다.
+ */
 int DiffTimeval( struct timeval * psttOld, struct timeval * psttNew )
 {
 	int	iRet;
@@ -34,6 +41,14 @@ int DiffTimeval( struct timeval * psttOld, struct timeval * psttNew )
 	return iRet;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 쓰레드를 시작한다.
+ * @param pszName					쓰레드 이름
+ * @param lpStartAddress	쓰레드 함수
+ * @param lpParameter			쓰레드 인자
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 #ifdef WIN32
 bool StartThread( const char * pszName, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter )
 {
@@ -66,6 +81,11 @@ bool StartThread( const char * pszName, void *(*lpStartAddress)(void*), void * l
 }
 #endif
 
+/**
+ * @ingroup SipStack
+ * @brief ms 동안 대기한다.
+ * @param iMiliSecond ms
+ */
 void MiliSleep( int iMiliSecond )
 {
 #ifdef WIN32
