@@ -35,6 +35,14 @@ CXmlElement::~CXmlElement()
 {
 }
 
+#define XML_ELEMENT_NULL				0
+#define XML_ELEMENT_NAME				1
+#define XML_ELEMENT_ATTR				2
+#define XML_ELEMENT_DATA				3
+#define XML_ELEMENT_NAME_END		4
+#define XML_ELEMENT_DATA_PARSE	5
+#define XML_ELEMENT_COMMENT			6
+
 /**
  * @ingroup XmlParser
  * @brief XML 문자열을 파싱하여서 멤버 변수에 저장한다.
@@ -45,19 +53,33 @@ CXmlElement::~CXmlElement()
 int CXmlElement::Parse( const char * pszText, int iTextLen )
 {
 	int		iPos, iStartPos = -1, iLen;
-	char	cType = 0;
+	char	cType = XML_ELEMENT_NULL, cTypeOld = XML_ELEMENT_NULL;
 	std::string	strName, strValue;
 
 	Clear();
 
 	for( iPos = 0; iPos < iTextLen; ++iPos )
 	{
+		if( cType == XML_ELEMENT_COMMENT )
+		{
+			if( pszText[iPos] == '-' )
+			{
+				if( iPos + 3 < iTextLen && !strncmp( pszText + iPos + 1, "->", 2 ) )
+				{
+					iPos += 2;
+					cType = cTypeOld;
+				}
+			}
+
+			continue;
+		}
+
 		if( pszText[iPos] == ' ' || pszText[iPos] == '\t' || pszText[iPos] == '/' || pszText[iPos] == '\r' || pszText[iPos] == '\n' )
 		{
-			if( cType == 1 )
+			if( cType == XML_ELEMENT_NAME )
 			{
 				m_strName.append( pszText + iStartPos, iPos - iStartPos );
-				cType = 2;
+				cType = XML_ELEMENT_ATTR;
 				iStartPos = -1;
 				strName.clear();
 				strValue.clear();
@@ -65,14 +87,22 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 		}
 		else if( pszText[iPos] == '<' )
 		{
-			if( cType == 0 )
+			if( cType == XML_ELEMENT_NULL )
 			{
-				cType = 1;
-				iStartPos = iPos + 1;
+				if( iPos + 4 < iTextLen && !strncmp( pszText + iPos + 1, "!--", 3 ) )
+				{
+					cTypeOld = cType;
+					cType = XML_ELEMENT_COMMENT;
+				}
+				else
+				{
+					cType = XML_ELEMENT_NAME;
+					iStartPos = iPos + 1;
+				}
 			}
 			else if( pszText[iPos+1] == '/' )
 			{
-				if( cType == 3 )
+				if( cType == XML_ELEMENT_DATA )
 				{
 					m_strData.append( pszText + iStartPos, iPos - iStartPos );		
 				}
@@ -83,7 +113,7 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 
 				if( !strncmp( pszText + iPos + 2, m_strName.c_str(), iLen ) )
 				{
-					cType = 4;
+					cType = XML_ELEMENT_NAME_END;
 					iPos += iLen + 1;
 				}
 				else
@@ -100,17 +130,17 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 
 				m_clsElementList.push_back( clsElement );
 
-				cType = 5;
+				cType = XML_ELEMENT_DATA_PARSE;
 				iPos += iLen - 1;
 			}
 		}
 		else if( pszText[iPos] == '>' )
 		{
-			if( cType == 1 )
+			if( cType == XML_ELEMENT_NAME )
 			{
 				m_strName.append( pszText + iStartPos, iPos - iStartPos );
 			}
-			else if( cType == 4 )
+			else if( cType == XML_ELEMENT_NAME_END )
 			{
 				++iPos;
 				break;
@@ -125,10 +155,10 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 				break;
 			}
 
-			cType = 3;
+			cType = XML_ELEMENT_DATA;
 			iStartPos = iPos + 1;
 		}
-		else if( cType == 2 )
+		else if( cType == XML_ELEMENT_ATTR )
 		{
 			if( iStartPos == -1 )
 			{

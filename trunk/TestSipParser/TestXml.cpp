@@ -146,5 +146,16 @@ bool TestXml()
 		return false;
 	}
 
+	if( Test( 
+		"<setup>\n"
+		" <!-- SIP info -->\n"
+		"	<sip ip=\"127.0.0.1\" port=\"5060\" udp_thread_count=\"10\" />\n"
+		"	<log folder=\"/usr/local/bin/log\" max_size=\"4321\" />\n"
+		"</setup>\n",
+		"<setup>\n"
+		"<sip ip=\"127.0.0.1\" port=\"5060\" udp_thread_count=\"10\"/>\n"
+		"<log folder=\"/usr/local/bin/log\" max_size=\"4321\"/>\n"
+		"</setup>\n" ) == false ) return false;
+
 	return true;
 }
