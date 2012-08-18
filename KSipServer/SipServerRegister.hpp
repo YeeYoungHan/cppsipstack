@@ -171,7 +171,7 @@ bool CSipServer::RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage )
 		break;
 	}
 
-	if( pclsMessage->m_iExpires == 0 )
+	if( pclsMessage->GetExpires() == 0 )
 	{
 		gclsUserMap.Delete( pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str() );
 	}

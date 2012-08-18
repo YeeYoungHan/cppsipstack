@@ -53,6 +53,7 @@ public:
 	bool Select( const char * pszUserId, CUserInfo & clsInfo );
 	bool Select( const char * pszUserId );
 	bool Delete( const char * pszUserId );
+	void DeleteTimeout( int iTimeout );
 
 private:
 	USER_MAP	m_clsMap;

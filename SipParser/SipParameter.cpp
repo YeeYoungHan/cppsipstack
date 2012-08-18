@@ -146,7 +146,7 @@ bool SearchSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, std
 
 	for( itList = clsList.begin(); itList != clsList.end(); ++itList )
 	{
-		if( !strcmp( itList->m_strName.c_str(), pszName ) )
+		if( !strcasecmp( itList->m_strName.c_str(), pszName ) )
 		{
 			strValue = itList->m_strValue;
 			return true;
@@ -169,7 +169,7 @@ const char * SearchSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszN
 
 	for( itList = clsList.begin(); itList != clsList.end(); ++itList )
 	{
-		if( !strcmp( itList->m_strName.c_str(), pszName ) )
+		if( !strcasecmp( itList->m_strName.c_str(), pszName ) )
 		{
 			return itList->m_strValue.c_str();
 		}
