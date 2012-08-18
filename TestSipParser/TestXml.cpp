@@ -87,6 +87,28 @@ bool TestXml()
 		"<log folder=\"/usr/local/bin/log\" max_size=\"4321\"/>\n"
 		"</setup>\n" ) == false ) return false;
 
+	// 주석 테스트
+	if( Test( 
+		"<setup>\n"
+		" <!-- SIP info -->\n"
+		"	<sip ip=\"127.0.0.1\" port=\"5060\" udp_thread_count=\"10\" />\n"
+		"	<log folder=\"/usr/local/bin/log\" max_size=\"4321\" />\n"
+		"</setup>\n",
+		"<setup>\n"
+		"<sip ip=\"127.0.0.1\" port=\"5060\" udp_thread_count=\"10\"/>\n"
+		"<log folder=\"/usr/local/bin/log\" max_size=\"4321\"/>\n"
+		"</setup>\n" ) == false ) return false;
+
+	if( Test( 
+		"<setup> <!--Start-->\n"
+		"	<sip ip=\"127.0.0.1\" port=\"5060\" udp_thread_count=\"10\" /><!-- SIP info -->\n"
+		"	<log folder=\"/usr/local/bin/log\" max_size=\"4321\" /><!-- Log -->\n"
+		"</setup><!--End-->\n",
+		"<setup>\n"
+		"<sip ip=\"127.0.0.1\" port=\"5060\" udp_thread_count=\"10\"/>\n"
+		"<log folder=\"/usr/local/bin/log\" max_size=\"4321\"/>\n"
+		"</setup>\n" ) == false ) return false;
+
 	char * pszXml = "<userlist>\r\n"
 		"  <user id=\"1000\">\r\n"
 		"    <password>1234</password>\r\n"
@@ -145,17 +167,6 @@ bool TestXml()
 		printf( "xml password error\n" );
 		return false;
 	}
-
-	if( Test( 
-		"<setup>\n"
-		" <!-- SIP info -->\n"
-		"	<sip ip=\"127.0.0.1\" port=\"5060\" udp_thread_count=\"10\" />\n"
-		"	<log folder=\"/usr/local/bin/log\" max_size=\"4321\" />\n"
-		"</setup>\n",
-		"<setup>\n"
-		"<sip ip=\"127.0.0.1\" port=\"5060\" udp_thread_count=\"10\"/>\n"
-		"<log folder=\"/usr/local/bin/log\" max_size=\"4321\"/>\n"
-		"</setup>\n" ) == false ) return false;
 
 	return true;
 }

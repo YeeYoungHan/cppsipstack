@@ -87,18 +87,15 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 		}
 		else if( pszText[iPos] == '<' )
 		{
-			if( cType == XML_ELEMENT_NULL )
+			if( iPos + 4 < iTextLen && !strncmp( pszText + iPos + 1, "!--", 3 ) )
 			{
-				if( iPos + 4 < iTextLen && !strncmp( pszText + iPos + 1, "!--", 3 ) )
-				{
-					cTypeOld = cType;
-					cType = XML_ELEMENT_COMMENT;
-				}
-				else
-				{
-					cType = XML_ELEMENT_NAME;
-					iStartPos = iPos + 1;
-				}
+				cTypeOld = cType;
+				cType = XML_ELEMENT_COMMENT;
+			}
+			else if( cType == XML_ELEMENT_NULL )
+			{
+				cType = XML_ELEMENT_NAME;
+				iStartPos = iPos + 1;
 			}
 			else if( pszText[iPos+1] == '/' )
 			{
