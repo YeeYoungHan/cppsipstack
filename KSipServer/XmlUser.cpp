@@ -32,6 +32,12 @@ CXmlUser::~CXmlUser()
 {
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief XML 파일을 읽어서 SIP 사용자 정보를 가져온다.
+ * @param pszFileName XML 파일 이름
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CXmlUser::Parse( const char * pszFileName )
 {
 	CXmlElement clsXml;
@@ -60,6 +66,10 @@ bool CXmlUser::Parse( const char * pszFileName )
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 내부 변수를 초기화시킨다.
+ */
 void CXmlUser::Clear()
 {
 	m_strId.clear();
@@ -69,6 +79,13 @@ void CXmlUser::Clear()
 }
 
 #ifdef USE_MYSQL
+/**
+ * @ingroup KSipServer
+ * @brief 
+ * @param pclsData 
+ * @param sttRow 
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 static bool SipUserFetchRow( void * pclsData, MYSQL_ROW & sttRow )
 {
 	CXmlUser * pclsUser = (CXmlUser *)pclsData;
@@ -81,6 +98,13 @@ static bool SipUserFetchRow( void * pclsData, MYSQL_ROW & sttRow )
 }
 #endif
 
+/**
+ * @ingroup KSipServer
+ * @brief SIP 사용자 정보를 XML 파일 또는 MySQL 에서 읽어서 저장한다.
+ * @param pszUserId SIP 사용자 아이디
+ * @param clsUser		SIP 사용자 정보 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool SelectUser( const char * pszUserId, CXmlUser & clsUser )
 {	
 	if( gclsSetup.m_eType == E_DT_XML )

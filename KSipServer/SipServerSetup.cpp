@@ -23,14 +23,28 @@
 
 CSipServerSetup gclsSetup;
 
+/**
+ * @ingroup KSipServer
+ * @brief 생성자
+ */
 CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10), m_iLogLevel(0), m_iLogMaxSize(20000000), m_iDbPort(3306)
 {
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 소멸자
+ */
 CSipServerSetup::~CSipServerSetup()
 {
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 설정 파일을 읽어서 멤버 변수에 저장한다.
+ * @param pszFileName 설정 파일 full path
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipServerSetup::Read( const char * pszFileName )
 {
 	CXmlElement clsXml, * pclsElement, * pclsClient;

@@ -166,6 +166,12 @@ int CDirectory::IsDirectory( const char * szDirName )
 	return 0;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 파일 경로에 파일 이름을 추가한다.
+ * @param strFileName 파일 경로
+ * @param pszAppend		추가할 파일 이름
+ */
 void CDirectory::AppendName( std::string & strFileName, const char * pszAppend )
 {
 #ifdef WIN32
