@@ -71,6 +71,7 @@ int main( int argc, char * argv[] )
 
 	clsSetup.m_iLocalUdpPort = gclsSetup.m_iUdpPort;
 	clsSetup.m_iUdpThreadCount = gclsSetup.m_iUdpThreadCount;
+	clsSetup.m_strUserAgent = "KSipServer";
 
 	Fork( true );
 

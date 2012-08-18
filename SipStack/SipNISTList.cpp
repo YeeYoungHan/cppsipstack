@@ -72,7 +72,7 @@ bool CSipNISTList::Insert( CSipMessage * pclsMessage )
 		{
 			if( itMap->second->m_pclsResponse )
 			{
-				m_pclsSipStack->Send( itMap->second->m_pclsResponse );
+				m_pclsSipStack->Send( itMap->second->m_pclsResponse, false );
 			}
 		}
 		m_clsMutex.release();

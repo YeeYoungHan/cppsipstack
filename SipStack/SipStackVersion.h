@@ -19,6 +19,14 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.02"
+#define SIP_STACK_VERSION "0.03"
+
+/* 버전 정보
+
+= 버전 0.03 ( 2012년 08월 18일 ) =
+ * UserAgent 헤더를 응용 프로그램에서 수정할 수 있는 기능을 추가함
+ * SIP 메시지를 전송하기 전에 2번 SIP 메시지를 점검하는 기능을 1번만 점검하도록 수정함.
+
+*/
 
 #endif
