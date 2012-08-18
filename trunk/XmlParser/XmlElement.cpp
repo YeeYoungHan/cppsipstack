@@ -19,14 +19,29 @@
 #include "SipParserDefine.h"
 #include "XmlElement.h"
 
+/**
+ * @ingroup XmlParser
+ * @brief 생성자
+ */
 CXmlElement::CXmlElement()
 {
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief 소멸자
+ */
 CXmlElement::~CXmlElement()
 {
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief XML 문자열을 파싱하여서 멤버 변수에 저장한다.
+ * @param pszText		XML 문자열
+ * @param iTextLen	XML 문자열 길이
+ * @returns 성공하면 파싱한 XML 문자열의 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CXmlElement::Parse( const char * pszText, int iTextLen )
 {
 	int		iPos, iStartPos = -1, iLen;
@@ -143,6 +158,13 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 	return iPos;
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief 멤버 변수에 저장된 값을 이용하여서 XML 문자열을 생성한다.
+ * @param pszText			XML 문자열을 저장할 변수
+ * @param iTextSize		XML 문자열을 저장할 변수의 크기
+ * @returns 생성된 XML 문자열의 길이를 리턴한다.
+ */
 int CXmlElement::ToString( char * pszText, int iTextSize )
 {
 	int iLen, n;
@@ -186,6 +208,10 @@ int CXmlElement::ToString( char * pszText, int iTextSize )
 	return iLen;
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief 멤버 변수를 초기화시킨다.
+ */
 void CXmlElement::Clear( )
 {
 	m_strName.clear();
@@ -194,6 +220,12 @@ void CXmlElement::Clear( )
 	m_clsElementList.clear();
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief XML 파일을 읽어서 멤버 변수에 저장한다.
+ * @param pszFileName		XML 파일 이름
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CXmlElement::ParseFile( const char * pszFileName )
 {
 	FILE * fd;
@@ -215,6 +247,12 @@ bool CXmlElement::ParseFile( const char * pszFileName )
 	return true;
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief 애트리뷰트에 해당하는 값을 검색한다.
+ * @param pszName 애트리뷰트 이름
+ * @returns 성공하면 애트리뷰트의 값을 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
 const char * CXmlElement::SelectAttribute( const char * pszName )
 {
 	XML_ATTRIBUTE_MAP::iterator	itAM;
@@ -228,6 +266,13 @@ const char * CXmlElement::SelectAttribute( const char * pszName )
 	return NULL;
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief 애트리뷰트에 해당하는 값을 검색한다.
+ * @param pszName		애트리뷰트 이름
+ * @param strValue	애트리뷰트 값
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CXmlElement::SelectAttribute( const char * pszName, std::string & strValue )
 {
 	XML_ATTRIBUTE_MAP::iterator	itAM;
@@ -244,6 +289,13 @@ bool CXmlElement::SelectAttribute( const char * pszName, std::string & strValue 
 	return false;
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief 애트리뷰트에 해당하는 값을 검색하여 int 변수에 저장한다.
+ * @param pszName		애트리뷰트 이름
+ * @param iValue		애트리뷰트 값
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CXmlElement::SelectAttribute( const char * pszName, int & iValue )
 {
 	XML_ATTRIBUTE_MAP::iterator	itAM;
@@ -260,6 +312,13 @@ bool CXmlElement::SelectAttribute( const char * pszName, int & iValue )
 	return false;
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief 애트리뷰트에 해당하는 값을 검색하여 bool 변수에 저장한다.
+ * @param pszName		애트리뷰트 이름
+ * @param bValue		애트리뷰트 값
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CXmlElement::SelectAttribute( const char * pszName, bool & bValue )
 {
 	XML_ATTRIBUTE_MAP::iterator	itAM;
@@ -280,6 +339,13 @@ bool CXmlElement::SelectAttribute( const char * pszName, bool & bValue )
 	return false;
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 를 검색한다.
+ * @param pszName		하위 Element 이름
+ * @param iIndex		하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @returns 성공하면 하위 Element 객체의 포인터를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
 CXmlElement * CXmlElement::SelectElement( const char * pszName, int iIndex )
 {
 	XML_ELEMENT_LIST::iterator	itEL;
@@ -303,6 +369,13 @@ CXmlElement * CXmlElement::SelectElement( const char * pszName, int iIndex )
 	return NULL;
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 를 검색하여서 Element 리스트에 저장한다.
+ * @param pszName		하위 Element 이름
+ * @param clsList		하위 Element 를 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CXmlElement::SelectElementList( const char * pszName, XML_ELEMENT_LIST & clsList )
 {
 	XML_ELEMENT_LIST::iterator	itEL;
@@ -322,6 +395,13 @@ bool CXmlElement::SelectElementList( const char * pszName, XML_ELEMENT_LIST & cl
 	return false;
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 를 검색하여서 내용을 저장한다.
+ * @param pszName		하위 Element 이름
+ * @param strData		하위 Elemnet 의 내용을 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CXmlElement::SelectElementData( const char * pszName, std::string & strData )
 {
 	strData.clear();
@@ -336,6 +416,13 @@ bool CXmlElement::SelectElementData( const char * pszName, std::string & strData
 	return false;
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 를 검색하여서 정수 내용을 가져온다.
+ * @param pszName 하위 Element 이름
+ * @param iData		하위 Element 의 값을 저장하는 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CXmlElement::SelectElementData( const char * pszName, int & iData )
 {
 	iData = -1;
@@ -350,11 +437,21 @@ bool CXmlElement::SelectElementData( const char * pszName, int & iData )
 	return false;
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief Element 이름을 리턴한다.
+ * @returns Element 이름을 리턴한다.
+ */
 const char * CXmlElement::GetName()
 {
 	return m_strName.c_str();
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief Element 내용을 리턴한다.
+ * @returns Element 내용을 리턴한다.
+ */
 const char * CXmlElement::GetData()
 {
 	return m_strData.c_str();
