@@ -18,6 +18,7 @@
 
 #include "UserMap.h"
 #include "Log.h"
+#include <time.h>
 
 CUserMap gclsUserMap;
 
@@ -45,6 +46,14 @@ bool CUserMap::Insert( CSipMessage * pclsMessage )
 	if( strUserId.empty() ) return false;
 
 	if( pclsMessage->GetTopViaIpPort( clsInfo.m_strIp, clsInfo.m_iPort ) == false ) return false;
+	clsInfo.m_iLoginTimeout = pclsMessage->GetExpires();
+
+	if( clsInfo.m_iLoginTimeout == 0 )
+	{
+		return false;
+	}
+
+	time( &clsInfo.m_iLoginTime );
 
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( strUserId );
@@ -130,4 +139,36 @@ bool CUserMap::Delete( const char * pszUserId )
 	m_clsMutex.release();
 
 	return bRes;
+}
+
+/**
+ * @ingroup KSipServer
+ * @brief 만료된 사용자를 자료구조에서 삭제한다.
+ * @param iTimeout 만료된 시간 이후에 대기 시간 (초단위)
+ */
+void CUserMap::DeleteTimeout( int iTimeout )
+{
+	USER_MAP::iterator	itMap, itNext;
+	time_t iTime;
+
+	time( &iTime );
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+LOOP_START:
+		if( iTime > ( itMap->second.m_iLoginTime + itMap->second.m_iLoginTimeout + iTimeout ) )
+		{
+			itNext = itMap;
+			++itNext;
+
+			CLog::Print( LOG_DEBUG, "user(%s) is deleted - timeout", itMap->first.c_str() );
+
+			m_clsMap.erase( itMap );
+			if( itNext == m_clsMap.end() ) break;
+			itMap = itNext;
+			goto LOOP_START;
+		}
+	}
+	m_clsMutex.release();
 }

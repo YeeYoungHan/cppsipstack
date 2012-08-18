@@ -725,6 +725,23 @@ bool CSipMessage::GetTopViaIpPort( std::string & strIp, int & iPort )
 	return true;
 }
 
+int CSipMessage::GetExpires()
+{
+	if( m_iExpires != -1 ) return m_iExpires;
+
+	SIP_FROM_LIST::iterator itContact = m_clsContactList.begin();
+	if( itContact == m_clsContactList.end() ) return 0;
+
+	std::string	strExpires;
+
+	if( itContact->SelectParam( "EXPIRES", strExpires ) )
+	{
+		return atoi( strExpires.c_str() );
+	}
+
+	return 0;
+}
+
 int CSipMessage::ParseStatusLine( const char * pszText, int iTextLen )
 {
 	int		iPos, iStartPos = -1;

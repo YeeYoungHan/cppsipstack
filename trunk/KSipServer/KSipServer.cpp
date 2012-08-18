@@ -21,6 +21,7 @@
 #include "SipServerSetup.h"
 #include "Log.h"
 #include "NonceMap.h"
+#include "UserMap.h"
 #include "ServerUtility.h"
 #include "DbMySQL.h"
 #include "KSipServerVersion.h"
@@ -86,11 +87,23 @@ int main( int argc, char * argv[] )
 		return -1;
 	}
 
+	int iSecond = 0;
+
 	while( 1 )
 	{
 		sleep(1);
+		++iSecond;
 
-		gclsNonceMap.DeleteTimeout( 10 );
+		if( iSecond % 10 == 0 )
+		{
+			gclsNonceMap.DeleteTimeout( 10 );
+			gclsUserMap.DeleteTimeout( 10 );
+		}
+
+		if( iSecond == 3600 )
+		{
+			iSecond = 0;
+		}
 
 #ifdef USE_MYSQL
 		if( gclsSetup.m_eType == E_DT_MYSQL )

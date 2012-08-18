@@ -142,6 +142,8 @@ public:
 
 	bool GetTopViaIpPort( std::string & strIp, int & iPort );
 
+	int GetExpires();
+
 	CSipMessage * CreateResponse( int iStatus, const char * pszToTag = NULL );
 	CSipMessage * CreateResponseWithToTag( int iStatus );
 
