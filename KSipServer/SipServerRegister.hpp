@@ -56,11 +56,7 @@ bool SendUnAuthorizedResponse( CSipMessage * pclsMessage )
 
 	AddChallenge( pclsResponse );
 
-	if( gclsSipStack.SendSipMessage( pclsResponse ) == false )
-	{
-		delete pclsResponse;
-		return false;
-	}
+	gclsSipStack.SendSipMessage( pclsResponse );
 
 	return true;
 }

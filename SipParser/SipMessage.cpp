@@ -725,6 +725,12 @@ bool CSipMessage::GetTopViaIpPort( std::string & strIp, int & iPort )
 	return true;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief Expires 헤더가 존재하면 Expires 헤더 값을 리턴하고 Contact 헤더에 expires 가 존재하면 Contact 헤더의 expires 를 리턴한다.
+ * @returns Expires 헤더가 존재하면 Expires 헤더 값을 리턴하고 Contact 헤더에 expires 가 존재하면 Contact 헤더의 expires 를 리턴한다.
+ *					둘 다 없으면 0 을 리턴한다.
+ */
 int CSipMessage::GetExpires()
 {
 	if( m_iExpires != -1 ) return m_iExpires;
@@ -740,6 +746,27 @@ int CSipMessage::GetExpires()
 	}
 
 	return 0;
+}
+
+/**
+ * @ingroup SipParser
+ * @brief 헤더 리스트를 검색하여서 입력된 이름과 일치하는 헤더를 리턴한다.
+ * @param pszName 헤더 이름
+ * @returns 헤더 리스트에 존재하면 헤더 객체를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
+CSipHeader * CSipMessage::GetHeader( const char * pszName )
+{
+	SIP_HEADER_LIST::iterator	itList;
+
+	for( itList = m_clsHeaderList.begin(); itList != m_clsHeaderList.end(); ++itList )
+	{
+		if( !strcasecmp( pszName, itList->m_strName.c_str() ) )
+		{
+			return &(*itList);
+		}
+	}
+
+	return NULL;
 }
 
 int CSipMessage::ParseStatusLine( const char * pszText, int iTextLen )

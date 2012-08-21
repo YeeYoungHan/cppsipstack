@@ -16,21 +16,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_STACK_VERSION_H_
-#define _SIP_STACK_VERSION_H_
+/**
+ * @ingroup SipUserAgent
+ * @brief SIP REFER 요청 메시지 수신 이벤트 핸들러
+ * @param iThreadId		SIP stack 의 UDP 쓰레드 아이디
+ * @param pclsMessage 수신된 SIP 요청 메시지
+ * @returns 정상적으로 처리하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
+{
+	CSipMessage * pclsResponse;
 
-#define SIP_STACK_VERSION "0.04"
+	CSipHeader * pclsHeader = pclsMessage->GetHeader( "Refer-To" );
+	if( pclsHeader == NULL )
+	{
+		pclsResponse = pclsMessage->CreateResponse( SIP_NOT_ACCEPTABLE );
+	}
 
-/* 버전 정보
+	if( pclsResponse )
+	{
+		gclsSipStack.SendSipMessage( pclsResponse );
+		return true;
+	}
 
-= 버전 0.04 ( 2012년 08월 21일 ) =
- * SendSipMessage 메소드에서 SIP stack 에 CSipMessage 를 입력하지 못 하면 CSipMessage 를 삭제하도록 수정함.
- * SendSipMessage 메소드 호출 실패시에 CSipMessage 를 삭제하는 코드를 제거함.
-
-= 버전 0.03 ( 2012년 08월 18일 ) =
- * UserAgent 헤더를 응용 프로그램에서 수정할 수 있는 기능을 추가함
- * SIP 메시지를 전송하기 전에 2번 SIP 메시지를 점검하는 기능을 1번만 점검하도록 수정함.
-
-*/
-
-#endif
+	return false;
+}

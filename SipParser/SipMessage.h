@@ -144,6 +144,8 @@ public:
 
 	int GetExpires();
 
+	CSipHeader * GetHeader( const char * pszName );
+
 	CSipMessage * CreateResponse( int iStatus, const char * pszToTag = NULL );
 	CSipMessage * CreateResponseWithToTag( int iStatus );
 

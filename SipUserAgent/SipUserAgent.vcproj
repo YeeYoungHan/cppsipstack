@@ -205,6 +205,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipUserAgentRefer.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipUserAgentRegister.hpp"
 				>
 			</File>

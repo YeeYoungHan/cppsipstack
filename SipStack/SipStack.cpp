@@ -213,6 +213,8 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 		}
 	}
 
+	delete pclsMessage;
+
 	return false;
 }
 

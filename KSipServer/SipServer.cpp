@@ -101,11 +101,7 @@ bool CSipServer::SendResponse( CSipMessage * pclsMessage, int iStatusCode )
 	CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( iStatusCode );
 	if( pclsResponse == NULL ) return false;
 
-	if( gclsSipStack.SendSipMessage( pclsResponse ) == false )
-	{
-		delete pclsResponse;
-		return false;
-	}
+	gclsSipStack.SendSipMessage( pclsResponse );
 
 	return true;
 }

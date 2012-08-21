@@ -28,6 +28,7 @@ CSipStack	gclsSipStack;
 #include "SipUserAgentInvite.hpp"
 #include "SipUserAgentBye.hpp"
 #include "SipUserAgentCancel.hpp"
+#include "SipUserAgentRefer.hpp"
 
 /**
  * @ingroup SipUserAgent
@@ -328,6 +329,10 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return RecvCancelRequest( iThreadId, pclsMessage );
 	}
+	else if( pclsMessage->IsMethod( "REFER" ) )
+	{
+		return RecvReferRequest( iThreadId, pclsMessage );
+	}
 
 	return false;
 }
@@ -402,7 +407,6 @@ bool CSipUserAgent::SendInvite( CSipDialog & clsDialog )
 
 	if( gclsSipStack.SendSipMessage( pclsMessage ) == false )
 	{
-		delete pclsMessage;
 		Delete( clsDialog.m_strCallId.c_str() );
 		return false;
 	}
