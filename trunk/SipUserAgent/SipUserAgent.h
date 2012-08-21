@@ -91,6 +91,8 @@ private:
 
 	bool RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage );
 
+	bool RecvReferRequest( int iThreadId, CSipMessage * pclsMessage );
+
 	bool SendInvite( CSipDialog & clsDialog );
 	bool Delete( const char * pszCallId );
 

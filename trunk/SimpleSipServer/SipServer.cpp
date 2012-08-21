@@ -63,12 +63,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 		CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );
 		if( pclsResponse )
 		{
-			if( gclsSipStack.SendSipMessage( pclsResponse ) == false )
-			{
-				delete pclsResponse;
-				return false;
-			}
-
+			gclsSipStack.SendSipMessage( pclsResponse );
 			return true;
 		}
 	}
@@ -83,12 +78,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 			CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_NOT_FOUND );
 			if( pclsResponse )
 			{
-				if( gclsSipStack.SendSipMessage( pclsResponse ) == false )
-				{
-					delete pclsResponse;
-					return false;
-				}
-
+				gclsSipStack.SendSipMessage( pclsResponse );
 				return true;
 			}
 		}
@@ -122,12 +112,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 						itContact->m_clsUri.m_iPort = gclsSipStack.m_clsSetup.m_iLocalUdpPort;
 					}
 
-					if( gclsSipStack.SendSipMessage( pclsRequest ) == false )
-					{
-						delete pclsRequest;
-						return false;
-					}
-
+					gclsSipStack.SendSipMessage( pclsRequest );
 					return true;
 				}
 			}
@@ -160,12 +145,7 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 			itContact->m_clsUri.m_iPort = gclsSipStack.m_clsSetup.m_iLocalUdpPort;
 		}
 
-		if( gclsSipStack.SendSipMessage( pclsResponse ) == false )
-		{
-			delete pclsResponse;
-			return false;
-		}
-
+		gclsSipStack.SendSipMessage( pclsResponse );
 		return true;
 	}
 
