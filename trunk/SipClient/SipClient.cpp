@@ -123,7 +123,7 @@ void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 	}
 }
 
-bool CSipClient::EventTransfer( const char * pszCallId, const char * pszReferToCallId )
+bool CSipClient::EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer )
 {
 	printf( "EventTransfer(%s,%s)\n", pszCallId, pszReferToCallId );
 

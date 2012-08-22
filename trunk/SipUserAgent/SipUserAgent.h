@@ -71,6 +71,10 @@ public:
 	CSipMessage * DeleteIncomingCall( const char * pszCallId );
 	bool RingCall( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
 
+	bool GetRemoteCallRtp( const char * pszCallId, CSipCallRtp * pclsRtp );
+	bool GetToId( const char * pszCallId, std::string & strToId );
+	bool SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
+
 	// ISipStackCallBack
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );

@@ -159,6 +159,7 @@ bool CSipUserAgent::StopCall( const char * pszCallId, int iSipCode )
 			{
 				pclsMessage = itMap->second.CreateBye();
 				gettimeofday( &itMap->second.m_sttEndTime, NULL );
+				m_clsMap.erase( itMap );
 			}
 		}
 		else
@@ -311,6 +312,71 @@ bool CSipUserAgent::RingCall( const char * pszCallId, int iSipStatus, CSipCallRt
 	if( pclsMessage )
 	{
 		gclsSipStack.SendSipMessage( pclsMessage );
+	}
+
+	return bRes;
+}
+
+bool CSipUserAgent::GetRemoteCallRtp( const char * pszCallId, CSipCallRtp * pclsRtp )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		pclsRtp->m_strIp = itMap->second.m_strRemoteRtpIp;
+		pclsRtp->m_iPort = itMap->second.m_iRemoteRtpPort;
+		pclsRtp->m_iCodec = itMap->second.m_iCodec;
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+bool CSipUserAgent::GetToId( const char * pszCallId, std::string & strToId )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+
+	strToId.clear();
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		strToId = itMap->second.m_strToId;
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+bool CSipUserAgent::SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	CSipMessage * pclsRequest = NULL;
+	bool	bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		itMap->second.m_strLocalRtpIp = pclsRtp->m_strIp;
+		itMap->second.m_iLocalRtpPort = pclsRtp->m_iPort;
+		itMap->second.m_iCodec = pclsRtp->m_iCodec;
+
+		pclsRequest = itMap->second.CreateInvite();
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	if( pclsRequest )
+	{
+		gclsSipStack.SendSipMessage( pclsRequest );
 	}
 
 	return bRes;
