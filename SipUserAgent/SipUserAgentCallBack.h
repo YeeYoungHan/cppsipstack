@@ -101,7 +101,7 @@ public:
 	 */
 	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp ) = 0;
 
-	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId ) = 0;
+	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer ) = 0;
 
 	/**
    * @ingroup SipUserAgent

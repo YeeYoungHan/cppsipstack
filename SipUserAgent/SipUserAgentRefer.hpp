@@ -85,12 +85,17 @@ bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 			}
 			else
 			{
+				bool bScreenedTransfer = true;
 				bFound = false;
 
 				m_clsMutex.acquire();
 				itMap = m_clsMap.find( strReferToCallId );
 				if( itMap != m_clsMap.end() )
 				{
+					if( itMap->second.m_sttStartTime.tv_sec == 0 )
+					{
+						bScreenedTransfer = false;
+					}
 					bFound = true;
 				}
 				m_clsMutex.release();
@@ -103,7 +108,7 @@ bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 				{
 					if( m_pclsCallBack )
 					{
-						if( m_pclsCallBack->EventTransfer( strCallId.c_str(), strReferToCallId.c_str() ) )
+						if( m_pclsCallBack->EventTransfer( strCallId.c_str(), strReferToCallId.c_str(), bScreenedTransfer ) )
 						{
 							pclsResponse = pclsMessage->CreateResponse( SIP_ACCEPTED );
 						}

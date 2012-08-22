@@ -50,7 +50,7 @@ public:
 	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
 	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
-	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId );
+	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer );
 	virtual void EventTimer( );
 
 	// ISipNetworkLog
