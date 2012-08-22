@@ -19,9 +19,12 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.02"
+#define KSIP_SERVER_VERSION	"0.03"
 
 /* 버전 정보 
+
+= 버전 0.03 ( 2012년 08월 22일 ) =
+ * Screened / Unscreened Transfer 기능을 추가함.
 
 = 버전 0.02 ( 2012년 08월 18일 ) =
  * MySQL 과 연동하는 기능을 추가함.
