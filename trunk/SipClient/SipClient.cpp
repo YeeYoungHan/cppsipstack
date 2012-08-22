@@ -123,6 +123,13 @@ void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 	}
 }
 
+bool CSipClient::EventTransfer( const char * pszCallId, const char * pszReferToCallId )
+{
+	printf( "EventTransfer(%s,%s)\n", pszCallId, pszReferToCallId );
+
+	return true;
+}
+
 void CSipClient::SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort )
 {
 	struct timeval sttTime;

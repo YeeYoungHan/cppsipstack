@@ -29,8 +29,37 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	bool	bReINVITE = false;
 	CSipCallRtp clsRtp;
 	char	szTag[SIP_TAG_MAX_SIZE];
+	CSipMessage * pclsResponse = NULL;
+	SIP_DIALOG_MAP::iterator itMap;
 
 	pclsMessage->GetCallId( strCallId );
+
+	if( GetSipCallRtp( pclsMessage, clsRtp ) == false )
+	{
+		pclsResponse->m_iStatusCode = SIP_NOT_ACCEPTABLE_HERE;
+		gclsSipStack.SendSipMessage( pclsResponse );
+		return true;
+	}
+
+	// ReINVITE 인지 검사한다.
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( strCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		bReINVITE = true;
+		pclsResponse = pclsMessage->CreateResponse( SIP_OK );
+		itMap->second.AddSdp( pclsResponse );
+	}
+	m_clsMutex.release();
+
+	if( bReINVITE )
+	{
+		if( pclsResponse ) gclsSipStack.SendSipMessage( pclsResponse );
+		m_pclsCallBack->EventReInvite( strCallId.c_str(), &clsRtp );
+		return true;
+	}
+
+	// 새로운 INVITE 인 경우
 	SipMakeTag( szTag, sizeof(szTag) );
 
 	if( m_pclsCallBack )
@@ -41,25 +70,13 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 		}
 	}
 
-	CSipMessage * pclsResponse = pclsMessage->CreateResponse( SIP_RINGING, szTag );
+	pclsResponse = pclsMessage->CreateResponse( SIP_RINGING, szTag );
 	if( pclsResponse == NULL ) return false;
-
-	if( GetSipCallRtp( pclsMessage, clsRtp ) == false )
-	{
-		pclsResponse->m_iStatusCode = SIP_NOT_ACCEPTABLE_HERE;
-		gclsSipStack.SendSipMessage( pclsResponse );
-		return true;
-	}
+	gclsSipStack.SendSipMessage( pclsResponse );
 
 	m_clsMutex.acquire();
-	SIP_DIALOG_MAP::iterator itMap = m_clsMap.find( strCallId );
-	if( itMap != m_clsMap.end() )
-	{
-		bReINVITE = true;
-		pclsResponse->m_iStatusCode = SIP_OK;
-		itMap->second.AddSdp( pclsResponse );
-	}
-	else
+	itMap = m_clsMap.find( strCallId );
+	if( itMap == m_clsMap.end() )
 	{
 		CSipDialog	clsDialog;
 
@@ -106,14 +123,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	if( m_pclsCallBack )
 	{
-		if( bReINVITE )
-		{
-			m_pclsCallBack->EventReInvite( strCallId.c_str(), &clsRtp );
-		}
-		else
-		{
-			m_pclsCallBack->EventIncomingCall( strCallId.c_str(), pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str(), &clsRtp );
-		}
+		m_pclsCallBack->EventIncomingCall( strCallId.c_str(), pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str(), &clsRtp );
 	}
 
 	return true;

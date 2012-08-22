@@ -192,6 +192,21 @@ void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 }
 
+bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToCallId )
+{
+	std::string	strCallId, strReferToCallId;
+
+	if( gclsCallMap.Select( pszCallId, strCallId ) == false ) return false;
+	if( gclsCallMap.Select( pszReferToCallId, strReferToCallId ) == false ) return false;
+
+	gclsUserAgent.StopCall( pszCallId );
+	gclsUserAgent.StopCall( pszReferToCallId, SIP_REQUEST_TERMINATED );
+
+	// QQQ: ReINVITE 전송
+
+	return true;
+}
+
 /**
  * @ingroup KSipServer
  * @brief 1초 단위로 실행되는 타이머 이벤트 핸들러

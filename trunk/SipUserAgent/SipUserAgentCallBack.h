@@ -101,6 +101,8 @@ public:
 	 */
 	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp ) = 0;
 
+	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId ) = 0;
+
 	/**
    * @ingroup SipUserAgent
 	 * @brief 1초 단위로 실행되는 타이머 이벤트 핸들러
