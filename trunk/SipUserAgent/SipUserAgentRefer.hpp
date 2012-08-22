@@ -48,7 +48,7 @@ bool GetCallIdFromReferTo( const char * pszValue, std::string & strReferToCallId
  */
 bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 {
-	CSipMessage * pclsResponse;
+	CSipMessage * pclsResponse = NULL;
 	std::string	strCallId;
 	SIP_DIALOG_MAP::iterator	itMap;
 	bool	bFound = false;

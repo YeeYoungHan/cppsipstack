@@ -73,7 +73,6 @@ void CSipDeleteQueue::DeleteTimeout( )
 			if( m_clsList.front().m_pclsMessage->m_iUseCount > 0 ) break;
 
 			delete m_clsList.front().m_pclsMessage;
-
 			m_clsList.pop_front();
 		}
 	}

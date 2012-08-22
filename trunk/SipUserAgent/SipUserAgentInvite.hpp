@@ -119,8 +119,6 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	}
 	m_clsMutex.release();
 
-	gclsSipStack.SendSipMessage( pclsResponse );
-
 	if( m_pclsCallBack )
 	{
 		m_pclsCallBack->EventIncomingCall( strCallId.c_str(), pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str(), &clsRtp );
