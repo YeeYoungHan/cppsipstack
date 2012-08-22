@@ -20,6 +20,7 @@
 #include "SipRegisterThread.h"
 #include "SipUtility.h"
 #include "SdpMessage.h"
+#include "StringUtility.h"
 #include <time.h>
 
 CSipStack	gclsSipStack;
@@ -142,7 +143,7 @@ bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCal
  * @param pszCallId SIP Call-ID
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CSipUserAgent::StopCall( const char * pszCallId )
+bool CSipUserAgent::StopCall( const char * pszCallId, int iSipCode )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
 	bool	bRes = false;
@@ -164,7 +165,14 @@ bool CSipUserAgent::StopCall( const char * pszCallId )
 		{
 			if( itMap->second.m_pclsInvite )
 			{
-				pclsMessage = itMap->second.m_pclsInvite->CreateResponse( SIP_DECLINE );
+				if( iSipCode )
+				{
+					pclsMessage = itMap->second.m_pclsInvite->CreateResponse( iSipCode );
+				}
+				else
+				{
+					pclsMessage = itMap->second.m_pclsInvite->CreateResponse( SIP_DECLINE );
+				}
 				gettimeofday( &itMap->second.m_sttEndTime, NULL );
 				m_clsMap.erase( itMap );
 			}

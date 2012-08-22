@@ -16,6 +16,29 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+bool GetCallIdFromReferTo( const char * pszValue, std::string & strReferToCallId )
+{
+	const char * pszPos, * pszNext;
+
+	strReferToCallId.clear();
+
+	pszPos = strstr( pszValue, "Replaces=" );
+	if( pszPos == NULL ) return false;
+	pszPos += 9;
+
+	pszNext = strstr( pszPos, "%3B" );
+	if( pszNext == NULL )
+	{
+		pszNext = strstr( pszPos, "%3b" );
+		if( pszNext == NULL )	return false;
+	}
+
+	strReferToCallId.append( pszPos, pszNext - pszPos );
+	ReplaceString( strReferToCallId, "%40", "@" );
+
+	return true;
+}
+
 /**
  * @ingroup SipUserAgent
  * @brief SIP REFER 요청 메시지 수신 이벤트 핸들러
@@ -26,11 +49,72 @@
 bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 {
 	CSipMessage * pclsResponse;
+	std::string	strCallId;
+	SIP_DIALOG_MAP::iterator	itMap;
+	bool	bFound = false;
 
-	CSipHeader * pclsHeader = pclsMessage->GetHeader( "Refer-To" );
-	if( pclsHeader == NULL )
+	pclsMessage->GetCallId( strCallId );
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( strCallId );
+	if( itMap != m_clsMap.end() )
 	{
-		pclsResponse = pclsMessage->CreateResponse( SIP_NOT_ACCEPTABLE );
+		bFound = true;
+	}
+	m_clsMutex.release();
+
+	if( bFound == false )
+	{
+		pclsResponse = pclsMessage->CreateResponse( SIP_CALL_TRANSACTION_DOES_NOT_EXIST );
+	}
+	else
+	{
+		CSipHeader * pclsHeader = pclsMessage->GetHeader( "Refer-To" );
+		if( pclsHeader == NULL )
+		{
+			// RFC-3515 : An agent responding to a REFER method MUST return a 400 (Bad Request) if the request contained zero or more than one Refer-To header field values.
+			pclsResponse = pclsMessage->CreateResponse( SIP_BAD_REQUEST );
+		}
+		else
+		{
+			std::string	strReferToCallId;
+
+			if( GetCallIdFromReferTo( pclsHeader->m_strValue.c_str(), strReferToCallId ) == false )
+			{
+				// QQQ: Blind Transfer
+			}
+			else
+			{
+				bFound = false;
+
+				m_clsMutex.acquire();
+				itMap = m_clsMap.find( strReferToCallId );
+				if( itMap != m_clsMap.end() )
+				{
+					bFound = true;
+				}
+				m_clsMutex.release();
+
+				if( bFound == false )
+				{
+					pclsResponse = pclsMessage->CreateResponse( SIP_NOT_FOUND );
+				}
+				else
+				{
+					if( m_pclsCallBack )
+					{
+						if( m_pclsCallBack->EventTransfer( strCallId.c_str(), strReferToCallId.c_str() ) )
+						{
+							pclsResponse = pclsMessage->CreateResponse( SIP_ACCEPTED );
+						}
+						else
+						{
+							pclsResponse = pclsMessage->CreateResponse( SIP_NOT_FOUND );
+						}
+					}
+				}
+			}
+		}
 	}
 
 	if( pclsResponse )

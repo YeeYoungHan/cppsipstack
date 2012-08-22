@@ -224,6 +224,14 @@
 				RelativePath=".\Md5.h"
 				>
 			</File>
+			<File
+				RelativePath=".\StringUtility.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\StringUtility.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

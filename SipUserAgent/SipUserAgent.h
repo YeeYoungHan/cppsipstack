@@ -64,7 +64,7 @@ public:
 
 	// 통화 관련
 	bool StartCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId );
-	bool StopCall( const char * pszCallId );
+	bool StopCall( const char * pszCallId, int iSipCode = 0 );
 	bool AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp );
 	
 	// IP-PBX 에서 사용되는 통화 관련 메소드
