@@ -74,6 +74,7 @@ public:
 	bool GetRemoteCallRtp( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool GetToId( const char * pszCallId, std::string & strToId );
 	bool SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
+	bool SendNotify( const char * pszCallId, int iSipCode );
 
 	// ISipStackCallBack
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );

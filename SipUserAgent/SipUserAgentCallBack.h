@@ -103,6 +103,8 @@ public:
 
 	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer ) = 0;
 
+	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId ) = 0;
+
 	/**
    * @ingroup SipUserAgent
 	 * @brief 1초 단위로 실행되는 타이머 이벤트 핸들러

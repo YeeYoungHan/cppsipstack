@@ -127,7 +127,14 @@ bool CSipClient::EventTransfer( const char * pszCallId, const char * pszReferToC
 {
 	printf( "EventTransfer(%s,%s)\n", pszCallId, pszReferToCallId );
 
-	return true;
+	return false;
+}
+
+bool CSipClient::EventBlindTransfer( const char * pszCallId, const char * pszReferToId )
+{
+	printf( "EventBlindTransfer(%s,%s)\n", pszCallId, pszReferToId );
+
+	return false;
 }
 
 void CSipClient::SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort )

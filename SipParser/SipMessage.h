@@ -139,6 +139,7 @@ public:
 	bool AddIpPortToTopVia( const char * pszIp, int iPort );
 	bool AddVia( const char * pszIp, int iPort, const char * pszBranch = NULL );
 	bool AddRoute( const char * pszIp, int iPort );
+	bool AddHeader( const char * pszName, const char * pszValue );
 
 	bool GetTopViaIpPort( std::string & strIp, int & iPort );
 

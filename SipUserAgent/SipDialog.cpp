@@ -106,6 +106,14 @@ CSipMessage * CSipDialog::CreateBye( )
 	return pclsMessage;
 }
 
+CSipMessage * CSipDialog::CreateNotify( )
+{
+	CSipMessage * pclsMessage = CreateMessage( "NOTIFY" );
+	if( pclsMessage == NULL ) return NULL;
+
+	return pclsMessage;
+}
+
 /**
  * @ingroup SipUserAgent
  * @brief SIP 메시지에 SDP 메시지를 추가한다.

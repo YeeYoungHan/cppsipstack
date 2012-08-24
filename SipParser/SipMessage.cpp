@@ -592,6 +592,9 @@ bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort )
  */
 bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch )
 {
+	if( pszIp == NULL || strlen(pszIp) == 0 ) return false;
+	if( iPort <= 0 ) return false;
+
 	CSipVia clsVia;
 
 	clsVia.m_strProtocolName = "SIP";
@@ -628,6 +631,9 @@ bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch 
  */
 bool CSipMessage::AddRoute( const char * pszIp, int iPort )
 {
+	if( pszIp == NULL || strlen(pszIp) == 0 ) return false;
+	if( iPort <= 0 ) return false;
+
 	CSipFrom clsFrom;
 
 	clsFrom.m_clsUri.m_strProtocol = "sip";
@@ -637,6 +643,20 @@ bool CSipMessage::AddRoute( const char * pszIp, int iPort )
 	AddSipParameter( clsFrom.m_clsUri.m_clsUriParamList, "lr", NULL );
 
 	m_clsRouteList.push_front( clsFrom );
+
+	return true;
+}
+
+bool CSipMessage::AddHeader( const char * pszName, const char * pszValue )
+{
+	if( pszName == NULL || pszValue == NULL ) return false;
+
+	CSipHeader clsHeader;
+
+	clsHeader.m_strName = pszName;
+	clsHeader.m_strValue = pszValue;
+
+	m_clsHeaderList.push_back( clsHeader );
 
 	return true;
 }

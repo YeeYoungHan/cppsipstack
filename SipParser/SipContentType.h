@@ -45,6 +45,8 @@ public:
 	bool Empty();
 
 	void Set( const char * pszType, const char * pszSubType );
+	void InsertParam( const char * pszName, const char * pszValue );
+
 	bool IsEqual( const char * pszType, const char * pszSubType );
 };
 

@@ -19,6 +19,7 @@
 #include "CallMap.h"
 
 CCallMap gclsCallMap;
+CCallMap gclsTransCallMap;
 
 CCallMap::CCallMap()
 {
