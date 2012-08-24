@@ -64,7 +64,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	if( m_pclsCallBack )
 	{
-		if( m_pclsCallBack->EventIncomingCallAuth( pclsMessage ) == false )
+		if( m_pclsCallBack->EventIncomingRequestAuth( pclsMessage ) == false )
 		{
 			return true;
 		}

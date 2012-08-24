@@ -27,13 +27,21 @@ bool CSipUserAgent::RecvByeRequest( int iThreadId, CSipMessage * pclsMessage )
 {
 	std::string strCallId;
 
-	if( pclsMessage->GetCallId( strCallId ) == false ) return false;
-
-	CSipMessage * pclsResponse = pclsMessage->CreateResponse( SIP_OK );
-	if( pclsResponse )
+	if( pclsMessage->GetCallId( strCallId ) == false )
 	{
-		gclsSipStack.SendSipMessage( pclsResponse );
+		gclsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_BAD_REQUEST ) );
+		return true;
 	}
+
+	if( m_pclsCallBack )
+	{
+		if( m_pclsCallBack->EventIncomingRequestAuth( pclsMessage ) == false )
+		{
+			return true;
+		}
+	}
+
+	gclsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_OK ) );
 
 	if( Delete( strCallId.c_str() ) )
 	{

@@ -27,7 +27,19 @@ bool CSipUserAgent::RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage 
 {
 	std::string strCallId;
 
-	if( pclsMessage->GetCallId( strCallId ) == false ) return false;
+	if( pclsMessage->GetCallId( strCallId ) == false )
+	{
+		gclsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_BAD_REQUEST ) );
+		return true;
+	}
+
+	if( m_pclsCallBack )
+	{
+		if( m_pclsCallBack->EventIncomingRequestAuth( pclsMessage ) == false )
+		{
+			return true;
+		}
+	}
 
 	CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );
 	if( pclsResponse )

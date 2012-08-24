@@ -53,7 +53,19 @@ bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 	SIP_DIALOG_MAP::iterator	itMap;
 	bool	bFound = false;
 
-	pclsMessage->GetCallId( strCallId );
+	if( pclsMessage->GetCallId( strCallId ) == false )
+	{
+		gclsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_BAD_REQUEST ) );
+		return true;
+	}
+
+	if( m_pclsCallBack )
+	{
+		if( m_pclsCallBack->EventIncomingRequestAuth( pclsMessage ) == false )
+		{
+			return true;
+		}
+	}
 
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( strCallId );

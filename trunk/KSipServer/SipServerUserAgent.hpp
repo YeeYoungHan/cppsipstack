@@ -33,9 +33,11 @@ void CSipServer::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
  * @param pclsMessage	SIP INVITE 요청 메시지
  * @return 인증에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool CSipServer::EventIncomingCallAuth( CSipMessage * pclsMessage )
+bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 {
-	if( gclsUserMap.Select( pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str() ) == false )
+	CUserInfo clsUserInfo;
+
+	if( gclsUserMap.Select( pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), clsUserInfo ) == false )
 	{
 		SIP_CREDENTIAL_LIST::iterator	itCL = pclsMessage->m_clsAuthorizationList.begin();
 
@@ -56,6 +58,21 @@ bool CSipServer::EventIncomingCallAuth( CSipMessage * pclsMessage )
 		default:
 			break;
 		}
+	}
+
+	std::string	strIp;
+	int		iPort;
+
+	if( pclsMessage->GetTopViaIpPort( strIp, iPort ) == false )
+	{
+		SendResponse( pclsMessage, SIP_BAD_REQUEST );
+		return false;
+	}
+
+	if( strcmp( clsUserInfo.m_strIp.c_str(), strIp.c_str() ) || clsUserInfo.m_iPort != iPort )
+	{
+		SendResponse( pclsMessage, SIP_FORBIDDEN );
+		return false;
 	}
 
 	return true;
