@@ -382,6 +382,47 @@ bool CSipUserAgent::SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp 
 	return bRes;
 }
 
+bool CSipUserAgent::SendNotify( const char * pszCallId, int iSipCode )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	CSipMessage * pclsRequest = NULL;
+	bool	bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		pclsRequest = itMap->second.CreateNotify();
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	if( pclsRequest )
+	{
+		char	szBuf[255];
+
+		pclsRequest->m_clsContentType.Set( "message", "sipfrag" );
+		pclsRequest->m_clsContentType.InsertParam( "version", "2.0" );
+		pclsRequest->AddHeader( "Event", "refer" );
+
+		if( iSipCode >= 200 )
+		{
+			pclsRequest->AddHeader( "Subscription-State",  "terminated" );
+		}
+		else
+		{
+			pclsRequest->AddHeader( "Subscription-State",  "active" );
+		}
+
+		pclsRequest->m_iContentLength = snprintf( szBuf, sizeof(szBuf), "SIP/2.0 %d %s", iSipCode, GetReasonPhrase( iSipCode ) );
+		pclsRequest->m_strBody = szBuf;
+
+		gclsSipStack.SendSipMessage( pclsRequest );
+	}
+
+	return bRes;
+}
+
 /**
  * @ingroup SipUserAgent
  * @brief SIP 요청 메시지 수신 callback method
@@ -427,6 +468,14 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	else if( pclsMessage->IsMethod( "INVITE" ) )
 	{
 		return RecvInviteResponse( iThreadId, pclsMessage );
+	}
+	else if( pclsMessage->IsMethod( "BYE" ) )
+	{
+		return true;
+	}
+	else if( pclsMessage->IsMethod( "CANCEL" ) )
+	{
+		return true;
 	}
 
 	return false;

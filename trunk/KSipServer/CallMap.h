@@ -49,5 +49,6 @@ private:
 };
 
 extern CCallMap gclsCallMap;
+extern CCallMap gclsTransCallMap;
 
 #endif

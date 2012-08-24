@@ -160,6 +160,11 @@ void CSipContentType::Set( const char * pszType, const char * pszSubType )
 	m_strSubType = pszSubType;
 }
 
+void CSipContentType::InsertParam( const char * pszName, const char * pszValue )
+{
+	AddSipParameter( m_clsParamList, pszName, pszValue );
+}
+
 /**
  * @ingroup SipParser
  * @brief Content-Type 이 동일한지 검사한다. 

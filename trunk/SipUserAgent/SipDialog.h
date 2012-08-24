@@ -65,6 +65,7 @@ public:
 	CSipMessage * CreateAck( );
 	CSipMessage * CreateCancel( );
 	CSipMessage * CreateBye( );
+	CSipMessage * CreateNotify( );
 	bool AddSdp( CSipMessage * pclsMessage );
 
 private:

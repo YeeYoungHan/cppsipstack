@@ -81,10 +81,31 @@ bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 
 			if( GetCallIdFromReferTo( pclsHeader->m_strValue.c_str(), strReferToCallId ) == false )
 			{
-				// QQQ: Blind Transfer
+				// Blind Transfer
+				CSipUri	clsReferToUri;
+
+				if( clsReferToUri.Parse( pclsHeader->m_strValue.c_str(), pclsHeader->m_strValue.length() ) == -1 )
+				{
+					pclsResponse = pclsMessage->CreateResponse( SIP_BAD_REQUEST );
+				}
+				else
+				{
+					if( m_pclsCallBack )
+					{
+						if( m_pclsCallBack->EventBlindTransfer( strCallId.c_str(), clsReferToUri.m_strUser.c_str() ) )
+						{
+							pclsResponse = pclsMessage->CreateResponse( SIP_ACCEPTED );
+						}
+						else
+						{
+							pclsResponse = pclsMessage->CreateResponse( SIP_NOT_FOUND );
+						}
+					}
+				}
 			}
 			else
 			{
+				// Screened / Unscreened Transfer
 				bool bScreenedTransfer = true;
 				bFound = false;
 
