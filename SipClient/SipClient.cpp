@@ -38,7 +38,7 @@ void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
  * @param pclsMessage	SIP INVITE 요청 메시지
  * @return 인증에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool CSipClient::EventIncomingCallAuth( CSipMessage * pclsMessage )
+bool CSipClient::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 {
 	return true;
 }
