@@ -168,6 +168,14 @@ bool CSipUri::Empty()
 	return false;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief 멤버 변수에 입력된 데이터를 저장한다.
+ * @param pszProtocol 프로토콜
+ * @param pszUser			사용자 아이디
+ * @param pszHost			도메인 이름 또는 IP 주소
+ * @param iPort				포트 번호
+ */
 void CSipUri::Set( const char * pszProtocol, const char * pszUser, const char * pszHost, int iPort )
 {
 	if( pszProtocol )

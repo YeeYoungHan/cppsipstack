@@ -317,6 +317,13 @@ bool CSipUserAgent::RingCall( const char * pszCallId, int iSipStatus, CSipCallRt
 	return bRes;
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief SIP Call-ID 로 통화를 검색한 후, 검색된 결과로 peer RTP 정보를 저장한다.
+ * @param pszCallId SIP Call-ID
+ * @param pclsRtp		peer RTP 정보를 저장할 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::GetRemoteCallRtp( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
@@ -336,6 +343,13 @@ bool CSipUserAgent::GetRemoteCallRtp( const char * pszCallId, CSipCallRtp * pcls
 	return bRes;
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief SIP Call-ID 로 통화를 검색한 후, 검색된 결과로 peer 아이디를 저장한다.
+ * @param pszCallId SIP Call-ID
+ * @param strToId		peer 아이디를 저장할 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::GetToId( const char * pszCallId, std::string & strToId )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
@@ -355,6 +369,13 @@ bool CSipUserAgent::GetToId( const char * pszCallId, std::string & strToId )
 	return bRes;
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief ReINVITE 메시지를 전송한다.
+ * @param pszCallId SIP Call-ID
+ * @param pclsRtp		local RTP 정보 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
@@ -382,6 +403,13 @@ bool CSipUserAgent::SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp 
 	return bRes;
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief Blind Transfer 에서 사용되는 NOTIFY 메시지를 전송한다.
+ * @param pszCallId SIP Call-ID
+ * @param iSipCode	INVITE 응답 메시지의 SIP status code
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::SendNotify( const char * pszCallId, int iSipCode )
 {
 	SIP_DIALOG_MAP::iterator		itMap;

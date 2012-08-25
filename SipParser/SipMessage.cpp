@@ -647,6 +647,13 @@ bool CSipMessage::AddRoute( const char * pszIp, int iPort )
 	return true;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP 헤더 자료구조에 이름과 값을 추가한다.
+ * @param pszName		SIP 헤더 이름
+ * @param pszValue	SIP 헤더 값
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipMessage::AddHeader( const char * pszName, const char * pszValue )
 {
 	if( pszName == NULL || pszValue == NULL ) return false;
@@ -690,6 +697,12 @@ CSipMessage * CSipMessage::CreateResponse( int iStatus, const char * pszToTag )
 	return pclsResponse;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief To 헤더의 tag 가 존재하지 않는 경우 tag 를 생성하여서 저장한 SIP 응답 메시지 객체를 생성한다.
+ * @param iStatus SIP 응답 코드
+ * @returns 성공하면 SIP 응답 메시지 객체의 포인터를 리턴하고 실패하면 NULL 을 리턴한다.
+ */
 CSipMessage * CSipMessage::CreateResponseWithToTag( int iStatus )
 {
 	if( IsRequest() == false ) return NULL;

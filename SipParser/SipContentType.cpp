@@ -160,6 +160,12 @@ void CSipContentType::Set( const char * pszType, const char * pszSubType )
 	m_strSubType = pszSubType;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief parameter 리스트에 parameter 를 추가한다.
+ * @param pszName		parameter 이름
+ * @param pszValue	parameter 값
+ */
 void CSipContentType::InsertParam( const char * pszName, const char * pszValue )
 {
 	AddSipParameter( m_clsParamList, pszName, pszValue );

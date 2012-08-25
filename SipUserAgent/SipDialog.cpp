@@ -106,6 +106,11 @@ CSipMessage * CSipDialog::CreateBye( )
 	return pclsMessage;
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief NOTIFY 메시지를 생성한다.
+ * @returns 성공하면 BYE 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
 CSipMessage * CSipDialog::CreateNotify( )
 {
 	CSipMessage * pclsMessage = CreateMessage( "NOTIFY" );
