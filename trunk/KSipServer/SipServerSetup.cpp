@@ -27,7 +27,7 @@ CSipServerSetup gclsSetup;
  * @ingroup KSipServer
  * @brief »ý¼ºÀÚ
  */
-CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10), m_iLogLevel(0), m_iLogMaxSize(20000000), m_iDbPort(3306)
+CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10), m_iDbPort(3306), m_iLogLevel(0), m_iLogMaxSize(20000000)
 {
 }
 
