@@ -19,9 +19,14 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.03"
+#define KSIP_SERVER_VERSION	"0.04"
 
 /* 버전 정보 
+
+= 버전 0.04 ( 2012년 08월 25일 ) =
+ * Blind Transfer 기능을 추가함.
+ * 로그인된 사용자에게 주기적으로 OPTIONS 메시지를 전송하는 기능을 추가함.
+ * 로그인된 사용자에게 OPTIONS 메시지를 전송하는 주기를 설정 XML 에서 읽어 오도록 수정함.
 
 = 버전 0.03 ( 2012년 08월 22일 ) =
  * Screened / Unscreened Transfer 기능을 추가함.

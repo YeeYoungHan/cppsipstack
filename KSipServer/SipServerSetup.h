@@ -49,13 +49,25 @@ public:
 	/** SIP 통신을 위한 realm */
 	std::string	m_strRealm;
 
+	/** 로그인된 사용자에게 OPTIONS 메시지를 전송하는 주기 (초단위) */
+	int					m_iSendOptionsPeriod;
+
 	/** 사용자 계정 정보 저장 폴더 */
 	std::string	m_strUserXmlFolder;
 
+	/** DB 서버 IP 주소 */
 	std::string	m_strDbHost;
+
+	/** DB 서버 접속 사용자 아이디 */
 	std::string m_strDbUserId;
+
+	/** DB 서버 접속 비밀번호 */
 	std::string m_strDbPassWord;
+
+	/** DB 서버 데이터베이스 이름 */
 	std::string m_strDbName;
+
+	/** DB 서버 포트 번호 */
 	int					m_iDbPort;
 
 	/** 로그 폴더 */

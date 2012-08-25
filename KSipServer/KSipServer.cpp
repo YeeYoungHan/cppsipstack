@@ -99,6 +99,7 @@ int main( int argc, char * argv[] )
 		{
 			gclsNonceMap.DeleteTimeout( 10 );
 			gclsUserMap.DeleteTimeout( 10 );
+			gclsUserMap.SendOptions( );
 		}
 
 		if( iSecond == 3600 )

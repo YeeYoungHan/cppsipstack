@@ -71,7 +71,7 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 
 	if( strcmp( clsUserInfo.m_strIp.c_str(), strIp.c_str() ) || clsUserInfo.m_iPort != iPort )
 	{
-		SendResponse( pclsMessage, SIP_FORBIDDEN );
+		SendUnAuthorizedResponse( pclsMessage );
 		return false;
 	}
 
