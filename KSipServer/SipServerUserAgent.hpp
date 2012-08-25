@@ -197,16 +197,16 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 	{
 		gclsUserAgent.SendNotify( strCallId.c_str(), SIP_OK );
 
-		std::string	strReferCallId;
+		std::string	strReferToCallId;
 
-		if( gclsCallMap.Select( strCallId.c_str(), strReferCallId ) )
+		if( gclsCallMap.Select( strCallId.c_str(), strReferToCallId ) )
 		{
-			gclsUserAgent.StopCall( strReferCallId.c_str() );
+			gclsUserAgent.StopCall( strCallId.c_str() );
 			gclsCallMap.Delete( strCallId.c_str() );
 		}
 
-		gclsUserAgent.SendReInvite( strCallId.c_str(), pclsRtp );
-		gclsCallMap.Insert( pszCallId, strCallId.c_str() );
+		gclsUserAgent.SendReInvite( strReferToCallId.c_str(), pclsRtp );
+		gclsCallMap.Insert( pszCallId, strReferToCallId.c_str() );
 		gclsTransCallMap.Delete( pszCallId );
 	}
 }
@@ -319,7 +319,7 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 		return false;
 	}
 
-	gclsTransCallMap.Insert( strCallId.c_str(), strInviteCallId.c_str() );
+	gclsTransCallMap.Insert( pszCallId, strInviteCallId.c_str() );
 
 	return true;
 }
