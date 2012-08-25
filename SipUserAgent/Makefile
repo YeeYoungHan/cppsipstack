@@ -18,7 +18,7 @@ LIB_OBJ=SipDialog.o \
 	SipRegisterThread.o SipServerInfo.o \
 	SipUserAgent.o \
 	SipDialog.o \
-	Md5.o
+	Md5.o StringUtility.o
 
 libsipuseragent.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)
