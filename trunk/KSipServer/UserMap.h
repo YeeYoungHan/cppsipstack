@@ -30,11 +30,16 @@
 class CUserInfo
 {
 public:
+	CUserInfo();
+
 	std::string m_strIp;
 	int					m_iPort;
 
 	time_t			m_iLoginTime;
 	int					m_iLoginTimeout;
+
+	int					m_iOptionsSeq;
+	time_t			m_iSendOptionsTime;
 };
 
 typedef std::map< std::string, CUserInfo > USER_MAP;
@@ -54,6 +59,8 @@ public:
 	bool Select( const char * pszUserId );
 	bool Delete( const char * pszUserId );
 	void DeleteTimeout( int iTimeout );
+
+	void SendOptions( );
 
 private:
 	USER_MAP	m_clsMap;

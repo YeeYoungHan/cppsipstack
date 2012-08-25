@@ -16,11 +16,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipParserDefine.h"
 #include "UserMap.h"
 #include "Log.h"
+#include "SipServerSetup.h"
+#include "SipServer.h"
 #include <time.h>
 
 CUserMap gclsUserMap;
+
+CUserInfo::CUserInfo() : m_iLoginTime(0), m_iLoginTimeout(3600), m_iOptionsSeq(0), m_iSendOptionsTime(0)
+{
+}
 
 CUserMap::CUserMap()
 {
@@ -171,4 +178,76 @@ LOOP_START:
 		}
 	}
 	m_clsMutex.release();
+}
+
+typedef std::list< std::string > STRING_LIST;
+
+/**
+ * @brief 로그인된 모든 사용자에게 OPTIONS 메시지를 전송한다.
+ */
+void CUserMap::SendOptions(  )
+{
+	USER_MAP::iterator	itMap;
+	STRING_LIST	clsList;
+	STRING_LIST::iterator	itList;
+	time_t	iTime;
+
+	if( gclsSetup.m_iSendOptionsPeriod <= 0 ) return;
+
+	time( &iTime );
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		if( itMap->second.m_iSendOptionsTime == 0 )
+		{
+			if( ( iTime - itMap->second.m_iLoginTime ) < gclsSetup.m_iSendOptionsPeriod )
+			{
+				continue;
+			}
+		}
+		else
+		{
+			if( ( iTime - itMap->second.m_iSendOptionsTime ) < gclsSetup.m_iSendOptionsPeriod )
+			{
+				continue;
+			}
+		}
+
+		itMap->second.m_iSendOptionsTime = iTime;
+
+		++itMap->second.m_iOptionsSeq;
+		if( itMap->second.m_iOptionsSeq > 10000000 ) itMap->second.m_iOptionsSeq = 1;
+
+		clsList.push_back( itMap->first );
+	}
+	m_clsMutex.release();
+
+	for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+	{
+		CUserInfo clsUserInfo;
+
+		if( Select( itList->c_str(), clsUserInfo ) == false )
+		{
+			continue;
+		}
+
+		CSipMessage * pclsMessage = new CSipMessage();
+		if( pclsMessage == NULL ) break;
+
+		pclsMessage->m_strSipMethod = "OPTIONS";
+		pclsMessage->m_clsReqUri.Set( "sip", itList->c_str(), clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
+		
+		pclsMessage->m_clsFrom.m_clsUri.Set( "sip", "ksipserver", gclsSetup.m_strLocalIp.c_str() );
+		pclsMessage->m_clsFrom.InsertTag();
+
+		pclsMessage->m_clsTo.m_clsUri.Set( "sip", itList->c_str(), clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
+
+		pclsMessage->m_clsCallId.Make( gclsSetup.m_strLocalIp.c_str() );
+
+		pclsMessage->m_clsCSeq.Set( clsUserInfo.m_iOptionsSeq, "OPTIONS" );
+		pclsMessage->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
+
+		gclsSipStack.SendSipMessage( pclsMessage );
+	}
 }

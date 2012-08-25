@@ -4,6 +4,7 @@
 		<UdpPort>5060</UdpPort>
 		<UdpThreadCount>10</UdpThreadCount>
 		<Realm>ksipserver</Realm>
+		<SendOptionsPeriod>30</SendOptionsPeriod>
 	</Sip>
 	<Log>
 		<Folder>d:\temp\sipserver</Folder>

@@ -58,6 +58,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "UdpPort", m_iUdpPort );
 	pclsElement->SelectElementData( "UdpThreadCount", m_iUdpThreadCount );
 	pclsElement->SelectElementData( "Realm", m_strRealm );
+	pclsElement->SelectElementData( "SendOptionsPeriod", m_iSendOptionsPeriod );
 
 	pclsElement = clsXml.SelectElement( "Log" );
 	if( pclsElement == NULL ) return false;
