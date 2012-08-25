@@ -148,6 +148,25 @@ bool CUserMap::Delete( const char * pszUserId )
 	return bRes;
 }
 
+bool CUserMap::SetIpPort( const char * pszUserId, const char * pszIp, int iPort )
+{
+	bool bRes = false;
+	USER_MAP::iterator	itMap;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszUserId );
+	if( itMap != m_clsMap.end() )
+	{
+		itMap->second.m_strIp = pszIp;
+		itMap->second.m_iPort = iPort;
+		CLog::Print( LOG_DEBUG, "user(%s) ip(%s) port(%d)", pszUserId, pszIp, iPort );
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
 /**
  * @ingroup KSipServer
  * @brief 만료된 사용자를 자료구조에서 삭제한다.

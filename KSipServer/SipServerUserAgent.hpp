@@ -71,8 +71,15 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 
 	if( strcmp( clsUserInfo.m_strIp.c_str(), strIp.c_str() ) || clsUserInfo.m_iPort != iPort )
 	{
-		SendUnAuthorizedResponse( pclsMessage );
-		return false;
+		SIP_CREDENTIAL_LIST::iterator	itCL = pclsMessage->m_clsAuthorizationList.begin();
+
+		if( itCL == pclsMessage->m_clsAuthorizationList.end() )
+		{
+			SendUnAuthorizedResponse( pclsMessage );
+			return false;
+		}
+
+		gclsUserMap.SetIpPort( pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), strIp.c_str(), iPort );
 	}
 
 	return true;
