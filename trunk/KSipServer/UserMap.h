@@ -58,8 +58,10 @@ public:
 	bool Select( const char * pszUserId, CUserInfo & clsInfo );
 	bool Select( const char * pszUserId );
 	bool Delete( const char * pszUserId );
-	void DeleteTimeout( int iTimeout );
 
+	bool SetIpPort( const char * pszUserId, const char * pszIp, int iPort );
+
+	void DeleteTimeout( int iTimeout );
 	void SendOptions( );
 
 private:
