@@ -123,6 +123,14 @@ void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 	}
 }
 
+/**
+ * @ingroup SipClient
+ * @brief Screened / Unscreened Transfer 요청 수신 이벤트 핸들러
+ * @param pszCallId					SIP Call-ID
+ * @param pszReferToCallId	전화가 전달될 SIP Call-ID
+ * @param bScreenedTransfer Screened Transfer 이면 true 가 입력되고 Unscreened Transfer 이면 false 가 입력된다.
+ * @returns 요청을 수락하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipClient::EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer )
 {
 	printf( "EventTransfer(%s,%s)\n", pszCallId, pszReferToCallId );
@@ -130,6 +138,13 @@ bool CSipClient::EventTransfer( const char * pszCallId, const char * pszReferToC
 	return false;
 }
 
+/**
+ * @ingroup SipClient
+ * @brief Blind Transfer 요청 수신 이벤트 핸들러
+ * @param pszCallId			SIP Call-ID
+ * @param pszReferToId	전화가 전달될 사용자 아이디
+ * @returns 요청을 수락하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipClient::EventBlindTransfer( const char * pszCallId, const char * pszReferToId )
 {
 	printf( "EventBlindTransfer(%s,%s)\n", pszCallId, pszReferToId );
