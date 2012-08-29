@@ -281,6 +281,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\XmlSipServer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XmlSipServer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\XmlUser.cpp"
 				>
 			</File>

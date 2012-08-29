@@ -88,6 +88,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	if( pclsElement )
 	{
 		pclsElement->SelectElementData( "User", m_strUserXmlFolder );
+		pclsElement->SelectElementData( "SipServer", m_strSipServerXmlFolder );
 	}
 
 #ifdef USE_MYSQL

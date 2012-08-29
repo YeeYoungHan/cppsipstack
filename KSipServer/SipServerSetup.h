@@ -55,6 +55,9 @@ public:
 	/** 사용자 계정 정보 저장 폴더 */
 	std::string	m_strUserXmlFolder;
 
+	/** IP-PBX 정보 저장 폴더 */
+	std::string	m_strSipServerXmlFolder;
+
 	/** DB 서버 IP 주소 */
 	std::string	m_strDbHost;
 
