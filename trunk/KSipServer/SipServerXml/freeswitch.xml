@@ -1,0 +1,7 @@
+<SipServer>
+	<Ip>192.168.89.129</Ip>
+	<Port>5060</Port>
+	<Domain>192.168.89.129</Domain>
+	<UserId>1010</UserId>
+	<PassWord>1234</PassWord>
+</SipServer>
