@@ -23,14 +23,30 @@
 
 /**
  * @ingroup SipUserAgent
+ * @brief RTP 전송/수신
+ */
+enum ERtpDirection
+{
+	E_RTP_SEND_RECV = 0,
+	E_RTP_SEND,
+	E_RTP_RECV,
+	E_RTP_INACTIVE
+};
+
+/**
+ * @ingroup SipUserAgent
  * @brief RTP 정보 저장 클래스
  */
 class CSipCallRtp
 {
 public:
+	CSipCallRtp() : m_iPort(-1), m_iCodec(-1), m_eDirection( E_RTP_SEND_RECV )
+	{}
+
 	std::string	m_strIp;
 	int					m_iPort;
 	int					m_iCodec;
+	ERtpDirection	m_eDirection;
 };
 
 /**

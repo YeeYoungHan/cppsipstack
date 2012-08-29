@@ -23,6 +23,9 @@
 #include "SipUdp.h"
 #include "SipMessage.h"
 
+enum ERtpDirection;
+class CSipCallRtp;
+
 /**
  * @ingroup SipUserAgent
  * @brief SIP Dialog 정보를 저장하는 클래스
@@ -46,9 +49,11 @@ public:
 
 	std::string	m_strLocalRtpIp;
 	int					m_iLocalRtpPort;
+	ERtpDirection	m_eLocalDirection;
 
 	std::string	m_strRemoteRtpIp;
 	int					m_iRemoteRtpPort;
+	ERtpDirection	m_eRemoteDirection;
 
 	int					m_iCodec;
 
@@ -67,6 +72,8 @@ public:
 	CSipMessage * CreateBye( );
 	CSipMessage * CreateNotify( );
 	bool AddSdp( CSipMessage * pclsMessage );
+	bool SetLocalRtp( CSipCallRtp * pclsRtp );
+	bool SetRemoteRtp( CSipCallRtp * pclsRtp );
 
 private:
 	CSipMessage * CreateMessage( const char * pszSipMethod );

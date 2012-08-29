@@ -47,6 +47,9 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	if( itMap != m_clsMap.end() )
 	{
 		bReINVITE = true;
+		
+		itMap->second.SetRemoteRtp( &clsRtp );
+
 		pclsResponse = pclsMessage->CreateResponse( SIP_OK );
 		itMap->second.AddSdp( pclsResponse );
 	}
@@ -87,10 +90,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 		pclsMessage->m_clsFrom.SelectParam( "tag", clsDialog.m_strToTag );
 
 		clsDialog.m_strCallId = strCallId;
-
-		clsDialog.m_strRemoteRtpIp = clsRtp.m_strIp;
-		clsDialog.m_iRemoteRtpPort = clsRtp.m_iPort;
-		clsDialog.m_iCodec = clsRtp.m_iCodec;
+		clsDialog.SetRemoteRtp( &clsRtp );
 
 		pclsMessage->GetTopViaIpPort( clsDialog.m_strContactIp, clsDialog.m_iContactPort );
 

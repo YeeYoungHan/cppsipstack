@@ -43,7 +43,8 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 
 		if( itCL == pclsMessage->m_clsAuthorizationList.end() )
 		{
-			return SendUnAuthorizedResponse( pclsMessage );
+			SendUnAuthorizedResponse( pclsMessage );
+			return false;
 		}
 
 		ECheckAuthResult eRes = CheckAuthorization( &(*itCL), pclsMessage->m_strSipMethod.c_str() );
@@ -241,7 +242,12 @@ void CSipServer::EventCallEnd( const char * pszCallId, int iSipStatus )
  */
 void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
+	std::string	strCallId;
 
+	if( gclsCallMap.Select( pszCallId, strCallId ) )
+	{
+		gclsUserAgent.SendReInvite( strCallId.c_str(), pclsRtp );
+	}
 }
 
 /**
