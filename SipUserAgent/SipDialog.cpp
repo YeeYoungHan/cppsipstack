@@ -158,13 +158,76 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 	}
 
 	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:101 telephone-event/8000\r\n"
-		"a=fmtp:101 0-15\r\n"
-		"a=sendrecv\r\n" );
+		"a=fmtp:101 0-15\r\n" );
+
+	switch( m_eLocalDirection )
+	{
+	case E_RTP_SEND_RECV:
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=sendrecv\r\n" );
+		break;
+	case E_RTP_SEND:
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=sendonly\r\n" );
+		break;
+	case E_RTP_RECV:
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=recvonly\r\n" );
+		break;
+	case E_RTP_INACTIVE:
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=inactive\r\n" );
+		break;
+	}
 
 	pclsMessage->m_strBody = szSdp;
 	pclsMessage->m_iContentLength = iLen;
 	pclsMessage->m_clsContentType.Set( "application", "sdp" );
 	
+	return true;
+}
+
+bool CSipDialog::SetLocalRtp( CSipCallRtp * pclsRtp )
+{
+	m_strLocalRtpIp = pclsRtp->m_strIp;
+	m_iLocalRtpPort = pclsRtp->m_iPort;
+	m_iCodec = pclsRtp->m_iCodec;
+	m_eLocalDirection = pclsRtp->m_eDirection;
+
+	switch( m_eLocalDirection )
+	{
+	case E_RTP_SEND_RECV:
+	case E_RTP_INACTIVE:
+		m_eRemoteDirection = m_eLocalDirection;
+		break;
+	case E_RTP_SEND:
+		m_eRemoteDirection = E_RTP_RECV;
+		break;
+	case E_RTP_RECV:
+		m_eRemoteDirection = E_RTP_SEND;
+		break;
+	}
+
+	return true;
+}
+
+bool CSipDialog::SetRemoteRtp( CSipCallRtp * pclsRtp )
+{
+	m_strRemoteRtpIp = pclsRtp->m_strIp;
+	m_iRemoteRtpPort = pclsRtp->m_iPort;
+	m_iCodec = pclsRtp->m_iCodec;
+	m_eRemoteDirection = pclsRtp->m_eDirection;
+
+	switch( m_eRemoteDirection )
+	{
+	case E_RTP_SEND_RECV:
+	case E_RTP_INACTIVE:
+		m_eLocalDirection = m_eRemoteDirection;
+		break;
+	case E_RTP_SEND:
+		m_eLocalDirection = E_RTP_RECV;
+		break;
+	case E_RTP_RECV:
+		m_eLocalDirection = E_RTP_SEND;
+		break;
+	}
+
 	return true;
 }
 

@@ -19,9 +19,12 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.04"
+#define KSIP_SERVER_VERSION	"0.05"
 
 /* 버전 정보 
+
+= 버전 0.05 ( 2012년 08월 29일 ) =
+ * 인증되지 않은 사용자의 INVITE 메시지에 대한 401 응답 메시지를 전송한 후, 180 응답 메시지를 전송하는 버그를 패치함.
 
 = 버전 0.04 ( 2012년 08월 25일 ) =
  * Blind Transfer 기능을 추가함.

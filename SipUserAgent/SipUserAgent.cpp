@@ -121,9 +121,7 @@ bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCal
 	clsDialog.m_strFromId = pszFrom;
 	clsDialog.m_strToId = pszTo;
 
-	clsDialog.m_strLocalRtpIp = pclsRtp->m_strIp;
-	clsDialog.m_iLocalRtpPort = pclsRtp->m_iPort;
-	clsDialog.m_iCodec = pclsRtp->m_iCodec;
+	clsDialog.SetLocalRtp( pclsRtp );
 
 	clsDialog.m_strContactIp = pclsRoute->m_strDestIp;
 	clsDialog.m_iContactPort = pclsRoute->m_iDestPort;
@@ -216,9 +214,7 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 	{
 		if( itMap->second.m_sttStartTime.tv_sec == 0 )
 		{
-			itMap->second.m_strLocalRtpIp = pclsRtp->m_strIp;
-			itMap->second.m_iLocalRtpPort = pclsRtp->m_iPort;
-			itMap->second.m_iCodec = pclsRtp->m_iCodec;
+			itMap->second.SetLocalRtp( pclsRtp );
 
 			pclsMessage = itMap->second.m_pclsInvite->CreateResponse( SIP_OK );
 			gettimeofday( &itMap->second.m_sttStartTime, NULL );
@@ -297,9 +293,7 @@ bool CSipUserAgent::RingCall( const char * pszCallId, int iSipStatus, CSipCallRt
 
 				if( pclsRtp )
 				{
-					itMap->second.m_strLocalRtpIp = pclsRtp->m_strIp;
-					itMap->second.m_iLocalRtpPort = pclsRtp->m_iPort;
-					itMap->second.m_iCodec = pclsRtp->m_iCodec;
+					itMap->second.SetLocalRtp( pclsRtp );
 					itMap->second.AddSdp( pclsMessage );
 				}
 
@@ -336,6 +330,7 @@ bool CSipUserAgent::GetRemoteCallRtp( const char * pszCallId, CSipCallRtp * pcls
 		pclsRtp->m_strIp = itMap->second.m_strRemoteRtpIp;
 		pclsRtp->m_iPort = itMap->second.m_iRemoteRtpPort;
 		pclsRtp->m_iCodec = itMap->second.m_iCodec;
+		pclsRtp->m_eDirection = itMap->second.m_eRemoteDirection;
 		bRes = true;
 	}
 	m_clsMutex.release();
@@ -386,10 +381,7 @@ bool CSipUserAgent::SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp 
 	itMap = m_clsMap.find( pszCallId );
 	if( itMap != m_clsMap.end() )
 	{
-		itMap->second.m_strLocalRtpIp = pclsRtp->m_strIp;
-		itMap->second.m_iLocalRtpPort = pclsRtp->m_iPort;
-		itMap->second.m_iCodec = pclsRtp->m_iCodec;
-
+		itMap->second.SetLocalRtp( pclsRtp );
 		pclsRequest = itMap->second.CreateInvite();
 		bRes = true;
 	}
@@ -611,9 +603,7 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 
 		if( pclsRtp )
 		{
-			itMap->second.m_strRemoteRtpIp = pclsRtp->m_strIp;
-			itMap->second.m_iRemoteRtpPort = pclsRtp->m_iPort;
-			itMap->second.m_iCodec = pclsRtp->m_iCodec;
+			itMap->second.SetRemoteRtp( pclsRtp );
 		}
 
 		if( pclsMessage->m_iStatusCode >= 200 )
@@ -712,6 +702,34 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 			clsRtp.m_iCodec = atoi( itFmt->c_str() );
 			if( clsRtp.m_iCodec == 0 )
 			{
+				break;
+			}
+		}
+
+		clsRtp.m_eDirection = E_RTP_SEND_RECV;
+
+		SDP_ATTRIBUTE_LIST::iterator	itAttr;
+
+		for( itAttr = itMedia->m_clsAttributeList.begin(); itAttr != itMedia->m_clsAttributeList.end(); ++itAttr )
+		{
+			if( !strcmp( itAttr->m_strName.c_str(), "sendrecv" ) )
+			{
+				clsRtp.m_eDirection = E_RTP_SEND_RECV;
+				break;
+			}
+			else if( !strcmp( itAttr->m_strName.c_str(), "sendonly" ) )
+			{
+				clsRtp.m_eDirection = E_RTP_SEND;
+				break;
+			}
+			else if( !strcmp( itAttr->m_strName.c_str(), "recvonly" ) )
+			{
+				clsRtp.m_eDirection = E_RTP_RECV;
+				break;
+			}
+			else if( !strcmp( itAttr->m_strName.c_str(), "inactive" ) )
+			{
+				clsRtp.m_eDirection = E_RTP_INACTIVE;
 				break;
 			}
 		}
