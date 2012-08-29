@@ -84,6 +84,7 @@ public:
 	SIP_SERVER_INFO_LIST	m_clsRegisterList;
 	CSipMutex							m_clsRegisterMutex;
 
+	/** 응용 프로그램 callback 인터페이스 */
 	ISipUserAgentCallBack * m_pclsCallBack;
 
 private:

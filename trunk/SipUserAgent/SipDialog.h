@@ -36,34 +36,70 @@ public:
 	CSipDialog();
 	~CSipDialog();
 
+	/** SIP From 헤더에 저장되는 사용자 아이디 */
 	std::string	m_strFromId;
+
+	/** SIP From 헤더에 저장되는 tag */
 	std::string	m_strFromTag;
+
+	/** SIP To 헤더에 저장되는 사용자 아이디 */
 	std::string	m_strToId;
+
+	/** SIP To 헤더에 저장되는 tag */
 	std::string	m_strToTag;
+
+	/** SIP Call-ID */
 	std::string m_strCallId;
+
+	/** SIP Top Via 헤더의 branch */
 	std::string m_strViaBranch;
+
+	/** SIP CSeq 헤더의 번호 */
 	int					m_iSeq;
 
+	/** SIP 요청 메시지를 전송할 IP 주소 */
 	std::string	m_strContactIp;
+
+	/** SIP 요청 메시지를 전송할 포트 번호 */
 	int					m_iContactPort;
 
+	/** local RTP IP 주소 */
 	std::string	m_strLocalRtpIp;
+
+	/** local RTP 포트 번호 */
 	int					m_iLocalRtpPort;
+
+	/** local RTP direction ( sendrecv, sendonly, recvonly, inactive ) */
 	ERtpDirection	m_eLocalDirection;
 
+	/** remote RTP IP 주소 */
 	std::string	m_strRemoteRtpIp;
+
+	/** remote RTP 포트 번호 */
 	int					m_iRemoteRtpPort;
+
+	/** remote RTP direction ( sendrecv, sendonly, recvonly, inactive ) */
 	ERtpDirection	m_eRemoteDirection;
 
+	/** 코덱 */
 	int					m_iCodec;
 
+	/** SIP 요청 메시지에 저장될 Request Uri */
 	std::string	m_strContactUri;
 
+	/** INVITE 전송/수신 시간 */
 	struct timeval m_sttInviteTime;
+
+	/** CANCEL 전송 시간 */
 	struct timeval m_sttCancelTime;
+
+	/** 통화 시작 시간 */
 	struct timeval m_sttStartTime;
+
+	/** 통화 종료 시간 */
 	struct timeval m_sttEndTime;
 
+	/** 수신된 INVITE 메시지 */
 	CSipMessage * m_pclsInvite;
 
 	CSipMessage * CreateInvite( );

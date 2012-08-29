@@ -33,13 +33,22 @@ public:
 
 	void ClearLogin();
 
+	/** SIP 서버의 IP 주소 */
 	std::string		m_strIp;
+
+	/** SIP 서버의 포트 번호 */
 	int						m_iPort;
 
+	/** SIP 서버의 도메인 */
 	std::string		m_strDomain;
+
+	/** 로그인 아이디 */
 	std::string		m_strUserId;
+
+	/** 로그인 비밀번호 */
 	std::string		m_strPassWord;
 
+	/** 로그인 만료 시간 (초단위) */
 	int						m_iLoginTimeout;
 
 	bool					m_bLogin;
