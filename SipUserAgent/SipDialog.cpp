@@ -183,6 +183,12 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 	return true;
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief local RTP 정보를 저장한다.
+ * @param pclsRtp RTP 정보를 저장한 객체
+ * @returns true 를 리턴한다.
+ */
 bool CSipDialog::SetLocalRtp( CSipCallRtp * pclsRtp )
 {
 	m_strLocalRtpIp = pclsRtp->m_strIp;
@@ -207,6 +213,12 @@ bool CSipDialog::SetLocalRtp( CSipCallRtp * pclsRtp )
 	return true;
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief remote RTP 정보를 저장한다.
+ * @param pclsRtp RTP 정보를 저장한 객체
+ * @returns true 를 리턴한다.
+ */
 bool CSipDialog::SetRemoteRtp( CSipCallRtp * pclsRtp )
 {
 	m_strRemoteRtpIp = pclsRtp->m_strIp;

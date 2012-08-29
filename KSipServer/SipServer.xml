@@ -2,7 +2,7 @@
 	<Sip>
 		<LocalIp></LocalIp>
 		<UdpPort>5060</UdpPort>
-		<UdpThreadCount>10</UdpThreadCount>
+		<UdpThreadCount>1</UdpThreadCount>
 		<Realm>ksipserver</Realm>
 		<!--<SendOptionsPeriod>30</SendOptionsPeriod>-->
 	</Sip>
@@ -12,7 +12,7 @@
 		<MaxSize>10000000</MaxSize>
 	</Log>
 	<XmlFolder>
-		<!--<User>D:\OpenProject\CppSipStack\trunk\KSipServer\UserXml</User>-->
+		<User>D:\OpenProject\CppSipStack\trunk\KSipServer\UserXml</User>
 	</XmlFolder>
 	<Db>
 		<Host>127.0.0.1</Host>
