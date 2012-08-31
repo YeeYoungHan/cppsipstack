@@ -22,9 +22,7 @@
 #include <string>
 #include "SipUdp.h"
 #include "SipMessage.h"
-
-enum ERtpDirection;
-class CSipCallRtp;
+#include "SipUserAgentCallBack.h"
 
 /**
  * @ingroup SipUserAgent
