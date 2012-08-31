@@ -22,6 +22,7 @@
 #include "Log.h"
 #include "NonceMap.h"
 #include "UserMap.h"
+#include "SipServerMap.h"
 #include "ServerUtility.h"
 #include "DbMySQL.h"
 #include "KSipServerVersion.h"
@@ -72,6 +73,8 @@ int main( int argc, char * argv[] )
 	clsSetup.m_iLocalUdpPort = gclsSetup.m_iUdpPort;
 	clsSetup.m_iUdpThreadCount = gclsSetup.m_iUdpThreadCount;
 	clsSetup.m_strUserAgent = "KSipServer";
+
+	gclsSipServerMap.ReadDir( gclsSetup.m_strSipServerXmlFolder.c_str() );
 
 	Fork( true );
 

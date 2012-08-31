@@ -19,6 +19,6 @@
 #ifndef _K_SIP_SERVER_H_
 #define _K_SIP_SERVER_H_
 
-#define USE_MYSQL
+//#define USE_MYSQL
 
 #endif

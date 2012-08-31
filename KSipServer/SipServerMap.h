@@ -16,34 +16,32 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _XML_SIP_SERVER_H_
-#define _XML_SIP_SERVER_H_
+#ifndef _SIP_SERVER_MAP_H_
+#define _SIP_SERVER_MAP_H_
 
-#include <string>
+#include "XmlSipServer.h"
+#include "SipMutex.h"
+#include <map>
 
-#define FLAG_NULL				0x00
-#define FLAG_INSERT			0x01
-#define FLAG_UPDATE			0x02
-#define FLAG_DELETE			0x04
-#define FLAG_NO_CHANGE	0x10
+// key = IP 주소 + 사용자 아이디
+typedef std::map< std::string, CXmlSipServer > SIP_SERVER_MAP;
 
-class CXmlSipServer
+class CSipServerMap
 {
 public:
-	CXmlSipServer();
-	~CXmlSipServer();
+	CSipServerMap();
+	~CSipServerMap();
 
-	std::string		m_strIp;
-	int						m_iPort;
-	std::string		m_strDomain;
+	bool ReadDir( const char * pszDirName );
 
-	std::string		m_strUserId;
-	std::string		m_strPassWord;
+private:
+	SIP_SERVER_MAP	m_clsMap;
+	CSipMutex				m_clsMutex;
 
-	int						m_iFlag;
-
-	bool Parse( const char * pszFileName );
-	void Clear();
+	void GetKey( CXmlSipServer & clsXmlSipServer, std::string & strKey );
+	bool Insert( CXmlSipServer & clsXmlSipServer );
 };
+
+extern CSipServerMap gclsSipServerMap;
 
 #endif

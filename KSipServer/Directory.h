@@ -20,6 +20,7 @@
 #define _DIRECTORY_H_
 
 #include <string>
+#include <list>
 
 #ifdef WIN32
 # include <windows.h>
@@ -29,6 +30,8 @@
 # define DIR_SEP	'/'
 # define DIR_MODE		S_IRWXU
 #endif
+
+typedef std::list< std::string > FILE_LIST;
 
 /** 
  * @ingroup KSipServer
@@ -40,6 +43,7 @@ public:
 	static int Create( const char * szDirName );
 	static int IsDirectory( const char * szDirName );
 	static void AppendName( std::string & strFileName, const char * pszAppend );
+	static bool List( const char * pszDirName, FILE_LIST & clsFileList );
 };
 
 #endif
