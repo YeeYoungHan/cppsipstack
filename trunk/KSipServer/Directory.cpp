@@ -234,3 +234,63 @@ bool CDirectory::List( const char * pszDirName, FILE_LIST & clsFileList )
 
 	return true;
 }
+
+bool CDirectory::FileList( const char * pszDirName, FILE_LIST & clsFileList )
+{
+	clsFileList.clear();
+
+#ifdef WIN32
+	WIN32_FIND_DATA	sttFindData;
+	HANDLE			hFind;
+	BOOL				bNext = TRUE;
+	std::string	strPath = pszDirName;
+
+	strPath.append( "\\*.*" );
+
+	hFind = FindFirstFile( strPath.c_str(), &sttFindData );
+	if( hFind == INVALID_HANDLE_VALUE )
+	{
+		CLog::Print( LOG_ERROR, "FindFirstFile(%s) error(%d)", pszDirName, GetLastError() );
+		return false;
+	}
+
+	for( ; bNext == TRUE; bNext = FindNextFile( hFind, &sttFindData ) )
+	{
+		if( !strcmp( sttFindData.cFileName, "." ) || !strcmp( sttFindData.cFileName, ".." ) ) continue;
+		if( sttFindData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) continue;
+
+		clsFileList.push_back( sttFindData.cFileName );
+	}
+
+	FindClose( hFind );
+#else
+	DIR						* psttDir;
+	struct dirent	* psttDirent, sttDirent;
+	struct stat		sttStat;
+	int		n;
+	std::string		strFileName;
+
+	psttDir = opendir( pszDirName );
+	if( psttDir == NULL )
+	{
+		CLog::Print( LOG_ERROR, "opendir(%s) error(%d)", pszDirName, getErrno() );
+		return false;
+	}
+
+	for( n = readdir_r( psttDir, &sttDirent, &psttDirent ); psttDirent && n == 0; n = readdir_r( psttDir, &sttDirent, &psttDirent ) )
+	{
+		if( !strcmp( psttDirent->d_name, "." ) || !strcmp( psttDirent->d_name, ".." ) ) continue;
+		strFileName = pszDirName;
+		CDirectory::Append( strFileName, psttDirent->d_name );
+
+		if( lstat( strFileName.c_str(), &sttStat ) < 0 ) continue;
+		if( S_ISDIR( sttStat.st_mode ) ) continue;
+
+		clsFileList.push_back( psttDirent->d_name );
+	}
+
+	closedir( psttDir );
+#endif
+
+	return true;
+}
