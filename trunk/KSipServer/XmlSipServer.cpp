@@ -19,7 +19,7 @@
 #include "XmlSipServer.h"
 #include "XmlElement.h"
 
-CXmlSipServer::CXmlSipServer() : m_iPort(5060)
+CXmlSipServer::CXmlSipServer() : m_iPort(5060), m_iFlag(FLAG_NULL)
 {
 }
 
@@ -38,7 +38,7 @@ bool CXmlSipServer::Parse( const char * pszFileName )
 	clsXml.SelectElementData( "Ip", m_strIp );
 	clsXml.SelectElementData( "Port", m_iPort );
 	clsXml.SelectElementData( "Domain", m_strDomain );
-	clsXml.SelectElementData( "Id", m_strId );
+	clsXml.SelectElementData( "UserId", m_strUserId );
 	clsXml.SelectElementData( "PassWord", m_strPassWord );
 
 	if( m_strIp.empty() ) return false;
@@ -54,6 +54,6 @@ void CXmlSipServer::Clear()
 	m_strIp.clear();
 	m_iPort = 5060;
 	m_strDomain.clear();
-	m_strId.clear();
+	m_strUserId.clear();
 	m_strPassWord.clear();
 }

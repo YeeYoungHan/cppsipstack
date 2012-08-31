@@ -18,6 +18,7 @@
 
 #include <string.h>
 #include "Directory.h"
+#include "Log.h"
 
 /** 
  * @ingroup KSipServer
@@ -181,4 +182,55 @@ void CDirectory::AppendName( std::string & strFileName, const char * pszAppend )
 	strFileName.append( "/" );
 	strFileName.append( pszAppend );
 #endif
+}
+
+bool CDirectory::List( const char * pszDirName, FILE_LIST & clsFileList )
+{
+	clsFileList.clear();
+
+#ifdef WIN32
+	WIN32_FIND_DATA	sttFindData;
+	HANDLE			hFind;
+	BOOL				bNext = TRUE;
+	std::string	strPath = pszDirName;
+
+	strPath.append( "\\*.*" );
+
+	hFind = FindFirstFile( strPath.c_str(), &sttFindData );
+	if( hFind == INVALID_HANDLE_VALUE )
+	{
+		CLog::Print( LOG_ERROR, "FindFirstFile(%s) error(%d)", pszDirName, GetLastError() );
+		return false;
+	}
+
+	for( ; bNext == TRUE; bNext = FindNextFile( hFind, &sttFindData ) )
+	{
+		if( !strcmp( sttFindData.cFileName, "." ) || !strcmp( sttFindData.cFileName, ".." ) ) continue;
+		clsFileList.push_back( sttFindData.cFileName );
+	}
+
+	FindClose( hFind );
+#else
+	DIR						* psttDir;
+	struct dirent	* psttDirent, sttDirent;
+	int	n;
+
+	psttDir = opendir( pszDirName );
+	if( psttDir == NULL )
+	{
+		CLog::Print( LOG_ERROR, "opendir(%s) error(%d)", pszDirName, getErrno() );
+		return false;
+	}
+
+	for( n = readdir_r( psttDir, &sttDirent, &psttDirent ); psttDirent && n == 0; n = readdir_r( psttDir, &sttDirent, &psttDirent ) )
+	{
+		if( !strcmp( psttDirent->d_name, "." ) || !strcmp( psttDirent->d_name, ".." ) ) continue;
+
+		clsFileList.push_back( psttDirent->d_name );
+	}
+
+	closedir( psttDir );
+#endif
+
+	return true;
 }

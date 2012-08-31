@@ -209,6 +209,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipServerMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipServerMap.h"
+				>
+			</File>
+			<File
 				RelativePath=".\UserMap.cpp"
 				>
 			</File>
