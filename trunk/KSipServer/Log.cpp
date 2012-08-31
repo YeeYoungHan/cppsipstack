@@ -251,8 +251,8 @@ OPEN_FILE:
 		m_iLogSize += fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%u] %s\n"
 			, sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec, sttTime.tv_usec, szHeader, GetCurrentThreadId(), szBuf );
 #else
-		m_iLogSize += fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%u] %s\n"
-			, sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec, (unsigned int)sttTime.tv_usec, szHeader, (unsigned int)pthread_self(), szBuf );
+		m_iLogSize += fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%lu] %s\n"
+			, sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec, (unsigned int)sttTime.tv_usec, szHeader, (unsigned long)pthread_self(), szBuf );
 #endif
 		fflush( m_sttFd );
 	}
