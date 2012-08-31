@@ -20,6 +20,7 @@
 #define _SIP_USER_AGENT_CALLBACK_H_
 
 #include "SipStackDefine.h"
+#include "SipServerInfo.h"
 
 /**
  * @ingroup SipUserAgent
