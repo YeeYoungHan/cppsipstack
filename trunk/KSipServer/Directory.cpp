@@ -23,7 +23,7 @@
 #ifndef WIN32
 #include <sys/types.h>
 #include <dirent.h>
-
+#include <errno.h>
 #endif
 
 /** 
@@ -224,7 +224,7 @@ bool CDirectory::List( const char * pszDirName, FILE_LIST & clsFileList )
 	psttDir = opendir( pszDirName );
 	if( psttDir == NULL )
 	{
-		CLog::Print( LOG_ERROR, "opendir(%s) error(%d)", pszDirName, getErrno() );
+		CLog::Print( LOG_ERROR, "opendir(%s) error(%d)", pszDirName, errno );
 		return false;
 	}
 
@@ -279,7 +279,7 @@ bool CDirectory::FileList( const char * pszDirName, FILE_LIST & clsFileList )
 	psttDir = opendir( pszDirName );
 	if( psttDir == NULL )
 	{
-		CLog::Print( LOG_ERROR, "opendir(%s) error(%d)", pszDirName, getErrno() );
+		CLog::Print( LOG_ERROR, "opendir(%s) error(%d)", pszDirName, errno );
 		return false;
 	}
 
@@ -287,7 +287,7 @@ bool CDirectory::FileList( const char * pszDirName, FILE_LIST & clsFileList )
 	{
 		if( !strcmp( psttDirent->d_name, "." ) || !strcmp( psttDirent->d_name, ".." ) ) continue;
 		strFileName = pszDirName;
-		CDirectory::Append( strFileName, psttDirent->d_name );
+		AppendName( strFileName, psttDirent->d_name );
 
 		if( lstat( strFileName.c_str(), &sttStat ) < 0 ) continue;
 		if( S_ISDIR( sttStat.st_mode ) ) continue;
