@@ -25,7 +25,11 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+#ifndef __APPLE__
 #include <sys/prctl.h>
+#endif
+
 #include <signal.h>
 #include <sys/ioctl.h>
 #include <netinet/in.h>
@@ -43,7 +47,9 @@
 void SetCoreDumpEnable()
 {
 #ifndef WIN32
+#ifndef __APPLE__
 	prctl(PR_SET_DUMPABLE, 1);
+#endif
 #endif
 }
 
@@ -98,7 +104,9 @@ bool ChangeExecuteUser( const char * pszUserId )
 	if( psttPassWord->pw_dir )
 	{
 		chdir( psttPassWord->pw_dir );
+#ifndef __APPLE__
 		prctl(PR_SET_DUMPABLE, 1);
+#endif
 	}
 #endif
 	
