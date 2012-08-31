@@ -25,7 +25,7 @@ all: KSipServer.exe
 SRV_OBJ=KSipServer.o SipServer.o \
 	SipServerSetup.o XmlUser.o \
 	Directory.o Log.o ServerUtility.o \
-	CallMap.o NonceMap.o UserMap.o \
+	CallMap.o NonceMap.o UserMap.o SipServerMap.o \
 	DbMySQL.o
 
 KSipServer.exe: $(SRV_OBJ)
