@@ -20,6 +20,12 @@
 #include "Directory.h"
 #include "Log.h"
 
+#ifndef WIN32
+#include <sys/types.h>
+#include <dirent.h>
+
+#endif
+
 /** 
  * @ingroup KSipServer
  * @brief 디렉토리를 생성한다. 
