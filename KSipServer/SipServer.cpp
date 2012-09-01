@@ -22,6 +22,7 @@
 #include "UserMap.h"
 #include "NonceMap.h"
 #include "CallMap.h"
+#include "SipServerMap.h"
 #include "Log.h"
 #include "Md5.h"
 #include "XmlUser.h"
@@ -49,7 +50,7 @@ CSipServer::~CSipServer()
  */
 bool CSipServer::Start( CSipStackSetup & clsSetup )
 {
-	// QQQ: Call Routeing 할 IP-PBX 정보를 등록해 주어야 한다.
+	gclsSipServerMap.SetSipUserAgentRegisterInfo();
 
 	gclsUserAgent.m_pclsCallBack = this;
 	if( gclsUserAgent.Start( clsSetup ) == false ) return false;

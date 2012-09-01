@@ -33,6 +33,7 @@ public:
 	~CSipServerMap();
 
 	bool ReadDir( const char * pszDirName );
+	bool SetSipUserAgentRegisterInfo( );
 
 private:
 	SIP_SERVER_MAP	m_clsMap;
