@@ -19,7 +19,7 @@
 #include "XmlSipServer.h"
 #include "XmlElement.h"
 
-CXmlSipServer::CXmlSipServer() : m_iPort(5060), m_iFlag(FLAG_NULL)
+CXmlSipServer::CXmlSipServer() : m_iFlag(FLAG_NULL)
 {
 }
 

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipServer.h"
 #include "SipServerMap.h"
 #include "Directory.h"
 
@@ -33,9 +34,17 @@ bool CSipServerMap::ReadDir( const char * pszDirName )
 {
 	FILE_LIST	clsFileList;
 	FILE_LIST::iterator	itFL;
+	SIP_SERVER_MAP::iterator	itMap;
 	std::string		strFileName;
 
 	if( CDirectory::FileList( pszDirName, clsFileList ) == false ) return false;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		itMap->second.m_iFlag = FLAG_NULL;
+	}
+	m_clsMutex.release();
 
 	for( itFL = clsFileList.begin(); itFL != clsFileList.end(); ++itFL )
 	{
@@ -49,6 +58,23 @@ bool CSipServerMap::ReadDir( const char * pszDirName )
 			Insert( clsXml );
 		}
 	}
+
+	return true;
+}
+
+bool CSipServerMap::SetSipUserAgentRegisterInfo( )
+{
+	SIP_SERVER_MAP::iterator	itMap;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		if( itMap->second.m_iFlag == FLAG_INSERT )
+		{
+			gclsUserAgent.AddRegisterInfo( itMap->second );
+		}
+	}
+	m_clsMutex.release();
 
 	return true;
 }

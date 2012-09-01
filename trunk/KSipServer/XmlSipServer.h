@@ -20,6 +20,7 @@
 #define _XML_SIP_SERVER_H_
 
 #include <string>
+#include "SipServerInfo.h"
 
 #define FLAG_NULL				0x00
 #define FLAG_INSERT			0x01
@@ -27,18 +28,11 @@
 #define FLAG_DELETE			0x04
 #define FLAG_NO_CHANGE	0x10
 
-class CXmlSipServer
+class CXmlSipServer : public CSipServerInfo
 {
 public:
 	CXmlSipServer();
 	~CXmlSipServer();
-
-	std::string		m_strIp;
-	int						m_iPort;
-	std::string		m_strDomain;
-
-	std::string		m_strUserId;
-	std::string		m_strPassWord;
 
 	int						m_iFlag;
 

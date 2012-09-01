@@ -13,6 +13,7 @@
 	</Log>
 	<XmlFolder>
 		<User>D:\OpenProject\CppSipStack\trunk\KSipServer\UserXml</User>
+		<SipServer>D:\OpenProject\CppSipStack\trunk\KSipServer\SipServerXml</SipServer>
 	</XmlFolder>
 	<Db>
 		<Host>127.0.0.1</Host>
