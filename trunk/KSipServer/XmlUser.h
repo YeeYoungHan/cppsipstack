@@ -45,6 +45,9 @@ public:
 
 	bool Parse( const char * pszFileName );
 	void Clear();
+
+	bool IsDnd();
+	bool IsCallForward();
 };
 
 bool SelectUser( const char * pszUserId, CXmlUser & clsUser );

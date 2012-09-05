@@ -121,13 +121,13 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 		}
 	}
 
-	if( clsXmlUser.m_bDnd )
+	if( clsXmlUser.IsDnd() )
 	{
 		gclsUserAgent.StopCall( pszCallId );
 		return;
 	}
 
-	if( clsXmlUser.m_strCallForward.empty() == false )
+	if( clsXmlUser.IsCallForward() )
 	{
 		CSipMessage * pclsInvite = gclsUserAgent.DeleteIncomingCall( pszCallId );
 		if( pclsInvite )

@@ -78,6 +78,18 @@ void CXmlUser::Clear()
 	m_strCallForward.clear();
 }
 
+bool CXmlUser::IsDnd()
+{
+	return m_bDnd;
+}
+
+bool CXmlUser::IsCallForward()
+{
+	if( m_strCallForward.empty() ) return false;
+
+	return true;
+}
+
 #ifdef USE_MYSQL
 /**
  * @ingroup KSipServer
