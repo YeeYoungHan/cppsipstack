@@ -79,6 +79,31 @@ bool CSipServerMap::SetSipUserAgentRegisterInfo( )
 	return true;
 }
 
+bool CSipServerMap::SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXmlSipServer )
+{
+	SIP_SERVER_MAP::iterator		itMap;
+	ROUTE_PREFIX_LIST::iterator	itList;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		if( itMap->second.m_clsRoutePrefixList.size() > 0 )
+		{
+			for( itList = itMap->second.m_clsRoutePrefixList.begin(); itList != itMap->second.m_clsRoutePrefixList.end(); ++itList )
+			{
+				if( !strncmp( itList->c_str(), pszTo, itList->length() ) )
+				{
+					clsXmlSipServer = itMap->second;
+					break;
+				}
+			}
+		}
+	}
+	m_clsMutex.release();
+
+	return true;
+}
+
 void CSipServerMap::GetKey( CXmlSipServer & clsXmlSipServer, std::string & strKey )
 {
 	strKey = clsXmlSipServer.m_strIp;

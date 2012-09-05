@@ -41,6 +41,21 @@ bool CXmlSipServer::Parse( const char * pszFileName )
 	clsXml.SelectElementData( "UserId", m_strUserId );
 	clsXml.SelectElementData( "PassWord", m_strPassWord );
 
+	CXmlElement * pclsRPL = clsXml.SelectElement( "RoutePrefixList" ); 
+	if( pclsRPL )
+	{
+		XML_ELEMENT_LIST clsList;
+		XML_ELEMENT_LIST::iterator	itList;
+
+		if( pclsRPL->SelectElementList( "RoutePrefix", clsList ) )
+		{
+			for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+			{
+				m_clsRoutePrefixList.push_back( itList->GetData() );
+			}
+		}
+	}
+
 	if( m_strIp.empty() ) return false;
 
 	if( m_strDomain.empty() ) m_strDomain = m_strIp;
@@ -56,4 +71,5 @@ void CXmlSipServer::Clear()
 	m_strDomain.clear();
 	m_strUserId.clear();
 	m_strPassWord.clear();
+	m_clsRoutePrefixList.clear();
 }

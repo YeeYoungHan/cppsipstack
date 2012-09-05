@@ -199,7 +199,7 @@ LOOP_START:
 	m_clsMutex.release();
 }
 
-typedef std::list< std::string > STRING_LIST;
+typedef std::list< std::string > USER_ID_LIST;
 
 /**
  * @brief 로그인된 모든 사용자에게 OPTIONS 메시지를 전송한다.
@@ -207,8 +207,8 @@ typedef std::list< std::string > STRING_LIST;
 void CUserMap::SendOptions(  )
 {
 	USER_MAP::iterator	itMap;
-	STRING_LIST	clsList;
-	STRING_LIST::iterator	itList;
+	USER_ID_LIST	clsList;
+	USER_ID_LIST::iterator	itList;
 	time_t	iTime;
 
 	if( gclsSetup.m_iSendOptionsPeriod <= 0 ) return;

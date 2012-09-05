@@ -28,6 +28,8 @@
 #define FLAG_DELETE			0x04
 #define FLAG_NO_CHANGE	0x10
 
+typedef std::list< std::string > ROUTE_PREFIX_LIST;
+
 class CXmlSipServer : public CSipServerInfo
 {
 public:
@@ -35,6 +37,7 @@ public:
 	~CXmlSipServer();
 
 	int						m_iFlag;
+	ROUTE_PREFIX_LIST	m_clsRoutePrefixList;
 
 	bool Parse( const char * pszFileName );
 	void Clear();

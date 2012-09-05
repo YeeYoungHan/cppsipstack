@@ -97,11 +97,28 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
 {
 	CXmlUser	clsXmlUser;
+	CUserInfo	clsUserInfo;
+	bool			bRoutePrefix = false;
 
 	if( SelectUser( pszTo, clsXmlUser ) == false )
 	{
-		gclsUserAgent.StopCall( pszCallId );
-		return;
+		CXmlSipServer clsXmlSipServer;
+
+		if( gclsSipServerMap.SelectRoutePrefix( pszTo, clsXmlSipServer ) )
+		{
+			clsXmlUser.m_strId = clsXmlSipServer.m_strUserId;
+			clsXmlUser.m_strPassWord = clsXmlSipServer.m_strPassWord;
+
+			clsUserInfo.m_strIp = clsXmlSipServer.m_strIp;
+			clsUserInfo.m_iPort = clsXmlSipServer.m_iPort;
+
+			bRoutePrefix = true;
+		}
+		else
+		{
+			gclsUserAgent.StopCall( pszCallId );
+			return;
+		}
 	}
 
 	if( clsXmlUser.m_bDnd )
@@ -136,12 +153,13 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 		return;
 	}
 
-	CUserInfo	clsUserInfo;
-
-	if( gclsUserMap.Select( pszTo, clsUserInfo ) == false )
+	if( bRoutePrefix == false )
 	{
-		gclsUserAgent.StopCall( pszCallId );
-		return;
+		if( gclsUserMap.Select( pszTo, clsUserInfo ) == false )
+		{
+			gclsUserAgent.StopCall( pszCallId );
+			return;
+		}
 	}
 
 	std::string	strCallId;
