@@ -27,6 +27,12 @@ CXmlSipServer::~CXmlSipServer()
 {
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief IP-PBX 정보를 저장한 XML 파일을 파싱하여서 내부 변수에 저장한다.
+ * @param pszFileName IP-PBX 정보를 저장한 XML 파일의 full path
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CXmlSipServer::Parse( const char * pszFileName )
 {
 	CXmlElement clsXml;
@@ -64,6 +70,10 @@ bool CXmlSipServer::Parse( const char * pszFileName )
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 내부 변수를 초기화 시킨다.
+ */
 void CXmlSipServer::Clear()
 {
 	m_strIp.clear();

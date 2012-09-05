@@ -30,6 +30,10 @@
 
 typedef std::list< std::string > ROUTE_PREFIX_LIST;
 
+/**
+ * @ingroup KSipServer
+ * @brief IP-PBX 정보 저장 클래스
+ */
 class CXmlSipServer : public CSipServerInfo
 {
 public:
@@ -37,6 +41,8 @@ public:
 	~CXmlSipServer();
 
 	int						m_iFlag;
+
+	/** Call 라우팅을 위한 전화번호 prefix 리스트 */
 	ROUTE_PREFIX_LIST	m_clsRoutePrefixList;
 
 	bool Parse( const char * pszFileName );

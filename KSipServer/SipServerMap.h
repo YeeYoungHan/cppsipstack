@@ -26,6 +26,10 @@
 // key = IP 주소 + 사용자 아이디
 typedef std::map< std::string, CXmlSipServer > SIP_SERVER_MAP;
 
+/**
+ * @ingroup KSipServer
+ * @brief IP-PBX 정보 저장하는 자료구조
+ */
 class CSipServerMap
 {
 public:
