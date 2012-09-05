@@ -4,4 +4,7 @@
 	<Domain>192.168.89.129</Domain>
 	<UserId>1010</UserId>
 	<PassWord>1234</PassWord>
+	<RoutePrefixList>
+	  <RoutePrefix>0</RoutePrefix>
+	</RoutePrefixList>
 </SipServer>

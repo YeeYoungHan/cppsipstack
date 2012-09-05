@@ -35,6 +35,8 @@ public:
 	bool ReadDir( const char * pszDirName );
 	bool SetSipUserAgentRegisterInfo( );
 
+	bool SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXmlSipServer );
+
 private:
 	SIP_SERVER_MAP	m_clsMap;
 	CSipMutex				m_clsMutex;
