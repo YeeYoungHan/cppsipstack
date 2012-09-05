@@ -30,6 +30,12 @@ CSipServerMap::~CSipServerMap()
 {
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 폴더에서 IP-PBX 정보를 저장한 XML 파일을 읽어서 자료구조에 저장한다.
+ * @param pszDirName 폴더 full path
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipServerMap::ReadDir( const char * pszDirName )
 {
 	FILE_LIST	clsFileList;
@@ -62,6 +68,11 @@ bool CSipServerMap::ReadDir( const char * pszDirName )
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief IP-PBX 정보 저장 자료구조의 정보를 SipUserAgent 라이브러리에 전달한다.
+ * @returns true 를 리턴한다.
+ */
 bool CSipServerMap::SetSipUserAgentRegisterInfo( )
 {
 	SIP_SERVER_MAP::iterator	itMap;
@@ -79,6 +90,13 @@ bool CSipServerMap::SetSipUserAgentRegisterInfo( )
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief IP-PBX 정보 저장 자료구조를 검색하여서 수신자 전화번호에 대한 routing 정보를 가지고 있는 IP-PBX 정보를 저장한다.
+ * @param pszTo						수신자 전화번호
+ * @param clsXmlSipServer IP-PBX 정보 저장 객체
+ * @returns true 를 리턴한다.
+ */
 bool CSipServerMap::SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXmlSipServer )
 {
 	SIP_SERVER_MAP::iterator		itMap;
@@ -104,6 +122,12 @@ bool CSipServerMap::SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXm
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief IP-PBX 정보 저장 자료구조의 key 문자열을 생성한다.
+ * @param clsXmlSipServer IP-PBX 정보 저장 객체
+ * @param strKey					key 문자열을 저장할 변수
+ */
 void CSipServerMap::GetKey( CXmlSipServer & clsXmlSipServer, std::string & strKey )
 {
 	strKey = clsXmlSipServer.m_strIp;
@@ -111,6 +135,13 @@ void CSipServerMap::GetKey( CXmlSipServer & clsXmlSipServer, std::string & strKe
 	strKey.append( clsXmlSipServer.m_strUserId );
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief IP-PBX 정보 저장 자료구조에 존재하지 않으면 추가하고
+ *				IP-PBX 정보 저장 자료구조에 존재하면 정보 수정 여부를 검사하여서 수정된 경우 IP-PBX 정보를 수정한다.
+ * @param clsXmlSipServer IP-PBX 정보 저장 객체
+ * @returns true 를 리턴한다.
+ */
 bool CSipServerMap::Insert( CXmlSipServer & clsXmlSipServer )
 {
 	SIP_SERVER_MAP::iterator	itMap;
