@@ -46,6 +46,7 @@ bool CXmlSipServer::Parse( const char * pszFileName )
 	clsXml.SelectElementData( "Domain", m_strDomain );
 	clsXml.SelectElementData( "UserId", m_strUserId );
 	clsXml.SelectElementData( "PassWord", m_strPassWord );
+	clsXml.SelectElementData( "LoginTimeout", m_iLoginTimeout );
 
 	CXmlElement * pclsRPL = clsXml.SelectElement( "RoutePrefixList" ); 
 	if( pclsRPL )
