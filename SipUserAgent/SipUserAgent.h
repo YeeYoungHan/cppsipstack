@@ -73,6 +73,8 @@ public:
 
 	bool GetRemoteCallRtp( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool GetToId( const char * pszCallId, std::string & strToId );
+	bool GetCdr( const char * pszCallId, CSipCdr * pclsCdr );
+
 	bool SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool SendNotify( const char * pszCallId, int iSipCode );
 
@@ -100,6 +102,7 @@ private:
 	bool RecvReferRequest( int iThreadId, CSipMessage * pclsMessage );
 
 	bool SendInvite( CSipDialog & clsDialog );
+	bool SetCallEnd( const char * pszCallId );
 	bool Delete( const char * pszCallId );
 
 	bool SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * pclsRtp );

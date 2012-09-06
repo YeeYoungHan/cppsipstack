@@ -25,6 +25,7 @@
 #include "SipServerMap.h"
 #include "ServerUtility.h"
 #include "DbMySQL.h"
+#include "Directory.h"
 #include "KSipServerVersion.h"
 
 /**
@@ -59,6 +60,11 @@ int main( int argc, char * argv[] )
 	CLog::SetLevel( gclsSetup.m_iLogLevel );
 
 	CLog::Print( LOG_SYSTEM, "KSipServer is started ( version-%s %s %s )", KSIP_SERVER_VERSION, __DATE__, __TIME__ );
+
+	if( gclsSetup.m_strCdrFolder.empty() == false )
+	{
+		CDirectory::Create( gclsSetup.m_strCdrFolder.c_str() );
+	}
 
 	CSipStackSetup clsSetup;
 

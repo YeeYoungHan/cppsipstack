@@ -169,6 +169,14 @@
 			Name="Dialog"
 			>
 			<File
+				RelativePath=".\SipCdr.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipCdr.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SipDialog.cpp"
 				>
 			</File>

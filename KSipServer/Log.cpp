@@ -157,8 +157,7 @@ int CLog::Print( EnumLogLevel iLevel, const char * fmt, ... )
 	localtime_r( &sttTime.tv_sec, &sttTm );	
 #endif
 
-	snprintf( szDate, sizeof(szDate), "%04d%02d%02d"
-		, sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday );
+	snprintf( szDate, sizeof(szDate), "%04d%02d%02d", sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday );
 
 	if( m_pThreadMutex && m_pThreadMutex->acquire() == false ) return -1;
 
@@ -173,13 +172,9 @@ int CLog::Print( EnumLogLevel iLevel, const char * fmt, ... )
 OPEN_FILE:
 		m_iLogSize = 0;
 #ifdef WIN32
-		snprintf( szFileName, sizeof(szFileName), "%s\\%04d%02d%02d_%d.txt"
-			, m_pszDirName, sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday
-			, m_iIndex );
+		snprintf( szFileName, sizeof(szFileName), "%s\\%04d%02d%02d_%d.txt", m_pszDirName, sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday, m_iIndex );
 #else
-		snprintf( szFileName, sizeof(szFileName), "%s/%04d%02d%02d_%d.txt"
-			, m_pszDirName, sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday
-			, m_iIndex );
+		snprintf( szFileName, sizeof(szFileName), "%s/%04d%02d%02d_%d.txt", m_pszDirName, sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday, m_iIndex );
 #endif
 		
 		// 이미 Open 된 파일이 있는 경우에는 이를 닫는다.

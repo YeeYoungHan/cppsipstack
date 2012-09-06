@@ -247,17 +247,31 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
  */
 void CSipServer::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
-	std::string	strCallId;
+	CCallInfo clsCallInfo;
 
-	if( gclsCallMap.Select( pszCallId, strCallId ) )
+	if( gclsCallMap.Select( pszCallId, clsCallInfo ) )
 	{
-		gclsUserAgent.StopCall( strCallId.c_str() );
+		if( clsCallInfo.m_bRecv )
+		{
+			SaveCdr( pszCallId, iSipStatus );
+		}
+		else
+		{
+			SaveCdr( clsCallInfo.m_strPeerCallId.c_str(), iSipStatus );
+		}
+
+		gclsUserAgent.StopCall( clsCallInfo.m_strPeerCallId.c_str() );
 		gclsCallMap.Delete( pszCallId );
 	}
-	else if( gclsTransCallMap.Select( pszCallId, strCallId ) )
+	else
 	{
-		gclsUserAgent.SendNotify( strCallId.c_str(), iSipStatus );
-		gclsTransCallMap.Delete( pszCallId );
+		std::string	strCallId;
+
+		if( gclsTransCallMap.Select( pszCallId, strCallId ) )
+		{
+			gclsUserAgent.SendNotify( strCallId.c_str(), iSipStatus );
+			gclsTransCallMap.Delete( pszCallId );
+		}
 	}
 }
 

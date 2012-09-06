@@ -43,9 +43,10 @@ bool CSipUserAgent::RecvByeRequest( int iThreadId, CSipMessage * pclsMessage )
 
 	gclsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_OK ) );
 
-	if( Delete( strCallId.c_str() ) )
+	if( SetCallEnd( strCallId.c_str() ) )
 	{
 		if( m_pclsCallBack ) m_pclsCallBack->EventCallEnd( strCallId.c_str(), SIP_OK );
+		Delete( strCallId.c_str() );
 	}
 
 	return true;

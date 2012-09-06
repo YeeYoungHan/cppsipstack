@@ -162,6 +162,8 @@ bool CSipUserAgent::RecvInviteResponse( int iThreadId, CSipMessage * pclsMessage
 		else
 		{
 			if( m_pclsCallBack ) m_pclsCallBack->EventCallEnd( strCallId.c_str(), pclsMessage->m_iStatusCode );
+
+			Delete( strCallId.c_str() );
 		}
 	}
 

@@ -52,10 +52,10 @@ public:
 	/** 로그인된 사용자에게 OPTIONS 메시지를 전송하는 주기 (초단위) */
 	int					m_iSendOptionsPeriod;
 
-	/** 사용자 계정 정보 저장 폴더 */
+	/** 사용자 계정 정보 저장 폴더 - 본 항목이 설정되어 있지 않으면 MySQL DB 를 사용한다. */
 	std::string	m_strUserXmlFolder;
 
-	/** IP-PBX 정보 저장 폴더 */
+	/** IP-PBX 정보 저장 폴더 - m_strUserXmlFolder 가 설정되어 있지 않으면 본 항목은 사용되지 않는다. */
 	std::string	m_strSipServerXmlFolder;
 
 	/** DB 서버 IP 주소 */
@@ -84,6 +84,9 @@ public:
 
 	/** SIP 통신을 위한 정보 저장 방법 */
 	EDbType			m_eType;
+
+	/** CDR 파일 저장 폴더 - m_strUserXmlFolder 가 설정되어 있지 않으면 본 항목은 사용되지 않는다. */
+	std::string	m_strCdrFolder;
 
 	bool Read( const char * pszFileName );
 };

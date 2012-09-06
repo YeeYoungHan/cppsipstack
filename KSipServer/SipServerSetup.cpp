@@ -141,5 +141,13 @@ bool CSipServerSetup::Read( const char * pszFileName )
 #endif
 	}
 
+	if( m_eType == E_DT_XML )
+	{
+		pclsElement = clsXml.SelectElement( "Cdr" );
+		if( pclsElement == NULL ) return false;
+
+		pclsElement->SelectElementData( "Folder", m_strCdrFolder );
+	}
+
 	return true;
 }

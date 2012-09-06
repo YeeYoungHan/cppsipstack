@@ -276,6 +276,14 @@
 				RelativePath=".\ServerUtility.h"
 				>
 			</File>
+			<File
+				RelativePath=".\TimeString.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TimeString.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="XML"

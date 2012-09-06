@@ -366,6 +366,30 @@ bool CSipUserAgent::GetToId( const char * pszCallId, std::string & strToId )
 
 /**
  * @ingroup SipUserAgent
+ * @brief SIP Call-ID 로 통화를 검색한 후, 검색된 결과의 CDR 정보를 저장한다.
+ * @param pszCallId SIP Call-ID
+ * @param pclsCdr		CDR 정보 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::GetCdr( const char * pszCallId, CSipCdr * pclsCdr )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		itMap->second.GetCdr( pclsCdr );
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief ReINVITE 메시지를 전송한다.
  * @param pszCallId SIP Call-ID
  * @param pclsRtp		local RTP 정보 저장 객체
@@ -559,6 +583,29 @@ bool CSipUserAgent::SendInvite( CSipDialog & clsDialog )
 
 /**
  * @ingroup SipUserAgent
+ * @brief SIP Dialog 에 통화 종료 정보를 저장한다.
+ * @param pszCallId SIP Call-ID
+ * @returns 존재하면 true 를 리턴하고 존재하지 않으면 false 를 리턴한다.
+ */
+bool CSipUserAgent::SetCallEnd( const char * pszCallId )
+{
+	SIP_DIALOG_MAP::iterator			itMap;
+	bool	bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		gettimeofday( &itMap->second.m_sttEndTime, NULL );
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief SIP Dialog 를 삭제한다.
  * @param pszCallId SIP Call-ID
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -566,12 +613,14 @@ bool CSipUserAgent::SendInvite( CSipDialog & clsDialog )
 bool CSipUserAgent::Delete( const char * pszCallId )
 {
 	SIP_DIALOG_MAP::iterator			itMap;
+	bool	bRes = false;
 
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( pszCallId );
 	if( itMap != m_clsMap.end() )
 	{
 		m_clsMap.erase( itMap );
+		bRes = true;
 	}
 	m_clsMutex.release();
 
@@ -652,7 +701,6 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 			else
 			{
 				gettimeofday( &itMap->second.m_sttEndTime, NULL );
-				m_clsMap.erase( itMap );
 			}
 		}
 

@@ -21,4 +21,7 @@
 		<PassWord>1234</PassWord>
 		<DataBase>ksipserver</DataBase>
 	</Db>
+	<Cdr>
+		<Folder>d:\temp\cdr</Folder>
+	</Cdr>
 </Setup>
