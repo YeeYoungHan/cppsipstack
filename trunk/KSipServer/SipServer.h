@@ -58,7 +58,10 @@ public:
 	virtual void SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort );
 
 private:
+	CSipMutex	m_clsMutex;
+
 	bool SendResponse( CSipMessage * pclsMessage, int iStatusCode );
+	void SaveCdr( const char * pszCallId, int iSipStatus );
 
 	// SipServerRegister.hpp
 	bool RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage );

@@ -21,6 +21,10 @@
 CCallMap gclsCallMap;
 CCallMap gclsTransCallMap;
 
+CCallInfo::CCallInfo() : m_bRecv(false)
+{
+}
+
 CCallMap::CCallMap()
 {
 }
@@ -44,13 +48,21 @@ bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId )
 	itMap = m_clsMap.find( pszRecvCallId );
 	if( itMap == m_clsMap.end() )
 	{
-		m_clsMap.insert( CALL_MAP::value_type( pszRecvCallId, pszSendCallId ) );
+		CCallInfo	clsCallInfo;
+
+		clsCallInfo.m_strPeerCallId = pszSendCallId;
+		clsCallInfo.m_bRecv = true;
+		m_clsMap.insert( CALL_MAP::value_type( pszRecvCallId, clsCallInfo ) );
 	}
 
 	itMap = m_clsMap.find( pszSendCallId );
 	if( itMap == m_clsMap.end() )
 	{
-		m_clsMap.insert( CALL_MAP::value_type( pszSendCallId, pszRecvCallId ) );
+		CCallInfo	clsCallInfo;
+
+		clsCallInfo.m_strPeerCallId = pszRecvCallId;
+		clsCallInfo.m_bRecv = false;
+		m_clsMap.insert( CALL_MAP::value_type( pszSendCallId, clsCallInfo ) );
 	}
 	m_clsMutex.release();
 
@@ -75,7 +87,24 @@ bool CCallMap::Select( const char * pszCallId, std::string & strCallId )
 	itMap = m_clsMap.find( pszCallId );
 	if( itMap != m_clsMap.end() )
 	{
-		strCallId = itMap->second;
+		strCallId = itMap->second.m_strPeerCallId;
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+bool CCallMap::Select( const char * pszCallId, CCallInfo & clsCallInfo )
+{
+	CALL_MAP::iterator	itMap;
+	bool	bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		clsCallInfo = itMap->second;
 		bRes = true;
 	}
 	m_clsMutex.release();
@@ -99,7 +128,7 @@ bool CCallMap::Delete( const char * pszCallId )
 	itMap = m_clsMap.find( pszCallId );
 	if( itMap != m_clsMap.end() )
 	{
-		strCallId = itMap->second;
+		strCallId = itMap->second.m_strPeerCallId;
 		m_clsMap.erase( itMap );
 		bRes = true;
 	}

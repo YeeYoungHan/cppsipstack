@@ -16,49 +16,39 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _CALL_MAP_H_
-#define _CALL_MAP_H_
+#ifndef _SIP_CDR_H_
+#define _SIP_CDR_H_
 
 #include <string>
-#include <map>
-#include "SipMutex.h"
-
-class CCallInfo
-{
-public:
-	CCallInfo();
-
-	std::string	m_strPeerCallId;
-	bool				m_bRecv;
-};
+#include "SipUdp.h"
 
 /**
- * @ingroup KSipServer
- * @brief 연결된 통화 정보를 저장하는 자료구조. key 와 value 는 SIP Call-ID 이다.
+ * @ingroup SipUserAgent
+ * @brief SIP CDR 정보를 저장하는 클래스
  */
-typedef std::map< std::string, CCallInfo > CALL_MAP;
-
-/**
- * @ingroup KSipServer
- * @brief 연결된 통화 정보를 저장하는 자료구조 클래스
- */
-class CCallMap
+class CSipCdr
 {
 public:
-	CCallMap();
-	~CCallMap();
+	CSipCdr();
+	~CSipCdr();
 
-	bool Insert( const char * pszRecvCallId, const char * pszSendCallId );
-	bool Select( const char * pszCallId, std::string & strCallId );
-	bool Select( const char * pszCallId, CCallInfo & clsCallInfo );
-	bool Delete( const char * pszCallId );
+	/** SIP From 헤더에 저장되는 사용자 아이디 */
+	std::string	m_strFromId;
 
-private:
-	CALL_MAP	m_clsMap;
-	CSipMutex	m_clsMutex;
+	/** SIP To 헤더에 저장되는 사용자 아이디 */
+	std::string	m_strToId;
+
+	/** SIP Call-ID */
+	std::string m_strCallId;
+
+	/** INVITE 전송/수신 시간 */
+	struct timeval m_sttInviteTime;
+
+	/** 통화 시작 시간 */
+	struct timeval m_sttStartTime;
+
+	/** 통화 종료 시간 */
+	struct timeval m_sttEndTime;
 };
-
-extern CCallMap gclsCallMap;
-extern CCallMap gclsTransCallMap;
 
 #endif

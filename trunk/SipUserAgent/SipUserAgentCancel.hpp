@@ -58,8 +58,6 @@ bool CSipUserAgent::RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage 
 		{
 			pclsResponse = itMap->second.m_pclsInvite->CreateResponse( SIP_REQUEST_TERMINATED );
 			gettimeofday( &itMap->second.m_sttEndTime, NULL );
-
-			m_clsMap.erase( itMap );
 		}
 	}
 	m_clsMutex.release();
@@ -67,7 +65,9 @@ bool CSipUserAgent::RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage 
 	if( pclsResponse )
 	{
 		gclsSipStack.SendSipMessage( pclsResponse );
-		if( m_pclsCallBack ) m_pclsCallBack->EventCallEnd( strCallId.c_str(), SIP_OK );
+		if( m_pclsCallBack ) m_pclsCallBack->EventCallEnd( strCallId.c_str(), SIP_REQUEST_TERMINATED );
+
+		Delete( strCallId.c_str() );
 	}
 
 	return true;

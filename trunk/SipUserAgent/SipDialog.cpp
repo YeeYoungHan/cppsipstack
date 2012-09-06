@@ -291,3 +291,19 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 
 	return pclsMessage;
 }
+
+/**
+ * @ingroup SipUserAgent
+ * @brief CDR 정보 객체에 데이터를 저장한다.
+ * @param pclsCdr CDR 정보 객체
+ */
+void CSipDialog::GetCdr( CSipCdr * pclsCdr )
+{
+	// CSipDialog 의 From, To 는 SipUserAgent 가 SIP 요청 메시지를 전송하는 입장에서 저장되어 있으므로 CDR 을 위해서는 반대로 저장해 준다.
+	pclsCdr->m_strFromId = m_strToId;
+	pclsCdr->m_strToId = m_strFromId;
+	pclsCdr->m_strCallId = m_strCallId;
+	pclsCdr->m_sttInviteTime = m_sttInviteTime;
+	pclsCdr->m_sttStartTime = m_sttStartTime;
+	pclsCdr->m_sttEndTime = m_sttEndTime;
+}

@@ -19,8 +19,7 @@
 #ifndef _SIP_DIALOG_H_
 #define _SIP_DIALOG_H_
 
-#include <string>
-#include "SipUdp.h"
+#include "SipCdr.h"
 #include "SipMessage.h"
 #include "SipUserAgentCallBack.h"
 
@@ -108,6 +107,7 @@ public:
 	bool AddSdp( CSipMessage * pclsMessage );
 	bool SetLocalRtp( CSipCallRtp * pclsRtp );
 	bool SetRemoteRtp( CSipCallRtp * pclsRtp );
+	void GetCdr( CSipCdr * pclsCdr );
 
 private:
 	CSipMessage * CreateMessage( const char * pszSipMethod );
