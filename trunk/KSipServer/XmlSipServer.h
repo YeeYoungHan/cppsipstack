@@ -49,6 +49,7 @@ public:
 	CXmlSipServer();
 	~CXmlSipServer();
 
+	std::string		m_strName;
 	int						m_iFlag;
 
 	/** Call 라우팅을 위한 전화번호 prefix 리스트 */

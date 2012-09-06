@@ -78,8 +78,6 @@ int main( int argc, char * argv[] )
 	clsSetup.m_iUdpThreadCount = gclsSetup.m_iUdpThreadCount;
 	clsSetup.m_strUserAgent = "KSipServer";
 
-	gclsSipServerMap.ReadDir( gclsSetup.m_strSipServerXmlFolder.c_str() );
-
 	Fork( true );
 
 #ifdef USE_MYSQL
@@ -88,6 +86,8 @@ int main( int argc, char * argv[] )
 		gclsReadDB.Connect( gclsSetup.m_strDbHost.c_str(), gclsSetup.m_strDbUserId.c_str(), gclsSetup.m_strDbPassWord.c_str(), gclsSetup.m_strDbName.c_str(), gclsSetup.m_iDbPort );
 	}
 #endif
+
+	gclsSipServerMap.Load();
 
 	if( gclsSipServer.Start( clsSetup ) == false )
 	{
