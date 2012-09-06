@@ -28,7 +28,16 @@
 #define FLAG_DELETE			0x04
 #define FLAG_NO_CHANGE	0x10
 
-typedef std::list< std::string > ROUTE_PREFIX_LIST;
+class CRoutePrefix
+{
+public:
+	CRoutePrefix();
+
+	std::string	m_strPrefix;
+	bool				m_bDeletePrefix;
+};
+
+typedef std::list< CRoutePrefix > ROUTE_PREFIX_LIST;
 
 /**
  * @ingroup KSipServer

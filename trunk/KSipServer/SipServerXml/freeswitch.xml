@@ -6,6 +6,6 @@
 	<PassWord>1234</PassWord>
 	<LoginTimeout>300</LoginTimeout>
 	<RoutePrefixList>
-	  <RoutePrefix>0</RoutePrefix>
+	  <RoutePrefix DeletePrefix="true">0</RoutePrefix>
 	</RoutePrefixList>
 </SipServer>

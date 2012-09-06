@@ -19,6 +19,10 @@
 #include "XmlSipServer.h"
 #include "XmlElement.h"
 
+CRoutePrefix::CRoutePrefix() : m_bDeletePrefix(false)
+{
+}
+
 CXmlSipServer::CXmlSipServer() : m_iFlag(FLAG_NULL)
 {
 }
@@ -58,7 +62,14 @@ bool CXmlSipServer::Parse( const char * pszFileName )
 		{
 			for( itList = clsList.begin(); itList != clsList.end(); ++itList )
 			{
-				m_clsRoutePrefixList.push_back( itList->GetData() );
+				if( itList->IsDataEmpty() ) continue;
+
+				CRoutePrefix clsRoutePrefix;
+
+				clsRoutePrefix.m_strPrefix = itList->GetData();
+				itList->SelectAttribute( "DeletePrefix", clsRoutePrefix.m_bDeletePrefix );
+
+				m_clsRoutePrefixList.push_back( clsRoutePrefix );
 			}
 		}
 	}

@@ -95,9 +95,10 @@ bool CSipServerMap::SetSipUserAgentRegisterInfo( )
  * @brief IP-PBX 정보 저장 자료구조를 검색하여서 수신자 전화번호에 대한 routing 정보를 가지고 있는 IP-PBX 정보를 저장한다.
  * @param pszTo						수신자 전화번호
  * @param clsXmlSipServer IP-PBX 정보 저장 객체
+ * @param strTo						INVITE 메시지를 전송할 때 사용할 수신자 전화번호
  * @returns true 를 리턴한다.
  */
-bool CSipServerMap::SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXmlSipServer )
+bool CSipServerMap::SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXmlSipServer, std::string & strTo )
 {
 	SIP_SERVER_MAP::iterator		itMap;
 	ROUTE_PREFIX_LIST::iterator	itList;
@@ -109,9 +110,19 @@ bool CSipServerMap::SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXm
 		{
 			for( itList = itMap->second.m_clsRoutePrefixList.begin(); itList != itMap->second.m_clsRoutePrefixList.end(); ++itList )
 			{
-				if( !strncmp( itList->c_str(), pszTo, itList->length() ) )
+				if( !strncmp( itList->m_strPrefix.c_str(), pszTo, itList->m_strPrefix.length() ) )
 				{
 					clsXmlSipServer = itMap->second;
+
+					if( itList->m_bDeletePrefix )
+					{
+						strTo = pszTo + itList->m_strPrefix.length();
+					}
+					else
+					{
+						strTo = pszTo;
+					}
+
 					break;
 				}
 			}
