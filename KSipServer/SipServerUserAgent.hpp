@@ -35,7 +35,21 @@ void CSipServer::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
  */
 bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 {
+	std::string	strIp;
+	int		iPort;
 	CUserInfo clsUserInfo;
+
+	if( pclsMessage->GetTopViaIpPort( strIp, iPort ) == false )
+	{
+		SendResponse( pclsMessage, SIP_BAD_REQUEST );
+		return false;
+	}
+
+	// IP-PBX 에서 전송한 SIP 요청 메시지는 인증 허용으로 처리한다.
+	if( gclsSipServerMap.Select( strIp.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str() ) )
+	{
+		return true;
+	}
 
 	if( gclsUserMap.Select( pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), clsUserInfo ) == false )
 	{
@@ -59,15 +73,6 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 		default:
 			break;
 		}
-	}
-
-	std::string	strIp;
-	int		iPort;
-
-	if( pclsMessage->GetTopViaIpPort( strIp, iPort ) == false )
-	{
-		SendResponse( pclsMessage, SIP_BAD_REQUEST );
-		return false;
 	}
 
 	if( strcmp( clsUserInfo.m_strIp.c_str(), strIp.c_str() ) || clsUserInfo.m_iPort != iPort )
