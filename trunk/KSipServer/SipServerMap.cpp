@@ -90,6 +90,27 @@ bool CSipServerMap::SetSipUserAgentRegisterInfo( )
 	return true;
 }
 
+bool CSipServerMap::Select( const char * pszIp, const char * pszUserId )
+{
+	std::string	strKey;
+	bool	bRes = false;
+	SIP_SERVER_MAP::iterator	itMap;
+
+	strKey = pszIp;
+	strKey.append( "_" );
+	strKey.append( pszUserId );
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( strKey );
+	if( itMap != m_clsMap.end() )
+	{
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
 /**
  * @ingroup KSipServer
  * @brief IP-PBX 정보 저장 자료구조를 검색하여서 수신자 전화번호에 대한 routing 정보를 가지고 있는 IP-PBX 정보를 저장한다.

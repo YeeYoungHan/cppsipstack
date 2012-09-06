@@ -69,6 +69,10 @@ int main( int argc, char * argv[] )
 		GetLocalIp( clsSetup.m_strLocalIp );
 		gclsSetup.m_strLocalIp = clsSetup.m_strLocalIp;
 	}
+	else
+	{
+		clsSetup.m_strLocalIp = gclsSetup.m_strLocalIp;
+	}
 
 	clsSetup.m_iLocalUdpPort = gclsSetup.m_iUdpPort;
 	clsSetup.m_iUdpThreadCount = gclsSetup.m_iUdpThreadCount;

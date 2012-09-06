@@ -28,6 +28,7 @@
  * IP-PBX 정보를 XML 파일에서 읽어서 로그인하는 기능을 추가함.
  * IP-PBX 정보를 저장한 XML 파일에 Call Routing 을 위한 전화번호 prefix 리스트를 설정할 수 있는 기능을 추가함.
  * 사용자 자료구조에 존재하지 않는 수신자 전화번호에 대한 INVITE 메시지를 수신하였을 때에 IP-PBX 의 Call Route Prefix 리스트를 검사하는 기능을 추가함.
+ * 설정파일의 LocalIp 를 읽어서 SIP stack 을 정상적으로 시작하도록 수정함.
 
 = 버전 0.04 ( 2012년 08월 25일 ) =
  * Blind Transfer 기능을 추가함.

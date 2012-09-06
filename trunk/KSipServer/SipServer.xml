@@ -1,6 +1,6 @@
 <Setup>
 	<Sip>
-		<LocalIp></LocalIp>
+		<LocalIp>192.168.89.1</LocalIp>
 		<UdpPort>5060</UdpPort>
 		<UdpThreadCount>1</UdpThreadCount>
 		<Realm>ksipserver</Realm>
