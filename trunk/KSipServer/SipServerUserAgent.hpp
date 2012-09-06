@@ -112,6 +112,8 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 			clsUserInfo.m_strIp = clsXmlSipServer.m_strIp;
 			clsUserInfo.m_iPort = clsXmlSipServer.m_iPort;
 
+			pszFrom = clsXmlUser.m_strId.c_str();
+
 			bRoutePrefix = true;
 		}
 		else
