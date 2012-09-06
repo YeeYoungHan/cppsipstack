@@ -73,6 +73,8 @@ public:
 	const char * GetName();
 	const char * GetData();
 
+	bool IsDataEmpty();
+
 private:
 	std::string	m_strName;
 	std::string m_strData;

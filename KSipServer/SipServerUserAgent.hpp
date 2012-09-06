@@ -99,12 +99,13 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	CXmlUser	clsXmlUser;
 	CUserInfo	clsUserInfo;
 	bool			bRoutePrefix = false;
+	std::string	strTo;
 
 	if( SelectUser( pszTo, clsXmlUser ) == false )
 	{
 		CXmlSipServer clsXmlSipServer;
 
-		if( gclsSipServerMap.SelectRoutePrefix( pszTo, clsXmlSipServer ) )
+		if( gclsSipServerMap.SelectRoutePrefix( pszTo, clsXmlSipServer, strTo ) )
 		{
 			clsXmlUser.m_strId = clsXmlSipServer.m_strUserId;
 			clsXmlUser.m_strPassWord = clsXmlSipServer.m_strPassWord;
@@ -113,6 +114,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 			clsUserInfo.m_iPort = clsXmlSipServer.m_iPort;
 
 			pszFrom = clsXmlUser.m_strId.c_str();
+			pszTo = strTo.c_str();
 
 			bRoutePrefix = true;
 		}

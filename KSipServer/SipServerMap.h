@@ -39,7 +39,7 @@ public:
 	bool ReadDir( const char * pszDirName );
 	bool SetSipUserAgentRegisterInfo( );
 
-	bool SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXmlSipServer );
+	bool SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXmlSipServer, std::string & strTo );
 
 private:
 	SIP_SERVER_MAP	m_clsMap;

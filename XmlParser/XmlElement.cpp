@@ -483,3 +483,8 @@ const char * CXmlElement::GetData()
 {
 	return m_strData.c_str();
 }
+
+bool CXmlElement::IsDataEmpty()
+{
+	return m_strData.empty();
+}
