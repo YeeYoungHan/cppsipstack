@@ -90,6 +90,13 @@ bool CSipServerMap::SetSipUserAgentRegisterInfo( )
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief IP-PBX 정보 저장 자료구조에 존재하는지 검사한다.
+ * @param pszIp			IP-PBX 의 IP 주소
+ * @param pszUserId IP-PBX 에 로그인한 사용자 아이디
+ * @returns IP-PBX 정보 저장 자료구조에 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServerMap::Select( const char * pszIp, const char * pszUserId )
 {
 	std::string	strKey;
