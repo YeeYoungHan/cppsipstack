@@ -16,9 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "KSipServer.h"
 #include "SipServer.h"
 #include "SipServerMap.h"
+#include "SipServerSetup.h"
 #include "Directory.h"
+#include "DbMySQL.h"
 
 CSipServerMap gclsSipServerMap;
 
@@ -28,6 +31,83 @@ CSipServerMap::CSipServerMap()
 
 CSipServerMap::~CSipServerMap()
 {
+}
+
+#ifdef USE_MYSQL
+/**
+ * @ingroup KSipServer
+ * @brief 
+ * @param pclsData 
+ * @param sttRow 
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool SipServerFetchRow( void * pclsData, MYSQL_ROW & sttRow )
+{
+	CXmlSipServer	clsXml;
+
+	if( sttRow[0] ) clsXml.m_strName = sttRow[0];
+	if( sttRow[1] ) clsXml.m_strIp = sttRow[1];
+	if( sttRow[2] ) clsXml.m_iPort = atoi( sttRow[2] );
+	if( sttRow[3] ) clsXml.m_strDomain = sttRow[3];
+	if( sttRow[4] ) clsXml.m_strUserId = sttRow[4];
+	if( sttRow[5] ) clsXml.m_strPassWord = sttRow[5];
+	if( sttRow[6] ) clsXml.m_iLoginTimeout = atoi( sttRow[6] );
+
+	gclsSipServerMap.Insert( clsXml );
+
+	return true;
+}
+
+/**
+ * @ingroup KSipServer
+ * @brief 
+ * @param pclsData 
+ * @param sttRow 
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool RoutePrefixFetchRow( void * pclsData, MYSQL_ROW & sttRow )
+{
+	std::string	strName;
+	CRoutePrefix clsRoutePrefix;
+
+	if( sttRow[0] ) strName = sttRow[0];
+	if( sttRow[1] ) clsRoutePrefix.m_strPrefix = sttRow[1];
+	if( sttRow[2] && sttRow[2][0] == 'Y' ) clsRoutePrefix.m_bDeletePrefix = true;
+
+	gclsSipServerMap.InsertRoutePrefix( strName.c_str(), clsRoutePrefix );
+
+	return true;
+}
+#endif
+
+bool CSipServerMap::Load( )
+{
+	bool	bRes = false;
+
+	if( gclsSetup.m_eType == E_DT_XML )
+	{
+		bRes = ReadDir( gclsSetup.m_strSipServerXmlFolder.c_str() );
+	}
+#ifdef USE_MYSQL
+	else if( gclsSetup.m_eType == E_DT_MYSQL )
+	{
+		char szSQL[255];
+
+		snprintf( szSQL, sizeof(szSQL), "SELECT Id, Ip, Port, Domain, UserId, PassWord, LoginTimeout FROM SipServer" );
+		if( gclsReadDB.Query( szSQL, NULL, SipServerFetchRow ) )
+		{
+			bRes = true;
+
+			snprintf( szSQL, sizeof(szSQL), "SELECT Id, Prefix, DeletePrefix FROM RoutePrefix" );
+			if( gclsReadDB.Query( szSQL, NULL, RoutePrefixFetchRow ) )
+			{
+				
+			}
+		}
+	}
+#endif
+
+	return bRes;
 }
 
 /**
@@ -61,6 +141,7 @@ bool CSipServerMap::ReadDir( const char * pszDirName )
 
 		if( clsXml.Parse( strFileName.c_str() ) )
 		{
+			clsXml.m_strName = itFL->c_str();
 			Insert( clsXml );
 		}
 	}
@@ -212,4 +293,23 @@ bool CSipServerMap::Insert( CXmlSipServer & clsXmlSipServer )
 	m_clsMutex.release();
 
 	return true;
+}
+
+bool CSipServerMap::InsertRoutePrefix( const char * pszName, CRoutePrefix & clsRoutePrefix )
+{
+	SIP_SERVER_MAP::iterator	itMap;
+	bool bRes = false;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		if( !strcmp( itMap->second.m_strName.c_str(), pszName ) )
+		{
+			itMap->second.m_clsRoutePrefixList.push_back( clsRoutePrefix );
+			break;
+		}
+	}
+	m_clsMutex.release();
+
+	return bRes;
 }

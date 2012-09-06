@@ -36,18 +36,22 @@ public:
 	CSipServerMap();
 	~CSipServerMap();
 
-	bool ReadDir( const char * pszDirName );
+	bool Load( );
+
 	bool SetSipUserAgentRegisterInfo( );
 
 	bool Select( const char * pszIp, const char * pszUserId );
 	bool SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXmlSipServer, std::string & strTo );
 
+	bool Insert( CXmlSipServer & clsXmlSipServer );
+	bool InsertRoutePrefix( const char * pszName, CRoutePrefix & clsRoutePrefix );
+
 private:
 	SIP_SERVER_MAP	m_clsMap;
 	CSipMutex				m_clsMutex;
 
+	bool ReadDir( const char * pszDirName );
 	void GetKey( CXmlSipServer & clsXmlSipServer, std::string & strKey );
-	bool Insert( CXmlSipServer & clsXmlSipServer );
 };
 
 extern CSipServerMap gclsSipServerMap;

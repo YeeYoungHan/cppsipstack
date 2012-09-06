@@ -9,4 +9,4 @@ CREATE TABLE SipServer(
   PRIMARY KEY (`Id`)
 );
 
-INSERT INTO SipServer( Id, Ip, Port, Domain, UserId, PassWord, LoginTimeout ) VALUES( 'freeswitch', '192.168.89.129', 5060, '', '1000', '1234', 300 );
+INSERT INTO SipServer( Id, Ip, Port, Domain, UserId, PassWord, LoginTimeout ) VALUES( 'freeswitch', '192.168.89.129', 5060, '', '1010', '1234', 300 );
