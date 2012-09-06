@@ -484,6 +484,11 @@ const char * CXmlElement::GetData()
 	return m_strData.c_str();
 }
 
+/**
+ * @ingroup XmlParser
+ * @brief Element 내용이 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ * @returns 
+ */
 bool CXmlElement::IsDataEmpty()
 {
 	return m_strData.empty();
