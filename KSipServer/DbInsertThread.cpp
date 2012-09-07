@@ -94,7 +94,7 @@ void * DbInsertThread( void * lpParameter )
 	gbDbThreadRun = true;
 	CLog::Print( LOG_INFO, "DbInsertThread is started" );
 
-	while( 1 )
+	while( gbStop == false )
 	{
 		bFound = false;
 		gclsMutex.acquire();
@@ -113,9 +113,6 @@ void * DbInsertThread( void * lpParameter )
 			gclsWriteDB.Execute( strSQL.c_str() );
 		}
 	}
-
-	// 다른 쓰레드가 종료할 때까지 2초 대기한다.
-	sleep(2);
 
 	// 큐에 존재하는 모든 SQL 을 실행한다.
 	gclsMutex.acquire();

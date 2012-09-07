@@ -21,4 +21,6 @@
 
 #define USE_MYSQL
 
+extern bool gbStop;
+
 #endif

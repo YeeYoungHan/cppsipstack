@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipServer.h"
 #include "CallMap.h"
 
 CCallMap gclsCallMap;
@@ -144,4 +145,27 @@ bool CCallMap::Delete( const char * pszCallId )
 	m_clsMutex.release();
 
 	return bRes;
+}
+
+void CCallMap::StopCallAll()
+{
+	CALL_MAP::iterator	itMap;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		gclsUserAgent.StopCall( itMap->first.c_str() );
+	}
+	m_clsMutex.release();
+}
+
+int CCallMap::GetCount()
+{
+	int iCount;
+
+	m_clsMutex.acquire();
+	iCount = m_clsMap.size();
+	m_clsMutex.release();
+
+	return iCount;
 }

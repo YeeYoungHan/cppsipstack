@@ -23,11 +23,46 @@
 #include "NonceMap.h"
 #include "UserMap.h"
 #include "SipServerMap.h"
+#include "CallMap.h"
 #include "ServerUtility.h"
 #include "DbMySQL.h"
 #include "Directory.h"
 #include "KSipServerVersion.h"
 #include "DbInsertThread.h"
+#include <signal.h>
+
+bool gbStop = false;
+
+/** signal function */
+void LastMethod( int sig )
+{
+	char	szText[21];
+
+	szText[0] = '\0';
+	switch( sig )
+	{
+	case SIGINT:
+		snprintf( szText, sizeof(szText), "SIGINT" );
+		break;
+	case SIGSEGV:
+		snprintf( szText, sizeof(szText), "SIGSEGV" );
+		break;
+	case SIGTERM:
+		snprintf( szText, sizeof(szText), "SIGTERM" );
+		break;
+#ifndef WIN32
+	case SIGQUIT:
+		snprintf( szText, sizeof(szText), "SIGQUIT" );
+		break;
+#endif
+	case SIGABRT:
+		snprintf( szText, sizeof(szText), "SIGABRT" );
+		break;
+	}
+	CLog::Print( LOG_ERROR, "signal%s%s(%d) is received. terminated", strlen(szText) > 0 ? "-" : "", szText, sig );
+
+	gbStop = true;
+}
 
 /**
  * @ingroup KSipServer
@@ -86,6 +121,16 @@ int main( int argc, char * argv[] )
 	clsSetup.m_strUserAgent = "KSipServer";
 
 	Fork( true );
+	SetCoreDumpEnable();
+
+	signal( SIGINT, LastMethod );
+	signal( SIGTERM, LastMethod );
+	signal( SIGABRT, LastMethod );
+#ifndef WIN32
+	signal( SIGKILL, LastMethod );
+	signal( SIGQUIT, LastMethod );
+	signal( SIGPIPE, SIG_IGN );
+#endif
 
 #ifdef USE_MYSQL
 	if( gclsSetup.m_eType == E_DT_MYSQL )
@@ -107,7 +152,7 @@ int main( int argc, char * argv[] )
 
 	int iSecond = 0;
 
-	while( 1 )
+	while( gbStop == false )
 	{
 		sleep(1);
 		++iSecond;
@@ -131,11 +176,43 @@ int main( int argc, char * argv[] )
 			{
 				gclsReadDB.Connect( gclsSetup.m_strDbHost.c_str(), gclsSetup.m_strDbUserId.c_str(), gclsSetup.m_strDbPassWord.c_str(), gclsSetup.m_strDbName.c_str(), gclsSetup.m_iDbPort );
 			}
+
+			if( gclsWriteDB.IsConnected() == false )
+			{
+				gclsWriteDB.Connect( gclsSetup.m_strDbHost.c_str(), gclsSetup.m_strDbUserId.c_str(), gclsSetup.m_strDbPassWord.c_str(), gclsSetup.m_strDbName.c_str(), gclsSetup.m_iDbPort );
+			}
 		}
 #endif
 
 		// QQQ: 설정 파일 수정 여부를 검사한다.
 	}
+
+	gclsCallMap.StopCallAll();
+	gclsTransCallMap.StopCallAll();
+
+	for( int i = 0; i < 20; ++i )
+	{
+		if( gclsCallMap.GetCount() == 0 && gclsTransCallMap.GetCount() == 0 )
+		{
+			break;
+		}
+
+		sleep( 1 );
+	}
+
+	DbSignal();
+
+	for( int i = 0; i < 20; ++i )
+	{
+		if( IsDbInsertThreadRun() == false )
+		{
+			break;
+		}
+
+		sleep( 1 );
+	}
+
+	CLog::Print( LOG_SYSTEM, "KSipServer is terminated" );
 
 	return 0;
 }

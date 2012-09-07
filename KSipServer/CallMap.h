@@ -53,6 +53,9 @@ public:
 	bool Select( const char * pszCallId, CCallInfo & clsCallInfo );
 	bool Delete( const char * pszCallId );
 
+	void StopCallAll();
+	int GetCount();
+
 private:
 	CALL_MAP	m_clsMap;
 	CSipMutex	m_clsMutex;
