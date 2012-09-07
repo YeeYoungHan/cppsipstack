@@ -78,6 +78,8 @@ void * MonitorThread( void * lpParameter )
 		}
 	}
 
+	closesocket( pclsArg->hSocket );
+
 	CLog::Print( LOG_INFO, "MonitorThread is terminated" );
 
 	gclsMutex.acquire();
@@ -100,7 +102,7 @@ bool StartMonitorThread( Socket hSocket, const char * pszIp, int iPort )
 	pclsArg->m_strIp = pszIp;
 	pclsArg->m_iPort = iPort;
 
-	if( StartThread( "MonitorThread", MonitorThread, NULL ) == false ) return false;
+	if( StartThread( "MonitorThread", MonitorThread, pclsArg ) == false ) return false;
 
 	return true;
 }
