@@ -317,14 +317,6 @@
 			Name="DB"
 			>
 			<File
-				RelativePath=".\DbInsertThread.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DbInsertThread.h"
-				>
-			</File>
-			<File
 				RelativePath=".\DbMySQL.cpp"
 				>
 			</File>
@@ -337,11 +329,19 @@
 			Name="¾²·¹µå"
 			>
 			<File
+				RelativePath=".\DbInsertThread.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MonitorThread.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\ServerThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ServerThread.h"
 				>
 			</File>
 		</Filter>

@@ -28,13 +28,10 @@
 #include "DbMySQL.h"
 #include "Directory.h"
 #include "KSipServerVersion.h"
-#include "DbInsertThread.h"
-#include "SipTcp.h"
+#include "ServerThread.h"
 #include <signal.h>
 
 bool gbStop = false;
-
-bool StartServerThread( );
 
 /** signal function */
 void LastMethod( int sig )

@@ -16,12 +16,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _DB_INSERT_THREAD_H_
-#define _DB_INSERT_THREAD_H_
+#ifndef _SERVER_THREAD_H_
+#define _SERVER_THREAD_H_
 
+#include "SipTcp.h"
+
+// DbInsertThread.cpp
 void DbInsert( const char * pszSQL );
 void DbSignal( );
 bool StartDbInsertThread();
 bool IsDbInsertThreadRun();
+
+// MonitorThread.cpp
+bool StartMonitorThread( Socket hSocket, const char * pszIp, int iPort );
+bool IsMonitorThreadRun();
+
+// ServerThread.cpp
+bool StartServerThread( );
 
 #endif

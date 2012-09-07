@@ -28,7 +28,7 @@
 #include "XmlUser.h"
 #include "Directory.h"
 #include "TimeString.h"
-#include "DbInsertThread.h"
+#include "ServerThread.h"
 
 CSipServer gclsSipServer;
 CSipUserAgent gclsUserAgent;
