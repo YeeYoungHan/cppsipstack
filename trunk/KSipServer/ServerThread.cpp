@@ -21,8 +21,7 @@
 #include "SipStackThread.h"
 #include "SipServerSetup.h"
 #include "Log.h"
-
-bool StartMonitorThread( Socket hSocket, const char * pszIp, int iPort );
+#include "ServerThread.h"
 
 #ifdef WIN32
 DWORD WINAPI ServerThread( LPVOID lpParameter )
