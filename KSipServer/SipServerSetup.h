@@ -20,12 +20,15 @@
 #define _SIP_SERVER_SETUP_H_
 
 #include <string>
+#include <list>
 
 enum EDbType
 {
 	E_DT_XML = 0,
 	E_DT_MYSQL
 };
+
+typedef std::list< std::string > CLIENT_IP_LIST;
 
 /**
  * @ingroup KSipServer
@@ -88,7 +91,14 @@ public:
 	/** CDR 파일 저장 폴더 - m_strUserXmlFolder 가 설정되어 있지 않으면 본 항목은 사용되지 않는다. */
 	std::string	m_strCdrFolder;
 
+	/** 모니터링 TCP 포트 번호 */
+	int					m_iMonitorPort;
+
+	/** 모니터링 TCP 포트에 접속 허용할 IP 주소 리스트 */
+	CLIENT_IP_LIST m_clsMonitorIpList;
+
 	bool Read( const char * pszFileName );
+	bool IsMonitorIp( const char * pszIp );
 };
 
 extern CSipServerSetup gclsSetup;

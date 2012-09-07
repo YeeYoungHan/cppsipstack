@@ -11,7 +11,7 @@ KSipServer
 
 2. 개발자 정보
   
- * 이영한
+ * 이름   : 이영한
  * 이메일 : websearch@naver.com
  * 블로그 : http://blog.naver.com/websearch
 
