@@ -27,6 +27,7 @@
 #include "DbMySQL.h"
 #include "Directory.h"
 #include "KSipServerVersion.h"
+#include "DbInsertThread.h"
 
 /**
  * @ingroup KSipServer
@@ -90,6 +91,9 @@ int main( int argc, char * argv[] )
 	if( gclsSetup.m_eType == E_DT_MYSQL )
 	{
 		gclsReadDB.Connect( gclsSetup.m_strDbHost.c_str(), gclsSetup.m_strDbUserId.c_str(), gclsSetup.m_strDbPassWord.c_str(), gclsSetup.m_strDbName.c_str(), gclsSetup.m_iDbPort );
+		gclsWriteDB.Connect( gclsSetup.m_strDbHost.c_str(), gclsSetup.m_strDbUserId.c_str(), gclsSetup.m_strDbPassWord.c_str(), gclsSetup.m_strDbName.c_str(), gclsSetup.m_iDbPort );
+
+		StartDbInsertThread();
 	}
 #endif
 

@@ -125,13 +125,15 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 		}
 		else
 		{
-			gclsUserAgent.StopCall( pszCallId );
+			SaveCdr( pszCallId, SIP_NOT_FOUND );
+			gclsUserAgent.StopCall( pszCallId, SIP_NOT_FOUND );
 			return;
 		}
 	}
 
 	if( clsXmlUser.IsDnd() )
 	{
+		SaveCdr( pszCallId, SIP_DECLINE );
 		gclsUserAgent.StopCall( pszCallId );
 		return;
 	}
@@ -158,6 +160,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 			}
 		}
 
+		SaveCdr( pszCallId, SIP_MOVED_TEMPORARILY );
 		gclsUserAgent.StopCall( pszCallId );
 		return;
 	}
@@ -166,7 +169,8 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	{
 		if( gclsUserMap.Select( pszTo, clsUserInfo ) == false )
 		{
-			gclsUserAgent.StopCall( pszCallId );
+			SaveCdr( pszCallId, SIP_NOT_FOUND );
+			gclsUserAgent.StopCall( pszCallId, SIP_NOT_FOUND );
 			return;
 		}
 	}
@@ -179,7 +183,8 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 	if( gclsUserAgent.StartCall( pszFrom, pszTo, pclsRtp, &clsRoute, strCallId ) == false )
 	{
-		gclsUserAgent.StopCall( pszCallId );
+		SaveCdr( pszCallId, SIP_INTERNAL_SERVER_ERROR );
+		gclsUserAgent.StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
 		return;
 	}
 

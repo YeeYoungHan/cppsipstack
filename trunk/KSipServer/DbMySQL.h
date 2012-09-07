@@ -71,6 +71,7 @@ private:
 };
 
 extern CMySQL gclsReadDB;
+extern CMySQL gclsWriteDB;
 
 #endif
 

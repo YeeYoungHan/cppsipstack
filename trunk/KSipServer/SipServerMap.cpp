@@ -211,6 +211,7 @@ bool CSipServerMap::SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXm
 {
 	SIP_SERVER_MAP::iterator		itMap;
 	ROUTE_PREFIX_LIST::iterator	itList;
+	bool bRes = false;
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
@@ -232,6 +233,7 @@ bool CSipServerMap::SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXm
 						strTo = pszTo;
 					}
 
+					bRes = true;
 					break;
 				}
 			}
@@ -239,7 +241,7 @@ bool CSipServerMap::SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXm
 	}
 	m_clsMutex.release();
 
-	return true;
+	return bRes;
 }
 
 /**

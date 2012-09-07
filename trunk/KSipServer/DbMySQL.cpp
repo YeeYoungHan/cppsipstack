@@ -23,6 +23,7 @@
 #include "errmsg.h"
 
 CMySQL gclsReadDB;
+CMySQL gclsWriteDB;
 
 CMySQL::CMySQL(void) : m_psttRes(NULL), m_bConnected(false), m_iPort(0), m_eLogLevel(LOG_SQL)
 {

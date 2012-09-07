@@ -19,11 +19,14 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.05"
+#define KSIP_SERVER_VERSION	"0.06"
 
 /* 버전 정보 
 
-= 버전 0.05 ( 2012년 08월 29일 ) =
+= 버전 0.06 ( 2012년 09월 07일 ) =
+ * CDR 저장 기능을 추가함.
+
+= 버전 0.05 ( 2012년 09월 06일 ) =
  * 인증되지 않은 사용자의 INVITE 메시지에 대한 401 응답 메시지를 전송한 후, 180 응답 메시지를 전송하는 버그를 패치함.
  * IP-PBX 정보를 XML 파일에서 읽어서 로그인하는 기능을 추가함.
  * IP-PBX 정보를 저장한 XML 파일에 Call Routing 을 위한 전화번호 prefix 리스트를 설정할 수 있는 기능을 추가함.
