@@ -340,6 +340,10 @@
 				RelativePath=".\MonitorThread.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\ServerThread.cpp"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
