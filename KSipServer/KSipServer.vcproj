@@ -317,6 +317,14 @@
 			Name="DB"
 			>
 			<File
+				RelativePath=".\DbInsertThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DbInsertThread.h"
+				>
+			</File>
+			<File
 				RelativePath=".\DbMySQL.cpp"
 				>
 			</File>
