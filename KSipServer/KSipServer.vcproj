@@ -333,6 +333,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MonitorDefine.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MonitorThread.cpp"
 				>
 			</File>
