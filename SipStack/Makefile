@@ -19,7 +19,7 @@ LIB_OBJ=SipDeleteQueue.o \
 	SipInviteTransaction.o SipNonInviteTransaction.o SipTransactionList.o \
 	SipStack.o SipStackSetup.o \
 	SipStackThread.o SipUdpThread.o \
-	SipUdp.o
+	SipUdp.o SipTcp.o
 
 libsipstack.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)

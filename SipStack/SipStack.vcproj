@@ -213,6 +213,14 @@
 			Name="Utility"
 			>
 			<File
+				RelativePath=".\SipTcp.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipTcp.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SipUdp.cpp"
 				>
 			</File>
