@@ -24,4 +24,10 @@
 	<Cdr>
 		<Folder>d:\temp\cdr</Folder>
 	</Cdr>
+	<Monitor>
+	  <Port>6000</Port>
+	  <ClientIpList>
+	    <ClientIp>127.0.0.1</ClientIp>
+	  </ClientIpList>
+	</Monitor>
 </Setup>

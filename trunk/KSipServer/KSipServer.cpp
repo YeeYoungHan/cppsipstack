@@ -29,9 +29,12 @@
 #include "Directory.h"
 #include "KSipServerVersion.h"
 #include "DbInsertThread.h"
+#include "SipTcp.h"
 #include <signal.h>
 
 bool gbStop = false;
+
+bool StartMonitorThread( Socket hSocket, const char * pszIp, int iPort );
 
 /** signal function */
 void LastMethod( int sig )
@@ -150,12 +153,65 @@ int main( int argc, char * argv[] )
 		return -1;
 	}
 
-	int iSecond = 0;
+	Socket hMonitorSocket = INVALID_SOCKET;
+	pollfd sttPoll[1];
+
+	if( gclsSetup.m_iMonitorPort > 0 )
+	{
+		hMonitorSocket = TcpListen( gclsSetup.m_iMonitorPort, 255 );
+		if( hMonitorSocket == INVALID_SOCKET )
+		{
+			CLog::Print( LOG_ERROR, "Monitor Tcp Server Port(%d) open error(%d)", gclsSetup.m_iMonitorPort, GetError() );
+		}
+		else
+		{
+			sttPoll[0].fd = hMonitorSocket;
+			sttPoll[0].events = POLLIN;
+			sttPoll[0].revents = 0;
+		}
+	}
+
+	int iSecond = 0, n;
 
 	while( gbStop == false )
 	{
-		sleep(1);
-		++iSecond;
+		if( hMonitorSocket != INVALID_SOCKET )
+		{
+			n = poll( sttPoll, 1, 1000 );
+			if( n < 0 )
+			{
+				continue;
+			}
+			else if( n == 0 )
+			{
+				++iSecond;
+			}
+			else
+			{
+				char	szIp[16];
+				int		iPort;
+
+				Socket hClientSocket = TcpAccept( hMonitorSocket, szIp, sizeof(szIp), &iPort );
+				if( hClientSocket == INVALID_SOCKET )
+				{
+
+				}
+				else if( gclsSetup.IsMonitorIp( szIp ) )
+				{
+					StartMonitorThread( hClientSocket, szIp, iPort );
+				}
+				else
+				{
+					CLog::Print( LOG_ERROR, "monitor client(%s:%d) is disconnected because it's ip is not monitor ip", szIp, iPort );
+					closesocket( hClientSocket );
+				}
+			}
+		}
+		else
+		{
+			sleep(1);
+			++iSecond;
+		}
 
 		if( iSecond % 10 == 0 )
 		{

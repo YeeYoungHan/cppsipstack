@@ -149,5 +149,41 @@ bool CSipServerSetup::Read( const char * pszFileName )
 		pclsElement->SelectElementData( "Folder", m_strCdrFolder );
 	}
 
+	pclsElement = clsXml.SelectElement( "Monitor" );
+	if( pclsElement == NULL ) return false;
+
+	pclsElement->SelectElementData( "Port", m_iMonitorPort );
+	pclsClient = pclsElement->SelectElement( "ClientIpList" );
+	if( pclsClient )
+	{
+		XML_ELEMENT_LIST clsList;
+		XML_ELEMENT_LIST::iterator	itList;
+
+		if( pclsClient->SelectElementList( "ClientIp", clsList ) )
+		{
+			for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+			{
+				if( itList->IsDataEmpty() ) continue;
+
+				m_clsMonitorIpList.push_back( itList->GetData() );
+			}
+		}
+	}
+
 	return true;
+}
+
+bool CSipServerSetup::IsMonitorIp( const char * pszIp )
+{
+	CLIENT_IP_LIST::iterator	itList;
+
+	for( itList = m_clsMonitorIpList.begin(); itList != m_clsMonitorIpList.end(); ++itList )
+	{
+		if( !strcmp( itList->c_str(), pszIp ) )
+		{
+			return true;
+		}
+	}
+
+	return false;
 }

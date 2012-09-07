@@ -333,6 +333,14 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="¾²·¹µå"
+			>
+			<File
+				RelativePath=".\MonitorThread.cpp"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
