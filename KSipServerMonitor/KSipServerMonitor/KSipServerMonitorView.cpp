@@ -22,6 +22,9 @@
 #include "KSipServerMonitorDoc.h"
 #include "KSipServerMonitorView.h"
 
+#include "Setup.h"
+#include "TcpSocket.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -36,7 +39,7 @@ END_MESSAGE_MAP()
 
 // CKSipServerMonitorView 생성/소멸
 
-CKSipServerMonitorView::CKSipServerMonitorView()
+CKSipServerMonitorView::CKSipServerMonitorView() : m_bInit(false)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
@@ -58,9 +61,27 @@ void CKSipServerMonitorView::OnInitialUpdate()
 {
 	CListView::OnInitialUpdate();
 
+	if( m_bInit == false )
+	{
+		CListCtrl & clsListCtrl = GetListCtrl();
 
-	// TODO: GetListCtrl()을 호출하여 해당 list 컨트롤을 직접 액세스함으로써
-	//  ListView를 항목으로 채울 수 있습니다.
+		ModifyStyle( LVS_ICON, LVS_REPORT );
+
+		switch( GetDocument()->m_eType )
+		{
+		case E_COMM_SIP_STACK_COUNT_LIST:
+			GetDocument()->SetTitle( __T("Transaction List") );
+			clsListCtrl.InsertColumn(  0, _T("ICT")    , LVCFMT_LEFT, gclsSetup.GetInt( "tran",  0, 100 ) );
+			clsListCtrl.InsertColumn(  1, _T("NICT")   , LVCFMT_LEFT, gclsSetup.GetInt( "tran",  1, 100 ) );
+			clsListCtrl.InsertColumn(  2, _T("IST")    , LVCFMT_LEFT, gclsSetup.GetInt( "tran",  2, 100 ) );
+			clsListCtrl.InsertColumn(  3, _T("NIST")   , LVCFMT_LEFT, gclsSetup.GetInt( "tran",  3, 100 ) );
+			clsListCtrl.InsertColumn(  4, _T("Delete") , LVCFMT_LEFT, gclsSetup.GetInt( "tran",  4, 100 ) );
+			break;
+		}
+
+		gclsSocket.AddCommand( GetDocument()->m_eType, &clsListCtrl );
+		m_bInit = true;
+	}
 }
 
 void CKSipServerMonitorView::OnRButtonUp(UINT nFlags, CPoint point)

@@ -21,6 +21,7 @@
 
 #include "MainFrm.h"
 #include "LogInDlg.h"
+#include "TcpSocket.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -169,7 +170,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CMFCToolBar::SetBasicCommands(lstBasicCommands);
 
-	SetTimer( MONITOR_TIMER, gclsLogInDlg.m_iPeriod, NULL );
+	SetTimer( MONITOR_TIMER, gclsLogInDlg.m_iPeriod * 1000, NULL );
 
 	return 0;
 }
@@ -331,7 +332,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
 	if( nIDEvent == MONITOR_TIMER )
 	{
-
+		gclsSocket.Execute();
 	}
 
 	CMDIFrameWndEx::OnTimer(nIDEvent);
