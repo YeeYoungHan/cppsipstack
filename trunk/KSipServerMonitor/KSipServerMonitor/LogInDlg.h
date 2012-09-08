@@ -16,6 +16,36 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "stdafx.h"
+#pragma once
+#include "afxwin.h"
 
+// CLogInDlg 대화 상자입니다.
 
+class CLogInDlg : public CDialog
+{
+	DECLARE_DYNAMIC(CLogInDlg)
+
+public:
+	CLogInDlg(CWnd* pParent = NULL);   // 표준 생성자입니다.
+	virtual ~CLogInDlg();
+
+// 대화 상자 데이터입니다.
+	enum { IDD = IDD_LOGIN };
+
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
+
+	DECLARE_MESSAGE_MAP()
+
+public:
+	CComboBox m_clsIpList;
+	int			m_iPort;
+	int			m_iPeriod;
+	CString	m_strIp;
+
+	virtual BOOL OnInitDialog();
+	afx_msg void OnBnClickedOk();
+
+private:
+	void SaveFile();
+};

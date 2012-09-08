@@ -298,11 +298,35 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="·Î±×ÀÎ"
+			>
+			<File
+				RelativePath=".\LogInDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\LogInDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Setup.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Setup.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>
 		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="KSipServerMonitor.rc"
+		/>
 	</Globals>
 </VisualStudioProject>
