@@ -20,6 +20,7 @@
 #include "SipTcp.h"
 #include "SipStackThread.h"
 #include "Log.h"
+#include "MonitorDefine.h"
 
 static int giMonitorThreadCount = 0;
 static CSipMutex gclsMutex;
@@ -31,6 +32,20 @@ public:
 	std::string	m_strIp;
 	int					m_iPort;
 };
+
+static bool MonitorCommand( CMonitorSocket * pclsArg, const char * pszPacket )
+{
+	if( !strcmp( pszPacket, MC_CALL_MAP_LIST ) )
+	{
+		
+	}
+	else
+	{
+		return false;
+	}
+
+	return true;
+}
 
 /**
  * @brief KSipServer 의 내부 자료구조를 모니터링하기 위한 쓰레드 함수
@@ -45,7 +60,7 @@ void * MonitorThread( void * lpParameter )
 {
 	CMonitorSocket * pclsArg = ( CMonitorSocket * )lpParameter;
 	char	szPacket[1024];
-	int		n;
+	int		iPacketLen, n, iNoCommandSecond = 0;
 
 	pollfd sttPoll[1];
 
@@ -68,11 +83,35 @@ void * MonitorThread( void * lpParameter )
 		}
 		else if( n == 0 )
 		{
+			++iNoCommandSecond;
+			if( iNoCommandSecond == 600 ) break;
 			continue;
 		}
 
+		iNoCommandSecond = 0;
+
+		// 명령 길이를 수신한다.
+		n = recv( pclsArg->hSocket, (char *)&iPacketLen, sizeof(iPacketLen), 0 );
+		if( n <= 0 )
+		{
+			break;
+		}
+
+		iPacketLen = ntohl( iPacketLen );
+		if( iPacketLen <= 0 || iPacketLen >= sizeof(szPacket) )
+		{
+			break;
+		}
+
+		// 명령을 수신한다.
 		n = TcpRecv( pclsArg->hSocket, szPacket, sizeof(szPacket), 1 );
 		if( n <= 0 )
+		{
+			break;
+		}
+
+		szPacket[n] = '\0';
+		if( MonitorCommand( pclsArg, szPacket ) == false )
 		{
 			break;
 		}

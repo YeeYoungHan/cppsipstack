@@ -21,14 +21,16 @@
 #include "LogInDlg.h"
 #include "Setup.h"
 
+CLogInDlg gclsLogInDlg;
+
 // CLogInDlg 대화 상자입니다.
 
 IMPLEMENT_DYNAMIC(CLogInDlg, CDialog)
 
 CLogInDlg::CLogInDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CLogInDlg::IDD, pParent)
-	, m_iPort(6000)
-	, m_iPeriod(1)
+	, m_iPort(DEFAULT_PORT)
+	, m_iPeriod(DEFAULT_PERIOD)
 {
 
 }
@@ -64,7 +66,7 @@ BOOL CLogInDlg::OnInitDialog()
 
 	for( int i = 0; ; ++i )
 	{
-		_snprintf( szKey, sizeof(szKey), "server_%d", i );
+		_snprintf( szKey, sizeof(szKey), "%s_%d", SSR_IP, i );
 
 		if( gclsSetup.GetString( szKey, strValue ) == false ) break;
 
@@ -72,6 +74,9 @@ BOOL CLogInDlg::OnInitDialog()
 	}
 
 	m_clsIpList.SetCurSel( 0 );
+
+	m_iPort = gclsSetup.GetInt( SSR_PORT, DEFAULT_PORT );
+	m_iPeriod = gclsSetup.GetInt( SSR_PERIOD, DEFAULT_PERIOD );
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -109,8 +114,13 @@ void CLogInDlg::SaveFile()
 
 	for( i = 0; i < iCount; ++i )
 	{
-		_snprintf( szKey, sizeof(szKey), "server_%d", i );
+		_snprintf( szKey, sizeof(szKey), "%s_%d", SSR_IP, i );
 		m_clsIpList.GetLBText( i, strText );
 		gclsSetup.PutString( szKey, T2A( strText ) );
 	}
+
+	gclsSetup.PutInt( SSR_PORT, m_iPort );
+	gclsSetup.PutInt( SSR_PERIOD, m_iPeriod );
+
+	gclsSetup.PutFile();
 }

@@ -25,6 +25,10 @@
 #include "KSipServerMonitorDoc.h"
 #include "KSipServerMonitorView.h"
 
+#include "Setup.h"
+#include "LogInDlg.h"
+#include "TcpSocket.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -92,11 +96,29 @@ BOOL CKSipServerMonitorApp::InitInstance()
 	// 해당 설정이 저장된 레지스트리 키를 변경하십시오.
 	// TODO: 이 문자열을 회사 또는 조직의 이름과 같은
 	// 적절한 내용으로 수정해야 합니다.
-	SetRegistryKey(_T("로컬 응용 프로그램 마법사에서 생성된 응용 프로그램"));
+	SetRegistryKey(_T("KSipServerMonitor"));
 	LoadStdProfileSettings(0);  // MRU를 포함하여 표준 INI 파일 옵션을 로드합니다.
 
-	InitContextMenuManager();
+	gclsSetup.GetFile();
 
+	if( gclsLogInDlg.DoModal() != IDOK )
+	{
+		return FALSE;
+	}
+
+	if( gclsSocket.Create( ) == FALSE )
+	{
+		MessageBox( NULL, _T("Socket Create Error"), _T("Error"), MB_OK | MB_ICONERROR );
+		return FALSE;
+	}
+
+	if( gclsSocket.Connect( gclsLogInDlg.m_strIp, gclsLogInDlg.m_iPort ) == FALSE )
+	{
+		MessageBox( NULL, _T("Connect KSipServer Error"), _T("Error"), MB_OK | MB_ICONERROR );
+		return FALSE;
+	}
+
+	InitContextMenuManager();
 	InitKeyboardManager();
 
 	InitTooltipManager();

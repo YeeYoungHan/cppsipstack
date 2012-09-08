@@ -119,6 +119,18 @@ int CSetup::GetInt( const char * pszName, int iIndex, int iDefaultValue )
 	return iInt;
 }
 
+int CSetup::GetInt( const char * pszName, int iDefaultValue )
+{
+	int	iInt;
+	std::string	strValue;
+
+	if( GetString( pszName, strValue ) == false ) return iDefaultValue;
+
+	iInt = atoi( strValue.c_str() );
+
+	return iInt;
+}
+
 bool CSetup::GetString( const char * pszName, std::string & strValue )
 {
 	SETUP_MAP::iterator	it;
@@ -147,6 +159,15 @@ bool CSetup::PutInt( const char * pszName, int iIndex, int iValue )
 	_snprintf( szIndex, sizeof(szIndex), "%d", iValue );
 
 	return PutString( strKey.c_str(), szIndex );
+}
+
+bool CSetup::PutInt( const char * pszName, int iValue )
+{
+	char	szValue[11];
+
+	_snprintf( szValue, sizeof(szValue), "%d", iValue );
+
+	return PutString( pszName, szValue );
 }
 
 bool CSetup::PutString( const char * pszName, const char * pszValue )

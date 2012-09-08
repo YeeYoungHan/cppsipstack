@@ -16,19 +16,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _MONITOR_DEFINE_H_
-#define _MONITOR_DEFINE_H_
+#pragma once
 
-#define MC_CALL_MAP_LIST				"call_map_list"
-#define MC_NONCE_MAP_LIST				"nonce_map_list"
-#define MC_SIP_SERVER_MAP_LIST	"sip_server_map_list"
-#define MC_USER_MAP_LIST				"user_map_list"
+// CTcpSocket 명령 대상입니다.
 
-#define MC_DIALOG_MAP_LIST			"dialog_map_list"
+class CTcpSocket : public CSocket
+{
+public:
+	CTcpSocket();
+	virtual ~CTcpSocket();
 
-#define MC_SIP_STACK_COUNT_LIST	"sip_stack_count_list"
+	virtual void OnReceive( int nErrorCode );
+};
 
-#define MR_COL_SEP							"|"
-#define MR_ROW_SEP							"\n"
-
-#endif
+extern CTcpSocket gclsSocket;

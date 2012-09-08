@@ -318,6 +318,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="라이브러리"
+			>
+			<File
+				RelativePath=".\TcpSocket.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TcpSocket.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>
