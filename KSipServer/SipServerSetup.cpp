@@ -51,6 +51,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 
 	if( clsXml.ParseFile( pszFileName ) == false ) return false;
 
+	// SIP 설정
 	pclsElement = clsXml.SelectElement( "Sip" );
 	if( pclsElement == NULL ) return false;
 
@@ -60,6 +61,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "Realm", m_strRealm );
 	pclsElement->SelectElementData( "SendOptionsPeriod", m_iSendOptionsPeriod );
 
+	// 로그
 	pclsElement = clsXml.SelectElement( "Log" );
 	if( pclsElement == NULL ) return false;
 
@@ -84,6 +86,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 
 	pclsElement->SelectElementData( "MaxSize", m_iLogMaxSize );
 
+	// XML 폴더
 	pclsElement = clsXml.SelectElement( "XmlFolder" );
 	if( pclsElement )
 	{
@@ -91,6 +94,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 		pclsElement->SelectElementData( "SipServer", m_strSipServerXmlFolder );
 	}
 
+	// DB
 #ifdef USE_MYSQL
 	pclsElement = clsXml.SelectElement( "Db" );
 	if( pclsElement )
@@ -141,6 +145,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 #endif
 	}
 
+	// CDR
 	if( m_eType == E_DT_XML )
 	{
 		pclsElement = clsXml.SelectElement( "Cdr" );
@@ -149,6 +154,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 		pclsElement->SelectElementData( "Folder", m_strCdrFolder );
 	}
 
+	// 모니터링
 	pclsElement = clsXml.SelectElement( "Monitor" );
 	if( pclsElement == NULL ) return false;
 
@@ -173,6 +179,12 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 모니터링 클라이언트 IP 주소인가?
+ * @param pszIp		클라이언트 IP 주소
+ * @returns 모니터링 클라이언트 IP 주소이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServerSetup::IsMonitorIp( const char * pszIp )
 {
 	CLIENT_IP_LIST::iterator	itList;

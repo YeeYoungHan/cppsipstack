@@ -19,6 +19,9 @@
 #pragma once
 #include "afxwin.h"
 
+#define DEFAULT_PORT		6000
+#define DEFAULT_PERIOD	1
+
 // CLogInDlg 대화 상자입니다.
 
 class CLogInDlg : public CDialog
@@ -49,3 +52,5 @@ public:
 private:
 	void SaveFile();
 };
+
+extern CLogInDlg gclsLogInDlg;

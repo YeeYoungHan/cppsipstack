@@ -20,10 +20,13 @@
 #include "KSipServerMonitor.h"
 
 #include "MainFrm.h"
+#include "LogInDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+
+#define MONITOR_TIMER	100
 
 // CMainFrame
 
@@ -40,6 +43,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_OFF_2007_AQUA, &CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_OFF_2007_AQUA, &CMainFrame::OnUpdateApplicationLook)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -164,6 +168,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	lstBasicCommands.AddTail(ID_VIEW_APPLOOK_OFF_2007_AQUA);
 
 	CMFCToolBar::SetBasicCommands(lstBasicCommands);
+
+	SetTimer( MONITOR_TIMER, gclsLogInDlg.m_iPeriod, NULL );
 
 	return 0;
 }
@@ -320,3 +326,13 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	return TRUE;
 }
 
+
+void CMainFrame::OnTimer(UINT_PTR nIDEvent)
+{
+	if( nIDEvent == MONITOR_TIMER )
+	{
+
+	}
+
+	CMDIFrameWndEx::OnTimer(nIDEvent);
+}

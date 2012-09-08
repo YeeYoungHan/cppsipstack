@@ -23,6 +23,10 @@
 
 #define SETUP_FILENAME	"KSipServerMonitor.ini"
 
+#define SSR_IP					"ip"
+#define SSR_PORT				"port"
+#define SSR_PERIOD			"period"
+
 typedef std::map< std::string, std::string > SETUP_MAP;
 
 class CSetup
@@ -35,9 +39,11 @@ public:
 	bool PutFile();
 
 	int GetInt( const char * pszName, int iIndex, int iDefaultValue );
+	int GetInt( const char * pszName, int iDefaultValue );
 	bool GetString( const char * pszName, std::string & strValue );
 
 	bool PutInt( const char * pszName, int iIndex, int iValue );
+	bool PutInt( const char * pszName, int iValue );
 	bool PutString( const char * pszName, const char * pszValue );
 
 private:
