@@ -21,6 +21,8 @@
 #include "SipStackThread.h"
 #include "Log.h"
 #include "MonitorDefine.h"
+#include "SipUserAgent.h"
+#include "CallMap.h"
 
 static int giMonitorThreadCount = 0;
 static CSipMutex gclsMutex;
@@ -35,11 +37,32 @@ public:
 
 static bool MonitorCommand( CMonitorSocket * pclsArg, const char * pszPacket )
 {
+	std::string	strBuf;
+	int	iPacketLen, n;
+
 	if( !strcmp( pszPacket, MC_CALL_MAP_LIST ) )
 	{
 		
 	}
+	else if( !strcmp( pszPacket, MC_SIP_STACK_COUNT_LIST ) )
+	{
+		gclsSipStack.GetString( strBuf );
+	}
 	else
+	{
+		return false;
+	}
+
+	iPacketLen = htonl( strBuf.length() );
+
+	n = TcpSend( pclsArg->hSocket, (char *)&iPacketLen, sizeof(iPacketLen) );
+	if( n != sizeof(iPacketLen) )
+	{
+		return false;
+	}
+
+	n = TcpSend( pclsArg->hSocket, strBuf.c_str(), strBuf.length() );
+	if( n != strBuf.length() )
 	{
 		return false;
 	}

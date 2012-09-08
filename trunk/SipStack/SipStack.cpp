@@ -19,6 +19,7 @@
 #include "SipStack.h"
 #include "SipStackThread.h"
 #include "SipStack.hpp"
+#include "SipDeleteQueue.h"
 
 /**
  * @ingroup SipStack
@@ -455,7 +456,11 @@ void CSipStack::DecreateUdpThreadCount()
  */
 void CSipStack::GetString( std::string & strBuf )
 {
-	// QQQ
+	char	szBuf[255];
+
+	snprintf( szBuf, sizeof(szBuf), "%d%s%d%s%d%s%d%s%d%s", m_clsICT.GetSize(), MR_COL_SEP, m_clsNICT.GetSize(), MR_COL_SEP
+		, m_clsIST.GetSize(), MR_COL_SEP, m_clsNIST.GetSize(), MR_COL_SEP, gclsSipDeleteQueue.GetSize(), MR_ROW_SEP );
+	strBuf = szBuf;
 }
 
 /**
