@@ -16,6 +16,32 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "stdafx.h"
+#pragma once
 
+#include <string>
+#include <map>
 
+#define SETUP_FILENAME	"KSipServerMonitor.ini"
+
+typedef std::map< std::string, std::string > SETUP_MAP;
+
+class CSetup
+{
+public:
+	CSetup(void);
+	~CSetup(void);
+
+	bool GetFile();
+	bool PutFile();
+
+	int GetInt( const char * pszName, int iIndex, int iDefaultValue );
+	bool GetString( const char * pszName, std::string & strValue );
+
+	bool PutInt( const char * pszName, int iIndex, int iValue );
+	bool PutString( const char * pszName, const char * pszValue );
+
+private:
+	SETUP_MAP	m_clsMap;
+};
+
+extern CSetup gclsSetup;
