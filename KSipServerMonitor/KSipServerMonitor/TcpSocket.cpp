@@ -20,6 +20,8 @@
 #include "KSipServerMonitor.h"
 #include "TcpSocket.h"
 
+#include <string>
+
 CTcpSocket gclsSocket;
 
 // CTcpSocket
@@ -36,5 +38,41 @@ CTcpSocket::~CTcpSocket()
 
 void CTcpSocket::OnReceive( int nErrorCode )
 {
+	if( nErrorCode != 0 )
+	{
+		// QQQ: 프로그램을 종료한다.
+		return;
+	}
 
+	int		iPacketLen, n, iRecvLen = 0;
+	char	szPacket[8192];
+	std::string	strPacket;
+
+	n = Receive( &iPacketLen, sizeof(iPacketLen) );
+	if( n != sizeof(iPacketLen) )
+	{
+		// QQQ: 프로그램을 종료한다.
+		return;
+	}
+
+	iPacketLen = ntohl( iPacketLen );
+	if( iPacketLen <= 0 )
+	{
+		// QQQ
+		return;
+	}
+
+	while( iRecvLen < iPacketLen )
+	{
+		n = Receive( szPacket, iPacketLen - iRecvLen );
+		if( n <= 0 )
+		{
+			// QQQ
+			return;
+		}
+
+		strPacket.append( szPacket, n );
+	}
+
+	CAsyncSocket::OnReceive(nErrorCode);
 }

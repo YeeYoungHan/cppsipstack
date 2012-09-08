@@ -169,3 +169,20 @@ int CCallMap::GetCount()
 
 	return iCount;
 }
+
+void CCallMap::GetString( std::string & strBuf )
+{
+	CALL_MAP::iterator	itMap;
+
+	strBuf.clear();
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		strBuf.append( itMap->first );
+		strBuf.append( MR_COL_SEP );
+		strBuf.append( itMap->second.m_strPeerCallId );
+		strBuf.append( MR_ROW_SEP );
+	}
+	m_clsMutex.release();
+}

@@ -56,6 +56,8 @@ public:
 	void StopCallAll();
 	int GetCount();
 
+	void GetString( std::string & strBuf );
+
 private:
 	CALL_MAP	m_clsMap;
 	CSipMutex	m_clsMutex;
