@@ -18,7 +18,16 @@
 
 #pragma once
 
-// CTcpSocket 명령 대상입니다.
+#include <vector>
+
+class CMonitorCommand
+{
+public:
+	std::string		m_strCommand;
+	CListCtrl			* m_pclsListCtrl;
+};
+
+typedef std::vector< CMonitorCommand > MONITOR_COMMAND_LIST;
 
 class CTcpSocket : public CSocket
 {
@@ -27,6 +36,17 @@ public:
 	virtual ~CTcpSocket();
 
 	virtual void OnReceive( int nErrorCode );
+
+	bool AddCommand( ECommType cCommType, CListCtrl * pclsListCtrl );
+	bool Execute();
+
+private:
+	MONITOR_COMMAND_LIST	m_clsCommandList;
+	CMutex								m_clsMutex;
+
+	int										m_iSendCommand;
+
+	void ParseRecvData( const char * pszBuf, CListCtrl * pclsListCtrl );
 };
 
 extern CTcpSocket gclsSocket;

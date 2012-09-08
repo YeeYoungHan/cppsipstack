@@ -47,6 +47,7 @@ public:
 #endif
 
 protected:
+	bool	m_bInit;
 
 // 생성된 메시지 맵 함수
 protected:
