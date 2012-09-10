@@ -41,7 +41,7 @@ void CTcpSocket::OnReceive( int nErrorCode )
 {
 	if( nErrorCode != 0 )
 	{
-		// QQQ: 프로그램을 종료한다.
+		TRACE( "nErrorCode = %d\n", nErrorCode );
 		return;
 	}
 
@@ -52,45 +52,66 @@ void CTcpSocket::OnReceive( int nErrorCode )
 	n = Receive( &iPacketLen, sizeof(iPacketLen) );
 	if( n != sizeof(iPacketLen) )
 	{
-		// QQQ: 프로그램을 종료한다.
+		TRACE( "Recv packet length error\n" );
 		return;
 	}
 
 	iPacketLen = ntohl( iPacketLen );
-	if( iPacketLen <= 0 )
+	if( iPacketLen > 0 )
 	{
-		// QQQ
-		return;
-	}
-
-	while( iRecvLen < iPacketLen )
-	{
-		n = Receive( szPacket, iPacketLen - iRecvLen );
-		if( n <= 0 )
+		while( iRecvLen < iPacketLen )
 		{
-			// QQQ
-			return;
-		}
+			n = Receive( szPacket, iPacketLen - iRecvLen );
+			if( n <= 0 )
+			{
+				TRACE( "Recv packet body error\n" );
+				return;
+			}
 
-		strPacket.append( szPacket, n );
-		iRecvLen += n;
+			strPacket.append( szPacket, n );
+			iRecvLen += n;
+		}
 	}
 
 	CListCtrl * pclsListCtrl = NULL;
 
 	m_clsMutex.Lock();
-	int iIndex = m_clsCommandList.size() - m_iSendCommand;
-	if( iIndex >= 0 )
+	if( m_iSendCommand > 0 )
 	{
 		--m_iSendCommand;
 
-		pclsListCtrl = m_clsCommandList[iIndex].m_pclsListCtrl;
+		if( m_clsSendCommandList.size() > 0 )
+		{
+			CMonitorCommand clsCommand = m_clsSendCommandList.front();
+			m_clsSendCommandList.pop_front();
+
+			TRACE( "Recv command(%s)\n", clsCommand.m_strCommand.c_str() );
+
+			pclsListCtrl = clsCommand.m_pclsListCtrl;
+		}
 	}
 	m_clsMutex.Unlock();
 
 	if( pclsListCtrl )
 	{
-		ParseRecvData( strPacket.c_str(), pclsListCtrl );
+		pclsListCtrl->DeleteAllItems();
+
+		if( iPacketLen > 0 )
+		{
+			ParseRecvData( strPacket.c_str(), pclsListCtrl );
+		}
+
+		CString			strBuf;
+		SYSTEMTIME	sttTime;
+		int					iRow = pclsListCtrl->GetItemCount();
+
+		strBuf.Format( _T("count=%d"), iRow );
+		pclsListCtrl->InsertItem( iRow, strBuf );
+
+		GetLocalTime( &sttTime );
+
+		strBuf.Format( _T("%02d:%02d:%02d.%03d"), sttTime.wHour, sttTime.wMinute, sttTime.wSecond, sttTime.wMilliseconds );
+		pclsListCtrl->SetItemText( iRow, 1, strBuf );
 	}
 
 	CAsyncSocket::OnReceive(nErrorCode);
@@ -102,6 +123,18 @@ bool CTcpSocket::AddCommand( ECommType cCommType, CListCtrl * pclsListCtrl )
 
 	switch( cCommType )
 	{
+	case E_COMM_CALL_LIST:
+		clsCommand.m_strCommand = MC_CALL_MAP_LIST;
+		break;
+	case E_COMM_SIP_SERVER_LIST:
+		clsCommand.m_strCommand = MC_SIP_SERVER_MAP_LIST;
+		break;
+	case E_COMM_USER_LIST:
+		clsCommand.m_strCommand = MC_USER_MAP_LIST;
+		break;
+	case E_COMM_DIALOG_LIST:
+		clsCommand.m_strCommand = MC_DIALOG_MAP_LIST;
+		break;
 	case E_COMM_SIP_STACK_COUNT_LIST:
 		clsCommand.m_strCommand = MC_SIP_STACK_COUNT_LIST;
 		break;
@@ -132,17 +165,20 @@ bool CTcpSocket::Execute()
 		n = Send( &iPacketLen, sizeof(iPacketLen) );
 		if( n != sizeof(iPacketLen) )
 		{
-			// QQQ
+			TRACE( "Send packet length error\n" );
 			break;
 		}
 
 		n = Send( itList->m_strCommand.c_str(), itList->m_strCommand.length() );
 		if( n != itList->m_strCommand.length() )
 		{
-			// QQQ
+			TRACE( "Send packet command error\n" );
 			break;
 		}
 
+		TRACE( "Send command(%s)\n", itList->m_strCommand.c_str() );
+
+		m_clsSendCommandList.push_back( *itList );
 		++m_iSendCommand;
 	}
 	m_clsMutex.Unlock();
@@ -154,8 +190,6 @@ void CTcpSocket::ParseRecvData( const char * pszBuf, CListCtrl * pclsListCtrl )
 {
 	int	iPos = 0, iRow = 0, iColumn = 0;
 	std::string	strText;
-
-	pclsListCtrl->DeleteAllItems();
 
 	USES_CONVERSION;
 
@@ -197,15 +231,4 @@ void CTcpSocket::ParseRecvData( const char * pszBuf, CListCtrl * pclsListCtrl )
 			strText.clear();
 		}
 	}
-
-	CString			strBuf;
-	SYSTEMTIME	sttTime;
-
-	strBuf.Format( _T("count=%d"), pclsListCtrl->GetItemCount() );
-	pclsListCtrl->InsertItem( iRow, strBuf );
-
-	GetLocalTime( &sttTime );
-
-	strBuf.Format( _T("%02d:%02d:%02d.%03d"), sttTime.wHour, sttTime.wMinute, sttTime.wSecond, sttTime.wMilliseconds );
-	pclsListCtrl->SetItemText( iRow, 1, strBuf );
 }

@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <vector>
+#include <list>
 
 class CMonitorCommand
 {
@@ -27,7 +27,7 @@ public:
 	CListCtrl			* m_pclsListCtrl;
 };
 
-typedef std::vector< CMonitorCommand > MONITOR_COMMAND_LIST;
+typedef std::list< CMonitorCommand > MONITOR_COMMAND_LIST;
 
 class CTcpSocket : public CSocket
 {
@@ -42,6 +42,7 @@ public:
 
 private:
 	MONITOR_COMMAND_LIST	m_clsCommandList;
+	MONITOR_COMMAND_LIST	m_clsSendCommandList;
 	CMutex								m_clsMutex;
 
 	int										m_iSendCommand;

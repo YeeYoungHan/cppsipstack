@@ -23,6 +23,9 @@
 #include "MonitorDefine.h"
 #include "SipUserAgent.h"
 #include "CallMap.h"
+#include "SipServerMap.h"
+#include "UserMap.h"
+#include "SipServer.h"
 
 static int giMonitorThreadCount = 0;
 static CSipMutex gclsMutex;
@@ -42,7 +45,19 @@ static bool MonitorCommand( CMonitorSocket * pclsArg, const char * pszPacket )
 
 	if( !strcmp( pszPacket, MC_CALL_MAP_LIST ) )
 	{
-		
+		gclsCallMap.GetString( strBuf );
+	}
+	else if( !strcmp( pszPacket, MC_SIP_SERVER_MAP_LIST ) )
+	{
+		gclsSipServerMap.GetString( strBuf );
+	}
+	else if( !strcmp( pszPacket, MC_USER_MAP_LIST ) )
+	{
+		gclsUserMap.GetString( strBuf );
+	}
+	else if( !strcmp( pszPacket, MC_DIALOG_MAP_LIST ) )
+	{
+		gclsUserAgent.GetString( strBuf );
 	}
 	else if( !strcmp( pszPacket, MC_SIP_STACK_COUNT_LIST ) )
 	{

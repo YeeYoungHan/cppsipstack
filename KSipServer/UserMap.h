@@ -64,6 +64,8 @@ public:
 	void DeleteTimeout( int iTimeout );
 	void SendOptions( );
 
+	void GetString( std::string & strBuf );
+
 private:
 	USER_MAP	m_clsMap;
 	CSipMutex m_clsMutex;

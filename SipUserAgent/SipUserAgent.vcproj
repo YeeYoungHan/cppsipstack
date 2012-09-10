@@ -240,6 +240,14 @@
 				RelativePath=".\StringUtility.h"
 				>
 			</File>
+			<File
+				RelativePath=".\TimeString.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TimeString.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

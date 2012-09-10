@@ -46,6 +46,8 @@ public:
 	bool Insert( CXmlSipServer & clsXmlSipServer );
 	bool InsertRoutePrefix( const char * pszName, CRoutePrefix & clsRoutePrefix );
 
+	void GetString( std::string & strBuf );
+
 private:
 	SIP_SERVER_MAP	m_clsMap;
 	CSipMutex				m_clsMutex;

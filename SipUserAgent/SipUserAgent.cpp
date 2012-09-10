@@ -21,7 +21,7 @@
 #include "SipUtility.h"
 #include "SdpMessage.h"
 #include "StringUtility.h"
-#include <time.h>
+#include "TimeString.h"
 
 CSipStack	gclsSipStack;
 
@@ -465,6 +465,56 @@ bool CSipUserAgent::SendNotify( const char * pszCallId, int iSipCode )
 	}
 
 	return bRes;
+}
+
+void CSipUserAgent::GetString( std::string & strBuf )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	char	szTemp[51];
+
+	strBuf.clear();
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		strBuf.append( itMap->first );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itMap->second.m_strFromId );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itMap->second.m_strToId );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itMap->second.m_strContactIp );
+		snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iContactPort );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itMap->second.m_strLocalRtpIp );
+		snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iLocalRtpPort );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itMap->second.m_strRemoteRtpIp );
+		snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iRemoteRtpPort );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		GetDateTimeString( itMap->second.m_sttInviteTime.tv_sec, szTemp, sizeof(szTemp) );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		GetDateTimeString( itMap->second.m_sttStartTime.tv_sec, szTemp, sizeof(szTemp) );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		GetDateTimeString( itMap->second.m_sttEndTime.tv_sec, szTemp, sizeof(szTemp) );
+		strBuf.append( szTemp );
+		
+		strBuf.append( MR_ROW_SEP );
+	}
+	m_clsMutex.release();
 }
 
 /**
