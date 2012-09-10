@@ -491,27 +491,39 @@ void CSipUserAgent::GetString( std::string & strBuf )
 		strBuf.append( szTemp );
 		strBuf.append( MR_COL_SEP );
 
-		strBuf.append( itMap->second.m_strLocalRtpIp );
-		snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iLocalRtpPort );
-		strBuf.append( szTemp );
+		if( itMap->second.m_iLocalRtpPort )
+		{
+			strBuf.append( itMap->second.m_strLocalRtpIp );
+			snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iLocalRtpPort );
+			strBuf.append( szTemp );
+		}
 		strBuf.append( MR_COL_SEP );
 
-		strBuf.append( itMap->second.m_strRemoteRtpIp );
-		snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iRemoteRtpPort );
-		strBuf.append( szTemp );
+		if( itMap->second.m_iRemoteRtpPort > 0 )
+		{
+			strBuf.append( itMap->second.m_strRemoteRtpIp );
+			snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iRemoteRtpPort );
+			strBuf.append( szTemp );
+		}
 		strBuf.append( MR_COL_SEP );
 
 		GetDateTimeString( itMap->second.m_sttInviteTime.tv_sec, szTemp, sizeof(szTemp) );
 		strBuf.append( szTemp );
 		strBuf.append( MR_COL_SEP );
 
-		GetDateTimeString( itMap->second.m_sttStartTime.tv_sec, szTemp, sizeof(szTemp) );
-		strBuf.append( szTemp );
+		if( itMap->second.m_sttStartTime.tv_sec )
+		{
+			GetDateTimeString( itMap->second.m_sttStartTime.tv_sec, szTemp, sizeof(szTemp) );
+			strBuf.append( szTemp );
+		}
 		strBuf.append( MR_COL_SEP );
 
-		GetDateTimeString( itMap->second.m_sttEndTime.tv_sec, szTemp, sizeof(szTemp) );
-		strBuf.append( szTemp );
-		
+		if( itMap->second.m_sttEndTime.tv_sec )
+		{
+			GetDateTimeString( itMap->second.m_sttEndTime.tv_sec, szTemp, sizeof(szTemp) );
+			strBuf.append( szTemp );
+		}
+
 		strBuf.append( MR_ROW_SEP );
 	}
 	m_clsMutex.release();

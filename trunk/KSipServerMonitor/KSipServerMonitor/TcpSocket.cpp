@@ -27,7 +27,7 @@ CTcpSocket gclsSocket;
 
 // CTcpSocket
 
-CTcpSocket::CTcpSocket() : m_iSendCommand(0)
+CTcpSocket::CTcpSocket()
 {
 }
 
@@ -76,19 +76,14 @@ void CTcpSocket::OnReceive( int nErrorCode )
 	CListCtrl * pclsListCtrl = NULL;
 
 	m_clsMutex.Lock();
-	if( m_iSendCommand > 0 )
+	if( m_clsSendCommandList.size() > 0 )
 	{
-		--m_iSendCommand;
+		CMonitorCommand clsCommand = m_clsSendCommandList.front();
+		m_clsSendCommandList.pop_front();
 
-		if( m_clsSendCommandList.size() > 0 )
-		{
-			CMonitorCommand clsCommand = m_clsSendCommandList.front();
-			m_clsSendCommandList.pop_front();
+		TRACE( "Recv command(%s)\n", clsCommand.m_strCommand.c_str() );
 
-			TRACE( "Recv command(%s)\n", clsCommand.m_strCommand.c_str() );
-
-			pclsListCtrl = clsCommand.m_pclsListCtrl;
-		}
+		pclsListCtrl = clsCommand.m_pclsListCtrl;
 	}
 	m_clsMutex.Unlock();
 
@@ -151,7 +146,13 @@ bool CTcpSocket::AddCommand( ECommType cCommType, CListCtrl * pclsListCtrl )
 
 bool CTcpSocket::Execute()
 {
-	if( m_iSendCommand > 0 ) return false;
+	int iSendCount;
+
+	m_clsMutex.Lock();
+	iSendCount = m_clsSendCommandList.size();
+	m_clsMutex.Unlock();
+
+	if( iSendCount > 0 ) return false;
 
 	MONITOR_COMMAND_LIST::iterator	itList;
 	int		iPacketLen, n;
@@ -179,7 +180,6 @@ bool CTcpSocket::Execute()
 		TRACE( "Send command(%s)\n", itList->m_strCommand.c_str() );
 
 		m_clsSendCommandList.push_back( *itList );
-		++m_iSendCommand;
 	}
 	m_clsMutex.Unlock();
 
