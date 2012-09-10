@@ -27,6 +27,12 @@
 #define SSR_PORT				"port"
 #define SSR_PERIOD			"period"
 
+#define ST_CALL_LIST				"call"
+#define ST_SIP_SERVER_LIST	"sipserver"
+#define ST_USER_LIST				"user"
+#define ST_DIALOG_LIST			"dialog"
+#define ST_SIP_STACK_COUNT	"sipstack"
+
 typedef std::map< std::string, std::string > SETUP_MAP;
 
 class CSetup
