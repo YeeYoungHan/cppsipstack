@@ -65,6 +65,7 @@ static bool MonitorCommand( CMonitorSocket * pclsArg, const char * pszPacket )
 	}
 	else
 	{
+		CLog::Print( LOG_DEBUG, "MonitorThread(%s:%d) command(%s) is not defined", pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pszPacket );
 		return false;
 	}
 
@@ -73,12 +74,14 @@ static bool MonitorCommand( CMonitorSocket * pclsArg, const char * pszPacket )
 	n = TcpSend( pclsArg->hSocket, (char *)&iPacketLen, sizeof(iPacketLen) );
 	if( n != sizeof(iPacketLen) )
 	{
+		CLog::Print( LOG_DEBUG, "MonitorThread(%s:%d) send header error(%d)", pclsArg->m_strIp.c_str(), pclsArg->m_iPort, GetError() );
 		return false;
 	}
 
 	n = TcpSend( pclsArg->hSocket, strBuf.c_str(), strBuf.length() );
 	if( n != strBuf.length() )
 	{
+		CLog::Print( LOG_DEBUG, "MonitorThread(%s:%d) send body error(%d)", pclsArg->m_strIp.c_str(), pclsArg->m_iPort, GetError() );
 		return false;
 	}
 
@@ -110,19 +113,25 @@ void * MonitorThread( void * lpParameter )
 	++giMonitorThreadCount;
 	gclsMutex.release();
 
-	CLog::Print( LOG_INFO, "MonitorThread is started" );
+	CLog::Print( LOG_INFO, "MonitorThread(%s:%d) is started", pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
 
 	while( gbStop == false )
 	{
 		n = poll( sttPoll, 1, 1000 );
 		if( n < 0 )
 		{
+			CLog::Print( LOG_ERROR, "MonitorThread(%s:%d) poll error(%d)", pclsArg->m_strIp.c_str(), pclsArg->m_iPort, GetError() );
 			break;
 		}
 		else if( n == 0 )
 		{
 			++iNoCommandSecond;
-			if( iNoCommandSecond == 600 ) break;
+			if( iNoCommandSecond == 600 ) 
+			{
+				CLog::Print( LOG_DEBUG, "MonitorThread(%s:%d) no command received in 600 second", pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
+				break;
+			}
+
 			continue;
 		}
 
@@ -132,19 +141,22 @@ void * MonitorThread( void * lpParameter )
 		n = recv( pclsArg->hSocket, (char *)&iPacketLen, sizeof(iPacketLen), 0 );
 		if( n <= 0 )
 		{
+			CLog::Print( LOG_DEBUG, "MonitorThread(%s:%d) recv header(%d)", pclsArg->m_strIp.c_str(), pclsArg->m_iPort, n );
 			break;
 		}
 
 		iPacketLen = ntohl( iPacketLen );
 		if( iPacketLen <= 0 || iPacketLen >= sizeof(szPacket) )
 		{
+			CLog::Print( LOG_DEBUG, "MonitorThread(%s:%d) recv command length(%d)", pclsArg->m_strIp.c_str(), pclsArg->m_iPort, iPacketLen );
 			break;
 		}
 
 		// 명령을 수신한다.
-		n = TcpRecv( pclsArg->hSocket, szPacket, sizeof(szPacket), 1 );
+		n = TcpRecv( pclsArg->hSocket, szPacket, iPacketLen, 5 );
 		if( n <= 0 )
 		{
+			CLog::Print( LOG_DEBUG, "MonitorThread(%s:%d) recv command body(%d)", pclsArg->m_strIp.c_str(), pclsArg->m_iPort, n );
 			break;
 		}
 
@@ -157,7 +169,7 @@ void * MonitorThread( void * lpParameter )
 
 	closesocket( pclsArg->hSocket );
 
-	CLog::Print( LOG_INFO, "MonitorThread is terminated" );
+	CLog::Print( LOG_INFO, "MonitorThread(%s:%d) is terminated", pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
 
 	gclsMutex.acquire();
 	--giMonitorThreadCount;

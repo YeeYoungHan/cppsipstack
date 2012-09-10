@@ -45,8 +45,6 @@ private:
 	MONITOR_COMMAND_LIST	m_clsSendCommandList;
 	CMutex								m_clsMutex;
 
-	int										m_iSendCommand;
-
 	void ParseRecvData( const char * pszBuf, CListCtrl * pclsListCtrl );
 };
 
