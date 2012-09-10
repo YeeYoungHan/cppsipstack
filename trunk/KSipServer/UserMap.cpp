@@ -21,7 +21,7 @@
 #include "Log.h"
 #include "SipServerSetup.h"
 #include "SipServer.h"
-#include <time.h>
+#include "TimeString.h"
 
 CUserMap gclsUserMap;
 
@@ -269,4 +269,33 @@ void CUserMap::SendOptions(  )
 
 		gclsSipStack.SendSipMessage( pclsMessage );
 	}
+}
+
+void CUserMap::GetString( std::string & strBuf )
+{
+	USER_MAP::iterator	itMap;
+	char	szTemp[51];
+
+	strBuf.clear();
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		strBuf.append( itMap->first );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itMap->second.m_strIp );
+		snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iPort );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		GetDateTimeString( itMap->second.m_iLoginTime, szTemp, sizeof(szTemp) );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		snprintf( szTemp, sizeof(szTemp), "%d", itMap->second.m_iLoginTimeout );
+		strBuf.append( szTemp );
+		strBuf.append( MR_ROW_SEP );
+	}
+	m_clsMutex.release();
 }

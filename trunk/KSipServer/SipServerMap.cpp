@@ -315,3 +315,49 @@ bool CSipServerMap::InsertRoutePrefix( const char * pszName, CRoutePrefix & clsR
 
 	return bRes;
 }
+
+void CSipServerMap::GetString( std::string & strBuf )
+{
+	SIP_SERVER_MAP::iterator	itMap;
+	char	szTemp[51];
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		strBuf.append( itMap->first );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itMap->second.m_strName );
+		strBuf.append( MR_COL_SEP );
+
+		snprintf( szTemp, sizeof(szTemp), "%d", itMap->second.m_iFlag );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itMap->second.m_strIp );
+		snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iPort );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itMap->second.m_strDomain );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itMap->second.m_strUserId );
+		strBuf.append( MR_COL_SEP );
+
+		snprintf( szTemp, sizeof(szTemp), "%d", itMap->second.m_iLoginTimeout );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		if( itMap->second.m_bLogin )
+		{
+			strBuf.append( "login" );
+		}
+		else
+		{
+			strBuf.append( "logout" );
+		}
+		strBuf.append( MR_ROW_SEP );
+	}
+	m_clsMutex.release();
+}
