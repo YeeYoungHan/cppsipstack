@@ -125,6 +125,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="../../SipParser;../../SipStack;../../KSipServer"
 				PreprocessorDefinitions="../../SipParser"
 				MinimalRebuild="false"
 				RuntimeLibrary="0"
