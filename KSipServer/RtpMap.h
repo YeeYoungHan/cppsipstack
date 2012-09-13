@@ -40,6 +40,7 @@ public:
 
 	void CloseSocket();
 	void SetIpPort( int iIndex, uint32_t iIp, uint16_t sPort );
+	void ReSetIPPort( );
 	bool Send( int iIndex, char * pszPacket, int iPacketLen );
 };
 
@@ -56,6 +57,7 @@ public:
 	bool Select( int iPort, CRtpInfo ** ppclsRtpInfo );
 	bool SetStop( int iPort );
 	bool Delete( int iPort );
+	bool ReSetIpPort( int iPort );
 
 private:
 	RTP_MAP		m_clsMap;

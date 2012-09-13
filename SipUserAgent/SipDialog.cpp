@@ -221,7 +221,12 @@ bool CSipDialog::SetLocalRtp( CSipCallRtp * pclsRtp )
  */
 bool CSipDialog::SetRemoteRtp( CSipCallRtp * pclsRtp )
 {
-	m_strRemoteRtpIp = pclsRtp->m_strIp;
+	// ReINVITE 에서 hold 인 경우 IP 주소가 0.0.0.0 으로 수신되어서 Transfer 할 때에 정상적으로 SDP IP 주소가 전달되지 않기 위해서 수정함.
+	if( strcmp( pclsRtp->m_strIp.c_str(), "0.0.0.0" ) )
+	{
+		m_strRemoteRtpIp = pclsRtp->m_strIp;
+	}
+
 	m_iRemoteRtpPort = pclsRtp->m_iPort;
 	m_iCodec = pclsRtp->m_iCodec;
 	m_eRemoteDirection = pclsRtp->m_eDirection;

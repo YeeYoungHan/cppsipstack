@@ -254,13 +254,17 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 			pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
 		}
 
-		gclsUserAgent.AcceptCall( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp );
+		if( gclsUserAgent.AcceptCall( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp ) == false )
+		{
+			gclsUserAgent.SendReInvite( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp );
+		}
 	}
 	else if( gclsTransCallMap.Select( pszCallId, clsCallInfo ) )
 	{
 		gclsUserAgent.SendNotify( clsCallInfo.m_strPeerCallId.c_str(), SIP_OK );
 
 		std::string	strReferToCallId;
+		int iStartPort = -1;
 
 		if( gclsCallMap.Select( clsCallInfo.m_strPeerCallId.c_str(), strReferToCallId ) )
 		{
@@ -268,11 +272,18 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 			gclsCallMap.Delete( clsCallInfo.m_strPeerCallId.c_str() );
 		}
 
+		if( pclsRtp && clsCallInfo.m_iRtpPort > 0 )
+		{
+			iStartPort = clsCallInfo.m_iRtpPort - 2;
+
+			pclsRtp->m_iPort = clsCallInfo.m_iRtpPort;
+			pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
+		}
+
 		gclsUserAgent.SendReInvite( strReferToCallId.c_str(), pclsRtp );
 
-		// QQQ: RTP relay 에서 pszCallId 에 대한 RTP 포트 번호를 저장해 주어야 한다.
-		gclsCallMap.Insert( pszCallId, strReferToCallId.c_str(), -1 );
-		gclsTransCallMap.Delete( pszCallId );
+		gclsCallMap.Insert( pszCallId, strReferToCallId.c_str(), iStartPort );
+		gclsTransCallMap.Delete( pszCallId, false );
 	}
 }
 
@@ -320,11 +331,17 @@ void CSipServer::EventCallEnd( const char * pszCallId, int iSipStatus )
  */
 void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
-	std::string	strCallId;
+	CCallInfo	clsCallInfo;
 
-	if( gclsCallMap.Select( pszCallId, strCallId ) )
+	if( gclsCallMap.Select( pszCallId, clsCallInfo ) )
 	{
-		gclsUserAgent.SendReInvite( strCallId.c_str(), pclsRtp );
+		if( pclsRtp && clsCallInfo.m_iRtpPort > 0 )
+		{
+			pclsRtp->m_iPort = clsCallInfo.m_iRtpPort;
+			pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
+		}
+
+		gclsUserAgent.SendReInvite( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp );
 	}
 }
 
@@ -338,27 +355,40 @@ void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
  */
 bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer )
 {
-	std::string	strCallId, strReferToCallId;
+	CCallInfo		clsCallInfo, clsReferToCallInfo;
 	CSipCallRtp clsRtp;
 
-	if( gclsCallMap.Select( pszCallId, strCallId ) == false ) return false;
-	if( gclsCallMap.Select( pszReferToCallId, strReferToCallId ) == false ) return false;
+	if( gclsCallMap.Select( pszCallId, clsCallInfo ) == false ) return false;
+	if( gclsCallMap.Select( pszReferToCallId, clsReferToCallInfo ) == false ) return false;
 
 	gclsCallMap.Delete( pszCallId );
-	gclsCallMap.Delete( pszReferToCallId );
+	gclsCallMap.Delete( pszReferToCallId, false );
+	
+	if( gclsUserAgent.GetRemoteCallRtp( clsCallInfo.m_strPeerCallId.c_str(), &clsRtp ) == false ) return false;
+	clsRtp.m_eDirection = E_RTP_SEND_RECV;
 
-	if( gclsUserAgent.GetRemoteCallRtp( strCallId.c_str(), &clsRtp ) == false ) return false;
+	if( gclsSetup.m_bUseRtpRelay )
+	{
+		clsRtp.m_strIp = gclsSetup.m_strLocalIp;
+		clsRtp.m_iPort = clsReferToCallInfo.m_iRtpPort;
+	}
 
 	if( bScreenedTransfer )
 	{
 		CSipCallRtp clsReferToRtp;
 
-		if( gclsUserAgent.GetRemoteCallRtp( strReferToCallId.c_str(), &clsReferToRtp ) == false ) return false;
+		if( gclsUserAgent.GetRemoteCallRtp( clsReferToCallInfo.m_strPeerCallId.c_str(), &clsReferToRtp ) == false ) return false;
+		clsReferToRtp.m_eDirection = E_RTP_SEND_RECV;
 
-		// QQQ:
-		gclsCallMap.Insert( strCallId.c_str(), strReferToCallId.c_str(), -1 );
-		gclsUserAgent.SendReInvite( strCallId.c_str(), &clsReferToRtp );
-		gclsUserAgent.SendReInvite( strReferToCallId.c_str(), &clsRtp );
+		if( gclsSetup.m_bUseRtpRelay )
+		{
+			clsReferToRtp.m_strIp = gclsSetup.m_strLocalIp;
+			clsReferToRtp.m_iPort = clsReferToCallInfo.m_iRtpPort + 2;
+		}
+
+		gclsCallMap.Insert( clsCallInfo.m_strPeerCallId.c_str(), clsReferToCallInfo.m_strPeerCallId.c_str(), clsReferToCallInfo.m_iRtpPort );
+		gclsUserAgent.SendReInvite( clsCallInfo.m_strPeerCallId.c_str(), &clsReferToRtp );
+		gclsUserAgent.SendReInvite( clsReferToCallInfo.m_strPeerCallId.c_str(), &clsRtp );
 	}
 
 	gclsUserAgent.StopCall( pszCallId );
@@ -370,25 +400,29 @@ bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToC
 		CUserInfo	clsUserInfo;
 		CSipCallRoute	clsRoute;
 
-		gclsUserAgent.GetToId( strCallId.c_str(), strFromId );
-		gclsUserAgent.GetToId( strReferToCallId.c_str(), strToId );
+		gclsUserAgent.GetToId( clsCallInfo.m_strPeerCallId.c_str(), strFromId );
+		gclsUserAgent.GetToId( clsReferToCallInfo.m_strPeerCallId.c_str(), strToId );
 
 		if( gclsUserMap.Select( strToId.c_str(), clsUserInfo ) )
 		{
 			clsRoute.m_strDestIp = clsUserInfo.m_strIp;
 			clsRoute.m_iDestPort = clsUserInfo.m_iPort;
 
-			gclsUserAgent.StopCall( strReferToCallId.c_str() );
+			gclsUserAgent.StopCall( clsReferToCallInfo.m_strPeerCallId.c_str() );
 			gclsUserAgent.StartCall( strFromId.c_str(), strToId.c_str(), &clsRtp, &clsRoute, strNewCallId );
 
-			// QQQ
-			gclsCallMap.Insert( strCallId.c_str(), strNewCallId.c_str(), -1 );
+			gclsCallMap.Insert( strNewCallId.c_str(), clsCallInfo.m_strPeerCallId.c_str(), clsReferToCallInfo.m_iRtpPort );
 		}
 		else
 		{
-			gclsUserAgent.StopCall( strCallId.c_str() );
-			gclsUserAgent.StopCall( strReferToCallId.c_str() );
+			gclsUserAgent.StopCall( clsCallInfo.m_strPeerCallId.c_str() );
+			gclsUserAgent.StopCall( clsReferToCallInfo.m_strPeerCallId.c_str() );
 		}
+	}
+
+	if( gclsSetup.m_bUseRtpRelay )
+	{
+		gclsRtpMap.ReSetIpPort( clsReferToCallInfo.m_iRtpPort );
 	}
 
 	return true;
@@ -407,11 +441,23 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 	CSipCallRtp clsRtp;
 	CUserInfo		clsUserInfo;
 	CSipCallRoute	clsRoute;
+	int iStartPort = -1;
 
 	if( gclsCallMap.Select( pszCallId, strCallId ) == false ) return false;
-	if( gclsUserAgent.GetRemoteCallRtp( strCallId.c_str(), &clsRtp ) == false ) return false;
 	if( gclsUserAgent.GetToId( strCallId.c_str(), strToId ) == false ) return false;
 	if( gclsUserMap.Select( pszReferToId, clsUserInfo ) == false ) return false;
+
+	if( gclsUserAgent.GetRemoteCallRtp( strCallId.c_str(), &clsRtp ) == false ) return false;
+	clsRtp.m_eDirection = E_RTP_SEND_RECV;
+
+	if( gclsSetup.m_bUseRtpRelay )
+	{
+		iStartPort = gclsRtpMap.CreatePort();
+		if( iStartPort == -1 ) return false;
+
+		clsRtp.m_strIp = gclsSetup.m_strLocalIp;
+		clsRtp.m_iPort = iStartPort;
+	}
 
 	clsRoute.m_strDestIp = clsUserInfo.m_strIp;
 	clsRoute.m_iDestPort = clsUserInfo.m_iPort;
@@ -421,8 +467,7 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 		return false;
 	}
 
-	// QQQ
-	gclsTransCallMap.Insert( pszCallId, strInviteCallId.c_str(), -1 );
+	gclsTransCallMap.Insert( pszCallId, strInviteCallId.c_str(), iStartPort );
 
 	return true;
 }
