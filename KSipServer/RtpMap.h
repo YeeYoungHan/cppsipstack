@@ -16,55 +16,56 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _CALL_MAP_H_
-#define _CALL_MAP_H_
+#ifndef _RTP_MAP_H_
+#define _RTP_MAP_H_
 
-#include <string>
-#include <map>
+#include "SipParserDefine.h"
+#include "SipUdp.h"
 #include "SipMutex.h"
+#include <map>
 
-class CCallInfo
+#define RTP_INFO_SOCKET_COUNT	4
+
+class CRtpInfo
 {
 public:
-	CCallInfo();
+	CRtpInfo();
 
-	std::string	m_strPeerCallId;
-	bool				m_bRecv;
-	int					m_iRtpPort;
+	Socket		m_arrSocket[RTP_INFO_SOCKET_COUNT];
+	uint32_t	m_arrIp[RTP_INFO_SOCKET_COUNT];
+	uint16_t	m_arrPort[RTP_INFO_SOCKET_COUNT];
+
+	int			m_iStartPort;
+	bool		m_bStop;
+
+	void CloseSocket();
+	void SetIpPort( int iIndex, uint32_t iIp, uint16_t sPort );
+	bool Send( int iIndex, char * pszPacket, int iPacketLen );
 };
 
-/**
- * @ingroup KSipServer
- * @brief 연결된 통화 정보를 저장하는 자료구조. key 와 value 는 SIP Call-ID 이다.
- */
-typedef std::map< std::string, CCallInfo > CALL_MAP;
+typedef std::map< int, CRtpInfo > RTP_MAP;
 
-/**
- * @ingroup KSipServer
- * @brief 연결된 통화 정보를 저장하는 자료구조 클래스
- */
-class CCallMap
+class CRtpMap
 {
 public:
-	CCallMap();
-	~CCallMap();
+	CRtpMap();
+	~CRtpMap();
 
-	bool Insert( const char * pszRecvCallId, const char * pszSendCallId, int iStartRtpPort );
-	bool Select( const char * pszCallId, std::string & strCallId );
-	bool Select( const char * pszCallId, CCallInfo & clsCallInfo );
-	bool Delete( const char * pszCallId );
+	int CreatePort( );
 
-	void StopCallAll();
-	int GetCount();
-
-	void GetString( std::string & strBuf );
+	bool Select( int iPort, CRtpInfo ** ppclsRtpInfo );
+	bool SetStop( int iPort );
+	bool Delete( int iPort );
 
 private:
-	CALL_MAP	m_clsMap;
+	RTP_MAP		m_clsMap;
 	CSipMutex	m_clsMutex;
+
+	int				m_iStartPort;
+
+	bool CreatePort( CRtpInfo & clsInfo, int iStart, int iEnd );
 };
 
-extern CCallMap gclsCallMap;
-extern CCallMap gclsTransCallMap;
+extern CRtpMap gclsRtpMap;
 
 #endif

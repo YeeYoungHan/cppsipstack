@@ -27,7 +27,9 @@ CSipServerSetup gclsSetup;
  * @ingroup KSipServer
  * @brief 생성자
  */
-CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10), m_iDbPort(3306), m_iLogLevel(0), m_iLogMaxSize(20000000)
+CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10)
+	, m_bUseRtpRelay(false), m_iBeginRtpPort(10000), m_iEndRtpPort(60000)
+	, m_iDbPort(3306), m_iLogLevel(0), m_iLogMaxSize(20000000)
 {
 }
 
@@ -60,6 +62,15 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "UdpThreadCount", m_iUdpThreadCount );
 	pclsElement->SelectElementData( "Realm", m_strRealm );
 	pclsElement->SelectElementData( "SendOptionsPeriod", m_iSendOptionsPeriod );
+
+	// RTP relay 설정
+	pclsElement = clsXml.SelectElement( "RtpRelay" );
+	if( pclsElement )
+	{
+		pclsElement->SelectElementData( "UseRtpRelay", m_bUseRtpRelay );
+		pclsElement->SelectElementData( "BeginPort", m_iBeginRtpPort );
+		pclsElement->SelectElementData( "EndPort", m_iEndRtpPort );
+	}
 
 	// 로그
 	pclsElement = clsXml.SelectElement( "Log" );

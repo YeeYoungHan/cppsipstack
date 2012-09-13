@@ -31,6 +31,10 @@ bool IsDbInsertThreadRun();
 bool StartMonitorThread( Socket hSocket, const char * pszIp, int iPort );
 bool IsMonitorThreadRun();
 
+// RtpThread.cpp
+bool StartRtpThread( int iPort );
+bool IsRtpThreadRun();
+
 // ServerThread.cpp
 bool StartServerThread( );
 

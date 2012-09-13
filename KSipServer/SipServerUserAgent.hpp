@@ -110,6 +110,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	{
 		CXmlSipServer clsXmlSipServer;
 
+		// 로그인 대상 사용자가 아니면 연동할 IP-PBX 가 존재하는지 검사한다.
 		if( gclsSipServerMap.SelectRoutePrefix( pszTo, clsXmlSipServer, strTo ) )
 		{
 			clsXmlUser.m_strId = clsXmlSipServer.m_strUserId;
@@ -133,6 +134,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 	if( clsXmlUser.IsDnd() )
 	{
+		// 사용자가 DND 로 설정되어 있으면 통화 요청을 거절한다.
 		SaveCdr( pszCallId, SIP_DECLINE );
 		gclsUserAgent.StopCall( pszCallId );
 		return;
@@ -140,6 +142,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 	if( clsXmlUser.IsCallForward() )
 	{
+		// 사용자가 착신전환 설정되어 있으면 착신전환 처리한다.
 		CSipMessage * pclsInvite = gclsUserAgent.DeleteIncomingCall( pszCallId );
 		if( pclsInvite )
 		{
@@ -175,8 +178,23 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 		}
 	}
 
+	int iStartPort = -1;
 	std::string	strCallId;
 	CSipCallRoute	clsRoute;
+
+	if( gclsSetup.m_bUseRtpRelay )
+	{
+		iStartPort = gclsRtpMap.CreatePort();
+		if( iStartPort == -1 )
+		{
+			SaveCdr( pszCallId, SIP_INTERNAL_SERVER_ERROR );
+			gclsUserAgent.StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
+			return;
+		}
+
+		pclsRtp->m_iPort = iStartPort;
+		pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
+	}
 
 	clsRoute.m_strDestIp = clsUserInfo.m_strIp;
 	clsRoute.m_iDestPort = clsUserInfo.m_iPort;
@@ -188,7 +206,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 		return;
 	}
 
-	gclsCallMap.Insert( pszCallId, strCallId.c_str() );
+	gclsCallMap.Insert( pszCallId, strCallId.c_str(), iStartPort );
 }
 
 /**
@@ -200,15 +218,21 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
  */
 void CSipServer::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
 {
-	std::string	strCallId;
+	CCallInfo clsCallInfo;
 
-	if( gclsCallMap.Select( pszCallId, strCallId ) )
+	if( gclsCallMap.Select( pszCallId, clsCallInfo ) )
 	{
-		gclsUserAgent.RingCall( strCallId.c_str(), iSipStatus, pclsRtp );
+		if( pclsRtp && clsCallInfo.m_iRtpPort > 0 )
+		{
+			pclsRtp->m_iPort = clsCallInfo.m_iRtpPort;
+			pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
+		}
+
+		gclsUserAgent.RingCall( clsCallInfo.m_strPeerCallId.c_str(), iSipStatus, pclsRtp );
 	}
-	else if( gclsTransCallMap.Select( pszCallId, strCallId ) )
+	else if( gclsTransCallMap.Select( pszCallId, clsCallInfo ) )
 	{
-		gclsUserAgent.SendNotify( strCallId.c_str(), iSipStatus );
+		gclsUserAgent.SendNotify( clsCallInfo.m_strPeerCallId.c_str(), iSipStatus );
 	}
 }
 
@@ -220,26 +244,34 @@ void CSipServer::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
  */
 void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
-	std::string	strCallId;
+	CCallInfo clsCallInfo;
 
-	if( gclsCallMap.Select( pszCallId, strCallId ) )
+	if( gclsCallMap.Select( pszCallId, clsCallInfo ) )
 	{
-		gclsUserAgent.AcceptCall( strCallId.c_str(), pclsRtp );
+		if( pclsRtp && clsCallInfo.m_iRtpPort > 0 )
+		{
+			pclsRtp->m_iPort = clsCallInfo.m_iRtpPort;
+			pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
+		}
+
+		gclsUserAgent.AcceptCall( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp );
 	}
-	else if( gclsTransCallMap.Select( pszCallId, strCallId ) )
+	else if( gclsTransCallMap.Select( pszCallId, clsCallInfo ) )
 	{
-		gclsUserAgent.SendNotify( strCallId.c_str(), SIP_OK );
+		gclsUserAgent.SendNotify( clsCallInfo.m_strPeerCallId.c_str(), SIP_OK );
 
 		std::string	strReferToCallId;
 
-		if( gclsCallMap.Select( strCallId.c_str(), strReferToCallId ) )
+		if( gclsCallMap.Select( clsCallInfo.m_strPeerCallId.c_str(), strReferToCallId ) )
 		{
-			gclsUserAgent.StopCall( strCallId.c_str() );
-			gclsCallMap.Delete( strCallId.c_str() );
+			gclsUserAgent.StopCall( clsCallInfo.m_strPeerCallId.c_str() );
+			gclsCallMap.Delete( clsCallInfo.m_strPeerCallId.c_str() );
 		}
 
 		gclsUserAgent.SendReInvite( strReferToCallId.c_str(), pclsRtp );
-		gclsCallMap.Insert( pszCallId, strReferToCallId.c_str() );
+
+		// QQQ: RTP relay 에서 pszCallId 에 대한 RTP 포트 번호를 저장해 주어야 한다.
+		gclsCallMap.Insert( pszCallId, strReferToCallId.c_str(), -1 );
 		gclsTransCallMap.Delete( pszCallId );
 	}
 }
@@ -323,7 +355,8 @@ bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToC
 
 		if( gclsUserAgent.GetRemoteCallRtp( strReferToCallId.c_str(), &clsReferToRtp ) == false ) return false;
 
-		gclsCallMap.Insert( strCallId.c_str(), strReferToCallId.c_str() );
+		// QQQ:
+		gclsCallMap.Insert( strCallId.c_str(), strReferToCallId.c_str(), -1 );
 		gclsUserAgent.SendReInvite( strCallId.c_str(), &clsReferToRtp );
 		gclsUserAgent.SendReInvite( strReferToCallId.c_str(), &clsRtp );
 	}
@@ -347,7 +380,9 @@ bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToC
 
 			gclsUserAgent.StopCall( strReferToCallId.c_str() );
 			gclsUserAgent.StartCall( strFromId.c_str(), strToId.c_str(), &clsRtp, &clsRoute, strNewCallId );
-			gclsCallMap.Insert( strCallId.c_str(), strNewCallId.c_str() );
+
+			// QQQ
+			gclsCallMap.Insert( strCallId.c_str(), strNewCallId.c_str(), -1 );
 		}
 		else
 		{
@@ -386,7 +421,8 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 		return false;
 	}
 
-	gclsTransCallMap.Insert( pszCallId, strInviteCallId.c_str() );
+	// QQQ
+	gclsTransCallMap.Insert( pszCallId, strInviteCallId.c_str(), -1 );
 
 	return true;
 }

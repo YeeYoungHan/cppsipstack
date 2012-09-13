@@ -355,10 +355,7 @@ bool CXmlElement::SelectAttribute( const char * pszName, bool & bValue )
 	itAM = m_clsAttributeMap.find( pszName );
 	if( itAM != m_clsAttributeMap.end() )
 	{
-		if( !strcasecmp( itAM->second.c_str(), "true" ) )
-		{
-			bValue = true;
-		}
+		bValue = GetBoolean( itAM->second.c_str() );
 
 		return true;
 	}
@@ -466,6 +463,28 @@ bool CXmlElement::SelectElementData( const char * pszName, int & iData )
 
 /**
  * @ingroup XmlParser
+ * @brief 하위 Element 를 검색하여서 bool 내용을 가져온다.
+ * @param pszName 하위 Element 이름
+ * @param bData		하위 Element 의 값을 저장하는 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CXmlElement::SelectElementData( const char * pszName, bool & bData )
+{
+	bData = false;
+
+	CXmlElement * pclsElement = SelectElement( pszName );
+	if( pclsElement )
+	{
+		bData = GetBoolean( pclsElement->m_strData.c_str() );
+
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup XmlParser
  * @brief Element 이름을 리턴한다.
  * @returns Element 이름을 리턴한다.
  */
@@ -492,4 +511,14 @@ const char * CXmlElement::GetData()
 bool CXmlElement::IsDataEmpty()
 {
 	return m_strData.empty();
+}
+
+bool CXmlElement::GetBoolean( const char * pszData )
+{
+	if( !strcasecmp( pszData, "true" ) || !strcasecmp( pszData, "yes" ) )
+	{
+		return true;
+	}
+
+	return false;
 }

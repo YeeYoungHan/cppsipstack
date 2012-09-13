@@ -209,6 +209,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RtpMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RtpMap.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SipServerMap.cpp"
 				>
 			</File>
@@ -330,6 +338,10 @@
 			</File>
 			<File
 				RelativePath=".\MonitorThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RtpThread.cpp"
 				>
 			</File>
 			<File

@@ -18,11 +18,12 @@
 
 #include "SipServer.h"
 #include "CallMap.h"
+#include "RtpMap.h"
 
 CCallMap gclsCallMap;
 CCallMap gclsTransCallMap;
 
-CCallInfo::CCallInfo() : m_bRecv(false)
+CCallInfo::CCallInfo() : m_bRecv(false), m_iRtpPort(-1)
 {
 }
 
@@ -39,9 +40,10 @@ CCallMap::~CCallMap()
  * @brief 통화 요청 Call-ID 와 전달된 통화 요청 Call-ID 를 자료구조에 저장한다.
  * @param pszRecvCallId 통화 요청 Call-ID
  * @param pszSendCallId 전달된 통화 요청 Call-ID
+ * @param iStartRtpPort	생성된 RTP 포트에서 시작 포트 번호
  * @returns true 를 리턴한다.
  */
-bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId )
+bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId, int iStartRtpPort )
 {
 	CALL_MAP::iterator	itMap;
 
@@ -53,6 +55,10 @@ bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId )
 
 		clsCallInfo.m_strPeerCallId = pszSendCallId;
 		clsCallInfo.m_bRecv = true;
+		if( iStartRtpPort > 0 )
+		{
+			clsCallInfo.m_iRtpPort = iStartRtpPort;
+		}
 		m_clsMap.insert( CALL_MAP::value_type( pszRecvCallId, clsCallInfo ) );
 	}
 
@@ -63,6 +69,10 @@ bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId )
 
 		clsCallInfo.m_strPeerCallId = pszRecvCallId;
 		clsCallInfo.m_bRecv = false;
+		if( iStartRtpPort > 0 )
+		{
+			clsCallInfo.m_iRtpPort = iStartRtpPort + 2;
+		}
 		m_clsMap.insert( CALL_MAP::value_type( pszSendCallId, clsCallInfo ) );
 	}
 	m_clsMutex.release();
@@ -124,12 +134,17 @@ bool CCallMap::Delete( const char * pszCallId )
 	CALL_MAP::iterator	itMap;
 	bool	bRes = false;
 	std::string strCallId;
+	int		iPort = -1;
 
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( pszCallId );
 	if( itMap != m_clsMap.end() )
 	{
 		strCallId = itMap->second.m_strPeerCallId;
+		if( itMap->second.m_bRecv )
+		{
+			iPort = itMap->second.m_iRtpPort;
+		}
 		m_clsMap.erase( itMap );
 		bRes = true;
 	}
@@ -139,10 +154,19 @@ bool CCallMap::Delete( const char * pszCallId )
 		itMap = m_clsMap.find( strCallId );
 		if( itMap != m_clsMap.end() )
 		{
+			if( itMap->second.m_bRecv )
+			{
+				iPort = itMap->second.m_iRtpPort;
+			}
 			m_clsMap.erase( itMap );
 		}
 	}
 	m_clsMutex.release();
+
+	if( iPort > 0 )
+	{
+		gclsRtpMap.SetStop( iPort );
+	}
 
 	return bRes;
 }

@@ -28,7 +28,7 @@
 #include "SipServer.h"
 
 static int giMonitorThreadCount = 0;
-static CSipMutex gclsMutex;
+CSipMutex gclsCountMutex;
 
 class CMonitorSocket
 {
@@ -109,9 +109,9 @@ void * MonitorThread( void * lpParameter )
 	sttPoll[0].events = POLLIN;
 	sttPoll[0].revents = 0;
 
-	gclsMutex.acquire();
+	gclsCountMutex.acquire();
 	++giMonitorThreadCount;
-	gclsMutex.release();
+	gclsCountMutex.release();
 
 	CLog::Print( LOG_INFO, "MonitorThread(%s:%d) is started", pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
 
@@ -171,9 +171,9 @@ void * MonitorThread( void * lpParameter )
 
 	CLog::Print( LOG_INFO, "MonitorThread(%s:%d) is terminated", pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
 
-	gclsMutex.acquire();
+	gclsCountMutex.acquire();
 	--giMonitorThreadCount;
-	gclsMutex.release();
+	gclsCountMutex.release();
 
 	return 0;
 }

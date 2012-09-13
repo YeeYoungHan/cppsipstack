@@ -6,6 +6,11 @@
 		<Realm>ksipserver</Realm>
 		<!--<SendOptionsPeriod>30</SendOptionsPeriod>-->
 	</Sip>
+	<RtpRelay>
+		<UseRtpRelay>true</UseRtpRelay>
+		<BeginPort>10000</BeginPort>
+		<EndPort>10010</EndPort>
+	</RtpRelay>
 	<Log>
 		<Folder>d:\temp\sipserver</Folder>
 		<Level Debug="true" Info="true" Network="true" Sql="true" />
