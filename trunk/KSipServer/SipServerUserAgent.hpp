@@ -370,7 +370,15 @@ bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToC
 	if( gclsSetup.m_bUseRtpRelay )
 	{
 		clsRtp.m_strIp = gclsSetup.m_strLocalIp;
-		clsRtp.m_iPort = clsReferToCallInfo.m_iRtpPort;
+
+		if( bScreenedTransfer )
+		{
+			clsRtp.m_iPort = clsReferToCallInfo.m_iRtpPort;
+		}
+		else
+		{
+			clsRtp.m_iPort = clsReferToCallInfo.m_iRtpPort + 2;
+		}
 	}
 
 	if( bScreenedTransfer )
