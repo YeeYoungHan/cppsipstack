@@ -69,6 +69,7 @@ public:
 
 	bool SelectElementData( const char * pszName, std::string & strData );
 	bool SelectElementData( const char * pszName, int & iData );
+	bool SelectElementData( const char * pszName, bool & bData );
 
 	const char * GetName();
 	const char * GetData();
@@ -81,6 +82,8 @@ private:
 
 	XML_ATTRIBUTE_MAP	m_clsAttributeMap;
 	XML_ELEMENT_LIST	m_clsElementList;
+
+	bool GetBoolean( const char * pszData );
 };
 
 #endif

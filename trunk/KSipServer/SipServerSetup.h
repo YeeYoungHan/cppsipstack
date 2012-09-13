@@ -52,6 +52,15 @@ public:
 	/** SIP 통신을 위한 realm */
 	std::string	m_strRealm;
 
+	/** RTP relay 기능 사용 여부 */
+	bool				m_bUseRtpRelay;
+
+	/** RTP relay 에 사용할 시작 포트 번호 */
+	int					m_iBeginRtpPort;
+
+	/** RTP relay 에 사용할 종료 포트 번호 */
+	int					m_iEndRtpPort;
+
 	/** 로그인된 사용자에게 OPTIONS 메시지를 전송하는 주기 (초단위) */
 	int					m_iSendOptionsPeriod;
 

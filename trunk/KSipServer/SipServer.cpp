@@ -23,6 +23,7 @@
 #include "NonceMap.h"
 #include "CallMap.h"
 #include "SipServerMap.h"
+#include "RtpMap.h"
 #include "Log.h"
 #include "Md5.h"
 #include "XmlUser.h"
