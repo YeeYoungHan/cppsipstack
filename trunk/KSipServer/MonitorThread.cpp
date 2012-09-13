@@ -79,7 +79,7 @@ static bool MonitorCommand( CMonitorSocket * pclsArg, const char * pszPacket )
 	}
 
 	n = TcpSend( pclsArg->hSocket, strBuf.c_str(), strBuf.length() );
-	if( n != strBuf.length() )
+	if( n != (int)strBuf.length() )
 	{
 		CLog::Print( LOG_DEBUG, "MonitorThread(%s:%d) send body error(%d)", pclsArg->m_strIp.c_str(), pclsArg->m_iPort, GetError() );
 		return false;
@@ -146,7 +146,7 @@ void * MonitorThread( void * lpParameter )
 		}
 
 		iPacketLen = ntohl( iPacketLen );
-		if( iPacketLen <= 0 || iPacketLen >= sizeof(szPacket) )
+		if( iPacketLen <= 0 || iPacketLen >= (int)sizeof(szPacket) )
 		{
 			CLog::Print( LOG_DEBUG, "MonitorThread(%s:%d) recv command length(%d)", pclsArg->m_strIp.c_str(), pclsArg->m_iPort, iPacketLen );
 			break;
