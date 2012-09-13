@@ -212,7 +212,7 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 	itMap = m_clsMap.find( pszCallId );
 	if( itMap != m_clsMap.end() )
 	{
-		if( itMap->second.m_sttStartTime.tv_sec == 0 )
+		if( itMap->second.m_sttStartTime.tv_sec == 0 && itMap->second.m_pclsInvite )
 		{
 			itMap->second.SetLocalRtp( pclsRtp );
 
@@ -703,7 +703,7 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 	if( pclsMessage->GetCallId( strCallId ) == false ) return false;
 
 	SIP_DIALOG_MAP::iterator		itMap;
-	bool	bFound = false;
+	bool	bFound = false, bReInvite = false;
 	CSipMessage *pclsAck = NULL, *pclsInvite = NULL;
 
 	m_clsMutex.acquire();
@@ -724,11 +724,6 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 
 			if( pclsMessage->m_iStatusCode >= 200 && pclsMessage->m_iStatusCode < 300 )
 			{
-				if( itMap->second.m_sttStartTime.tv_sec == 0 )
-				{
-					gettimeofday( &itMap->second.m_sttStartTime, NULL );
-				}
-
 				SIP_FROM_LIST::iterator	itContact = pclsMessage->m_clsContactList.begin();
 				if( itContact != pclsMessage->m_clsContactList.end() )
 				{
@@ -736,6 +731,15 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 
 					itContact->m_clsUri.ToString( szUri, sizeof(szUri) );
 					itMap->second.m_strContactUri = szUri;
+				}
+
+				if( itMap->second.m_sttStartTime.tv_sec == 0 )
+				{
+					gettimeofday( &itMap->second.m_sttStartTime, NULL );
+				}
+				else
+				{
+					bReInvite = true;
 				}
 			}
 			else if( pclsMessage->m_iStatusCode == SIP_UNAUTHORIZED || pclsMessage->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
@@ -779,6 +783,8 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 	{
 		gclsSipStack.SendSipMessage( pclsInvite );
 	}
+
+	if( bReInvite ) return false;
 
 	return bFound;
 }

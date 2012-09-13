@@ -52,7 +52,7 @@ public:
 	bool Insert( const char * pszRecvCallId, const char * pszSendCallId, int iStartRtpPort );
 	bool Select( const char * pszCallId, std::string & strCallId );
 	bool Select( const char * pszCallId, CCallInfo & clsCallInfo );
-	bool Delete( const char * pszCallId );
+	bool Delete( const char * pszCallId, bool bStopPort = true );
 
 	void StopCallAll();
 	int GetCount();

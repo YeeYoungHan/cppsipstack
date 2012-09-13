@@ -50,6 +50,15 @@ void CRtpInfo::SetIpPort( int iIndex, uint32_t iIp, uint16_t sPort )
 	m_arrPort[iIndex] = sPort;
 }
 
+void CRtpInfo::ReSetIPPort( )
+{
+	for( int i = 0; i < RTP_INFO_SOCKET_COUNT; ++i )
+	{
+		m_arrIp[i] = 0;
+		m_arrPort[i] = 0;
+	}
+}
+
 bool CRtpInfo::Send( int iIndex, char * pszPacket, int iPacketLen )
 {
 	return UdpSend( m_arrSocket[iIndex], pszPacket, iPacketLen, m_arrIp[iIndex], m_arrPort[iIndex] );
@@ -150,6 +159,23 @@ bool CRtpMap::Delete( int iPort )
 	{
 		itMap->second.CloseSocket();
 		m_clsMap.erase( itMap );
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+bool CRtpMap::ReSetIpPort( int iPort )
+{
+	RTP_MAP::iterator	itMap;
+	bool	bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( iPort );
+	if( itMap != m_clsMap.end() )
+	{
+		itMap->second.ReSetIPPort();
 		bRes = true;
 	}
 	m_clsMutex.release();

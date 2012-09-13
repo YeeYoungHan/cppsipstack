@@ -127,9 +127,10 @@ bool CCallMap::Select( const char * pszCallId, CCallInfo & clsCallInfo )
  * @ingroup KSipServer
  * @brief Call-ID 와 연결된 Call-ID 를 자료구조에서 삭제한다.
  * @param pszCallId SIP Call-ID
+ * @param bStopPort	RTP 포트 사용을 중지시킬 것인가?
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool CCallMap::Delete( const char * pszCallId )
+bool CCallMap::Delete( const char * pszCallId, bool bStopPort )
 {
 	CALL_MAP::iterator	itMap;
 	bool	bRes = false;
@@ -163,7 +164,7 @@ bool CCallMap::Delete( const char * pszCallId )
 	}
 	m_clsMutex.release();
 
-	if( iPort > 0 )
+	if( bStopPort && iPort > 0 )
 	{
 		gclsRtpMap.SetStop( iPort );
 	}
