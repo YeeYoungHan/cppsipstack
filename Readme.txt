@@ -44,7 +44,13 @@ C++ SIP stack 프로젝트
      C++ SIP stack 의 사용법이 궁금하신 분은 소스 코드를 꼭 읽어 보세요.
 
  * KSipServer
-   - 한국형 SIP 서버 프로그램 ( 개발중 )
+   - 한국형 SIP 서버 프로그램
+
+ * KSipServerMonitor
+   - KSipServer 자료구조 모니터링 프로그램
+
+ * FindNoLiceseFile
+   - 폴더에서 라이선스 문구가 포함되지 않은 소스 코드를 검색하는 프로그램
 
  * Curio
    - C++ SIP stack 을 이용한 안드로이드 SIP 클라이언트 ( 개발 계획중 )
