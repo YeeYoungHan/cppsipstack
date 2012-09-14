@@ -206,7 +206,7 @@ void CRtpMap::GetString( std::string & strBuf )
 		{
 			iIp = itMap->second.m_arrIp[i];
 
-			snprintf( szTemp, sizeof(szTemp), "%d.%d.%d.%d:%d", (iIp)&0xFF, (iIp>>8)&0xFF, (iIp>>16)&0xFF, (iIp>>24)&0xFF, itMap->second.m_arrPort[i] );
+			snprintf( szTemp, sizeof(szTemp), "%d.%d.%d.%d:%d", (iIp)&0xFF, (iIp>>8)&0xFF, (iIp>>16)&0xFF, (iIp>>24)&0xFF, ntohs(itMap->second.m_arrPort[i]) );
 			strBuf.append( szTemp );
 			strBuf.append( MR_COL_SEP );
 		}
