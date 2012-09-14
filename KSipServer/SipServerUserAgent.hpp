@@ -282,7 +282,7 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 		gclsUserAgent.SendReInvite( strReferToCallId.c_str(), pclsRtp );
 
-		gclsCallMap.Insert( pszCallId, strReferToCallId.c_str(), iStartPort );
+		gclsCallMap.Insert( strReferToCallId.c_str(), pszCallId, iStartPort );
 		gclsTransCallMap.Delete( pszCallId, false );
 	}
 }
