@@ -163,7 +163,7 @@ BOOL CKSipServerMonitorApp::InitInstance()
 	pMainFrame->ShowWindow(m_nCmdShow);
 	pMainFrame->UpdateWindow();
 
-	for( int i = 0; i < 4; ++i )
+	for( int i = 0; i < 5; ++i )
 	{
 		OnFileNew();
 	}

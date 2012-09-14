@@ -198,6 +198,7 @@ int CCallMap::GetCount()
 void CCallMap::GetString( std::string & strBuf )
 {
 	CALL_MAP::iterator	itMap;
+	char	szTemp[51];
 
 	strBuf.clear();
 
@@ -207,6 +208,16 @@ void CCallMap::GetString( std::string & strBuf )
 		strBuf.append( itMap->first );
 		strBuf.append( MR_COL_SEP );
 		strBuf.append( itMap->second.m_strPeerCallId );
+		strBuf.append( MR_COL_SEP );
+
+		if( itMap->second.m_bRecv )
+		{
+			strBuf.append( "recv" );
+		}
+		strBuf.append( MR_COL_SEP );
+
+		snprintf( szTemp, sizeof(szTemp), "%d", itMap->second.m_iRtpPort );
+		strBuf.append( szTemp );
 		strBuf.append( MR_ROW_SEP );
 	}
 	m_clsMutex.release();

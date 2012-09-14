@@ -64,6 +64,9 @@ BOOL CKSipServerMonitorDoc::OnNewDocument()
 		eType = E_COMM_USER_LIST;
 		break;
 	case E_COMM_USER_LIST:
+		eType = E_COMM_RTP_LIST;
+		break;
+	case E_COMM_RTP_LIST:
 		eType = E_COMM_DIALOG_LIST;
 		break;
 	case E_COMM_DIALOG_LIST:

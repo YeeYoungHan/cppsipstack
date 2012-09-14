@@ -30,6 +30,7 @@
 #define ST_CALL_LIST				"call"
 #define ST_SIP_SERVER_LIST	"sipserver"
 #define ST_USER_LIST				"user"
+#define ST_RTP_LIST					"rtp"
 #define ST_DIALOG_LIST			"dialog"
 #define ST_SIP_STACK_COUNT	"sipstack"
 

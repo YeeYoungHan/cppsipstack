@@ -127,6 +127,9 @@ bool CTcpSocket::AddCommand( ECommType cCommType, CListCtrl * pclsListCtrl )
 	case E_COMM_USER_LIST:
 		clsCommand.m_strCommand = MC_USER_MAP_LIST;
 		break;
+	case E_COMM_RTP_LIST:
+		clsCommand.m_strCommand = MC_RTP_MAP_LIST;
+		break;
 	case E_COMM_DIALOG_LIST:
 		clsCommand.m_strCommand = MC_DIALOG_MAP_LIST;
 		break;

@@ -491,7 +491,7 @@ void CSipUserAgent::GetString( std::string & strBuf )
 		strBuf.append( szTemp );
 		strBuf.append( MR_COL_SEP );
 
-		if( itMap->second.m_iLocalRtpPort )
+		if( itMap->second.m_iLocalRtpPort > 0 )
 		{
 			strBuf.append( itMap->second.m_strLocalRtpIp );
 			snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iLocalRtpPort );

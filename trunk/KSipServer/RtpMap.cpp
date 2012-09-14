@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipStackDefine.h"
 #include "RtpMap.h"
 #include "SipServerSetup.h"
 #include "ServerThread.h"
@@ -181,6 +182,42 @@ bool CRtpMap::ReSetIpPort( int iPort )
 	m_clsMutex.release();
 
 	return bRes;
+}
+
+void CRtpMap::GetString( std::string & strBuf )
+{
+	RTP_MAP::iterator	itMap;
+	char	szTemp[51];
+	int		i;
+	uint32_t	iIp;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		snprintf( szTemp, sizeof(szTemp), "%d", itMap->first );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		snprintf( szTemp, sizeof(szTemp), "%d", itMap->second.m_iStartPort );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		for( i = 0; i < RTP_INFO_SOCKET_COUNT; ++i )
+		{
+			iIp = itMap->second.m_arrIp[i];
+
+			snprintf( szTemp, sizeof(szTemp), "%d.%d.%d.%d:%d", (iIp)&0xFF, (iIp>>8)&0xFF, (iIp>>16)&0xFF, (iIp>>24)&0xFF, itMap->second.m_arrPort[i] );
+			strBuf.append( szTemp );
+			strBuf.append( MR_COL_SEP );
+		}
+
+		if( itMap->second.m_bStop )
+		{
+			strBuf.append( "stop" );
+		}
+		strBuf.append( MR_ROW_SEP );
+	}
+	m_clsMutex.release();
 }
 
 bool CRtpMap::CreatePort( CRtpInfo & clsInfo, int iStart, int iEnd )
