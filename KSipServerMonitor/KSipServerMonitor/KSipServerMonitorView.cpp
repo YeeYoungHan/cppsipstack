@@ -72,8 +72,10 @@ void CKSipServerMonitorView::OnInitialUpdate()
 		{
 		case E_COMM_CALL_LIST:
 			GetDocument()->SetTitle( _T("Call List") );
-			clsListCtrl.InsertColumn(  0, _T("Call-Id"), LVCFMT_LEFT, gclsSetup.GetInt( ST_CALL_LIST,  0, 100 ) );
-			clsListCtrl.InsertColumn(  1, _T("Call-Id"), LVCFMT_LEFT, gclsSetup.GetInt( ST_CALL_LIST,  1, 100 ) );
+			clsListCtrl.InsertColumn(  0, _T("Call-Id")  , LVCFMT_LEFT, gclsSetup.GetInt( ST_CALL_LIST,  0, 100 ) );
+			clsListCtrl.InsertColumn(  1, _T("Call-Id")  , LVCFMT_LEFT, gclsSetup.GetInt( ST_CALL_LIST,  1, 100 ) );
+			clsListCtrl.InsertColumn(  2, _T("Invite")   , LVCFMT_LEFT, gclsSetup.GetInt( ST_CALL_LIST,  2, 100 ) );
+			clsListCtrl.InsertColumn(  3, _T("Peer-Port"), LVCFMT_LEFT, gclsSetup.GetInt( ST_CALL_LIST,  3, 100 ) );
 			break;
 		case E_COMM_SIP_SERVER_LIST:
 			GetDocument()->SetTitle( _T("SipServer List") );
@@ -92,6 +94,16 @@ void CKSipServerMonitorView::OnInitialUpdate()
 			clsListCtrl.InsertColumn(  1, _T("ip")        , LVCFMT_LEFT, gclsSetup.GetInt( ST_USER_LIST,  1, 100 ) );
 			clsListCtrl.InsertColumn(  2, _T("login time"), LVCFMT_LEFT, gclsSetup.GetInt( ST_USER_LIST,  2, 100 ) );
 			clsListCtrl.InsertColumn(  3, _T("timeout")   , LVCFMT_LEFT, gclsSetup.GetInt( ST_USER_LIST,  3, 100 ) );
+			break;
+		case E_COMM_RTP_LIST:
+			GetDocument()->SetTitle( _T("Rtp List") );
+			clsListCtrl.InsertColumn(  0, _T("Port")        , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  0, 100 ) );
+			clsListCtrl.InsertColumn(  1, _T("StartPort")   , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  1, 100 ) );
+			clsListCtrl.InsertColumn(  2, _T("Rtp")         , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  2, 100 ) );
+			clsListCtrl.InsertColumn(  3, _T("Rtcp")        , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  3, 100 ) );
+			clsListCtrl.InsertColumn(  4, _T("Rtp")         , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  4, 100 ) );
+			clsListCtrl.InsertColumn(  5, _T("Rtcp")        , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  5, 100 ) );
+			clsListCtrl.InsertColumn(  6, _T("Stop")        , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  6, 100 ) );
 			break;
 		case E_COMM_DIALOG_LIST:
 			GetDocument()->SetTitle( _T("Dialog List") );
@@ -173,6 +185,9 @@ void CKSipServerMonitorView::OnDestroy()
 		break;
 	case E_COMM_USER_LIST:
 		strName = ST_USER_LIST;
+		break;
+	case E_COMM_RTP_LIST:
+		strName = ST_RTP_LIST;
 		break;
 	case E_COMM_DIALOG_LIST:
 		strName = ST_DIALOG_LIST;

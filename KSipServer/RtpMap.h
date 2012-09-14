@@ -59,6 +59,8 @@ public:
 	bool Delete( int iPort );
 	bool ReSetIpPort( int iPort );
 
+	void GetString( std::string & strBuf );
+
 private:
 	RTP_MAP		m_clsMap;
 	CSipMutex	m_clsMutex;

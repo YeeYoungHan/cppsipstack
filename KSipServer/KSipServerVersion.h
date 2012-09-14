@@ -19,9 +19,13 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.06"
+#define KSIP_SERVER_VERSION	"0.07"
 
 /* 버전 정보 
+
+= 버전 0.07 ( 2012년 09월 14일 ) =
+ * RTP relay 기능으로 Blind Transfer 가 성공한 후, ReINVITE 전송시 SDP 에 RTP 포트를 잘 못 저장하는 버그를 패치함.
+ * RTP 자료구조에 대한 모니터링 기능을 추가함.
 
 = 버전 0.06 ( 2012년 09월 13일 ) =
  * CDR 저장 기능을 추가함.

@@ -25,6 +25,7 @@
 #include "CallMap.h"
 #include "SipServerMap.h"
 #include "UserMap.h"
+#include "RtpMap.h"
 #include "SipServer.h"
 
 static int giMonitorThreadCount = 0;
@@ -54,6 +55,10 @@ static bool MonitorCommand( CMonitorSocket * pclsArg, const char * pszPacket )
 	else if( !strcmp( pszPacket, MC_USER_MAP_LIST ) )
 	{
 		gclsUserMap.GetString( strBuf );
+	}
+	else if( !strcmp( pszPacket, MC_RTP_MAP_LIST ) )
+	{
+		gclsRtpMap.GetString( strBuf );
 	}
 	else if( !strcmp( pszPacket, MC_DIALOG_MAP_LIST ) )
 	{
