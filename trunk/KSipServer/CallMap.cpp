@@ -23,7 +23,7 @@
 CCallMap gclsCallMap;
 CCallMap gclsTransCallMap;
 
-CCallInfo::CCallInfo() : m_bRecv(false), m_iRtpPort(-1)
+CCallInfo::CCallInfo() : m_bRecv(false), m_iPeerRtpPort(-1)
 {
 }
 
@@ -41,6 +41,7 @@ CCallMap::~CCallMap()
  * @param pszRecvCallId 통화 요청 Call-ID
  * @param pszSendCallId 전달된 통화 요청 Call-ID
  * @param iStartRtpPort	생성된 RTP 포트에서 시작 포트 번호
+ *											pszSendCallId 와 연동하는 RTP 포트 번호이다.
  * @returns true 를 리턴한다.
  */
 bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId, int iStartRtpPort )
@@ -57,7 +58,7 @@ bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId, i
 		clsCallInfo.m_bRecv = true;
 		if( iStartRtpPort > 0 )
 		{
-			clsCallInfo.m_iRtpPort = iStartRtpPort;
+			clsCallInfo.m_iPeerRtpPort = iStartRtpPort;
 		}
 		m_clsMap.insert( CALL_MAP::value_type( pszRecvCallId, clsCallInfo ) );
 	}
@@ -71,7 +72,7 @@ bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId, i
 		clsCallInfo.m_bRecv = false;
 		if( iStartRtpPort > 0 )
 		{
-			clsCallInfo.m_iRtpPort = iStartRtpPort + 2;
+			clsCallInfo.m_iPeerRtpPort = iStartRtpPort + 2;
 		}
 		m_clsMap.insert( CALL_MAP::value_type( pszSendCallId, clsCallInfo ) );
 	}
@@ -144,7 +145,7 @@ bool CCallMap::Delete( const char * pszCallId, bool bStopPort )
 		strCallId = itMap->second.m_strPeerCallId;
 		if( itMap->second.m_bRecv )
 		{
-			iPort = itMap->second.m_iRtpPort;
+			iPort = itMap->second.m_iPeerRtpPort;
 		}
 		m_clsMap.erase( itMap );
 		bRes = true;
@@ -157,7 +158,7 @@ bool CCallMap::Delete( const char * pszCallId, bool bStopPort )
 		{
 			if( itMap->second.m_bRecv )
 			{
-				iPort = itMap->second.m_iRtpPort;
+				iPort = itMap->second.m_iPeerRtpPort;
 			}
 			m_clsMap.erase( itMap );
 		}
@@ -216,7 +217,7 @@ void CCallMap::GetString( std::string & strBuf )
 		}
 		strBuf.append( MR_COL_SEP );
 
-		snprintf( szTemp, sizeof(szTemp), "%d", itMap->second.m_iRtpPort );
+		snprintf( szTemp, sizeof(szTemp), "%d", itMap->second.m_iPeerRtpPort );
 		strBuf.append( szTemp );
 		strBuf.append( MR_ROW_SEP );
 	}

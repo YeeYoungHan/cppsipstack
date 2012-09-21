@@ -30,7 +30,7 @@ public:
 
 	std::string	m_strPeerCallId;
 	bool				m_bRecv;
-	int					m_iRtpPort;
+	int					m_iPeerRtpPort;
 };
 
 /**
