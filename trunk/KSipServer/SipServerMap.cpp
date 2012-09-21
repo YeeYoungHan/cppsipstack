@@ -22,6 +22,7 @@
 #include "SipServerSetup.h"
 #include "Directory.h"
 #include "DbMySQL.h"
+#include "Log.h"
 
 CSipServerMap gclsSipServerMap;
 
@@ -84,6 +85,10 @@ bool CSipServerMap::Load( )
 {
 	bool	bRes = false;
 
+	CLog::Print( LOG_DEBUG, "SipServerMap Load" );
+
+	ReSetFlag( );
+
 	if( gclsSetup.m_eType == E_DT_XML )
 	{
 		bRes = ReadDir( gclsSetup.m_strSipServerXmlFolder.c_str() );
@@ -106,6 +111,8 @@ bool CSipServerMap::Load( )
 		}
 	}
 #endif
+
+	// QQQ: 추가/수정/삭제된 IP-PBX 정보를 SipUserAgent 에 전달한다.
 
 	return bRes;
 }
@@ -255,6 +262,18 @@ void CSipServerMap::GetKey( CXmlSipServer & clsXmlSipServer, std::string & strKe
 	strKey = clsXmlSipServer.m_strIp;
 	strKey.append( "_" );
 	strKey.append( clsXmlSipServer.m_strUserId );
+}
+
+void CSipServerMap::ReSetFlag( )
+{
+	SIP_SERVER_MAP::iterator	itMap;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		itMap->second.m_iFlag = FLAG_NULL;
+	}
+	m_clsMutex.release();
 }
 
 /**

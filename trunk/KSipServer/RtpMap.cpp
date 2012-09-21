@@ -20,6 +20,7 @@
 #include "RtpMap.h"
 #include "SipServerSetup.h"
 #include "ServerThread.h"
+#include "Log.h"
 
 CRtpMap gclsRtpMap;
 
@@ -106,11 +107,14 @@ int CRtpMap::CreatePort( )
 	{
 		if( StartRtpThread( clsInfo.m_iStartPort ) )
 		{
+			CLog::Print( LOG_DEBUG, "Create RtpPort(%d) success", clsInfo.m_iStartPort );
 			return clsInfo.m_iStartPort;
 		}
 
 		Delete( clsInfo.m_iStartPort );
 	}
+
+	CLog::Print( LOG_ERROR, "Create RtpPort error" );
 
 	return -1;
 }

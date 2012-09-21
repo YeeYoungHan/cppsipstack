@@ -94,6 +94,7 @@ static bool MonitorCommand( CMonitorSocket * pclsArg, const char * pszPacket )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief KSipServer 의 내부 자료구조를 모니터링하기 위한 쓰레드 함수
  * @param lpParameter 의미없음
  * @returns 0 을 리턴한다.
@@ -184,6 +185,7 @@ void * MonitorThread( void * lpParameter )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief 모니터링 쓰레드를 시작한다.
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
@@ -202,6 +204,7 @@ bool StartMonitorThread( Socket hSocket, const char * pszIp, int iPort )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief 모니터링 쓰레드 실행 유무를 검사한다.
  * @returns 모니터링 쓰레드가 실행 중이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */

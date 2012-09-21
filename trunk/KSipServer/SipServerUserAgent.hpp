@@ -41,6 +41,7 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 
 	if( pclsMessage->GetTopViaIpPort( strIp, iPort ) == false )
 	{
+		CLog::Print( LOG_ERROR, "EventIncomingRequestAuth - GetTopViaIpPort error" );
 		SendResponse( pclsMessage, SIP_BAD_REQUEST );
 		return false;
 	}
@@ -48,6 +49,7 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 	// IP-PBX 에서 전송한 SIP 요청 메시지는 인증 허용으로 처리한다.
 	if( gclsSipServerMap.Select( strIp.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str() ) )
 	{
+		CLog::Print( LOG_DEBUG, "EventIncomingRequestAuth ip(%s) user(%s) IP-PBX => allowed", strIp.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str() );
 		return true;
 	}
 
@@ -81,6 +83,7 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 
 		if( itCL == pclsMessage->m_clsAuthorizationList.end() )
 		{
+			CLog::Print( LOG_DEBUG, "EventIncomingRequestAuth current(%s:%d) != recv(%s:%d)", clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, strIp.c_str(), iPort );
 			SendUnAuthorizedResponse( pclsMessage );
 			return false;
 		}
@@ -106,6 +109,8 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	bool			bRoutePrefix = false;
 	std::string	strTo;
 
+	CLog::Print( LOG_DEBUG, "EventIncomingCall(%s,%s,%s)", pszCallId, pszFrom, pszTo );
+
 	if( SelectUser( pszTo, clsXmlUser ) == false )
 	{
 		CXmlSipServer clsXmlSipServer;
@@ -123,9 +128,12 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 			pszTo = strTo.c_str();
 
 			bRoutePrefix = true;
+			CLog::Print( LOG_DEBUG, "EventIncomingCall routePrefix IP-PBX(%s:%d)", clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
 		}
 		else
 		{
+			CLog::Print( LOG_DEBUG, "EventIncomingCall to(%s) is not found in XML or DB", pszTo );
+
 			SaveCdr( pszCallId, SIP_NOT_FOUND );
 			gclsUserAgent.StopCall( pszCallId, SIP_NOT_FOUND );
 			return;
@@ -135,6 +143,8 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	if( clsXmlUser.IsDnd() )
 	{
 		// 사용자가 DND 로 설정되어 있으면 통화 요청을 거절한다.
+		CLog::Print( LOG_DEBUG, "EventIncomingCall to(%s) is DND", pszTo );
+
 		SaveCdr( pszCallId, SIP_DECLINE );
 		gclsUserAgent.StopCall( pszCallId );
 		return;
@@ -142,6 +152,8 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 	if( clsXmlUser.IsCallForward() )
 	{
+		CLog::Print( LOG_DEBUG, "EventIncomingCall to(%s) is CallForward(%s)", pszTo, clsXmlUser.m_strCallForward.c_str() );
+
 		// 사용자가 착신전환 설정되어 있으면 착신전환 처리한다.
 		CSipMessage * pclsInvite = gclsUserAgent.DeleteIncomingCall( pszCallId );
 		if( pclsInvite )
@@ -162,6 +174,10 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 				return;
 			}
 		}
+		else
+		{
+			CLog::Print( LOG_ERROR, "EventIncomingCall(%s) INVITE it not found", pszCallId );
+		}
 
 		SaveCdr( pszCallId, SIP_MOVED_TEMPORARILY );
 		gclsUserAgent.StopCall( pszCallId );
@@ -172,6 +188,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	{
 		if( gclsUserMap.Select( pszTo, clsUserInfo ) == false )
 		{
+			CLog::Print( LOG_DEBUG, "EventIncomingCall(%s) to(%s) is not found", pszCallId, pszTo );
 			SaveCdr( pszCallId, SIP_NOT_FOUND );
 			gclsUserAgent.StopCall( pszCallId, SIP_NOT_FOUND );
 			return;
@@ -201,6 +218,8 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 	if( gclsUserAgent.StartCall( pszFrom, pszTo, pclsRtp, &clsRoute, strCallId ) == false )
 	{
+		CLog::Print( LOG_ERROR, "EventIncomingCall(%s) StartCall errr", pszCallId );
+
 		SaveCdr( pszCallId, SIP_INTERNAL_SERVER_ERROR );
 		gclsUserAgent.StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
 		return;
@@ -219,6 +238,8 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 void CSipServer::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
 {
 	CCallInfo clsCallInfo;
+
+	CLog::Print( LOG_DEBUG, "EventCallRing(%s,%d)", pszCallId, iSipStatus );
 
 	if( gclsCallMap.Select( pszCallId, clsCallInfo ) )
 	{
@@ -245,6 +266,8 @@ void CSipServer::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
 void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
 	CCallInfo clsCallInfo;
+
+	CLog::Print( LOG_DEBUG, "EventCallStart(%s)", pszCallId );
 
 	if( gclsCallMap.Select( pszCallId, clsCallInfo ) )
 	{
@@ -297,6 +320,8 @@ void CSipServer::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
 	CCallInfo clsCallInfo;
 
+	CLog::Print( LOG_DEBUG, "EventCallEnd(%s:%d)", pszCallId, iSipStatus );
+
 	if( gclsCallMap.Select( pszCallId, clsCallInfo ) )
 	{
 		if( clsCallInfo.m_bRecv )
@@ -333,6 +358,8 @@ void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
 	CCallInfo	clsCallInfo;
 
+	CLog::Print( LOG_DEBUG, "EventReInvite(%s)", pszCallId );
+
 	if( gclsCallMap.Select( pszCallId, clsCallInfo ) )
 	{
 		if( pclsRtp && clsCallInfo.m_iPeerRtpPort > 0 )
@@ -357,6 +384,8 @@ bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToC
 {
 	CCallInfo		clsCallInfo, clsReferToCallInfo;
 	CSipCallRtp clsRtp;
+
+	CLog::Print( LOG_DEBUG, "EventTransfer(%s,%s,%s)", pszCallId, pszReferToCallId, ( bScreenedTransfer ? "screened" : "unscreened" ) );
 
 	if( gclsCallMap.Select( pszCallId, clsCallInfo ) == false ) return false;
 	if( gclsCallMap.Select( pszReferToCallId, clsReferToCallInfo ) == false ) return false;
@@ -450,6 +479,8 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 	CUserInfo		clsUserInfo;
 	CSipCallRoute	clsRoute;
 	int iStartPort = -1;
+
+	CLog::Print( LOG_DEBUG, "EventBlindTransfer(%s,%s)", pszCallId, pszReferToId );
 
 	if( gclsCallMap.Select( pszCallId, strCallId ) == false ) return false;
 	if( gclsUserAgent.GetToId( strCallId.c_str(), strToId ) == false ) return false;

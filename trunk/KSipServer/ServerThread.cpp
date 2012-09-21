@@ -23,6 +23,12 @@
 #include "Log.h"
 #include "ServerThread.h"
 
+/**
+ * @ingroup KSipServer
+ * @brief KSipServer 관리를 위한 네트워크 서버 쓰레드 함수
+ * @param lpParameter 의미없음
+ * @returns 0 을 리턴한다.
+ */
 #ifdef WIN32
 DWORD WINAPI ServerThread( LPVOID lpParameter )
 #else
@@ -78,6 +84,7 @@ void * ServerThread( void * lpParameter )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief 모니터링 서버 쓰레드를 시작한다.
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
