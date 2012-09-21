@@ -12,13 +12,13 @@
 		<EndPort>10010</EndPort>
 	</RtpRelay>
 	<Log>
-		<Folder>d:\temp\sipserver</Folder>
+		<Folder>c:\temp\sipserver</Folder>
 		<Level Debug="true" Info="true" Network="true" Sql="true" />
 		<MaxSize>10000000</MaxSize>
 	</Log>
 	<XmlFolder>
-		<User>D:\OpenProject\CppSipStack\trunk\KSipServer\UserXml</User>
-		<SipServer>D:\OpenProject\CppSipStack\trunk\KSipServer\SipServerXml</SipServer>
+		<User>c:\OpenProject\CppSipStack\trunk\KSipServer\UserXml</User>
+		<SipServer>c:\OpenProject\CppSipStack\trunk\KSipServer\SipServerXml</SipServer>
 	</XmlFolder>
 	<Db>
 		<Host>127.0.0.1</Host>
@@ -27,7 +27,7 @@
 		<DataBase>ksipserver</DataBase>
 	</Db>
 	<Cdr>
-		<Folder>d:\temp\cdr</Folder>
+		<Folder>c:\temp\cdr</Folder>
 	</Cdr>
 	<Monitor>
 	  <Port>6000</Port>

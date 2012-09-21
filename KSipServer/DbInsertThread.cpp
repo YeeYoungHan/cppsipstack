@@ -32,6 +32,7 @@ static size_t		giMaxSqlCount = 99;
 #endif
 
 /**
+ * @ingroup KSipServer
  * @brief DB INSERT/UPDATE/DELETE SQL 문장을 추가한다.
  * @param strSQL SQL 문장
  */
@@ -51,6 +52,7 @@ void DbInsertString( std::string & strSQL )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief DB INSERT/UPDATE/DELETE SQL 문장을 추가한다.
  * @param pszSQL SQL 문장
  */
@@ -64,6 +66,7 @@ void DbInsert( const char * pszSQL )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief SQL 문장 버퍼가 0 인 경우 DB 입력 쓰레드에 신호를 발생한다.
  */
 void DbSignal( )
@@ -77,6 +80,7 @@ void DbSignal( )
 
 #ifdef USE_MYSQL
 /**
+ * @ingroup KSipServer
  * @brief DB INSERT/UPDATE/DELETE 쓰레드
  *				주기적으로 SQL 큐를 읽어서 이를 실행한다.
  * @param lpParameter 의미없음
@@ -135,6 +139,7 @@ void * DbInsertThread( void * lpParameter )
 #endif
 
 /**
+ * @ingroup KSipServer
  * @brief DB 입력 쓰레드를 시작한다.
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
@@ -150,6 +155,7 @@ bool StartDbInsertThread()
 }
 
 /**
+ * @ingroup KSipServer
  * @brief DB 입력 쓰레드 실행 유무를 검사한다.
  * @returns DB 입력 쓰레드가 실행 중이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
