@@ -96,7 +96,7 @@ bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 				// Blind Transfer
 				CSipUri	clsReferToUri;
 
-				if( clsReferToUri.Parse( pclsHeader->m_strValue.c_str(), pclsHeader->m_strValue.length() ) == -1 )
+				if( clsReferToUri.Parse( pclsHeader->m_strValue.c_str(), (int)pclsHeader->m_strValue.length() ) == -1 )
 				{
 					pclsResponse = pclsMessage->CreateResponse( SIP_BAD_REQUEST );
 				}

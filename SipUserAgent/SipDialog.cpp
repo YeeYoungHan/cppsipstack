@@ -259,7 +259,7 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	CSipMessage * pclsMessage = new CSipMessage();
 	if( pclsMessage == NULL ) return NULL;
 
-	if( pclsMessage->m_clsCallId.Parse( m_strCallId.c_str(), m_strCallId.length() ) == -1 )
+	if( pclsMessage->m_clsCallId.Parse( m_strCallId.c_str(), (int)m_strCallId.length() ) == -1 )
 	{
 		delete pclsMessage;
 		return NULL;
@@ -269,7 +269,7 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 
 	if( m_strContactUri.empty() == false )
 	{
-		pclsMessage->m_clsReqUri.Parse( m_strContactUri.c_str(), m_strContactUri.length() );
+		pclsMessage->m_clsReqUri.Parse( m_strContactUri.c_str(), (int)m_strContactUri.length() );
 	}
 	else
 	{

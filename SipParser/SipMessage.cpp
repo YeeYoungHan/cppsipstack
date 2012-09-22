@@ -65,7 +65,7 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 		pszName = clsHeader.m_strName.c_str();
 		pszValue = clsHeader.m_strValue.c_str();
 		iValuePos = 0;
-		iValueLen = clsHeader.m_strValue.length();
+		iValueLen = (int)clsHeader.m_strValue.length();
 
 		if( !strcasecmp( pszName, "Via" ) || !strcasecmp( pszName, "v" ) )
 		{
