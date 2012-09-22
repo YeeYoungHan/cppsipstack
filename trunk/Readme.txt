@@ -49,6 +49,14 @@ C++ SIP stack 프로젝트
  * KSipServerMonitor
    - KSipServer 자료구조 모니터링 프로그램
 
+ * MySQL Server 5.0
+   - MS 윈도우용 MySQL Server 5.0 에서 가져온 개발용 헤더 파일과 라이브러리
+   - 32bit 버전
+
+ * MySQL Server 5.5
+   - MS 윈도우용 MySQL Server 5.5 에서 가져온 개발용 헤더 파일과 라이브러리
+   - 64bit 버전
+
  * FindNoLiceseFile
    - 폴더에서 라이선스 문구가 포함되지 않은 소스 코드를 검색하는 프로그램
 
