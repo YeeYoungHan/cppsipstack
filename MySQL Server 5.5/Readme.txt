@@ -1,0 +1,1 @@
+64bit MS 윈도우용 MySQL Server 5.5 에서 가져온 라이브러리
