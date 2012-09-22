@@ -32,6 +32,7 @@
 #include <signal.h>
 
 bool gbStop = false;
+static std::string gstrConfigFileName;
 
 /** signal function */
 void LastMethod( int sig )
@@ -67,28 +68,13 @@ void LastMethod( int sig )
 /**
  * @ingroup KSipServer
  * @brief C++ SIP stack 을 이용한 한국형 IP-PBX
- * @param argc 
- * @param argv 
  * @returns 정상 종료하면 0 을 리턴하고 오류가 발생하면 -1 를 리턴한다.
  */
-int main( int argc, char * argv[] )
+int ServerMain( )
 {
-	if( argc != 2 )
+	if( gclsSetup.Read( gstrConfigFileName.c_str() ) == false )
 	{
-		printf( "[Usage] %s {config filename}\n", argv[0] );
-		return -1;
-	}
-
-	const char * pszConfigFileName = argv[1];
-	if( !strcmp( pszConfigFileName, "-h" ) || !strcmp( pszConfigFileName, "-v" ) )
-	{
-		printf( "%s version-%s ( build %s %s )\n", argv[0], KSIP_SERVER_VERSION, __DATE__, __TIME__ );
-		return 0;
-	}
-
-	if( gclsSetup.Read( pszConfigFileName ) == false )
-	{
-		printf( "config filename(%s) read error\n", pszConfigFileName );
+		printf( "config filename(%s) read error\n", gstrConfigFileName.c_str() );
 		return -1;
 	}
 
@@ -218,6 +204,67 @@ int main( int argc, char * argv[] )
 	}
 
 	CLog::Print( LOG_SYSTEM, "KSipServer is terminated" );
+
+	return 0;
+}
+
+
+/**
+ * @ingroup KSipServer
+ * @brief C++ SIP stack 을 이용한 한국형 IP-PBX
+ * @param argc 
+ * @param argv 
+ * @returns 정상 종료하면 0 을 리턴하고 오류가 발생하면 -1 를 리턴한다.
+ */
+int main( int argc, char * argv[] )
+{
+#ifdef WIN32
+	if( argc == 1 )
+	{
+		gstrConfigFileName = GetConfigFileName();
+		if( IsExistFile( gstrConfigFileName.c_str() ) == false )
+		{
+			printf( "setup file(%s) is not exist", gstrConfigFileName.c_str() );
+			return -1;
+		}
+
+		KSipServiceStart();
+		return 0;
+	}
+#endif
+	 
+	if( argc != 2 )
+	{
+		printf( "[Usage] %s {config filename}\n", argv[0] );
+		return -1;
+	}
+
+	gstrConfigFileName = argv[1];
+	if( !strcmp( gstrConfigFileName.c_str(), "-h" ) || !strcmp( gstrConfigFileName.c_str(), "-v" ) )
+	{
+		printf( "%s version-%s ( build %s %s )\n", argv[0], KSIP_SERVER_VERSION, __DATE__, __TIME__ );
+		printf( "[Usage] %s {config filename}\n", argv[0] );
+#ifdef WIN32
+		printf( "        %s -i : install service\n", argv[0] );
+		printf( "        %s -u : uninstall service\n", argv[0] );
+#endif
+		return 0;
+	}
+#ifdef WIN32
+	if( !strcmp( gstrConfigFileName.c_str(), "-i" ) )
+	{
+		InstallService();
+		return 0;
+	}
+	else if( !strcmp( gstrConfigFileName.c_str(), "-u" ) )
+	{
+		InitNetwork();
+		UninstallService();
+		return 0;
+	}
+#endif
+
+	ServerMain( );
 
 	return 0;
 }

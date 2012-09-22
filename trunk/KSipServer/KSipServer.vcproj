@@ -177,6 +177,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\InstallService.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\KSipServer.cpp"
 				>
 			</File>
@@ -186,6 +190,10 @@
 			</File>
 			<File
 				RelativePath=".\KSipServerVersion.h"
+				>
+			</File>
+			<File
+				RelativePath=".\KSipService.cpp"
 				>
 			</File>
 		</Filter>
