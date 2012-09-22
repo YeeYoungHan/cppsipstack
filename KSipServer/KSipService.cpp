@@ -28,11 +28,11 @@ DWORD					g_iNowState;
 
 extern int ServerMain( );
 
-/** change service current status 
- *
- *	@param	dwState		status
- *	@param	dwAccept	afforded status
- *	@return	nothing.
+/**
+ * @ingroup KSipServer
+ * @brief change service current status 
+ * @param dwState		status
+ * @param dwAccept	afforded status
  */
 void KSipServiceSetStatus( DWORD dwState, DWORD dwAccept = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_PAUSE_CONTINUE )
 {
@@ -51,13 +51,10 @@ void KSipServiceSetStatus( DWORD dwState, DWORD dwAccept = SERVICE_ACCEPT_STOP |
 	SetServiceStatus( g_hSrv, &ss );
 }
 
-
-/** handler function. 
- *
- *	This function handle command from service control window.
- *
- *	@param	request status
- *	@return	nothing.
+/**
+ * @ingroup KSipServer
+ * @brief handler function. This function handle command from service control window.
+ * @param fdwControl request status
  */
 void KSipServiceHandler( DWORD fdwControl )
 {
@@ -81,6 +78,12 @@ void KSipServiceHandler( DWORD fdwControl )
 	}
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief MS 윈도우에서 서비스 실행시 호출되는 메소드. KSipServer 를 시작한다.
+ * @param  
+ * @param  
+ */
 void KSipServiceMain( DWORD , LPTSTR * )
 {
 	// regist service handler.
@@ -102,6 +105,10 @@ void KSipServiceMain( DWORD , LPTSTR * )
 	KSipServiceSetStatus( SERVICE_STOPPED );
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief MS 윈도우용 서비스로 KSipServer 를 시작한다.
+ */
 void KSipServiceStart()
 {
 	SERVICE_TABLE_ENTRY ste[]={
@@ -113,6 +120,7 @@ void KSipServiceStart()
 }
 
 /**
+ * @ingroup KSipServer
  * @brief 프로그램 실행 폴더를 리턴한다.
  * @returns 프로그램 실행 폴더를 리턴한다.
  */
@@ -142,6 +150,7 @@ char * GetProgramDirectory( )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief 설정 파일 이름을 리턴한다.
  * @returns 설정 파일 이름을 리턴한다.
  */

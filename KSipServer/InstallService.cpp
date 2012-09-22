@@ -24,6 +24,7 @@
 #include <stdio.h>
 
 /**
+ * @ingroup KSipServer
  * @brief 현재 프로그램이 서비스에 등록되어 있는지 확인한다.
  * @returns 현재 프로그램이 서비스에 등록되어 있으면 true 를 리턴한다.
  *					그렇지 않으면 false 를 리턴한다.
@@ -50,6 +51,7 @@ bool IsExistService()
 }
 
 /**
+ * @ingroup KSipServer
  * @brief 현재 프로그램을 서비스로 등록한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
@@ -110,6 +112,7 @@ bool InstallService( )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief 현재 프로그램을 서비스에서 등록 해제한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */

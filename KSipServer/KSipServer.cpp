@@ -34,7 +34,11 @@
 bool gbStop = false;
 static std::string gstrConfigFileName;
 
-/** signal function */
+/**
+ * @ingroup KSipServer
+ * @brief signal function
+ * @param sig 신호 번호
+ */
 void LastMethod( int sig )
 {
 	char	szText[21];
