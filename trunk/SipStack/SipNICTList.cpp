@@ -199,7 +199,7 @@ void CSipNICTList::DeleteAll( )
  */
 int CSipNICTList::GetSize( )
 {
-	return m_clsMap.size();
+	return (int)m_clsMap.size();
 }
 
 /**

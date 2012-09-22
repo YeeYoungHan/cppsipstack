@@ -240,7 +240,7 @@ void CSipISTList::DeleteAll( )
  */
 int CSipISTList::GetSize( )
 {
-	return m_clsMap.size();
+	return (int)m_clsMap.size();
 }
 
 /**

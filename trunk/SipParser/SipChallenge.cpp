@@ -165,7 +165,7 @@ void CSipChallenge::Clear()
 
 void CSipChallenge::DeQuoteString( std::string & strInput, std::string & strOutput )
 {
-	int iLen = strInput.length();
+	int iLen = (int)strInput.length();
 
 	strOutput.clear();
 

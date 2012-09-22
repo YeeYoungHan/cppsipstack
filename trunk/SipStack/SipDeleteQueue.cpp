@@ -64,7 +64,7 @@ void CSipDeleteQueue::DeleteTimeout( )
 	time_t	iTime = giTime;
 
 	m_clsMutex.acquire();
-	iCount = m_clsList.size();
+	iCount = (int)m_clsList.size();
 	if( iCount > 0 )
 	{
 		for( int i = 0; i < iCount; ++i )
@@ -86,5 +86,5 @@ void CSipDeleteQueue::DeleteTimeout( )
  */
 int CSipDeleteQueue::GetSize()
 {
-	return m_clsList.size();
+	return (int)m_clsList.size();
 }

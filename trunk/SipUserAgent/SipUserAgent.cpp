@@ -802,7 +802,7 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 	{
 		CSdpMessage clsSdp;
 
-		if( clsSdp.Parse( pclsMessage->m_strBody.c_str(), pclsMessage->m_strBody.length() ) == -1 ) return false;
+		if( clsSdp.Parse( pclsMessage->m_strBody.c_str(), (int)pclsMessage->m_strBody.length() ) == -1 ) return false;
 
 		clsRtp.m_strIp = clsSdp.m_clsConnection.m_strAddr;
 

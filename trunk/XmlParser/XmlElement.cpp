@@ -104,7 +104,7 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 					m_strData.append( pszText + iStartPos, iPos - iStartPos );		
 				}
 
-				iLen = m_strName.length();
+				iLen = (int)m_strName.length();
 
 				if( iTextLen - ( iPos + 2 ) < (int)( iLen + 1 ) ) return -1;
 
@@ -269,7 +269,7 @@ bool CXmlElement::ParseFile( const char * pszFileName )
 	}
 	fclose( fd );
 
-	if( Parse( strBuf.c_str(), strBuf.length() ) == -1 ) return false;
+	if( Parse( strBuf.c_str(), (int)strBuf.length() ) == -1 ) return false;
 
 	return true;
 }

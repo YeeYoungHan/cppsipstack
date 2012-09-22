@@ -370,7 +370,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 	}
 
 	m_clsUdpSendMutex.acquire();
-	bool bRes = UdpSend( m_iUdpSocket, pclsMessage->m_strPacket.c_str(), pclsMessage->m_strPacket.length(), pszIp, iPort );
+	bool bRes = UdpSend( m_iUdpSocket, pclsMessage->m_strPacket.c_str(), (int)pclsMessage->m_strPacket.length(), pszIp, iPort );
 	m_clsUdpSendMutex.release();
 
 	NetworkLog( true, pclsMessage->m_strPacket.c_str(), pszIp, iPort );
