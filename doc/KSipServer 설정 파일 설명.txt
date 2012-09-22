@@ -1,0 +1,66 @@
+소스 코드에 포함된 KSipServer 설정 파일은 다음과 같습니다. 
+
+<Setup> 
+        <Sip> 
+                <LocalIp>192.168.89.1</LocalIp> 
+                <UdpPort>5060</UdpPort> 
+                <UdpThreadCount>1</UdpThreadCount> 
+                <Realm>ksipserver</Realm> 
+                <!--<SendOptionsPeriod>30</SendOptionsPeriod>--> 
+        </Sip> 
+        <RtpRelay> 
+                <UseRtpRelay>false</UseRtpRelay> 
+                <BeginPort>10000</BeginPort> 
+                <EndPort>10010</EndPort> 
+        </RtpRelay> 
+        <Log> 
+                <Folder>d:\temp\sipserver</Folder> 
+                <Level Debug="true" Info="true" Network="true" Sql="true" /> 
+                <MaxSize>10000000</MaxSize> 
+        </Log> 
+        <XmlFolder> 
+                <User>D:\OpenProject\CppSipStack\trunk\KSipServer\UserXml</User>
+                 <SipServer>D:\OpenProject\CppSipStack\trunk\KSipServer\SipServerXml</SipServer>
+         </XmlFolder> 
+        <Db> 
+                <Host>127.0.0.1</Host> 
+                <UserId>ksipserver</UserId> 
+                <PassWord>1234</PassWord> 
+                <DataBase>ksipserver</DataBase> 
+        </Db> 
+        <Cdr> 
+                <Folder>d:\temp\cdr</Folder> 
+        </Cdr> 
+        <Monitor> 
+          <Port>6000</Port> 
+          <ClientIpList> 
+            <ClientIp>127.0.0.1</ClientIp> 
+          </ClientIpList> 
+        </Monitor> 
+</Setup> 
+
+각 항목에 대한 설명은 다음과 같습니다. 
+
+* Sip 
+  - SIP 프로토콜 관련 설정 항목입니다. 
+
+* RtpRelay 
+  - RTP relay 기능 관련 설정 항목입니다. 
+  - RTP relay 기능을 사용하지 않고 싶으면 UseRtpRelay 에 false 를 넣어 주시면 됩니다. 
+
+* Log 
+  - 로그 저장 기능 설정 항목입니다. 
+
+* XmlFolder 
+  - 사용자 및 IP-PBX 정보를 XML 파일에서 읽기 위한 기능입니다. 
+  - 사용자 및 IP-PBX 정보를 MySQL 에서 읽고 싶으면 User 에 공백을 넣어 주시면 됩니다. 
+
+* Db 
+  - MySQL DB 연동을 위한 정보 설정 항목입니다. 
+
+* Cdr 
+  - MySQL DB 연동을 하지 않을 경우 CDR 파일을 저장하기 위한 기능입니다. 
+
+* Monitor 
+  - KSipServer 내부 자료구조 모니터링 기능을 위한 설정 항목입니다. 
+  - ClientIpList 에 포함된 IP 주소만 TCP 접속을 허용하므로 다른 호스트에서 모니터링 프로그램을 실행할 경우 다른 호스트의 IP 주소를 추가해 주어야 합니다. 
