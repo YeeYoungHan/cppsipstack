@@ -29,7 +29,8 @@
 #define new DEBUG_NEW
 #endif
 
-#define MONITOR_TIMER	100
+#define MONITOR_START_TIMER	101
+#define MONITOR_TIMER				100
 
 // CMainFrame
 
@@ -174,7 +175,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CMFCToolBar::SetBasicCommands(lstBasicCommands);
 
-	SetTimer( MONITOR_TIMER, gclsLogInDlg.m_iPeriod * 1000, NULL );
+	SetTimer( MONITOR_START_TIMER, 500, NULL );
 
 	return 0;
 }
@@ -334,7 +335,14 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
-	if( nIDEvent == MONITOR_TIMER )
+	if( nIDEvent == MONITOR_START_TIMER )
+	{
+		KillTimer( MONITOR_START_TIMER );
+
+		gclsSocket.Execute();
+		SetTimer( MONITOR_TIMER, gclsLogInDlg.m_iPeriod * 1000, NULL );
+	}
+	else if( nIDEvent == MONITOR_TIMER )
 	{
 		gclsSocket.Execute();
 	}
