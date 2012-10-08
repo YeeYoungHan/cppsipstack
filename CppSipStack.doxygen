@@ -710,7 +710,8 @@ RECURSIVE              = YES
 # run.
 
 EXCLUDE                = C:/OpenProject/CppSipStack/trunk/Curio \
-                         c:/OpenProject/CppSipStack/trunk/Curio
+                         c:/OpenProject/CppSipStack/trunk/Curio \
+                         c:/OpenProject/CppSipStack/trunk/SimpleSipServer
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or 
 # directories that are symbolic links (a Unix file system feature) are excluded 

@@ -140,7 +140,8 @@ QUERY_START:
 
 /**
  * @brief INSERT SQL 문장을 실행하고 AUTO_INCREMENT 필드의 값을 저장한다.
- * @param pszSQL SQL 문장
+ * @param pszSQL	SQL 문장
+ * @param piId		AUTO_INCREMENT 로 생성된 정수 저장 변수
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool CMySQL::Insert( const char * pszSQL, uint64_t * piId )
