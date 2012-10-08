@@ -207,6 +207,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SetupDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -254,6 +258,10 @@
 			</File>
 			<File
 				RelativePath=".\Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SetupDlg.h"
 				>
 			</File>
 			<File
