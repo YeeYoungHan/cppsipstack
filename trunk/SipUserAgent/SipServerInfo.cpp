@@ -25,7 +25,7 @@
  * @ingroup SipUserAgent
  * @brief 생성자
  */
-CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_iLoginTimeout(3600), m_iNextSendTime(0), m_iSeqNo(0)
+CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_iLoginTimeout(3600), m_iNextSendTime(0), m_iSeqNo(0), m_bDelete(false)
 {
 	ClearLogin();
 }
@@ -36,6 +36,30 @@ CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_iLoginTimeout(3600), m_iNext
  */
 CSipServerInfo::~CSipServerInfo()
 {
+}
+
+/**
+ * @brief 동일한 IP-PBX 정보인지 검사한다.
+ * @param clsInfo IP-PBX 정보
+ * @returns 동일한 IP-PBX 정보이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipServerInfo::Equal( CSipServerInfo & clsInfo )
+{
+	if( !strcmp( clsInfo.m_strIp.c_str(), m_strIp.c_str() ) &&
+			!strcmp( clsInfo.m_strUserId.c_str(), m_strUserId.c_str() ) &&
+			clsInfo.m_iPort == m_iPort )
+	{
+		return true;
+	}
+
+	return false;
+}
+
+void CSipServerInfo::Update( CSipServerInfo & clsInfo )
+{
+	m_strDomain = clsInfo.m_strDomain;
+	m_strPassWord = clsInfo.m_strPassWord;
+	m_iLoginTimeout = clsInfo.m_iLoginTimeout;
 }
 
 /**

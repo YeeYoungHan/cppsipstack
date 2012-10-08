@@ -63,16 +63,88 @@ bool CSipUserAgent::InsertRegisterInfo( CSipServerInfo & clsInfo )
 		clsInfo.m_strDomain = clsInfo.m_strIp;
 	}
 
+	SIP_SERVER_INFO_LIST::iterator	it;
+	bool	bFound = false;
+
 	m_clsRegisterMutex.acquire();
-	m_clsRegisterList.push_back( clsInfo );
+	for( it = m_clsRegisterList.begin(); it != m_clsRegisterList.end(); ++it )
+	{
+		if( it->Equal( clsInfo ) )
+		{
+			bFound = true;
+			break;
+		}
+	}
+
+	if( bFound == false )
+	{
+		m_clsRegisterList.push_back( clsInfo );
+	}
 	m_clsRegisterMutex.release();
 
 	return true;
 }
 
+bool CSipUserAgent::UpdateRegisterInfo( CSipServerInfo & clsInfo )
+{
+	if( clsInfo.m_strIp.empty() ) return false;
+	if( clsInfo.m_strUserId.empty() ) return false;
+
+	SIP_SERVER_INFO_LIST::iterator	it;
+	bool	bRes = false;
+
+	m_clsRegisterMutex.acquire();
+	for( it = m_clsRegisterList.begin(); it != m_clsRegisterList.end(); ++it )
+	{
+		if( it->Equal( clsInfo ) )
+		{
+			bRes = true;
+			it->Update( clsInfo );
+			break;
+		}
+	}
+	m_clsRegisterMutex.release();
+
+	return bRes;
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief SIP 로그인 정보를 삭제한다.
+ * @param clsInfo clsInfo SIP 로그인 정보 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipUserAgent::DeleteRegisterInfo( CSipServerInfo & clsInfo )
 {
-	return true;
+	if( clsInfo.m_strIp.empty() ) return false;
+	if( clsInfo.m_strUserId.empty() ) return false;
+
+	SIP_SERVER_INFO_LIST::iterator	it;
+	bool	bRes = false;
+
+	m_clsRegisterMutex.acquire();
+	for( it = m_clsRegisterList.begin(); it != m_clsRegisterList.end(); ++it )
+	{
+		if( it->Equal( clsInfo ) )
+		{
+			bRes = true;
+
+			if( it->m_iLoginTimeout == 0 )
+			{
+				m_clsRegisterList.erase( it );
+			}
+			else
+			{
+				it->m_bDelete = true;
+				it->m_iLoginTimeout = 0;
+			}
+
+			break;
+		}
+	}
+	m_clsRegisterMutex.release();
+
+	return bRes;
 }
 
 /**

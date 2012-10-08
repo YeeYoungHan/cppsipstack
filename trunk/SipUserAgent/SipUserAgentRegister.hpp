@@ -49,6 +49,11 @@ bool CSipUserAgent::RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessa
 				}
 
 				if( m_pclsCallBack ) m_pclsCallBack->EventRegister( &(*itSL), iStatusCode );
+
+				if( itSL->m_iLoginTimeout == 0 && itSL->m_bDelete )
+				{
+					m_clsRegisterList.erase( itSL );
+				}
 			}
 			else if( iStatusCode == SIP_UNAUTHORIZED || iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
 			{

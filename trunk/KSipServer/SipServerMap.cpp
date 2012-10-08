@@ -112,7 +112,17 @@ bool CSipServerMap::Load( )
 	}
 #endif
 
-	// QQQ: 추가/수정/삭제된 IP-PBX 정보를 SipUserAgent 에 전달한다.
+	SIP_SERVER_MAP::iterator	itMap;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		if( itMap->second.m_iFlag == FLAG_NULL )
+		{
+			itMap->second.m_iFlag = FLAG_DELETE;
+		}
+	}
+	m_clsMutex.release();
 
 	return bRes;
 }
@@ -131,13 +141,6 @@ bool CSipServerMap::ReadDir( const char * pszDirName )
 	std::string		strFileName;
 
 	if( CDirectory::FileList( pszDirName, clsFileList ) == false ) return false;
-
-	m_clsMutex.acquire();
-	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
-	{
-		itMap->second.m_iFlag = FLAG_NULL;
-	}
-	m_clsMutex.release();
 
 	for( itFL = clsFileList.begin(); itFL != clsFileList.end(); ++itFL )
 	{
@@ -163,14 +166,32 @@ bool CSipServerMap::ReadDir( const char * pszDirName )
  */
 bool CSipServerMap::SetSipUserAgentRegisterInfo( )
 {
-	SIP_SERVER_MAP::iterator	itMap;
+	SIP_SERVER_MAP::iterator	itMap, itNext;
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
+LOOP_START:
 		if( itMap->second.m_iFlag == FLAG_INSERT )
 		{
 			gclsUserAgent.InsertRegisterInfo( itMap->second );
+		}
+		else if( itMap->second.m_iFlag == FLAG_UPDATE )
+		{
+			gclsUserAgent.UpdateRegisterInfo( itMap->second );
+		}
+		else if( itMap->second.m_iFlag == FLAG_DELETE )
+		{
+			gclsUserAgent.DeleteRegisterInfo( itMap->second );
+
+			itNext = itMap;
+			++itNext;
+
+			m_clsMap.erase( itMap );
+			if( itNext == m_clsMap.end() ) break;
+			
+			itMap = itNext;
+			goto LOOP_START;
 		}
 	}
 	m_clsMutex.release();
@@ -264,6 +285,9 @@ void CSipServerMap::GetKey( CXmlSipServer & clsXmlSipServer, std::string & strKe
 	strKey.append( clsXmlSipServer.m_strUserId );
 }
 
+/**
+ * @brief 모든 SIP 서버 정보 상태값을 초기화시킨다.
+ */
 void CSipServerMap::ReSetFlag( )
 {
 	SIP_SERVER_MAP::iterator	itMap;
@@ -316,6 +340,12 @@ bool CSipServerMap::Insert( CXmlSipServer & clsXmlSipServer )
 	return true;
 }
 
+/**
+ * @brief IP-PBX 라우팅 정보를 저장한다.
+ * @param pszName					IP-PBX 이름
+ * @param clsRoutePrefix	라우팅 정보
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipServerMap::InsertRoutePrefix( const char * pszName, CRoutePrefix & clsRoutePrefix )
 {
 	SIP_SERVER_MAP::iterator	itMap;
@@ -335,6 +365,10 @@ bool CSipServerMap::InsertRoutePrefix( const char * pszName, CRoutePrefix & clsR
 	return bRes;
 }
 
+/**
+ * @brief 자료구조 모니터링을 위한 문자열을 가져온다.
+ * @param strBuf 자료구조 모니터링을 위한 문자열 저장 변수
+ */
 void CSipServerMap::GetString( std::string & strBuf )
 {
 	SIP_SERVER_MAP::iterator	itMap;

@@ -159,6 +159,12 @@ int ServerMain( )
 			gclsUserMap.SendOptions( );
 		}
 
+		if( iSecond % 60 == 0 )
+		{
+			gclsSipServerMap.Load();
+			gclsSipServerMap.SetSipUserAgentRegisterInfo();
+		}
+
 		if( iSecond == 3600 )
 		{
 			iSecond = 0;

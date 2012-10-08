@@ -19,9 +19,12 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.07"
+#define KSIP_SERVER_VERSION	"0.08"
 
 /* 버전 정보 
+
+= 버전 0.08 ( 2012년 10월 08일 ) =
+ * 1분 간격으로 추가/수정/삭제된 IP-PBX 정보를 자료구조에 반영하는 기능을 추가함.
 
 = 버전 0.07 ( 2012년 09월 22일 ) =
  * RTP relay 기능으로 Blind Transfer 가 성공한 후, ReINVITE 전송시 SDP 에 RTP 포트를 잘 못 저장하는 버그를 패치함.
