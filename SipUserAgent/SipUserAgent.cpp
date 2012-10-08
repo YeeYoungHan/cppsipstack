@@ -53,7 +53,7 @@ CSipUserAgent::~CSipUserAgent()
  * @param clsInfo SIP 로그인 정보 저장 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CSipUserAgent::AddRegisterInfo( CSipServerInfo & clsInfo )
+bool CSipUserAgent::InsertRegisterInfo( CSipServerInfo & clsInfo )
 {
 	if( clsInfo.m_strIp.empty() ) return false;
 	if( clsInfo.m_strUserId.empty() ) return false;
@@ -67,6 +67,11 @@ bool CSipUserAgent::AddRegisterInfo( CSipServerInfo & clsInfo )
 	m_clsRegisterList.push_back( clsInfo );
 	m_clsRegisterMutex.release();
 
+	return true;
+}
+
+bool CSipUserAgent::DeleteRegisterInfo( CSipServerInfo & clsInfo )
+{
 	return true;
 }
 

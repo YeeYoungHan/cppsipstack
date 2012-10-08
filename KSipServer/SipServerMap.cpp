@@ -170,7 +170,7 @@ bool CSipServerMap::SetSipUserAgentRegisterInfo( )
 	{
 		if( itMap->second.m_iFlag == FLAG_INSERT )
 		{
-			gclsUserAgent.AddRegisterInfo( itMap->second );
+			gclsUserAgent.InsertRegisterInfo( itMap->second );
 		}
 	}
 	m_clsMutex.release();
