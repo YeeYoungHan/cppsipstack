@@ -78,12 +78,16 @@ BOOL CLogInDlg::OnInitDialog()
 	m_iPort = gclsSetup.GetInt( SSR_PORT, DEFAULT_PORT );
 	m_iPeriod = gclsSetup.GetInt( SSR_PERIOD, DEFAULT_PERIOD );
 
+	UpdateData( FALSE );
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
 void CLogInDlg::OnBnClickedOk()
 {
+	UpdateData( TRUE );
+
 	int iCurSel = m_clsIpList.GetCurSel();
 	if( iCurSel == LB_ERR )
 	{

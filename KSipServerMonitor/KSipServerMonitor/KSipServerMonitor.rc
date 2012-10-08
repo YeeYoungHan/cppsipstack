@@ -204,6 +204,8 @@ BEGIN
         MENUITEM "잘라내기(&T)\tCtrl+X",            ID_EDIT_CUT
         MENUITEM "복사(&C)\tCtrl+C",              ID_EDIT_COPY
         MENUITEM "붙여넣기(&P)\tCtrl+V",            ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "설정(&S)\tCtrl+S",              IDM_SETUP
     END
     POPUP "보기(&V)"
     BEGIN
@@ -315,6 +317,18 @@ BEGIN
     EDITTEXT        IDC_PERIOD,44,61,62,14,ES_AUTOHSCROLL
 END
 
+IDD_SETUP DIALOGEX 0, 0, 154, 82
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Setup"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "확인",IDOK,68,58,37,17
+    PUSHBUTTON      "취소",IDCANCEL,110,58,37,17
+    GROUPBOX        "",IDC_STATIC,7,7,140,39
+    LTEXT           "Period",IDC_STATIC,17,23,21,8
+    EDITTEXT        IDC_PERIOD,44,21,62,14,ES_AUTOHSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -377,6 +391,14 @@ BEGIN
         RIGHTMARGIN, 148
         TOPMARGIN, 7
         BOTTOMMARGIN, 112
+    END
+
+    IDD_SETUP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 147
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 75
     END
 END
 #endif    // APSTUDIO_INVOKED

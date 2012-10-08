@@ -23,6 +23,7 @@
 #include "LogInDlg.h"
 #include "TcpSocket.h"
 #include "Setup.h"
+#include "SetupDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -47,6 +48,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_OFF_2007_AQUA, &CMainFrame::OnUpdateApplicationLook)
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
+	ON_COMMAND(IDM_SETUP, &CMainFrame::OnSetup)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -345,4 +347,15 @@ void CMainFrame::OnDestroy()
 	CMDIFrameWndEx::OnDestroy();
 
 	gclsSetup.PutFile();
+}
+
+void CMainFrame::OnSetup()
+{
+	CSetupDlg	clsDlg;
+
+	if( clsDlg.DoModal() == IDOK )
+	{
+		KillTimer( MONITOR_TIMER );
+		SetTimer( MONITOR_TIMER, gclsLogInDlg.m_iPeriod * 1000, NULL );
+	}
 }
