@@ -159,6 +159,7 @@ bool CTcpSocket::Execute()
 
 	MONITOR_COMMAND_LIST::iterator	itList;
 	int		iPacketLen, n;
+	bool	bError = false;
 
 	m_clsMutex.Lock();
 	for( itList = m_clsCommandList.begin(); itList != m_clsCommandList.end(); ++itList )
@@ -170,6 +171,7 @@ bool CTcpSocket::Execute()
 		if( n != sizeof(iPacketLen) )
 		{
 			TRACE( "Send packet length error\n" );
+			bError = true;
 			break;
 		}
 
@@ -177,6 +179,7 @@ bool CTcpSocket::Execute()
 		if( n != itList->m_strCommand.length() )
 		{
 			TRACE( "Send packet command error\n" );
+			bError = true;
 			break;
 		}
 
@@ -185,6 +188,13 @@ bool CTcpSocket::Execute()
 		m_clsSendCommandList.push_back( *itList );
 	}
 	m_clsMutex.Unlock();
+
+	if( bError )
+	{
+		Close();
+		Create();
+		return false;
+	}
 
 	return true;
 }
