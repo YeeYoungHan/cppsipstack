@@ -56,7 +56,8 @@ public:
 	CSipUserAgent();
 	~CSipUserAgent();
 
-	bool AddRegisterInfo( CSipServerInfo & clsInfo );
+	bool InsertRegisterInfo( CSipServerInfo & clsInfo );
+	bool DeleteRegisterInfo( CSipServerInfo & clsInfo );
 
 	// 로그인 관련
 	bool Start( CSipStackSetup & clsSetup );
