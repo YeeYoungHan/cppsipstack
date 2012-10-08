@@ -1,7 +1,7 @@
 <SipServer>
-	<Ip>192.168.89.129</Ip>
+	<Ip>192.168.10.130</Ip>
 	<Port>5060</Port>
-	<Domain>192.168.89.129</Domain>
+	<Domain>192.168.10.130</Domain>
 	<UserId>1010</UserId>
 	<PassWord>1234</PassWord>
 	<LoginTimeout>300</LoginTimeout>

@@ -31,6 +31,8 @@ public:
 	CSipServerInfo();
 	~CSipServerInfo();
 
+	bool Equal( CSipServerInfo & clsInfo );
+	void Update( CSipServerInfo & clsInfo );
 	void ClearLogin();
 
 	/** SIP 서버의 IP 주소 */
@@ -57,6 +59,8 @@ public:
 	time_t				m_iNextSendTime;
 	CSipCallId		m_clsCallId;
 	int						m_iSeqNo;
+
+	bool					m_bDelete;
 
 	CSipMessage * CreateRegister( const CSipMessage * pclsResponse );
 	bool AddAuth( CSipMessage * pclsRequest, const CSipMessage * pclsResponse );

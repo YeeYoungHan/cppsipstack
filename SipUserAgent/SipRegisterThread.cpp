@@ -62,7 +62,7 @@ void * SipRegisterThread( void * lpParameter )
 			}
 			else
 			{
-				if( ( iTime - itList->m_iLoginTime ) > ( itList->m_iLoginTimeout / 2 ) )
+				if( ( ( iTime - itList->m_iLoginTime ) > ( itList->m_iLoginTimeout / 2 ) ) || itList->m_iLoginTimeout == 0 )
 				{
 					CSipMessage * pclsRequest = itList->CreateRegister( NULL );
 					if( pclsRequest )
