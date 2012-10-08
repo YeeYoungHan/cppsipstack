@@ -139,6 +139,7 @@ bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCal
  *				통화 연결되었으면 통화 종료 메시지를 전송한다.
  *				통화 수락인 경우 통화 거절 응답 메시지를 전송한다.
  * @param pszCallId SIP Call-ID
+ * @param iSipCode	통화 요청을 거절할 때에 전송할 SIP status code
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool CSipUserAgent::StopCall( const char * pszCallId, int iSipCode )
