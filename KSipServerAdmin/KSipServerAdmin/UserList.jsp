@@ -57,10 +57,13 @@
 		<td><%= clsRS.getString( 1 ) %></td>
 		<td align="center"><%= clsRS.getString( 2 ) %></td>
 		<td><%= clsRS.getString( 3 ) %></td>
-		<td><img src="img/update.png"></td>
+		<td><a href="UserUpdate.jsp?id=<%= clsRS.getString( 1 ) %>"><img src="img/update.png"></a></td>
 	</tr>
 <%			
 		}
+		
+		clsRS.close( );
+		clsStmt.close( );
 	}
 %>
 

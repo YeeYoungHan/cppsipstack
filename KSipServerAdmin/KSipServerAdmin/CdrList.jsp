@@ -91,6 +91,9 @@
 	</tr>
 <%			
 		}
+		
+		clsRS.close( );
+		clsStmt.close( );
 	}
 %>
 </body>
