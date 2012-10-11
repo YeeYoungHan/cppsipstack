@@ -3,13 +3,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>Menu</title>
+<title>CDR List</title>
 </head>
 <body>
-<b>KSipServerAdmin</b><br>
-<br>
-<a href="UserList.jsp" target="content">UserList</a><br>
-<a href="SipServerList.jsp" target="content">SipServerList</a><br>
-<a href="CdrList.jsp" target="content">CDR</a><br>
+<b>CDR List</b><br>
 </body>
 </html>

@@ -3,9 +3,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>사용자 리스트</title>
+<title>SipUserList</title>
 </head>
 <body>
+<b>SIP User List</b>
+
 
 </body>
 </html>
