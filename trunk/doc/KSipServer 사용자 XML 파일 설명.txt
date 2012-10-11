@@ -1,0 +1,42 @@
+KSipServer 에 로그인할 사용자 정보를 설정하는 XML 파일은 UserXml 폴더에 위치해 있다. KSipServer 에 로그인할 사용자 정보를 XML 파일에서 읽기 위해서는 SipServer.xml 에 아래와 같이 사용자 정보를 포함한 XML 파일들이 존재하는 폴더를 설정해 놓아야 한다.
+ 
+<XmlFolder> 
+  <User>c:\OpenProject\CppSipStack\trunk\KSipServer\UserXml</User> 
+  <SipServer>c:\OpenProject\CppSipStack\trunk\KSipServer\SipServerXml</SipServer>
+ </XmlFolder> 
+
+
+1. 기본 사용자 정보 설정 방법 
+
+UserXml 폴더에 위치한 1000.xml 파일의 내용은 다음과 같다. 
+
+<User> 
+        <Id>1000</Id> 
+        <PassWord>1234</PassWord> 
+</User> 
+
+기본적인 사용자 정보를 포함한 XML 파일로써 사용자 아이디와 비밀번호를 포함하고 있다. KSipServer 에서는 사용자 XML 파일 이름에서 사용자 아이디를 가져오므로 Id 컬럼은 파일 이름과 동일해야 한다.
+ 
+2. DND 기능 설정 방법 
+
+UserXml 폴더에 위치한 1002.xml 파일의 내용은 다음과 같다. 
+
+<User> 
+        <Id>1002</Id> 
+        <PassWord>1234</PassWord> 
+        <DND>true</DND> 
+</User> 
+
+DND 기능을 on 시킨 사용자 정보를 포함한 XML 파일이다. DND 는 Do Not Disturb 의 약자로써 전화 수신을 하지 않고 싶을 때에 사용하는 옵션이다. DND 항목에 true 가 입력되어 있으면 해당 사용자에게 호출한 전화는 KSipServer 에서 자동으로 종료시킨다.
+ 
+3. 착신전환 설정 방법 
+
+UserXml 폴더에 위치한 1003.xml 파일의 내용은 다음과 같다. 
+
+<User> 
+        <Id>1003</Id> 
+        <PassWord>1234</PassWord> 
+        <CallForward>1001</CallForward> 
+</User> 
+
+착신전환 기능을 on 시킨 사용자 정보를 포함한 XML 파일이다. CallForward 에 착신전환할 전화번호를 넣어주면 된다.

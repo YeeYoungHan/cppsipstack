@@ -1,0 +1,34 @@
+KSipServer 와 연동할 외부 IP-PBX 를 설정하는 XML 파일은 SipServerXml 폴더에 위치해 있다. KSipServer 에서 외부 IP-PBX 정보를 XML 파일에서 읽기 위해서는 SipServer.xml 에 아래와 같이 사용자 정보를 포함한 XML 파일들이 존재하는 폴더를 설정해 놓아야 한다.
+ 
+<XmlFolder> 
+  <User>c:\OpenProject\CppSipStack\trunk\KSipServer\UserXml</User> 
+  <SipServer>c:\OpenProject\CppSipStack\trunk\KSipServer\SipServerXml</SipServer>
+  </XmlFolder> 
+
+외부 IP-PBX 설정 XML 파일의 예제는 아래와 같다. 
+
+<SipServer> 
+        <Ip>192.168.10.130</Ip> 
+        <Port>5060</Port> 
+        <Domain>192.168.10.130</Domain> 
+        <UserId>1010</UserId> 
+        <PassWord>1234</PassWord> 
+        <LoginTimeout>300</LoginTimeout> 
+        <RoutePrefixList> 
+          <RoutePrefix DeletePrefix="true">0</RoutePrefix> 
+        </RoutePrefixList> 
+</SipServer> 
+
+위의 XML 의 각 항목에 대한 설명은 아래와 같다. 
+
+* Ip : IP-PBX 의 IP 주소 
+* Port : IP-PBX 의 포트 번호 
+* Domain : IP-PBX 의 도메인 주소 
+* UserId : IP-PBX 에 로그인 할 사용자 아이디 
+* PassWord : IP-PBX 의 로그인 비밀번호 
+* LoginTimeout : IP-PBX 에 다시 로그인하는 주기 ( 초단위 ) 
+* RoutePrefixList : 내부 IP 폰에서 수신자 전화번호의 prefix 를 이용하여서 라우팅할 외부 IP-PBX 를 결정하기 위한 리스트
+   - 01000 으로 수신되면 외부 IP-PBX 로 라우팅하고 prefix 는 삭제할 경우 아래와 같이 정의한다. 
+   <RoutePrefix DeletePrefix="true">0</RoutePrefix> 
+  - 01000 으로 수신되면 외부 IP-PBX 로 라우팅하고 prefix 를 삭제하지 않을 경우 아래와 같이 정의한다. 
+   <RoutePrefix DeletePrefix="false">0</RoutePrefix> 
