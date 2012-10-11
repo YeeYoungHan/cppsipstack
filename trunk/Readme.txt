@@ -46,6 +46,10 @@ C++ SIP stack 프로젝트
  * KSipServer
    - 한국형 SIP 서버 프로그램
 
+ * KSipServerAdmin
+   - KSipServer 가 사용하는 MySQL 데이터베이스와 연동하는 웹 프로그램
+   - KSipServer 관리자 웹 프로그램
+
  * KSipServerMonitor
    - KSipServer 자료구조 모니터링 프로그램
 
