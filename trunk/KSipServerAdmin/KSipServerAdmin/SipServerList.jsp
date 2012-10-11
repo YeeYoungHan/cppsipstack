@@ -67,6 +67,9 @@
 	</tr>
 <%			
 		}
+		
+		clsRS.close( );
+		clsStmt.close( );
 	}
 %>
 
