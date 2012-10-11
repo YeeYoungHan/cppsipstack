@@ -24,27 +24,40 @@
 <body>
 <b>SIP User List</b>
 <br><br>
-<table border=1 cellspacing=0 cellpadding=7 >
-	<tr>
+<table border=1 cellspacing=0 cellpadding=5>
+	<tr bgcolor="#ffcccc" >
 		<td width="100" align="center"><b>UserId</b></td>
 		<td width="40" align="center"><b>DND</b></td>
 		<td width="100" align="center"><b>CallForward</b></td>
+		<td width="70" align="center">&nbsp;</td>
 	</tr>
 <%
 	if( m_clsDbConn != null )
 	{
 		Statement clsStmt = m_clsDbConn.createStatement( );
-		String strSQL = "SELECT Id, DND, CallForward FROM sipuser";
+		String strSQL = "SELECT Id, DND, CallForward FROM sipuser ORDER BY Id";
 		
 		ResultSet clsRS = clsStmt.executeQuery( strSQL );
+		String strBgColor;
+		int	iRow = 0;
 		
 		while( clsRS.next() )
 		{
+			++iRow;
+			if( iRow % 2 == 0 )
+			{
+				strBgColor = "bgcolor=\"#ffeeee\"";
+			}
+			else
+			{
+				strBgColor = "";
+			}
 %>
-	<tr>
+	<tr <%= strBgColor %>>
 		<td><%= clsRS.getString( 1 ) %></td>
 		<td align="center"><%= clsRS.getString( 2 ) %></td>
 		<td><%= clsRS.getString( 3 ) %></td>
+		<td><img src="img/update.png"></td>
 	</tr>
 <%			
 		}
