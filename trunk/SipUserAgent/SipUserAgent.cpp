@@ -545,6 +545,11 @@ bool CSipUserAgent::SendNotify( const char * pszCallId, int iSipCode )
 	return bRes;
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief 자료구조 모니터링을 위한 문자열을 저장한다.
+ * @param strBuf 자료구조 모니터링을 위한 문자열 변수
+ */
 void CSipUserAgent::GetString( std::string & strBuf )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
