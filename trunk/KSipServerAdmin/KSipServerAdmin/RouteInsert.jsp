@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.util.*" %>
 <%@ include file="DbInfo.jsp" %>
 <%
 	Connection m_clsDbConn = null;
@@ -8,6 +9,7 @@
 	String m_strDeletePrefix = "";
 	String m_strErrorMsg = "";
 	String m_strMeta = "";
+	Vector<String> m_clsSipServerIdList = new Vector<String>();
 	
 	Class.forName("com.mysql.jdbc.Driver");
 		
@@ -45,6 +47,31 @@
 		{
 			e.printStackTrace( );
 			m_strErrorMsg = "DB Error - " + e.toString( );
+		}
+	}
+
+	if( m_strMeta.isEmpty( ) )
+	{
+		try
+		{
+			if( m_clsDbConn == null ) 
+			{
+				m_clsDbConn = DriverManager.getConnection( "jdbc:mysql://localhost/ksipserver", m_strDbUserId, m_strDbPassWord );
+			}
+			
+			String strSQL = "SELECT Id From sipserver ORDER BY Id ASC";
+			Statement clsStmt = m_clsDbConn.createStatement(  );
+			
+			ResultSet clsRS = clsStmt.executeQuery( strSQL );
+			while( clsRS.next( ) )
+			{
+				m_clsSipServerIdList.add( clsRS.getString( 1 ) );
+			}
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace( );
+			m_strErrorMsg = "DB Error - " + e.toString( );			
 		}
 	}
 	
@@ -85,7 +112,30 @@
 		<table border=1 cellspacing=0 cellpadding=5>
 			<tr>
 				<td width="100"><b>SipServerId</b></td>
-				<td width="400"><input type="text" name="id" value="<%= m_strId %>" ></td>
+				<td width="400">
+					<select name="id">
+<%
+	int iCount = m_clsSipServerIdList.size( );
+
+	for( int i = 0; i < iCount; ++i )
+	{
+		String strName = m_clsSipServerIdList.get( i );
+		out.print( "<option value=\"" );
+		out.print( strName );
+		out.print( "\"" );
+		
+		if( m_strId != null && m_strId.equals( strName ) )
+		{
+			out.print( " selected" );
+		}
+		
+		out.print( ">" );
+		out.print( strName );
+		out.println( "</option>");
+	}
+%>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td width="100"><b>Prefix</b></td>
