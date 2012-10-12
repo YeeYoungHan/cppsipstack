@@ -12,6 +12,7 @@
 	
 	if( request.getMethod( ).equals( "POST" ) )
 	{
+		// 사용자 추가 기능
 		try
 		{
 			m_strId = request.getParameter( "id" );

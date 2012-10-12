@@ -23,6 +23,7 @@
 			String strDelete = request.getParameter( "delete" );
 			if( strDelete.equals( "Y" ) )
 			{
+				// 사용자 삭제 기능
 				m_clsDbConn = DriverManager.getConnection( "jdbc:mysql://localhost/ksipserver", m_strDbUserId, m_strDbPassWord );
 				String strSQL = "DELETE FROM sipuser WHERE Id = ?";
 				PreparedStatement clsStmt = m_clsDbConn.prepareStatement( strSQL );
@@ -34,6 +35,7 @@
 			}
 			else
 			{
+				// 사용자 수정 기능
 				m_strPassWord = request.getParameter( "password" );
 				m_strDnd = request.getParameter( "dnd" );
 				m_strCallForward = request.getParameter( "callforward" );
@@ -66,6 +68,7 @@
 	}
 	else
 	{
+		// 사용자 수정을 위한 사용자 정보 보여주기 기능
 		try
 		{
 			m_clsDbConn = DriverManager.getConnection( "jdbc:mysql://localhost/ksipserver", m_strDbUserId, m_strDbPassWord );

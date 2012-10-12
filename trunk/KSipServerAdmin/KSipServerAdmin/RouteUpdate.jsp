@@ -3,14 +3,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>Menu</title>
+<title>Insert title here</title>
 </head>
 <body>
-<b>KSipServerAdmin</b><br>
-<br>
-<a href="UserList.jsp" target="content">UserList</a><br>
-<a href="SipServerList.jsp" target="content">SipServerList</a><br>
-<a href="RouteList.jsp" target="content">RouteList</a><br>
-<a href="CdrList.jsp" target="content">CDR</a><br>
+
 </body>
 </html>
