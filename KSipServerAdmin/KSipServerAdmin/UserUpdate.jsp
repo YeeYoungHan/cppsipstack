@@ -3,35 +3,33 @@
 <%@ include file="DbInfo.jsp" %>
 <%
 	Connection m_clsDbConn = null;
-	String m_strId = "";
+	String m_strId = request.getParameter( "id" );
 	String m_strPassWord = "";
 	String m_strDnd = "";
 	String m_strCallForward = "";
 	String m_strErrorMsg = "";
 	String m_strMeta = "";
 	
-	if( request.getMethod( ).equals( "POST" ) )
+	Class.forName("com.mysql.jdbc.Driver");
+	
+	if( m_strId.isEmpty(  ) )
+	{
+		m_strErrorMsg = "UserId is not found.";
+	}
+	else if( request.getMethod( ).equals( "POST" ) )
 	{
 		try
 		{
-			m_strId = request.getParameter( "id" );
 			m_strPassWord = request.getParameter( "password" );
 			m_strDnd = request.getParameter( "dnd" );
 			m_strCallForward = request.getParameter( "callforward" );
 			
-			if( m_strId.isEmpty( ) )
-			{
-				m_strErrorMsg = "please insert UserId.";
-			}
-			else if( m_strPassWord.isEmpty(  ) )
+			if( m_strPassWord.isEmpty(  ) )
 			{
 				m_strErrorMsg = "please insert Password.";
 			}
-			
-			if( m_strErrorMsg.isEmpty(  ) )
+			else
 			{
-				Class.forName("com.mysql.jdbc.Driver");
-				
 				m_clsDbConn = DriverManager.getConnection( "jdbc:mysql://localhost/ksipserver", m_strDbUserId, m_strDbPassWord );
 				String strSQL = "UPDATE sipuser SET PassWord = ?, DND = ?, CallForward = ? WHERE Id = ?";
 				PreparedStatement clsStmt = m_clsDbConn.prepareStatement( strSQL );
@@ -41,75 +39,47 @@
 				clsStmt.setString( 4, m_strId );
 				
 				clsStmt.executeUpdate( );
+				
+				m_strMeta = "<meta http-equiv=\"refresh\" content=\"0;url=UserList.jsp\">";
 			}			
 		}
 		catch( Exception e )
 		{
 			e.printStackTrace( );
 			m_strErrorMsg = "DB Error - " + e.toString( );
-		}
-		finally
-		{
-			try
-			{
-				if( m_clsDbConn != null ) m_clsDbConn.close();
-			}
-			catch( Exception e )
-			{
-				e.printStackTrace( );
-			}
-		}
-		
-		if( m_strErrorMsg.isEmpty(  ) )
-		{
-			m_strMeta = "<meta http-equiv=\"refresh\" content=\"0;url=UserList.jsp\">";
 		}
 	}
 	else
 	{
 		try
 		{
-			m_strId = request.getParameter( "id" );
+			m_clsDbConn = DriverManager.getConnection( "jdbc:mysql://localhost/ksipserver", m_strDbUserId, m_strDbPassWord );
+			String strSQL = "SELECT PassWord, DND, CallForward FROM sipuser WHERE Id = ?";
+			PreparedStatement clsStmt = m_clsDbConn.prepareStatement( strSQL );
+			clsStmt.setString( 1, m_strId );
 			
-			if( m_strId.isEmpty(  ) )
+			ResultSet clsRS = clsStmt.executeQuery( );
+			if( clsRS.next(  ) )
 			{
-				m_strErrorMsg = "UserId is not found.";
+				m_strPassWord = clsRS.getString( 1 );
+				m_strDnd = clsRS.getString( 2 );
+				m_strCallForward = clsRS.getString( 3 );
 			}
-			
-			if( m_strErrorMsg.isEmpty(  ) )
-			{
-				Class.forName("com.mysql.jdbc.Driver");
-				
-				m_clsDbConn = DriverManager.getConnection( "jdbc:mysql://localhost/ksipserver", m_strDbUserId, m_strDbPassWord );
-				String strSQL = "SELECT PassWord, DND, CallForward FROM sipuser WHERE Id = ?";
-				PreparedStatement clsStmt = m_clsDbConn.prepareStatement( strSQL );
-				clsStmt.setString( 1, m_strId );
-				
-				ResultSet clsRS = clsStmt.executeQuery( );
-				if( clsRS.next(  ) )
-				{
-					m_strPassWord = clsRS.getString( 1 );
-					m_strDnd = clsRS.getString( 2 );
-					m_strCallForward = clsRS.getString( 3 );
-				}
-			}			
 		}
 		catch( Exception e )
 		{
 			e.printStackTrace( );
 			m_strErrorMsg = "DB Error - " + e.toString( );
 		}
-		finally
-		{
-			try
-			{
-				if( m_clsDbConn != null ) m_clsDbConn.close();
-			}
-			catch( Exception e )
-			{
-				e.printStackTrace( );
-			}
-		}
+	}
+	
+	try
+	{
+		if( m_clsDbConn != null ) m_clsDbConn.close();
+	}
+	catch( Exception e )
+	{
+		e.printStackTrace( );
 	}
 	
 	String strDndCheck = "", strNdndCheck = "";
