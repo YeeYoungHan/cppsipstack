@@ -133,7 +133,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <%= m_strMeta %>
-<title>UserUpdate</title>
+<title>SipServerUpdate</title>
 <script>
 	function checkDelete()
 	{
