@@ -139,7 +139,7 @@
 				<td width="400"><input type="text" name="prefix" readonly="readonly" value="<%= m_strPrefix %>" ></td>
 			</tr>
 			<tr>
-				<td><b>DND</b></td>
+				<td><b>DeletePrefix</b></td>
 				<td>
 					<input type="radio" name="deleteprefix" value="Y" <%= strDeletePrefixCheck %>> Use delete prefix 
 					<input type="radio" name="deleteprefix" value="N" <%= strNoDeletePrefixCheck %>> Not use delete prefix
