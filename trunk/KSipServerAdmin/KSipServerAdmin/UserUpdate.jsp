@@ -20,28 +20,43 @@
 	{
 		try
 		{
-			m_strPassWord = request.getParameter( "password" );
-			m_strDnd = request.getParameter( "dnd" );
-			m_strCallForward = request.getParameter( "callforward" );
-			
-			if( m_strPassWord.isEmpty(  ) )
-			{
-				m_strErrorMsg = "please insert Password.";
-			}
-			else
+			String strDelete = request.getParameter( "delete" );
+			if( strDelete.equals( "Y" ) )
 			{
 				m_clsDbConn = DriverManager.getConnection( "jdbc:mysql://localhost/ksipserver", m_strDbUserId, m_strDbPassWord );
-				String strSQL = "UPDATE sipuser SET PassWord = ?, DND = ?, CallForward = ? WHERE Id = ?";
+				String strSQL = "DELETE FROM sipuser WHERE Id = ?";
 				PreparedStatement clsStmt = m_clsDbConn.prepareStatement( strSQL );
-				clsStmt.setString( 1, m_strPassWord );
-				clsStmt.setString( 2, m_strDnd );
-				clsStmt.setString( 3, m_strCallForward );
-				clsStmt.setString( 4, m_strId );
+				clsStmt.setString( 1, m_strId );
 				
 				clsStmt.executeUpdate( );
 				
 				m_strMeta = "<meta http-equiv=\"refresh\" content=\"0;url=UserList.jsp\">";
-			}			
+			}
+			else
+			{
+				m_strPassWord = request.getParameter( "password" );
+				m_strDnd = request.getParameter( "dnd" );
+				m_strCallForward = request.getParameter( "callforward" );
+				
+				if( m_strPassWord.isEmpty(  ) )
+				{
+					m_strErrorMsg = "please insert Password.";
+				}
+				else
+				{
+					m_clsDbConn = DriverManager.getConnection( "jdbc:mysql://localhost/ksipserver", m_strDbUserId, m_strDbPassWord );
+					String strSQL = "UPDATE sipuser SET PassWord = ?, DND = ?, CallForward = ? WHERE Id = ?";
+					PreparedStatement clsStmt = m_clsDbConn.prepareStatement( strSQL );
+					clsStmt.setString( 1, m_strPassWord );
+					clsStmt.setString( 2, m_strDnd );
+					clsStmt.setString( 3, m_strCallForward );
+					clsStmt.setString( 4, m_strId );
+					
+					clsStmt.executeUpdate( );
+					
+					m_strMeta = "<meta http-equiv=\"refresh\" content=\"0;url=UserList.jsp\">";
+				}
+			}
 		}
 		catch( Exception e )
 		{
@@ -99,14 +114,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <%= m_strMeta %>
 <title>UserUpdate</title>
+<script>
+	function checkDelete()
+	{
+		if( confirm( "Do you want to Delete <%= m_strId %> ?" ) )
+		{
+			document.user.delete.value = "Y";
+			document.user.submit();
+		}
+	}
+</script>
 </head>
 <body>
 <b>Update SIP User</b>
 <br><br>
 <font color=red><%= m_strErrorMsg %></font>
 <form name="user" method="post" action="UserUpdate.jsp">
+<input type="hidden" name="delete" value="N">
 <table>
-	<tr><td>
+	<tr><td colspan=2>
 		<table border=1 cellspacing=0 cellpadding=5>
 			<tr>
 				<td width="100"><b>UserId</b></td>
@@ -129,9 +155,14 @@
 			</tr>		
 		</table>
 	</td></tr>
-	<tr><td align="right">
-		<input type="submit" value="SAVE">&nbsp;&nbsp;<input type="button" value="BACK" onClick="history.go(-1)">
-	</td></tr>
+	<tr>
+		<td align="left">
+			<input type="button" value="DELETE" onClick="checkDelete()">
+		</td>
+		<td align="right">
+			<input type="submit" value="SAVE">&nbsp;&nbsp;<input type="button" value="BACK" onClick="history.go(-1)">
+		</td>
+	</tr>
 </table>	
 </form>
 </body>
