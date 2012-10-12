@@ -100,8 +100,8 @@
 			<tr>
 				<td><b>DND</b></td>
 				<td>
-					<input type="radio" name="dnd" value="Y" <%= strDndCheck %>> Use Do Not Disturb 
-					<input type="radio" name="dnd" value="N" <%= strNdndCheck %>> Not Use Do Not Disturb
+					<input type="radio" name="dnd" value="Y" <%= strDndCheck %>> Use do not disturb 
+					<input type="radio" name="dnd" value="N" <%= strNdndCheck %>> Not use do not disturb
 				</td>
 			</tr>
 			<tr>
