@@ -23,17 +23,23 @@
 </head>
 <body>
 <b>SIP Server List</b><br>
-<br>
-<table border=1 cellspacing=0 cellpadding=5>
-	<tr bgcolor="#ffcccc" >
-		<td width="100" align="center"><b>Id</b></td>
-		<td width="80" align="center"><b>IP</b></td>
-		<td width="50" align="center"><b>Port</b></td>
-		<td width="100" align="center"><b>Domain</b></td>
-		<td width="100" align="center"><b>UserId</b></td>
-		<td width="80" align="center"><b>Timeout</b></td>
-		<td width="70" align="center">&nbsp;</td>
-	</tr>
+
+<table>
+	<tr><td align="right">
+		<a href="SipServerInsert.jsp">AddSipServer</a>
+	</td></tr>
+	<tr><td>
+
+		<table border=1 cellspacing=0 cellpadding=5>
+			<tr bgcolor="#ffcccc" >
+				<td width="100" align="center"><b>Id</b></td>
+				<td width="80" align="center"><b>IP</b></td>
+				<td width="50" align="center"><b>Port</b></td>
+				<td width="100" align="center"><b>Domain</b></td>
+				<td width="100" align="center"><b>UserId</b></td>
+				<td width="80" align="center"><b>Timeout</b></td>
+				<td width="70" align="center">&nbsp;</td>
+			</tr>
 <%
 	if( m_clsDbConn != null )
 	{
@@ -56,15 +62,15 @@
 				strBgColor = "";
 			}
 %>
-	<tr <%= strBgColor %>>
-		<td><%= clsRS.getString( 1 ) %></td>
-		<td><%= clsRS.getString( 2 ) %></td>
-		<td align="center"><%= clsRS.getInt( 3 ) %></td>
-		<td><%= clsRS.getString( 4 ) %></td>
-		<td><%= clsRS.getString( 5 ) %></td>
-		<td align="center"><%= clsRS.getInt( 6 ) %></td>
-		<td><a href="SipServerUpdate.jsp?id=<%= clsRS.getString( 1 ) %>"><img src="img/update.png" border="0"></a></td>
-	</tr>
+			<tr <%= strBgColor %>>
+				<td><%= clsRS.getString( 1 ) %></td>
+				<td><%= clsRS.getString( 2 ) %></td>
+				<td align="center"><%= clsRS.getInt( 3 ) %></td>
+				<td><%= clsRS.getString( 4 ) %></td>
+				<td><%= clsRS.getString( 5 ) %></td>
+				<td align="center"><%= clsRS.getInt( 6 ) %></td>
+				<td><a href="SipServerUpdate.jsp?id=<%= clsRS.getString( 1 ) %>"><img src="img/update.png" border="0"></a></td>
+			</tr>
 <%			
 		}
 		
@@ -73,7 +79,10 @@
 	}
 %>
 
-</table>
+		</table>
+		
+	</td></tr>
+</table>		
 </body>
 </html>
 <%
