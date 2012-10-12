@@ -27,8 +27,7 @@
 			{
 				m_strErrorMsg = "please insert Password.";
 			}
-			
-			if( m_strErrorMsg.isEmpty(  ) )
+			else
 			{
 				Class.forName("com.mysql.jdbc.Driver");
 				
@@ -41,6 +40,8 @@
 				clsStmt.setString( 4, m_strCallForward );
 				
 				clsStmt.executeUpdate( );
+				
+				m_strMeta = "<meta http-equiv=\"refresh\" content=\"0;url=UserList.jsp\">";
 			}			
 		}
 		catch( Exception e )
@@ -58,11 +59,6 @@
 			{
 				e.printStackTrace( );
 			}
-		}
-		
-		if( m_strErrorMsg.isEmpty(  ) )
-		{
-			m_strMeta = "<meta http-equiv=\"refresh\" content=\"0;url=UserList.jsp\">";
 		}
 	}
 	
