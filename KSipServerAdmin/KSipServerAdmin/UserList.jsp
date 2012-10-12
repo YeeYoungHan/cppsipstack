@@ -23,14 +23,20 @@
 </head>
 <body>
 <b>SIP User List</b>
-<br><br>
-<table border=1 cellspacing=0 cellpadding=5>
-	<tr bgcolor="#ffcccc" >
-		<td width="100" align="center"><b>UserId</b></td>
-		<td width="40" align="center"><b>DND</b></td>
-		<td width="100" align="center"><b>CallForward</b></td>
-		<td width="70" align="center">&nbsp;</td>
-	</tr>
+<br>
+<table>
+	<tr><td align="right">
+		<a href="UserInsert.jsp">AddUser</a>
+	</td></tr>
+	<tr><td>
+
+	<table border=1 cellspacing=0 cellpadding=5>
+		<tr bgcolor="#ffcccc" >
+			<td width="100" align="center"><b>UserId</b></td>
+			<td width="40" align="center"><b>DND</b></td>
+			<td width="100" align="center"><b>CallForward</b></td>
+			<td width="70" align="center">&nbsp;</td>
+		</tr>
 <%
 	if( m_clsDbConn != null )
 	{
@@ -53,12 +59,12 @@
 				strBgColor = "";
 			}
 %>
-	<tr <%= strBgColor %>>
-		<td><%= clsRS.getString( 1 ) %></td>
-		<td align="center"><%= clsRS.getString( 2 ) %></td>
-		<td><%= clsRS.getString( 3 ) %></td>
-		<td><a href="UserUpdate.jsp?id=<%= clsRS.getString( 1 ) %>"><img src="img/update.png"></a></td>
-	</tr>
+		<tr <%= strBgColor %>>
+			<td><%= clsRS.getString( 1 ) %></td>
+			<td align="center"><%= clsRS.getString( 2 ) %></td>
+			<td><%= clsRS.getString( 3 ) %></td>
+			<td><a href="UserUpdate.jsp?id=<%= clsRS.getString( 1 ) %>"><img src="img/update.png" border=0></a></td>
+		</tr>
 <%			
 		}
 		
@@ -66,7 +72,10 @@
 		clsStmt.close( );
 	}
 %>
+	
+	</table>
 
+	</td></tr>
 </table>
 </body>
 </html>

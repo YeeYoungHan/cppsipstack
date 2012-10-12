@@ -63,7 +63,7 @@
 		<td><%= clsRS.getString( 4 ) %></td>
 		<td><%= clsRS.getString( 5 ) %></td>
 		<td align="center"><%= clsRS.getInt( 6 ) %></td>
-		<td><img src="img/update.png"></td>
+		<td><a href="SipServerUpdate.jsp?id=<%= clsRS.getString( 1 ) %>"><img src="img/update.png" border="0"></a></td>
 	</tr>
 <%			
 		}
