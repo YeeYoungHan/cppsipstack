@@ -63,7 +63,7 @@
 			<td><%= clsRS.getString( 1 ) %></td>
 			<td align="center"><%= clsRS.getString( 2 ) %></td>
 			<td align="center"><%= clsRS.getString( 3 ) %></td>
-			<td><a href="RouteUpdate.jsp?id=<%= clsRS.getString( 1 ) %>"><img src="img/update.png" border=0></a></td>
+			<td><a href="RouteUpdate.jsp?id=<%= clsRS.getString( 1 ) %>&prefix=<%= clsRS.getString( 2 ) %>"><img src="img/update.png" border=0></a></td>
 		</tr>
 <%			
 		}
