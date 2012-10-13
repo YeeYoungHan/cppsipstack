@@ -19,45 +19,20 @@
 
 		return "";
 	}
-	
-	public int GetInt( String strInput, int iDefaultValue )
-	{
-		if( strInput == null ) return iDefaultValue;
-		
-		return Integer.parseInt( strInput );
-	}
 %>
 <%@ include file="DbInfo.jsp" %>
 <%
-	int iPageRowNum = GetInt( request.getParameter( "rowcount" ), 30 );
-	int iPage = GetInt( request.getParameter( "page" ), 0 );
-	int iStartPos = 0;
-	int iRowCount = 0;
-
-	if( iPage > 0 )
-	{
-		--iPage;
-		iStartPos = iPage * iPageRowNum;
-	}
-	
 	Connection m_clsDbConn = null;
+	String m_strFrom = request.getParameter( "from" );
+	String m_strTo = request.getParameter( "to" );
+	String m_strCallId = request.getParameter( "callid" );
+	String m_strInviteTime = request.getParameter( "invitetime" );
 	
 	try
 	{
 		Class.forName("com.mysql.jdbc.Driver");
 		
 		m_clsDbConn = DriverManager.getConnection( "jdbc:mysql://localhost/ksipserver", m_strDbUserId, m_strDbPassWord );
-		Statement clsStmt = m_clsDbConn.createStatement( );
-		String strSQL = "SELECT count(*) FROM sipcdr";
-		
-		ResultSet clsRS = clsStmt.executeQuery( strSQL );
-		if( clsRS.next( ) )
-		{
-			iRowCount = clsRS.getInt( 1 );
-		}
-		
-		clsRS.close();
-		clsStmt.close( );
 	}
 	catch( Exception e )
 	{
@@ -93,11 +68,55 @@
 	if( m_clsDbConn != null )
 	{
 		String strSQL = "SELECT FromId, ToId, CallId, InviteTime, StartTime, EndTime, SipStatus "
-				+ "FROM sipcdr ORDER BY InviteTime DESC LIMIT ?,?";
+				+ "FROM sipcdr ";
+		int iWhereCount = 0;
+		
+		if( m_strFrom != null && m_strFrom.isEmpty( ) == false )
+		{
+			if( iWhereCount == 0 ) strSQL += "WHERE ";
+			else strSQL += "AND ";
+			
+			strSQL += "FromId = ? ";
+			++iWhereCount;
+		}
+		
+		if( m_strTo != null && m_strTo.isEmpty( ) == false )
+		{
+			if( iWhereCount == 0 ) strSQL += "WHERE ";
+			else strSQL += "AND ";
+			
+			strSQL += "ToId = ? ";
+			++iWhereCount;
+		}
+
+		if( m_strCallId != null && m_strCallId.isEmpty( ) == false )
+		{
+			if( iWhereCount == 0 ) strSQL += "WHERE ";
+			else strSQL += "AND ";
+			
+			strSQL += "CallId = ? ";
+			++iWhereCount;
+		}
+		
+		strSQL += "ORDER BY InviteTime DESC";
 		
 		PreparedStatement clsStmt = m_clsDbConn.prepareStatement( strSQL );
-		clsStmt.setInt( 1, iStartPos );
-		clsStmt.setInt( 2, iPageRowNum );
+		int iIndex = 0;
+		
+		if( m_strFrom != null && m_strFrom.isEmpty( ) == false )
+		{
+			clsStmt.setString( ++iIndex, m_strFrom );
+		}
+
+		if( m_strTo != null && m_strTo.isEmpty( ) == false )
+		{
+			clsStmt.setString( ++iIndex, m_strTo );
+		}
+
+		if( m_strCallId != null && m_strCallId.isEmpty( ) == false )
+		{
+			clsStmt.setString( ++iIndex, m_strCallId );
+		}		
 		
 		ResultSet clsRS = clsStmt.executeQuery( );
 		String strBgColor;
@@ -139,27 +158,6 @@
 </td></tr>
 
 <tr><td align="center">
-<%
-	if( iRowCount > iPageRowNum )
-	{
-		int iPageCount = iRowCount / iPageRowNum;
-		if( iRowCount % iPageRowNum > 0 ) ++iPageCount;
-		
-		for( int i = 0; i < iPageCount; ++i )
-		{
-			int iNum = i + 1;
-			
-			if( i == iPage )
-			{
-				out.println( "<b>" + iNum + "</b>&nbsp;" );
-			}
-			else
-			{
-				out.println( "<a href=\"CdrList.jsp?page=" + iNum + "\">" + iNum + "</a>&nbsp;" );
-			}
-		}
-	}
-%>
 </td></tr>
 
 </table>
