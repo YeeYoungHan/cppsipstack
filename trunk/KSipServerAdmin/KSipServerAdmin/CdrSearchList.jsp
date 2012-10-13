@@ -26,7 +26,8 @@
 	String m_strFrom = request.getParameter( "from" );
 	String m_strTo = request.getParameter( "to" );
 	String m_strCallId = request.getParameter( "callid" );
-	String m_strInviteTime = request.getParameter( "invitetime" );
+	String m_strInviteTimeStart = request.getParameter( "invitetimestart" );
+	String m_strInviteTimeEnd = request.getParameter( "invitetimeend" );
 	
 	try
 	{
@@ -98,6 +99,24 @@
 			++iWhereCount;
 		}
 		
+		if( m_strInviteTimeStart != null && m_strInviteTimeStart.isEmpty( ) == false )
+		{
+			if( iWhereCount == 0 ) strSQL += "WHERE ";
+			else strSQL += "AND ";
+			
+			strSQL += "InviteTime >= ? ";
+			++iWhereCount;			
+		}
+		
+		if( m_strInviteTimeEnd != null && m_strInviteTimeEnd.isEmpty( ) == false )
+		{
+			if( iWhereCount == 0 ) strSQL += "WHERE ";
+			else strSQL += "AND ";
+			
+			strSQL += "InviteTime <= ? ";
+			++iWhereCount;			
+		}		
+		
 		strSQL += "ORDER BY InviteTime DESC";
 		
 		PreparedStatement clsStmt = m_clsDbConn.prepareStatement( strSQL );
@@ -116,7 +135,17 @@
 		if( m_strCallId != null && m_strCallId.isEmpty( ) == false )
 		{
 			clsStmt.setString( ++iIndex, m_strCallId );
-		}		
+		}
+		
+		if( m_strInviteTimeStart != null && m_strInviteTimeStart.isEmpty( ) == false )
+		{
+			clsStmt.setString( ++iIndex, m_strInviteTimeStart );
+		}
+
+		if( m_strInviteTimeEnd != null && m_strInviteTimeEnd.isEmpty( ) == false )
+		{
+			clsStmt.setString( ++iIndex, m_strInviteTimeEnd );
+		}
 		
 		ResultSet clsRS = clsStmt.executeQuery( );
 		String strBgColor;

@@ -24,6 +24,10 @@
 				<td><b>CallId</b></td>
 				<td><input type="text" name="callid" ></td>
 			</tr>		
+			<tr>
+				<td><b>InviteTime</b></td>
+				<td><input type="text" name="invitetimestart" >&nbsp;~&nbsp;<input type="text" name="invitetimeend" ></td>
+			</tr>		
 		</table>
 	</td></tr>
 	<tr><td align="right">
