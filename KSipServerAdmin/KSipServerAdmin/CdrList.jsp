@@ -19,9 +19,27 @@
 
 		return "";
 	}
+	
+	public int GetInt( String strInput, int iDefaultValue )
+	{
+		if( strInput == null ) return iDefaultValue;
+		
+		return Integer.parseInt( strInput );
+	}
 %>
 <%@ include file="DbInfo.jsp" %>
 <%
+	int iPageRowNum = GetInt( request.getParameter( "rowcount" ), 30 );
+	int iPage = GetInt( request.getParameter( "page" ), 0 );
+	int iStartPos = 0;
+	int iRowCount = 0;
+
+	if( iPage > 0 )
+	{
+		--iPage;
+		iStartPos = iPage * iPageRowNum;
+	}
+	
 	Connection m_clsDbConn = null;
 	
 	try
@@ -29,6 +47,17 @@
 		Class.forName("com.mysql.jdbc.Driver");
 		
 		m_clsDbConn = DriverManager.getConnection( "jdbc:mysql://localhost/ksipserver", m_strDbUserId, m_strDbPassWord );
+		Statement clsStmt = m_clsDbConn.createStatement( );
+		String strSQL = "SELECT count(*) FROM sipcdr";
+		
+		ResultSet clsRS = clsStmt.executeQuery( strSQL );
+		if( clsRS.next( ) )
+		{
+			iRowCount = clsRS.getInt( 1 );
+		}
+		
+		clsRS.close();
+		clsStmt.close( );
 	}
 	catch( Exception e )
 	{
@@ -44,6 +73,9 @@
 <body>
 <b>CDR List</b><br>
 <br>
+<table>
+	<tr><td>
+
 <table border=1 cellspacing=0 cellpadding=5>
 	<tr bgcolor="#ffcccc" >
 		<td width="60" align="center"><b>From</b></td>
@@ -57,10 +89,14 @@
 <%
 	if( m_clsDbConn != null )
 	{
-		Statement clsStmt = m_clsDbConn.createStatement( );
-		String strSQL = "SELECT FromId, ToId, CallId, InviteTime, StartTime, EndTime, SipStatus FROM sipcdr ORDER BY InviteTime";
+		String strSQL = "SELECT FromId, ToId, CallId, InviteTime, StartTime, EndTime, SipStatus "
+				+ "FROM sipcdr ORDER BY InviteTime DESC LIMIT ?,?";
 		
-		ResultSet clsRS = clsStmt.executeQuery( strSQL );
+		PreparedStatement clsStmt = m_clsDbConn.prepareStatement( strSQL );
+		clsStmt.setInt( 1, iStartPos );
+		clsStmt.setInt( 2, iPageRowNum );
+		
+		ResultSet clsRS = clsStmt.executeQuery( );
 		String strBgColor;
 		int	iRow = 0;
 		
@@ -96,6 +132,35 @@
 		clsStmt.close( );
 	}
 %>
+</table>
+</td></tr>
+
+<tr><td align="center">
+<%
+	if( iRowCount > iPageRowNum )
+	{
+		int iPageCount = iRowCount / iPageRowNum;
+		if( iRowCount % iPageRowNum > 0 ) ++iPageCount;
+		
+		for( int i = 0; i < iPageCount; ++i )
+		{
+			int iNum = i + 1;
+			
+			if( i == iPage )
+			{
+				out.println( "<b>" + iNum + "</b>&nbsp;" );
+			}
+			else
+			{
+				out.println( "<a href=\"CdrList.jsp?page=" + iNum + "\">" + iNum + "</a>&nbsp;" );
+			}
+		}
+	}
+%>
+</td></tr>
+
+</table>
+
 </body>
 </html>
 <%
