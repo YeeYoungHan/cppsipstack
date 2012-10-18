@@ -41,11 +41,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipParser;../MySQL Server 5.0/include"
+				AdditionalIncludeDirectories="../SipParser;../XmlParser;../MySQL Server 5.0/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -173,6 +173,14 @@
 			>
 			<File
 				RelativePath=".\KSipServerLogAnalysis.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\LogAnalysisSetup.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\LogAnalysisSetup.h"
 				>
 			</File>
 			<File
