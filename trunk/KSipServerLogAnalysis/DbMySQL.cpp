@@ -48,16 +48,16 @@ bool CMySQL::Connect( const char * pszHost, const char * pszUserId, const char *
 	m_clsMutex.acquire();
 	if( mysql_init( &m_sttMySQL ) == NULL )
 	{
-		printf( "[ERROR] mysql_init error" );
+		printf( "[ERROR] mysql_init error\n" );
 	}
 	else if( mysql_real_connect( &m_sttMySQL, pszHost, pszUserId, pszPassWord, pszDbName, iPort, NULL, 0 ) == NULL )
 	{
-		printf( "[ERROR] mysql_real_connect error - %s", mysql_error( &m_sttMySQL ) );
+		printf( "[ERROR] mysql_real_connect error - %s\n", mysql_error( &m_sttMySQL ) );
 		mysql_close( &m_sttMySQL );
 	}
 	else
 	{
-		printf( "[ERROR] mysql_real_connect success" );
+		printf( "[ERROR] mysql_real_connect success\n" );
 		m_bConnected = true;
 
 		m_strDbHost = pszHost;
@@ -112,7 +112,7 @@ QUERY_START:
 			Close( false );
 			if( Connect( ) == false )
 			{
-				printf( "[ERROR] %s - db connection is closed and db connection error - %s", pszSQL, mysql_error( &m_sttMySQL ) );
+				printf( "[ERROR] %s - db connection is closed and db connection error - %s\n", pszSQL, mysql_error( &m_sttMySQL ) );
 			}
 			else
 			{
@@ -121,12 +121,12 @@ QUERY_START:
 		}
 		else
 		{
-			printf( "[ERROR] %s - %s", pszSQL, mysql_error( &m_sttMySQL ) );
+			printf( "[ERROR] %s - %s\n", pszSQL, mysql_error( &m_sttMySQL ) );
 		}
 	}
 	else
 	{
-		printf( "[ERROR] %s", pszSQL );
+		printf( "[ERROR] %s\n", pszSQL );
 		bRes = true;
 	}
 	m_clsMutex.release();
@@ -159,7 +159,7 @@ QUERY_START:
 			Close( false );
 			if( Connect( ) == false )
 			{
-				printf( "[ERROR] %s - db connection is closed and db connection error - %s", pszSQL, mysql_error( &m_sttMySQL ) );
+				printf( "[ERROR] %s - db connection is closed and db connection error - %s\n", pszSQL, mysql_error( &m_sttMySQL ) );
 			}
 			else
 			{
@@ -168,7 +168,7 @@ QUERY_START:
 		}
 		else
 		{
-			printf( "[ERROR] %s - %s", pszSQL, mysql_error( &m_sttMySQL ) );
+			printf( "[ERROR] %s - %s\n", pszSQL, mysql_error( &m_sttMySQL ) );
 		}
 	}
 	else
@@ -210,7 +210,7 @@ QUERY_START:
 			Close( false );
 			if( Connect( ) == false )
 			{
-				printf( "[ERROR] %s - db connection is closed and db connection error - %s", pszSQL, mysql_error( &m_sttMySQL ) );
+				printf( "[ERROR] %s - db connection is closed and db connection error - %s\n", pszSQL, mysql_error( &m_sttMySQL ) );
 			}
 			else
 			{
@@ -219,7 +219,7 @@ QUERY_START:
 		}
 		else
 		{
-			printf( "[ERROR] %s - %s", pszSQL, mysql_error( &m_sttMySQL ) );
+			printf( "[ERROR] %s - %s\n", pszSQL, mysql_error( &m_sttMySQL ) );
 		}
 	}
 	else
@@ -227,7 +227,7 @@ QUERY_START:
 		m_psttRes = mysql_use_result( &m_sttMySQL );
 		if( m_psttRes == NULL )
 		{
-			printf( "[ERROR] mysql_use_result - %s - %s", pszSQL, mysql_error( &m_sttMySQL ) );
+			printf( "[ERROR] mysql_use_result - %s - %s\n", pszSQL, mysql_error( &m_sttMySQL ) );
 		}
 
 		bRes = true;
@@ -257,7 +257,7 @@ QUERY_START:
 			Close( false );
 			if( Connect( ) == false )
 			{
-				printf( "[ERROR] %s - db connection is closed and db connection error - %s", pszSQL, mysql_error( &m_sttMySQL ) );
+				printf( "[ERROR] %s - db connection is closed and db connection error - %s\n", pszSQL, mysql_error( &m_sttMySQL ) );
 			}
 			else
 			{
@@ -266,7 +266,7 @@ QUERY_START:
 		}
 		else
 		{
-			printf( "[ERROR] %s - %s", pszSQL, mysql_error( &m_sttMySQL ) );
+			printf( "[ERROR] %s - %s\n", pszSQL, mysql_error( &m_sttMySQL ) );
 		}
 	}
 	else
@@ -274,7 +274,7 @@ QUERY_START:
 		MYSQL_RES * psttRes = mysql_use_result( &m_sttMySQL );
 		if( psttRes == NULL )
 		{
-			printf( "[ERROR] mysql_use_result - %s - %s", pszSQL, mysql_error( &m_sttMySQL ) );
+			printf( "[ERROR] mysql_use_result - %s - %s\n", pszSQL, mysql_error( &m_sttMySQL ) );
 		}
 		else
 		{
@@ -342,16 +342,16 @@ bool CMySQL::Connect( )
 
 	if( mysql_init( &m_sttMySQL ) == NULL )
 	{
-		printf( "[ERROR] mysql_init error" );
+		printf( "[ERROR] mysql_init error\n" );
 	}
 	else if( mysql_real_connect( &m_sttMySQL, m_strDbHost.c_str(), m_strDbUserId.c_str(), m_strDbPassWord.c_str(), m_strDbName.c_str(), 0, NULL, 0 ) == NULL )
 	{
-		printf( "[ERROR] mysql_real_connect error - %s", mysql_error( &m_sttMySQL ) );
+		printf( "[ERROR] mysql_real_connect error - %s\n", mysql_error( &m_sttMySQL ) );
 		mysql_close( &m_sttMySQL );
 	}
 	else
 	{
-		printf( "[ERROR] mysql_real_connect success" );
+		printf( "[ERROR] mysql_real_connect success\n" );
 		m_bConnected = true;
 		bRes = true;
 	}
