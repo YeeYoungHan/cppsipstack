@@ -16,20 +16,42 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "LogAnalysisSetup.h"
+#ifndef _LOG_ANALYSIS_SETUP_H_
+#define _LOG_ANALYSIS_SETUP_H_
 
-int main( int argc, char * argv[] )
+#include <string>
+
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief KSipServerLogAnalysis 설정 파일의 내용을 저장하는 클래스
+ */
+class CLogAnalysisSetup
 {
-	if( argc != 2 )
-	{
-		printf( "[Usage] %s {setup xml filename}\n", argv[0] );
-		return -1;
-	}
+public:
+	CLogAnalysisSetup();
+	~CLogAnalysisSetup();
 
-	if( gclsSetup.Read( argv[1] ) == false )
-	{
-		return -1;
-	}
+	/** DB 서버 IP 주소 */
+	std::string	m_strDbHost;
 
-	return 0;
-}
+	/** DB 서버 접속 사용자 아이디 */
+	std::string m_strDbUserId;
+
+	/** DB 서버 접속 비밀번호 */
+	std::string m_strDbPassWord;
+
+	/** DB 서버 데이터베이스 이름 */
+	std::string m_strDbName;
+
+	/** DB 서버 포트 번호 */
+	int					m_iDbPort;
+
+	/** 로그 폴더 */
+	std::string	m_strLogFolder;
+
+	bool Read( const char * pszFileName );
+};
+
+extern CLogAnalysisSetup gclsSetup;
+
+#endif

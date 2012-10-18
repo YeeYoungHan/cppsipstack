@@ -50,6 +50,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XmlParser", "XmlParser\XmlParser.vcproj", "{AF551BC2-1AF3-419B-9B54-04C2EF4FAC72}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KSipServerLogAnalysis", "KSipServerLogAnalysis\KSipServerLogAnalysis.vcproj", "{7C158B38-6447-45BA-92AF-379CCF20EB01}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AF551BC2-1AF3-419B-9B54-04C2EF4FAC72} = {AF551BC2-1AF3-419B-9B54-04C2EF4FAC72}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
