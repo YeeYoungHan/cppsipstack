@@ -51,6 +51,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XmlParser", "XmlParser\XmlP
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KSipServerLogAnalysis", "KSipServerLogAnalysis\KSipServerLogAnalysis.vcproj", "{7C158B38-6447-45BA-92AF-379CCF20EB01}"
 	ProjectSection(ProjectDependencies) = postProject
+		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB} = {11E19CA3-F409-41E3-BD62-E1CEA134B7DB}
 		{AF551BC2-1AF3-419B-9B54-04C2EF4FAC72} = {AF551BC2-1AF3-419B-9B54-04C2EF4FAC72}
 	EndProjectSection
 EndProject
