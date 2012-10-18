@@ -19,8 +19,8 @@
 #include "SipParserDefine.h"
 #include "LogAnalysisSetup.h"
 #include "LogFile.h"
-#include "SipMessage.h"
 #include "DbMySQL.h"
+#include "StatsSipMethod.h"
 #include <time.h>
 
 void GetYesterday( std::string & strDate )
@@ -77,19 +77,30 @@ int main( int argc, char * argv[] )
 
 	strFileName.append( strDate );
 
-	
-
 	for( int i = 1; ; ++i )
 	{
 		snprintf( szFileName, sizeof(szFileName), "%s_%d.txt", strFileName.c_str(), i );
 
 		if( clsLogFile.Open( szFileName ) == false ) break;
 
+		memset( szPacket, 0, sizeof(szPacket) );
 		while( clsLogFile.ReadSip( &clsLogHeader, szPacket, sizeof(szPacket) ) )
 		{
-			CSipMessage clsMessage;
+			if( clsLogHeader.m_bSend == false )
+			{
+				CSipMessage clsMessage;
 
-			clsMessage.Parse( szPacket, (int)strlen(szPacket) );
+				if( clsMessage.Parse( szPacket, (int)strlen(szPacket) ) > 0 )
+				{
+					gclsStatsSipMethod.AddSipMessage( &clsMessage );
+				}
+				else
+				{
+					printf( "[ERROR] CSipMessage.Parse(%s)\n", szPacket );
+				}
+			}
+
+			memset( szPacket, 0, sizeof(szPacket) );
 		}
 
 		clsLogFile.Close();
