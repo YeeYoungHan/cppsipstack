@@ -80,7 +80,7 @@ int main( int argc, char * argv[] )
 		{
 			CSipMessage clsMessage;
 
-			clsMessage.Parse( szPacket, strlen(szPacket) );
+			clsMessage.Parse( szPacket, (int)strlen(szPacket) );
 		}
 
 		clsLogFile.Close();
