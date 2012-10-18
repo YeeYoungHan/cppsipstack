@@ -356,6 +356,14 @@
 		<Filter
 			Name="자료구조"
 			>
+			<File
+				RelativePath=".\StatsSipMethod.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\StatsSipMethod.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="DB"
