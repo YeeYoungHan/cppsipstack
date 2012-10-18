@@ -67,7 +67,7 @@ bool CLogFile::ReadSip( CLogHeader * psttLogHeader, char * pszBuf, int iBufSize 
 				if( iPos >= iBufSize ) return false;
 			}
 		}
-		else if( strstr( szTemp, "UdpSend" ) )
+		else if( strstr( szTemp, "Send" ) )
 		{
 			psttLogHeader->Clear();
 			psttLogHeader->m_bSend = true;
@@ -76,7 +76,7 @@ bool CLogFile::ReadSip( CLogHeader * psttLogHeader, char * pszBuf, int iBufSize 
 			if( SaveLogHeader( szTemp, psttLogHeader, pszBuf, iBufSize, iPos ) == false ) return false;
 			bStart = true;
 		}
-		else if( strstr( szTemp, "UdpRecv" ) )
+		else if( strstr( szTemp, "Recv" ) )
 		{
 			psttLogHeader->Clear();
 			psttLogHeader->m_bSend = false;
