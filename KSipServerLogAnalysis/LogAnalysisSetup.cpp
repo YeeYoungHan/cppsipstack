@@ -74,19 +74,19 @@ bool CLogAnalysisSetup::Read( const char * pszFileName )
 
 	if( m_strDbHost.empty() )
 	{
-		printf( "[ERROR] Db.Host data is not found" );
+		printf( "[ERROR] Db.Host data is not found\n" );
 		return false;
 	}
 
 	if( m_strDbUserId.empty() )
 	{
-		printf( "[ERROR] Db.UserId data is not found" );
+		printf( "[ERROR] Db.UserId data is not found\n" );
 		return false;
 	}
 
 	if( m_strDbName.empty() )
 	{
-		printf( "[ERROR] Db.DataBase data is not found" );
+		printf( "[ERROR] Db.DataBase data is not found\n" );
 		return false;
 	}
 

@@ -20,6 +20,7 @@
 #include "LogAnalysisSetup.h"
 #include "LogFile.h"
 #include "SipMessage.h"
+#include "DbMySQL.h"
 #include <time.h>
 
 void GetYesterday( std::string & strDate )
@@ -54,6 +55,12 @@ int main( int argc, char * argv[] )
 		return -1;
 	}
 
+	if( gclsWriteDB.Connect( gclsSetup.m_strDbHost.c_str(), gclsSetup.m_strDbUserId.c_str(), gclsSetup.m_strDbPassWord.c_str(), gclsSetup.m_strDbName.c_str(), gclsSetup.m_iDbPort ) == false )
+	{
+		printf( "[ERROR] MySQL DB is not connected\n" );
+		return -1;
+	}
+
 	std::string strDate, strFileName;
 	char	szFileName[1024], szPacket[4096];
 	CLogFile clsLogFile;
@@ -70,6 +77,8 @@ int main( int argc, char * argv[] )
 
 	strFileName.append( strDate );
 
+	
+
 	for( int i = 1; ; ++i )
 	{
 		snprintf( szFileName, sizeof(szFileName), "%s_%d.txt", strFileName.c_str(), i );
@@ -85,6 +94,8 @@ int main( int argc, char * argv[] )
 
 		clsLogFile.Close();
 	}
+
+	gclsWriteDB.Close();
 
 	return 0;
 }
