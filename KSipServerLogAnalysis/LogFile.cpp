@@ -68,7 +68,7 @@ bool CLogFile::ReadSip( CLogHeader * psttLogHeader, char * pszBuf, int iBufSize 
 
 				if( !strncmp( szTemp, "Call-ID: ", 9 ) )
 				{
-					iLen = strlen( szTemp + 9 );
+					iLen = (int)strlen( szTemp + 9 );
 					if( iLen > 2 )
 					{
 						psttLogHeader->m_strCallId.append( szTemp + 9, iLen - 2 );
@@ -182,7 +182,7 @@ bool CLogFile::SaveLogHeader( const char * pszTemp, CLogHeader * psttLogHeader, 
 
 void CLogFile::CheckLineEnd( char * pszTemp )
 {
-	int iLen = strlen( pszTemp );
+	int iLen = (int)strlen( pszTemp );
 
 	if( iLen >= 2 )
 	{
