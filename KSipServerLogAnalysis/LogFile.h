@@ -31,9 +31,6 @@ public:
 	char						m_szIp[16];
 	int							m_iPort;
 	bool						m_bSend;
-	std::string			m_strCallId;
-	int							m_iStatusCode;
-	bool						m_bBye;
 
 	void Clear();
 };

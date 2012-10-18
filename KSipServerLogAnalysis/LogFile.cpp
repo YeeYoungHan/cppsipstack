@@ -49,7 +49,7 @@ bool CLogFile::ReadSip( CLogHeader * psttLogHeader, char * pszBuf, int iBufSize 
 
 	char	szTemp[2048];
 	bool	bStart = false;
-	int		iPos = 0, iLen;
+	int		iPos = 0;
 
 	memset( szTemp, 0, sizeof(szTemp) );
 	while( fgets( szTemp, sizeof(szTemp), m_sttFd ) )
@@ -65,33 +65,12 @@ bool CLogFile::ReadSip( CLogHeader * psttLogHeader, char * pszBuf, int iBufSize 
 				CheckLineEnd( szTemp );
 				iPos += snprintf( pszBuf + iPos, iBufSize - iPos, "%s", szTemp );
 				if( iPos >= iBufSize ) return false;
-
-				if( !strncmp( szTemp, "Call-ID: ", 9 ) )
-				{
-					iLen = (int)strlen( szTemp + 9 );
-					if( iLen > 2 )
-					{
-						psttLogHeader->m_strCallId.append( szTemp + 9, iLen - 2 );
-					}
-				}
-				else if( !strncmp( szTemp, "CSeq: ", 6 ) )
-				{
-					std::string strTemp;
-
-					strTemp.append( szTemp + 6, iLen - 2 );
-					sscanf( strTemp.c_str(), "%*d %s", szTemp );
-					if( !strcmp( szTemp, "BYE" ) )
-					{
-						psttLogHeader->m_bBye = true;
-					}
-				}
 			}
 		}
 		else if( strstr( szTemp, "UdpSend" ) )
 		{
 			psttLogHeader->Clear();
 			psttLogHeader->m_bSend = true;
-			psttLogHeader->m_strCallId.clear();
 
 			CheckLineEnd( szTemp );
 			if( SaveLogHeader( szTemp, psttLogHeader, pszBuf, iBufSize, iPos ) == false ) return false;
@@ -101,7 +80,6 @@ bool CLogFile::ReadSip( CLogHeader * psttLogHeader, char * pszBuf, int iBufSize 
 		{
 			psttLogHeader->Clear();
 			psttLogHeader->m_bSend = false;
-			psttLogHeader->m_strCallId.clear();
 
 			CheckLineEnd( szTemp );
 			if( SaveLogHeader( szTemp, psttLogHeader, pszBuf, iBufSize, iPos ) == false ) return false;
@@ -140,10 +118,6 @@ bool CLogFile::SaveLogHeader( const char * pszTemp, CLogHeader * psttLogHeader, 
 			if( cType == 5 )
 			{
 				iPos = snprintf( pszBuf, iBufSize, "%s", pszTemp + i + 1 );
-				if( !strncmp( pszBuf, "SIP/2.0 ", 8 ) )
-				{
-					psttLogHeader->m_iStatusCode = atoi( pszBuf + 8 );
-				}
 				return true;
 			}
 		}

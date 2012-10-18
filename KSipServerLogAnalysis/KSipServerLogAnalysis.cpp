@@ -16,7 +16,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipParserDefine.h"
 #include "LogAnalysisSetup.h"
+#include "LogFile.h"
+#include "SipMessage.h"
+#include <time.h>
+
+void GetYesterday( std::string & strDate )
+{
+	struct tm	sttTm;
+	time_t	iTime;
+	char	szDate[9];
+
+	time( &iTime );
+	iTime -= 24 * 60 * 60;
+
+#ifdef WIN32
+	localtime_s( &sttTm, &iTime );
+#else
+	localtime_r( &iTime, &sttTm );	
+#endif
+
+	snprintf( szDate, sizeof(szDate), "%04d%02d%02d", sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday );
+	strDate = szDate;
+}
 
 int main( int argc, char * argv[] )
 {
@@ -29,6 +52,38 @@ int main( int argc, char * argv[] )
 	if( gclsSetup.Read( argv[1] ) == false )
 	{
 		return -1;
+	}
+
+	std::string strDate, strFileName;
+	char	szFileName[1024], szPacket[4096];
+	CLogFile clsLogFile;
+	CLogHeader clsLogHeader;
+
+	GetYesterday( strDate );
+	strFileName = gclsSetup.m_strLogFolder;
+
+#ifdef WIN32
+	strFileName.append( "\\" );
+#else
+	strFileName.append( "/" );
+#endif
+
+	strFileName.append( strDate );
+
+	for( int i = 1; ; ++i )
+	{
+		snprintf( szFileName, sizeof(szFileName), "%s_%d.txt", strFileName.c_str(), i );
+
+		if( clsLogFile.Open( szFileName ) == false ) break;
+
+		while( clsLogFile.ReadSip( &clsLogHeader, szPacket, sizeof(szPacket) ) )
+		{
+			CSipMessage clsMessage;
+
+			clsMessage.Parse( szPacket, strlen(szPacket) );
+		}
+
+		clsLogFile.Close();
 	}
 
 	return 0;
