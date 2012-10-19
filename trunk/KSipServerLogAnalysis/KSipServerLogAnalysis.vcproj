@@ -364,6 +364,22 @@
 				RelativePath=".\StatsSipMethod.h"
 				>
 			</File>
+			<File
+				RelativePath=".\StatsSipMethodIp.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\StatsSipMethodIp.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StatsSipMethodUserAgent.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\StatsSipMethodUserAgent.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="DB"
