@@ -57,7 +57,6 @@ bool CMySQL::Connect( const char * pszHost, const char * pszUserId, const char *
 	}
 	else
 	{
-		printf( "[ERROR] mysql_real_connect success\n" );
 		m_bConnected = true;
 
 		m_strDbHost = pszHost;
@@ -126,7 +125,6 @@ QUERY_START:
 	}
 	else
 	{
-		printf( "[ERROR] %s\n", pszSQL );
 		bRes = true;
 	}
 	m_clsMutex.release();

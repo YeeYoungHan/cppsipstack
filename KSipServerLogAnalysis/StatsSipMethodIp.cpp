@@ -16,43 +16,55 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "StatsSipMethod.h"
+#include "StatsSipMethodIp.h"
 #include "DbMySQL.h"
 
-CStatsSipMethod gclsStatsSipMethod;
+CStatsSipMethodIp gclsStatsSipMethodIp;
 
-CStatsSipMethod::CStatsSipMethod()
+CStatsSipMethodIp::CStatsSipMethodIp()
 {
 }
 
-CStatsSipMethod::~CStatsSipMethod()
+CStatsSipMethodIp::~CStatsSipMethodIp()
 {
 }
 
-void CStatsSipMethod::AddSipMessage( CSipMessage * pclsMessage )
+void CStatsSipMethodIp::AddSipMessage( CSipMessage * pclsMessage, const char * pszIp )
 {
-	STATS_SIP_METHOD_MAP::iterator	itMap;
+	STATS_SIP_METHOD_MAP_IP::iterator	itMap;
 
-	itMap = m_clsMap.find( pclsMessage->m_strSipMethod );
+	std::string	strKey;
+
+	strKey = pclsMessage->m_strSipMethod;
+	strKey.append( "_" );
+	strKey.append( pszIp );
+
+	itMap = m_clsMap.find( strKey );
 	if( itMap == m_clsMap.end() )
 	{
-		m_clsMap.insert( STATS_SIP_METHOD_MAP::value_type( pclsMessage->m_strSipMethod, 1 ) );
+		CIp clsIp;
+
+		clsIp.m_strMethod = pclsMessage->m_strSipMethod;
+		clsIp.m_strIp = pszIp;
+		clsIp.m_iCount = 1;
+
+		m_clsMap.insert( STATS_SIP_METHOD_MAP_IP::value_type( strKey, clsIp ) );
 	}
 	else
 	{
-		++itMap->second;
+		++itMap->second.m_iCount;
 	}
 }
 
-void CStatsSipMethod::SaveDB( const char * pszDate )
+void CStatsSipMethodIp::SaveDB( const char * pszDate )
 {
-	STATS_SIP_METHOD_MAP::iterator	itMap;
+	STATS_SIP_METHOD_MAP_IP::iterator	itMap;
 	char	szSQL[255];
 
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
-		snprintf( szSQL, sizeof(szSQL), "INSERT INTO StatsMethod( Date, Method, Count ) VALUES( '%s', '%s', %llu )"
-			, pszDate, itMap->first.c_str(), itMap->second );
+		snprintf( szSQL, sizeof(szSQL), "INSERT INTO StatsMethodIp( Date, Method, Ip, Count ) VALUES( '%s', '%s', '%s', %llu )"
+			, pszDate, itMap->second.m_strMethod.c_str(), itMap->second.m_strIp.c_str(), itMap->second.m_iCount );
 		gclsWriteDB.Execute( szSQL );
 	}
 }

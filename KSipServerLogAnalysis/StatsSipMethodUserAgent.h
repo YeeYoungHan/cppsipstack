@@ -16,28 +16,36 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _STATS_SIP_METHOD_H_
-#define _STATS_SIP_METHOD_H_
+#ifndef _STATS_SIP_METHOD_USER_AGENT_H_
+#define _STATS_SIP_METHOD_USER_AGENT_H_
 
 #include "SipParserDefine.h"
 #include "SipMessage.h"
 #include <map>
 
-typedef std::map< std::string, uint64_t > STATS_SIP_METHOD_MAP;
-
-class CStatsSipMethod
+class CUserAgent
 {
 public:
-	CStatsSipMethod();
-	~CStatsSipMethod();
+	std::string	m_strMethod;
+	std::string	m_strUserAgent;
+	uint64_t		m_iCount;
+};
+
+typedef std::map< std::string, CUserAgent > STATS_SIP_METHOD_USER_AGENT_MAP;
+
+class CStatsSipMethodUserAgent
+{
+public:
+	CStatsSipMethodUserAgent();
+	~CStatsSipMethodUserAgent();
 
 	void AddSipMessage( CSipMessage * pclsMessage );
 	void SaveDB( const char * pszDate );
 
 private:
-	STATS_SIP_METHOD_MAP m_clsMap;
+	STATS_SIP_METHOD_USER_AGENT_MAP m_clsMap;
 };
 
-extern CStatsSipMethod gclsStatsSipMethod;
+extern CStatsSipMethodUserAgent gclsStatsSipMethodUserAgent;
 
 #endif

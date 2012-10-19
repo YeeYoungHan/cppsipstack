@@ -21,6 +21,8 @@
 #include "LogFile.h"
 #include "DbMySQL.h"
 #include "StatsSipMethod.h"
+#include "StatsSipMethodIp.h"
+#include "StatsSipMethodUserAgent.h"
 #include <time.h>
 
 void GetYesterday( std::string & strDate )
@@ -93,6 +95,8 @@ int main( int argc, char * argv[] )
 				if( clsMessage.Parse( szPacket, (int)strlen(szPacket) ) > 0 )
 				{
 					gclsStatsSipMethod.AddSipMessage( &clsMessage );
+					gclsStatsSipMethodIp.AddSipMessage( &clsMessage, clsLogHeader.m_szIp );
+					gclsStatsSipMethodUserAgent.AddSipMessage( &clsMessage );
 				}
 				else
 				{
@@ -105,6 +109,10 @@ int main( int argc, char * argv[] )
 
 		clsLogFile.Close();
 	}
+
+	gclsStatsSipMethod.SaveDB( strDate.c_str() );
+	gclsStatsSipMethodIp.SaveDB( strDate.c_str() );
+	gclsStatsSipMethodUserAgent.SaveDB( strDate.c_str() );
 
 	gclsWriteDB.Close();
 
