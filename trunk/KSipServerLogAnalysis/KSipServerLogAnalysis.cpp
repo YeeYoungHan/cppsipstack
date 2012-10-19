@@ -24,6 +24,7 @@
 #include "StatsSipMethodIp.h"
 #include "StatsSipMethodUserAgent.h"
 #include <time.h>
+#include "Version.h"
 
 void GetYesterday( std::string & strDate )
 {
@@ -48,6 +49,7 @@ int main( int argc, char * argv[] )
 {
 	if( argc != 2 )
 	{
+		printf( "%s (version - %s)\n", argv[0], PROGRAM_VERSION );
 		printf( "[Usage] %s {setup xml filename}\n", argv[0] );
 		return -1;
 	}
