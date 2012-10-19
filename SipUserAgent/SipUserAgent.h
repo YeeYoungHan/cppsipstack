@@ -68,6 +68,8 @@ public:
 	bool StartCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId );
 	bool StopCall( const char * pszCallId, int iSipCode = 0 );
 	bool AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp );
+
+	bool SendSms( const char * pszFrom, const char * pszTo, const char * pszText, CSipCallRoute * pclsRoute );
 	
 	// IP-PBX 에서 사용되는 통화 관련 메소드
 	CSipMessage * DeleteIncomingCall( const char * pszCallId );
@@ -104,6 +106,8 @@ private:
 	bool RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage );
 
 	bool RecvReferRequest( int iThreadId, CSipMessage * pclsMessage );
+
+	bool RecvMessageRequest( int iThreadId, CSipMessage * pclsMessage );
 
 	bool SendInvite( CSipDialog & clsDialog );
 	bool SetCallEnd( const char * pszCallId );

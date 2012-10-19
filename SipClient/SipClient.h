@@ -45,6 +45,7 @@ public:
 	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
 	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer );
 	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId );
+	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage ){ return true; };
 	virtual void EventTimer( ){};
 
 	virtual void SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort );

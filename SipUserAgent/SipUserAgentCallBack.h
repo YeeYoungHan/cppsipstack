@@ -142,6 +142,15 @@ public:
 
 	/**
    * @ingroup SipUserAgent
+	 * @brief SIP MESSAGE 수신 이벤트 핸들러
+	 * @param pszFrom		SIP From 사용자 아이디
+	 * @param pszTo			SIP To 사용자 아이디
+	 * @param pclsMessage	SIP 메시지
+	 */
+	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage ) = 0;
+
+	/**
+   * @ingroup SipUserAgent
 	 * @brief 1초 단위로 실행되는 타이머 이벤트 핸들러
 	 */
 	virtual void EventTimer( ) = 0;
