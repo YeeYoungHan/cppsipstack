@@ -61,7 +61,7 @@ bool SipServerFetchRow( void * pclsData, MYSQL_ROW & sttRow )
 
 /**
  * @ingroup KSipServer
- * @brief 
+ * @brief RoutePrefix 테이블에서 읽은 하나의 row 를 처리한다.
  * @param pclsData 
  * @param sttRow 
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -81,6 +81,11 @@ bool RoutePrefixFetchRow( void * pclsData, MYSQL_ROW & sttRow )
 }
 #endif
 
+/**
+ * @ingroup KSipServer
+ * @brief XML 파일 또는 MySQL 에서 IP-PBX 정보를 읽는다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipServerMap::Load( )
 {
 	bool	bRes = false;

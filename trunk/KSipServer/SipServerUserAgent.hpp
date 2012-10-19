@@ -511,6 +511,18 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 	return true;
 }
 
+bool CSipServer::EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage )
+{
+	CUserInfo		clsUserInfo;
+
+	if( gclsUserMap.Select( pszTo, clsUserInfo ) == false ) return false;
+
+	
+
+
+	return true;
+}
+
 /**
  * @ingroup KSipServer
  * @brief 1초 단위로 실행되는 타이머 이벤트 핸들러
