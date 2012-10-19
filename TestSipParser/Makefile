@@ -19,7 +19,8 @@ all: TestSipParser.exe
 SRV_OBJ=TestSipFrom.o TestSipMessage.o TestSipUri.o TestSipVia.o \
 	TestSdp.o \
 	TestXml.o \
-	TestSipParser.o
+	TestSipParser.o \
+	TestInt.o
 
 TestSipParser.exe: $(SRV_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)
