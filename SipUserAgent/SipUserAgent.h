@@ -116,9 +116,15 @@ private:
 	bool SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * pclsRtp );
 	bool GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsRtp );
 
+	int GetSeqNum( );
+
 	/** SIP Dialog ¸Ê */
 	SIP_DIALOG_MAP			m_clsMap;
 	CSipMutex						m_clsMutex;
+
+	/** */
+	int									m_iSeq;
+	CSipMutex						m_clsOtherMutex;
 };
 
 extern CSipStack	gclsSipStack;

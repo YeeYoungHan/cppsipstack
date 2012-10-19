@@ -40,7 +40,7 @@ CSipStack	gclsSipStack;
  * @ingroup SipUserAgent
  * @brief »ý¼ºÀÚ
  */
-CSipUserAgent::CSipUserAgent() : m_pclsCallBack(NULL)
+CSipUserAgent::CSipUserAgent() : m_pclsCallBack(NULL), m_iSeq(0)
 {
 }
 
@@ -530,4 +530,21 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 	}
 
 	return false;
+}
+
+int CSipUserAgent::GetSeqNum( )
+{
+	int iSeq;
+
+	m_clsOtherMutex.acquire();
+	++m_iSeq;
+	if( m_iSeq > 1000000000 )
+	{
+		m_iSeq = 1;
+	}
+
+	iSeq = m_iSeq;
+	m_clsOtherMutex.release();
+
+	return iSeq;
 }

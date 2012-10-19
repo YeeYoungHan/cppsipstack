@@ -511,16 +511,25 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief SIP MESSAGE 메시지 수신 이벤트 핸들러
+ * @param pszFrom			발신자 아이디
+ * @param pszTo				수신자 아이디
+ * @param pclsMessage 수신된 SIP 메시지
+ * @returns 
+ */
 bool CSipServer::EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage )
 {
 	CUserInfo		clsUserInfo;
+	CSipCallRoute	clsRoute;
 
 	if( gclsUserMap.Select( pszTo, clsUserInfo ) == false ) return false;
 
-	
+	clsRoute.m_strDestIp = clsUserInfo.m_strIp;
+	clsRoute.m_iDestPort = clsUserInfo.m_iPort;
 
-
-	return true;
+	return gclsUserAgent.SendSms( pszFrom, pszTo, pclsMessage->m_strBody.c_str(), &clsRoute );
 }
 
 /**
