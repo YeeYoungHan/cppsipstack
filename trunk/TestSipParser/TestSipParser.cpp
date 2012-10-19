@@ -29,6 +29,7 @@ bool TestSipVia();
 bool TestSipMessage();
 bool TestSdp();
 bool TestXml();
+bool TestInt();
 
 /**
  * @ingroup TestSipParser
@@ -39,6 +40,7 @@ bool TestXml();
  */
 int main( int argc, char * argv[] )
 {
+	if( TestInt() == false ) goto FUNC_END;
 	if( TestSipUri() == false ) goto FUNC_END;
 	if( TestSipFrom() == false ) goto FUNC_END;
 	if( TestSipVia() == false ) goto FUNC_END;
