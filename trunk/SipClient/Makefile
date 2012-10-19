@@ -18,7 +18,7 @@ LIB=-L../SipUserAgent -lsipuseragent \
 
 all: SipClient.exe
 
-SRV_OBJ=SipClient.o
+SRV_OBJ=SipClient.o SipClientMain.o
 
 SipClient.exe: $(SRV_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)
