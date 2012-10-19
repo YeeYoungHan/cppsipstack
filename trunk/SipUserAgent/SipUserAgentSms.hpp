@@ -1,4 +1,20 @@
-
+/* 
+ * Copyright (C) 2012 Yee Young Han <websearch@naver.com> (http://blog.naver.com/websearch)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
 
 bool CSipUserAgent::SendSms( const char * pszFrom, const char * pszTo, const char * pszText, CSipCallRoute * pclsRoute )
 {
@@ -13,8 +29,17 @@ bool CSipUserAgent::SendSms( const char * pszFrom, const char * pszTo, const cha
 
 	pclsRequest->m_clsTo.m_clsUri.Set( "sip", pszTo, gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort );
 
-	pclsRequest->m_clsCSeq.m_iDigit = 1;
+	pclsRequest->m_clsCSeq.m_iDigit = GetSeqNum();
 	pclsRequest->m_clsCSeq.m_strMethod = pclsRequest->m_strSipMethod;
+
+	pclsRequest->AddRoute( pclsRoute->m_strDestIp.c_str(), pclsRoute->m_iDestPort );
+	pclsRequest->m_clsCallId.Make( gclsSipStack.m_clsSetup.m_strLocalIp.c_str() );
+
+	pclsRequest->m_clsContentType.Set( "text", "plain" );
+	pclsRequest->m_strBody = pszText;
+	pclsRequest->m_iContentLength = pclsRequest->m_strBody.length();
+
+	if( gclsSipStack.SendSipMessage( pclsRequest ) == false ) return false;
 
 	return true;
 }

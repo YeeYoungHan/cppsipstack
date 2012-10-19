@@ -327,10 +327,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SipUserAgentBye.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\SipUserAgentCall.hpp"
 				>
 			</File>
@@ -339,27 +335,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SipUserAgentCancel.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SipUserAgentInvite.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SipUserAgentMessage.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\SipUserAgentPbx.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SipUserAgentRefer.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SipUserAgentRegister.hpp"
 				>
 			</File>
 			<File
@@ -392,6 +368,34 @@
 			</File>
 			<File
 				RelativePath=".\TimeString.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="UserAgentSip"
+			>
+			<File
+				RelativePath=".\SipUserAgentBye.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUserAgentCancel.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUserAgentInvite.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUserAgentMessage.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUserAgentRefer.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUserAgentRegister.hpp"
 				>
 			</File>
 		</Filter>
