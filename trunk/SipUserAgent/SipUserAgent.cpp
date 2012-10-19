@@ -895,14 +895,17 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 		clsRtp.m_iPort = itMedia->m_iPort;
 
 		SDP_FMT_LIST::iterator itFmt;
-		
+		int iCodec = -1;
+
 		for( itFmt = itMedia->m_clsFmtList.begin(); itFmt != itMedia->m_clsFmtList.end(); ++itFmt )
 		{
-			clsRtp.m_iCodec = atoi( itFmt->c_str() );
-			if( clsRtp.m_iCodec == 0 )
+			iCodec = atoi( itFmt->c_str() );
+			if( clsRtp.m_iCodec == -1 )
 			{
-				break;
+				clsRtp.m_iCodec = iCodec;
 			}
+
+			clsRtp.m_clsCodecList.push_back( iCodec );
 		}
 
 		clsRtp.m_eDirection = E_RTP_SEND_RECV;

@@ -81,6 +81,8 @@ public:
 	/** 코덱 */
 	int					m_iCodec;
 
+	CODEC_LIST	m_clsCodecList;
+
 	/** SIP 요청 메시지에 저장될 Request Uri */
 	std::string	m_strContactUri;
 
