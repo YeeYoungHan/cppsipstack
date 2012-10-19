@@ -34,6 +34,8 @@ enum ERtpDirection
 	E_RTP_INACTIVE
 };
 
+typedef std::list< int > CODEC_LIST;
+
 /**
  * @ingroup SipUserAgent
  * @brief RTP 정보 저장 클래스
@@ -48,6 +50,7 @@ public:
 	int					m_iPort;
 	int					m_iCodec;
 	ERtpDirection	m_eDirection;
+	CODEC_LIST	m_clsCodecList;
 };
 
 /**
