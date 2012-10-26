@@ -26,6 +26,12 @@ static CSipMutex gclsMutex;
 static int	giTag;
 static int	giBranch;
 static int	giCallId;
+static std::string gstrSystemId;
+
+void SipSetSystemId( const char * pszId )
+{
+	gstrSystemId = pszId;
+}
 
 #ifdef WIN32
 #include <sys/timeb.h>
@@ -95,7 +101,14 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 
 	gettimeofday( &sttTime, NULL );
 
-	snprintf( pszBranch, iBranchSize, "%s-WCSS-%d-%d-%d", VIA_PREFIX, iBranch, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
+	if( gstrSystemId.empty() )
+	{
+		snprintf( pszBranch, iBranchSize, "%sWCSS%d-%d-%d", VIA_PREFIX, iBranch, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
+	}
+	else
+	{
+		snprintf( pszBranch, iBranchSize, "%sWCSS%s%d-%d-%d", VIA_PREFIX, gstrSystemId.c_str(), iBranch, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
+	}
 }
 
 /**
@@ -124,5 +137,12 @@ void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 	iCallId = giCallId;
 	gclsMutex.release();
 
-	snprintf( pszCallId, iCallIdSize, "WCSS-%d-%d-%d", iCallId, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
+	if( gstrSystemId.empty() )
+	{
+		snprintf( pszCallId, iCallIdSize, "WCSS%d-%d-%d", iCallId, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
+	}
+	else
+	{
+		snprintf( pszCallId, iCallIdSize, "WCSS%s%d-%d-%d", gstrSystemId.c_str(), iCallId, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
+	}
 }

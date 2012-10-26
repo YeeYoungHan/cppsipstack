@@ -19,6 +19,7 @@
 #ifndef _SIP_UTILITY_H_
 #define _SIP_UTILITY_H_
 
+void SipSetSystemId( const char * pszId );
 void SipMakeTag( char * pszTag, int iTagSize );
 void SipMakeBranch( char * pszBranch, int iBranchSize );
 void SipMakeCallIdName( char * pszCallId, int iCallIdSize );

@@ -18,6 +18,8 @@
 
 #include "SipStackDefine.h"
 #include "SipStackSetup.h"
+#include "SipMd5.h"
+#include "SipUtility.h"
 
 /**
  * @ingroup SipStack
@@ -52,10 +54,15 @@ bool CSipStackSetup::Check( )
 		m_strUserAgent.append( SIP_USER_AGENT );
 	}
 
-	char	szTemp[101];
+	char	szTemp[101], szMd5[33];
+	struct timeval sttTime;
+	
+	gettimeofday( &sttTime, NULL );
 
-	snprintf( szTemp, sizeof(szTemp), "%s:%d", m_strLocalIp.c_str(), m_iLocalUdpPort );
+	snprintf( szTemp, sizeof(szTemp), "%s:%d:%d:%d", m_strLocalIp.c_str(), m_iLocalUdpPort, sttTime.tv_sec, sttTime.tv_usec );
+	SipMd5String( szTemp, szMd5 );
 
+	SipSetSystemId( szMd5 );
 
 	return true;
 }
