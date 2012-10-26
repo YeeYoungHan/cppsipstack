@@ -351,14 +351,6 @@
 			Name="Utility"
 			>
 			<File
-				RelativePath=".\Md5.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Md5.h"
-				>
-			</File>
-			<File
 				RelativePath=".\StringUtility.cpp"
 				>
 			</File>

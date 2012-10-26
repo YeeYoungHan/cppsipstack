@@ -24,7 +24,7 @@
 
 #include <time.h>
 #include "NonceMap.h"
-#include "Md5.h"
+#include "SipMd5.h"
 
 CNonceMap	gclsNonceMap;
 
@@ -65,7 +65,7 @@ bool CNonceMap::GetNewValue( char * pszNonce, int iNonceSize )
 			, (unsigned int)sttTime.tv_sec
 			, (unsigned int)sttTime.tv_usec, PRIVATE_KEY );
 #endif
-		Md5String( szNonce, szMd5 );
+		SipMd5String( szNonce, szMd5 );
 		snprintf( szNonce, sizeof(szNonce), "%s", szMd5 );
 	
 		m_clsMutex.acquire();

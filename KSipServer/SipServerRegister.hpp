@@ -84,15 +84,15 @@ bool CheckAuthorizationResponse( const char * pszUserName
 	char	szA1[301], szA2[201], szMd5[33], szResponse[201];
 	
 	snprintf( szA1, sizeof(szA1), "%s:%s:%s", pszUserName, pszRealm, pszPassWord );
-	Md5String( szA1, szMd5 );
+	SipMd5String( szA1, szMd5 );
 	snprintf( szA1, sizeof(szA1), "%s", szMd5 );
 	
 	snprintf( szA2, sizeof(szA2), "%s:%s", pszMethod, pszUri );
-	Md5String( szA2, szMd5 );
+	SipMd5String( szA2, szMd5 );
 	snprintf( szA2, sizeof(szA2), "%s", szMd5 );
 	
 	snprintf( szResponse, sizeof(szResponse), "%s:%s:%s", szA1, pszNonce, szA2 );
-	Md5String( szResponse, szMd5 );
+	SipMd5String( szResponse, szMd5 );
 	snprintf( szResponse, sizeof(szResponse), "%s", szMd5 );
 	
 	if( strcmp( szResponse, pszResponse ) )

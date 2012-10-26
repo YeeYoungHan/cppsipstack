@@ -19,7 +19,7 @@
 #include "SipUserAgent.h"
 #include "SipServerInfo.h"
 #include "SipUtility.h"
-#include "Md5.h"
+#include "SipMd5.h"
 
 /**
  * @ingroup SipUserAgent
@@ -167,16 +167,16 @@ bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, const CSipMessage * pcl
 		clsCredential.m_strCnonce = "1";
 
 		snprintf( szA1, sizeof(szA1), "%s:%s:%s", clsCredential.m_strUserName.c_str(), clsCredential.m_strRealm.c_str(), m_strPassWord.c_str() );
-		Md5String( szA1, szMd5 );
+		SipMd5String( szA1, szMd5 );
 		snprintf( szA1, sizeof(szA1), "%s", szMd5 );
 		
 		snprintf( szA2, sizeof(szA2), "%s:%s", pclsRequest->m_strSipMethod.c_str(), clsCredential.m_strUri.c_str() );
-		Md5String( szA2, szMd5 );
+		SipMd5String( szA2, szMd5 );
 		snprintf( szA2, sizeof(szA2), "%s", szMd5 );
 		
 		snprintf( szResponse, sizeof(szResponse), "%s:%s:%s:%s:%s:%s", szA1, clsCredential.m_strNonce.c_str(), clsCredential.m_strNonceCount.c_str()
 			, clsCredential.m_strCnonce.c_str(), clsCredential.m_strQop.c_str(), szA2 );
-		Md5String( szResponse, szMd5 );
+		SipMd5String( szResponse, szMd5 );
 		snprintf( szResponse, sizeof(szResponse), "%s", szMd5 );
 
 		clsCredential.m_strResponse = szMd5;
@@ -184,15 +184,15 @@ bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, const CSipMessage * pcl
 	else
 	{
 		snprintf( szA1, sizeof(szA1), "%s:%s:%s", clsCredential.m_strUserName.c_str(), clsCredential.m_strRealm.c_str(), m_strPassWord.c_str() );
-		Md5String( szA1, szMd5 );
+		SipMd5String( szA1, szMd5 );
 		snprintf( szA1, sizeof(szA1), "%s", szMd5 );
 		
 		snprintf( szA2, sizeof(szA2), "%s:%s", pclsRequest->m_strSipMethod.c_str(), clsCredential.m_strUri.c_str() );
-		Md5String( szA2, szMd5 );
+		SipMd5String( szA2, szMd5 );
 		snprintf( szA2, sizeof(szA2), "%s", szMd5 );
 		
 		snprintf( szResponse, sizeof(szResponse), "%s:%s:%s", szA1, clsCredential.m_strNonce.c_str(), szA2 );
-		Md5String( szResponse, szMd5 );
+		SipMd5String( szResponse, szMd5 );
 
 		clsCredential.m_strResponse = szMd5;
 	}
