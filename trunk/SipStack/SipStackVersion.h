@@ -25,6 +25,7 @@
 
 = 버전 0.05 ( 2012년 08월 21일 ) =
  * VIA branch 에 time 정보를 넣어서 SIP 메시지가 일치할 확률을 줄임.
+ * VIA branch 및 Call-Id 에 system unique string 을 넣는 기능을 추가함.
 
 = 버전 0.04 ( 2012년 08월 21일 ) =
  * SendSipMessage 메소드에서 SIP stack 에 CSipMessage 를 입력하지 못 하면 CSipMessage 를 삭제하도록 수정함.

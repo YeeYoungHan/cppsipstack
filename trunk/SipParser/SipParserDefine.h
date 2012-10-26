@@ -51,8 +51,8 @@ typedef char int8_t;
 
 #define SIP_MESSAGE_MAX_LEN		8192
 #define SIP_TAG_MAX_SIZE			21
-#define SIP_BRANCH_MAX_SIZE		51
-#define SIP_CALL_ID_NAME_MAX_SIZE	51
+#define SIP_BRANCH_MAX_SIZE		101
+#define SIP_CALL_ID_NAME_MAX_SIZE	101
 
 #define VIA_PREFIX						"z9hG4bK"
 #define VIA_PREFIX_LEN				7
