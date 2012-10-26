@@ -20,5 +20,6 @@
 #define _MD5_H_
 
 void SipMd5String( char * string, char result[33] );
+void SipMd5String16( char * string, char result[17] );
 
 #endif
