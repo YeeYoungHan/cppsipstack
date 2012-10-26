@@ -20,6 +20,7 @@
 #include "SipUtility.h"
 #include "SipMutex.h"
 #include <string>
+#include <time.h>
 
 static CSipMutex gclsMutex;
 static int	giTag;
@@ -77,6 +78,7 @@ void SipMakeTag( char * pszTag, int iTagSize )
 void SipMakeBranch( char * pszBranch, int iBranchSize )
 {
 	int		iBranch;
+	struct timeval sttTime;
 
 	gclsMutex.acquire();
 	if( giBranch <= 0 || giBranch > 2000000000 )
@@ -91,7 +93,9 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 	iBranch = giBranch;
 	gclsMutex.release();
 
-	snprintf( pszBranch, iBranchSize, "%s-WCSS-%d", VIA_PREFIX, iBranch );
+	gettimeofday( &sttTime, NULL );
+
+	snprintf( pszBranch, iBranchSize, "%s-WCSS-%d-%d-%d", VIA_PREFIX, iBranch, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
 }
 
 /**

@@ -342,6 +342,10 @@
 				RelativePath=".\SipUserAgentSms.hpp"
 				>
 			</File>
+			<File
+				RelativePath=".\SipUserAgentVersion.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Utility"
