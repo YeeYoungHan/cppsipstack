@@ -46,7 +46,7 @@ bool CSipUserAgent::SendSms( const char * pszFrom, const char * pszTo, const cha
 
 	pclsRequest->m_clsContentType.Set( "text", "plain" );
 	pclsRequest->m_strBody = pszText;
-	pclsRequest->m_iContentLength = pclsRequest->m_strBody.length();
+	pclsRequest->m_iContentLength = (int)pclsRequest->m_strBody.length();
 
 	if( gclsSipStack.SendSipMessage( pclsRequest ) == false ) return false;
 
