@@ -20,54 +20,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-static bool bInit = false;
-static char garrChar[64];
-
-void InitRandomString()
-{
-	if( bInit == false )
-	{
-		srand( (unsigned int)time(NULL) );
-
-		int i, iPos = 0;
-
-		for( i = 0; i < 26; ++i )
-		{
-			garrChar[iPos++] = 'a' + i;
-			garrChar[iPos++] = 'A' + i;
-		}
-
-		for( i = 0; i < 10; ++i )
-		{
-			garrChar[iPos++] = '0' + i;
-		}
-
-		garrChar[iPos++] = '_';
-		garrChar[iPos++] = '-';
-
-		bInit = true;
-	}
-}
-
-void GetRandomString( char * pszOutput, int iOutputSize )
-{
-	if( bInit == false )
-	{
-		InitRandomString();
-	}
-
-	for( int i = 0; i < iOutputSize; ++i )
-	{
-		unsigned short sRand = rand();
-
-		pszOutput[i++] = garrChar[ (sRand >> 8) & 63 ];
-		pszOutput[i] = garrChar[ (sRand & 0xFF) & 63 ];
-	}
-}
-
 int main( int argc, char * argv[] )
 {
-	InitRandomString();
+	// 동일한 초에 본 프로그램을 실행하면 동일한 값이 출력된다.
+	srand( (unsigned int)time(NULL) );
 
 	printf( "%d\n", rand() );
 	printf( "%d\n", rand() );
