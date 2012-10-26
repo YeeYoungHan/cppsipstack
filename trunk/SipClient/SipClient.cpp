@@ -152,6 +152,20 @@ bool CSipClient::EventBlindTransfer( const char * pszCallId, const char * pszRef
 	return false;
 }
 
+bool CSipClient::EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage )
+{
+	char	szContentType[255];
+
+	memset( szContentType, 0, sizeof(szContentType) );
+	pclsMessage->m_clsContentType.ToString( szContentType, sizeof(szContentType) );
+
+	printf( "EventMessage(%s,%s)\n", pszFrom, pszTo );
+	printf( "content-type[%s]\n", szContentType );
+	printf( "body[%s]\n", pclsMessage->m_strBody.c_str() );
+
+	return true;
+}
+
 void CSipClient::SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort )
 {
 	struct timeval sttTime;

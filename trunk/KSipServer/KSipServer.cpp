@@ -28,6 +28,7 @@
 #include "DbMySQL.h"
 #include "Directory.h"
 #include "KSipServerVersion.h"
+#include "SipUserAgentVersion.h"
 #include "ServerThread.h"
 #include <signal.h>
 
@@ -108,7 +109,10 @@ int ServerMain( )
 
 	clsSetup.m_iLocalUdpPort = gclsSetup.m_iUdpPort;
 	clsSetup.m_iUdpThreadCount = gclsSetup.m_iUdpThreadCount;
-	clsSetup.m_strUserAgent = "KSipServer";
+	clsSetup.m_strUserAgent = "KSipServer_";
+	clsSetup.m_strUserAgent.append( KSIP_SERVER_VERSION );
+	clsSetup.m_strUserAgent.append( "_" );
+	clsSetup.m_strUserAgent.append( SIP_USER_AGENT_VERSION );
 
 	Fork( true );
 	SetCoreDumpEnable();

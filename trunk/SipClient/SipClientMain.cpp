@@ -11,7 +11,7 @@ extern std::string	gstrInviteId;
  */
 int main( int argc, char * argv[] )
 {
-	if( argc != 4 )
+	if( argc < 4 )
 	{
 		printf( "[Usage] %s {sip server ip} {user id} {password}\n", argv[0] );
 		return 0;
@@ -20,6 +20,12 @@ int main( int argc, char * argv[] )
 	char * pszServerIp = argv[1];
 	char * pszUserId = argv[2];
 	char * pszPassWord = argv[3];
+	int iLocalPort = 10000;
+
+	if( argc >= 5 )
+	{
+		iLocalPort = atoi( argv[4] );
+	}
 	
 	CSipUserAgent clsUserAgent;
 	CSipServerInfo clsServerInfo;
@@ -35,7 +41,7 @@ int main( int argc, char * argv[] )
 	GetLocalIp( clsSetup.m_strLocalIp );
 
 	// 클라이언트가 SIP 통신에 사용할 포트 번호를 넣어 주세요.
-	clsSetup.m_iLocalUdpPort = 10000;
+	clsSetup.m_iLocalUdpPort = iLocalPort;
 
 	// UDP 수신 쓰레드의 기본 개수는 1개이다. 이를 수정하려면 CSipStackSetup.m_iUdpThreadCount 를 수정하면 된다.
 
@@ -93,6 +99,15 @@ int main( int argc, char * argv[] )
 			clsRtp.m_iCodec = 0;
 
 			clsUserAgent.AcceptCall( gstrInviteId.c_str(), &clsRtp );
+		}
+		else if( szCommand[0] == 'm' )
+		{
+			CSipCallRoute	clsRoute;
+
+			clsRoute.m_strDestIp = pszServerIp;
+			clsRoute.m_iDestPort = 5060;
+
+			clsUserAgent.SendSms( pszUserId, szCommand + 2, "hello", &clsRoute );
 		}
 	
 		memset( szCommand, 0, sizeof(szCommand) );

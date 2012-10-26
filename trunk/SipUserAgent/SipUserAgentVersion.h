@@ -16,23 +16,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_STACK_VERSION_H_
-#define _SIP_STACK_VERSION_H_
+#ifndef _SIP_USER_AGENT_VERSION_H_
+#define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_STACK_VERSION "0.05"
+#define SIP_USER_AGENT_VERSION "0.08"
 
 /* 버전 정보
 
-= 버전 0.05 ( 2012년 08월 21일 ) =
- * VIA branch 에 time 정보를 넣어서 SIP 메시지가 일치할 확률을 줄임.
-
-= 버전 0.04 ( 2012년 08월 21일 ) =
- * SendSipMessage 메소드에서 SIP stack 에 CSipMessage 를 입력하지 못 하면 CSipMessage 를 삭제하도록 수정함.
- * SendSipMessage 메소드 호출 실패시에 CSipMessage 를 삭제하는 코드를 제거함.
-
-= 버전 0.03 ( 2012년 08월 18일 ) =
- * UserAgent 헤더를 응용 프로그램에서 수정할 수 있는 기능을 추가함
- * SIP 메시지를 전송하기 전에 2번 SIP 메시지를 점검하는 기능을 1번만 점검하도록 수정함.
+= 버전 0.08 =
+ * SIP MESSAGE 전송/수신 기능을 추가함.
 
 */
 
