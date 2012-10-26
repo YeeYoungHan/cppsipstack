@@ -27,16 +27,41 @@ static int	giTag;
 static int	giBranch;
 static int	giCallId;
 static std::string gstrSystemId;
+static char garrChar[64];
 
 void SipSetSystemId( const char * pszId )
 {
 	gstrSystemId = pszId;
 }
 
+static void InitRandomString()
+{
+	struct timeval sttTime;
+
+	gettimeofday( &sttTime, NULL );
+	srand( sttTime.tv_sec * sttTime.tv_usec );
+
+	int i, iPos = 0;
+
+	for( i = 0; i < 26; ++i )
+	{
+		garrChar[iPos++] = 'a' + i;
+		garrChar[iPos++] = 'A' + i;
+	}
+
+	for( i = 0; i < 10; ++i )
+	{
+		garrChar[iPos++] = '0' + i;
+	}
+
+	garrChar[iPos++] = '_';
+	garrChar[iPos++] = '-';
+}
+
 #ifdef WIN32
 #include <sys/timeb.h>
 
-int gettimeofday(struct timeval *tv, struct timezone *tz)
+int gettimeofday( struct timeval *tv, struct timezone *tz )
 {
   struct _timeb timebuffer;
 
@@ -60,9 +85,14 @@ void SipMakeTag( char * pszTag, int iTagSize )
 	int		iTag;
 
 	gclsMutex.acquire();
+	if( garrChar[0] == '\0' )
+	{
+		InitRandomString();
+	}
+
 	if( giTag <= 0 || giTag > 2000000000 )
 	{
-		giTag = 1;
+		giTag = rand();
 	}
 	else
 	{
@@ -87,9 +117,14 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 	struct timeval sttTime;
 
 	gclsMutex.acquire();
+	if( garrChar[0] == '\0' )
+	{
+		InitRandomString();
+	}
+
 	if( giBranch <= 0 || giBranch > 2000000000 )
 	{
-		giBranch = 1;
+		giBranch = rand();
 	}
 	else
 	{
@@ -99,15 +134,30 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 	iBranch = giBranch;
 	gclsMutex.release();
 
+	int iLen = 0;
+
 	gettimeofday( &sttTime, NULL );
 
 	if( gstrSystemId.empty() )
 	{
-		snprintf( pszBranch, iBranchSize, "%sWCSS%d-%d-%d", VIA_PREFIX, iBranch, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
+		iLen = snprintf( pszBranch, iBranchSize, "%sWCSS%x", VIA_PREFIX, iBranch );
 	}
 	else
 	{
-		snprintf( pszBranch, iBranchSize, "%sWCSS%s%d-%d-%d", VIA_PREFIX, gstrSystemId.c_str(), iBranch, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
+		iLen = snprintf( pszBranch, iBranchSize, "%sWCSS%s%x", VIA_PREFIX, gstrSystemId.c_str(), iBranch );
+	}
+
+	if( iBranchSize > iLen + 8 )
+	{
+		pszBranch[iLen++] = garrChar[ ( sttTime.tv_sec >> 24 ) & 63 ];
+		pszBranch[iLen++] = garrChar[ ( sttTime.tv_sec >> 16 ) & 63 ];
+		pszBranch[iLen++] = garrChar[ ( sttTime.tv_sec >> 8 ) & 63 ];
+		pszBranch[iLen++] = garrChar[ ( sttTime.tv_sec & 0xFF ) & 63 ];
+		pszBranch[iLen++] = garrChar[ ( sttTime.tv_usec >> 24 ) & 63 ];
+		pszBranch[iLen++] = garrChar[ ( sttTime.tv_usec >> 16 ) & 63 ];
+		pszBranch[iLen++] = garrChar[ ( sttTime.tv_usec >> 8 ) & 63 ];
+		pszBranch[iLen++] = garrChar[ ( sttTime.tv_usec & 0xFF ) & 63 ];
+		pszBranch[iLen] = '\0';
 	}
 }
 
@@ -125,9 +175,14 @@ void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 	gettimeofday( &sttTime, NULL );
 
 	gclsMutex.acquire();
+	if( garrChar[0] == '\0' )
+	{
+		InitRandomString();
+	}
+
 	if( giCallId <= 0 || giCallId > 2000000000 )
 	{
-		giCallId = 1;
+		giCallId = rand();
 	}
 	else
 	{
@@ -137,12 +192,47 @@ void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 	iCallId = giCallId;
 	gclsMutex.release();
 
+	int iLen = 0;
+
 	if( gstrSystemId.empty() )
 	{
-		snprintf( pszCallId, iCallIdSize, "WCSS%d-%d-%d", iCallId, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
+		iLen = snprintf( pszCallId, iCallIdSize, "WCSS%x", iCallId );
 	}
 	else
 	{
-		snprintf( pszCallId, iCallIdSize, "WCSS%s%d-%d-%d", gstrSystemId.c_str(), iCallId, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
+		iLen = snprintf( pszCallId, iCallIdSize, "WCSS%s%x", gstrSystemId.c_str(), iCallId );
+	}
+
+	if( iCallIdSize > iLen + 8 )
+	{
+		pszCallId[iLen++] = garrChar[ ( sttTime.tv_sec >> 24 ) & 63 ];
+		pszCallId[iLen++] = garrChar[ ( sttTime.tv_sec >> 16 ) & 63 ];
+		pszCallId[iLen++] = garrChar[ ( sttTime.tv_sec >> 8 ) & 63 ];
+		pszCallId[iLen++] = garrChar[ ( sttTime.tv_sec & 0xFF ) & 63 ];
+		pszCallId[iLen++] = garrChar[ ( sttTime.tv_usec >> 24 ) & 63 ];
+		pszCallId[iLen++] = garrChar[ ( sttTime.tv_usec >> 16 ) & 63 ];
+		pszCallId[iLen++] = garrChar[ ( sttTime.tv_usec >> 8 ) & 63 ];
+		pszCallId[iLen++] = garrChar[ ( sttTime.tv_usec & 0xFF ) & 63 ];
+		pszCallId[iLen] = '\0';
+	}
+}
+
+/**
+ * @ingroup SipParser
+ * @brief 입력 문자열을 출력할 수 있는 64개의 문자들로 변환하여서 출력 문자열에 저장한다.
+ * @param pszInput		입력 문자열
+ * @param iInputSize	입력 문자열 크기
+ * @param pszOutput		출력 문자열
+ */
+void SipMakePrintString( const char * pszInput, int iInputSize, char * pszOutput )
+{
+	if( garrChar[0] == '\0' )
+	{
+		InitRandomString();
+	}
+
+	for( int i = 0; i < iInputSize; ++i )
+	{
+		pszOutput[i] = garrChar[ pszInput[i] & 63 ];
 	}
 }

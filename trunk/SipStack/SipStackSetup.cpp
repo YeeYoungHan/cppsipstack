@@ -54,13 +54,13 @@ bool CSipStackSetup::Check( )
 		m_strUserAgent.append( SIP_USER_AGENT );
 	}
 
-	char	szTemp[101], szMd5[33];
+	char	szTemp[101], szMd5[17];
 	struct timeval sttTime;
 	
 	gettimeofday( &sttTime, NULL );
 
 	snprintf( szTemp, sizeof(szTemp), "%s:%d:%d:%d", m_strLocalIp.c_str(), m_iLocalUdpPort, sttTime.tv_sec, sttTime.tv_usec );
-	SipMd5String( szTemp, szMd5 );
+	SipMd5String16( szTemp, szMd5 );
 
 	SipSetSystemId( szMd5 );
 
