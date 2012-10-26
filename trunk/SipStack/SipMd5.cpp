@@ -320,7 +320,7 @@ static void MD5Final( unsigned char digest[16], MD5_CTX * context )
  * @param string 평문
  * @param result MD5 문자열 저장 변수
  */
-void Md5String( char * string, char result[33] )
+void SipMd5String( char * string, char result[33] )
 {
 	MD5_CTX context;
 	unsigned char digest[16];

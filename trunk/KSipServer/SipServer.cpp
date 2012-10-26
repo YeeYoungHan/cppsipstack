@@ -25,7 +25,7 @@
 #include "SipServerMap.h"
 #include "RtpMap.h"
 #include "Log.h"
-#include "Md5.h"
+#include "SipMd5.h"
 #include "XmlUser.h"
 #include "Directory.h"
 #include "TimeString.h"

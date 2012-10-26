@@ -52,5 +52,10 @@ bool CSipStackSetup::Check( )
 		m_strUserAgent.append( SIP_USER_AGENT );
 	}
 
+	char	szTemp[101];
+
+	snprintf( szTemp, sizeof(szTemp), "%s:%d", m_strLocalIp.c_str(), m_iLocalUdpPort );
+
+
 	return true;
 }
