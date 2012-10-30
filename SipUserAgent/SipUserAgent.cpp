@@ -532,6 +532,11 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 	return false;
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief SIP CSeq 헤더에 저장할 번호를 리턴한다.
+ * @returns SIP CSeq 헤더에 저장할 번호를 리턴한다.
+ */
 int CSipUserAgent::GetSeqNum( )
 {
 	int iSeq;

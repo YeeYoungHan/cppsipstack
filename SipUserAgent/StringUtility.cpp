@@ -19,6 +19,7 @@
 #include "StringUtility.h"
 
 /**
+ * @ingroup SipUserAgent
  * @brief 문자열에 포함된 문자열을 수정한다.
  * @param strCallId	문자열
  * @param pszBefore 수정 대상 문자열

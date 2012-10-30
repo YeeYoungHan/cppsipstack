@@ -22,7 +22,7 @@
 static bool Test( const char * pszText, const char * pszResult )
 {
 	CSipMessage clsMessage;
-	int		iTextLen = strlen( pszText );
+	int		iTextLen = (int)strlen( pszText );
 	int		iPos, iLen;
 	char	szResult[2000];
 

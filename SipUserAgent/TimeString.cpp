@@ -21,6 +21,7 @@
 #include "TimeString.h"
 
 /**
+ * @ingroup SipUserAgent
  * @brief 현재 시간을 년,월,일,시,분,초 구조체에 저장한다.
  * @param iTime 현재 시간
  * @param sttTm 년,월,일,시,분,초 구조체
@@ -35,6 +36,7 @@ void LocalTime( time_t iTime, struct tm & sttTm )
 }
 
 /**
+ * @ingroup SipUserAgent
  * @brief 시간 변수를 시간 문자열 변수에 저장한다.
  * @param iTime			시간 변수
  * @param pszTime		시간 문자열이 저장될 변수
@@ -54,6 +56,12 @@ void GetDateTimeString( time_t iTime, char * pszTime, int iTimeSize )
 		, sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec );
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief 년월일시분초 문자열을 저장한다.
+ * @param pszTime		년월일시분초 문자열 저장 변수
+ * @param iTimeSize pszTime 변수의 크기
+ */
 void GetDateTimeString( char * pszTime, int iTimeSize )
 {
 	time_t		iTime;
@@ -63,6 +71,13 @@ void GetDateTimeString( char * pszTime, int iTimeSize )
 	GetDateTimeString( iTime, pszTime, iTimeSize );
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief 년월일 문자열을 저장한다.
+ * @param iTime			시간
+ * @param pszDate		년월일 문자열을 저장 변수
+ * @param iDateSize pszDate 변수의 크기
+ */
 void GetDateString( time_t iTime, char * pszDate, int iDateSize )
 {
 	struct tm	sttTm;
@@ -76,6 +91,12 @@ void GetDateString( time_t iTime, char * pszDate, int iDateSize )
 	snprintf( pszDate, iDateSize, "%04d%02d%02d", sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday );
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief 년월일 문자열을 저장한다.
+ * @param pszDate		년월일 문자열을 저장 변수
+ * @param iDateSize pszDate 변수의 크기
+ */
 void GetDateString( char * pszDate, int iDateSize )
 {
 	time_t		iTime;
@@ -85,6 +106,13 @@ void GetDateString( char * pszDate, int iDateSize )
 	GetDateString( iTime, pszDate, iDateSize );
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief 시분초 문자열을 저장한다.
+ * @param iTime			시간
+ * @param pszTime		시분초 문자열 저장 변수
+ * @param iTimeSize pszTime 변수의 크기
+ */
 void GetTimeString( time_t iTime, char * pszTime, int iTimeSize )
 {
 	struct tm	sttTm;
@@ -98,6 +126,12 @@ void GetTimeString( time_t iTime, char * pszTime, int iTimeSize )
 	snprintf( pszTime, iTimeSize, "%02d%02d%02d", sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec );
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief 시분초 문자열을 저장한다.
+ * @param pszTime		시분초 문자열 저장 변수
+ * @param iTimeSize pszTime 변수의 크기
+ */
 void GetTimeString( char * pszTime, int iTimeSize )
 {
 	time_t		iTime;

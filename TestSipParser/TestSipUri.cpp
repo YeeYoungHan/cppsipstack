@@ -21,7 +21,7 @@
 static bool Test( const char * pszText )
 {
 	CSipUri clsUri;
-	int		iTextLen = strlen( pszText );
+	int		iTextLen = (int)strlen( pszText );
 	int		iPos, iLen;
 	char	szResult[255];
 

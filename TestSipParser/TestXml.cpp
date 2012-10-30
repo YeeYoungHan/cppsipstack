@@ -21,7 +21,7 @@
 static bool Test( const char * pszText, const char * pszResult )
 {
 	CXmlElement	clsXml;
-	int		iPos, iTextLen = strlen(pszText);
+	int		iPos, iTextLen = (int)strlen(pszText);
 	char	szResult[1024];
 
 	iPos = clsXml.Parse( pszText, iTextLen );
@@ -116,7 +116,7 @@ bool TestXml()
 		"</userlist>\r\n";
 	CXmlElement	clsXml;
 
-	if( clsXml.Parse( pszXml, strlen(pszXml) ) == -1 )
+	if( clsXml.Parse( pszXml, (int)strlen(pszXml) ) == -1 )
 	{
 		printf( "xml(%s) parser error\n", pszXml );
 		return false;

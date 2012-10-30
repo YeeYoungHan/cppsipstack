@@ -39,6 +39,7 @@ CSipServerInfo::~CSipServerInfo()
 }
 
 /**
+ * @ingroup SipUserAgent
  * @brief 동일한 IP-PBX 정보인지 검사한다.
  * @param clsInfo IP-PBX 정보
  * @returns 동일한 IP-PBX 정보이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
@@ -55,6 +56,11 @@ bool CSipServerInfo::Equal( CSipServerInfo & clsInfo )
 	return false;
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief IP-PBX 정보를 수정한다.
+ * @param clsInfo IP-PBX 정보
+ */
 void CSipServerInfo::Update( CSipServerInfo & clsInfo )
 {
 	m_strDomain = clsInfo.m_strDomain;
