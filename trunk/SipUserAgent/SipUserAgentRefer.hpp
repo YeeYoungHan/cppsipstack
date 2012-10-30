@@ -16,6 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+/**
+ * @ingroup SipUserAgent
+ * @brief Replaces 를 포함한 문자열에서 SIP Call-ID 를 가져온다.
+ * @param pszValue	Replaces 를 포함한 문자열
+ * @param strReferToCallId SIP Call-ID 를 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool GetCallIdFromReferTo( const char * pszValue, std::string & strReferToCallId )
 {
 	const char * pszPos, * pszNext;

@@ -21,7 +21,7 @@
 static bool Test( const char * pszText, const char * pszResult )
 {
 	CSipFrom clsFrom;
-	int		iTextLen = strlen( pszText );
+	int		iTextLen = (int)strlen( pszText );
 	int		iPos, iLen;
 	char	szResult[255];
 
