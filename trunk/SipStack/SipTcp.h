@@ -29,4 +29,8 @@ int TcpRecvSize( Socket fd, char * szBuf, int iBufLen, int iSecond );
 Socket TcpListen( int iPort, int iListenQ, const char * pszIp = NULL );
 Socket TcpAccept( Socket hListenFd, char * pszIp, int iIpSize, int * piPort );
 
+#ifdef WIN32
+int pipe( Socket filedes[2] );
+#endif
+
 #endif

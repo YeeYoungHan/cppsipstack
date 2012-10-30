@@ -75,7 +75,7 @@ void * SipUdpThread( void * lpParameter )
 	bool	bRes;
 
 	pclsSipStack->IncreateUdpThreadCount( iThreadId );
-	TcpSetPollIn( arrPoll[0], pclsSipStack->m_iUdpSocket );
+	TcpSetPollIn( arrPoll[0], pclsSipStack->m_hUdpSocket );
 
 	while( pclsSipStack->m_bStopEvent == false )
 	{
@@ -84,7 +84,7 @@ void * SipUdpThread( void * lpParameter )
 		if( n > 0 )
 		{
 			iPacketSize = sizeof(szPacket);
-			bRes = UdpRecv( pclsSipStack->m_iUdpSocket, szPacket, &iPacketSize, szIp, sizeof(szIp), &sPort );
+			bRes = UdpRecv( pclsSipStack->m_hUdpSocket, szPacket, &iPacketSize, szIp, sizeof(szIp), &sPort );
 			pclsSipStack->m_clsUdpRecvMutex.release();
 
 			if( bRes )

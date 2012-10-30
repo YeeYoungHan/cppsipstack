@@ -343,3 +343,138 @@ Socket TcpAccept( Socket hListenFd, char * pszIp, int iIpSize, int * piPort )
 
 	return hConnFd;
 }
+
+#ifdef WIN32
+
+/** make listening socket for TCP server.
+ *	- port reuse option 을 사용하지 않는다.
+ *	- 윈도우용 pipe 를 위해서 만들어졌다.
+ *
+ *  @author Yee Young Han 
+ *	@param	iPort		port number to listen
+ *	@param	iListenQ	queue number to listen
+ *  @return if success, return socket.
+ *			if can not create socket, return INVALID_SOCKET.
+ */
+static Socket TcpListenNotReuse( int iPort, int iListenQ, const char * pszIp )
+{
+	Socket	fd;
+
+	struct	sockaddr_in	addr;
+
+	// create socket.
+	if( ( fd = socket( AF_INET, SOCK_STREAM, 0 )) == INVALID_SOCKET )
+	{
+		return INVALID_SOCKET;
+	}
+	
+	memset( &addr, 0, sizeof(addr));
+	
+	addr.sin_family = AF_INET;
+	addr.sin_port   = htons(iPort);
+
+	if( pszIp )
+	{
+		addr.sin_addr.s_addr = inet_addr(pszIp);
+	}
+	else
+	{
+		addr.sin_addr.s_addr = INADDR_ANY;	
+	}
+
+	if( bind( fd, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR )
+	{
+		closesocket( fd );
+		return INVALID_SOCKET;
+	}
+
+	if( listen( fd, iListenQ ) == SOCKET_ERROR )
+	{
+		closesocket( fd );
+		return INVALID_SOCKET;
+	}
+
+	return fd;
+}
+
+static bool gbIsStartPipeThread = false;
+static int giListenPort = 0;
+
+/** 윈도우용 pipe 메소드를 위한 쓰레드 */
+DWORD WINAPI PipeThread( LPVOID lpParameter )
+{
+	int			iPort;
+	char		szBuf[12];
+	Socket	hListenFd, hConnFd;
+
+	for( iPort = 1024; iPort < 65535; ++iPort )
+	{
+		hListenFd = TcpListenNotReuse( iPort, 255, "127.0.0.1" );
+		if( hListenFd != INVALID_SOCKET ) break;
+	}
+
+	if( hListenFd == INVALID_SOCKET ) return 0;
+
+	giListenPort = iPort;
+
+	while( 1 )
+	{
+		hConnFd = accept( hListenFd, NULL, NULL );
+		if( hConnFd == INVALID_SOCKET ) break;
+
+		memcpy( szBuf, &hConnFd, sizeof(hConnFd) );
+		send( hConnFd, szBuf, sizeof(hConnFd), 0 );
+	}
+
+	return 0;
+}
+
+/** 윈도우용 pipe 메소드
+ *
+ *	@param	filedes	pipe 를 위한 소켓 배열
+ *	@return	성공하면 0 을 리턴한다. 실패하면 -1 을 리턴한다.
+ */
+int pipe( Socket filedes[2] )
+{
+	if( gbIsStartPipeThread == false )
+	{
+		DWORD		dwThreadId;
+		HANDLE	hThread;
+
+		hThread = CreateThread( NULL, 0, PipeThread, NULL, 0, &dwThreadId );
+		if( hThread == NULL )
+		{
+			return -1;
+		}
+
+		gbIsStartPipeThread = true;
+
+		// PipeThread 에서 소켓을 생성할 때까지 대기한다. (1초)
+		for( int i = 0; i < 50; ++i )
+		{
+			if( giListenPort != 0 ) break;
+			Sleep( 20 );
+		}
+	}
+
+	int		n;
+	char	szBuf[12];
+
+	if( giListenPort == 0 ) return -1;
+
+	filedes[1] = TcpConnect( "127.0.0.1", giListenPort );
+	if( filedes[1] == INVALID_SOCKET ) return -1;
+
+	n = recv( filedes[1], szBuf, sizeof(Socket), 0 );
+	if( n != sizeof(Socket) )
+	{
+		closesocket( filedes[1] );
+		return -1;
+	}
+
+	memcpy( &filedes[0], szBuf, sizeof(Socket) );
+
+	return 0;
+}
+
+#endif
