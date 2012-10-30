@@ -407,6 +407,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipStackVersion.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="¾²·¹µå"
+			>
+			<File
 				RelativePath=".\SipStackThread.cpp"
 				>
 			</File>
@@ -415,11 +423,39 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SipStackVersion.h"
+				RelativePath=".\SipTcpThread.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\SipUdpThread.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="TCP"
+			>
+			<File
+				RelativePath=".\SipBuffer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipBuffer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TcpSessionList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TcpSessionList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TcpThreadList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TcpThreadList.h"
 				>
 			</File>
 		</Filter>

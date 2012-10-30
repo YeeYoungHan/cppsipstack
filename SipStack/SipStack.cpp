@@ -29,7 +29,7 @@ CSipStack::CSipStack()
 {
 	m_bStopEvent = false;
 	m_bStackThreadRun = false;
-	m_iUdpSocket = INVALID_SOCKET;
+	m_hUdpSocket = INVALID_SOCKET;
 	m_bStarted = false;
 	m_iUdpThreadRunCount = 0;
 
@@ -62,8 +62,10 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 
 	InitNetwork();
 
-	m_iUdpSocket = UdpListen( m_clsSetup.m_iLocalUdpPort, NULL );
-	if( m_iUdpSocket == INVALID_SOCKET ) return false;
+	m_hUdpSocket = UdpListen( m_clsSetup.m_iLocalUdpPort, NULL );
+	if( m_hUdpSocket == INVALID_SOCKET ) return false;
+
+	m_hTcpSocket = TcpListen( m_clsSetup.m_iLocalTcpPort, 255, NULL );
 
 	if( StartSipUdpThread( this ) == false )
 	{
@@ -370,7 +372,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 	}
 
 	m_clsUdpSendMutex.acquire();
-	bool bRes = UdpSend( m_iUdpSocket, pclsMessage->m_strPacket.c_str(), (int)pclsMessage->m_strPacket.length(), pszIp, iPort );
+	bool bRes = UdpSend( m_hUdpSocket, pclsMessage->m_strPacket.c_str(), (int)pclsMessage->m_strPacket.length(), pszIp, iPort );
 	m_clsUdpSendMutex.release();
 
 	NetworkLog( true, pclsMessage->m_strPacket.c_str(), pszIp, iPort );
@@ -520,8 +522,8 @@ bool CSipStack::_Stop( )
 		MiliSleep( 20 );
 	}
 
-	closesocket( m_iUdpSocket );
-	m_iUdpSocket = INVALID_SOCKET;
+	closesocket( m_hUdpSocket );
+	m_hUdpSocket = INVALID_SOCKET;
 
 	m_bStopEvent = false;
 

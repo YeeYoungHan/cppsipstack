@@ -20,7 +20,7 @@
 #define _SIP_STACK_H_
 
 #include "SipStackDefine.h"
-#include "SipUdp.h"
+#include "SipTcp.h"
 #include "SipStatusCode.h"
 #include "SipICTList.h"
 #include "SipNICTList.h"
@@ -28,6 +28,7 @@
 #include "SipNISTList.h"
 #include "SipStackSetup.h"
 #include "SipStackCallBack.h"
+#include "TcpThreadList.h"
 
 typedef std::list< ISipStackCallBack * > SIP_STACK_CALLBACK_LIST;
 typedef std::list< ISipNetworkLog * > SIP_NETWORK_LOG_LIST;
@@ -72,9 +73,13 @@ public:
 	bool	m_bStopEvent;						// SIP stack thread 종료 이벤트
 	bool	m_bStackThreadRun;			// SIP stack thread 가 실행 중에 있는가?
 
-	Socket m_iUdpSocket;					// SIP 메시지 전송/수신 소켓 핸들
+	Socket m_hUdpSocket;					// UDP SIP 메시지 전송/수신 소켓 핸들
+	Socket m_hTcpSocket;					// TCP SIP 메시지 전송/수신 소켓 핸들
+
 	CSipMutex m_clsUdpRecvMutex;	// SIP 메시지 수신 뮤텍스
 	CSipStackSetup	m_clsSetup;		// SIP stack 설정
+
+	CThreadList	m_clsTcpThreadList;
 
 private:
 	bool	 m_bStarted;
