@@ -19,9 +19,12 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.08"
+#define KSIP_SERVER_VERSION	"0.09"
 
 /* 버전 정보 
+
+= 버전 0.09 ( 2012년 10월 30일 ) =
+ * TCP 프로토콜로 SIP 메시지를 수신하기 위한 설정 정보를 추가함.
 
 = 버전 0.08 ( 2012년 10월 08일 ) =
  * 1분 간격으로 추가/수정/삭제된 IP-PBX 정보를 자료구조에 반영하는 기능을 추가함.

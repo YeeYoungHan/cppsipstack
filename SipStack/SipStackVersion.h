@@ -19,11 +19,14 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.05"
+#define SIP_STACK_VERSION "0.06"
 
 /* 버전 정보
 
-= 버전 0.05 ( 2012년 08월 21일 ) =
+= 버전 0.06 ( 2012년 10월 30일 ) =
+ * TCP 프로토콜로 SIP 메시지 전송/수신 기능 추가중
+
+= 버전 0.05 ( 2012년 10월 21일 ) =
  * VIA branch 에 time 정보를 넣어서 SIP 메시지가 일치할 확률을 줄임.
  * VIA branch 및 Call-Id 에 system unique string 을 넣는 기능을 추가함.
 

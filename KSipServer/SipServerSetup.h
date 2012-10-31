@@ -49,6 +49,12 @@ public:
 	/** SIP 통신을 위한 UDP 수신 쓰레드 개수 */
 	int					m_iUdpThreadCount;
 
+	/** SIP 통신을 위한 TCP 포트 번호 */
+	int					m_iTcpPort;
+
+	/** SIP 통신을 위한 TCP 수신 쓰레드 개수 */
+	int					m_iTcpThreadCount;
+
 	/** SIP 통신을 위한 realm */
 	std::string	m_strRealm;
 

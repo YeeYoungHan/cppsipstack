@@ -25,7 +25,7 @@
  * @ingroup SipStack
  * @brief »ý¼ºÀÚ
  */
-CSipStackSetup::CSipStackSetup() : m_iLocalUdpPort(5060), m_iUdpThreadCount(1), m_iLocalTcpPort(5060), m_iTcpThreadCount(1)
+CSipStackSetup::CSipStackSetup() : m_iLocalUdpPort(5060), m_iUdpThreadCount(1), m_iLocalTcpPort(5060), m_iTcpThreadCount(1), m_iTcpMaxSocketPerThread(100)
 {
 }
 
@@ -47,6 +47,18 @@ bool CSipStackSetup::Check( )
 	if( m_strLocalIp.empty() ) return false;
 	if( m_iLocalUdpPort <= 0 || m_iLocalUdpPort > 65535 ) return false;
 	if( m_iUdpThreadCount <= 0 ) return false;
+
+	if( m_iLocalTcpPort < 0 || m_iLocalTcpPort > 65535 ) m_iLocalTcpPort = 0;
+	if( m_iTcpThreadCount < 0 ) 
+	{
+		if( m_iLocalTcpPort > 0 ) return false;
+		m_iTcpThreadCount = 0;
+	}
+	if( m_iTcpMaxSocketPerThread < 0 ) 
+	{
+		if( m_iLocalTcpPort > 0 ) return false;
+		m_iTcpMaxSocketPerThread = 0;
+	}
 
 	if( m_strUserAgent.empty() == false )
 	{

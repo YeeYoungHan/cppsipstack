@@ -3,6 +3,8 @@
 		<LocalIp>192.168.10.1</LocalIp>
 		<UdpPort>5060</UdpPort>
 		<UdpThreadCount>1</UdpThreadCount>
+		<TcpPort>5060</TcpPort>
+		<TcpThreadCount>1</TcpThreadCount>
 		<Realm>ksipserver</Realm>
 		<!--<SendOptionsPeriod>30</SendOptionsPeriod>-->
 	</Sip>
