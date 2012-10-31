@@ -109,7 +109,7 @@ bool TestXml()
 		"<log folder=\"/usr/local/bin/log\" max_size=\"4321\"/>\n"
 		"</setup>\n" ) == false ) return false;
 
-	char * pszXml = "<userlist>\r\n"
+	const char * pszXml = "<userlist>\r\n"
 		"  <user id=\"1000\">\r\n"
 		"    <password>1234</password>\r\n"
 		"  </user>\r\n"
