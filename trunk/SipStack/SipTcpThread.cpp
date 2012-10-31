@@ -89,6 +89,7 @@ void * SipTcpThread( void * lpParameter )
 			if( n <= 0 )
 			{
 CLOSE_SESSION:
+				pclsSipStack->m_clsTcpSocketMap.Delete( clsSessionList.m_clsList[i].m_strIp.c_str(), clsSessionList.m_clsList[i].m_iPort );
 				clsSessionList.Delete( i, pclsEntry );
 				continue;
 			}
@@ -110,6 +111,8 @@ LOOP_END:
 			iDeleteTime = iTime;
 		}
 	}
+
+	clsSessionList.DeleteAll( pclsEntry );
 
 FUNC_END:
 	pclsSipStack->DecreateTcpThreadCount();
@@ -195,7 +198,7 @@ FUNC_END:
  * @param pclsSipStack SIP stack 포인터
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool StartSipTcpThread( CSipStack * pclsSipStack )
+bool StartSipTcpListenThread( CSipStack * pclsSipStack )
 {
 	return StartThread( "SipTcpListenThread", SipTcpListenThread, pclsSipStack );
 }

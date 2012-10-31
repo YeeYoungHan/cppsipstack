@@ -161,6 +161,24 @@ bool CTcpSessionList::Delete( int iIndex, CThreadListEntry * pclsEntry )
 	return true;
 }
 
+void CTcpSessionList::DeleteAll( CThreadListEntry * pclsEntry )
+{
+	for( int i = 0; i < m_iPoolFdCount; ++i )
+	{
+		if( m_psttPollFd[i].fd != INVALID_SOCKET )
+		{
+			closesocket( m_psttPollFd[i].fd );
+
+			m_psttPollFd[i].fd = INVALID_SOCKET;
+			m_psttPollFd[i].events = 0;
+			m_psttPollFd[i].revents = 0;
+			m_clsList[i].Clear();
+
+			pclsEntry->DecreaseSocketCount();
+		}
+	}
+}
+
 /**
  * @brief TCP 수신 timeout 이 발생한 TCP 세션을 종료시킨다.
  * @param iTimeout	TCP 수신 timeout 시간 (초단위)

@@ -26,6 +26,21 @@ CThreadListEntry::CThreadListEntry() : m_hSend(INVALID_SOCKET), m_hRecv(INVALID_
 
 }
 
+void CThreadListEntry::Close()
+{
+	if( m_hSend != INVALID_SOCKET )
+	{
+		closesocket( m_hSend );
+		m_hSend = INVALID_SOCKET;
+	}
+
+	if( m_hRecv != INVALID_SOCKET )
+	{
+		closesocket( m_hRecv );
+		m_hRecv = INVALID_SOCKET;
+	}
+}
+
 /**
  * @brief 소켓 사용 개수를 증가시킨다.
  */
@@ -92,6 +107,7 @@ void CThreadList::Final()
 
 	for( it = m_clsList.begin(); it != m_clsList.end(); ++it )
 	{
+		(*it)->Close();
 		delete (*it);
 	}
 }

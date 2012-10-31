@@ -30,6 +30,6 @@ DWORD WINAPI SipTcpThread( LPVOID lpParameter );
 void * SipTcpThread( void * lpParameter );
 #endif
 
-bool StartSipTcpThread( CSipStack * pclsSipStack );
+bool StartSipTcpListenThread( CSipStack * pclsSipStack );
 
 #endif
