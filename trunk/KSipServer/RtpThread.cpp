@@ -25,6 +25,12 @@
 static int giRtpThreadCount = 0;
 extern CSipMutex gclsCountMutex;
 
+class CRtpThreadInfo
+{
+public:
+	int	m_iPort;
+};
+
 /**
  * @ingroup KSipServer
  * @brief RTP relay 쓰레드 함수
@@ -37,13 +43,16 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 void * RtpThread( void * lpParameter )
 #endif
 {
-	int				iPort = (int)lpParameter;
+	CRtpThreadInfo * pclsThreadInfo = (CRtpThreadInfo *)lpParameter;
+	int				iPort = pclsThreadInfo->m_iPort;
 	CRtpInfo	* pclsRtpInfo;
 	pollfd		sttPoll[4];
 	int				n, iPacketLen;
 	char			szPacket[1500];
 	uint32_t	iIp;
 	uint16_t	sPort;
+
+	delete pclsThreadInfo;
 
 	gclsCountMutex.acquire();
 	++giRtpThreadCount;
@@ -158,7 +167,12 @@ FUNC_END:
  */
 bool StartRtpThread( int iPort )
 {
-	if( StartThread( "RtpThread", RtpThread, (void *)iPort ) == false ) return false;
+	CRtpThreadInfo * pclsInfo = new CRtpThreadInfo();
+	if( pclsInfo == NULL ) return false;
+
+	pclsInfo->m_iPort = iPort;
+
+	if( StartThread( "RtpThread", RtpThread, pclsInfo ) == false ) return false;
 
 	return true;
 }
