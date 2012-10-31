@@ -32,6 +32,8 @@ class CThreadListEntry
 public:
 	CThreadListEntry();
 
+	void Close();
+
 	Socket	m_hSend;				// 송신 pipe
 	Socket	m_hRecv;				// 수신 pipe
 	int			m_iSocketCount;	// 소켓 개수

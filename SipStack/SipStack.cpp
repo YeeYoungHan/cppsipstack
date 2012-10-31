@@ -82,6 +82,12 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 			_Stop();
 			return false;
 		}
+
+		if( StartSipTcpListenThread( this ) == false )
+		{
+			_Stop();
+			return false;
+		}
 	}
 
 	if( StartSipUdpThread( this ) == false )
@@ -558,13 +564,24 @@ bool CSipStack::_Stop( )
 	}
 
 	// 모든 쓰레드가 종료할 때까지 대기한다.
-	while( m_iUdpThreadRunCount > 0 || m_bStackThreadRun )
+	while( m_iUdpThreadRunCount > 0 || m_iTcpThreadRunCount > 0 || m_bStackThreadRun )
 	{
 		MiliSleep( 20 );
 	}
 
-	closesocket( m_hUdpSocket );
-	m_hUdpSocket = INVALID_SOCKET;
+	if( m_hUdpSocket != INVALID_SOCKET )
+	{
+		closesocket( m_hUdpSocket );
+		m_hUdpSocket = INVALID_SOCKET;
+	}
+
+	if( m_hTcpSocket != INVALID_SOCKET )
+	{
+		closesocket( m_hTcpSocket );
+		m_hTcpSocket = INVALID_SOCKET;
+	}
+
+	m_clsTcpThreadList.Final();
 
 	m_bStopEvent = false;
 
