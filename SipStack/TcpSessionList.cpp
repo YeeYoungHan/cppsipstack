@@ -133,7 +133,8 @@ bool CTcpSessionList::Insert( CTcpComm & clsTcpComm )
 
 /**
  * @brief TCP 세션 정보를 삭제한다.
- * @param iIndex TCP 세션 인덱스
+ * @param iIndex		TCP 세션 인덱스
+ * @param pclsEntry	TCP 쓰레드 정보 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool CTcpSessionList::Delete( int iIndex, CThreadListEntry * pclsEntry )
@@ -161,6 +162,10 @@ bool CTcpSessionList::Delete( int iIndex, CThreadListEntry * pclsEntry )
 	return true;
 }
 
+/**
+ * @brief 모든 TCP 세션 정보를 삭제한다.
+ * @param pclsEntry	TCP 쓰레드 정보 객체
+ */
 void CTcpSessionList::DeleteAll( CThreadListEntry * pclsEntry )
 {
 	for( int i = 0; i < m_iPoolFdCount; ++i )

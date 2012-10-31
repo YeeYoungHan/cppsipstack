@@ -26,7 +26,7 @@
  * @brief 생성자
  */
 CSipStackSetup::CSipStackSetup() : m_iLocalUdpPort(5060), m_iUdpThreadCount(1)
-	, m_iLocalTcpPort(5060), m_iTcpThreadCount(1), m_iTcpMaxSocketPerThread(100), m_iTcpRecvTimeout(600)
+	, m_iLocalTcpPort(5060), m_iTcpThreadCount(1), m_iTcpMaxSocketPerThread(SIP_TCP_MAX_SOCKET_PER_THREAD), m_iTcpRecvTimeout(SIP_TCP_RECV_TIMEOUT)
 {
 }
 
@@ -46,19 +46,29 @@ CSipStackSetup::~CSipStackSetup()
 bool CSipStackSetup::Check( )
 {
 	if( m_strLocalIp.empty() ) return false;
+
+	// UDP 관련 설정 점검
 	if( m_iLocalUdpPort <= 0 || m_iLocalUdpPort > 65535 ) return false;
 	if( m_iUdpThreadCount <= 0 ) return false;
 
+	// TCP 관련 설정 점검
 	if( m_iLocalTcpPort < 0 || m_iLocalTcpPort > 65535 ) m_iLocalTcpPort = 0;
+
 	if( m_iTcpThreadCount < 0 ) 
 	{
 		if( m_iLocalTcpPort > 0 ) return false;
-		m_iTcpThreadCount = 0;
+		m_iTcpThreadCount = 1;
 	}
+	
 	if( m_iTcpMaxSocketPerThread < 0 ) 
 	{
 		if( m_iLocalTcpPort > 0 ) return false;
-		m_iTcpMaxSocketPerThread = 0;
+		m_iTcpMaxSocketPerThread = SIP_TCP_MAX_SOCKET_PER_THREAD;
+	}
+
+	if( m_iTcpRecvTimeout < 0 )
+	{
+		m_iTcpRecvTimeout = SIP_TCP_RECV_TIMEOUT;
 	}
 
 	if( m_strUserAgent.empty() == false )

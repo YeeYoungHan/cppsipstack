@@ -21,9 +21,12 @@
 #include "SipParserDefine.h"
 #include "SipStackVersion.h"
 
-#define SIP_PACKET_MIN_SIZE	100
-#define SIP_PACKET_MAX_SIZE	8192
-#define SIP_RING_TIMEOUT		300000
+#define SIP_PACKET_MIN_SIZE		100
+#define SIP_PACKET_MAX_SIZE		8192
+#define SIP_RING_TIMEOUT			300000
+
+#define SIP_TCP_MAX_SOCKET_PER_THREAD	100
+#define SIP_TCP_RECV_TIMEOUT					600
 
 #define SIP_USER_AGENT	"CppSipStack_" SIP_STACK_VERSION
 #define SIP_MAX_FORWARDS	70
