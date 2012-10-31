@@ -109,6 +109,10 @@ int ServerMain( )
 
 	clsSetup.m_iLocalUdpPort = gclsSetup.m_iUdpPort;
 	clsSetup.m_iUdpThreadCount = gclsSetup.m_iUdpThreadCount;
+
+	clsSetup.m_iLocalTcpPort = gclsSetup.m_iTcpPort;
+	clsSetup.m_iTcpThreadCount = gclsSetup.m_iTcpThreadCount;
+	
 	clsSetup.m_strUserAgent = "KSipServer_";
 	clsSetup.m_strUserAgent.append( KSIP_SERVER_VERSION );
 	clsSetup.m_strUserAgent.append( "_" );

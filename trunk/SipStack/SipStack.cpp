@@ -30,6 +30,7 @@ CSipStack::CSipStack()
 	m_bStopEvent = false;
 	m_bStackThreadRun = false;
 	m_hUdpSocket = INVALID_SOCKET;
+	m_hTcpSocket = INVALID_SOCKET;
 	m_bStarted = false;
 	m_iUdpThreadRunCount = 0;
 
@@ -65,7 +66,11 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	m_hUdpSocket = UdpListen( m_clsSetup.m_iLocalUdpPort, NULL );
 	if( m_hUdpSocket == INVALID_SOCKET ) return false;
 
-	m_hTcpSocket = TcpListen( m_clsSetup.m_iLocalTcpPort, 255, NULL );
+	if( m_clsSetup.m_iLocalTcpPort > 0 )
+	{
+		m_hTcpSocket = TcpListen( m_clsSetup.m_iLocalTcpPort, 255, NULL );
+		if( m_hTcpSocket == INVALID_SOCKET ) return false;
+	}
 
 	if( StartSipUdpThread( this ) == false )
 	{
