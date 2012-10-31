@@ -19,7 +19,7 @@ LIB_OBJ=SipDeleteQueue.o \
 	SipInviteTransaction.o SipNonInviteTransaction.o SipTransactionList.o \
 	SipStack.o SipStackSetup.o \
 	SipStackThread.o SipUdpThread.o SipTcpThread.o \
-	TcpSessionList.o TcpSocketMap.o TcpThreadList.o \
+	TcpSessionList.o TcpSocketMap.o TcpThreadList.o SipBuffer.o \
 	SipUdp.o SipTcp.o
 
 libsipstack.a: $(LIB_OBJ)
