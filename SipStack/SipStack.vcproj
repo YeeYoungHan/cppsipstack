@@ -451,6 +451,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TcpSocketMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TcpSocketMap.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TcpThreadList.cpp"
 				>
 			</File>

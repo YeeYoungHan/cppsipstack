@@ -33,6 +33,7 @@ CSipStack::CSipStack()
 	m_hTcpSocket = INVALID_SOCKET;
 	m_bStarted = false;
 	m_iUdpThreadRunCount = 0;
+	m_iTcpThreadRunCount = 0;
 
 	m_clsICT.SetSipStack( this );
 	m_clsNICT.SetSipStack( this );
@@ -69,7 +70,18 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	if( m_clsSetup.m_iLocalTcpPort > 0 )
 	{
 		m_hTcpSocket = TcpListen( m_clsSetup.m_iLocalTcpPort, 255, NULL );
-		if( m_hTcpSocket == INVALID_SOCKET ) return false;
+		if( m_hTcpSocket == INVALID_SOCKET ) 
+		{
+			_Stop();
+			return false;
+		}
+
+		m_clsTcpThreadList.SetMaxSocketPerThread( m_clsSetup.m_iTcpMaxSocketPerThread );
+		if( m_clsTcpThreadList.Init( m_clsSetup.m_iTcpThreadCount, m_clsSetup.m_iTcpThreadCount, SipTcpThread, this ) == false )
+		{
+			_Stop();
+			return false;
+		}
 	}
 
 	if( StartSipUdpThread( this ) == false )
@@ -453,6 +465,30 @@ void CSipStack::DecreateUdpThreadCount()
 {
 	m_clsMutex.acquire();
 	--m_iUdpThreadRunCount;
+	m_clsMutex.release();
+}
+
+/**
+ * @ingroup SipStack
+ * @brief TCP SIP 메시지 수신 쓰레드 개수를 증가시킨다.
+ * @param iThreadId UDP SIP 메시지 수신 쓰레드 개수를 증가시키기 전에 UDP SIP 메시지 수신 쓰레드 개수를 저장할 변수
+ */
+void CSipStack::IncreateTcpThreadCount( int & iThreadId )
+{
+	m_clsMutex.acquire();
+	iThreadId = m_iTcpThreadRunCount;
+	++m_iTcpThreadRunCount;
+	m_clsMutex.release();
+}
+
+/**
+ * @ingroup SipStack
+ * @brief TCP SIP 메시지 수신 쓰레드 개수를 감소시킨다.
+ */
+void CSipStack::DecreateTcpThreadCount()
+{
+	m_clsMutex.acquire();
+	--m_iTcpThreadRunCount;
 	m_clsMutex.release();
 }
 

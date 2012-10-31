@@ -25,7 +25,8 @@
  * @ingroup SipStack
  * @brief »ý¼ºÀÚ
  */
-CSipStackSetup::CSipStackSetup() : m_iLocalUdpPort(5060), m_iUdpThreadCount(1), m_iLocalTcpPort(5060), m_iTcpThreadCount(1), m_iTcpMaxSocketPerThread(100)
+CSipStackSetup::CSipStackSetup() : m_iLocalUdpPort(5060), m_iUdpThreadCount(1)
+	, m_iLocalTcpPort(5060), m_iTcpThreadCount(1), m_iTcpMaxSocketPerThread(100), m_iTcpRecvTimeout(600)
 {
 }
 

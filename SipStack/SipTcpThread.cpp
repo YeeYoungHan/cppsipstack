@@ -18,6 +18,104 @@
 
 #include "SipStackThread.h"
 #include "TcpSessionList.h"
+#include <time.h>
+
+bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort );
+
+/**
+ * @brief TCP 세션을 종료한다.
+ * @param clsTcpComm TCP 세션 정보를 저장하는 객체
+ */
+void CloseSocket( CTcpComm & clsTcpComm )
+{
+	closesocket( clsTcpComm.m_hSocket );
+}
+
+/**
+ * @brief TCP 세션을 위한 쓰레드 함수
+ * @param lpParameter CThreadListEntry 객체의 포인터
+ * @returns 0 을 리턴한다.
+ */
+#ifdef WIN32
+DWORD WINAPI SipTcpThread( LPVOID lpParameter )
+#else
+void * SipTcpThread( void * lpParameter )
+#endif
+{
+	CThreadListEntry * pclsEntry = (CThreadListEntry *)lpParameter;
+	CSipStack * pclsSipStack = (CSipStack *)pclsEntry->m_pUser;
+	CTcpSessionList	clsSessionList;
+	CTcpComm			clsTcpComm;
+	int		n, i, iBufLen, iThreadId;
+	char	szBuf[2048], *pszBuf;
+	time_t	iTime, iDeleteTime;
+
+	pclsSipStack->IncreateTcpThreadCount( iThreadId );
+
+	if( clsSessionList.Init( pclsSipStack->m_clsSetup.m_iTcpMaxSocketPerThread + 1 ) == false ) goto FUNC_END;
+	if( clsSessionList.Insert( pclsEntry->m_hRecv ) == false ) goto FUNC_END;
+
+	time( &iDeleteTime );
+	while( pclsSipStack->m_bStopEvent == false )
+	{
+		n = poll( clsSessionList.m_psttPollFd, clsSessionList.m_iPoolFdCount, 1000 );
+		time( &iTime );
+		if( n <= 0 ) goto LOOP_END;
+
+		if( clsSessionList.m_psttPollFd[0].revents & POLLIN )
+		{
+			if( CThreadList::RecvCommand( clsSessionList.m_psttPollFd[0].fd, (char *)&clsTcpComm, sizeof(clsTcpComm) ) == sizeof(clsTcpComm) )
+			{
+				if( clsSessionList.Insert( clsTcpComm ) )
+				{
+					pclsSipStack->m_clsTcpSocketMap.Insert( clsTcpComm.m_szIp, clsTcpComm.m_iPort, clsTcpComm.m_hSocket );
+				}
+				else
+				{
+					CloseSocket( clsTcpComm );
+					pclsEntry->DecreaseSocketCount();
+				}
+			}
+			--n;
+		}
+
+		if( n == 0 ) goto LOOP_END;
+
+		for( i = 1; i < clsSessionList.m_iPoolFdCount; ++i )
+		{
+			if( !(clsSessionList.m_psttPollFd[i].revents & POLLIN) ) continue;
+
+			n = recv( clsSessionList.m_psttPollFd[i].fd, szBuf, sizeof(szBuf), 0 );
+			if( n <= 0 )
+			{
+CLOSE_SESSION:
+				clsSessionList.Delete( i, pclsEntry );
+				continue;
+			}
+
+			clsSessionList.m_clsList[i].m_iRecvTime = iTime;
+
+			if( clsSessionList.m_clsList[i].m_clsSipBuf.AddBuf( szBuf, n ) == false ) goto CLOSE_SESSION;
+			while( clsSessionList.m_clsList[i].m_clsSipBuf.GetSipMessage( &pszBuf, &iBufLen ) )
+			{
+				SipMessageProcess( pclsSipStack, iThreadId, pszBuf, iBufLen, clsSessionList.m_clsList[i].m_strIp.c_str(), clsSessionList.m_clsList[i].m_iPort );
+				clsSessionList.m_clsList[i].m_clsSipBuf.ShiftBuf( iBufLen );
+			}
+		}
+
+LOOP_END:
+		if( ( iDeleteTime + 5 ) < iTime )
+		{
+			clsSessionList.DeleteTimeout( pclsSipStack->m_clsSetup.m_iTcpRecvTimeout, pclsEntry );
+			iDeleteTime = iTime;
+		}
+	}
+
+FUNC_END:
+	pclsSipStack->DecreateTcpThreadCount();
+
+	return 0;
+}
 
 /** 
  * @ingroup SipStack

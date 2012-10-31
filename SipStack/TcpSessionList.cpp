@@ -91,6 +91,47 @@ bool CTcpSessionList::Insert( Socket hSocket )
 }
 
 /**
+ * @brief TCP 세션 정보를 추가한다.
+ * @param clsTcpComm	TCP 세션 정보 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CTcpSessionList::Insert( CTcpComm & clsTcpComm )
+{
+	time_t	iTime;
+
+	time( &iTime );
+
+	if( m_iPoolFdCount >= m_iPollFdMax )
+	{
+		for( int i = 1; i < m_iPoolFdCount; ++i )
+		{
+			if( m_psttPollFd[i].fd == INVALID_SOCKET )
+			{
+				TcpSetPollIn( m_psttPollFd[i], clsTcpComm.m_hSocket );
+				m_clsList[i].m_strIp = clsTcpComm.m_szIp;
+				m_clsList[i].m_iPort = clsTcpComm.m_iPort;
+				m_clsList[i].m_iConnectTime = iTime;
+				m_clsList[i].m_iRecvTime = iTime;
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	TcpSetPollIn( m_psttPollFd[m_iPoolFdCount], clsTcpComm.m_hSocket );
+	m_clsList[m_iPoolFdCount].m_strIp = clsTcpComm.m_szIp;
+	m_clsList[m_iPoolFdCount].m_iPort = clsTcpComm.m_iPort;
+	m_clsList[m_iPoolFdCount].m_iConnectTime = iTime;
+	m_clsList[m_iPoolFdCount].m_iRecvTime = iTime;
+
+	++m_iPoolFdCount;
+
+	return true;
+}
+
+/**
  * @brief TCP 세션 정보를 삭제한다.
  * @param iIndex TCP 세션 인덱스
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.

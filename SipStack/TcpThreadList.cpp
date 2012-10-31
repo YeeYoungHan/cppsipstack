@@ -21,7 +21,7 @@
 
 static CSipMutex gclsMutex;
 
-CThreadListEntry::CThreadListEntry() : m_hSend(INVALID_SOCKET), m_hRecv(INVALID_SOCKET), m_iSocketCount(0)
+CThreadListEntry::CThreadListEntry() : m_hSend(INVALID_SOCKET), m_hRecv(INVALID_SOCKET), m_iSocketCount(0), m_pUser(NULL)
 {
 
 }
@@ -56,18 +56,21 @@ CThreadList::~CThreadList(void)
 
 /**
  * @brief 쓰레드 리스트를 시작한다.
- * @param iThreadCount	생성할 쓰레드 개수
- * @param pThreadProc		쓰레드 함수
+ * @param iThreadCount		생성할 쓰레드 개수
+ * @param iThreadMaxCount	최대 쓰레드 개수
+ * @param pThreadProc			쓰레드 함수
+ * @param pUser						사용자 정의 변수
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
 #ifdef WIN32
-bool CThreadList::Init( int iThreadCount, int iThreadMaxCount, LPTHREAD_START_ROUTINE pThreadProc )
+bool CThreadList::Init( int iThreadCount, int iThreadMaxCount, LPTHREAD_START_ROUTINE pThreadProc, void * pUser )
 #else
-bool CThreadList::Init( int iThreadCount, int iThreadMaxCount, void *(*pThreadProc)(void*) )
+bool CThreadList::Init( int iThreadCount, int iThreadMaxCount, void *(*pThreadProc)(void*), void * pUser )
 #endif
 {
 	m_pThreadProc = pThreadProc;
 	m_iThreadMaxCount = iThreadMaxCount;
+	m_pUser = pUser;
 
 	for( int i = 0; i < iThreadCount; ++i )
 	{
@@ -233,6 +236,7 @@ bool CThreadList::AddThread()
 
 	pclsThreadListEntry->m_hRecv = arrSocket[0];
 	pclsThreadListEntry->m_hSend = arrSocket[1];
+	pclsThreadListEntry->m_pUser = m_pUser;
 
 	m_clsList.push_back( pclsThreadListEntry );
 
