@@ -29,6 +29,7 @@
 #include "SipStackSetup.h"
 #include "SipStackCallBack.h"
 #include "TcpThreadList.h"
+#include "TcpSocketMap.h"
 
 typedef std::list< ISipStackCallBack * > SIP_STACK_CALLBACK_LIST;
 typedef std::list< ISipNetworkLog * > SIP_NETWORK_LOG_LIST;
@@ -65,6 +66,9 @@ public:
 	void IncreateUdpThreadCount( int & iThreadId );
 	void DecreateUdpThreadCount();
 
+	void IncreateTcpThreadCount( int & iThreadId );
+	void DecreateTcpThreadCount();
+
 	void GetString( std::string & strBuf );
 	void GetICTString( std::string & strBuf );
 
@@ -79,11 +83,14 @@ public:
 	CSipMutex m_clsUdpRecvMutex;	// SIP 메시지 수신 뮤텍스
 	CSipStackSetup	m_clsSetup;		// SIP stack 설정
 
-	CThreadList	m_clsTcpThreadList;
+	CThreadList		m_clsTcpThreadList;
+	CTcpSocketMap	m_clsTcpSocketMap;
 
 private:
 	bool	 m_bStarted;
 	int		 m_iUdpThreadRunCount;	// UDP 수신 쓰레드 개수
+	int		 m_iTcpThreadRunCount;	// TCP 수신 쓰레드 개수
+
 	CSipMutex m_clsMutex;
 	CSipMutex m_clsUdpSendMutex;	// SIP 메시지 전송 뮤텍스
 

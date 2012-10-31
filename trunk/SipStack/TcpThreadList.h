@@ -35,6 +35,7 @@ public:
 	Socket	m_hSend;				// 송신 pipe
 	Socket	m_hRecv;				// 수신 pipe
 	int			m_iSocketCount;	// 소켓 개수
+	void		* m_pUser;			// 사용자 정의 변수
 
 	void IncreaseSocketCount( bool bLock = true );
 	void DecreaseSocketCount( bool bLock = true );
@@ -52,9 +53,9 @@ public:
 	~CThreadList(void);
 
 #ifdef WIN32
-	bool Init( int iThreadCount, int iThreadMaxCount, LPTHREAD_START_ROUTINE pThreadProc );
+	bool Init( int iThreadCount, int iThreadMaxCount, LPTHREAD_START_ROUTINE pThreadProc, void * pUser );
 #else
-	bool Init( int iThreadCount, int iThreadMaxCount, void *(*pThreadProc)(void*) );
+	bool Init( int iThreadCount, int iThreadMaxCount, void *(*pThreadProc)(void*), void * pUser );
 #endif
 
 	void Final();
@@ -74,6 +75,8 @@ private:
 #else
 	void *(*m_pThreadProc)(void*);
 #endif
+
+	void * m_pUser;
 
 	bool AddThread();
 	bool _SendCommand( Socket hSocket, const char * pszData, int iDataLen );

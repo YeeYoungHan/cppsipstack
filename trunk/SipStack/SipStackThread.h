@@ -24,4 +24,12 @@
 bool StartSipUdpThread( CSipStack * pclsSipStack );
 bool StartSipStackThread( CSipStack * pclsSipStack );
 
+#ifdef WIN32
+DWORD WINAPI SipTcpThread( LPVOID lpParameter );
+#else
+void * SipTcpThread( void * lpParameter );
+#endif
+
+bool StartSipTcpThread( CSipStack * pclsSipStack );
+
 #endif

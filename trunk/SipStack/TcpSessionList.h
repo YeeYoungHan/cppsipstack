@@ -68,6 +68,7 @@ public:
 
 	bool Init( int iPollFdMax );
 	bool Insert( Socket hSocket );
+	bool Insert( CTcpComm & clsTcpComm );
 	bool Delete( int iIndex, CThreadListEntry * pclsEntry );
 	void DeleteTimeout( int iTimeout, CThreadListEntry * pclsEntry );
 

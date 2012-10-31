@@ -51,6 +51,9 @@ public:
 	/** SIP 메시지 수신용 TCP 쓰레드 하나에 포함될 수 있는 최대 소켓 개수 */
 	int					m_iTcpMaxSocketPerThread;
 
+	/** SIP 메시지 수신용 TCP 소켓의 수신 대기 시간 (초단위) */
+	int					m_iTcpRecvTimeout;
+
 	/** SIP UserAgent 헤더에 저장될 문자열 */
 	std::string	m_strUserAgent;
 };
