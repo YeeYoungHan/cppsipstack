@@ -167,16 +167,31 @@ bool CSipServer::RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage )
 		break;
 	}
 
+
 	if( pclsMessage->GetExpires() == 0 )
 	{
 		gclsUserMap.Delete( pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str() );
+
+		SendResponse( pclsMessage, SIP_OK );
 	}
 	else
 	{
-		gclsUserMap.Insert( pclsMessage );
-	}
+		CSipFrom clsContact;
 
-	SendResponse( pclsMessage, SIP_OK );
+		if( gclsUserMap.Insert( pclsMessage, &clsContact ) )
+		{
+			CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );
+			if( pclsResponse == NULL ) return false;
+
+			pclsResponse->m_clsContactList.push_back( clsContact );
+
+			gclsSipStack.SendSipMessage( pclsResponse );
+		}
+		else
+		{
+			SendResponse( pclsMessage, SIP_BAD_REQUEST );
+		}
+	}
 
 	return true;
 }

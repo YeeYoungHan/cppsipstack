@@ -65,7 +65,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "SendOptionsPeriod", m_iSendOptionsPeriod );
 	pclsElement->SelectElementData( "TcpPort", m_iTcpPort );
 	pclsElement->SelectElementData( "TcpThreadCount", m_iTcpThreadCount );
-	pclsElement->SelectElementData( "TcpRecvTimeout", m_iTcpThreadCount );
+	pclsElement->SelectElementData( "TcpRecvTimeout", m_iTcpRecvTimeout );
 
 	// RTP relay ¼³Á¤
 	pclsElement = clsXml.SelectElement( "RtpRelay" );
