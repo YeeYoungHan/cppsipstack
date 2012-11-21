@@ -5,6 +5,7 @@
 		<UdpThreadCount>1</UdpThreadCount>
 		<TcpPort>5060</TcpPort>
 		<TcpThreadCount>1</TcpThreadCount>
+		<TcpRecvTimeout>600</TcpRecvTimeout>
 		<Realm>ksipserver</Realm>
 		<!--<SendOptionsPeriod>30</SendOptionsPeriod>-->
 	</Sip>
