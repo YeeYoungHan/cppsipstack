@@ -35,8 +35,6 @@
 
 #include <map>
 
-int DiffTimeval( struct timeval * psttOld, struct timeval * psttNew );
-
 #ifdef WIN32
 bool StartThread( const char * pszName, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter );
 #else

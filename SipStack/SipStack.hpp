@@ -18,31 +18,6 @@
 
 /**
  * @ingroup SipStack
- * @brief 두 개의 시간의 차이를 리턴한다.
- * @param psttOld 시작 시간
- * @param psttNew 종료 시간
- * @returns 두 개의 시간의 차이를 리턴한다.
- */
-int DiffTimeval( struct timeval * psttOld, struct timeval * psttNew )
-{
-	int	iRet;
-
-	if( psttNew->tv_usec >= psttOld->tv_usec )
-	{
-		iRet = ( psttNew->tv_usec - psttOld->tv_usec ) / 1000;
-		iRet += ( psttNew->tv_sec - psttOld->tv_sec ) * 1000;
-	}
-	else
-	{
-		iRet = 1000 + ( psttNew->tv_usec - psttOld->tv_usec ) / 1000;
-		iRet += ( psttNew->tv_sec - psttOld->tv_sec - 1 ) * 1000;
-	}
-
-	return iRet;
-}
-
-/**
- * @ingroup SipStack
  * @brief 쓰레드를 시작한다.
  * @param pszName					쓰레드 이름
  * @param lpStartAddress	쓰레드 함수
@@ -80,23 +55,3 @@ bool StartThread( const char * pszName, void *(*lpStartAddress)(void*), void * l
 	return true;
 }
 #endif
-
-/**
- * @ingroup SipStack
- * @brief ms 동안 대기한다.
- * @param iMiliSecond ms
- */
-void MiliSleep( int iMiliSecond )
-{
-#ifdef WIN32
-	Sleep( iMiliSecond );
-#else
-	struct timespec req;
-	struct timespec rem;
-
-	req.tv_sec = (int) iMiliSecond / 1000;
-	req.tv_nsec = (int)( iMiliSecond % 1000 ) * 1000;
-
-	nanosleep( &req, &rem );
-#endif
-}

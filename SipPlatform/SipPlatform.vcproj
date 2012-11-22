@@ -362,6 +362,10 @@
 				RelativePath=".\TimeString.h"
 				>
 			</File>
+			<File
+				RelativePath=".\TimeUtility.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
