@@ -6,7 +6,7 @@
 
 CC=g++
 CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
-INC=
+INC=-I../SipPlatform
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
@@ -16,7 +16,8 @@ all: libsipparser.a
 
 LIB_OBJ=SipAcceptData.o SipCallId.o SipChallenge.o SipContentType.o \
 	SipCredential.o SipCSeq.o SipFrom.o SipHeader.o SipMessage.o \
-	SipParameter.o SipUri.o SipVia.o SipStatusCode.o
+	SipParameter.o SipUri.o SipVia.o SipStatusCode.o \
+	SipUtility.o
 
 libsipparser.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)

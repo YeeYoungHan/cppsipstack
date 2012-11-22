@@ -16,14 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_UTILITY_H_
-#define _SIP_UTILITY_H_
+#ifndef _MD5_H_
+#define _MD5_H_
 
-void SipSetSystemId( const char * pszId );
-void SipMakeTag( char * pszTag, int iTagSize );
-void SipMakeBranch( char * pszBranch, int iBranchSize );
-void SipMakeCallIdName( char * pszCallId, int iCallIdSize );
-void SipMakePrintString( const char * pszInput, int iInputSize, char * pszOutput );
-void SipMd5String16( char * string, char result[17] );
+void SipMd5String( char * string, char result[33] );
+void SipMd5Byte( char * string, unsigned char digest[16] );
 
 #endif

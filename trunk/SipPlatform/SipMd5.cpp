@@ -18,10 +18,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "SipParserDefine.h"
+#include "SipPlatformDefine.h"
 #include <stdio.h>
 #include <string.h>
-#include "SipUtility.h"
 
 /* UINT2 defines a two byte word */
 typedef unsigned short int UINT2;
@@ -339,22 +338,12 @@ void SipMd5String( char * string, char result[33] )
 	}
 }
 
-/**
- * @ingroup SipUserAgent
- * @brief 평문을 MD5 문자열로 변환한다.
- * @param string 평문
- * @param result MD5 문자열 저장 변수
- */
-void SipMd5String16( char * string, char result[17] )
+void SipMd5Byte( char * string, unsigned char digest[16] )
 {
 	MD5_CTX context;
-	unsigned char digest[16];
 	unsigned int len = (unsigned int)strlen (string);
 	
 	MD5Init( &context );
 	MD5Update( &context, (unsigned char *)string, len );
 	MD5Final( digest, &context );
-
-	SipMakePrintString( (char *)digest, 16, result );
-	result[16] = '\0';
 }

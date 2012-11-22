@@ -6,7 +6,7 @@
 
 CC=g++
 CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
-INC=-I../SipParser
+INC=-I../SipParser -I../SipPlatform
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
@@ -19,8 +19,8 @@ LIB_OBJ=SipDeleteQueue.o \
 	SipInviteTransaction.o SipNonInviteTransaction.o SipTransactionList.o \
 	SipStack.o SipStackSetup.o \
 	SipStackThread.o SipUdpThread.o SipTcpThread.o \
-	TcpSessionList.o TcpSocketMap.o TcpThreadList.o SipBuffer.o \
-	SipUdp.o SipTcp.o SipMd5.o
+	TcpSessionList.o TcpSocketMap.o TcpThreadList.o \
+	SipBuffer.o
 
 libsipstack.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)

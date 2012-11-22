@@ -6,7 +6,7 @@
 
 CC=g++
 CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
-INC=-I../SipStack -I../SipParser -I../SdpParser
+INC=-I../SipStack -I../SipParser -I../SdpParser -I../SipPlatform
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
@@ -17,8 +17,7 @@ all: libsipuseragent.a
 LIB_OBJ=SipDialog.o \
 	SipRegisterThread.o SipServerInfo.o \
 	SipUserAgent.o \
-	SipDialog.o SipCdr.o \
-	StringUtility.o TimeString.o
+	SipDialog.o SipCdr.o
 
 libsipuseragent.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)

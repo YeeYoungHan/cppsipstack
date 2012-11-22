@@ -5,6 +5,7 @@
 # start date : 2012/07/12
 
 all:
+	cd SipPlatform && make
 	cd SipParser && make
 	cd SdpParser && make
 	cd XmlParser && make
@@ -17,6 +18,7 @@ all:
 	cd KSipServerLogAnalysis && make
 
 clean:
+	cd SipPlatform && make clean
 	cd SipParser && make clean
 	cd SdpParser && make clean
 	cd XmlParser && make clean
