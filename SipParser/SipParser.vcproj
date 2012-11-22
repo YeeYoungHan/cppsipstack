@@ -44,6 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="../SipPlatform"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -106,6 +107,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="../SipPlatform"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -169,6 +171,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="../SipPlatform"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -388,6 +391,18 @@
 			</File>
 			<File
 				RelativePath=".\SipVia.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="유틸리티"
+			>
+			<File
+				RelativePath=".\SipUtility.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUtility.h"
 				>
 			</File>
 		</Filter>

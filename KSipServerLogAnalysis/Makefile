@@ -6,10 +6,11 @@
 
 CC=g++
 CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
-INC=-I../SipParser -I../SipStack \
+INC=-I../SipParser -I../SipStack -I../SipPlatform \
 	-I../XmlParser -I/usr/include/mysql
 LIB=-L../SipParser -lsipparser \
 	-L../XmlParser -lxmlparser \
+	-L../SipPlatform -lsipplatform \
 	-L/usr/lib/mysql -lmysqlclient \
 	-lpthread
 

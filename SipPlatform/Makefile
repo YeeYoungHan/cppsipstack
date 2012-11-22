@@ -1,22 +1,25 @@
-# Makefile for XmlParser
+# Makefile for SipPlatform
 #
 # programmer : yee young han ( websearch@naver.com )
 #            : http://blog.naver.com/websearch
-# start date : 2012/08/09
+# start date : 2012/11/22
 
 CC=g++
 CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
-INC=-I../SipParser -I../SipPlatform
+INC=
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
 	$(CC) $(CFLAGS) -c $< $(INC)
 
-all: libxmlparser.a
+all: libsipplatform.a
 
-LIB_OBJ=XmlElement.o
+LIB_OBJ=Directory.o Log.o ServerUtility.o \
+  SipMd5.o SipMutex.o \
+  SipTcp.o SipUdp.o \
+  StringUtility.o TimeString.o
 
-libxmlparser.a: $(LIB_OBJ)
+libsipplatform.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)
 
 clean:

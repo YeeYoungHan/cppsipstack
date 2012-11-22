@@ -24,7 +24,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser"
+				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser;../SipPlatform"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -86,7 +86,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -107,7 +107,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser"
+				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser;../SipPlatform"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -149,7 +149,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -171,7 +171,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser"
+				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser;../SipPlatform"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -212,7 +212,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -235,7 +235,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser"
+				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser;../SipPlatform"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -344,26 +344,6 @@
 			</File>
 			<File
 				RelativePath=".\SipUserAgentVersion.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Utility"
-			>
-			<File
-				RelativePath=".\StringUtility.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\StringUtility.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TimeString.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TimeString.h"
 				>
 			</File>
 		</Filter>

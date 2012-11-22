@@ -6,13 +6,14 @@
 
 CC=g++
 CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
-INC=-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser \
+INC=-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser -I../SipPlatform \
 	-I../XmlParser -I/usr/include/mysql
 LIB=-L../SipUserAgent -lsipuseragent \
 	-L../SipStack -lsipstack \
 	-L../SipParser -lsipparser \
 	-L../SdpParser -lsdpparser \
 	-L../XmlParser -lxmlparser \
+	-L../SipPlatform -lsipplatform \
 	-L/usr/lib/mysql -lmysqlclient \
 	-lpthread
 
@@ -24,7 +25,6 @@ all: KSipServer.exe
 
 SRV_OBJ=KSipServer.o SipServer.o \
 	SipServerSetup.o XmlUser.o XmlSipServer.o \
-	Directory.o Log.o ServerUtility.o \
 	CallMap.o NonceMap.o UserMap.o SipServerMap.o RtpMap.o \
 	DbMySQL.o DbInsertThread.o \
   ServerThread.o MonitorThread.o RtpThread.o

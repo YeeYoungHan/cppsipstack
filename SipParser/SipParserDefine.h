@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_DEFINE_H_
-#define _SIP_DEFINE_H_
+#ifndef _SIP_PARSER_DEFINE_H_
+#define _SIP_PARSER_DEFINE_H_
 
 #include "SipPlatformDefine.h"
 

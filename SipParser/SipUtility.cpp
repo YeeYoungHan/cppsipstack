@@ -19,6 +19,7 @@
 #include "SipParserDefine.h"
 #include "SipUtility.h"
 #include "SipMutex.h"
+#include "SipMd5.h"
 #include <string>
 #include <time.h>
 
@@ -57,22 +58,6 @@ static void InitRandomString()
 	garrChar[iPos++] = '_';
 	garrChar[iPos++] = '-';
 }
-
-#ifdef WIN32
-#include <sys/timeb.h>
-
-int gettimeofday( struct timeval *tv, struct timezone *tz )
-{
-  struct _timeb timebuffer;
-
-  _ftime( &timebuffer );
-  tv->tv_sec = (long) timebuffer.time;
-  tv->tv_usec = timebuffer.millitm * 1000;
-
-  return 0;
-}
-
-#endif
 
 /**
  * @ingroup SipParser
@@ -235,4 +220,20 @@ void SipMakePrintString( const char * pszInput, int iInputSize, char * pszOutput
 	{
 		pszOutput[i] = garrChar[ pszInput[i] & 63 ];
 	}
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief 평문을 MD5 문자열로 변환한다.
+ * @param string 평문
+ * @param result MD5 문자열 저장 변수
+ */
+void SipMd5String16( char * string, char result[17] )
+{
+	unsigned char digest[16];
+
+	SipMd5Byte( string, digest );
+
+	SipMakePrintString( (char *)digest, 16, result );
+	result[16] = '\0';
 }
