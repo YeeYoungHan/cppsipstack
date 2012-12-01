@@ -27,7 +27,7 @@
 #endif
 
 /** 
- * @ingroup SipStack
+ * @ingroup SipPlatform
  * @brief		UDP 소켓을 생성한다.
  * @return	성공하면 socket handle 을 리턴한다. 그렇지 않으면 INVALID_SOCKET 를 리턴한다.
  */
@@ -45,7 +45,7 @@ Socket UdpSocket()
 }
 
 /** 
- * @ingroup SipStack
+ * @ingroup SipPlatform
  * @brief UDP listen 소켓을 생성한다. 
  * @param	iPort	UDP 포트
  * @param	pszIp	UDP IP 주소. NULL 을 입력하면 any ip 주소를 사용한다.
@@ -90,7 +90,7 @@ Socket UdpListen( unsigned short iPort, const char * pszIp )
 }
 
 /**
- * @ingroup SipStack
+ * @ingroup SipPlatform
  * @brief UDP 메시지를 수신한다.
  * @param iFd			소켓 핸들
  * @param pszBuf	수신 버퍼
@@ -136,7 +136,7 @@ bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, char * pszIp, int iIpSize,
 }
 
 /**
- * @ingroup SipStack
+ * @ingroup SipPlatform
  * @brief UDP 메시지를 수신한다.
  * @param iFd			소켓 핸들
  * @param pszBuf	수신 버퍼
@@ -174,7 +174,7 @@ bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, unsigned int * piIp, unsig
 }
 
 /**
- * @ingroup SipStack
+ * @ingroup SipPlatform
  * @brief UDP 메시지를 전송한다.
  * @param iFd			소캣 핸들
  * @param pszBuf	전송 버퍼
@@ -203,7 +203,7 @@ bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, const char * pszIp, 
 }
 
 /**
- * @ingroup SipStack
+ * @ingroup SipPlatform
  * @brief UDP 메시지를 전송한다.
  * @param iFd			소캣 핸들
  * @param pszBuf	발신 버퍼
@@ -232,7 +232,7 @@ bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, unsigned int iIp, un
 }
 
 /**
- * @ingroup SipStack
+ * @ingroup SipPlatform
  * @brief 네트워크 API 를 초기화시킨다.
  */
 void InitNetwork()
@@ -269,7 +269,7 @@ void TcpSetPollIn( struct pollfd & sttPollFd, Socket hSocket )
 
 #ifdef WIN32
 /** 
- * @ingroup SipStack
+ * @ingroup SipPlatform
  * @brief 윈도우용 poll 메소드
  *	- 현재는 read event 만 처리할 수 있다.
  */
@@ -313,7 +313,7 @@ int poll( struct pollfd *fds, unsigned int nfds, int timeout )
 #endif
 
 /**  
- * @ingroup SipStack
+ * @ingroup SipPlatform
  * @brief localhost IP 주소를 제외한 호스트에 연결된 IP 주소를 가져온다.
  * @param	strIp	IP 주소를 저장할 변수
  * @return 성공하면 true 를 리턴한다. 실패하면 false 를 리턴한다.

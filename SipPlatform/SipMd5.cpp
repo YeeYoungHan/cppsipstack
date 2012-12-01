@@ -315,35 +315,42 @@ static void MD5Final( unsigned char digest[16], MD5_CTX * context )
 }
 
 /**
- * @ingroup SipUserAgent
+ * @ingroup SipPlatform
  * @brief 평문을 MD5 문자열로 변환한다.
- * @param string 평문
- * @param result MD5 문자열 저장 변수
+ * @param pszPlainText 평문 문자열
+ * @param szMd5 MD5 문자열 저장 변수
  */
-void SipMd5String( char * string, char result[33] )
+void SipMd5String( char * pszPlainText, char szMd5[33] )
 {
 	MD5_CTX context;
 	unsigned char digest[16];
-	unsigned int len = (unsigned int)strlen (string);
+	unsigned int iLen = (unsigned int)strlen(pszPlainText);
 	int		i;
 	
 	MD5Init( &context );
-	MD5Update( &context, (unsigned char *)string, len );
+	MD5Update( &context, (unsigned char *)pszPlainText, iLen );
 	MD5Final( digest, &context );
 
-	memset( result, 0, sizeof(result) );
+	memset( szMd5, 0, sizeof(szMd5) );
 	for (i = 0; i < 16; i++)
 	{
-		sprintf( result + 2 * i, "%02x", (unsigned char)digest[i]);
+		sprintf( szMd5 + 2 * i, "%02x", (unsigned char)digest[i]);
 	}
 }
 
-void SipMd5Byte( char * string, unsigned char digest[16] )
+
+/**
+ * @ingroup SipPlatform
+ * @brief 평문을 MD5 해쉬한다.
+ * @param pszPlainText	평문 문자열
+ * @param szMd5					MD5 해쉬 결과값을 저장할 변수 ( 문자열이 아닌 바이너리 )
+ */
+void SipMd5Byte( char * pszPlainText, unsigned char szMd5[16] )
 {
 	MD5_CTX context;
-	unsigned int len = (unsigned int)strlen (string);
+	unsigned int iLen = (unsigned int)strlen (pszPlainText);
 	
 	MD5Init( &context );
-	MD5Update( &context, (unsigned char *)string, len );
-	MD5Final( digest, &context );
+	MD5Update( &context, (unsigned char *)pszPlainText, iLen );
+	MD5Final( szMd5, &context );
 }
