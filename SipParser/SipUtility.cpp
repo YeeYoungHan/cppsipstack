@@ -70,11 +70,6 @@ void SipMakeTag( char * pszTag, int iTagSize )
 	int		iTag;
 
 	gclsMutex.acquire();
-	if( garrChar[0] == '\0' )
-	{
-		InitRandomString();
-	}
-
 	if( giTag <= 0 || giTag > 2000000000 )
 	{
 		giTag = rand();
@@ -102,11 +97,6 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 	struct timeval sttTime;
 
 	gclsMutex.acquire();
-	if( garrChar[0] == '\0' )
-	{
-		InitRandomString();
-	}
-
 	if( giBranch <= 0 || giBranch > 2000000000 )
 	{
 		giBranch = rand();
@@ -132,17 +122,9 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 		iLen = snprintf( pszBranch, iBranchSize, "%sWCSS%s%x", VIA_PREFIX, gstrSystemId.c_str(), iBranch );
 	}
 
-	if( iBranchSize > iLen + 8 )
+	if( iBranchSize > ( iLen + (int)sizeof(sttTime) * 8 / 6 ) )
 	{
-		pszBranch[iLen++] = garrChar[ ( sttTime.tv_sec >> 24 ) & 63 ];
-		pszBranch[iLen++] = garrChar[ ( sttTime.tv_sec >> 16 ) & 63 ];
-		pszBranch[iLen++] = garrChar[ ( sttTime.tv_sec >> 8 ) & 63 ];
-		pszBranch[iLen++] = garrChar[ ( sttTime.tv_sec & 0xFF ) & 63 ];
-		pszBranch[iLen++] = garrChar[ ( sttTime.tv_usec >> 24 ) & 63 ];
-		pszBranch[iLen++] = garrChar[ ( sttTime.tv_usec >> 16 ) & 63 ];
-		pszBranch[iLen++] = garrChar[ ( sttTime.tv_usec >> 8 ) & 63 ];
-		pszBranch[iLen++] = garrChar[ ( sttTime.tv_usec & 0xFF ) & 63 ];
-		pszBranch[iLen] = '\0';
+		SipMakePrintString( ( unsigned char *)&sttTime, sizeof(sttTime), pszBranch + iLen, iBranchSize - iLen );
 	}
 }
 
@@ -160,11 +142,6 @@ void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 	gettimeofday( &sttTime, NULL );
 
 	gclsMutex.acquire();
-	if( garrChar[0] == '\0' )
-	{
-		InitRandomString();
-	}
-
 	if( giCallId <= 0 || giCallId > 2000000000 )
 	{
 		giCallId = rand();
@@ -188,17 +165,9 @@ void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 		iLen = snprintf( pszCallId, iCallIdSize, "WCSS%s%x", gstrSystemId.c_str(), iCallId );
 	}
 
-	if( iCallIdSize > iLen + 8 )
+	if( iCallIdSize > ( iLen + (int)sizeof(sttTime) * 8 / 6 ) )
 	{
-		pszCallId[iLen++] = garrChar[ ( sttTime.tv_sec >> 24 ) & 63 ];
-		pszCallId[iLen++] = garrChar[ ( sttTime.tv_sec >> 16 ) & 63 ];
-		pszCallId[iLen++] = garrChar[ ( sttTime.tv_sec >> 8 ) & 63 ];
-		pszCallId[iLen++] = garrChar[ ( sttTime.tv_sec & 0xFF ) & 63 ];
-		pszCallId[iLen++] = garrChar[ ( sttTime.tv_usec >> 24 ) & 63 ];
-		pszCallId[iLen++] = garrChar[ ( sttTime.tv_usec >> 16 ) & 63 ];
-		pszCallId[iLen++] = garrChar[ ( sttTime.tv_usec >> 8 ) & 63 ];
-		pszCallId[iLen++] = garrChar[ ( sttTime.tv_usec & 0xFF ) & 63 ];
-		pszCallId[iLen] = '\0';
+		SipMakePrintString( ( unsigned char *)&sttTime, sizeof(sttTime), pszCallId + iLen, iCallIdSize - iLen );
 	}
 }
 
