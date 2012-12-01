@@ -20,6 +20,7 @@
 #include "SipStackSetup.h"
 #include "SipMd5.h"
 #include "SipUtility.h"
+#include "Log.h"
 
 /**
  * @ingroup SipStack
@@ -45,24 +46,45 @@ CSipStackSetup::~CSipStackSetup()
  */
 bool CSipStackSetup::Check( )
 {
-	if( m_strLocalIp.empty() ) return false;
+	if( m_strLocalIp.empty() ) 
+	{
+		CLog::Print( LOG_ERROR, "%s m_strLocalIp is empty", __FUNCTION__ );
+		return false;
+	}
 
 	// UDP 관련 설정 점검
-	if( m_iLocalUdpPort <= 0 || m_iLocalUdpPort > 65535 ) return false;
-	if( m_iUdpThreadCount <= 0 ) return false;
+	if( m_iLocalUdpPort <= 0 || m_iLocalUdpPort > 65535 ) 
+	{
+		CLog::Print( LOG_ERROR, "%s m_iLocalUdpPort(%d) is invalid", __FUNCTION__, m_iLocalUdpPort );
+		return false;
+	}
+
+	if( m_iUdpThreadCount <= 0 ) 
+	{
+		CLog::Print( LOG_ERROR, "%s m_iUdpThreadCount(%d) is invalid", __FUNCTION__, m_iUdpThreadCount );
+		return false;
+	}
 
 	// TCP 관련 설정 점검
 	if( m_iLocalTcpPort < 0 || m_iLocalTcpPort > 65535 ) m_iLocalTcpPort = 0;
 
 	if( m_iTcpThreadCount < 0 ) 
 	{
-		if( m_iLocalTcpPort > 0 ) return false;
+		if( m_iLocalTcpPort > 0 ) 
+		{
+			CLog::Print( LOG_ERROR, "%s m_iTcpThreadCount(%d) is invalid", __FUNCTION__, m_iTcpThreadCount );
+			return false;
+		}
 		m_iTcpThreadCount = 1;
 	}
 	
 	if( m_iTcpMaxSocketPerThread < 0 ) 
 	{
-		if( m_iLocalTcpPort > 0 ) return false;
+		if( m_iLocalTcpPort > 0 ) 
+		{
+			CLog::Print( LOG_ERROR, "%s m_iTcpMaxSocketPerThread(%d) is invalid", __FUNCTION__, m_iTcpMaxSocketPerThread );
+			return false;
+		}
 		m_iTcpMaxSocketPerThread = SIP_TCP_MAX_SOCKET_PER_THREAD;
 	}
 
