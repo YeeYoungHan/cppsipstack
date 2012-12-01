@@ -32,7 +32,7 @@
  * @ingroup SipClient
  * @brief 
  */
-class CSipClient : public ISipUserAgentCallBack, public ISipNetworkLog
+class CSipClient : public ISipUserAgentCallBack
 {
 public:
 	virtual ~CSipClient(){}
@@ -47,8 +47,6 @@ public:
 	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId );
 	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage );
 	virtual void EventTimer( ){};
-
-	virtual void SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort );
 };
 
 #endif

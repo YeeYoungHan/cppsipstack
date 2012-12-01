@@ -65,7 +65,6 @@ int main( int argc, char * argv[] )
 
 	clsUserAgent.m_pclsCallBack = &clsSipClient;
 	clsUserAgent.InsertRegisterInfo( clsServerInfo );
-	gclsSipStack.AddNetworkLog( &clsSipClient );
 
 	clsUserAgent.Start( clsSetup );
 

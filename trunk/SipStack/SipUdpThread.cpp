@@ -17,6 +17,7 @@
  */
 
 #include "SipStackThread.h"
+#include "Log.h"
 
 /**
  * @ingroup SipStack
@@ -29,9 +30,9 @@
  * @param iPort				포트 번호
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort )
+static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort )
 {
-	pclsSipStack->NetworkLog( false, pszBuf, pszIp, iPort );
+	CLog::Print( LOG_NETWORK, "UdpRecv(%s:%d) [%s]", pszIp, iPort, pszBuf );
 
 	CSipMessage	* pclsMessage = new CSipMessage();
 	if( pclsMessage == NULL ) return false;

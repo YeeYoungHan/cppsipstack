@@ -20,6 +20,7 @@
 #include "SipStackThread.h"
 #include "SipStack.hpp"
 #include "SipDeleteQueue.h"
+#include "Log.h"
 
 /**
  * @ingroup SipStack
@@ -148,36 +149,6 @@ bool CSipStack::AddCallBack( ISipStackCallBack * pclsCallBack )
 	if( bFound == false )
 	{
 		m_clsCallBackList.push_back( pclsCallBack );
-	}
-
-	return true;
-}
-
-/**
- * @ingroup SipStack
- * @brief SIP 수신/발신 메시지 callback 인터페이스를 추가한다.
- * @param pclsLog SIP 수신/발신 메시지 callback 인터페이스
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipStack::AddNetworkLog( ISipNetworkLog * pclsLog )
-{
-	if( pclsLog == NULL ) return false;
-
-	SIP_NETWORK_LOG_LIST::iterator it;
-	bool	bFound = false;
-
-	for( it = m_clsNetLogList.begin(); it != m_clsNetLogList.end(); ++it )
-	{
-		if( *it == pclsLog )
-		{
-			bFound = true;
-			break;
-		}
-	}
-
-	if( bFound == false )
-	{
-		m_clsNetLogList.push_back( pclsLog );
 	}
 
 	return true;
@@ -398,7 +369,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 	bool bRes = UdpSend( m_hUdpSocket, pclsMessage->m_strPacket.c_str(), (int)pclsMessage->m_strPacket.length(), pszIp, iPort );
 	m_clsUdpSendMutex.release();
 
-	NetworkLog( true, pclsMessage->m_strPacket.c_str(), pszIp, iPort );
+	CLog::Print( LOG_NETWORK, "UdpSend(%s:%d) [%s]", pszIp, iPort, pclsMessage->m_strPacket.c_str() );
 
 	return bRes;
 }
@@ -520,24 +491,6 @@ void CSipStack::GetString( std::string & strBuf )
 void CSipStack::GetICTString( std::string & strBuf )
 {
 	m_clsICT.GetString( strBuf );
-}
-
-/**
- * @ingroup SipStack
- * @brief SIP 수신/발신 메시지 callback 인터페이스로 SIP 수신/발신 정보를 전달한다.
- * @param bSend			발신이면 true, 수신이면 false
- * @param pszPacket SIP 메시지
- * @param pszIp			발신 IP 또는 수신 IP
- * @param iPort			발신 포트 또는 수신 포트
- */
-void CSipStack::NetworkLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort )
-{
-	SIP_NETWORK_LOG_LIST::iterator	itList;
-
-	for( itList = m_clsNetLogList.begin(); itList != m_clsNetLogList.end(); ++itList )
-	{
-		(*itList)->SipLog( bSend, pszPacket, pszIp, iPort );
-	}
 }
 
 /**

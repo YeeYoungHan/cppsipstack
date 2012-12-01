@@ -49,24 +49,4 @@ public:
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage ) = 0;
 };
 
-/**
- * @ingroup SipStack
- * @brief SIP 메시지 전송/수신 callback 인터페이스
- */
-class ISipNetworkLog
-{
-public:
-	virtual ~ISipNetworkLog(){};
-
-	/**
-   * @ingroup SipStack
-	 * @brief SIP 메시지 전송/수신 이벤트 핸들러
-	 * @param bSend			전송시 true, 수신시 false
-	 * @param pszPacket SIP 메시지
-	 * @param pszIp			IP 주소
-	 * @param iPort			포트 번호
-	 */
-	virtual void SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort ) = 0;
-};
-
 #endif

@@ -165,19 +165,3 @@ bool CSipClient::EventMessage( const char * pszFrom, const char * pszTo, CSipMes
 
 	return true;
 }
-
-void CSipClient::SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort )
-{
-	struct timeval sttTime;
-	struct tm	sttTm;
-
-	gettimeofday( &sttTime, NULL );
-
-#ifdef WIN32
-	_localtime32_s( &sttTm, &sttTime.tv_sec );
-#else
-	localtime_r( &sttTime.tv_sec, &sttTm );	
-#endif
-
-	printf( "[%02d:%02d:%02d.%03d] %s [%s]\n", sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec, (int)(sttTime.tv_usec / 1000), bSend ? "Send" : "Recv", pszPacket );
-}

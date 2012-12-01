@@ -36,7 +36,6 @@ CSipUserAgent gclsUserAgent;
 
 #include "SipServerRegister.hpp"
 #include "SipServerUserAgent.hpp"
-#include "SipServerLog.hpp"
 
 CSipServer::CSipServer()
 {
@@ -60,7 +59,6 @@ bool CSipServer::Start( CSipStackSetup & clsSetup )
 	if( gclsUserAgent.Start( clsSetup ) == false ) return false;
 
 	gclsSipStack.AddCallBack( this );
-	gclsSipStack.AddNetworkLog( this );
 
 	return true;
 }
