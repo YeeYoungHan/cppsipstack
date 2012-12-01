@@ -208,17 +208,43 @@ void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
  * @param pszInput		입력 문자열
  * @param iInputSize	입력 문자열 크기
  * @param pszOutput		출력 문자열
+ * @param iOutputSize	출력 문자열 크기
  */
-void SipMakePrintString( const char * pszInput, int iInputSize, char * pszOutput )
+void SipMakePrintString( const char * pszInput, int iInputSize, char * pszOutput, int iOutputSize )
 {
 	if( garrChar[0] == '\0' )
 	{
 		InitRandomString();
 	}
 
+	char	cType = 0;
+	char	cValue = 0, cNextValue = 0;
+	int		iOutputLen = 0;
+
 	for( int i = 0; i < iInputSize; ++i )
 	{
-		pszOutput[i] = garrChar[ pszInput[i] & 63 ];
+		switch( cType )
+		{
+		case 0:
+			cValue = pszInput[i] >> 2;
+			cNextValue = pszInput[i] & 0x03;
+			pszOutput[iOutputLen++] = garrChar[ cValue ];
+			++cType;
+			break;
+		case 1:
+			cValue = cNextValue << 4 | pszInput[i] >> 4;
+			cNextValue = pszInput[i] & 0x0F;
+			pszOutput[iOutputLen++] = garrChar[ cValue ];
+			++cType;
+			break;
+		case 2:
+			cValue = cNextValue << 2 | pszInput[i] >> 6;
+			cNextValue = pszInput[i] & 0x3F;
+			pszOutput[iOutputLen++] = garrChar[ cValue ];
+			pszOutput[iOutputLen++] = garrChar[ cNextValue ];
+			cType = 0;
+			break;
+		}
 	}
 }
 
@@ -228,12 +254,12 @@ void SipMakePrintString( const char * pszInput, int iInputSize, char * pszOutput
  * @param string 평문
  * @param result MD5 문자열 저장 변수
  */
-void SipMd5String16( char * string, char result[17] )
+void SipMd5String21( char * string, char szResult[22] )
 {
 	unsigned char digest[16];
 
 	SipMd5Byte( string, digest );
 
-	SipMakePrintString( (char *)digest, 16, result );
-	result[16] = '\0';
+	SipMakePrintString( (char *)digest, 16, szResult, sizeof(szResult) );
+	szResult[21] = '\0';
 }
