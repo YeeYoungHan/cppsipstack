@@ -61,6 +61,7 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact )
 		return false;
 	}
 
+	clsInfo.m_eTransport = pclsMessage->m_eTransport;
 	time( &clsInfo.m_iLoginTime );
 
 	m_clsMutex.acquire();
@@ -68,7 +69,7 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact )
 	if( itMap == m_clsMap.end() )
 	{
 		m_clsMap.insert( USER_MAP::value_type( strUserId, clsInfo ) );
-		CLog::Print( LOG_DEBUG, "user(%s) is inserted", strUserId.c_str() );
+		CLog::Print( LOG_DEBUG, "user(%s) is inserted (%s:%d:%d)", strUserId.c_str(), clsInfo.m_strIp.c_str(), clsInfo.m_iPort, clsInfo.m_eTransport );
 	}
 	else
 	{

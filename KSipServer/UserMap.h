@@ -34,6 +34,7 @@ public:
 
 	std::string m_strIp;
 	int					m_iPort;
+	ESipTransport	m_eTransport;
 
 	time_t			m_iLoginTime;
 	int					m_iLoginTimeout;
