@@ -21,7 +21,7 @@
 #include "SipStatusCode.h"
 #include "SipUtility.h"
 
-CSipMessage::CSipMessage() : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(-1), m_iMaxForwards(-1), m_iUseCount(0)
+CSipMessage::CSipMessage() : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(-1), m_iMaxForwards(-1), m_eTransport(E_SIP_UDP), m_iUseCount(0)
 {
 }
 
@@ -730,6 +730,7 @@ CSipMessage * CSipMessage::CreateResponseWithToTag( int iStatus )
  * @brief Top Via 헤더의 IP 주소와 포트 번호를 가져온다.
  * @param strIp		IP 주소를 저장할 변수
  * @param iPort		포트 번호를 저장할 변수
+ * @param eSipTransport	SIP 메시지를 전송한 transport 방법
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
 bool CSipMessage::GetTopViaIpPort( std::string & strIp, int & iPort )
@@ -754,6 +755,8 @@ bool CSipMessage::GetTopViaIpPort( std::string & strIp, int & iPort )
 
 	if( iPort == 0 ) iPort = itViaList->m_iPort;
 	if( strIp.empty() ) strIp = itViaList->m_strHost;
+
+	const char * pszTransport = itViaList->m_strTransport.c_str();
 
 	return true;
 }

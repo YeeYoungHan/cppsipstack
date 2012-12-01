@@ -18,9 +18,47 @@
 
 #include "SipStackThread.h"
 #include "TcpSessionList.h"
+#include "Log.h"
 #include <time.h>
 
-bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort );
+/**
+ * @ingroup SipStack
+ * @brief SIP 메시지를 파싱하여서 SIP stack 에 입력한다.
+ * @param pclsSipStack SIP stack
+ * @param iThreadId		UDP 쓰레드 번호
+ * @param pszBuf			네트워크에서 수신된 SIP 메시지
+ * @param iBufLen			네트워크에서 수신된 SIP 메시지의 길이
+ * @param pszIp				IP 주소
+ * @param iPort				포트 번호
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort )
+{
+	CLog::Print( LOG_NETWORK, "TcpRecv(%s:%d) [%s]", pszIp, iPort, pszBuf );
+
+	CSipMessage	* pclsMessage = new CSipMessage();
+	if( pclsMessage == NULL ) return false;
+
+	if( pclsMessage->Parse( pszBuf, iBufLen ) == -1 )
+	{
+		delete pclsMessage;
+		return false;
+	}
+
+	if( pclsMessage->IsRequest() )
+	{
+		pclsMessage->AddIpPortToTopVia( pszIp, iPort );
+	}
+
+	pclsMessage->m_eTransport = E_SIP_TCP;
+
+	if( pclsSipStack->RecvSipMessage( iThreadId, pclsMessage ) == false )
+	{
+		delete pclsMessage;
+	}
+
+	return true;
+}
 
 /**
  * @brief TCP 세션을 종료한다.

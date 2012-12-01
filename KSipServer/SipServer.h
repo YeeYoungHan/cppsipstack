@@ -30,7 +30,7 @@
  * @ingroup KSipServer
  * @brief C++ SIP Stack 을 이용한 한국형 IP-PBX 클래스
  */
-class CSipServer : public ISipStackCallBack, ISipUserAgentCallBack, ISipNetworkLog
+class CSipServer : public ISipStackCallBack, ISipUserAgentCallBack
 {
 public:
 	CSipServer();
@@ -54,9 +54,6 @@ public:
 	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId );
 	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage );
 	virtual void EventTimer( );
-
-	// ISipNetworkLog
-	virtual void SipLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort );
 
 private:
 	CSipMutex	m_clsMutex;

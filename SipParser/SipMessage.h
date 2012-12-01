@@ -29,6 +29,13 @@
 #include "SipCallId.h"
 #include "SipContentType.h"
 
+enum ESipTransport
+{
+	E_SIP_UDP = 0,
+	E_SIP_TCP,
+	E_SIP_TLS
+};
+
 /**
  * @ingroup SipParser
  * @brief SIP 메시지 정보를 저장하는 클래스
@@ -122,6 +129,9 @@ public:
 
 	/** 네트워크로 전송할 SIP 메시지 */
 	std::string			m_strPacket;
+
+	/** 네트워크로 전송/수신된 SIP 메시지의 transport */
+	ESipTransport		m_eTransport;
 
 	/** 객체 사용 개수 */
 	int							m_iUseCount;

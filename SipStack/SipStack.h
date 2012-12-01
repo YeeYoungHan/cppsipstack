@@ -32,7 +32,6 @@
 #include "TcpSocketMap.h"
 
 typedef std::list< ISipStackCallBack * > SIP_STACK_CALLBACK_LIST;
-typedef std::list< ISipNetworkLog * > SIP_NETWORK_LOG_LIST;
 
 /**
  * @defgroup SipStack SipStack
@@ -52,7 +51,6 @@ public:
 	bool Start( CSipStackSetup & clsSetup );
 	bool Stop( );
 	bool AddCallBack( ISipStackCallBack * pclsCallBack );
-	bool AddNetworkLog( ISipNetworkLog * pclsLog );
 
 	bool SendSipMessage( CSipMessage * pclsMessage );
 	bool RecvSipMessage( int iThreadId, CSipMessage * pclsMessage );
@@ -71,8 +69,6 @@ public:
 
 	void GetString( std::string & strBuf );
 	void GetICTString( std::string & strBuf );
-
-	void NetworkLog( bool bSend, const char * pszPacket, const char * pszIp, int iPort );
 
 	bool	m_bStopEvent;						// SIP stack thread 종료 이벤트
 	bool	m_bStackThreadRun;			// SIP stack thread 가 실행 중에 있는가?
@@ -100,7 +96,6 @@ private:
 	CSipNISTList	m_clsNIST;
 
 	SIP_STACK_CALLBACK_LIST	m_clsCallBackList;
-	SIP_NETWORK_LOG_LIST		m_clsNetLogList;
 
 	bool _Stop( );
 	void CheckSipMessage( CSipMessage * pclsMessage );
