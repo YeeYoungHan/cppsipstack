@@ -41,7 +41,7 @@
 #include <sys/stat.h>
 
 /**
- * @ingroup KSipServer
+ * @ingroup SipPlatform
  * @brief 리눅스에서 일반 사용자로 수정한 후, core dump 파일 생성 가능하게 한다.
  */
 void SetCoreDumpEnable()
@@ -54,7 +54,7 @@ void SetCoreDumpEnable()
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup SipPlatform
  * @brief 데몬 모드로 동작한다.
  * @param bIsFork 데몬 모드로 동작하면 true 를 넣어주고 그렇지 않으면 false 를 넣어준다.
  * @returns true 를 리턴한다.
@@ -80,7 +80,7 @@ bool Fork( bool bIsFork )
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup SipPlatform
  * @brief 프로그램 실행 사용자를 수정한다.
  * @param pszUserId 프로그램 실행 사용자
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -114,7 +114,7 @@ bool ChangeExecuteUser( const char * pszUserId )
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup SipPlatform
  * @brief 파일이 존재하는지 검사한다.
  * @param pszFileName 파일 이름
  * @returns 파일이 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.

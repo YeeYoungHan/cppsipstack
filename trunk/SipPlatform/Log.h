@@ -28,7 +28,7 @@
 #define MAX_LOG_FILE_SIZE						1024*1024*1024
 
 /** 
- * @ingroup KSipServer
+ * @ingroup SipPlatform
  * @brief 로그 레벨 관련 ENUM
  *	CLog 에서 사용하는 ENUM 이다.
  */
@@ -49,7 +49,7 @@ enum EnumLogLevel
 };
 
 /** 
- * @ingroup KSipServer
+ * @ingroup SipPlatform
  * @brief 로그 관련 클래스
  */
 class CLog

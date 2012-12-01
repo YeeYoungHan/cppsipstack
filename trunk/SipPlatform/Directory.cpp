@@ -27,7 +27,7 @@
 #endif
 
 /** 
- * @ingroup KSipServer
+ * @ingroup SipPlatform
  * @brief 디렉토리를 생성한다. 
  *	
  *	이미 디렉토리가 생성되어 있으면 아무런 동작을 하지 않는다.
@@ -39,7 +39,6 @@
  *			실패하면 -1 을 리턴한다. 
  *			디렉토리 full pathname 중간에 디렉토리가 아닌 항목이 포함된 경우, -1 을 리턴한다.
  */
-
 int CDirectory::Create( const char * szDirName )
 {
 	int		i, iLen, iCount, n;
@@ -119,10 +118,11 @@ int CDirectory::Create( const char * szDirName )
 	return 0;
 }
 
-/** 사용자가 입력한 path 가 디렉토리인지를 점검한다.
- *
- *	@param	szDirName	[in] 디렉토리 이름
- *	@return	입력된 path 가 디렉토리이면 0 을 리턴한다.
+/** 
+ * @ingroup SipPlatform
+ * @brief 사용자가 입력한 path 가 디렉토리인지를 점검한다.
+ * @param	szDirName	[in] 디렉토리 이름
+ * @return	입력된 path 가 디렉토리이면 0 을 리턴한다.
  *			존재하지 않으면 -2 을 리턴한다.
  *			디렉토리가 아니면 -1 을 리턴한다.
  */
@@ -174,7 +174,7 @@ int CDirectory::IsDirectory( const char * szDirName )
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup SipPlatform
  * @brief 파일 경로에 파일 이름을 추가한다.
  * @param strFileName 파일 경로
  * @param pszAppend		추가할 파일 이름
