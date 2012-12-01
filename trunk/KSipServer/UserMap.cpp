@@ -83,6 +83,11 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact )
 		pclsContact->m_clsUri.m_strUser = strUserId;
 		pclsContact->m_clsUri.m_strHost = clsInfo.m_strIp;
 		pclsContact->m_clsUri.m_iPort = clsInfo.m_iPort;
+
+		if( clsInfo.m_eTransport == E_SIP_TCP )
+		{
+			pclsContact->m_clsUri.InsertParam( "transport", "tcp" );
+		}
 	}
 
 	return true;

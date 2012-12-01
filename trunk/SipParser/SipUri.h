@@ -53,6 +53,7 @@ public:
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
 	bool Empty();
+	void InsertParam( const char * pszName, const char * pszValue );
 
 	void Set( const char * pszProtocol, const char * pszUser, const char * pszHost, int iPort = 0 );
 
