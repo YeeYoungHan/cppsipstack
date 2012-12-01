@@ -23,7 +23,7 @@ void SipSetSystemId( const char * pszId );
 void SipMakeTag( char * pszTag, int iTagSize );
 void SipMakeBranch( char * pszBranch, int iBranchSize );
 void SipMakeCallIdName( char * pszCallId, int iCallIdSize );
-void SipMakePrintString( const char * pszInput, int iInputSize, char * pszOutput );
-void SipMd5String16( char * string, char result[17] );
+void SipMakePrintString( const char * pszInput, int iInputSize, char * pszOutput, int iOutputSize );
+void SipMd5String21( char * string, char result[22] );
 
 #endif
