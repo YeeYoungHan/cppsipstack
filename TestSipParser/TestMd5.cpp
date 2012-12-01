@@ -16,14 +16,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_UTILITY_H_
-#define _SIP_UTILITY_H_
+#include "SipUtility.h"
+#include <string.h>
 
-void SipSetSystemId( const char * pszId );
-void SipMakeTag( char * pszTag, int iTagSize );
-void SipMakeBranch( char * pszBranch, int iBranchSize );
-void SipMakeCallIdName( char * pszCallId, int iCallIdSize );
-bool SipMakePrintString( const unsigned char * pszInput, int iInputSize, char * pszOutput, int iOutputSize );
-void SipMd5String21( char * string, char result[22] );
+bool TestMd5()
+{
+	unsigned char	szInput[10] = { 0x04, 0x20, 0xC4, 0x14, 0x61, 0xC8, 0x24, 0xA2, 0xCC, 0x34 };
+	char	szOutput[20];
 
-#endif
+	SipMakePrintString( szInput, sizeof(szInput), szOutput, sizeof(szOutput) );
+
+	if( strcmp( szOutput, "AbBcCdDeEfFgG" ) )
+	{
+		return false;
+	}
+
+	return true;
+}
