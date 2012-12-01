@@ -531,12 +531,3 @@ bool CSipServer::EventMessage( const char * pszFrom, const char * pszTo, CSipMes
 
 	return gclsUserAgent.SendSms( pszFrom, pszTo, pclsMessage->m_strBody.c_str(), &clsRoute );
 }
-
-/**
- * @ingroup KSipServer
- * @brief 1초 단위로 실행되는 타이머 이벤트 핸들러
- */
-void CSipServer::EventTimer( )
-{
-	
-}

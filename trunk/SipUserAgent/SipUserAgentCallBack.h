@@ -149,11 +149,6 @@ public:
 	 */
 	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage ) = 0;
 
-	/**
-   * @ingroup SipUserAgent
-	 * @brief 1초 단위로 실행되는 타이머 이벤트 핸들러
-	 */
-	virtual void EventTimer( ) = 0;
 };
 
 #endif
