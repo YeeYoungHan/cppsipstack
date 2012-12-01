@@ -168,6 +168,11 @@ bool CSipUri::Empty()
 	return false;
 }
 
+void CSipUri::InsertParam( const char * pszName, const char * pszValue )
+{
+	AddSipParameter( m_clsUriParamList, pszName, pszValue );
+}
+
 /**
  * @ingroup SipParser
  * @brief 멤버 변수에 입력된 데이터를 저장한다.
