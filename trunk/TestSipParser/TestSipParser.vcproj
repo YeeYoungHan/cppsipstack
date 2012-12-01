@@ -329,6 +329,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestMd5.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestSdp.cpp"
 				>
 			</File>

@@ -60,3 +60,8 @@ int gettimeofday( struct timeval *tv, struct timezone *tz );
 #endif
 
 #endif
+
+/**
+ * @defgroup SipPlatform SipPlatform
+ * SIP stack 프로젝트에서 사용되는 OS independent 라이브러리
+ */

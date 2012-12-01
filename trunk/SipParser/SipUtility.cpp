@@ -210,7 +210,7 @@ void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
  * @param pszOutput		출력 문자열
  * @param iOutputSize	출력 문자열 크기
  */
-void SipMakePrintString( const char * pszInput, int iInputSize, char * pszOutput, int iOutputSize )
+bool SipMakePrintString( const unsigned char * pszInput, int iInputSize, char * pszOutput, int iOutputSize )
 {
 	if( garrChar[0] == '\0' )
 	{
@@ -221,8 +221,12 @@ void SipMakePrintString( const char * pszInput, int iInputSize, char * pszOutput
 	char	cValue = 0, cNextValue = 0;
 	int		iOutputLen = 0;
 
+	--iOutputSize;
+
 	for( int i = 0; i < iInputSize; ++i )
 	{
+		if( iOutputLen >= iOutputSize ) return false;
+
 		switch( cType )
 		{
 		case 0:
@@ -241,11 +245,18 @@ void SipMakePrintString( const char * pszInput, int iInputSize, char * pszOutput
 			cValue = cNextValue << 2 | pszInput[i] >> 6;
 			cNextValue = pszInput[i] & 0x3F;
 			pszOutput[iOutputLen++] = garrChar[ cValue ];
+
+			if( iOutputLen >= iOutputSize ) return false;
+
 			pszOutput[iOutputLen++] = garrChar[ cNextValue ];
 			cType = 0;
 			break;
 		}
 	}
+
+	pszOutput[iOutputLen] = '\0';
+
+	return true;
 }
 
 /**
@@ -254,12 +265,11 @@ void SipMakePrintString( const char * pszInput, int iInputSize, char * pszOutput
  * @param string 평문
  * @param result MD5 문자열 저장 변수
  */
-void SipMd5String21( char * string, char szResult[22] )
+void SipMd5String21( char * pszInput, char szResult[22] )
 {
-	unsigned char digest[16];
+	unsigned char szDigest[16];
 
-	SipMd5Byte( string, digest );
+	SipMd5Byte( pszInput, szDigest );
 
-	SipMakePrintString( (char *)digest, 16, szResult, sizeof(szResult) );
-	szResult[21] = '\0';
+	SipMakePrintString( szDigest, 16, szResult, 22 );
 }
