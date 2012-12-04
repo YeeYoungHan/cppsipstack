@@ -19,9 +19,12 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.10"
+#define KSIP_SERVER_VERSION	"0.11"
 
 /* 버전 정보 
+
+= 버전 0.11 ( 2012년 12월 04일 ) =
+ * TCP 프로토콜로 SIP 메시지 전송/수신 기능 추가 완료
 
 = 버전 0.10 ( 2012년 11월 21일 ) =
  * SIP REGISTER 응답 메시지의 Contact 헤더에 로그인된 SIP 클라이언트 정보를 저장하는 기능을 추가함.
