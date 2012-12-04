@@ -703,6 +703,7 @@ CSipMessage * CSipMessage::CreateResponse( int iStatus, const char * pszToTag )
 	pclsResponse->m_clsViaList = m_clsViaList;
 	pclsResponse->m_clsCallId = m_clsCallId;
 	pclsResponse->m_clsCSeq = m_clsCSeq;
+	pclsResponse->m_eTransport = m_eTransport;
 
 	if( pszToTag )
 	{
@@ -731,6 +732,7 @@ CSipMessage * CSipMessage::CreateResponseWithToTag( int iStatus )
 	pclsResponse->m_clsViaList = m_clsViaList;
 	pclsResponse->m_clsCallId = m_clsCallId;
 	pclsResponse->m_clsCSeq = m_clsCSeq;
+	pclsResponse->m_eTransport = m_eTransport;
 
 	if( pclsResponse->m_clsTo.SelectParam( "tag" ) == false )
 	{

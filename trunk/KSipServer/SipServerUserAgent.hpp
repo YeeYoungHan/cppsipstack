@@ -214,9 +214,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 		pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
 	}
 
-	clsRoute.m_strDestIp = clsUserInfo.m_strIp;
-	clsRoute.m_iDestPort = clsUserInfo.m_iPort;
-	clsRoute.m_eTransport = clsUserInfo.m_eTransport;
+	clsUserInfo.GetCallRoute( clsRoute );
 
 	if( gclsUserAgent.StartCall( pszFrom, pszTo, pclsRtp, &clsRoute, strCallId ) == false )
 	{
@@ -444,9 +442,7 @@ bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToC
 
 		if( gclsUserMap.Select( strToId.c_str(), clsUserInfo ) )
 		{
-			clsRoute.m_strDestIp = clsUserInfo.m_strIp;
-			clsRoute.m_iDestPort = clsUserInfo.m_iPort;
-			clsRoute.m_eTransport = clsUserInfo.m_eTransport;
+			clsUserInfo.GetCallRoute( clsRoute );
 
 			gclsUserAgent.StopCall( clsReferToCallInfo.m_strPeerCallId.c_str() );
 			gclsUserAgent.StartCall( strFromId.c_str(), strToId.c_str(), &clsRtp, &clsRoute, strNewCallId );
@@ -501,9 +497,7 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 		clsRtp.m_iPort = iStartPort;
 	}
 
-	clsRoute.m_strDestIp = clsUserInfo.m_strIp;
-	clsRoute.m_iDestPort = clsUserInfo.m_iPort;
-	clsRoute.m_eTransport = clsUserInfo.m_eTransport;
+	clsUserInfo.GetCallRoute( clsRoute );
 
 	if( gclsUserAgent.StartCall( strToId.c_str(), pszReferToId, &clsRtp, &clsRoute, strInviteCallId ) == false )
 	{
@@ -530,9 +524,7 @@ bool CSipServer::EventMessage( const char * pszFrom, const char * pszTo, CSipMes
 
 	if( gclsUserMap.Select( pszTo, clsUserInfo ) == false ) return false;
 
-	clsRoute.m_strDestIp = clsUserInfo.m_strIp;
-	clsRoute.m_iDestPort = clsUserInfo.m_iPort;
-	clsRoute.m_eTransport = clsUserInfo.m_eTransport;
+	clsUserInfo.GetCallRoute( clsRoute );
 
 	return gclsUserAgent.SendSms( pszFrom, pszTo, pclsMessage->m_strBody.c_str(), &clsRoute );
 }

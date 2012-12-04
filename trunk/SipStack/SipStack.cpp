@@ -416,6 +416,8 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 		}
 	}
 
+	
+
 	return bRes;
 }
 
@@ -608,12 +610,54 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 
 	if( pclsMessage->m_clsContactList.size() == 0 )
 	{
+		ESipTransport eTransport = E_SIP_UDP;
+
+		if( pclsMessage->IsRequest() )
+		{
+			SIP_FROM_LIST::iterator itList = pclsMessage->m_clsRouteList.begin();
+			if( itList == pclsMessage->m_clsRouteList.end() )
+			{
+				eTransport = pclsMessage->m_clsReqUri.SelectTransport();
+			}
+			else
+			{
+				eTransport = itList->m_clsUri.SelectTransport();
+			}
+		}
+		else
+		{
+			SIP_VIA_LIST::iterator itViaList = pclsMessage->m_clsViaList.begin();
+			if( itViaList != pclsMessage->m_clsViaList.end() )
+			{
+				const char * pszTemp;
+
+				pszTemp = SearchSipParameter( itViaList->m_clsParamList, SIP_TRANSPORT );
+				if( pszTemp )
+				{
+					if( !strcasecmp( pszTemp, SIP_TRANSPORT_TCP ) )
+					{
+						eTransport = E_SIP_TCP;
+					}
+				}
+				else
+				{
+					const char * pszTransport = itViaList->m_strTransport.c_str();
+
+					if( !strcasecmp( pszTransport, SIP_TRANSPORT_TCP ) )
+					{
+						eTransport = E_SIP_TCP;
+					}
+				}
+			}
+		}
+
 		CSipFrom clsContact;
 
 		clsContact.m_clsUri.m_strProtocol = "sip";
 		clsContact.m_clsUri.m_strUser = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
 		clsContact.m_clsUri.m_strHost = m_clsSetup.m_strLocalIp;
 		clsContact.m_clsUri.m_iPort = m_clsSetup.m_iLocalUdpPort;
+		clsContact.m_clsUri.InsertTransport( eTransport );
 
 		pclsMessage->m_clsContactList.push_back( clsContact );
 	}

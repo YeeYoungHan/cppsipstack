@@ -29,6 +29,13 @@ CUserInfo::CUserInfo() : m_iLoginTime(0), m_iLoginTimeout(3600), m_iOptionsSeq(0
 {
 }
 
+void CUserInfo::GetCallRoute( CSipCallRoute & clsRoute )
+{
+	clsRoute.m_strDestIp = m_strIp;
+	clsRoute.m_iDestPort = m_iPort;
+	clsRoute.m_eTransport = m_eTransport;
+}
+
 CUserMap::CUserMap()
 {
 }

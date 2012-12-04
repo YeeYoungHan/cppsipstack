@@ -85,6 +85,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 		clsDialog.m_strFromId = pclsMessage->m_clsTo.m_clsUri.m_strUser;
 		clsDialog.m_strFromTag = szTag;
+		clsDialog.m_eTransport = pclsMessage->m_eTransport;
 
 		clsDialog.m_strToId = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
 		pclsMessage->m_clsFrom.SelectParam( "tag", clsDialog.m_strToTag );
