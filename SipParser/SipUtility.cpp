@@ -187,7 +187,7 @@ bool SipMakePrintString( const unsigned char * pszInput, int iInputSize, char * 
 	}
 
 	char	cType = 0;
-	char	cValue = 0, cNextValue = 0;
+	unsigned char	cValue = 0, cNextValue = 0;
 	int		iOutputLen = 0;
 
 	--iOutputSize;

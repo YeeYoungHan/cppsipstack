@@ -773,8 +773,6 @@ bool CSipMessage::GetTopViaIpPort( std::string & strIp, int & iPort )
 	if( iPort == 0 ) iPort = itViaList->m_iPort;
 	if( strIp.empty() ) strIp = itViaList->m_strHost;
 
-	const char * pszTransport = itViaList->m_strTransport.c_str();
-
 	return true;
 }
 
