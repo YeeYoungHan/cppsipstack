@@ -19,9 +19,12 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.08"
+#define SIP_USER_AGENT_VERSION "0.09"
 
 /* 버전 정보
+
+= 버전 0.09 ( 2012년 12월 04일 ) =
+ * TCP 프로토콜로 SIP 메시지 전송/수신 기능 추가 완료
 
 = 버전 0.08 =
  * SIP MESSAGE 전송/수신 기능을 추가함.

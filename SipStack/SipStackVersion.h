@@ -19,9 +19,12 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.06"
+#define SIP_STACK_VERSION "0.07"
 
 /* 버전 정보
+
+= 버전 0.07 ( 2012년 12월 04일 ) =
+ * TCP 프로토콜로 SIP 메시지 전송/수신 기능 추가 완료
 
 = 버전 0.06 ( 2012년 10월 30일 ) =
  * TCP 프로토콜로 SIP 메시지 전송/수신 기능 추가중
