@@ -23,6 +23,9 @@ C++ SIP stack 프로젝트
  * SipParser
    - SIP 메시지 파서/생성 라이브러리
 
+ * SipPlatform
+   - C++ SIP stack 에서 사용되는 OS 독립적인 유틸리티 라이브러리
+
  * SipStack
    - SIP stack 라이브러리
 
