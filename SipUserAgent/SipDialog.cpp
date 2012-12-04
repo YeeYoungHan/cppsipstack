@@ -349,7 +349,7 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	}
 
 	// Route
-	pclsMessage->AddRoute( m_strContactIp.c_str(), m_iContactPort );
+	pclsMessage->AddRoute( m_strContactIp.c_str(), m_iContactPort, m_eTransport );
 
 	return pclsMessage;
 }

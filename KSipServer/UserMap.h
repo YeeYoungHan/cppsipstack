@@ -21,6 +21,7 @@
 
 #include "SipMutex.h"
 #include "SipMessage.h"
+#include "SipUserAgent.h"
 #include <map>
 
 /**
@@ -31,6 +32,7 @@ class CUserInfo
 {
 public:
 	CUserInfo();
+	void GetCallRoute( CSipCallRoute & clsRoute );
 
 	std::string m_strIp;
 	int					m_iPort;
