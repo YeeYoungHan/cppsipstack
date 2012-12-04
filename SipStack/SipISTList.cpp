@@ -206,7 +206,7 @@ LOOP_START:
 				{
 					memcpy( &itMap->second->m_sttStopTime, psttTime, sizeof(itMap->second->m_sttStopTime) );
 				}
-				else
+				else if( itMap->second->m_pclsResponse->m_eTransport == E_SIP_UDP )
 				{
 					m_pclsSipStack->Send( itMap->second->m_pclsResponse, false );
 				}

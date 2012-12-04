@@ -32,6 +32,12 @@
 #define SIP_PROTOCOL					"sip"
 #define SIP_VERSION						"SIP/2.0"
 
+#define SIP_TRANSPORT					"transport"
+#define SIP_RECEIVED					"received"
+#define SIP_RPORT							"rport"
+
+#define SIP_TRANSPORT_TCP			"tcp"
+
 #endif
 
 /**

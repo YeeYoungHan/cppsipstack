@@ -177,7 +177,7 @@ void CSipUri::InsertTransport( ESipTransport eTransport )
 {
 	if( eTransport == E_SIP_TCP )
 	{
-		AddSipParameter( m_clsUriParamList, "transport", "tcp" );
+		AddSipParameter( m_clsUriParamList, SIP_TRANSPORT, SIP_TRANSPORT_TCP );
 	}
 }
 
@@ -185,11 +185,11 @@ ESipTransport CSipUri::SelectTransport( )
 {
 	std::string	strValue;
 
-	if( SearchSipParameter( m_clsUriParamList, "transport", strValue ) )
+	if( SearchSipParameter( m_clsUriParamList, SIP_TRANSPORT, strValue ) )
 	{
 		const char * pszValue = strValue.c_str();
 
-		if( !strcasecmp( pszValue, "tcp" ) )
+		if( !strcasecmp( pszValue, SIP_TRANSPORT_TCP ) )
 		{
 			return E_SIP_TCP;
 		}

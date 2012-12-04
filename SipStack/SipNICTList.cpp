@@ -157,7 +157,7 @@ DELETE_TRANSACTION:
 
 					goto DELETE_TRANSACTION;
 				}
-				else
+				else if( itMap->second->m_pclsRequest->m_eTransport == E_SIP_UDP )
 				{
 					m_pclsSipStack->Send( itMap->second->m_pclsRequest, false );
 				}

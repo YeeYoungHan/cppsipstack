@@ -34,7 +34,7 @@
  */
 static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort )
 {
-	CLog::Print( LOG_NETWORK, "TcpRecv(%s:%d) [%s]", pszIp, iPort, pszBuf );
+	CLog::Print( LOG_NETWORK, "TcpRecv(%s:%d) [%.*s]", pszIp, iPort, iBufLen, pszBuf );
 
 	CSipMessage	* pclsMessage = new CSipMessage();
 	if( pclsMessage == NULL ) return false;
