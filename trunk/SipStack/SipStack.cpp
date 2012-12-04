@@ -307,6 +307,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 {
 	const char * pszIp = NULL;
 	int iPort = -1;
+	ESipTransport eTransport = E_SIP_UDP;
 
 	if( bCheckMessage )
 	{
@@ -322,11 +323,13 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 
 			pszIp = pclsMessage->m_clsReqUri.m_strHost.c_str();
 			iPort = pclsMessage->m_clsReqUri.m_iPort;
+			eTransport = pclsMessage->m_clsReqUri.SelectTransport();
 		}
 		else
 		{
 			pszIp = itList->m_clsUri.m_strHost.c_str();
 			iPort = itList->m_clsUri.m_iPort;
+			eTransport = itList->m_clsUri.SelectTransport();
 		}
 	}
 	else
@@ -350,6 +353,15 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 		if( pszIp == NULL )
 		{
 			pszIp = itViaList->m_strHost.c_str();
+		}
+
+		pszTemp = SearchSipParameter( itViaList->m_clsParamList, "transport" );
+		if( pszTemp )
+		{
+			if( !strcasecmp( pszTemp, "tcp" ) )
+			{
+				eTransport = E_SIP_TCP;
+			}
 		}
 	}
 

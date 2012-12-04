@@ -60,6 +60,9 @@ public:
 	/** SIP 요청 메시지를 전송할 포트 번호 */
 	int					m_iContactPort;
 
+	/** SIP 요청 메시지를 전송할 transport */
+	ESipTransport	m_eTransport;
+
 	/** local RTP IP 주소 */
 	std::string	m_strLocalRtpIp;
 

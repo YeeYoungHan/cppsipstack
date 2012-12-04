@@ -123,6 +123,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 			clsUserInfo.m_strIp = clsXmlSipServer.m_strIp;
 			clsUserInfo.m_iPort = clsXmlSipServer.m_iPort;
+			clsUserInfo.m_eTransport = E_SIP_UDP;
 
 			pszFrom = clsXmlUser.m_strId.c_str();
 			pszTo = strTo.c_str();
@@ -215,6 +216,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 	clsRoute.m_strDestIp = clsUserInfo.m_strIp;
 	clsRoute.m_iDestPort = clsUserInfo.m_iPort;
+	clsRoute.m_eTransport = clsUserInfo.m_eTransport;
 
 	if( gclsUserAgent.StartCall( pszFrom, pszTo, pclsRtp, &clsRoute, strCallId ) == false )
 	{

@@ -173,6 +173,31 @@ void CSipUri::InsertParam( const char * pszName, const char * pszValue )
 	AddSipParameter( m_clsUriParamList, pszName, pszValue );
 }
 
+void CSipUri::InsertTransport( ESipTransport eTransport )
+{
+	if( eTransport == E_SIP_TCP )
+	{
+		AddSipParameter( m_clsUriParamList, "transport", "tcp" );
+	}
+}
+
+ESipTransport CSipUri::SelectTransport( )
+{
+	std::string	strValue;
+
+	if( SearchSipParameter( m_clsUriParamList, "transport", strValue ) )
+	{
+		const char * pszValue = strValue.c_str();
+
+		if( !strcasecmp( pszValue, "tcp" ) )
+		{
+			return E_SIP_TCP;
+		}
+	}
+
+	return E_SIP_UDP;
+}
+
 /**
  * @ingroup SipParser
  * @brief 멤버 변수에 입력된 데이터를 저장한다.

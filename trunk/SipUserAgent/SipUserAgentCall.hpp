@@ -40,6 +40,7 @@ bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCal
 
 	clsDialog.m_strContactIp = pclsRoute->m_strDestIp;
 	clsDialog.m_iContactPort = pclsRoute->m_iDestPort;
+	clsDialog.m_eTransport = pclsRoute->m_eTransport;
 
 	if( SendInvite( clsDialog ) == false ) return false;
 	strCallId = clsDialog.m_strCallId;

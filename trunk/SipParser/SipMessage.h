@@ -29,13 +29,6 @@
 #include "SipCallId.h"
 #include "SipContentType.h"
 
-enum ESipTransport
-{
-	E_SIP_UDP = 0,
-	E_SIP_TCP,
-	E_SIP_TLS
-};
-
 /**
  * @ingroup SipParser
  * @brief SIP 메시지 정보를 저장하는 클래스
@@ -146,9 +139,9 @@ public:
 	bool IsEqualCallId( CSipMessage * pclsMessage );
 	bool GetCallId( std::string & strCallId );
 
-	bool AddIpPortToTopVia( const char * pszIp, int iPort );
-	bool AddVia( const char * pszIp, int iPort, const char * pszBranch = NULL );
-	bool AddRoute( const char * pszIp, int iPort );
+	bool AddIpPortToTopVia( const char * pszIp, int iPort, ESipTransport eTransport = E_SIP_UDP );
+	bool AddVia( const char * pszIp, int iPort, const char * pszBranch = NULL, ESipTransport eTransport = E_SIP_UDP );
+	bool AddRoute( const char * pszIp, int iPort, ESipTransport eTransport = E_SIP_UDP );
 	bool AddHeader( const char * pszName, const char * pszValue );
 
 	bool GetTopViaIpPort( std::string & strIp, int & iPort );

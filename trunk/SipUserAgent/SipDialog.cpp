@@ -25,7 +25,8 @@
  * @ingroup SipUserAgent
  * @brief 생성자
  */
-CSipDialog::CSipDialog() : m_iSeq(0), m_iContactPort(-1), m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1), m_pclsInvite(NULL)
+CSipDialog::CSipDialog() : m_iSeq(0), m_iContactPort(-1), m_eTransport(E_SIP_UDP)
+	, m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1), m_pclsInvite(NULL)
 {
 	memset( &m_sttInviteTime, 0, sizeof(m_sttInviteTime) );
 	memset( &m_sttCancelTime, 0, sizeof(m_sttCancelTime) );
@@ -55,7 +56,9 @@ CSipMessage * CSipDialog::CreateInvite( )
 	char	szBranch[SIP_BRANCH_MAX_SIZE];
 
 	SipMakeBranch( szBranch, sizeof(szBranch) );
-	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, szBranch );
+
+	// QQQ: TCP local port 를 검색해서 가져와야 한다.
+	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, szBranch, m_eTransport );
 	m_strViaBranch = szBranch;
 
 	AddSdp( pclsMessage );
@@ -317,6 +320,7 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 		return NULL;
 	}
 
+	pclsMessage->m_eTransport = m_eTransport;
 	pclsMessage->m_strSipMethod = pszSipMethod;
 
 	if( m_strContactUri.empty() == false )
@@ -326,6 +330,7 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	else
 	{
 		pclsMessage->m_clsReqUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
+		pclsMessage->m_clsReqUri.InsertTransport( m_eTransport );
 	}
 
 	if( strcmp( pszSipMethod, "ACK" ) && strcmp( pszSipMethod, "CANCEL" ) )
