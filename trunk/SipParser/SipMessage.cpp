@@ -555,12 +555,12 @@ bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort, ESipTranspor
 
 	for( itList = itViaList->m_clsParamList.begin(); itList != itViaList->m_clsParamList.end(); ++itList )
 	{
-		if( !strcmp( itList->m_strName.c_str(), "rport" ) )
+		if( !strcmp( itList->m_strName.c_str(), SIP_RPORT ) )
 		{
 			itList->m_strValue = szNum;
 			bRport = true;
 		}
-		else if( !strcmp( itList->m_strName.c_str(), "received" ) )
+		else if( !strcmp( itList->m_strName.c_str(), SIP_RECEIVED ) )
 		{
 			itList->m_strValue = pszIp;
 			bReceived = true;
@@ -571,17 +571,17 @@ bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort, ESipTranspor
 
 	if( bRport == false && itViaList->m_iPort != iPort )
 	{
-		AddSipParameter( itViaList->m_clsParamList, "rport", szNum );
+		AddSipParameter( itViaList->m_clsParamList, SIP_RPORT, szNum );
 	}
 
 	if( bReceived == false && strcmp( itViaList->m_strHost.c_str(), pszIp ) )
 	{
-		AddSipParameter( itViaList->m_clsParamList, "received", pszIp );
+		AddSipParameter( itViaList->m_clsParamList, SIP_RECEIVED, pszIp );
 	}
 
-	if( eTransport == E_SIP_TCP )
+	if( eTransport == E_SIP_TCP && strcasecmp( itViaList->m_strTransport.c_str(), SIP_TRANSPORT_TCP ) )
 	{
-		AddSipParameter( itViaList->m_clsParamList, "transport", "tcp" );
+		AddSipParameter( itViaList->m_clsParamList, SIP_TRANSPORT, SIP_TRANSPORT_TCP );
 	}
 
 	return true;
@@ -617,7 +617,7 @@ bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch,
 	clsVia.m_strHost = pszIp;
 	clsVia.m_iPort = iPort;
 
-	AddSipParameter( clsVia.m_clsParamList, "rport", NULL );
+	AddSipParameter( clsVia.m_clsParamList, SIP_RPORT, NULL );
 
 	if( pszBranch == NULL || strlen(pszBranch) == 0 )
 	{
@@ -758,12 +758,12 @@ bool CSipMessage::GetTopViaIpPort( std::string & strIp, int & iPort )
 
 	std::string strTemp;
 
-	if( SearchSipParameter( itViaList->m_clsParamList, "rport", strTemp ) )
+	if( SearchSipParameter( itViaList->m_clsParamList, SIP_RPORT, strTemp ) )
 	{
 		iPort = atoi( strTemp.c_str() );
 	}
 
-	if( SearchSipParameter( itViaList->m_clsParamList, "received", strTemp ) )
+	if( SearchSipParameter( itViaList->m_clsParamList, SIP_RECEIVED, strTemp ) )
 	{
 		strIp = strTemp;
 	}

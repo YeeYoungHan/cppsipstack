@@ -339,7 +339,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 
 		const char * pszTemp;
 
-		pszTemp = SearchSipParameter( itViaList->m_clsParamList, "rport" );
+		pszTemp = SearchSipParameter( itViaList->m_clsParamList, SIP_RPORT );
 		if( pszTemp )
 		{
 			iPort = atoi( pszTemp );
@@ -349,16 +349,25 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 			iPort = itViaList->m_iPort;
 		}
 
-		pszIp = SearchSipParameter( itViaList->m_clsParamList, "received" );
+		pszIp = SearchSipParameter( itViaList->m_clsParamList, SIP_RECEIVED );
 		if( pszIp == NULL )
 		{
 			pszIp = itViaList->m_strHost.c_str();
 		}
 
-		pszTemp = SearchSipParameter( itViaList->m_clsParamList, "transport" );
+		pszTemp = SearchSipParameter( itViaList->m_clsParamList, SIP_TRANSPORT );
 		if( pszTemp )
 		{
-			if( !strcasecmp( pszTemp, "tcp" ) )
+			if( !strcasecmp( pszTemp, SIP_TRANSPORT_TCP ) )
+			{
+				eTransport = E_SIP_TCP;
+			}
+		}
+		else
+		{
+			const char * pszTransport = itViaList->m_strTransport.c_str();
+
+			if( !strcasecmp( pszTransport, SIP_TRANSPORT_TCP ) )
 			{
 				eTransport = E_SIP_TCP;
 			}
@@ -377,11 +386,35 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 		pclsMessage->m_strPacket = szPacket;
 	}
 
-	m_clsUdpSendMutex.acquire();
-	bool bRes = UdpSend( m_hUdpSocket, pclsMessage->m_strPacket.c_str(), (int)pclsMessage->m_strPacket.length(), pszIp, iPort );
-	m_clsUdpSendMutex.release();
+	bool bRes = false;
 
-	CLog::Print( LOG_NETWORK, "UdpSend(%s:%d) [%s]", pszIp, iPort, pclsMessage->m_strPacket.c_str() );
+	if( eTransport == E_SIP_UDP )
+	{
+		m_clsUdpSendMutex.acquire();
+		bRes = UdpSend( m_hUdpSocket, pclsMessage->m_strPacket.c_str(), (int)pclsMessage->m_strPacket.length(), pszIp, iPort );
+		m_clsUdpSendMutex.release();
+
+		CLog::Print( LOG_NETWORK, "UdpSend(%s:%d) [%s]", pszIp, iPort, pclsMessage->m_strPacket.c_str() );
+	}
+	else if( eTransport == E_SIP_TCP )
+	{
+		Socket	hSocket;
+
+		if( m_clsTcpSocketMap.Select( pszIp, iPort, hSocket ) )
+		{
+			int iPacketLen = pclsMessage->m_strPacket.length();
+
+			if( TcpSend( hSocket, pclsMessage->m_strPacket.c_str(), iPacketLen ) == iPacketLen )
+			{
+				CLog::Print( LOG_NETWORK, "TcpSend(%s:%d) [%s]", pszIp, iPort, pclsMessage->m_strPacket.c_str() );
+				bRes = true;
+			}
+			else
+			{
+				CLog::Print( LOG_NETWORK, "TcpSend(%s:%d) [%s] error(%d)", pszIp, iPort, pclsMessage->m_strPacket.c_str(), GetError() );
+			}
+		}
+	}
 
 	return bRes;
 }
