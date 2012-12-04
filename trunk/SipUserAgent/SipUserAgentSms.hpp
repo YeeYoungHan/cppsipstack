@@ -41,7 +41,7 @@ bool CSipUserAgent::SendSms( const char * pszFrom, const char * pszTo, const cha
 	pclsRequest->m_clsCSeq.m_iDigit = GetSeqNum();
 	pclsRequest->m_clsCSeq.m_strMethod = pclsRequest->m_strSipMethod;
 
-	pclsRequest->AddRoute( pclsRoute->m_strDestIp.c_str(), pclsRoute->m_iDestPort );
+	pclsRequest->AddRoute( pclsRoute->m_strDestIp.c_str(), pclsRoute->m_iDestPort, pclsRoute->m_eTransport );
 	pclsRequest->m_clsCallId.Make( gclsSipStack.m_clsSetup.m_strLocalIp.c_str() );
 
 	pclsRequest->m_clsContentType.Set( "text", "plain" );

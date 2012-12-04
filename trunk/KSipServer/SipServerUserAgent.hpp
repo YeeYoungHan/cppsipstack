@@ -446,6 +446,7 @@ bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToC
 		{
 			clsRoute.m_strDestIp = clsUserInfo.m_strIp;
 			clsRoute.m_iDestPort = clsUserInfo.m_iPort;
+			clsRoute.m_eTransport = clsUserInfo.m_eTransport;
 
 			gclsUserAgent.StopCall( clsReferToCallInfo.m_strPeerCallId.c_str() );
 			gclsUserAgent.StartCall( strFromId.c_str(), strToId.c_str(), &clsRtp, &clsRoute, strNewCallId );
@@ -502,6 +503,7 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 
 	clsRoute.m_strDestIp = clsUserInfo.m_strIp;
 	clsRoute.m_iDestPort = clsUserInfo.m_iPort;
+	clsRoute.m_eTransport = clsUserInfo.m_eTransport;
 
 	if( gclsUserAgent.StartCall( strToId.c_str(), pszReferToId, &clsRtp, &clsRoute, strInviteCallId ) == false )
 	{
@@ -530,6 +532,7 @@ bool CSipServer::EventMessage( const char * pszFrom, const char * pszTo, CSipMes
 
 	clsRoute.m_strDestIp = clsUserInfo.m_strIp;
 	clsRoute.m_iDestPort = clsUserInfo.m_iPort;
+	clsRoute.m_eTransport = clsUserInfo.m_eTransport;
 
 	return gclsUserAgent.SendSms( pszFrom, pszTo, pclsMessage->m_strBody.c_str(), &clsRoute );
 }

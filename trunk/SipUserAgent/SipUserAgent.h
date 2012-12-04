@@ -37,6 +37,9 @@
 class CSipCallRoute
 {
 public:
+	CSipCallRoute() : m_eTransport( E_SIP_UDP )
+	{}
+
 	/** 格利瘤 IP 林家 */
 	std::string	m_strDestIp;
 
