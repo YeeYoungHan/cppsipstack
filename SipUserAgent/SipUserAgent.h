@@ -42,6 +42,9 @@ public:
 
 	/** 목적지 포트 번호 */
 	int					m_iDestPort;
+
+	/** SIP transport */
+	ESipTransport	m_eTransport;
 };
 
 typedef std::map< std::string, CSipDialog > SIP_DIALOG_MAP;

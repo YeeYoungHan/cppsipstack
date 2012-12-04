@@ -22,6 +22,13 @@
 #include <string>
 #include <list>
 
+enum ESipTransport
+{
+	E_SIP_UDP = 0,
+	E_SIP_TCP,
+	E_SIP_TLS
+};
+
 /**
  * @ingroup SipParser
  * @brief parameter 정보를 저장하는 클래스

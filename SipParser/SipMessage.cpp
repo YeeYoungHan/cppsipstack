@@ -541,7 +541,7 @@ bool CSipMessage::GetCallId( std::string & strCallId )
  * @param iPort SIP 메시지 발신 포트 번호
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort )
+bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort, ESipTransport eTransport )
 {
 	SIP_VIA_LIST::iterator itViaList = m_clsViaList.begin();
 	if( itViaList == m_clsViaList.end() ) return false;
@@ -579,6 +579,11 @@ bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort )
 		AddSipParameter( itViaList->m_clsParamList, "received", pszIp );
 	}
 
+	if( eTransport == E_SIP_TCP )
+	{
+		AddSipParameter( itViaList->m_clsParamList, "transport", "tcp" );
+	}
+
 	return true;
 }
 
@@ -590,7 +595,7 @@ bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort )
  * @param pszBranch Via branch tag 문자열
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch )
+bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch, ESipTransport eTransport )
 {
 	if( pszIp == NULL || strlen(pszIp) == 0 ) return false;
 	if( iPort <= 0 ) return false;
@@ -599,7 +604,16 @@ bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch 
 
 	clsVia.m_strProtocolName = "SIP";
 	clsVia.m_strProtocolVersion = "2.0";
-	clsVia.m_strTransport = "UDP";
+
+	if( eTransport == E_SIP_UDP )
+	{
+		clsVia.m_strTransport = "UDP";
+	}
+	else if( eTransport == E_SIP_TCP )
+	{
+		clsVia.m_strTransport = "TCP";
+	}
+
 	clsVia.m_strHost = pszIp;
 	clsVia.m_iPort = iPort;
 
@@ -629,7 +643,7 @@ bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch 
  * @param iPort		Route 헤더에 저장할 포트 번호
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool CSipMessage::AddRoute( const char * pszIp, int iPort )
+bool CSipMessage::AddRoute( const char * pszIp, int iPort, ESipTransport eTransport )
 {
 	if( pszIp == NULL || strlen(pszIp) == 0 ) return false;
 	if( iPort <= 0 ) return false;
@@ -640,7 +654,8 @@ bool CSipMessage::AddRoute( const char * pszIp, int iPort )
 	clsFrom.m_clsUri.m_strHost = pszIp;
 	clsFrom.m_clsUri.m_iPort = iPort;
 
-	AddSipParameter( clsFrom.m_clsUri.m_clsUriParamList, "lr", NULL );
+	clsFrom.m_clsUri.InsertParam( "lr", NULL );
+	clsFrom.m_clsUri.InsertTransport( eTransport );
 
 	m_clsRouteList.push_front( clsFrom );
 
