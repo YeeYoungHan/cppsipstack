@@ -42,6 +42,7 @@ void CThreadListEntry::Close()
 }
 
 /**
+ * @ingroup SipStack
  * @brief 소켓 사용 개수를 증가시킨다.
  */
 void CThreadListEntry::IncreaseSocketCount( bool bLock )
@@ -52,6 +53,7 @@ void CThreadListEntry::IncreaseSocketCount( bool bLock )
 }
 
 /**
+ * @ingroup SipStack
  * @brief 소켓 사용 개수를 감소시킨다.
  */
 void CThreadListEntry::DecreaseSocketCount( bool bLock )
@@ -70,6 +72,7 @@ CThreadList::~CThreadList(void)
 }
 
 /**
+ * @ingroup SipStack
  * @brief 쓰레드 리스트를 시작한다.
  * @param iThreadCount		생성할 쓰레드 개수
  * @param iThreadMaxCount	최대 쓰레드 개수
@@ -99,6 +102,7 @@ bool CThreadList::Init( int iThreadCount, int iThreadMaxCount, void *(*pThreadPr
 }
 
 /**
+ * @ingroup SipStack
  * @brief 쓰레드 리스트를 종료한다.
  */
 void CThreadList::Final()
@@ -113,6 +117,7 @@ void CThreadList::Final()
 }
 
 /**
+ * @ingroup SipStack
  * @brief 하나의 쓰레드에서 처리하는 최대 소켓 개수를 설정한다.
  * @param iMaxSocketPerThread 하나의 쓰레드에서 처리하는 최대 소켓 개수
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
@@ -127,6 +132,7 @@ bool CThreadList::SetMaxSocketPerThread( int iMaxSocketPerThread )
 }
 
 /**
+ * @ingroup SipStack
  * @brief 쓰레드에 명령을 전송한다.
  * @param pszData				명령
  * @param iDataLen			pszData 길이
@@ -188,6 +194,7 @@ bool CThreadList::SendCommand( const char * pszData, int iDataLen, int iThreadIn
 }
 
 /**
+ * @ingroup SipStack
  * @brief 명령을 수신한다.
  * @param hSocket		pipe 수신 핸들
  * @param pszData		명령 저장 변수
@@ -208,6 +215,7 @@ int CThreadList::RecvCommand( Socket hSocket, char * pszData, int iDataSize )
 }
 
 /**
+ * @ingroup SipStack
  * @brief 쓰레드 정보를 하나의 문자열에 저장한다.
  * @param strText 쓰레드 정보를 저장할 문자열 변수
  */
@@ -229,6 +237,7 @@ void CThreadList::GetString( std::string & strText )
 }
 
 /**
+ * @ingroup SipStack
  * @brief 쓰레드를 추가한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
@@ -285,6 +294,7 @@ bool CThreadList::AddThread()
 }
 
 /**
+ * @ingroup SipStack
  * @brief 쓰레드에 명령을 전송한다.
  * @param hSocket		pipe 전송 핸들
  * @param pszData		명령

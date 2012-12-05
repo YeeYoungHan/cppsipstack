@@ -402,7 +402,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 
 		if( m_clsTcpSocketMap.Select( pszIp, iPort, hSocket ) )
 		{
-			int iPacketLen = pclsMessage->m_strPacket.length();
+			int iPacketLen = (int)pclsMessage->m_strPacket.length();
 
 			if( TcpSend( hSocket, pclsMessage->m_strPacket.c_str(), iPacketLen ) == iPacketLen )
 			{

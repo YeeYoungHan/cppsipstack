@@ -33,7 +33,7 @@ CTcpSocketMap::~CTcpSocketMap()
 }
 
 /**
- * @brief 
+ * @brief 클라이언트 정보를 저장한다.
  * @param pszIp		클라이언트 IP 주소
  * @param iPort		클라이언트 포트 번호
  * @param hSocket TCP 소켓
