@@ -539,6 +539,7 @@ bool CSipMessage::GetCallId( std::string & strCallId )
  * @brief Top Via 헤더에 발신 IP 주소와 포트 번호를 추가한다.
  * @param pszIp SIP 메시지 발신 IP 주소
  * @param iPort SIP 메시지 발신 포트 번호
+ * @param eTransport SIP 메시지를 발신한 transport
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
 bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort, ESipTransport eTransport )
@@ -593,6 +594,7 @@ bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort, ESipTranspor
  * @param pszIp			Via 헤더에 저장할 IP 주소
  * @param iPort			Via 헤더에 저장할 포트 번호
  * @param pszBranch Via branch tag 문자열
+ * @param eTransport SIP 메시지를 발신할 transport
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
 bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch, ESipTransport eTransport )
@@ -641,6 +643,7 @@ bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch,
  * @brief Route 헤더를 추가한다.
  * @param pszIp		Route 헤더에 저장할 IP 주소
  * @param iPort		Route 헤더에 저장할 포트 번호
+ * @param eTransport SIP 메시지를 발신할 transport
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
 bool CSipMessage::AddRoute( const char * pszIp, int iPort, ESipTransport eTransport )
@@ -747,7 +750,6 @@ CSipMessage * CSipMessage::CreateResponseWithToTag( int iStatus )
  * @brief Top Via 헤더의 IP 주소와 포트 번호를 가져온다.
  * @param strIp		IP 주소를 저장할 변수
  * @param iPort		포트 번호를 저장할 변수
- * @param eSipTransport	SIP 메시지를 전송한 transport 방법
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
 bool CSipMessage::GetTopViaIpPort( std::string & strIp, int & iPort )

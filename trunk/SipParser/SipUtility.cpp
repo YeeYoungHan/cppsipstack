@@ -231,8 +231,8 @@ bool SipMakePrintString( const unsigned char * pszInput, int iInputSize, char * 
 /**
  * @ingroup SipUserAgent
  * @brief 평문을 MD5 문자열로 변환한다.
- * @param string 평문
- * @param result MD5 문자열 저장 변수
+ * @param pszInput 평문
+ * @param szResult MD5 문자열 저장 변수
  */
 void SipMd5String21( char * pszInput, char szResult[22] )
 {

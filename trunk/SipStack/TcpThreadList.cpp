@@ -132,6 +132,7 @@ bool CThreadList::SetMaxSocketPerThread( int iMaxSocketPerThread )
  * @param iDataLen			pszData 길이
  * @param iThreadIndex	명령을 전송할 쓰레드 인덱스
  *											-1 을 입력하면 최대 소켓 개수를 넘지 않은 쓰레드에 명령이 전송된다.
+ * @param piThreadIndex	실제 전송된 쓰레드 인덱스를 저장하는 변수
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
 bool CThreadList::SendCommand( const char * pszData, int iDataLen, int iThreadIndex, int * piThreadIndex )
