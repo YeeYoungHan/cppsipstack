@@ -26,6 +26,7 @@
 #include <string>
 
 /**
+ * @ingroup SipStack
  * @brief TCP 쓰레드에 TCP 세션을 전달할 때에 사용되는 클래스
  */
 class CTcpComm
@@ -37,6 +38,7 @@ public:
 };
 
 /**
+ * @ingroup SipStack
  * @brief TCP 쓰레드 별로 관리하는 TCP 세션 정보
  */
 class CTcpSessionListInfo
@@ -58,6 +60,7 @@ public:
 typedef std::vector< CTcpSessionListInfo > SESSION_LIST;
 
 /**
+ * @ingroup SipStack
  * @brief TCP 쓰레드 별로 관리하는 TCP 세션 정보를 저장하는 클래스
  */
 class CTcpSessionList

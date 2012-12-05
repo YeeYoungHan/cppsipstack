@@ -23,7 +23,10 @@
 
 #include "SipUdp.h"
 
-/** SIP TCP 버퍼를 관리하는 클래스 */
+/** 
+ * @ingroup SipStack
+ * @brief SIP TCP 버퍼를 관리하는 클래스 
+ */
 class CSipBuffer
 {
 public:

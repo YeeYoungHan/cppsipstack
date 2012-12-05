@@ -25,6 +25,7 @@
 #include <string>
 
 /**
+ * @ingroup SipStack
  * @brief 쓰레드 리스트에 포함되는 하나의 쓰레드 정보 저장 클래스
  */
 class CThreadListEntry
@@ -46,6 +47,7 @@ public:
 typedef std::vector< CThreadListEntry * > THREAD_LIST;
 
 /**
+ * @ingroup SipStack
  * @brief 쓰레드 리스트 자료구조
  */
 class CThreadList

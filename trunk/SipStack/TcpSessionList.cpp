@@ -46,6 +46,7 @@ CTcpSessionList::~CTcpSessionList(void)
 }
 
 /**
+ * @ingroup SipStack
  * @brief TCP 세션 정보를 초기화시킨다.
  * @param iPollFdMax TCP 세션 개수
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -76,6 +77,7 @@ bool CTcpSessionList::Init( int iPollFdMax )
 }
 
 /**
+ * @ingroup SipStack
  * @brief TCP 소켓을 추가한다.
  * @param hSocket TCP 소켓
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -91,6 +93,7 @@ bool CTcpSessionList::Insert( Socket hSocket )
 }
 
 /**
+ * @ingroup SipStack
  * @brief TCP 세션 정보를 추가한다.
  * @param clsTcpComm	TCP 세션 정보 저장 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -132,6 +135,7 @@ bool CTcpSessionList::Insert( CTcpComm & clsTcpComm )
 }
 
 /**
+ * @ingroup SipStack
  * @brief TCP 세션 정보를 삭제한다.
  * @param iIndex		TCP 세션 인덱스
  * @param pclsEntry	TCP 쓰레드 정보 객체
@@ -163,6 +167,7 @@ bool CTcpSessionList::Delete( int iIndex, CThreadListEntry * pclsEntry )
 }
 
 /**
+ * @ingroup SipStack
  * @brief 모든 TCP 세션 정보를 삭제한다.
  * @param pclsEntry	TCP 쓰레드 정보 객체
  */
@@ -185,6 +190,7 @@ void CTcpSessionList::DeleteAll( CThreadListEntry * pclsEntry )
 }
 
 /**
+ * @ingroup SipStack
  * @brief TCP 수신 timeout 이 발생한 TCP 세션을 종료시킨다.
  * @param iTimeout	TCP 수신 timeout 시간 (초단위)
  * @param pclsEntry TCP 쓰레드 정보

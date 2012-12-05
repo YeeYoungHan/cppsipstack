@@ -31,11 +31,12 @@ CSipBuffer::~CSipBuffer()
 	if( m_pszBuf ) delete [] m_pszBuf;
 }
 
-/** 내부 버퍼에 데이타를 추가한다. 
- *
- *	@param	pszBuf	입력할 데이타
- *	@param	iLen		입력할 데이타의 길이
- *	@return	성공하면 true 를 리턴한다. 실패하면 false 를 리턴한다.
+/** 
+ * @ingroup SipStack
+ * @brief	내부 버퍼에 데이타를 추가한다. 
+ * @param	pszBuf	입력할 데이타
+ * @param	iLen		입력할 데이타의 길이
+ * @return	성공하면 true 를 리턴한다. 실패하면 false 를 리턴한다.
  */
 bool CSipBuffer::AddBuf( const char * pszBuf, int iLen )
 {
@@ -61,11 +62,12 @@ bool CSipBuffer::AddBuf( const char * pszBuf, int iLen )
 	return true;
 }
 
-/** 내부 버퍼에서 SIP 메시지를 추출한다. 
- *
- *	@param	ppszBuf	추출한 SIP 메시지의 포인터를 저장할 변수
- *	@param	piLen		추출한 SIP 메시지의 길이
- *	@return	성공하면 true 를 리턴한다. 실패하면 false 를 리턴한다.
+/** 
+ * @ingroup SipStack
+ * @brief	내부 버퍼에서 SIP 메시지를 추출한다. 
+ * @param	ppszBuf	추출한 SIP 메시지의 포인터를 저장할 변수
+ * @param	piLen		추출한 SIP 메시지의 길이
+ * @return	성공하면 true 를 리턴한다. 실패하면 false 를 리턴한다.
  */
 bool CSipBuffer::GetSipMessage( char ** ppszBuf, int * piLen )
 {
@@ -162,11 +164,11 @@ bool CSipBuffer::GetSipMessage( char ** ppszBuf, int * piLen )
 	return true;
 }
 
-/** 내부 버퍼를 왼쪽으로 이동한다.
- *	- SIP 메시지를 처리한 후에 호출하면 된다.
- *
- *	@param	iLen	이동할 길이
- *	@return	성공하면 true 를 리턴한다. 실패하면 false 를 리턴한다.
+/** 
+ * @ingroup SipStack
+ * @brief 내부 버퍼를 왼쪽으로 이동한다. SIP 메시지를 처리한 후에 호출하면 된다.
+ * @param	iLen	이동할 길이
+ * @return	성공하면 true 를 리턴한다. 실패하면 false 를 리턴한다.
  */
 bool CSipBuffer::ShiftBuf( int iLen )
 {
@@ -179,6 +181,7 @@ bool CSipBuffer::ShiftBuf( int iLen )
 }
 
 /**
+ * @ingroup SipStack
  * @brief 내부 변수를 초기화시킨다.
  */
 void CSipBuffer::Clear()

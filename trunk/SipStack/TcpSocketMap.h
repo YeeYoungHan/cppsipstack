@@ -25,6 +25,7 @@
 #include "SipMutex.h"
 
 /**
+ * @ingroup SipStack
  * @brief TCP/TLS 세션 정보
  */
 class CTcpSocketInfo
@@ -38,6 +39,7 @@ public:
 typedef std::map< std::string, CTcpSocketInfo > TCP_SOCKET_MAP;
 
 /**
+ * @ingroup SipStack
  * @brief TCP/TLS 세션 정보를 저장하는 자료구조
  */
 class CTcpSocketMap
