@@ -89,6 +89,26 @@ bool CTcpSocketMap::Select( const char * pszIp, int iPort, Socket & hSocket )
 	return bRes;
 }
 
+bool CTcpSocketMap::Select( const char * pszIp, int iPort, SSL ** psttSsl )
+{
+	bool	bRes = false;
+	std::string	strKey;
+	TCP_SOCKET_MAP::iterator	it;
+	
+	GetKey( pszIp, iPort, strKey );
+
+	m_clsMutex.acquire();
+	it = m_clsMap.find( strKey );
+	if( it != m_clsMap.end() )
+	{
+		*psttSsl = it->second.m_psttSsl;
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
 /**
  * @brief 자료구조에서 클라이언트 IP 주소와 포트번호에 해당하는 정보를 삭제한다.
  * @param pszIp 클라이언트 IP 주소

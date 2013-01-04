@@ -50,7 +50,7 @@ static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const ch
 		pclsMessage->AddIpPortToTopVia( pszIp, iPort );
 	}
 
-	pclsMessage->m_eTransport = E_SIP_TCP;
+	pclsMessage->m_eTransport = E_SIP_TLS;
 
 	if( pclsSipStack->RecvSipMessage( iThreadId, pclsMessage ) == false )
 	{
@@ -98,12 +98,16 @@ void * SipTlsThread( void * lpParameter )
 				SSL	* psttSsl;
 				bool	bRes = false;
 
-				if( SSLAccept( clsTcpComm.m_hSocket, &psttSsl, false, 0, 1000 ) )
+				if( SSLAccept( clsTcpComm.m_hSocket, &psttSsl, false, 0, pclsSipStack->m_clsSetup.m_iTlsAcceptTimeout ) )
 				{
 					if( clsSessionList.Insert( clsTcpComm, psttSsl ) )
 					{
 						pclsSipStack->m_clsTlsSocketMap.Insert( clsTcpComm.m_szIp, clsTcpComm.m_iPort, clsTcpComm.m_hSocket, psttSsl );
 						bRes = true;
+					}
+					else
+					{
+						SSLClose( psttSsl );
 					}
 				}
 
@@ -122,11 +126,11 @@ void * SipTlsThread( void * lpParameter )
 		{
 			if( !(clsSessionList.m_psttPollFd[i].revents & POLLIN) ) continue;
 
-			n = recv( clsSessionList.m_psttPollFd[i].fd, szBuf, sizeof(szBuf), 0 );
+			n = SSLRecv( clsSessionList.m_clsList[i].m_psttSsl, szBuf, sizeof(szBuf) );
 			if( n <= 0 )
 			{
 CLOSE_SESSION:
-				pclsSipStack->m_clsTcpSocketMap.Delete( clsSessionList.m_clsList[i].m_strIp.c_str(), clsSessionList.m_clsList[i].m_iPort );
+				pclsSipStack->m_clsTlsSocketMap.Delete( clsSessionList.m_clsList[i].m_strIp.c_str(), clsSessionList.m_clsList[i].m_iPort );
 				clsSessionList.Delete( i, pclsEntry );
 				continue;
 			}
@@ -214,7 +218,7 @@ void * SipTlsListenThread( void * lpParameter )
 				bRes = false;
 				if( arrPollFd[i].fd == pclsSipStack->m_hTcpSocket )
 				{
-					bRes = pclsSipStack->m_clsTcpThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) );
+					bRes = pclsSipStack->m_clsTlsThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) );
 				}
 
 				if( bRes == false )

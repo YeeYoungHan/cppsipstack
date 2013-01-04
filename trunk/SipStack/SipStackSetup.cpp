@@ -27,7 +27,9 @@
  * @brief 생성자
  */
 CSipStackSetup::CSipStackSetup() : m_iLocalUdpPort(5060), m_iUdpThreadCount(1)
-	, m_iLocalTcpPort(5060), m_iTcpThreadCount(1), m_iTcpMaxSocketPerThread(SIP_TCP_MAX_SOCKET_PER_THREAD), m_iTcpRecvTimeout(SIP_TCP_RECV_TIMEOUT)
+	, m_iLocalTcpPort(0), m_iLocalTlsPort(0)
+	, m_iTcpThreadCount(1), m_iTcpMaxSocketPerThread(SIP_TCP_MAX_SOCKET_PER_THREAD), m_iTcpRecvTimeout(SIP_TCP_RECV_TIMEOUT)
+	, m_iTlsAcceptTimeout(SIP_TLS_ACCEPT_TIMEOUT)
 {
 }
 
@@ -67,10 +69,11 @@ bool CSipStackSetup::Check( )
 
 	// TCP 관련 설정 점검
 	if( m_iLocalTcpPort < 0 || m_iLocalTcpPort > 65535 ) m_iLocalTcpPort = 0;
+	if( m_iLocalTlsPort < 0 || m_iLocalTlsPort > 65535 ) m_iLocalTlsPort = 0;
 
 	if( m_iTcpThreadCount < 0 ) 
 	{
-		if( m_iLocalTcpPort > 0 ) 
+		if( m_iLocalTcpPort > 0 || m_iLocalTlsPort > 0 ) 
 		{
 			CLog::Print( LOG_ERROR, "%s m_iTcpThreadCount(%d) is invalid", __FUNCTION__, m_iTcpThreadCount );
 			return false;
@@ -80,7 +83,7 @@ bool CSipStackSetup::Check( )
 	
 	if( m_iTcpMaxSocketPerThread < 0 ) 
 	{
-		if( m_iLocalTcpPort > 0 ) 
+		if( m_iLocalTcpPort > 0 || m_iLocalTlsPort > 0 ) 
 		{
 			CLog::Print( LOG_ERROR, "%s m_iTcpMaxSocketPerThread(%d) is invalid", __FUNCTION__, m_iTcpMaxSocketPerThread );
 			return false;
@@ -92,6 +95,9 @@ bool CSipStackSetup::Check( )
 	{
 		m_iTcpRecvTimeout = SIP_TCP_RECV_TIMEOUT;
 	}
+
+	// TLS 관련 설정 점검
+	if( m_iTlsAcceptTimeout < 0 ) m_iTlsAcceptTimeout = 0;
 
 	if( m_strUserAgent.empty() == false )
 	{

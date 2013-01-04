@@ -28,7 +28,14 @@ static SSL_METHOD	* meth;
 static bool gbStartSslServer = false;
 static CSipMutex * garrMutex;
 
-/** SSL 라이브러리를 multi-thread 에서 사용할 수 있기 위한 Lock/Unlock function */
+/**
+ * @ingroup SipStack
+ * @brief SSL 라이브러리를 multi-thread 에서 사용할 수 있기 위한 Lock/Unlock function
+ * @param mode	CRYPTO_LOCK / CRYPTO_UNLOCK
+ * @param n			쓰레드 아이디
+ * @param file 
+ * @param line 
+ */
 static void SSLLockingFunction( int mode, int n, const char * file, int line )
 {
 	if( mode & CRYPTO_LOCK )
@@ -41,7 +48,11 @@ static void SSLLockingFunction( int mode, int n, const char * file, int line )
 	}
 }
 
-/** SSL 라이브러리를 multi-thread 에서 사용할 수 있기 위한 ID function */
+/**
+ * @ingroup SipStack
+ * @brief SSL 라이브러리를 multi-thread 에서 사용할 수 있기 위한 ID function
+ * @returns 현재 쓰레드 ID 를 리턴한다.
+ */
 static unsigned long SSLIdFunction( )
 {
 #ifdef WIN32
@@ -51,6 +62,11 @@ static unsigned long SSLIdFunction( )
 #endif
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SSL 라이브러리를 multi-thread 기반으로 시작한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 static bool SSLStart( )
 {
 	garrMutex = new CSipMutex[ CRYPTO_num_locks() ];
@@ -72,6 +88,11 @@ static bool SSLStart( )
 	return true;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SSL 라이브러리를 중지시킨다.
+ * @returns true 를 리턴한다.
+ */
 static bool SSLStop( )
 {
 	CRYPTO_set_id_callback(NULL);
@@ -86,6 +107,13 @@ static bool SSLStop( )
 	return true;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SSL 서버 라이브러리를 시작한다.
+ * @param szCertFile		서버 인증서 및 개인키 파일
+ * @param szCaCertFile	CA 인증서 파일
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool SSLServerStart( const char * szCertFile, const char * szCaCertFile )
 {
 	int	n;
@@ -148,6 +176,11 @@ bool SSLServerStart( const char * szCertFile, const char * szCaCertFile )
 	return true;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SSL 서버 라이브러리를 종료한다.
+ * @returns true 를 리턴한다.
+ */
 bool SSLServerStop( )
 {
 	if( gbStartSslServer )
@@ -161,6 +194,16 @@ bool SSLServerStop( )
 	return true;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 클라이언트 SSL 접속 요청을 허용한다.
+ * @param iFd								클라이언트 TCP 소켓 핸들
+ * @param ppsttSsl					SSL 구조체
+ * @param bCheckClientCert	클라이언트 인증서를 확인할 것인가?
+ * @param iVerifyDepth			the maximum depth for the certificate chain verification that shall be allowed for ssl
+ * @param iAcceptTimeout		SSL 접속 요청 처리 최대 시간 ( ms 단위 )
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool SSLAccept( Socket iFd, SSL ** ppsttSsl, bool bCheckClientCert, int iVerifyDepth, int iAcceptTimeout )
 {
 	SSL * psttSsl;
@@ -173,21 +216,24 @@ bool SSLAccept( Socket iFd, SSL ** ppsttSsl, bool bCheckClientCert, int iVerifyD
 
 	SSL_set_fd( psttSsl, (int)iFd );
 
-#ifdef WIN32
-	int		iTimeout = iAcceptTimeout;
-	setsockopt( iFd, SOL_SOCKET, SO_RCVTIMEO, (char *)&iTimeout, sizeof(iTimeout) );
-#else
-	struct timeval	sttTime;
-
-	sttTime.tv_sec = iAcceptTimeout / 1000;
-	sttTime.tv_usec = ( iAcceptTimeout % 1000 ) * 1000;
-
-	CLog::Print( LOG_DEBUG, "SO_RCVTIMEO(%d.%d)", sttTime.tv_sec, sttTime.tv_usec );
-	if( setsockopt( iFd, SOL_SOCKET, SO_RCVTIMEO, &sttTime, sizeof(sttTime) ) == -1 )
+	if( iAcceptTimeout > 0 )
 	{
-		CLog::Print( LOG_ERROR, "setsockopt(SO_RCVTIMEO:%d.%d) error(%d)", sttTime.tv_sec, sttTime.tv_usec, GetError() );
-	}
+#ifdef WIN32
+		int		iTimeout = iAcceptTimeout;
+		setsockopt( iFd, SOL_SOCKET, SO_RCVTIMEO, (char *)&iTimeout, sizeof(iTimeout) );
+#else
+		struct timeval	sttTime;
+
+		sttTime.tv_sec = iAcceptTimeout / 1000;
+		sttTime.tv_usec = ( iAcceptTimeout % 1000 ) * 1000;
+
+		CLog::Print( LOG_DEBUG, "SO_RCVTIMEO(%d.%d)", sttTime.tv_sec, sttTime.tv_usec );
+		if( setsockopt( iFd, SOL_SOCKET, SO_RCVTIMEO, &sttTime, sizeof(sttTime) ) == -1 )
+		{
+			CLog::Print( LOG_ERROR, "setsockopt(SO_RCVTIMEO:%d.%d) error(%d)", sttTime.tv_sec, sttTime.tv_usec, GetError() );
+		}
 #endif
+	}
 
 	// QQQ : SSL 프로토콜이 아닌 경우에 메모리 에러가 발생하므로 아래와 같이
 	//     : 막아 놓았음. 더 좋은 방법을 모색하여야 함.
@@ -213,24 +259,36 @@ bool SSLAccept( Socket iFd, SSL ** ppsttSsl, bool bCheckClientCert, int iVerifyD
 		return false;
 	}
 
-
-#ifdef WIN32
-	iTimeout = 0;	
-	setsockopt( iFd, SOL_SOCKET, SO_RCVTIMEO, (char *)&iTimeout, sizeof(iTimeout) );
-#else
-	sttTime.tv_sec = 0;
-	sttTime.tv_usec = 0;
-	if( setsockopt( iFd, SOL_SOCKET, SO_RCVTIMEO, &sttTime, sizeof(sttTime) ) == -1 )
+	if( iAcceptTimeout > 0 )
 	{
-		CLog::Print( LOG_ERROR, "setsockopt(SO_RCVTIMEO:%d.%d) error(%d)", sttTime.tv_sec, sttTime.tv_usec, GetError() );
-	}
+#ifdef WIN32
+		int iTimeout = 0;	
+		setsockopt( iFd, SOL_SOCKET, SO_RCVTIMEO, (char *)&iTimeout, sizeof(iTimeout) );
+#else
+		struct timeval	sttTime;
+
+		sttTime.tv_sec = 0;
+		sttTime.tv_usec = 0;
+		if( setsockopt( iFd, SOL_SOCKET, SO_RCVTIMEO, &sttTime, sizeof(sttTime) ) == -1 )
+		{
+			CLog::Print( LOG_ERROR, "setsockopt(SO_RCVTIMEO:%d.%d) error(%d)", sttTime.tv_sec, sttTime.tv_usec, GetError() );
+		}
 #endif
+	}
 
 	*ppsttSsl = psttSsl;
 
 	return true;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SSL 프로토콜로 패킷을 전송한다.
+ * @param ssl			SSL 구조체
+ * @param szBuf		전송 패킷
+ * @param iBufLen 전송 패킷 크기
+ * @returns 전송 패킷 크기를 리턴한다.
+ */
 int SSLSend( SSL * ssl, const char * szBuf, int iBufLen )
 {
 	int		n;	
@@ -255,11 +313,25 @@ int SSLSend( SSL * ssl, const char * szBuf, int iBufLen )
 	return iBufLen;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SSL 프로토콜로 수신된 패킷을 읽는다.
+ * @param ssl			SSL 구조체
+ * @param szBuf		수신 패킷 저장 버퍼
+ * @param iBufLen 수신 패킷 저장 버퍼 크기
+ * @returns 성공하면 양수를 리턴하고 실패하면 0 또는 음수를 리턴한다.
+ */
 int SSLRecv( SSL * ssl, char * szBuf, int iBufLen )
 {
 	return SSL_read( ssl, szBuf, iBufLen );
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SSL 세션을 종료한다.
+ * @param ssl	SSL 구조체
+ * @returns true 를 리턴한다.
+ */
 bool SSLClose( SSL * ssl )
 {
 	if( ssl ) 

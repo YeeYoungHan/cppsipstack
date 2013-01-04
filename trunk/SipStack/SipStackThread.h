@@ -30,6 +30,12 @@ DWORD WINAPI SipTcpThread( LPVOID lpParameter );
 void * SipTcpThread( void * lpParameter );
 #endif
 
+#ifdef WIN32
+DWORD WINAPI SipTlsThread( LPVOID lpParameter );
+#else
+void * SipTlsThread( void * lpParameter );
+#endif
+
 bool StartSipTcpListenThread( CSipStack * pclsSipStack );
 bool StartSipTlsListenThread( CSipStack * pclsSipStack );
 
