@@ -45,6 +45,9 @@ public:
 	/** SIP 메시지 전송/수신용 TCP 포트 번호 */
 	int					m_iLocalTcpPort;
 
+	/** SIP 메시지 전송/수신용 TLS 포트 번호 */
+	int					m_iLocalTlsPort;
+
 	/** SIP 메시지 수신용 TCP 쓰레드 개수 */
 	int					m_iTcpThreadCount;
 
@@ -53,6 +56,12 @@ public:
 
 	/** SIP 메시지 수신용 TCP 소켓의 수신 대기 시간 (초단위) */
 	int					m_iTcpRecvTimeout;
+
+	/** TLS 세션 handshake 대기 시간 (초단위) */
+	int					m_iTlsAcceptTimeout;
+
+	/** TLS 세션을 위한 서버 인증서 + 개인키를 포함한 PEM 파일 */
+	std::string	m_strCertFile;
 
 	/** SIP UserAgent 헤더에 저장될 문자열 */
 	std::string	m_strUserAgent;

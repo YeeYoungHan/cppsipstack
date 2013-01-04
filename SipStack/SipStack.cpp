@@ -32,6 +32,7 @@ CSipStack::CSipStack()
 	m_bStackThreadRun = false;
 	m_hUdpSocket = INVALID_SOCKET;
 	m_hTcpSocket = INVALID_SOCKET;
+	m_hTlsSocket = INVALID_SOCKET;
 	m_bStarted = false;
 	m_iUdpThreadRunCount = 0;
 	m_iTcpThreadRunCount = 0;
@@ -85,6 +86,35 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 		}
 
 		if( StartSipTcpListenThread( this ) == false )
+		{
+			_Stop();
+			return false;
+		}
+	}
+
+	if( m_clsSetup.m_iLocalTlsPort > 0 )
+	{
+		if( SSLServerStart( m_clsSetup.m_strCertFile.c_str(), "" ) == false )
+		{
+			_Stop();
+			return false;
+		}
+
+		m_hTlsSocket = TcpListen( m_clsSetup.m_iLocalTlsPort, 255, NULL );
+		if( m_hTlsSocket == INVALID_SOCKET ) 
+		{
+			_Stop();
+			return false;
+		}
+
+		m_clsTlsThreadList.SetMaxSocketPerThread( m_clsSetup.m_iTcpMaxSocketPerThread );
+		if( m_clsTlsThreadList.Init( m_clsSetup.m_iTcpThreadCount, m_clsSetup.m_iTcpThreadCount, SipTlsThread, this ) == false )
+		{
+			_Stop();
+			return false;
+		}
+
+		if( StartSipTlsListenThread( this ) == false )
 		{
 			_Stop();
 			return false;
@@ -415,9 +445,26 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 			}
 		}
 	}
+	else if( eTransport == E_SIP_TLS )
+	{
+		SSL * psttSsl = NULL;
 
+		if( m_clsTcpSocketMap.Select( pszIp, iPort, &psttSsl ) )
+		{
+			int iPacketLen = (int)pclsMessage->m_strPacket.length();
+
+			if( SSLSend( psttSsl, pclsMessage->m_strPacket.c_str(), iPacketLen ) == iPacketLen )
+			{
+				CLog::Print( LOG_NETWORK, "TlsSend(%s:%d) [%s]", pszIp, iPort, pclsMessage->m_strPacket.c_str() );
+				bRes = true;
+			}
+			else
+			{
+				CLog::Print( LOG_NETWORK, "TlsSend(%s:%d) [%s] error(%d)", pszIp, iPort, pclsMessage->m_strPacket.c_str(), GetError() );
+			}
+		}
+	}
 	
-
 	return bRes;
 }
 
@@ -581,7 +628,14 @@ bool CSipStack::_Stop( )
 		m_hTcpSocket = INVALID_SOCKET;
 	}
 
+	if( m_hTlsSocket != INVALID_SOCKET )
+	{
+		closesocket( m_hTlsSocket );
+		m_hTlsSocket = INVALID_SOCKET;
+	}
+
 	m_clsTcpThreadList.Final();
+	m_clsTlsThreadList.Final();
 
 	m_bStopEvent = false;
 

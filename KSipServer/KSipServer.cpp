@@ -112,6 +112,10 @@ int ServerMain( )
 
 	clsSetup.m_iLocalTcpPort = gclsSetup.m_iTcpPort;
 	clsSetup.m_iTcpThreadCount = gclsSetup.m_iTcpThreadCount;
+
+	clsSetup.m_iLocalTlsPort = gclsSetup.m_iTlsPort;
+	clsSetup.m_iTlsAcceptTimeout = gclsSetup.m_iTlsAcceptTimeout;
+	clsSetup.m_strCertFile = gclsSetup.m_strCertFile;
 	
 	clsSetup.m_strUserAgent = "KSipServer_";
 	clsSetup.m_strUserAgent.append( KSIP_SERVER_VERSION );

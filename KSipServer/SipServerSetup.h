@@ -58,6 +58,15 @@ public:
 	/** SIP 통신을 위한 TCP 수신 최대 대기 시간 ( 초단위 ) */
 	int					m_iTcpRecvTimeout;
 
+	/** SIP 통신을 위한 TLS 포트 번호 */
+	int					m_iTlsPort;
+
+	/** SIP 통신을 위한 TLS handshake timeout 시간 (초단위) */
+	int					m_iTlsAcceptTimeout;
+
+	/** TLS 프로토콜을 위한 서버 인증서 + 키를 포함한 PEM 파일 full path */ 
+	std::string	m_strCertFile;
+
 	/** SIP 통신을 위한 realm */
 	std::string	m_strRealm;
 

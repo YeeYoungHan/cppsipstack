@@ -52,6 +52,7 @@ public:
 
 	bool Insert( const char * pszIp, int iPort, Socket hSocket, SSL * psttSsl = NULL );
 	bool Select( const char * pszIp, int iPort, Socket & hSocket );
+	bool Select( const char * pszIp, int iPort, SSL ** psttSsl );
 	bool Delete( const char * pszIp, int iPort );
 	void GetString( std::string & strText );
 
