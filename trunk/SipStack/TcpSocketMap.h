@@ -23,6 +23,7 @@
 #include <string>
 #include <map>
 #include "SipMutex.h"
+#include "TlsFunction.h"
 
 /**
  * @ingroup SipStack
@@ -34,6 +35,7 @@ public:
 	CTcpSocketInfo();
 
 	Socket	m_hSocket;
+	SSL			* m_psttSsl;
 };
 
 typedef std::map< std::string, CTcpSocketInfo > TCP_SOCKET_MAP;
@@ -48,7 +50,7 @@ public:
 	CTcpSocketMap(void);
 	~CTcpSocketMap(void);
 
-	bool Insert( const char * pszIp, int iPort, Socket hSocket );
+	bool Insert( const char * pszIp, int iPort, Socket hSocket, SSL * psttSsl = NULL );
 	bool Select( const char * pszIp, int iPort, Socket & hSocket );
 	bool Delete( const char * pszIp, int iPort );
 	void GetString( std::string & strText );

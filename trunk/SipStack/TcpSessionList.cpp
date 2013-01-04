@@ -20,7 +20,7 @@
 #include "TcpSessionList.h"
 #include <time.h>
 
-CTcpSessionListInfo::CTcpSessionListInfo() : m_iPort(0), m_iConnectTime(0), m_iRecvTime(0)
+CTcpSessionListInfo::CTcpSessionListInfo() : m_iPort(0), m_psttSsl(NULL), m_iConnectTime(0), m_iRecvTime(0)
 {
 
 }
@@ -96,9 +96,10 @@ bool CTcpSessionList::Insert( Socket hSocket )
  * @ingroup SipStack
  * @brief TCP 세션 정보를 추가한다.
  * @param clsTcpComm	TCP 세션 정보 저장 객체
+ * @param psttSsl			SSL 세션 정보 저장 구조체 - SSL 세션인 경우만 저장한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CTcpSessionList::Insert( CTcpComm & clsTcpComm )
+bool CTcpSessionList::Insert( CTcpComm & clsTcpComm, SSL * psttSsl )
 {
 	time_t	iTime;
 
@@ -115,6 +116,7 @@ bool CTcpSessionList::Insert( CTcpComm & clsTcpComm )
 				m_clsList[i].m_iPort = clsTcpComm.m_iPort;
 				m_clsList[i].m_iConnectTime = iTime;
 				m_clsList[i].m_iRecvTime = iTime;
+				m_clsList[i].m_psttSsl = psttSsl;
 
 				return true;
 			}
@@ -128,6 +130,7 @@ bool CTcpSessionList::Insert( CTcpComm & clsTcpComm )
 	m_clsList[m_iPoolFdCount].m_iPort = clsTcpComm.m_iPort;
 	m_clsList[m_iPoolFdCount].m_iConnectTime = iTime;
 	m_clsList[m_iPoolFdCount].m_iRecvTime = iTime;
+	m_clsList[m_iPoolFdCount].m_psttSsl = psttSsl;
 
 	++m_iPoolFdCount;
 
@@ -144,6 +147,12 @@ bool CTcpSessionList::Insert( CTcpComm & clsTcpComm )
 bool CTcpSessionList::Delete( int iIndex, CThreadListEntry * pclsEntry )
 {
 	if( iIndex >= m_iPoolFdCount || iIndex < 0 ) return false;
+
+	if( m_clsList[iIndex].m_psttSsl )
+	{
+		SSLClose( m_clsList[iIndex].m_psttSsl );
+		m_clsList[iIndex].m_psttSsl = NULL;
+	}
 
 	closesocket( m_psttPollFd[iIndex].fd );
 
@@ -175,6 +184,12 @@ void CTcpSessionList::DeleteAll( CThreadListEntry * pclsEntry )
 {
 	for( int i = 0; i < m_iPoolFdCount; ++i )
 	{
+		if( m_clsList[i].m_psttSsl )
+		{
+			SSLClose( m_clsList[i].m_psttSsl );
+			m_clsList[i].m_psttSsl = NULL;
+		}
+
 		if( m_psttPollFd[i].fd != INVALID_SOCKET )
 		{
 			closesocket( m_psttPollFd[i].fd );
