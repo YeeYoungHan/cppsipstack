@@ -81,6 +81,7 @@ public:
 
 	CThreadList		m_clsTcpThreadList;
 	CTcpSocketMap	m_clsTcpSocketMap;
+	CTcpSocketMap	m_clsTlsSocketMap;
 
 private:
 	bool	 m_bStarted;

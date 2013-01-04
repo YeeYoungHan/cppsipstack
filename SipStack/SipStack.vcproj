@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipParser;../SipPlatform"
+				AdditionalIncludeDirectories="../SipParser;../SipPlatform;../openssl-32bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -107,7 +107,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipParser;../SipPlatform"
+				AdditionalIncludeDirectories="../SipParser;../SipPlatform;../openssl-64bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -171,7 +171,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipParser;../SipPlatform"
+				AdditionalIncludeDirectories="../SipParser;../SipPlatform;../openssl-32bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -235,7 +235,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipParser;../SipPlatform"
+				AdditionalIncludeDirectories="../SipParser;../SipPlatform;../openssl-64bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -399,6 +399,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipTlsThread.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipUdpThread.cpp"
 				>
 			</File>
@@ -436,6 +440,18 @@
 			</File>
 			<File
 				RelativePath=".\TcpThreadList.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="TLS"
+			>
+			<File
+				RelativePath=".\TlsFunction.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TlsFunction.h"
 				>
 			</File>
 		</Filter>

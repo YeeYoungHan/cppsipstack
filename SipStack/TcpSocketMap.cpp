@@ -37,9 +37,10 @@ CTcpSocketMap::~CTcpSocketMap()
  * @param pszIp		클라이언트 IP 주소
  * @param iPort		클라이언트 포트 번호
  * @param hSocket TCP 소켓
+ * @param psttSsl	SSL 구조체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CTcpSocketMap::Insert( const char * pszIp, int iPort, Socket hSocket )
+bool CTcpSocketMap::Insert( const char * pszIp, int iPort, Socket hSocket, SSL * psttSsl )
 {
 	std::string	strKey;
 	CTcpSocketInfo	clsTcpSocketInfo;
@@ -52,6 +53,7 @@ bool CTcpSocketMap::Insert( const char * pszIp, int iPort, Socket hSocket )
 	if( it == m_clsMap.end() )
 	{
 		clsTcpSocketInfo.m_hSocket = hSocket;
+		clsTcpSocketInfo.m_psttSsl = psttSsl;
 
 		m_clsMap.insert( TCP_SOCKET_MAP::value_type( strKey, clsTcpSocketInfo ) );
 	}

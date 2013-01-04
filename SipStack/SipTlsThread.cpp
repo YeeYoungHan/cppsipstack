@@ -34,7 +34,7 @@
  */
 static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort )
 {
-	CLog::Print( LOG_NETWORK, "TcpRecv(%s:%d) [%.*s]", pszIp, iPort, iBufLen, pszBuf );
+	CLog::Print( LOG_NETWORK, "TlsRecv(%s:%d) [%.*s]", pszIp, iPort, iBufLen, pszBuf );
 
 	CSipMessage	* pclsMessage = new CSipMessage();
 	if( pclsMessage == NULL ) return false;
@@ -61,14 +61,14 @@ static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const ch
 }
 
 /**
- * @brief TCP 세션을 위한 쓰레드 함수
+ * @brief TLS 세션을 위한 쓰레드 함수
  * @param lpParameter CThreadListEntry 객체의 포인터
  * @returns 0 을 리턴한다.
  */
 #ifdef WIN32
-DWORD WINAPI SipTcpThread( LPVOID lpParameter )
+DWORD WINAPI SipTlsThread( LPVOID lpParameter )
 #else
-void * SipTcpThread( void * lpParameter )
+void * SipTlsThread( void * lpParameter )
 #endif
 {
 	CThreadListEntry * pclsEntry = (CThreadListEntry *)lpParameter;
@@ -95,11 +95,19 @@ void * SipTcpThread( void * lpParameter )
 		{
 			if( CThreadList::RecvCommand( clsSessionList.m_psttPollFd[0].fd, (char *)&clsTcpComm, sizeof(clsTcpComm) ) == sizeof(clsTcpComm) )
 			{
-				if( clsSessionList.Insert( clsTcpComm ) )
+				SSL	* psttSsl;
+				bool	bRes = false;
+
+				if( SSLAccept( clsTcpComm.m_hSocket, &psttSsl, false, 0, 1000 ) )
 				{
-					pclsSipStack->m_clsTcpSocketMap.Insert( clsTcpComm.m_szIp, clsTcpComm.m_iPort, clsTcpComm.m_hSocket );
+					if( clsSessionList.Insert( clsTcpComm, psttSsl ) )
+					{
+						pclsSipStack->m_clsTlsSocketMap.Insert( clsTcpComm.m_szIp, clsTcpComm.m_iPort, clsTcpComm.m_hSocket, psttSsl );
+						bRes = true;
+					}
 				}
-				else
+
+				if( bRes == false )
 				{
 					closesocket( clsTcpComm.m_hSocket );
 					pclsEntry->DecreaseSocketCount();
@@ -151,14 +159,14 @@ FUNC_END:
 
 /** 
  * @ingroup SipStack
- * @brief TCP 프로토콜로 SIP 메시지 수신 및 SIP 수신 이벤트를 처리하는 쓰레드 함수
+ * @brief TLS 프로토콜로 SIP 메시지 수신 및 SIP 수신 이벤트를 처리하는 쓰레드 함수
  * @param lpParameter SIP stack 포인터
  * @returns 0 을 리턴한다.
  */
 #ifdef WIN32
-DWORD WINAPI SipTcpListenThread( LPVOID lpParameter )
+DWORD WINAPI SipTlsListenThread( LPVOID lpParameter )
 #else
-void * SipTcpListenThread( void * lpParameter )
+void * SipTlsListenThread( void * lpParameter )
 #endif
 {
 	CSipStack * pclsSipStack = (CSipStack *)lpParameter;
@@ -223,11 +231,11 @@ FUNC_END:
 
 /**
  * @ingroup SipStack
- * @brief TCP 프로토콜로 SIP 메시지 수신 및 SIP 수신 이벤트를 처리하는 Thread Pool 을 시작한다.
+ * @brief TLS 프로토콜로 SIP 메시지 수신 및 SIP 수신 이벤트를 처리하는 Thread Pool 을 시작한다.
  * @param pclsSipStack SIP stack 포인터
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool StartSipTcpListenThread( CSipStack * pclsSipStack )
+bool StartSipTlsListenThread( CSipStack * pclsSipStack )
 {
-	return StartThread( "SipTcpListenThread", SipTcpListenThread, pclsSipStack );
+	return StartThread( "SipTlsListenThread", SipTlsListenThread, pclsSipStack );
 }

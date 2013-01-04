@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser"
+				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../openssl-32bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -64,8 +64,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib"
+				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories=";../openssl-32bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -118,7 +119,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser"
+				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../openssl-64bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -138,8 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib"
+				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories=";../openssl-64bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="17"
@@ -193,7 +195,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser"
+				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../openssl-32bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -212,8 +214,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib"
+				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories=";../openssl-32bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -270,7 +273,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser"
+				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../openssl-64bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -289,8 +292,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib"
+				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories=";../openssl-64bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"

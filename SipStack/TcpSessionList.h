@@ -22,6 +22,7 @@
 #include "SipTcp.h"
 #include "SipBuffer.h"
 #include "TcpThreadList.h"
+#include "TlsFunction.h"
 #include <vector>
 #include <string>
 
@@ -49,7 +50,7 @@ public:
 
 	std::string		m_strIp;
 	int						m_iPort;
-	//SSL						* m_psttSsl;
+	SSL						* m_psttSsl;
 
 	CSipBuffer		m_clsSipBuf;
 
@@ -71,7 +72,7 @@ public:
 
 	bool Init( int iPollFdMax );
 	bool Insert( Socket hSocket );
-	bool Insert( CTcpComm & clsTcpComm );
+	bool Insert( CTcpComm & clsTcpComm, SSL * psttSsl = NULL );
 	bool Delete( int iIndex, CThreadListEntry * pclsEntry );
 	void DeleteAll( CThreadListEntry * pclsEntry );
 	void DeleteTimeout( int iTimeout, CThreadListEntry * pclsEntry );

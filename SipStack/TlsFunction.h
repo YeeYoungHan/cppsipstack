@@ -16,21 +16,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_STACK_THREAD_H_
-#define _SIP_STACK_THREAD_H_
+#ifndef _TLS_FUNCTION_H_
+#define _TLS_FUNCTION_H_
 
-#include "SipStack.h"
+#include "SipTcp.h"
+#include <openssl/rsa.h>
+#include <openssl/crypto.h>
+#include <openssl/x509.h>
+#include <openssl/pem.h>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
 
-bool StartSipUdpThread( CSipStack * pclsSipStack );
-bool StartSipStackThread( CSipStack * pclsSipStack );
-
-#ifdef WIN32
-DWORD WINAPI SipTcpThread( LPVOID lpParameter );
-#else
-void * SipTcpThread( void * lpParameter );
-#endif
-
-bool StartSipTcpListenThread( CSipStack * pclsSipStack );
-bool StartSipTlsListenThread( CSipStack * pclsSipStack );
+bool SSLServerStart( const char * szCertFile, const char * szCaCertFile );
+bool SSLServerStop( );
+bool SSLAccept( Socket iFd, SSL ** ppsttSsl, bool bCheckClientCert, int iVerifyDepth, int iAcceptTimeout );
+int SSLSend( SSL * ssl, const char * szBuf, int iBufLen );
+int SSLRecv( SSL * ssl, char * szBuf, int iBufLen );
+bool SSLClose( SSL * ssl );
 
 #endif
