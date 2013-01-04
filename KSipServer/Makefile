@@ -15,7 +15,7 @@ LIB=-L../SipUserAgent -lsipuseragent \
 	-L../XmlParser -lxmlparser \
 	-L../SipPlatform -lsipplatform \
 	-L/usr/lib/mysql -lmysqlclient \
-	-lpthread
+	-lssl -lpthread
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp

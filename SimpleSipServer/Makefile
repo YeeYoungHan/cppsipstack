@@ -10,7 +10,7 @@ INC=-I../SipStack -I../SipParser -I../SdpParser -I../SipPlatform
 LIB=-L../SipStack -lsipstack \
 	-L../SipParser -lsipparser \
 	-L../SipPlatform -lsipplatform \
-	-lpthread
+	-lssl -lpthread
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp

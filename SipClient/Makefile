@@ -10,7 +10,7 @@ INC=-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser -I../SipPlatfo
 LIB=-L../SipUserAgent -lsipuseragent \
 	-L../SipStack -lsipstack \
 	-L../SipParser -lsipparser \
-	-L../SdpParser -lsdpparser -L../SipPlatform -lsipplatform -lpthread
+	-L../SdpParser -lsdpparser -L../SipPlatform -lsipplatform -lssl -lpthread
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
