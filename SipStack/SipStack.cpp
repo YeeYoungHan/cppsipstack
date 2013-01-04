@@ -392,6 +392,10 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 			{
 				eTransport = E_SIP_TCP;
 			}
+			else if( !strcasecmp( pszTemp, SIP_TRANSPORT_TLS ) )
+			{
+				eTransport = E_SIP_TLS;
+			}
 		}
 		else
 		{
@@ -400,6 +404,10 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 			if( !strcasecmp( pszTransport, SIP_TRANSPORT_TCP ) )
 			{
 				eTransport = E_SIP_TCP;
+			}
+			else if( !strcasecmp( pszTransport, SIP_TRANSPORT_TLS ) )
+			{
+				eTransport = E_SIP_TLS;
 			}
 		}
 	}
@@ -449,7 +457,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 	{
 		SSL * psttSsl = NULL;
 
-		if( m_clsTcpSocketMap.Select( pszIp, iPort, &psttSsl ) )
+		if( m_clsTlsSocketMap.Select( pszIp, iPort, &psttSsl ) )
 		{
 			int iPacketLen = (int)pclsMessage->m_strPacket.length();
 
