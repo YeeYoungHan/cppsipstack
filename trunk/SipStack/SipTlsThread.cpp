@@ -182,9 +182,9 @@ void * SipTlsListenThread( void * lpParameter )
 	socklen_t		iAddrLen;
 	CTcpComm		clsTcpComm;
 
-	if( pclsSipStack->m_hTcpSocket != INVALID_SOCKET )
+	if( pclsSipStack->m_hTlsSocket != INVALID_SOCKET )
 	{
-		TcpSetPollIn( arrPollFd[iSocketCount], pclsSipStack->m_hTcpSocket );
+		TcpSetPollIn( arrPollFd[iSocketCount], pclsSipStack->m_hTlsSocket );
 		++iSocketCount;
 	}
 
@@ -216,7 +216,7 @@ void * SipTlsListenThread( void * lpParameter )
 #endif
 
 				bRes = false;
-				if( arrPollFd[i].fd == pclsSipStack->m_hTcpSocket )
+				if( arrPollFd[i].fd == pclsSipStack->m_hTlsSocket )
 				{
 					bRes = pclsSipStack->m_clsTlsThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) );
 				}

@@ -37,6 +37,7 @@
 #define SIP_RPORT							"rport"
 
 #define SIP_TRANSPORT_TCP			"tcp"
+#define SIP_TRANSPORT_TLS			"tls"
 
 #endif
 
