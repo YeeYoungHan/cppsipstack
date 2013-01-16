@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipPlatformDefine.h"
 #include "UserMap.h"
 
 CUserMap gclsUserMap;
@@ -34,7 +35,7 @@ CUserMap::~CUserMap()
  * @param pclsMessage SIP REGISTER 메시지
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CUserMap::Insert( CSipMessage * pclsMessage )
+bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact  )
 {
 	CUserInfo			clsInfo;
 	std::string		strUserId;
@@ -56,6 +57,22 @@ bool CUserMap::Insert( CSipMessage * pclsMessage )
 		itMap->second = clsInfo;
 	}
 	m_clsMutex.release();
+
+	if( pclsContact )
+	{
+		pclsContact->m_clsUri.m_strProtocol = "sip";
+		pclsContact->m_clsUri.m_strUser = strUserId;
+		pclsContact->m_clsUri.m_strHost = clsInfo.m_strIp;
+		pclsContact->m_clsUri.m_iPort = clsInfo.m_iPort;
+
+		if( pclsMessage->m_iExpires > 0 )
+		{
+			char	szTemp[21];
+
+			snprintf( szTemp, sizeof(szTemp), "%d", pclsMessage->m_iExpires );
+			pclsContact->InsertParam( "expires", szTemp );
+		}
+	}
 
 	return true;
 }

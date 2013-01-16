@@ -58,19 +58,28 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	if( pclsMessage->IsMethod( "REGISTER" ) )
 	{
 		// 모든 클라이언트의 로그인을 허용한다.
-		gclsUserMap.Insert( pclsMessage );
+		CSipFrom clsContact;
+
+		gclsUserMap.Insert( pclsMessage, &clsContact );
 
 		CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );
 		if( pclsResponse )
 		{
+			pclsResponse->m_clsContactList.push_back( clsContact );
+
 			gclsSipStack.SendSipMessage( pclsResponse );
 			return true;
 		}
 	}
 	else
 	{
-		std::string strToId = pclsMessage->m_clsTo.m_clsUri.m_strUser;
 		CUserInfo clsUserInfo;
+		std::string strToId = pclsMessage->m_clsTo.m_clsUri.m_strUser;
+
+		if( strToId.length() == 0 )
+		{
+			strToId = pclsMessage->m_clsTo.m_strDisplayName;
+		}
 
 		if( gclsUserMap.Select( strToId.c_str(), clsUserInfo ) == false )
 		{

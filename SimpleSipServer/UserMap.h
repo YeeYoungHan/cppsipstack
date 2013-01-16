@@ -46,7 +46,7 @@ public:
 	CUserMap();
 	~CUserMap();
 
-	bool Insert( CSipMessage * pclsMessage );
+	bool Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact );
 	bool Select( const char * pszUserId, CUserInfo & clsInfo );
 
 private:
