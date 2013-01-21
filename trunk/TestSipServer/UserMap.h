@@ -58,6 +58,7 @@ public:
 	bool Select( const char * pszUserId, CUserInfo & clsInfo );
 	bool SaveFile( const char * pszFileName );
 	bool ReadFile( const char * pszFileName );
+	void Print( );
 
 private:
 	USER_MAP	m_clsMap;

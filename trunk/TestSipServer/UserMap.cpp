@@ -20,6 +20,7 @@
 #include "UserMap.h"
 
 CUserMap gclsUserMap;
+extern std::string gstrUserFileName;
 
 CUserMap::CUserMap()
 {
@@ -74,6 +75,8 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact )
 		}
 	}
 
+	SaveFile( gstrUserFileName.c_str() );
+
 	return true;
 }
 
@@ -102,6 +105,12 @@ bool CUserMap::Select( const char * pszUserId, CUserInfo & clsInfo )
 }
 
 
+/**
+ * @ingroup TestSipServer
+ * @brief 사용자 정보를 파일에 저장한다.
+ * @param pszFileName 사용자 정보를 저장할 파일 이름
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CUserMap::SaveFile( const char * pszFileName )
 {
 	FILE * fd = fopen( pszFileName, "wb" );
@@ -130,6 +139,12 @@ bool CUserMap::SaveFile( const char * pszFileName )
 	return true;
 }
 
+/**
+ * @ingroup TestSipServer
+ * @brief 사용자 정보를 파일에서 읽는다.
+ * @param pszFileName 사용자 정보가 저장된 파일 이름
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CUserMap::ReadFile( const char * pszFileName )
 {
 	FILE * fd = fopen( pszFileName, "rb" );
@@ -139,20 +154,22 @@ bool CUserMap::ReadFile( const char * pszFileName )
 	}
 
 	USER_MAP::iterator	itMap;
+	int n;
 
 	while( 1 )
 	{
 		CUserInfoFile clsInfo;
 		CUserInfo			clsUserInfo;
 
-		if( fread( &clsInfo, sizeof(clsInfo), 1, fd ) != sizeof(clsInfo) ) break;
+		n = fread( &clsInfo, sizeof(clsInfo), 1, fd );
+		if( n != 1 ) break;
 
 		clsUserInfo.m_strIp = clsInfo.m_szIp;
 		clsUserInfo.m_iPort = clsInfo.m_iPort;
 
 		m_clsMutex.acquire();
 		itMap = m_clsMap.find( clsInfo.m_szId );
-		if( itMap != m_clsMap.end() )
+		if( itMap == m_clsMap.end() )
 		{
 			m_clsMap.insert( USER_MAP::value_type( clsInfo.m_szId, clsUserInfo ) );
 		}
@@ -162,4 +179,23 @@ bool CUserMap::ReadFile( const char * pszFileName )
 	fclose( fd );
 
 	return true;
+}
+
+/**
+ * @brief 사용자 정보를 stdout 으로 출력한다.
+ */
+void CUserMap::Print( )
+{
+	USER_MAP::iterator	itMap;
+
+	printf( "UserList\n" );
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		printf( "[%s] (%s:%d)\n", itMap->first.c_str(), itMap->second.m_strIp.c_str(), itMap->second.m_iPort );
+	}
+	m_clsMutex.release();
+
+	printf( "\n" );
 }
