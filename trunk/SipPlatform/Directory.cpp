@@ -190,6 +190,13 @@ void CDirectory::AppendName( std::string & strFileName, const char * pszAppend )
 #endif
 }
 
+/**
+ * @ingroup SipPlatform
+ * @brief 폴더에 존재하는 모든 파일/폴더 리스트를 가져온다.
+ * @param pszDirName	폴더 경로
+ * @param clsFileList 파일/폴더 리스트를 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CDirectory::List( const char * pszDirName, FILE_LIST & clsFileList )
 {
 	clsFileList.clear();
@@ -241,6 +248,13 @@ bool CDirectory::List( const char * pszDirName, FILE_LIST & clsFileList )
 	return true;
 }
 
+/**
+ * @ingroup SipPlatform
+ * @brief 폴더에 존재하는 모든 파일 리스트를 가져온다.
+ * @param pszDirName	폴더 경로
+ * @param clsFileList 파일 리스트를 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CDirectory::FileList( const char * pszDirName, FILE_LIST & clsFileList )
 {
 	clsFileList.clear();
@@ -299,4 +313,36 @@ bool CDirectory::FileList( const char * pszDirName, FILE_LIST & clsFileList )
 #endif
 
 	return true;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 프로그램을 시작한 폴더를 가져온다.
+ * @returns 프로그램을 시작한 폴더 경로를 리턴한다.
+ */
+char * CDirectory::GetProgramDirectory( )
+{
+	static char	szDir[1024];
+
+	if( strlen(szDir) == 0 )
+	{
+#ifdef WIN32
+		int		i;
+		HMODULE	hThis;
+
+		hThis = GetModuleHandle( NULL );
+
+		GetModuleFileName( hThis, szDir, sizeof(szDir));
+		for( i = (int)strlen( szDir) - 1; i >= 0; i-- )
+		{
+			if( szDir[i] == '\\' ) 
+			{
+				szDir[i] = '\0';
+				break;
+			}
+		}
+#endif
+	}
+
+	return szDir;
 }
