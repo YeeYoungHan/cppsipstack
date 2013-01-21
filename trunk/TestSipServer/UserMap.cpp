@@ -30,12 +30,12 @@ CUserMap::~CUserMap()
 }
 
 /**
- * @ingroup SimpleSipServer
+ * @ingroup TestSipServer
  * @brief 로그인된 클라이언트 정보를 저장한다.
  * @param pclsMessage SIP REGISTER 메시지
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact  )
+bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact )
 {
 	CUserInfo			clsInfo;
 	std::string		strUserId;
@@ -78,7 +78,7 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact  )
 }
 
 /**
- * @ingroup SimpleSipServer
+ * @ingroup TestSipServer
  * @brief 사용자 ID 에 해당하는 정보를 검색한다.
  * @param pszUserId 사용자 ID
  * @param clsInfo		사용자 정보를 저장할 변수
@@ -99,4 +99,67 @@ bool CUserMap::Select( const char * pszUserId, CUserInfo & clsInfo )
 	m_clsMutex.release();
 
 	return bRes;
+}
+
+
+bool CUserMap::SaveFile( const char * pszFileName )
+{
+	FILE * fd = fopen( pszFileName, "wb" );
+	if( fd == NULL )
+	{
+		return false;
+	}
+
+	USER_MAP::iterator	itMap;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		CUserInfoFile clsInfo;
+
+		snprintf( clsInfo.m_szId, sizeof(clsInfo.m_szId), "%s", itMap->first.c_str() );
+		snprintf( clsInfo.m_szIp, sizeof(clsInfo.m_szIp), "%s", itMap->second.m_strIp.c_str() );
+		clsInfo.m_iPort = itMap->second.m_iPort;
+
+		fwrite( &clsInfo, sizeof(clsInfo), 1, fd );
+	}
+	m_clsMutex.release();
+
+	fclose( fd );
+
+	return true;
+}
+
+bool CUserMap::ReadFile( const char * pszFileName )
+{
+	FILE * fd = fopen( pszFileName, "rb" );
+	if( fd == NULL )
+	{
+		return false;
+	}
+
+	USER_MAP::iterator	itMap;
+
+	while( 1 )
+	{
+		CUserInfoFile clsInfo;
+		CUserInfo			clsUserInfo;
+
+		if( fread( &clsInfo, sizeof(clsInfo), 1, fd ) != sizeof(clsInfo) ) break;
+
+		clsUserInfo.m_strIp = clsInfo.m_szIp;
+		clsUserInfo.m_iPort = clsInfo.m_iPort;
+
+		m_clsMutex.acquire();
+		itMap = m_clsMap.find( clsInfo.m_szId );
+		if( itMap != m_clsMap.end() )
+		{
+			m_clsMap.insert( USER_MAP::value_type( clsInfo.m_szId, clsUserInfo ) );
+		}
+		m_clsMutex.release();
+	}
+
+	fclose( fd );
+
+	return true;
 }

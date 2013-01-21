@@ -17,9 +17,24 @@
  */
 
 #include "SipServer.h"
+#include "UserMap.h"
+#include "Directory.h"
+#include <signal.h>
+
+static bool gbStop = false;
 
 /**
- * @ingroup SimpleSipServer
+ * @ingroup TestSipServer
+ * @brief signal function
+ * @param sig 신호 번호
+ */
+void LastMethod( int sig )
+{
+	gbStop = true;
+}
+
+/**
+ * @ingroup TestSipServer
  * @brief C++ SIP stack 을 이용한 초간단 SIP 서버
  * @param argc 
  * @param argv 
@@ -28,6 +43,22 @@
 int main( int argc, char * argv[] )
 {
 	CSipStackSetup clsSetup;
+	std::string	strFileName;
+
+	signal( SIGINT, LastMethod );
+	signal( SIGTERM, LastMethod );
+	signal( SIGABRT, LastMethod );
+#ifndef WIN32
+	signal( SIGKILL, LastMethod );
+	signal( SIGQUIT, LastMethod );
+	signal( SIGPIPE, SIG_IGN );
+#endif
+
+	strFileName = CDirectory::GetProgramDirectory();
+	CDirectory::AppendName( strFileName, "userlist.db" );
+
+	gclsUserMap.ReadFile( strFileName.c_str() );
+	
 
 	// N개의 IP주소를 사용하는 호스트에서는 SIP 프로토콜로 사용할 IP주소를 직접 입력해 주세요.
 	// Vmware 등을 사용하는 경우 N개의 IP주소가 호스트에 존재합니다.
@@ -44,10 +75,16 @@ int main( int argc, char * argv[] )
 		return -1;
 	}
 
-	while( 1 )
+	while( gbStop == false )
 	{
 		sleep(1);
+
+#ifdef _DEBUG
+		gclsUserMap.SaveFile( strFileName.c_str() );
+#endif
 	}
+
+	gclsUserMap.SaveFile( strFileName.c_str() );
 
 	return 0;
 }
