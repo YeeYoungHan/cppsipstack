@@ -72,6 +72,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestUniqueValue", "TestUniq
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SipPlatform", "SipPlatform\SipPlatform.vcproj", "{59766094-16E8-4602-9621-6C1E5ED9AF5F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSipServer", "TestSipServer\TestSipServer.vcproj", "{1E54D165-885A-4A4F-A691-47E6C2A42B0D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A74D7687-3A0C-46C8-AC3D-304A68C7C635} = {A74D7687-3A0C-46C8-AC3D-304A68C7C635}
+		{59766094-16E8-4602-9621-6C1E5ED9AF5F} = {59766094-16E8-4602-9621-6C1E5ED9AF5F}
+		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB} = {11E19CA3-F409-41E3-BD62-E1CEA134B7DB}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -174,6 +181,12 @@ Global
 		{59766094-16E8-4602-9621-6C1E5ED9AF5F}.Release|Win32.Build.0 = Release|Win32
 		{59766094-16E8-4602-9621-6C1E5ED9AF5F}.Release|x64.ActiveCfg = Release|x64
 		{59766094-16E8-4602-9621-6C1E5ED9AF5F}.Release|x64.Build.0 = Release|x64
+		{1E54D165-885A-4A4F-A691-47E6C2A42B0D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1E54D165-885A-4A4F-A691-47E6C2A42B0D}.Debug|Win32.Build.0 = Debug|Win32
+		{1E54D165-885A-4A4F-A691-47E6C2A42B0D}.Debug|x64.ActiveCfg = Debug|Win32
+		{1E54D165-885A-4A4F-A691-47E6C2A42B0D}.Release|Win32.ActiveCfg = Release|Win32
+		{1E54D165-885A-4A4F-A691-47E6C2A42B0D}.Release|Win32.Build.0 = Release|Win32
+		{1E54D165-885A-4A4F-A691-47E6C2A42B0D}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
