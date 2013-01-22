@@ -110,6 +110,9 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 				if( pclsRequest )
 				{
 					*pclsRequest = *pclsMessage;
+
+					// QQQ: PolyCom VVX1500 에서 수신한 메시지를 전달할 때에 1500 byte 이하로 UDP 를 전송하기 위해서 추가된 코드
+					pclsRequest->m_clsAcceptLanguageList.clear();
 					
 					pclsRequest->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, strBranch.c_str() );
 					pclsRequest->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
