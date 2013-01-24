@@ -25,7 +25,7 @@ static bool gbStop = false;
 std::string gstrUserFileName;
 
 /**
- * @ingroup TestSipServer
+ * @ingroup McuControlServer
  * @brief signal function
  * @param sig 신호 번호
  */
@@ -35,7 +35,7 @@ void LastMethod( int sig )
 }
 
 /**
- * @ingroup TestSipServer
+ * @ingroup McuControlServer
  * @brief C++ SIP stack 을 이용한 초간단 SIP 서버
  * @param argc 
  * @param argv 

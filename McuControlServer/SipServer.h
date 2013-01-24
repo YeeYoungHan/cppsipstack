@@ -22,12 +22,12 @@
 #include "SipStack.h"
 
 /**
- * @defgroup TestSipServer TestSipServer
+ * @defgroup McuControlServer McuControlServer
  * SIP Stack 을 이용한 초간단 SIP 서버 예제 프로그램
  */
 
 /**
- * @ingroup TestSipServer
+ * @ingroup McuControlServer
  * @brief SIP Stack 을 이용한 초간단 SIP 서버 클래스
  */
 class CSipServer : public ISipStackCallBack
