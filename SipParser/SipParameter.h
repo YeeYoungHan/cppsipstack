@@ -56,7 +56,8 @@ typedef std::list< CSipParameter > SIP_PARAMETER_LIST;
 int ParseSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszText, int iTextLen );
 bool SearchSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, std::string & strValue );
 const char * SearchSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName );
-bool AddSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, const char * pszValue );
+bool InsertSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, const char * pszValue );
+bool UpdateSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, const char * pszValue );
 int MakeSipParameterString( SIP_PARAMETER_LIST & clsList, char * pszText, int iTextSize );
 
 #endif

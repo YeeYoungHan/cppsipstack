@@ -180,13 +180,13 @@ const char * SearchSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszN
 
 /**
  * @ingroup SipParser
- * @brief parameter 리스트에 paramter 를 저장한다.
+ * @brief parameter 리스트에 paramter 를 추가한다.
  * @param clsList		parameter 리스트 객체
  * @param pszName		parameter 이름
  * @param pszValue	parameter 값
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool AddSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, const char * pszValue )
+bool InsertSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, const char * pszValue )
 {
 	if( pszName == NULL ) return false;
 
@@ -198,6 +198,31 @@ bool AddSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, const 
 	clsList.push_back( clsParam );
 
 	return true;
+}
+
+/**
+ * @ingroup SipParser
+ * @brief parameter 리스트에 paramter 를 수정한다.
+ * @param clsList		parameter 리스트 객체
+ * @param pszName		parameter 이름
+ * @param pszValue	parameter 값
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool UpdateSipParameter( SIP_PARAMETER_LIST & clsList, const char * pszName, const char * pszValue )
+{
+	SIP_PARAMETER_LIST::iterator	itList;
+
+	for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+	{
+		if( !strcasecmp( itList->m_strName.c_str(), pszName ) )
+		{
+			itList->m_strValue = pszValue;
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**

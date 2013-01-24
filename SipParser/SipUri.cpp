@@ -170,14 +170,14 @@ bool CSipUri::Empty()
 
 void CSipUri::InsertParam( const char * pszName, const char * pszValue )
 {
-	AddSipParameter( m_clsUriParamList, pszName, pszValue );
+	InsertSipParameter( m_clsUriParamList, pszName, pszValue );
 }
 
 void CSipUri::InsertTransport( ESipTransport eTransport )
 {
 	if( eTransport == E_SIP_TCP )
 	{
-		AddSipParameter( m_clsUriParamList, SIP_TRANSPORT, SIP_TRANSPORT_TCP );
+		InsertSipParameter( m_clsUriParamList, SIP_TRANSPORT, SIP_TRANSPORT_TCP );
 	}
 }
 

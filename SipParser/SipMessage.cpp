@@ -572,17 +572,17 @@ bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort, ESipTranspor
 
 	if( bRport == false && itViaList->m_iPort != iPort )
 	{
-		AddSipParameter( itViaList->m_clsParamList, SIP_RPORT, szNum );
+		InsertSipParameter( itViaList->m_clsParamList, SIP_RPORT, szNum );
 	}
 
 	if( bReceived == false && strcmp( itViaList->m_strHost.c_str(), pszIp ) )
 	{
-		AddSipParameter( itViaList->m_clsParamList, SIP_RECEIVED, pszIp );
+		InsertSipParameter( itViaList->m_clsParamList, SIP_RECEIVED, pszIp );
 	}
 
 	if( eTransport == E_SIP_TCP && strcasecmp( itViaList->m_strTransport.c_str(), SIP_TRANSPORT_TCP ) )
 	{
-		AddSipParameter( itViaList->m_clsParamList, SIP_TRANSPORT, SIP_TRANSPORT_TCP );
+		InsertSipParameter( itViaList->m_clsParamList, SIP_TRANSPORT, SIP_TRANSPORT_TCP );
 	}
 
 	return true;
@@ -619,18 +619,18 @@ bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch,
 	clsVia.m_strHost = pszIp;
 	clsVia.m_iPort = iPort;
 
-	AddSipParameter( clsVia.m_clsParamList, SIP_RPORT, NULL );
+	InsertSipParameter( clsVia.m_clsParamList, SIP_RPORT, NULL );
 
 	if( pszBranch == NULL || strlen(pszBranch) == 0 )
 	{
 		char	szBranch[SIP_BRANCH_MAX_SIZE];
 
 		SipMakeBranch( szBranch, sizeof(szBranch) );
-		AddSipParameter( clsVia.m_clsParamList, "branch", szBranch );
+		InsertSipParameter( clsVia.m_clsParamList, "branch", szBranch );
 	}
 	else
 	{
-		AddSipParameter( clsVia.m_clsParamList, "branch", pszBranch );
+		InsertSipParameter( clsVia.m_clsParamList, "branch", pszBranch );
 	}
 
 	m_clsViaList.push_front( clsVia );
