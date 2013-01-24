@@ -24,7 +24,7 @@
 #include <map>
 
 /**
- * @ingroup TestSipServer
+ * @ingroup McuControlServer
  * @brief SIP 클라이언트 정보 저장 클래스
  */
 class CUserInfo
@@ -45,7 +45,7 @@ public:
 typedef std::map< std::string, CUserInfo > USER_MAP;
 
 /**
- * @ingroup TestSipServer
+ * @ingroup McuControlServer
  * @brief 로그인한 사용자들의 정보를 저장하는 클래스
  */
 class CUserMap

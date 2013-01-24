@@ -31,7 +31,7 @@ CUserMap::~CUserMap()
 }
 
 /**
- * @ingroup TestSipServer
+ * @ingroup McuControlServer
  * @brief 로그인된 클라이언트 정보를 저장한다.
  * @param pclsMessage SIP REGISTER 메시지
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -81,7 +81,7 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact )
 }
 
 /**
- * @ingroup TestSipServer
+ * @ingroup McuControlServer
  * @brief 사용자 ID 에 해당하는 정보를 검색한다.
  * @param pszUserId 사용자 ID
  * @param clsInfo		사용자 정보를 저장할 변수
@@ -106,7 +106,7 @@ bool CUserMap::Select( const char * pszUserId, CUserInfo & clsInfo )
 
 
 /**
- * @ingroup TestSipServer
+ * @ingroup McuControlServer
  * @brief 사용자 정보를 파일에 저장한다.
  * @param pszFileName 사용자 정보를 저장할 파일 이름
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -140,7 +140,7 @@ bool CUserMap::SaveFile( const char * pszFileName )
 }
 
 /**
- * @ingroup TestSipServer
+ * @ingroup McuControlServer
  * @brief 사용자 정보를 파일에서 읽는다.
  * @param pszFileName 사용자 정보가 저장된 파일 이름
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
