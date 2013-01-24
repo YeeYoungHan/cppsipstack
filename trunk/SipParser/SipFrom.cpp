@@ -160,7 +160,7 @@ int CSipFrom::ToString( char * pszText, int iTextSize )
  */
 void CSipFrom::InsertParam( const char * pszName, const char * pszValue )
 {
-	AddSipParameter( m_clsParamList, pszName, pszValue );
+	InsertSipParameter( m_clsParamList, pszName, pszValue );
 }
 
 /**

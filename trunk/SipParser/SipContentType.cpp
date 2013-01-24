@@ -168,7 +168,7 @@ void CSipContentType::Set( const char * pszType, const char * pszSubType )
  */
 void CSipContentType::InsertParam( const char * pszName, const char * pszValue )
 {
-	AddSipParameter( m_clsParamList, pszName, pszValue );
+	InsertSipParameter( m_clsParamList, pszName, pszValue );
 }
 
 /**
