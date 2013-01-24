@@ -1,8 +1,8 @@
-# Makefile for TestSipServer
+# Makefile for McuControlServer
 #
 # programmer : yee young han ( websearch@naver.com )
 #            : http://blog.naver.com/websearch
-# start date : 2013/01/21
+# start date : 2013/01/24
 
 CC=g++
 CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
@@ -16,11 +16,11 @@ LIB=-L../SipStack -lsipstack \
 %.o : %.cpp
 	$(CC) $(CFLAGS) -c $< $(INC)
 
-all: TestSipServer.exe
+all: McuControlServer.exe
 
-SRV_OBJ=TestSipServer.o SipServer.o UserMap.o
+SRV_OBJ=McuControlServer.o SipServer.o UserMap.o
 
-TestSipServer.exe: $(SRV_OBJ)
+McuControlServer.exe: $(SRV_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)
 
 clean:
