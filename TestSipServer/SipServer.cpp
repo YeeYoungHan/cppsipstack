@@ -110,9 +110,6 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 				if( pclsRequest )
 				{
 					*pclsRequest = *pclsMessage;
-
-					// QQQ: PolyCom VVX1500 에서 수신한 메시지를 전달할 때에 1500 byte 이하로 UDP 를 전송하기 위해서 추가된 코드
-					pclsRequest->m_clsAcceptLanguageList.clear();
 					
 					pclsRequest->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, strBranch.c_str() );
 					pclsRequest->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
@@ -122,6 +119,26 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 					{
 						itContact->m_clsUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
 						itContact->m_clsUri.m_iPort = gclsSipStack.m_clsSetup.m_iLocalUdpPort;
+					}
+
+					pclsRequest->m_strUserAgent = SIP_USER_AGENT;
+					pclsRequest->MakePacket();
+
+					// PolyCom 에서 전송한 패킷이 flagment 되었고 flagment 된 패킷의 길이가 60 미만인 경우
+					// 상대방으로 전달되지 않는 버그를 패치하는 기능
+					int iLength = pclsRequest->m_strPacket.length();
+					if( iLength > 1472 && iLength < 1498 )
+					{
+						int iAppendLength = 1498 - iLength;
+
+						for( int i = 0; i < iAppendLength; ++i )
+						{
+							strBranch.append( "1" );
+						}
+
+						SIP_VIA_LIST::iterator itViaList = pclsRequest->m_clsViaList.begin();
+						
+						UpdateSipParameter( itViaList->m_clsParamList, "branch", strBranch.c_str() );
 					}
 
 					gclsSipStack.SendSipMessage( pclsRequest );
