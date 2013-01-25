@@ -45,6 +45,11 @@ bool CXmlSipServer::Parse( const char * pszFileName )
 
 	if( clsXml.ParseFile( pszFileName ) == false ) return false;
 
+	if( clsXml.SelectElementData( "Use", m_bUse ) )
+	{
+		if( m_bUse == false ) return false;
+	}
+
 	clsXml.SelectElementData( "Ip", m_strIp );
 	clsXml.SelectElementData( "Port", m_iPort );
 	clsXml.SelectElementData( "Domain", m_strDomain );

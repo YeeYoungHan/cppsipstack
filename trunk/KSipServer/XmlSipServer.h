@@ -51,6 +51,7 @@ public:
 
 	std::string		m_strName;
 	int						m_iFlag;
+	bool					m_bUse;
 
 	/** Call 라우팅을 위한 전화번호 prefix 리스트 */
 	ROUTE_PREFIX_LIST	m_clsRoutePrefixList;
