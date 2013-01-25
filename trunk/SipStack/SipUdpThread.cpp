@@ -48,6 +48,9 @@ static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const ch
 		pclsMessage->AddIpPortToTopVia( pszIp, iPort );
 	}
 
+	pclsMessage->m_strClientIp = pszIp;
+	pclsMessage->m_iClientPort = iPort;
+
 	if( pclsSipStack->RecvSipMessage( iThreadId, pclsMessage ) == false )
 	{
 		delete pclsMessage;

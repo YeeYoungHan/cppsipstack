@@ -126,6 +126,12 @@ public:
 	/** 네트워크로 전송/수신된 SIP 메시지의 transport */
 	ESipTransport		m_eTransport;
 
+	/** SIP 메시지를 전송한 클라이언트의 IP 주소 */
+	std::string			m_strClientIp;
+
+	/** SIP 메시지를 전송한 클라이언트의 포트 번호 */
+	int							m_iClientPort;
+
 	/** 객체 사용 개수 */
 	int							m_iUseCount;
 
