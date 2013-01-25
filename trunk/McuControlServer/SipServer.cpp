@@ -25,6 +25,7 @@ CSipStack	gclsSipStack;
 CSipServer gclsSipServer;
 
 #include "SipServerRegister.hpp"
+#include "SipServerUtility.hpp"
 
 CSipServer::CSipServer()
 {
@@ -70,14 +71,15 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 		strToId = pclsMessage->m_clsTo.m_strDisplayName;
 	}
 
+	CUserInfo clsUserInfo;
+
 	if( !strncmp( strToId.c_str(), CONFERENCE_PREFIX, strlen(CONFERENCE_PREFIX) ) )
 	{
-
+		clsUserInfo.m_strIp = MCU_IP;
+		clsUserInfo.m_iPort = MCU_PORT;
 	}
 	else
 	{
-		CUserInfo clsUserInfo;
-
 		if( gclsUserMap.Select( strToId.c_str(), clsUserInfo ) == false )
 		{
 			// TO 사용자가 존재하지 않으면 404 NOT FOUND 로 응답한다.
@@ -87,61 +89,43 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 				gclsSipStack.SendSipMessage( pclsResponse );
 				return true;
 			}
+
+			return false;
 		}
-		else
+	}
+
+	// TO 사용자로 SIP 요청 메시지를 전달한다.
+	SIP_VIA_LIST::iterator itVia = pclsMessage->m_clsViaList.begin();
+	if( itVia != pclsMessage->m_clsViaList.end() )
+	{
+		const char * pszBranch = itVia->GetParamValue( "branch" );
+		std::string strBranch;
+
+		if( pszBranch )
 		{
-			// TO 사용자로 SIP 요청 메시지를 전달한다.
-			SIP_VIA_LIST::iterator itVia = pclsMessage->m_clsViaList.begin();
-			if( itVia != pclsMessage->m_clsViaList.end() )
+			strBranch = pszBranch;
+			strBranch.append( "_copy" );
+		}
+
+		CSipMessage * pclsRequest = new CSipMessage();
+		if( pclsRequest )
+		{
+			*pclsRequest = *pclsMessage;
+			
+			pclsRequest->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, strBranch.c_str() );
+			pclsRequest->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
+
+			SIP_FROM_LIST::iterator itContact = pclsRequest->m_clsContactList.begin();
+			if( itContact != pclsRequest->m_clsContactList.end() )
 			{
-				const char * pszBranch = itVia->GetParamValue( "branch" );
-				std::string strBranch;
-
-				if( pszBranch )
-				{
-					strBranch = pszBranch;
-					strBranch.append( "_copy" );
-				}
-
-				CSipMessage * pclsRequest = new CSipMessage();
-				if( pclsRequest )
-				{
-					*pclsRequest = *pclsMessage;
-					
-					pclsRequest->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, strBranch.c_str() );
-					pclsRequest->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
-
-					SIP_FROM_LIST::iterator itContact = pclsRequest->m_clsContactList.begin();
-					if( itContact != pclsRequest->m_clsContactList.end() )
-					{
-						itContact->m_clsUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
-						itContact->m_clsUri.m_iPort = gclsSipStack.m_clsSetup.m_iLocalUdpPort;
-					}
-
-					pclsRequest->m_strUserAgent = SIP_USER_AGENT;
-					pclsRequest->MakePacket();
-
-					// PolyCom 에서 전송한 패킷이 flagment 되었고 flagment 된 패킷의 길이가 60 미만인 경우
-					// 상대방으로 전달되지 않는 버그를 패치하는 기능
-					int iLength = pclsRequest->m_strPacket.length();
-					if( iLength > 1472 && iLength < 1498 )
-					{
-						int iAppendLength = 1498 - iLength;
-
-						for( int i = 0; i < iAppendLength; ++i )
-						{
-							strBranch.append( "1" );
-						}
-
-						SIP_VIA_LIST::iterator itViaList = pclsRequest->m_clsViaList.begin();
-						
-						UpdateSipParameter( itViaList->m_clsParamList, "branch", strBranch.c_str() );
-					}
-
-					gclsSipStack.SendSipMessage( pclsRequest );
-					return true;
-				}
+				itContact->m_clsUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
+				itContact->m_clsUri.m_iPort = gclsSipStack.m_clsSetup.m_iLocalUdpPort;
 			}
+
+			UpdateBranch( pclsRequest, strBranch );
+
+			gclsSipStack.SendSipMessage( pclsRequest );
+			return true;
 		}
 	}
 

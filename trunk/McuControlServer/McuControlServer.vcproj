@@ -197,6 +197,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipServerUtility.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\UserMap.cpp"
 				>
 			</File>

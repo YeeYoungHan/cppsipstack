@@ -43,7 +43,11 @@ public:
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 
 private:
+	// SipServerRegister.hpp
 	bool RecvRegisterRequest( int iThreadId, CSipMessage * pclsMessage );
+
+	// SipServerUtility.hpp
+	void UpdateBranch( CSipMessage * pclsMessage, std::string & strBranch );
 };
 
 extern CSipServer gclsSipServer;
