@@ -75,6 +75,7 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact )
 		}
 	}
 
+	// 사용자가 로그인할 때마다 파일로 저장한다.
 	SaveFile( gstrUserFileName.c_str() );
 
 	return true;

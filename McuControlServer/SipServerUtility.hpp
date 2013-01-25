@@ -16,21 +16,25 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-bool CSipServer::RecvRegisterRequest( int iThreadId, CSipMessage * pclsMessage )
+void CSipServer::UpdateBranch( CSipMessage * pclsMessage, std::string & strBranch )
 {
-	// 모든 클라이언트의 로그인을 허용한다.
-	CSipFrom clsContact;
+	pclsMessage->m_strUserAgent = SIP_USER_AGENT;
+	pclsMessage->MakePacket();
 
-	gclsUserMap.Insert( pclsMessage, &clsContact );
-
-	CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );
-	if( pclsResponse )
+	// PolyCom 에서 전송한 패킷이 flagment 되었고 flagment 된 패킷의 길이가 60 미만인 경우
+	// 상대방으로 전달되지 않는 버그를 패치하는 기능
+	int iLength = pclsMessage->m_strPacket.length();
+	if( iLength > 1472 && iLength < 1498 )
 	{
-		pclsResponse->m_clsContactList.push_back( clsContact );
+		int iAppendLength = 1498 - iLength;
 
-		gclsSipStack.SendSipMessage( pclsResponse );
-		return true;
+		for( int i = 0; i < iAppendLength; ++i )
+		{
+			strBranch.append( "1" );
+		}
+
+		SIP_VIA_LIST::iterator itViaList = pclsMessage->m_clsViaList.begin();
+		
+		UpdateSipParameter( itViaList->m_clsParamList, "branch", strBranch.c_str() );
 	}
-
-	return false;
 }
