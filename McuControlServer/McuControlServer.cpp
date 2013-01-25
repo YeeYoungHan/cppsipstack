@@ -36,7 +36,7 @@ void LastMethod( int sig )
 
 /**
  * @ingroup McuControlServer
- * @brief C++ SIP stack 을 이용한 초간단 SIP 서버
+ * @brief C++ SIP stack 을 이용한 초간단 MCU 연동 프로그램
  * @param argc 
  * @param argv 
  * @returns 정상 종료하면 0 을 리턴하고 오류가 발생하면 -1 를 리턴한다.
