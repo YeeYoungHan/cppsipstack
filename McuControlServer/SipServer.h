@@ -41,6 +41,9 @@ public:
 	// ISipStackCallBack
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
+
+private:
+	bool RecvRegisterRequest( int iThreadId, CSipMessage * pclsMessage );
 };
 
 extern CSipServer gclsSipServer;

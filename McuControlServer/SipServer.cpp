@@ -19,9 +19,12 @@
 #include "SipServer.h"
 #include "SipUtility.h"
 #include "UserMap.h"
+#include "McuControlServer.h"
 
 CSipStack	gclsSipStack;
 CSipServer gclsSipServer;
+
+#include "SipServerRegister.hpp"
 
 CSipServer::CSipServer()
 {
@@ -57,29 +60,23 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
 	if( pclsMessage->IsMethod( "REGISTER" ) )
 	{
-		// 모든 클라이언트의 로그인을 허용한다.
-		CSipFrom clsContact;
+		return RecvRegisterRequest( iThreadId, pclsMessage );
+	}
 
-		gclsUserMap.Insert( pclsMessage, &clsContact );
+	std::string strToId = pclsMessage->m_clsTo.m_clsUri.m_strUser;
 
-		CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );
-		if( pclsResponse )
-		{
-			pclsResponse->m_clsContactList.push_back( clsContact );
+	if( strToId.length() == 0 )
+	{
+		strToId = pclsMessage->m_clsTo.m_strDisplayName;
+	}
 
-			gclsSipStack.SendSipMessage( pclsResponse );
-			return true;
-		}
+	if( !strncmp( strToId.c_str(), CONFERENCE_PREFIX, strlen(CONFERENCE_PREFIX) ) )
+	{
+
 	}
 	else
 	{
 		CUserInfo clsUserInfo;
-		std::string strToId = pclsMessage->m_clsTo.m_clsUri.m_strUser;
-
-		if( strToId.length() == 0 )
-		{
-			strToId = pclsMessage->m_clsTo.m_strDisplayName;
-		}
 
 		if( gclsUserMap.Select( strToId.c_str(), clsUserInfo ) == false )
 		{
