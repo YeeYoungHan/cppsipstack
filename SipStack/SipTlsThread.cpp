@@ -51,6 +51,8 @@ static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const ch
 	}
 
 	pclsMessage->m_eTransport = E_SIP_TLS;
+	pclsMessage->m_strClientIp = pszIp;
+	pclsMessage->m_iClientPort = iPort;
 
 	if( pclsSipStack->RecvSipMessage( iThreadId, pclsMessage ) == false )
 	{
