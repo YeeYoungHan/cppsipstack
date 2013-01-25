@@ -73,7 +73,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 
 	CUserInfo clsUserInfo;
 
-	if( !strncmp( strToId.c_str(), CONFERENCE_PREFIX, strlen(CONFERENCE_PREFIX) ) )
+	if( !strncmp( strToId.c_str(), MCU_CONFERENCE_PREFIX, strlen(MCU_CONFERENCE_PREFIX) ) )
 	{
 		clsUserInfo.m_strIp = MCU_IP;
 		clsUserInfo.m_iPort = MCU_PORT;
