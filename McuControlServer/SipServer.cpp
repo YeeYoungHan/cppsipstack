@@ -20,6 +20,8 @@
 #include "SipUtility.h"
 #include "UserMap.h"
 #include "McuControlServer.h"
+#include "CallMap.h"
+#include "StringUtility.h"
 
 CSipStack	gclsSipStack;
 CSipServer gclsSipServer;
@@ -75,6 +77,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 
 	if( !strncmp( strToId.c_str(), MCU_CONFERENCE_PREFIX, strlen(MCU_CONFERENCE_PREFIX) ) )
 	{
+		// 회의룸 입장 요청
 		clsUserInfo.m_strIp = MCU_IP;
 		clsUserInfo.m_iPort = MCU_PORT;
 	}
@@ -83,14 +86,26 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 		if( gclsUserMap.Select( strToId.c_str(), clsUserInfo ) == false )
 		{
 			// TO 사용자가 존재하지 않으면 404 NOT FOUND 로 응답한다.
-			CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_NOT_FOUND );
-			if( pclsResponse )
+			gclsSipStack.SendSipMessage( pclsMessage->CreateResponseWithToTag( SIP_NOT_FOUND ) );
+			return true;
+		}
+
+		if( strcmp( pclsMessage->m_strClientIp.c_str(), MCU_IP ) )
+		{
+			if( pclsMessage->IsMethod( "INVITE" ) )
 			{
-				gclsSipStack.SendSipMessage( pclsResponse );
-				return true;
+				// 영상 디바이스에서 수신되었고 1:1 통화 INVITE 요청 메시지이면 통화 자료구조에 저장한다.
+				if( gclsCallMap.Insert( pclsMessage ) == false )
+				{
+					gclsSipStack.SendSipMessage( pclsMessage->CreateResponseWithToTag( SIP_INTERNAL_SERVER_ERROR ) );
+					return true;
+				}
 			}
 
-			return false;
+			gclsCallMap.Update( pclsMessage );
+
+			clsUserInfo.m_strIp = MCU_IP;
+			clsUserInfo.m_iPort = MCU_PORT;
 		}
 	}
 
@@ -148,14 +163,145 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 		*pclsResponse = *pclsMessage;
 		pclsResponse->m_clsViaList.pop_front();
 
-		SIP_FROM_LIST::iterator itContact = pclsResponse->m_clsContactList.begin();
-		if( itContact != pclsResponse->m_clsContactList.end() )
+		gclsCallMap.Update( pclsMessage );
+
+		if( pclsResponse->m_clsViaList.size() > 0 )
 		{
-			itContact->m_clsUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
-			itContact->m_clsUri.m_iPort = gclsSipStack.m_clsSetup.m_iLocalUdpPort;
+			SIP_FROM_LIST::iterator itContact = pclsResponse->m_clsContactList.begin();
+			if( itContact != pclsResponse->m_clsContactList.end() )
+			{
+				itContact->m_clsUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
+				itContact->m_clsUri.m_iPort = gclsSipStack.m_clsSetup.m_iLocalUdpPort;
+			}
+			
+			gclsSipStack.SendSipMessage( pclsResponse );
 		}
 
-		gclsSipStack.SendSipMessage( pclsResponse );
+		if( !strcmp( pclsMessage->m_strClientIp.c_str(), MCU_IP ) )
+		{
+			if( pclsMessage->IsMethod( "INVITE" ) && pclsMessage->m_iStatusCode == SIP_OK )
+			{
+				CCallInfo clsCallInfo;
+
+				if( gclsCallMap.Select( pclsMessage, clsCallInfo ) )
+				{
+					if( clsCallInfo.m_bRecvFromDevice )
+					{
+						CSipMessage * pclsRequest = new CSipMessage();
+						*pclsRequest = clsCallInfo.m_clsSipMessage;
+
+						pclsRequest->m_clsViaList.clear();
+						pclsRequest->m_clsCallId.m_strName.append( "_copy" );
+
+						CUserInfo	clsUserInfo;
+
+						std::string strToId = pclsMessage->m_clsTo.m_clsUri.m_strUser;
+						if( strToId.length() == 0 )
+						{
+							strToId = pclsMessage->m_clsTo.m_strDisplayName;
+						}
+
+						pclsRequest->m_clsReqUri.m_strUser = strToId;
+						pclsRequest->m_clsReqUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
+						pclsRequest->m_strSipMethod = "INVITE";
+						pclsRequest->m_iStatusCode = -1;
+
+						if( gclsUserMap.Select( strToId.c_str(), clsUserInfo ) )
+						{
+							pclsRequest->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
+							gclsCallMap.Insert( pclsRequest, clsCallInfo.m_strRoomId );
+							gclsSipStack.SendSipMessage( pclsRequest );
+						}
+					}
+					else
+					{
+						// Re-INVITE
+						CSipMessage * pclsRequest = new CSipMessage();
+						*pclsRequest = clsCallInfo.m_clsSipMessage;
+						pclsRequest->m_clsViaList.clear();
+
+						CUserInfo	clsUserInfo;
+
+						std::string strFromId = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
+						if( strFromId.length() == 0 )
+						{
+							strFromId = pclsMessage->m_clsFrom.m_strDisplayName;
+						}
+
+						pclsRequest->m_clsReqUri.m_strUser = strFromId;
+						pclsRequest->m_clsReqUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
+						pclsRequest->m_strSipMethod = "INVITE";
+						pclsRequest->m_iStatusCode = -1;
+						pclsRequest->m_clsCSeq.m_iDigit = pclsMessage->m_clsCSeq.m_iDigit;
+
+						if( gclsUserMap.Select( strFromId.c_str(), clsUserInfo ) )
+						{
+							pclsRequest->m_clsRouteList.clear();
+							pclsRequest->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
+							gclsSipStack.SendSipMessage( pclsRequest );
+						}
+
+						// ACK 전송한다.
+						pclsRequest = new CSipMessage();
+						*pclsRequest = clsCallInfo.m_clsSipMessage;
+						pclsRequest->m_strBody.clear();
+						pclsRequest->m_iContentLength = 0;
+						pclsRequest->m_clsContentType.Clear();
+						pclsRequest->m_strSipMethod = "ACK";
+						pclsRequest->m_clsCSeq.m_strMethod = "ACK";
+						pclsRequest->m_clsCSeq.m_iDigit = pclsMessage->m_clsCSeq.m_iDigit;
+						pclsRequest->m_clsTo.m_clsParamList = pclsMessage->m_clsTo.m_clsParamList;
+						pclsRequest->m_clsFrom.m_clsParamList = pclsMessage->m_clsFrom.m_clsParamList;
+
+						gclsCallMap.Update( pclsRequest );
+						pclsRequest->m_clsRouteList.clear();
+						pclsRequest->AddRoute( MCU_IP, MCU_PORT );
+						gclsSipStack.SendSipMessage( pclsRequest );
+					}
+				}
+			}
+		}
+		else if( strstr( pclsMessage->m_clsCallId.m_strName.c_str(), "_copy" ) && pclsMessage->m_iStatusCode == SIP_OK )
+		{
+			CCallInfo clsCallInfo;
+
+			if( gclsCallMap.Select( pclsMessage, clsCallInfo ) )
+			{
+				if( clsCallInfo.m_bInviteToMCU == false )
+				{
+					CSipMessage * pclsRequest = new CSipMessage();
+					*pclsRequest = clsCallInfo.m_clsSipMessage;
+					pclsRequest->m_strBody = pclsMessage->m_strBody;
+					pclsRequest->m_iContentLength = pclsMessage->m_iContentLength;
+					pclsRequest->m_clsContentType = pclsMessage->m_clsContentType;
+					++pclsRequest->m_clsCSeq.m_iDigit;
+					pclsRequest->m_clsFrom = clsCallInfo.m_clsSipMessage.m_clsTo;
+					pclsRequest->m_clsFrom.InsertTag();
+
+					gclsCallMap.Update( pclsRequest );
+					pclsRequest->m_clsRouteList.clear();
+					pclsRequest->AddRoute( MCU_IP, MCU_PORT );
+					gclsSipStack.SendSipMessage( pclsRequest );
+				}
+
+				// ACK 전송
+				{
+					CSipMessage * pclsRequest = new CSipMessage();
+					*pclsRequest = clsCallInfo.m_clsSipMessage;
+					pclsRequest->m_strBody.clear();
+					pclsRequest->m_iContentLength = 0;
+					pclsRequest->m_clsContentType.Clear();
+					pclsRequest->m_strSipMethod = "ACK";
+					pclsRequest->m_clsCSeq.m_strMethod = "ACK";
+					pclsRequest->m_clsCSeq.m_iDigit = pclsMessage->m_clsCSeq.m_iDigit;
+					pclsRequest->m_clsTo.m_clsParamList = pclsMessage->m_clsTo.m_clsParamList;
+					pclsRequest->m_clsFrom.m_clsParamList = pclsMessage->m_clsFrom.m_clsParamList;
+
+					gclsSipStack.SendSipMessage( pclsRequest );
+				}
+			}
+		}
+
 		return true;
 	}
 

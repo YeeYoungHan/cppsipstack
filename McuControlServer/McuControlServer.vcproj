@@ -200,6 +200,26 @@
 				RelativePath=".\SipServerUtility.hpp"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="자료구조"
+			>
+			<File
+				RelativePath=".\CallMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CallMap.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RoomMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RoomMap.h"
+				>
+			</File>
 			<File
 				RelativePath=".\UserMap.cpp"
 				>
@@ -208,10 +228,6 @@
 				RelativePath=".\UserMap.h"
 				>
 			</File>
-		</Filter>
-		<Filter
-			Name="자료구조"
-			>
 		</Filter>
 	</Files>
 	<Globals>
