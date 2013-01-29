@@ -284,6 +284,10 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 						pclsRequest->m_strBody = pclsMessage->m_strBody;
 						pclsRequest->m_iContentLength = pclsMessage->m_iContentLength;
 						pclsRequest->m_clsContentType = pclsMessage->m_clsContentType;
+						if( pclsRequest->m_clsTo.SelectParam( "tag" ) == false )
+						{
+							pclsRequest->m_clsTo.InsertParam( "tag", clsCallInfo.m_strToTag.c_str() );
+						}
 
 						if( gclsUserMap.Select( strFromId.c_str(), clsUserInfo ) )
 						{
@@ -320,6 +324,8 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 			{
 				if( clsCallInfo.m_bInviteToMCU == false )
 				{
+					gclsCallMap.UpdateToTag( pclsMessage );
+					
 					// 1:1 통화 수신자의 SDP 를 MCU 로 전달한다.
 					CSipMessage * pclsRequest = new CSipMessage();
 					*pclsRequest = clsCallInfo.m_clsSipMessage;

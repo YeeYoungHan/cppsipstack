@@ -165,3 +165,24 @@ bool CCallMap::Select( CSipMessage * pclsMessage, CCallInfo & clsCallInfo )
 
 	return bRes;
 }
+
+bool CCallMap::UpdateToTag( CSipMessage * pclsMessage )
+{
+	std::string strCallId, strTag;
+	bool bRes = false;
+	CALL_MAP::iterator	itMap;
+
+	pclsMessage->m_clsCallId.ToString( strCallId );
+	pclsMessage->m_clsTo.SelectParam( "tag", strTag );
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( strCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		itMap->second.m_strToTag = strTag;
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
