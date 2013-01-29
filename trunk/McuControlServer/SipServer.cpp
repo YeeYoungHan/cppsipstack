@@ -187,6 +187,7 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 				{
 					if( clsCallInfo.m_bRecvFromDevice )
 					{
+						// 1:1 통화 요청을 수신자에게 전달한다.
 						CSipMessage * pclsRequest = new CSipMessage();
 						*pclsRequest = clsCallInfo.m_clsSipMessage;
 
@@ -205,6 +206,16 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 						pclsRequest->m_clsReqUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
 						pclsRequest->m_strSipMethod = "INVITE";
 						pclsRequest->m_iStatusCode = -1;
+
+						/* 아래의 코드를 추가하면 영상 디바이스에서 MCU 간의 SIP INFO 메시지 등을 정상적으로 relay 시켜주어야 한다.
+								But 현재는 From, To tag 를 관리하고 있지 않으므로 정상적인 relay 는 안 되고 있다.
+ 						SIP_FROM_LIST::iterator itContact = pclsRequest->m_clsContactList.begin();
+						if( itContact != pclsRequest->m_clsContactList.end() )
+						{
+							itContact->m_clsUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
+							itContact->m_clsUri.m_iPort = gclsSipStack.m_clsSetup.m_iLocalUdpPort;
+						}
+						*/
 
 						if( gclsUserMap.Select( strToId.c_str(), clsUserInfo ) )
 						{
@@ -269,6 +280,7 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 			{
 				if( clsCallInfo.m_bInviteToMCU == false )
 				{
+					// 1:1 통화 수신자의 SDP 를 MCU 로 전달한다.
 					CSipMessage * pclsRequest = new CSipMessage();
 					*pclsRequest = clsCallInfo.m_clsSipMessage;
 					pclsRequest->m_strBody = pclsMessage->m_strBody;
