@@ -32,6 +32,7 @@ public:
 
 	std::string	m_strRoomId;
 	std::string m_strToId;
+	std::string m_strToTag;
 	CSipMessage m_clsSipMessage;
 	bool				m_bRecvFromDevice;
 	bool				m_bInviteToMCU;
@@ -51,6 +52,8 @@ public:
 	bool Update( CSipMessage * pclsMessage );
 	bool Delete( CSipMessage * pclsMessage );
 	bool Select( CSipMessage * pclsMessage, CCallInfo & clsCallInfo );
+
+	bool UpdateToTag( CSipMessage * pclsMessage );
 
 private:
 	CALL_MAP	m_clsMap;
