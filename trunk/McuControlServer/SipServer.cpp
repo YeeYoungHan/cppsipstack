@@ -52,6 +52,43 @@ bool CSipServer::Start( CSipStackSetup & clsSetup )
 	return true;
 }
 
+#ifdef USE_DIALOG
+/**
+ * @ingroup McuControlServer
+ * @brief SIP 요청 메시지 수신 이벤트 핸들러
+ * @param iThreadId		쓰레드 아이디
+ * @param pclsMessage SIP 요청 메시지
+ * @returns SIP 요청 메시지를 처리하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
+{
+	if( pclsMessage->IsMethod( "REGISTER" ) )
+	{
+		return RecvRegisterRequest( iThreadId, pclsMessage );
+	}
+
+	if( pclsMessage->IsMethod( "INVITE" ) )
+	{
+
+	}
+
+	return true;
+}
+
+/**
+ * @ingroup McuControlServer
+ * @brief SIP 응답 메시지 수신 이벤트 핸들러
+ * @param iThreadId		쓰레드 아이디
+ * @param pclsMessage SIP 응답 메시지
+ * @returns SIP 응답 메시지를 처리하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
+{
+	return true;
+}
+
+#else
+
 /**
  * @ingroup McuControlServer
  * @brief SIP 요청 메시지 수신 이벤트 핸들러
@@ -319,3 +356,5 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 
 	return false;
 }
+
+#endif

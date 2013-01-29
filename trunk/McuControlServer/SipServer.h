@@ -50,6 +50,7 @@ private:
 	void UpdateBranch( CSipMessage * pclsMessage, std::string & strBranch );
 };
 
+extern CSipStack	gclsSipStack;
 extern CSipServer gclsSipServer;
 
 #endif
