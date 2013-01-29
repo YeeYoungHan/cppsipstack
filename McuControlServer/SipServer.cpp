@@ -281,6 +281,9 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 						pclsRequest->m_strSipMethod = "INVITE";
 						pclsRequest->m_iStatusCode = -1;
 						pclsRequest->m_clsCSeq.m_iDigit = pclsMessage->m_clsCSeq.m_iDigit;
+						pclsRequest->m_strBody = pclsMessage->m_strBody;
+						pclsRequest->m_iContentLength = pclsMessage->m_iContentLength;
+						pclsRequest->m_clsContentType = pclsMessage->m_clsContentType;
 
 						if( gclsUserMap.Select( strFromId.c_str(), clsUserInfo ) )
 						{
