@@ -19,6 +19,8 @@
 #ifndef _MCU_CONTROL_SERVER_H_
 #define _MCU_CONTROL_SERVER_H_
 
+#define USE_DIALOG
+
 /** MCU È¸ÀÇ¹æ prefix */
 #define MCU_CONFERENCE_PREFIX		"71"
 

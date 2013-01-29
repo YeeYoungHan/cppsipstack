@@ -221,6 +221,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipDialog.h"
+				>
+			</File>
+			<File
 				RelativePath=".\UserMap.cpp"
 				>
 			</File>
