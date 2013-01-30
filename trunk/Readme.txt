@@ -70,9 +70,14 @@ C++ SIP stack 프로젝트
  * FindNoLiceseFile
    - 폴더에서 라이선스 문구가 포함되지 않은 소스 코드를 검색하는 프로그램
 
- * Curio
-   - C++ SIP stack 을 이용한 안드로이드 SIP 클라이언트 ( 개발 계획중 )
-   - 정종환 [sosolili@naver.com] 님께서 개발하실 계획입니다.
+ * TestSipServer
+   - SimpleSipServer 소스 코드를 가져와서 테스트용으로 사용할 IP-PBX 를 개발함.
+   - 테스트용이므로 클라이언트 로그인 정보를 파일로 저장하였다가 실행될 때 읽어 오는 기능이 존재함.
+   - 영상 디바이스 연동 테스트용으로 개발됨.
+
+ * McuControlServer
+   - TestSipServer 소스 코드를 가져와서 테스트용으로 사용할 IP-PBX 를 개발함.
+   - Radvision MCU 와 연동하여서 영상 디바이스 연결 테스트용으로 개발됨.
 
 3. 컴파일 방법
 
