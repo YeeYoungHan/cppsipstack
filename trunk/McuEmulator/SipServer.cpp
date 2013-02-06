@@ -64,7 +64,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	}
 	else if( pclsMessage->IsMethod( "INVITE" ) )
 	{
-
+		
 	}
 	else if( pclsMessage->IsMethod( "UPDATE" ) || pclsMessage->IsMethod( "INFO" ) )
 	{
