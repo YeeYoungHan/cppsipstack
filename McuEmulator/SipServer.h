@@ -16,15 +16,33 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _MCU_CONTROL_SERVER_H_
-#define _MCU_CONTROL_SERVER_H_
+#ifndef _SIP_SERVER_H_
+#define _SIP_SERVER_H_
 
-//#define USE_DIALOG
+#include "SipStack.h"
 
-/** MCU 회의방 prefix */
-#define MCU_CONFERENCE_PREFIX		"71"
+/**
+ * @defgroup McuEmulator McuEmulator
+ * SIP Stack 을 이용한 초간단 SIP 서버 예제 프로그램
+ */
 
-#define MCU_IP							"192.168.0.50"
-#define MCU_PORT						5060
+/**
+ * @ingroup McuEmulator
+ * @brief SIP Stack 을 이용한 초간단 SIP 서버 클래스
+ */
+class CSipServer : public ISipStackCallBack
+{
+public:
+	CSipServer();
+	~CSipServer();
+
+	bool Start( CSipStackSetup & clsSetup );
+
+	// ISipStackCallBack
+	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
+	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
+};
+
+extern CSipServer gclsSipServer;
 
 #endif
