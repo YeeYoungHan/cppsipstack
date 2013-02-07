@@ -18,6 +18,7 @@
 
 #include "SipServer.h"
 #include "SipUtility.h"
+#include "CallMap.h"
 
 CSipStack	gclsSipStack;
 CSipServer gclsSipServer;
@@ -64,7 +65,17 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	}
 	else if( pclsMessage->IsMethod( "INVITE" ) )
 	{
-		
+		gclsCallMap.Insert( pclsMessage );
+
+		CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );
+		if( pclsResponse )
+		{
+			pclsResponse->m_clsContentType = pclsMessage->m_clsContentType;
+			pclsResponse->m_strBody = pclsMessage->m_strBody;
+			pclsResponse->m_iContentLength = pclsMessage->m_iContentLength;
+
+			return gclsSipStack.SendSipMessage( pclsResponse );
+		}
 	}
 	else if( pclsMessage->IsMethod( "UPDATE" ) || pclsMessage->IsMethod( "INFO" ) )
 	{
@@ -76,7 +87,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	}
 	else if( pclsMessage->IsMethod( "BYE" ) )
 	{
-
+		gclsCallMap.Delete( pclsMessage );
 	}
 
 	return false;
