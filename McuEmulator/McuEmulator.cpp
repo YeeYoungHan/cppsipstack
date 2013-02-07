@@ -77,7 +77,7 @@ int main( int argc, char * argv[] )
 
 	int iLocalUdpPort = atoi( argv[1] );
 
-	CLog::SetLevel( LOG_DEBUG | LOG_INFO | LOG_NETWORK );
+	CLog::SetLevel( LOG_DEBUG | LOG_INFO );
 
 	signal( SIGINT, LastMethod );
 	signal( SIGTERM, LastMethod );
