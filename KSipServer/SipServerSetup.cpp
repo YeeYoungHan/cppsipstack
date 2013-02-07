@@ -20,6 +20,7 @@
 #include "SipServerSetup.h"
 #include "XmlElement.h"
 #include "Log.h"
+#include <string.h>
 
 CSipServerSetup gclsSetup;
 

@@ -17,6 +17,8 @@
  */
 
 #include "XmlElement.h"
+#include <string.h>
+#include <stdio.h>
 
 static bool Test( const char * pszText, const char * pszResult )
 {
