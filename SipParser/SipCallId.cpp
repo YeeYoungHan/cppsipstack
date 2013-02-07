@@ -19,6 +19,8 @@
 #include "SipParserDefine.h"
 #include "SipCallId.h"
 #include "SipUtility.h"
+#include <stdio.h>
+#include <string.h>
 
 CSipCallId::CSipCallId()
 {
