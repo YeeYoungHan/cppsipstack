@@ -17,6 +17,7 @@
  */
 
 #include "StringUtility.h"
+#include <string.h>
 
 /**
  * @ingroup SipPlatform
