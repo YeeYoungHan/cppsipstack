@@ -23,7 +23,12 @@
 #include "ServerUtility.h"
 
 static SSL_CTX	* ctx;
+
+#if OPENSSL_VERSION_NUMBER >= 0x10000003L
+static const SSL_METHOD	* meth;
+#else
 static SSL_METHOD	* meth;
+#endif
 
 static bool gbStartSslServer = false;
 static CSipMutex * garrMutex;

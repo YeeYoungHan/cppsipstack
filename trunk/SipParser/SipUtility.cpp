@@ -22,6 +22,7 @@
 #include "SipMd5.h"
 #include <string>
 #include <time.h>
+#include <stdlib.h>
 
 static CSipMutex gclsMutex;
 static int	giTag;

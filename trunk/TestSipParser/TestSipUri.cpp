@@ -17,6 +17,8 @@
  */
 
 #include "SipUri.h"
+#include <string.h>
+#include <stdio.h>
 
 static bool Test( const char * pszText )
 {
