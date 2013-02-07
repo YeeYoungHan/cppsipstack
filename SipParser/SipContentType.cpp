@@ -18,6 +18,8 @@
 
 #include "SipParserDefine.h"
 #include "SipContentType.h"
+#include <stdio.h>
+#include <string.h>
 
 CSipContentType::CSipContentType()
 {
