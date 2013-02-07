@@ -179,6 +179,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RtpThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RtpThread.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SipServer.cpp"
 				>
 			</File>
