@@ -20,8 +20,10 @@
 #include "RoomMap.h"
 #include "RtpThread.h"
 #include "SdpMessage.h"
+#include "SipStack.h"
 
 CCallMap gclsCallMap;
+extern CSipStack	gclsSipStack;
 
 CCallMap::CCallMap() : m_iUdpStartPort(10000), m_iUdpStopPort(20000), m_iUdpPort(0)
 {
@@ -207,6 +209,8 @@ bool CCallMap::SetRemoteRtp( CCallInfo & clsCallInfo, CSipMessage * pclsMessage 
 
 		if( clsSdpMessage.Parse( pclsMessage->m_strBody.c_str(), pclsMessage->m_strBody.length() ) > 0 )
 		{
+			clsSdpMessage.m_clsConnection.m_strAddr = gclsSipStack.m_clsSetup.m_strLocalIp;
+
 			SDP_MEDIA_LIST::iterator	itList;
 
 			for( itList = clsSdpMessage.m_clsMediaList.begin(); itList != clsSdpMessage.m_clsMediaList.end(); ++itList )
@@ -225,6 +229,8 @@ bool CCallMap::SetRemoteRtp( CCallInfo & clsCallInfo, CSipMessage * pclsMessage 
 				{
 					itList->m_iPort = 0;
 				}
+
+				itList->m_clsConnection.m_strAddr = gclsSipStack.m_clsSetup.m_strLocalIp;
 			}
 
 			char	szSdp[4192];
