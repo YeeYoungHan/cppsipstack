@@ -18,7 +18,9 @@ LIB=-L../SipStack -lsipstack \
 
 all: McuEmulator.exe
 
-SRV_OBJ=McuEmulator.o SipServer.o
+SRV_OBJ=McuEmulator.o SipServer.o \
+	CallMap.o RoomMap.o \
+	RtpThread.o
 
 McuEmulator.exe: $(SRV_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)
