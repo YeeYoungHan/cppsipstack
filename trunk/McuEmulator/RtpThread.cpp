@@ -22,7 +22,7 @@
 #include "RoomMap.h"
 #include "Log.h"
 
-#define MAX_POLL_COUNT	30
+#define MAX_POLL_COUNT	16
 
 static int giRtpThreadCount = 0;
 CSipMutex gclsCountMutex;
@@ -82,6 +82,8 @@ void * RtpThread( void * lpParameter )
 		{
 			if( gclsCallMap.Select( itCIL->c_str(), clsCallInfo ) )
 			{
+				if( (iPollCount + 1) >= MAX_POLL_COUNT ) break;
+
 				TcpSetPollIn( sttPoll[iPollCount++], clsCallInfo.m_hAudioRtp );
 				TcpSetPollIn( sttPoll[iPollCount++], clsCallInfo.m_hAudioRtcp );
 				TcpSetPollIn( sttPoll[iPollCount++], clsCallInfo.m_hVideoRtp );
@@ -105,17 +107,7 @@ void * RtpThread( void * lpParameter )
 				iPacketLen = sizeof(szPacket);
 				if( UdpRecv( sttPoll[iIndex].fd, szPacket, &iPacketLen, &iIp, &sPort ) )
 				{
-					for( int i = iIndex + 4; i < iPollCount; i += 4 )
-					{
-						// QQQ: 상대방 IP/Port 로 전송해야 한다.
-						UdpSend( sttPoll[i].fd, szPacket, iPacketLen, iIp, sPort );
-					}
-
-					for( int i = iIndex - 4; i >= 0; i -= 4 )
-					{
-						// QQQ: 상대방 IP/Port 로 전송해야 한다.
-						UdpSend( sttPoll[i].fd, szPacket, iPacketLen, iIp, sPort );
-					}
+					UdpSend( sttPoll[iIndex].fd, szPacket, iPacketLen, iIp, sPort );
 				}
 			}
 		}

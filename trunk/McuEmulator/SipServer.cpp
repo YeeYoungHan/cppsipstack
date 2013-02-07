@@ -57,7 +57,8 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
 	if( pclsMessage->IsMethod( "REGISTER" ) )
 	{
-		CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_NOT_IMPLEMENTED );
+		//CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_NOT_IMPLEMENTED );
+		CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );
 		if( pclsResponse )
 		{
 			return gclsSipStack.SendSipMessage( pclsResponse );
@@ -88,6 +89,12 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	else if( pclsMessage->IsMethod( "BYE" ) )
 	{
 		gclsCallMap.Delete( pclsMessage );
+
+		CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );
+		if( pclsResponse )
+		{
+			return gclsSipStack.SendSipMessage( pclsResponse );
+		}
 	}
 
 	return false;
