@@ -107,11 +107,13 @@ void * RtpThread( void * lpParameter )
 				{
 					for( int i = iIndex + 4; i < iPollCount; i += 4 )
 					{
+						// QQQ: 상대방 IP/Port 로 전송해야 한다.
 						UdpSend( sttPoll[i].fd, szPacket, iPacketLen, iIp, sPort );
 					}
 
 					for( int i = iIndex - 4; i >= 0; i -= 4 )
 					{
+						// QQQ: 상대방 IP/Port 로 전송해야 한다.
 						UdpSend( sttPoll[i].fd, szPacket, iPacketLen, iIp, sPort );
 					}
 				}
