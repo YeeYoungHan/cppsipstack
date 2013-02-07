@@ -18,6 +18,8 @@
 
 #include "SipParserDefine.h"
 #include "SipChallenge.h"
+#include <stdio.h>
+#include <string.h>
 
 CSipChallenge::CSipChallenge()
 {
