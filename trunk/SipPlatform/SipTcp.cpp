@@ -18,7 +18,6 @@
 
 #include "SipPlatformDefine.h"
 #include "SipTcp.h"
-#include <stdio.h>
 
 #ifndef WIN32
 #include <ctype.h>

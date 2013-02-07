@@ -18,8 +18,6 @@
 
 #include "SipPlatformDefine.h"
 #include <time.h>
-#include <string.h>
-#include <stdio.h>
 #include "SipUdp.h"
 
 #ifndef WIN32
