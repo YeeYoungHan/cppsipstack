@@ -34,7 +34,7 @@ public:
 };
 
 /**
- * @ingroup KSipServer
+ * @ingroup McuEmulator
  * @brief RTP relay 쓰레드 함수
  * @param lpParameter 의미없음
  * @returns 0 을 리턴한다.
@@ -125,7 +125,7 @@ void * RtpThread( void * lpParameter )
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup McuEmulator
  * @brief RTP relay 쓰레드를 시작한다.
  * @param	pszRoomId	회의방 번호
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
@@ -143,7 +143,7 @@ bool StartRtpThread( const char * pszRoomId )
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup McuEmulator
  * @brief RTP relay 쓰레드 실행 유무를 검사한다.
  * @returns RTP relay 쓰레드가 실행 중이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
