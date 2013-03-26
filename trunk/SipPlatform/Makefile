@@ -4,8 +4,8 @@
 #            : http://blog.naver.com/websearch
 # start date : 2012/11/22
 
-CC=g++
-CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
+include ../Makefile.mk
+
 INC=
 
 .SUFFIXES: .o .cpp

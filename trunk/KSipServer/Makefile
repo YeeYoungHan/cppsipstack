@@ -4,8 +4,8 @@
 #            : http://blog.naver.com/websearch
 # start date : 2012/08/16
 
-CC=g++
-CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
+include ../Makefile.mk
+
 INC=-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser -I../SipPlatform \
 	-I../XmlParser -I/usr/include/mysql
 LIB=-L../SipUserAgent -lsipuseragent \
