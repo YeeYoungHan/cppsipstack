@@ -18,6 +18,7 @@
 
 #include "LogAnalysisSetup.h"
 #include "XmlElement.h"
+#include <stdio.h>
 
 CLogAnalysisSetup gclsSetup;
 
