@@ -210,7 +210,17 @@ int CSipNICTList::GetSize( )
  */
 void CSipNICTList::GetString( std::string & strBuf )
 {
-	// QQQ
+	NON_INVITE_TRANSACTION_MAP::iterator	itMap;
+
+	strBuf.clear();
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		strBuf.append( itMap->first );
+		strBuf.append( "\n" );
+	}
+	m_clsMutex.release();
 }
 
 /**
