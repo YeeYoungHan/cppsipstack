@@ -117,3 +117,21 @@ bool CSipStackSetup::Check( )
 
 	return true;
 }
+
+/**
+ * @ingroup SipStack
+ * @brief 전송 프로토콜에 대한 로컬 포트 번호를 리턴한다.
+ * @returns 전송 프로토콜에 대한 로컬 포트 번호를 리턴한다.
+ */
+int CSipStackSetup::GetLocalPort( ESipTransport eTransport )
+{
+	switch( eTransport )
+	{
+	case E_SIP_TCP:
+		return m_iLocalTlsPort;
+	case E_SIP_TLS:	
+		return m_iLocalTcpPort;
+	default:
+		return m_iLocalUdpPort;
+	}
+}

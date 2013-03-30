@@ -661,7 +661,7 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 	{
 		if( pclsMessage->m_clsViaList.size() == 0 )
 		{
-			pclsMessage->AddVia( m_clsSetup.m_strLocalIp.c_str(), m_clsSetup.m_iLocalUdpPort );
+			pclsMessage->AddVia( m_clsSetup.m_strLocalIp.c_str(), m_clsSetup.GetLocalPort( pclsMessage->m_eTransport ) );
 		}
 	}
 

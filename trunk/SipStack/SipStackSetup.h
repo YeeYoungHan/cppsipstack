@@ -32,6 +32,7 @@ public:
 	~CSipStackSetup();
 
 	bool Check( );
+	int GetLocalPort( ESipTransport eTransport );
 
 	/** SIP 메시지에 저장되는 로컬 IP 주소 */
 	std::string m_strLocalIp;
