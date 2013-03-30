@@ -57,8 +57,7 @@ CSipMessage * CSipDialog::CreateInvite( )
 
 	SipMakeBranch( szBranch, sizeof(szBranch) );
 
-	// QQQ: TCP local port 를 검색해서 가져와야 한다.
-	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, szBranch, m_eTransport );
+	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.GetLocalPort( m_eTransport ), szBranch, m_eTransport );
 	m_strViaBranch = szBranch;
 
 	AddSdp( pclsMessage );
@@ -76,7 +75,7 @@ CSipMessage * CSipDialog::CreateAck( )
 	CSipMessage * pclsMessage = CreateMessage( "ACK" );
 	if( pclsMessage == NULL ) return NULL;
 
-	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, m_strViaBranch.c_str() );
+	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.GetLocalPort( m_eTransport ), m_strViaBranch.c_str(), m_eTransport );
 
 	return pclsMessage;
 }
@@ -91,7 +90,7 @@ CSipMessage * CSipDialog::CreateCancel( )
 	CSipMessage * pclsMessage = CreateMessage( "CANCEL" );
 	if( pclsMessage == NULL ) return NULL;
 
-	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, m_strViaBranch.c_str() );
+	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.GetLocalPort( m_eTransport ), m_strViaBranch.c_str(), m_eTransport );
 
 	return pclsMessage;
 }
