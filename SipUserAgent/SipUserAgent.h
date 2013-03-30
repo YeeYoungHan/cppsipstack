@@ -65,6 +65,7 @@ public:
 	bool InsertRegisterInfo( CSipServerInfo & clsInfo );
 	bool UpdateRegisterInfo( CSipServerInfo & clsInfo );
 	bool DeleteRegisterInfo( CSipServerInfo & clsInfo );
+	void DeleteRegisterInfoAll( );
 
 	// 로그인 관련
 	bool Start( CSipStackSetup & clsSetup );
