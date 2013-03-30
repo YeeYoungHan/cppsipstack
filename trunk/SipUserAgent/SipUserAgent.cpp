@@ -160,6 +160,23 @@ bool CSipUserAgent::DeleteRegisterInfo( CSipServerInfo & clsInfo )
 
 /**
  * @ingroup SipUserAgent
+ * @brief 모든 SIP 로그인 정보를 삭제한다.
+ */
+void CSipUserAgent::DeleteRegisterInfoAll( )
+{
+	SIP_SERVER_INFO_LIST::iterator	it;
+
+	m_clsRegisterMutex.acquire();
+	for( it = m_clsRegisterList.begin(); it != m_clsRegisterList.end(); ++it )
+	{
+		it->m_bDelete = true;
+		it->m_iLoginTimeout = 0;
+	}
+	m_clsRegisterMutex.release();
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief SIP stack 을 시작하고 SIP 로그인 쓰레드를 시작한다.
  * @param clsSetup	SIP stack 설정 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -182,7 +199,30 @@ bool CSipUserAgent::Start( CSipStackSetup & clsSetup )
  */
 bool CSipUserAgent::Stop( )
 {
-	// QQQ: SIP 로그아웃하여야 한다.
+	SIP_SERVER_INFO_LIST::iterator	it;
+	int	iCount;
+
+	DeleteRegisterInfoAll();
+
+	for( int i = 0; i < 10; ++i )
+	{
+		m_clsRegisterMutex.acquire();
+		iCount = m_clsRegisterList.size();
+		if( iCount > 0 )
+		{
+			iCount = 0;
+
+			// 로그인된 개수를 계산한다.
+			for( it = m_clsRegisterList.begin(); it != m_clsRegisterList.end(); ++it )
+			{
+				if( it->m_bLogin ) ++iCount;
+			}
+		}
+		m_clsRegisterMutex.release();
+
+		if( iCount <= 0 ) break;
+		sleep(1);
+	}
 
 	gclsSipStack.Stop();
 
