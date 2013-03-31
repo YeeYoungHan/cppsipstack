@@ -399,7 +399,7 @@ bool CSipUserAgent::Delete( const char * pszCallId )
 	}
 	m_clsMutex.release();
 
-	return true;
+	return bRes;
 }
 
 /**
