@@ -39,6 +39,17 @@ void ReplaceString( std::string & strCallId, const char * pszBefore, const char 
 	}
 }
 
+/**
+ * @ingroup SipPlatform
+ * @brief 문자열에 포함된 키의 값을 추출한다. 
+ *				"app=36;msg=36;hotline=46;presence=36; broadcast=46" 문자열에서 
+ *				app 의 값을 추출하고 싶으면 pszKey 에 "app=" 를 입력하고 cSep 에 ';' 를 입력하면 된다.
+ * @param strText		문자열
+ * @param pszKey		키
+ * @param cSep			구분자
+ * @param strValue	키의 값을 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool SearchValue( std::string & strText, const char * pszKey, char cSep, std::string & strValue )
 {
 	strValue.clear();
@@ -57,6 +68,31 @@ bool SearchValue( std::string & strText, const char * pszKey, char cSep, std::st
 		{
 			strValue = strText.substr( iPos + iKeyLen );
 		}
+
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 문자열에 포함된 키의 값을 추출한다. 
+ *				"app=36;msg=36;hotline=46;presence=36; broadcast=46" 문자열에서 
+ *				app 의 값을 추출하고 싶으면 pszKey 에 "app=" 를 입력하고 cSep 에 ';' 를 입력하면 된다.
+ * @param strText		문자열
+ * @param pszKey		키
+ * @param cSep			구분자
+ * @param iValue		키의 값을 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool SearchValue( std::string & strText, const char * pszKey, char cSep, int & iValue )
+{
+	std::string	strValue;
+
+	if( SearchValue( strText, pszKey, cSep, strValue ) )
+	{
+		iValue = atoi( strValue.c_str() );
 
 		return true;
 	}
