@@ -357,6 +357,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestString.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestXml.cpp"
 				>
 			</File>
