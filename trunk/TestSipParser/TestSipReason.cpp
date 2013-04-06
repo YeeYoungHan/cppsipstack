@@ -16,32 +16,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "StringUtility.h"
+#include "SipReason.h"
 #include <string.h>
 
-bool TestString()
+bool TestSipReason()
 {
-	std::string	strText = "dscp;app=36;msg=36;hotline=46;presence=36; broadcast=46;ppt=";
+	CSipReason clsReason;
+	std::string strText = "Control;cause=200;text=\"ok\";charset=euc-kr";
 	std::string strValue;
-	int	iValue;
 
-	if( SearchValue( strText, "app=", ';', strValue ) == false ) return false;
-	if( strcmp( strValue.c_str(), "36" ) ) return false;
+	if( clsReason.Parse( strText.c_str(), strText.length() ) == -1 ) return false;
 
-	if( SearchValue( strText, "broadcast=", ';', strValue ) == false ) return false;
-	if( strcmp( strValue.c_str(), "46" ) ) return false;
+	if( strcmp( clsReason.m_strProtocol.c_str(), "Control" ) ) return false;
 
-	if( SearchValue( strText, "test=", ';', strValue ) == true ) return false;
-	if( SearchValue( strText, "test=", ';', iValue ) == true ) return false;
+	if( clsReason.SelectParam( "cause", strValue ) == false ) return false;
+	if( strcmp( strValue.c_str(), "200" ) ) return false;
 
-	if( SearchValue( strText, "app=", ';', iValue ) == false ) return false;
-	if( iValue != 36 ) return false;
+	if( clsReason.SelectParam( "text", strValue ) == false ) return false;
+	if( strcmp( strValue.c_str(), "ok" ) ) return false;
 
-	if( SearchValue( strText, "broadcast=", ';', iValue ) == false ) return false;
-	if( iValue != 46 ) return false;
-
-	if( SearchValue( strText, "ppt=", ';', iValue ) == false ) return false;
-	if( iValue != 0 ) return false;
+	if( clsReason.SelectParam( "charset", strValue ) == false ) return false;
+	if( strcmp( strValue.c_str(), "euc-kr" ) ) return false;
 
 	return true;
 }
