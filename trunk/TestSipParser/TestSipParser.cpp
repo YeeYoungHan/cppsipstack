@@ -31,6 +31,7 @@ bool TestSdp();
 bool TestXml();
 bool TestInt();
 bool TestMd5();
+bool TestString();
 
 /**
  * @ingroup TestSipParser
@@ -41,6 +42,7 @@ bool TestMd5();
  */
 int main( int argc, char * argv[] )
 {
+	if( TestString() == false ) goto FUNC_END;
 	if( TestMd5() == false ) goto FUNC_END;
 	if( TestInt() == false ) goto FUNC_END;
 	if( TestSipUri() == false ) goto FUNC_END;

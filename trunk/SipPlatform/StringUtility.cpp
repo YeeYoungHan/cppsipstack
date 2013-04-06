@@ -38,3 +38,28 @@ void ReplaceString( std::string & strCallId, const char * pszBefore, const char 
 		iPos = strCallId.find( pszBefore, iPos + iAfterLen );
 	}
 }
+
+bool SearchValue( std::string & strText, const char * pszKey, char cSep, std::string & strValue )
+{
+	strValue.clear();
+
+	size_t iPos = strText.find( pszKey );
+	if( iPos < std::string::npos )
+	{
+		size_t iKeyLen = strlen( pszKey );
+		size_t iEndPos = strText.find( cSep, iPos + iKeyLen );
+
+		if( iEndPos < std::string::npos )
+		{
+			strValue = strText.substr( iPos + iKeyLen, iEndPos - ( iPos + iKeyLen ) );
+		}
+		else
+		{
+			strValue = strText.substr( iPos + iKeyLen );
+		}
+
+		return true;
+	}
+
+	return false;
+}
