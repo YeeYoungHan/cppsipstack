@@ -321,6 +321,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipReason.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipStatusCode.cpp"
 				>
 			</File>
@@ -380,6 +384,10 @@
 			</File>
 			<File
 				RelativePath=".\SipParserDefine.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipReason.h"
 				>
 			</File>
 			<File

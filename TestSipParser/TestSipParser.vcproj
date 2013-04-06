@@ -341,11 +341,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestSipHeader.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestSipMessage.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\TestSipParser.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TestSipReason.cpp"
 				>
 			</File>
 			<File

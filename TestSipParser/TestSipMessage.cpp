@@ -998,13 +998,5 @@ bool TestSipMessage()
 		"Content-Length: 0\r\n"
 		"\r\n" ) == false ) return false;
 
-	//
-	CSipMessage clsMessage;
-	CSipFrom	clsFrom;
-
-	std::string strText = "Alice <sip:alice@atlanta.com>";
-
-	if( clsFrom.Parse( strText.c_str(), strText.length() ) == -1 ) return false;
-
 	return true;
 }
