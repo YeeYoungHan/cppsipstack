@@ -17,24 +17,18 @@
  */
 
 #include "SipParserDefine.h"
-#include "SipAcceptData.h"
+#include "SipReason.h"
+#include "StringUtility.h"
 
-CSipAcceptData::CSipAcceptData()
+CSipReason::CSipReason()
 {
 }
 
-CSipAcceptData::~CSipAcceptData()
+CSipReason::~CSipReason()
 {
 }
 
-/**
- * @ingroup SipParser
- * @brief SIP 헤더 문자열을 파싱하여 CSipAcceptData 클래스의 멤버 변수에 저장한다.
- * @param pszText		SIP 헤더의 값을 저장한 문자열
- * @param iTextLen	pszText 문자열의 길이
- * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
- */
-int CSipAcceptData::Parse( const char * pszText, int iTextLen )
+int CSipReason::Parse( const char * pszText, int iTextLen )
 {
 	Clear();
 	if( pszText == NULL || iTextLen <= 0 ) return -1;
@@ -46,22 +40,22 @@ int CSipAcceptData::Parse( const char * pszText, int iTextLen )
 	{
 		if( pszText[iPos] == ';' )
 		{
-			m_strName.append( pszText, iPos );
+			m_strProtocol.append( pszText, iPos );
 			bParam = true;
 			break;
 		}
 		else if( pszText[iPos] == ',' )
 		{
-			m_strName.append( pszText, iPos );
+			m_strProtocol.append( pszText, iPos );
 			break;
 		}
 	}
 
 	iCurPos = iPos;
 
-	if( m_strName.empty() )
+	if( m_strProtocol.empty() )
 	{
-		m_strName.append( pszText, iCurPos );
+		m_strProtocol.append( pszText, iCurPos );
 	}
 
 	if( bParam )
@@ -82,6 +76,16 @@ int CSipAcceptData::Parse( const char * pszText, int iTextLen )
 			if( iPos == -1 ) return -1;
 			iCurPos += iPos;
 		}
+
+		SIP_PARAMETER_LIST::iterator	itList;
+
+		for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
+		{
+			if( itList->m_strValue.empty() == false && itList->m_strValue.at(0) == '"' )
+			{
+				ReplaceString( itList->m_strValue, "\"", "" );
+			}
+		}
 	}
 
 	return iCurPos;
@@ -94,13 +98,13 @@ int CSipAcceptData::Parse( const char * pszText, int iTextLen )
  * @param iTextSize	pszText 변수의 크기
  * @returns 성공하면 작성한 문자열 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
  */
-int CSipAcceptData::ToString( char * pszText, int iTextSize )
+int CSipReason::ToString( char * pszText, int iTextSize )
 {
 	if( pszText == NULL || iTextSize <= 0 ) return -1;
 
 	int iLen, iPos;
 
-	iLen = snprintf( pszText, iTextSize, "%s", m_strName.c_str() );
+	iLen = snprintf( pszText, iTextSize, "%s", m_strProtocol.c_str() );
 
 	iPos = MakeSipParameterString( m_clsParamList, pszText + iLen, iTextSize - iLen );
 	if( iPos == -1 ) return -1;
@@ -113,38 +117,20 @@ int CSipAcceptData::ToString( char * pszText, int iTextSize )
  * @ingroup SipParser
  * @brief 멤버 변수를 초기화시킨다.
  */
-void CSipAcceptData::Clear()
+void CSipReason::Clear()
 {
-	m_strName.clear();
+	m_strProtocol.clear();
 	m_clsParamList.clear();
 }
 
 /**
- * @brief SIP Accept-Data 헤더를 파싱한다.
- * @param clsList		Accept-Data 리스트
- * @param pszText		SIP 헤더의 값을 저장한 문자열
- * @param iTextLen	pszText 문자열의 길이
- * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ * @ingroup SipParser
+ * @brief parameter 리스트를 검색하여서 parameter 이름에 대한 값을 가져온다.
+ * @param pszName		parameter 이름
+ * @param strValue	parameter 값을 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-int ParseSipAcceptData( SIP_ACCEPT_DATA_LIST & clsList, const char * pszText, int iTextLen )
+bool CSipReason::SelectParam( const char * pszName, std::string & strValue )
 {
-	int iPos, iCurPos = 0;
-	CSipAcceptData	clsAccept;
-
-	while( iCurPos < iTextLen )
-	{
-		if( pszText[iCurPos] == ' ' || pszText[iCurPos] == '\t' || pszText[iCurPos] == ',' )
-		{
-			++iCurPos;
-			continue;
-		}
-
-		iPos = clsAccept.Parse( pszText + iCurPos, iTextLen - iCurPos );
-		if( iPos == -1 ) return -1;
-		iCurPos += iPos;
-
-		clsList.push_back( clsAccept );
-	}
-
-	return iCurPos;
+	return SearchSipParameter( m_clsParamList, pszName, strValue );
 }
