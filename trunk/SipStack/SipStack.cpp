@@ -645,6 +645,11 @@ bool CSipStack::_Stop( )
 	m_clsTcpThreadList.Final();
 	m_clsTlsThreadList.Final();
 
+	m_clsICT.DeleteAll();
+	m_clsNICT.DeleteAll();
+	m_clsIST.DeleteAll();
+	m_clsNIST.DeleteAll();
+
 	m_bStopEvent = false;
 
 	return true;
