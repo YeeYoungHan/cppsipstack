@@ -170,5 +170,48 @@ bool TestXml()
 		return false;
 	}
 
+	pszXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" 
+		"<presence xmlns=\"urn:ietf:params:xml:ns:pidf\">\r\n" 
+		"<tuple id=\"C\">\r\n" 
+		"<address uri=\"sip:1001@192.168.1.1\">\r\n" 
+		"<status>busy</status>\r\n" 
+		"<phone-type>Phone</phone-type>\r\n" 
+		"</address>\r\n" 
+		"</tuple>\r\n" 
+		"</presence>\r\n";
+
+	if( clsXml.Parse( pszXml, (int)strlen(pszXml) ) == -1 )
+	{
+		printf( "xml(%s) parser error\n", pszXml );
+		return false;
+	}
+
+	std::string strUrl, strStatus;
+
+	CXmlElement * pclsPresence = clsXml.SelectElement( "presence" );
+	if( pclsPresence )
+	{
+		CXmlElement * pclsTuple = pclsPresence->SelectElement( "tuple" );
+		if( pclsTuple )
+		{
+			CXmlElement * pclsAddress = pclsTuple->SelectElement( "address" );
+			if( pclsAddress )
+			{
+				pclsAddress->SelectAttribute( "uri", strUrl );
+				CXmlElement * pclsStatus = pclsAddress->SelectElement( "status" );
+				if( pclsStatus )
+				{
+					if( pclsStatus->GetData() != NULL )
+					{
+						strStatus = pclsStatus->GetData();
+					}
+				}
+			}
+		}
+	}
+
+	if( strcmp( strUrl.c_str(), "sip:1001@192.168.1.1" ) ) return false;
+	if( strcmp( strStatus.c_str(), "busy" ) ) return false;
+
 	return true;
 }
