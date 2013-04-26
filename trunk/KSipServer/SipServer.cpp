@@ -92,6 +92,11 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	return false;
 }
 
+bool CSipServer::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
+{
+	return false;
+}
+
 /**
  * @ingroup KSipServer
  * @brief SIP 응답 메시지를 생성하여서 전송한다.

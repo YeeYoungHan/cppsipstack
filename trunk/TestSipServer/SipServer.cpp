@@ -180,3 +180,8 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 
 	return false;
 }
+
+bool CSipServer::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
+{
+	return false;
+}
