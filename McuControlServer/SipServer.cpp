@@ -87,6 +87,11 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	return true;
 }
 
+bool CSipServer::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
+{
+	return false;
+}
+
 #else
 
 /**
@@ -363,6 +368,11 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 		return true;
 	}
 
+	return false;
+}
+
+bool CSipServer::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
+{
 	return false;
 }
 

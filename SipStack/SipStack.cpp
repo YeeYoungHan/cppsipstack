@@ -525,6 +525,22 @@ void CSipStack::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 
 /**
  * @ingroup SipStack
+ * @brief 전송 SIP 메시지에 대한 timeout callback 메소드를 호출한다.
+ * @param iThreadId		쓰레드 아이디 ( 0 부터 쓰레드 개수 )
+ * @param pclsMessage SIP 메시지 저장 구조체
+ */
+void CSipStack::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
+{
+	SIP_STACK_CALLBACK_LIST::iterator itList;
+
+	for( itList = m_clsCallBackList.begin(); itList != m_clsCallBackList.end(); ++itList )
+	{
+		if( (*itList)->SendTimeout( iThreadId, pclsMessage ) ) break;
+	}
+}
+
+/**
+ * @ingroup SipStack
  * @brief UDP SIP 메시지 수신 쓰레드 개수를 증가시킨다.
  * @param iThreadId UDP SIP 메시지 수신 쓰레드 개수를 증가시키기 전에 UDP SIP 메시지 수신 쓰레드 개수를 저장할 변수
  */

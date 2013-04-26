@@ -177,6 +177,7 @@ void CSipISTList::Execute( struct timeval * psttTime )
 	if( m_clsMap.size() == 0 ) return;
 
 	INVITE_TRANSACTION_MAP::iterator	itMap, itNext;
+	OSIP_MESSAGE_LIST	clsResponseList;
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
@@ -205,6 +206,12 @@ LOOP_START:
 				if( itMap->second->m_iReSendCount == MAX_ICT_RESEND_COUNT )
 				{
 					memcpy( &itMap->second->m_sttStopTime, psttTime, sizeof(itMap->second->m_sttStopTime) );
+
+					// INVITE 응답 메시지로 200 OK 를 전송하고 이에 대한 ACK 를 수신하지 못 한 경우 timeout 처리한다.
+					if( itMap->second->m_iStatusCode == 200 )
+					{
+						clsResponseList.push_back( itMap->second->m_pclsResponse );
+					}
 				}
 				else if( itMap->second->m_pclsResponse->m_eTransport == E_SIP_UDP )
 				{
@@ -214,6 +221,13 @@ LOOP_START:
 		}
 	}
 	m_clsMutex.release();
+
+	for( OSIP_MESSAGE_LIST::iterator itList = clsResponseList.begin(); itList != clsResponseList.end(); ++itList )
+	{
+		m_pclsSipStack->SendTimeout( m_pclsSipStack->m_clsSetup.m_iUdpThreadCount, *itList );
+	}
+
+	clsResponseList.clear();
 }
 
 /**

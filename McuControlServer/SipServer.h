@@ -41,6 +41,7 @@ public:
 	// ISipStackCallBack
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
+	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage );
 
 private:
 	// SipServerRegister.hpp

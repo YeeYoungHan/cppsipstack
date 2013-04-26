@@ -302,6 +302,18 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 
 /**
  * @ingroup SipUserAgent
+ * @brief SIP 메시지 전송 timeout callback method
+ * @param iThreadId		SIP stack 의 UDP 쓰레드 아이디
+ * @param pclsMessage 수신된 SIP 응답 메시지
+ * @returns SIP 응답 메시지를 처리한 경우 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipUserAgent::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
+{
+	return false;
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief CSipDialog 에서 SIP INVITE 메시지를 생성하여 전송한다.
  * @param clsDialog 통화 정보 저장 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
