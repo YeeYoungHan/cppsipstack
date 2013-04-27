@@ -19,9 +19,13 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.11"
+#define KSIP_SERVER_VERSION	"0.12"
 
 /* 버전 정보 
+
+= 버전 0.12 ( 2013년 4월 27일 ) =
+ * 연동 IP-PBX 설정 XML 파일에 Use Element 를 추가하여서 사용 여부를 설정할 수 있다
+ * KSipServer 설정 파일에서 TLS 연동 설정을 추가함
 
 = 버전 0.11 ( 2012년 12월 04일 ) =
  * TCP 프로토콜로 SIP 메시지 전송/수신 기능 추가 완료

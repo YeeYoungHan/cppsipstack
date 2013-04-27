@@ -19,9 +19,22 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.07"
+#define SIP_STACK_VERSION "0.12"
 
 /* 버전 정보
+
+= 버전 0.12 ( 2013년 4월 27일 ) =
+ * ACK 수신 timeout callback 기능을 추가함
+ * SipStack 이 stack 에서 제거될 때에 전역변수가 먼저 제거되어서 발생하는 비정상 종료 버그를 패치함
+ * 전송 프로토콜에 대한 로컬 포트 번호를 가져오는 메소드를 추가함
+ * Via 헤더를 추가할 때에 전송 프로토콜에 대한 로컬 포트를 정확하게 입력하도록 수정함.
+ * IST, NICT, NIST 에 포함된 call-id 문자열을 가져오는 기능을 추가함
+ * SIP Reason 헤더 파서/생성 클래스를 추가함
+ * SIP 메시지를 전송한 클라이언트 IP / Port 를 SIP 메시지에 저장하는 기능을 추가함
+ * AddSipParameter 메소드를 InsertSipParameter 메소드로 이름을 수정함
+ * UpdateSipParameter 메소드를 추가함
+ * TLS 기반으로 SIP 요청에 대한 응답 메시지가 전송되지 않는 버그를 패치함
+ * TLS 세션이 연결될 수 있도록 수정함
 
 = 버전 0.07 ( 2012년 12월 04일 ) =
  * TCP 프로토콜로 SIP 메시지 전송/수신 기능 추가 완료

@@ -19,9 +19,15 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.09"
+#define SIP_USER_AGENT_VERSION "0.12"
 
 /* 버전 정보
+
+= 버전 0.12 ( 2013년 4월 27일 ) =
+ * Delete 메소드 리턴값이 부정확한 오류를 수정함
+ * Via 헤더를 추가할 때에 전송 프로토콜에 대한 로컬 포트를 정확하게 입력하도록 수정함
+ * Stop 메소드 실행시 로그아웃처리하는 기능을 추가함
+ * G.723 코덱을 사용할 수 있는 기능을 추가함
 
 = 버전 0.09 ( 2012년 12월 04일 ) =
  * TCP 프로토콜로 SIP 메시지 전송/수신 기능 추가 완료
