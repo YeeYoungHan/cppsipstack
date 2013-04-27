@@ -25,7 +25,12 @@ bool TestInt()
 	uint64_t i64 = 12345678901234567890ULL;
 	char	szBuf[255];
 
+#ifdef LINUX_64
+	snprintf( szBuf, sizeof(szBuf), "%lu", i64 );
+#else
 	snprintf( szBuf, sizeof(szBuf), "%llu", i64 );
+#endif
+
 	if( strcmp( szBuf, "12345678901234567890" ) )
 	{
 		printf( "snprintf uint64 is error\n" );
