@@ -207,7 +207,7 @@ bool CCallMap::SetRemoteRtp( CCallInfo & clsCallInfo, CSipMessage * pclsMessage 
 	{
 		CSdpMessage clsSdpMessage;
 
-		if( clsSdpMessage.Parse( pclsMessage->m_strBody.c_str(), pclsMessage->m_strBody.length() ) > 0 )
+		if( clsSdpMessage.Parse( pclsMessage->m_strBody.c_str(), (int)pclsMessage->m_strBody.length() ) > 0 )
 		{
 			clsSdpMessage.m_clsConnection.m_strAddr = gclsSipStack.m_clsSetup.m_strLocalIp;
 

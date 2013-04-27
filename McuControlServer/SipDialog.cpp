@@ -125,7 +125,7 @@ CSipMessage * CSipDialog::CreateNotify( )
 bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 {
 	pclsMessage->m_strBody = m_strLocalSdp;
-	pclsMessage->m_iContentLength = m_strLocalSdp.length();
+	pclsMessage->m_iContentLength = (int)m_strLocalSdp.length();
 	pclsMessage->m_clsContentType.Set( "application", "sdp" );
 	
 	return true;

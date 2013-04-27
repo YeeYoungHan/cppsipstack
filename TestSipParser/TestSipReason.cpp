@@ -25,7 +25,7 @@ bool TestSipReason()
 	std::string strText = "Control;cause=200;text=\"ok\";charset=euc-kr";
 	std::string strValue;
 
-	if( clsReason.Parse( strText.c_str(), strText.length() ) == -1 ) return false;
+	if( clsReason.Parse( strText.c_str(), (int)strText.length() ) == -1 ) return false;
 
 	if( strcmp( clsReason.m_strProtocol.c_str(), "Control" ) ) return false;
 
