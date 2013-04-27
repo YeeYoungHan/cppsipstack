@@ -26,6 +26,10 @@
 #include <time.h>
 #include "Version.h"
 
+/**
+ * @brief 어제 날짜를 구한다.
+ * @param strDate 어제 날짜를 저장할 변수
+ */
 void GetYesterday( std::string & strDate )
 {
 	struct tm	sttTm;

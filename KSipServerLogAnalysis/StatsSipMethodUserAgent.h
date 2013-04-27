@@ -23,6 +23,9 @@
 #include "SipMessage.h"
 #include <map>
 
+/**
+ * @brief UserAgent 통계 저장 클래스
+ */
 class CUserAgent
 {
 public:
@@ -33,6 +36,9 @@ public:
 
 typedef std::map< std::string, CUserAgent > STATS_SIP_METHOD_USER_AGENT_MAP;
 
+/**
+ * @brief SIP 메소드별 UserAgent 통계 저장 클래스
+ */
 class CStatsSipMethodUserAgent
 {
 public:

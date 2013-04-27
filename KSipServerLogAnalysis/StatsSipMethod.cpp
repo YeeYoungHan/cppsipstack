@@ -29,6 +29,10 @@ CStatsSipMethod::~CStatsSipMethod()
 {
 }
 
+/**
+ * @brief SIP 메소드별 통계를 저장한다.
+ * @param pclsMessage SIP 메시지
+ */
 void CStatsSipMethod::AddSipMessage( CSipMessage * pclsMessage )
 {
 	STATS_SIP_METHOD_MAP::iterator	itMap;
@@ -44,6 +48,10 @@ void CStatsSipMethod::AddSipMessage( CSipMessage * pclsMessage )
 	}
 }
 
+/**
+ * @brief SIP 메소드별 통계를 DB 에 저장한다.
+ * @param pszDate 통계 생성 날짜
+ */
 void CStatsSipMethod::SaveDB( const char * pszDate )
 {
 	STATS_SIP_METHOD_MAP::iterator	itMap;

@@ -29,6 +29,10 @@ CStatsSipMethodUserAgent::~CStatsSipMethodUserAgent()
 {
 }
 
+/**
+ * @brief SIP 메시지별 SIP UserAgent 를 저장한다.
+ * @param pclsMessage SIP 메시지
+ */
 void CStatsSipMethodUserAgent::AddSipMessage( CSipMessage * pclsMessage )
 {
 	STATS_SIP_METHOD_USER_AGENT_MAP::iterator	itMap;
@@ -55,6 +59,10 @@ void CStatsSipMethodUserAgent::AddSipMessage( CSipMessage * pclsMessage )
 	}
 }
 
+/**
+ * @brief SIP 메시지별 SIP UserAgent 를 DB 에 저장한다.
+ * @param pszDate 통계 생성 날짜
+ */
 void CStatsSipMethodUserAgent::SaveDB( const char * pszDate )
 {
 	STATS_SIP_METHOD_USER_AGENT_MAP::iterator	itMap;

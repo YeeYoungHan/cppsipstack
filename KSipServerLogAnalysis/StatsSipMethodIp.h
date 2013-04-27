@@ -23,6 +23,9 @@
 #include "SipMessage.h"
 #include <map>
 
+/**
+ * @brief IP 주소 통계 저장 클래스
+ */
 class CIp
 {
 public:
@@ -33,6 +36,9 @@ public:
 
 typedef std::map< std::string, CIp > STATS_SIP_METHOD_MAP_IP;
 
+/**
+ * @brief SIP 메소드별 IP 주소 통계 저장 클래스
+ */
 class CStatsSipMethodIp
 {
 public:

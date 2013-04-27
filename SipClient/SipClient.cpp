@@ -152,6 +152,14 @@ bool CSipClient::EventBlindTransfer( const char * pszCallId, const char * pszRef
 	return false;
 }
 
+/**
+ * @ingroup SipClient
+ * @brief SIP MESSAGE 수신 이벤트 핸들러
+ * @param pszFrom			SIP 메시지 전송 아이디
+ * @param pszTo				SIP 메시지 수신 아이디
+ * @param pclsMessage SIP 메시지
+ * @returns 요청을 수락하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipClient::EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage )
 {
 	char	szContentType[255];
