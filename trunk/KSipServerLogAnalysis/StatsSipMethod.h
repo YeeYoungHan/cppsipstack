@@ -25,6 +25,9 @@
 
 typedef std::map< std::string, uint64_t > STATS_SIP_METHOD_MAP;
 
+/**
+ * @brief SIP 메소드별 통계 저장 클래스
+ */
 class CStatsSipMethod
 {
 public:

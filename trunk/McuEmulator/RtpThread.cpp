@@ -27,6 +27,9 @@
 static int giRtpThreadCount = 0;
 CSipMutex gclsCountMutex;
 
+/**
+ * @brief RTP relay 쓰레드 정보
+ */
 class CRtpThreadInfo
 {
 public:

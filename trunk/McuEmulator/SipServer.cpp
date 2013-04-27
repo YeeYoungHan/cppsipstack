@@ -114,6 +114,13 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	return false;
 }
 
+/**
+ * @ingroup McuEmulator
+ * @brief SIP 메시지 전송 timeout callback method
+ * @param iThreadId		SIP stack 의 UDP 쓰레드 아이디
+ * @param pclsMessage 수신된 SIP 응답 메시지
+ * @returns SIP 응답 메시지를 처리한 경우 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServer::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 {
 	return false;

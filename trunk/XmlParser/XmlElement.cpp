@@ -514,6 +514,11 @@ bool CXmlElement::IsDataEmpty()
 	return m_strData.empty();
 }
 
+/**
+ * @brief 입력된 문자열을 bool 로 변환하여서 리턴한다.
+ * @param pszData 문자열
+ * @returns 입력된 문자열이 true 이거나 yes 이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CXmlElement::GetBoolean( const char * pszData )
 {
 	if( !strcasecmp( pszData, "true" ) || !strcasecmp( pszData, "yes" ) )

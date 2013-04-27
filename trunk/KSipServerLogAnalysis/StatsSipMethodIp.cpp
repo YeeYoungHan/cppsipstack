@@ -29,6 +29,11 @@ CStatsSipMethodIp::~CStatsSipMethodIp()
 {
 }
 
+/**
+ * @brief SIP 메소드별 IP 주소 통계를 저장한다.
+ * @param pclsMessage SIP 메시지
+ * @param pszIp				IP 주소
+ */
 void CStatsSipMethodIp::AddSipMessage( CSipMessage * pclsMessage, const char * pszIp )
 {
 	STATS_SIP_METHOD_MAP_IP::iterator	itMap;
@@ -56,6 +61,10 @@ void CStatsSipMethodIp::AddSipMessage( CSipMessage * pclsMessage, const char * p
 	}
 }
 
+/**
+ * @brief SIP 메소드별 IP 주소 통계를 DB 에 저장한다.
+ * @param pszDate 통계 생성 날짜
+ */
 void CStatsSipMethodIp::SaveDB( const char * pszDate )
 {
 	STATS_SIP_METHOD_MAP_IP::iterator	itMap;
