@@ -46,7 +46,7 @@ bool CSipServerMap::SelectNext( CSipServerInfo & clsInfo )
 	bool bRes = false;
 
 	m_clsMutex.acquire();
-	int iCount = m_clsList.size();
+	int iCount = (int)m_clsList.size();
 	if( iCount > 0 )
 	{
 		if( m_iIndex >= iCount )
