@@ -62,7 +62,11 @@ void CStatsSipMethodUserAgent::SaveDB( const char * pszDate )
 
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
+#ifdef LINUX_64
+		snprintf( szSQL, sizeof(szSQL), "INSERT INTO StatsMethodUserAgent( Date, Method, UserAgent, Count ) VALUES( '%s', '%s', '%s', %lu )"
+#else
 		snprintf( szSQL, sizeof(szSQL), "INSERT INTO StatsMethodUserAgent( Date, Method, UserAgent, Count ) VALUES( '%s', '%s', '%s', %llu )"
+#endif
 			, pszDate, itMap->second.m_strMethod.c_str(), itMap->second.m_strUserAgent.c_str(), itMap->second.m_iCount );
 		gclsWriteDB.Execute( szSQL );
 	}

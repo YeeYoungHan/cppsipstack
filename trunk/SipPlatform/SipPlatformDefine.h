@@ -57,6 +57,10 @@ typedef char int8_t;
 #include <sys/time.h>
 #endif
 
+#if __WORDSIZE == 64
+#define LINUX_64
+#endif
+
 #ifdef WIN32
 int gettimeofday( struct timeval *tv, struct timezone *tz );
 #endif
