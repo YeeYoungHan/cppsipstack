@@ -126,7 +126,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 
 					// PolyCom 에서 전송한 패킷이 flagment 되었고 flagment 된 패킷의 길이가 60 미만인 경우
 					// 상대방으로 전달되지 않는 버그를 패치하는 기능
-					int iLength = pclsRequest->m_strPacket.length();
+					int iLength = (int)pclsRequest->m_strPacket.length();
 					if( iLength > 1472 && iLength < 1498 )
 					{
 						int iAppendLength = 1498 - iLength;

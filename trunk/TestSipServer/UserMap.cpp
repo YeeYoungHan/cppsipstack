@@ -154,7 +154,7 @@ bool CUserMap::ReadFile( const char * pszFileName )
 	}
 
 	USER_MAP::iterator	itMap;
-	int n;
+	size_t n;
 
 	while( 1 )
 	{

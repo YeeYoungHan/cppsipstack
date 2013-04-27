@@ -207,7 +207,7 @@ bool CSipUserAgent::Stop( )
 	for( int i = 0; i < 10; ++i )
 	{
 		m_clsRegisterMutex.acquire();
-		iCount = m_clsRegisterList.size();
+		iCount = (int)m_clsRegisterList.size();
 		if( iCount > 0 )
 		{
 			iCount = 0;
