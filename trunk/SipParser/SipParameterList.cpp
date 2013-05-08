@@ -27,6 +27,44 @@ CSipParameterList::~CSipParameterList()
 {
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP Header 가 , 로 구분되어서 N 개 저장되는 SIP Header 의 parameter list 를 파싱한다.
+ * @param pszText		parameter 리스트 문자열
+ * @param iTextLen	parameter 리스트 문자열의 길이
+ * @returns 성공하면 파싱한 문자열의 길이를 리턴하고 그렇지 않으면 -1 을 리턴한다.
+ */
+int CSipParameterList::HeaderListParamParse( const char * pszText, int iTextLen )
+{
+	int iCurPos = 0, iPos;
+
+	while( iCurPos < iTextLen )
+	{
+		if( pszText[iCurPos] == ' ' || pszText[iCurPos] == '\t' || pszText[iCurPos] == ';' )
+		{
+			++iCurPos;
+			continue;
+		}
+		else if( pszText[iCurPos] == ',' )
+		{
+			break;
+		}
+
+		iPos = ParamParse( pszText + iCurPos, iTextLen - iCurPos );
+		if( iPos == -1 ) return -1;
+		iCurPos += iPos;
+	}
+
+	return iCurPos;
+}
+
+/**
+ * @ingroup SipParser
+ * @brief parameter 리스트 문자열을 파싱하여서 parameter 리스트 객체에 저장한다.
+ * @param pszText		parameter 리스트 문자열
+ * @param iTextLen	parameter 리스트 문자열의 길이
+ * @returns 성공하면 파싱한 문자열의 길이를 리턴하고 그렇지 않으면 -1 을 리턴한다.
+ */
 int CSipParameterList::ParamParse( const char * pszText, int iTextLen )
 {
 	CSipParameter clsParam;
@@ -39,6 +77,13 @@ int CSipParameterList::ParamParse( const char * pszText, int iTextLen )
 	return iPos;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief parameter 리스트 객체를 parameter 리스트 문자열로 제작한다.
+ * @param pszText		parameter 리스트 문자열을 저장할 변수
+ * @param iTextSize parameter 리스트 문자열의 크기
+ * @returns parameter 리스트 문자열의 길이를 리턴한다.
+ */
 int CSipParameterList::ParamToString( char * pszText, int iTextSize )
 {
 	SIP_PARAMETER_LIST::iterator	itList;
@@ -56,7 +101,14 @@ int CSipParameterList::ParamToString( char * pszText, int iTextSize )
 	return iLen;
 }
 
-bool CSipParameterList::Insert( const char * pszName, const char * pszValue )
+/**
+ * @ingroup SipParser
+ * @brief parameter list 에서 입력된 이름과 값을 저장한다.
+ * @param pszName		parameter 이름
+ * @param pszValue	parameter 값
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipParameterList::InsertParam( const char * pszName, const char * pszValue )
 {
 	if( pszName == NULL ) return false;
 
@@ -70,7 +122,14 @@ bool CSipParameterList::Insert( const char * pszName, const char * pszValue )
 	return true;
 }
 
-bool CSipParameterList::Update( const char * pszName, const char * pszValue )
+/**
+ * @ingroup SipParser
+ * @brief parameter list 에서 입력된 이름에 대한 값을 수정한다.
+ * @param pszName		parameter 이름
+ * @param pszValue	parameter 값
+ * @returns parameter 이름이 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipParameterList::UpdateParam( const char * pszName, const char * pszValue )
 {
 	SIP_PARAMETER_LIST::iterator	itList;
 
@@ -86,7 +145,57 @@ bool CSipParameterList::Update( const char * pszName, const char * pszValue )
 	return false;
 }
 
-const char * CSipParameterList::Select( const char * pszName )
+/**
+ * @ingroup SipParser
+ * @brief parameter list 에서 입력된 이름을 검색한다.
+ * @param pszName		parameter 이름
+ * @param strValue	parameter 값을 저장할 변수
+ * @returns parameter 이름이 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipParameterList::SelectParam( const char * pszName, std::string & strValue )
+{
+	SIP_PARAMETER_LIST::iterator	itList;
+
+	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
+	{
+		if( !strcasecmp( itList->m_strName.c_str(), pszName ) )
+		{
+			strValue = itList->m_strValue;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup SipParser
+ * @brief parameter list 에서 입력된 이름을 검색한다.
+ * @param pszName parameter 이름
+ * @returns parameter 이름이 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipParameterList::SelectParam( const char * pszName )
+{
+	SIP_PARAMETER_LIST::iterator	itList;
+
+	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
+	{
+		if( !strcasecmp( itList->m_strName.c_str(), pszName ) )
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup SipParser
+ * @brief parameter list 에서 입력된 이름을 검색한다.
+ * @param pszName parameter 이름
+ * @returns parameter 이름이 존재하면 해당 값을 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
+const char * CSipParameterList::SelectParamValue( const char * pszName )
 {
 	SIP_PARAMETER_LIST::iterator	itList;
 
@@ -99,4 +208,13 @@ const char * CSipParameterList::Select( const char * pszName )
 	}
 
 	return NULL;
+}
+
+/**
+ * @ingroup SipParser
+ * @brief parameter list 를 삭제한다.
+ */
+void CSipParameterList::ClearParam()
+{
+	m_clsList.clear();
 }

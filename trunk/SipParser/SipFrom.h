@@ -19,13 +19,14 @@
 #ifndef _SIP_FROM_H_
 #define _SIP_FROM_H_
 
+#include "SipParameterList.h"
 #include "SipUri.h"
 
 /**
  * @ingroup SipParser
  * @brief SIP From/To/Contact/Route/Record-Route 헤더 정보 저장 클래스
  */
-class CSipFrom
+class CSipFrom : public CSipParameterList
 {
 public:
 	CSipFrom();
@@ -37,15 +38,9 @@ public:
 	/** SIP Uri */
 	CSipUri	m_clsUri;
 
-	/** parameter 리스트 */
-	SIP_PARAMETER_LIST m_clsParamList;
-
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
-	void InsertParam( const char * pszName, const char * pszValue );
 	void InsertTag();
-	bool SelectParam( const char * pszName, std::string & strValue );
-	bool SelectParam( const char * pszName );
 
 	void Clear();
 	bool Empty();

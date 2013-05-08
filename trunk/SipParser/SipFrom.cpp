@@ -40,7 +40,7 @@ int CSipFrom::Parse( const char * pszText, int iTextLen )
 	Clear();
 	if( pszText == NULL || iTextLen <= 0 ) return -1;
 
-	int		iPos, iDisplayNamePos = -1, iUriStartPos = -1, iUriEndPos = -1, iLen;
+	int		iPos, iDisplayNamePos = -1, iUriStartPos = -1, iUriEndPos = -1;
 
 	for( iPos = 0; iPos < iTextLen; ++iPos )
 	{
@@ -96,6 +96,12 @@ int CSipFrom::Parse( const char * pszText, int iTextLen )
 		m_clsUri.Parse( pszText, iPos );
 	}
 
+	int iRet = HeaderListParamParse( pszText + iPos, iTextLen - iPos );
+	if( iRet == -1 ) return -1;
+
+	return iRet + iPos;
+
+	/*
 	while( iPos < iTextLen )
 	{
 		if( pszText[iPos] == ' ' || pszText[iPos] == '\t' || pszText[iPos] == ';' )
@@ -114,6 +120,7 @@ int CSipFrom::Parse( const char * pszText, int iTextLen )
 	}
 
 	return iPos;
+	*/
 }
 
 /**
@@ -145,22 +152,11 @@ int CSipFrom::ToString( char * pszText, int iTextSize )
 	if( iLen == iTextSize ) return -1;
 	pszText[iLen++] = '>';
 
-	iPos = MakeSipParameterString( m_clsParamList, pszText + iLen, iTextSize - iLen );
+	iPos = ParamToString( pszText + iLen, iTextSize - iLen );
 	if( iPos == -1 ) return -1;
 	iLen += iPos;
 
 	return iLen;
-}
-
-/**
- * @ingroup SipParser
- * @brief parameter 리스트에 parameter 를 추가한다.
- * @param pszName		parameter 이름
- * @param pszValue	parameter 값
- */
-void CSipFrom::InsertParam( const char * pszName, const char * pszValue )
-{
-	InsertSipParameter( m_clsParamList, pszName, pszValue );
 }
 
 /**
@@ -178,38 +174,13 @@ void CSipFrom::InsertTag()
 
 /**
  * @ingroup SipParser
- * @brief parameter 리스트를 검색하여서 parameter 이름에 대한 값을 가져온다.
- * @param pszName		parameter 이름
- * @param strValue	parameter 값을 저장할 변수
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipFrom::SelectParam( const char * pszName, std::string & strValue )
-{
-	return SearchSipParameter( m_clsParamList, pszName, strValue );
-}
-
-/**
- * @ingroup SipParser
- * @brief parameter 리스트를 검색하여서 parameter 이름에 대한 값이 존재하는지 검사한다.
- * @param pszName		parameter 이름
- * @returns parameter 이름에 대한 값이 존재하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipFrom::SelectParam( const char * pszName )
-{
-	if( SearchSipParameter( m_clsParamList, pszName ) == NULL ) return false;
-
-	return true;
-}
-
-/**
- * @ingroup SipParser
  * @brief 멤버 변수를 초기화시킨다.
  */
 void CSipFrom::Clear()
 {
 	m_strDisplayName.clear();
 	m_clsUri.Clear();
-	m_clsParamList.clear();
+	ClearParam();
 }
 
 /**
