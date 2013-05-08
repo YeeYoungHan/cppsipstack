@@ -27,12 +27,17 @@ public:
 	CSipParameterList();
 	~CSipParameterList();
 
+	int HeaderListParamParse( const char * pszText, int iTextLen );
 	int ParamParse( const char * pszText, int iTextLen );
 	int ParamToString( char * pszText, int iTextSize );
 
-	bool Insert( const char * pszName, const char * pszValue );
-	bool Update( const char * pszName, const char * pszValue );
-	const char * Select( const char * pszName );
+	bool InsertParam( const char * pszName, const char * pszValue );
+	bool UpdateParam( const char * pszName, const char * pszValue );
+	bool SelectParam( const char * pszName, std::string & strValue );
+	bool SelectParam( const char * pszName );
+	const char * SelectParamValue( const char * pszName );
+
+	void ClearParam();
 
 	SIP_PARAMETER_LIST m_clsList;
 };
