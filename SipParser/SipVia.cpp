@@ -100,6 +100,12 @@ void CSipVia::Clear()
 	ClearParam();
 }
 
+/**
+ * @brief 문자열에서 프로토콜 및 프로토콜 버전을 파싱한다.
+ * @param pszText		SIP 헤더의 값을 저장한 문자열
+ * @param iTextLen	pszText 문자열의 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSipVia::ParseSentProtocol( const char * pszText, int iTextLen )
 {
 	int		iPos, iPrevPos = -1;
@@ -141,6 +147,12 @@ int CSipVia::ParseSentProtocol( const char * pszText, int iTextLen )
 	return -1;
 }
 
+/**
+ * @brief 전송 호스트 정보를 파싱한다.
+ * @param pszText		전송 호스트 정보 문자열
+ * @param iTextLen	전송 호스트 정보 문자열 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSipVia::ParseSentBy( const char * pszText, int iTextLen )
 {
 	int		iPos, iPortPos = -1;

@@ -66,9 +66,8 @@ int CSipAcceptData::Parse( const char * pszText, int iTextLen )
 
 	if( bParam )
 	{
-		int iRet = this->HeaderListParamParse( pszText + iCurPos, iTextLen - iCurPos );
+		int iRet = HeaderListParamParse( pszText + iCurPos, iTextLen - iCurPos );
 		if( iRet == -1 ) return -1;
-
 		iCurPos += iRet;
 	}
 
