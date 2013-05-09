@@ -19,6 +19,7 @@
 #ifndef _SIP_SERVER_SETUP_H_
 #define _SIP_SERVER_SETUP_H_
 
+#include "StringMap.h"
 #include <string>
 #include <list>
 
@@ -123,6 +124,9 @@ public:
 
 	/** 모니터링 TCP 포트에 접속 허용할 IP 주소 리스트 */
 	CLIENT_IP_LIST m_clsMonitorIpList;
+
+	/** SIP transaction list 에 저장하지 않을 SIP User Agent 맵 */
+	CStringMap		 m_clsDenySipUserAgentMap;
 
 	bool Read( const char * pszFileName );
 	bool IsMonitorIp( const char * pszIp );

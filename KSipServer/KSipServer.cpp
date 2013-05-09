@@ -122,6 +122,8 @@ int ServerMain( )
 	clsSetup.m_strUserAgent.append( "_" );
 	clsSetup.m_strUserAgent.append( SIP_USER_AGENT_VERSION );
 
+	clsSetup.m_clsDenySipUserAgentMap = gclsSetup.m_clsDenySipUserAgentMap;
+
 	Fork( true );
 	SetCoreDumpEnable();
 
