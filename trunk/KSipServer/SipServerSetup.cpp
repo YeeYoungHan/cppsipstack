@@ -196,6 +196,27 @@ bool CSipServerSetup::Read( const char * pszFileName )
 		}
 	}
 
+	// º¸¾È
+	pclsElement = clsXml.SelectElement( "Security" );
+	if( pclsElement == NULL ) return false;
+
+	pclsClient = pclsElement->SelectElement( "DenySipUserAgentList" );
+	if( pclsClient )
+	{
+		XML_ELEMENT_LIST clsList;
+		XML_ELEMENT_LIST::iterator	itList;
+
+		if( pclsClient->SelectElementList( "SipUserAgent", clsList ) )
+		{
+			for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+			{
+				if( itList->IsDataEmpty() ) continue;
+
+				m_clsDenySipUserAgentMap.Insert( itList->GetData(), "" );
+			}
+		}
+	}
+
 	return true;
 }
 

@@ -41,4 +41,9 @@
 	    <ClientIp>127.0.0.1</ClientIp>
 	  </ClientIpList>
 	</Monitor>
+	<Security>
+		<DenySipUserAgentList>
+			<SipUserAgent>friendly-scanner</SipUserAgent>
+		</DenySipUserAgentList>
+	</Security>
 </Setup>
