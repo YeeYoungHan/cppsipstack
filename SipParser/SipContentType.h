@@ -19,13 +19,13 @@
 #ifndef _SIP_CONTENT_TYPE_H_
 #define _SIP_CONTENT_TYPE_H_
 
-#include "SipParameter.h"
+#include "SipParameterList.h"
 
 /**
  * @ingroup SipParser
  * @brief Content-Type 을 저장하는 클래스
  */
-class CSipContentType
+class CSipContentType : public CSipParameterList
 {
 public:
 	CSipContentType();
@@ -37,15 +37,12 @@ public:
 	/** subtype */
 	std::string	m_strSubType;
 
-	SIP_PARAMETER_LIST m_clsParamList;
-
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
 	bool Empty();
 
 	void Set( const char * pszType, const char * pszSubType );
-	void InsertParam( const char * pszName, const char * pszValue );
 
 	bool IsEqual( const char * pszType, const char * pszSubType );
 };

@@ -76,31 +76,13 @@ int CSipContentType::Parse( const char * pszText, int iTextLen )
 
 	if( iParamPos != -1 )
 	{
-		int iCurPos = iPos;
+		int iRet = HeaderListParamParse( pszText + iPos, iTextLen - iPos );
+		if( iRet == -1 ) return -1;
 
-		while( iCurPos < iTextLen )
-		{
-			if( pszText[iCurPos] == ' ' || pszText[iCurPos] == '\t' || pszText[iCurPos] == ';' )
-			{
-				++iCurPos;
-				continue;
-			}
-			else if( pszText[iCurPos] == ',' )
-			{
-				break;
-			}
-
-			iPos = ParseSipParameter( m_clsParamList, pszText + iCurPos, iTextLen - iCurPos );
-			if( iPos == -1 ) return -1;
-			iCurPos += iPos;
-		}
-
-		return iCurPos;
+		iPos += iRet;
 	}
-	else
-	{
-		return iPos;
-	}
+
+	return iPos;
 }
 
 /**
@@ -118,7 +100,7 @@ int CSipContentType::ToString( char * pszText, int iTextSize )
 
 	iLen = snprintf( pszText, iTextSize, "%s/%s", m_strType.c_str(), m_strSubType.c_str() );
 
-	iPos = MakeSipParameterString( m_clsParamList, pszText + iLen, iTextSize - iLen );
+	iPos = ParamToString( pszText + iLen, iTextSize - iLen );
 	if( iPos == -1 ) return -1;
 	iLen += iPos;
 
@@ -133,7 +115,7 @@ void CSipContentType::Clear()
 {
 	m_strType.clear();
 	m_strSubType.clear();
-	m_clsParamList.clear();
+	ClearParam();
 }
 
 /**
@@ -164,17 +146,6 @@ void CSipContentType::Set( const char * pszType, const char * pszSubType )
 
 /**
  * @ingroup SipParser
- * @brief parameter 리스트에 parameter 를 추가한다.
- * @param pszName		parameter 이름
- * @param pszValue	parameter 값
- */
-void CSipContentType::InsertParam( const char * pszName, const char * pszValue )
-{
-	InsertSipParameter( m_clsParamList, pszName, pszValue );
-}
-
-/**
- * @ingroup SipParser
  * @brief Content-Type 이 동일한지 검사한다. 
  * @param pszType			type
  * @param pszSubType	subtype
@@ -189,6 +160,13 @@ bool CSipContentType::IsEqual( const char * pszType, const char * pszSubType )
 	return false;
 }
 
+/**
+ * @brief SIP Content-Type 헤더를 파싱한다.
+ * @param clsList		Content-Type 리스트
+ * @param pszText		SIP 헤더의 값을 저장한 문자열
+ * @param iTextLen	pszText 문자열의 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int ParseSipContentType( SIP_CONTENT_TYPE_LIST & clsList, const char * pszText, int iTextLen )
 {
 	int iPos, iCurPos = 0;
