@@ -132,6 +132,9 @@ public:
 	/** SIP 메시지를 전송한 클라이언트의 포트 번호 */
 	int							m_iClientPort;
 
+	/** SIP 메시지를 compact form 으로 생성하는지 설정 */
+	bool						m_bUseCompact;
+
 	/** 객체 사용 개수 */
 	int							m_iUseCount;
 

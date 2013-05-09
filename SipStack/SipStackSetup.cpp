@@ -29,7 +29,7 @@
 CSipStackSetup::CSipStackSetup() : m_iLocalUdpPort(5060), m_iUdpThreadCount(1)
 	, m_iLocalTcpPort(0), m_iLocalTlsPort(0)
 	, m_iTcpThreadCount(1), m_iTcpMaxSocketPerThread(SIP_TCP_MAX_SOCKET_PER_THREAD), m_iTcpRecvTimeout(SIP_TCP_RECV_TIMEOUT)
-	, m_iTlsAcceptTimeout(SIP_TLS_ACCEPT_TIMEOUT)
+	, m_iTlsAcceptTimeout(SIP_TLS_ACCEPT_TIMEOUT), m_bUseSipCompactForm(false)
 {
 }
 
