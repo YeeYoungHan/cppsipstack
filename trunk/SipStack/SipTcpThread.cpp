@@ -45,6 +45,12 @@ static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const ch
 		return false;
 	}
 
+	if( pclsSipStack->m_clsSetup.IsDenySipUserAgent( pclsMessage->m_strUserAgent.c_str() ) )
+	{
+		delete pclsMessage;
+		return false;
+	}
+
 	if( pclsMessage->IsRequest() )
 	{
 		pclsMessage->AddIpPortToTopVia( pszIp, iPort );

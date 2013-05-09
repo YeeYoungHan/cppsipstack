@@ -15,9 +15,10 @@ INC=
 all: libsipplatform.a
 
 LIB_OBJ=Directory.o Log.o ServerUtility.o \
-  SipMd5.o SipMutex.o \
-  SipTcp.o SipUdp.o \
-  StringUtility.o TimeString.o TimeUtility.o
+	SipMd5.o SipMutex.o \
+	SipTcp.o SipUdp.o \
+	StringUtility.o StringMap.o \
+	TimeString.o TimeUtility.o
 
 libsipplatform.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)
