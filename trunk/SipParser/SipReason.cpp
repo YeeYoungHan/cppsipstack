@@ -60,22 +60,9 @@ int CSipReason::Parse( const char * pszText, int iTextLen )
 
 	if( bParam )
 	{
-		while( iCurPos < iTextLen )
-		{
-			if( pszText[iCurPos] == ' ' || pszText[iCurPos] == '\t' || pszText[iCurPos] == ';' )
-			{
-				++iCurPos;
-				continue;
-			}
-			else if( pszText[iCurPos] == ',' )
-			{
-				break;
-			}
-
-			iPos = ParseSipParameter( m_clsParamList, pszText + iCurPos, iTextLen - iCurPos );
-			if( iPos == -1 ) return -1;
-			iCurPos += iPos;
-		}
+		int iRet = HeaderListParamParse( pszText + iCurPos, iTextLen - iCurPos );
+		if( iRet == -1 ) return -1;
+		iCurPos += iRet;
 
 		SIP_PARAMETER_LIST::iterator	itList;
 
@@ -106,7 +93,7 @@ int CSipReason::ToString( char * pszText, int iTextSize )
 
 	iLen = snprintf( pszText, iTextSize, "%s", m_strProtocol.c_str() );
 
-	iPos = MakeSipParameterString( m_clsParamList, pszText + iLen, iTextSize - iLen );
+	iPos = ParamToString( pszText + iLen, iTextSize - iLen );
 	if( iPos == -1 ) return -1;
 	iLen += iPos;
 
@@ -120,17 +107,5 @@ int CSipReason::ToString( char * pszText, int iTextSize )
 void CSipReason::Clear()
 {
 	m_strProtocol.clear();
-	m_clsParamList.clear();
-}
-
-/**
- * @ingroup SipParser
- * @brief parameter 리스트를 검색하여서 parameter 이름에 대한 값을 가져온다.
- * @param pszName		parameter 이름
- * @param strValue	parameter 값을 저장할 변수
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipReason::SelectParam( const char * pszName, std::string & strValue )
-{
-	return SearchSipParameter( m_clsParamList, pszName, strValue );
+	ClearParam();
 }

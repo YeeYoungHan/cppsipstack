@@ -19,12 +19,12 @@
 #ifndef _SIP_REASON_H_
 #define _SIP_REASON_H_
 
-#include "SipParameter.h"
+#include "SipParameterList.h"
 
 /**
  * @brief SIP Reason 헤더를 파싱하고 생성하는 클래스
  */
-class CSipReason
+class CSipReason : public CSipParameterList
 {
 public:
 	CSipReason();
@@ -33,14 +33,9 @@ public:
 	/** protocol */
 	std::string m_strProtocol;
 
-	/** parameter 리스트 */
-	SIP_PARAMETER_LIST m_clsParamList;
-
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
-
-	bool SelectParam( const char * pszName, std::string & strValue );
 };
 
 #endif
