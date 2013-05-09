@@ -309,6 +309,17 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
  */
 bool CSipUserAgent::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 {
+	if( pclsMessage->IsMethod( "ACK" ) )
+	{
+		std::string	strCallId;
+
+		pclsMessage->GetCallId( strCallId );
+
+		if( m_pclsCallBack ) m_pclsCallBack->EventCallEnd( strCallId.c_str(), SIP_GONE );
+
+		Delete( strCallId.c_str() );
+	}
+
 	return false;
 }
 
