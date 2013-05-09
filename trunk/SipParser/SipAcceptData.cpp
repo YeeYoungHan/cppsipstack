@@ -66,22 +66,10 @@ int CSipAcceptData::Parse( const char * pszText, int iTextLen )
 
 	if( bParam )
 	{
-		while( iCurPos < iTextLen )
-		{
-			if( pszText[iCurPos] == ' ' || pszText[iCurPos] == '\t' || pszText[iCurPos] == ';' )
-			{
-				++iCurPos;
-				continue;
-			}
-			else if( pszText[iCurPos] == ',' )
-			{
-				break;
-			}
+		int iRet = this->HeaderListParamParse( pszText + iCurPos, iTextLen - iCurPos );
+		if( iRet == -1 ) return -1;
 
-			iPos = ParseSipParameter( m_clsParamList, pszText + iCurPos, iTextLen - iCurPos );
-			if( iPos == -1 ) return -1;
-			iCurPos += iPos;
-		}
+		iCurPos += iRet;
 	}
 
 	return iCurPos;
@@ -102,7 +90,7 @@ int CSipAcceptData::ToString( char * pszText, int iTextSize )
 
 	iLen = snprintf( pszText, iTextSize, "%s", m_strName.c_str() );
 
-	iPos = MakeSipParameterString( m_clsParamList, pszText + iLen, iTextSize - iLen );
+	iPos = ParamToString( pszText + iLen, iTextSize - iLen );
 	if( iPos == -1 ) return -1;
 	iLen += iPos;
 
@@ -116,7 +104,7 @@ int CSipAcceptData::ToString( char * pszText, int iTextSize )
 void CSipAcceptData::Clear()
 {
 	m_strName.clear();
-	m_clsParamList.clear();
+	ClearParam();
 }
 
 /**

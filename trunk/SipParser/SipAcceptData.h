@@ -19,13 +19,13 @@
 #ifndef _SIP_ACCEPT_DATA_H_
 #define _SIP_ACCEPT_DATA_H_
 
-#include "SipParameter.h"
+#include "SipParameterList.h"
 
 /**
  * @ingroup SipParser
  * @brief SIP Accept-Encoding, Accept-Language 헤더를 저장하는 클래스
  */
-class CSipAcceptData
+class CSipAcceptData : public CSipParameterList
 {
 public:
 	CSipAcceptData();
@@ -33,9 +33,6 @@ public:
 
 	/** 이름 */
 	std::string		m_strName;
-
-	/** parameter 리스트 */
-	SIP_PARAMETER_LIST m_clsParamList;
 
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
