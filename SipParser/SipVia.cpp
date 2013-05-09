@@ -50,22 +50,9 @@ int CSipVia::Parse( const char * pszText, int iTextLen )
 	if( iPos == -1 ) return -1;
 	iCurPos += iPos;
 
-	while( iCurPos < iTextLen )
-	{
-		if( pszText[iCurPos] == ';' || pszText[iCurPos] == ' ' || pszText[iCurPos] == '\t' )
-		{
-			++iCurPos;
-			continue;
-		}
-		else if( pszText[iCurPos] == ',' )
-		{
-			break;
-		}
-
-		iPos = ParseSipParameter( m_clsParamList, pszText + iCurPos, iTextLen - iCurPos );
-		if( iPos == -1 ) return -1;
-		iCurPos += iPos;
-	}
+	iPos = HeaderListParamParse( pszText + iCurPos, iTextLen - iCurPos );
+	if( iPos == -1 ) return -1;
+	iCurPos += iPos;
 
 	return iCurPos;
 }
@@ -91,7 +78,7 @@ int CSipVia::ToString( char * pszText, int iTextSize )
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, ":%d", m_iPort );
 	}
 
-	iPos = MakeSipParameterString( m_clsParamList, pszText + iLen, iTextSize - iLen );
+	iPos = ParamToString( pszText + iLen, iTextSize - iLen );
 	if( iPos == -1 ) return -1;
 	iLen += iPos;
 
@@ -110,28 +97,7 @@ void CSipVia::Clear()
 	m_strHost.clear();
 	m_iPort = -1;
 
-	m_clsParamList.clear();
-}
-
-/**
- * @ingroup SipParser
- * @brief parameter 리스트를 검색하여서 입력된 이름에 대한 값을 리턴한다.
- * @param pszName parameter 이름
- * @returns 입력된 이름이 parameter 리스트에 존재하면 해당 값을 리턴하고 그렇지 않으면 NULL 을 리턴한다.
- */
-const char * CSipVia::GetParamValue( const char * pszName )
-{
-	SIP_PARAMETER_LIST::iterator	itList;
-
-	for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
-	{
-		if( !strcmp( itList->m_strName.c_str(), pszName ) )
-		{
-			return itList->m_strValue.c_str();
-		}
-	}
-
-	return NULL;
+	ClearParam();
 }
 
 int CSipVia::ParseSentProtocol( const char * pszText, int iTextLen )

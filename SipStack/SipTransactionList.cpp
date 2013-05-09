@@ -66,7 +66,7 @@ bool CSipTransactionList::GetKey( CSipMessage * pclsMessage, std::string & strKe
 	SIP_VIA_LIST::iterator itList = pclsMessage->m_clsViaList.begin();
 	if( itList == pclsMessage->m_clsViaList.end() ) return false;
 
-	const char * pszBranch = itList->GetParamValue( "branch" );
+	const char * pszBranch = itList->SelectParamValue( "branch" );
 	if( pszBranch )
 	{
 		if( !strncmp( pszBranch, VIA_PREFIX, VIA_PREFIX_LEN ) )
@@ -118,7 +118,7 @@ bool CSipTransactionList::GetKey( CSipMessage * pclsMessage, const char * pszMet
 	SIP_VIA_LIST::iterator itList = pclsMessage->m_clsViaList.begin();
 	if( itList == pclsMessage->m_clsViaList.end() ) return false;
 
-	const char * pszBranch = itList->GetParamValue( "branch" );
+	const char * pszBranch = itList->SelectParamValue( "branch" );
 	if( pszBranch )
 	{
 		if( !strncmp( pszBranch, VIA_PREFIX, VIA_PREFIX_LEN ) )
