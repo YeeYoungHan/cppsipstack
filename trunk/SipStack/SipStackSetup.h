@@ -66,6 +66,9 @@ public:
 
 	/** SIP UserAgent 헤더에 저장될 문자열 */
 	std::string	m_strUserAgent;
+
+	/** SIP 메시지를 생성할 때에 compact form 으로 생성할지 설정 */
+	bool				m_bUseSipCompactForm;
 };
 
 #endif

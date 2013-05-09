@@ -758,4 +758,6 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 	{
 		pclsMessage->m_iMaxForwards = SIP_MAX_FORWARDS;
 	}
+
+	pclsMessage->m_bUseCompact = m_clsSetup.m_bUseSipCompactForm;
 }

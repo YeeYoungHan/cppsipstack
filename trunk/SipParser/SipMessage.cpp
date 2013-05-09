@@ -22,7 +22,8 @@
 #include "SipUtility.h"
 #include <stdlib.h>
 
-CSipMessage::CSipMessage() : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(-1), m_iMaxForwards(-1), m_eTransport(E_SIP_UDP), m_iUseCount(0)
+CSipMessage::CSipMessage() : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(-1), m_iMaxForwards(-1), m_eTransport(E_SIP_UDP)
+	, m_bUseCompact(false), m_iUseCount(0)
 {
 }
 
@@ -215,7 +216,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 
 	for( SIP_VIA_LIST::iterator itList = m_clsViaList.begin(); itList != m_clsViaList.end(); ++itList )
 	{
-		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Via: " );
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, ( m_bUseCompact ? "v: " : "Via: " ) );
 		n = itList->ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
@@ -247,7 +248,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 
 	if( m_clsFrom.Empty() == false )
 	{
-		iLen += snprintf( pszText + iLen, iTextSize - iLen, "From: " );
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, ( m_bUseCompact ? "f: " : "From: " ) );
 		n = m_clsFrom.ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
@@ -256,7 +257,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 
 	if( m_clsTo.Empty() == false )
 	{
-		iLen += snprintf( pszText + iLen, iTextSize - iLen, "To: " );
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, ( m_bUseCompact ? "t: " : "To: " ) );
 		n = m_clsTo.ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
@@ -265,7 +266,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 
 	if( m_clsCallId.Empty() == false )
 	{
-		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Call-ID: " );
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, ( m_bUseCompact ? "i: " : "Call-ID: " ) );
 		n = m_clsCallId.ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
@@ -283,7 +284,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 
 	for( SIP_FROM_LIST::iterator itList = m_clsContactList.begin(); itList != m_clsContactList.end(); ++itList )
 	{
-		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Contact: " );
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, ( m_bUseCompact ? "m: " : "Contact: " ) );
 		n = itList->ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
@@ -328,14 +329,14 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 
 	if( m_clsContentType.Empty() == false )
 	{
-		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Content-Type: " );
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, ( m_bUseCompact ? "c: " : "Content-Type: " ) );
 		n = m_clsContentType.ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
 	}
 
-	iLen += snprintf( pszText + iLen, iTextSize - iLen, "Content-Length: %d\r\n", m_iContentLength );
+	iLen += snprintf( pszText + iLen, iTextSize - iLen, "%s: %d\r\n", ( m_bUseCompact ? "l" : "Content-Length" ), m_iContentLength );
 
 	if( m_clsAcceptList.size() > 0 )
 	{
