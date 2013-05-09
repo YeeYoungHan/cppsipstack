@@ -19,13 +19,13 @@
 #ifndef _SIP_VIA_H_
 #define _SIP_VIA_H_
 
-#include "SipParameter.h"
+#include "SipParameterList.h"
 
 /**
  * @ingroup SipParser
  * @brief SIP Via 헤더 저장 클래스
  */
-class CSipVia
+class CSipVia : public CSipParameterList
 {
 public:
 	CSipVia();
@@ -46,14 +46,9 @@ public:
 	/** 호스트 포트 번호 */
 	int					m_iPort;
 
-	/** Via parameter 리스트 */
-	SIP_PARAMETER_LIST m_clsParamList;
-
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
-
-	const char * GetParamValue( const char * pszName );
 
 private:
 	int ParseSentProtocol( const char * pszText, int iTextLen );
