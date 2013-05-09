@@ -135,3 +135,14 @@ int CSipStackSetup::GetLocalPort( ESipTransport eTransport )
 		return m_iLocalUdpPort;
 	}
 }
+
+/**
+ * @ingroup SipStack
+ * @brief SIP transaction list 에 저장하지 않을 SIP User Agent 인지 검사한다.
+ * @param pszSipUserAgent SIP User Agent
+ * @returns SIP transaction list 에 저장하지 않을 SIP User Agent 이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipStackSetup::IsDenySipUserAgent( const char * pszSipUserAgent )
+{
+	return m_clsDenySipUserAgentMap.Select( pszSipUserAgent );
+}
