@@ -100,27 +100,6 @@ int CSipFrom::Parse( const char * pszText, int iTextLen )
 	if( iRet == -1 ) return -1;
 
 	return iRet + iPos;
-
-	/*
-	while( iPos < iTextLen )
-	{
-		if( pszText[iPos] == ' ' || pszText[iPos] == '\t' || pszText[iPos] == ';' )
-		{
-			++iPos;
-			continue;
-		}
-		else if( pszText[iPos] == ',' )
-		{
-			break;
-		}
-
-		iLen = ParseSipParameter( m_clsParamList, pszText + iPos, iTextLen - iPos );
-		if( iLen == -1 ) return -1;
-		iPos += iLen;
-	}
-
-	return iPos;
-	*/
 }
 
 /**

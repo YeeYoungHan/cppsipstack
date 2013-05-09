@@ -72,7 +72,7 @@ int CSipParameterList::ParamParse( const char * pszText, int iTextLen )
 	int iPos = clsParam.Parse( pszText, iTextLen );
 	if( iPos == -1 ) return -1;
 
-	m_clsList.push_back( clsParam );
+	m_clsParamList.push_back( clsParam );
 
 	return iPos;
 }
@@ -89,7 +89,7 @@ int CSipParameterList::ParamToString( char * pszText, int iTextSize )
 	SIP_PARAMETER_LIST::iterator	itList;
 	int iLen = 0, iPos;
 
-	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
+	for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
 	{
 		if( iLen >= iTextSize ) return -1;
 		pszText[iLen++] = ';';
@@ -117,7 +117,7 @@ bool CSipParameterList::InsertParam( const char * pszName, const char * pszValue
 	clsParam.m_strName = pszName;
 	if( pszValue ) clsParam.m_strValue = pszValue;
 
-	m_clsList.push_back( clsParam );
+	m_clsParamList.push_back( clsParam );
 
 	return true;
 }
@@ -133,7 +133,7 @@ bool CSipParameterList::UpdateParam( const char * pszName, const char * pszValue
 {
 	SIP_PARAMETER_LIST::iterator	itList;
 
-	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
+	for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
 	{
 		if( !strcasecmp( itList->m_strName.c_str(), pszName ) )
 		{
@@ -156,7 +156,7 @@ bool CSipParameterList::SelectParam( const char * pszName, std::string & strValu
 {
 	SIP_PARAMETER_LIST::iterator	itList;
 
-	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
+	for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
 	{
 		if( !strcasecmp( itList->m_strName.c_str(), pszName ) )
 		{
@@ -178,7 +178,7 @@ bool CSipParameterList::SelectParam( const char * pszName )
 {
 	SIP_PARAMETER_LIST::iterator	itList;
 
-	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
+	for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
 	{
 		if( !strcasecmp( itList->m_strName.c_str(), pszName ) )
 		{
@@ -199,7 +199,7 @@ const char * CSipParameterList::SelectParamValue( const char * pszName )
 {
 	SIP_PARAMETER_LIST::iterator	itList;
 
-	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
+	for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
 	{
 		if( !strcasecmp( itList->m_strName.c_str(), pszName ) )
 		{
@@ -216,5 +216,5 @@ const char * CSipParameterList::SelectParamValue( const char * pszName )
  */
 void CSipParameterList::ClearParam()
 {
-	m_clsList.clear();
+	m_clsParamList.clear();
 }

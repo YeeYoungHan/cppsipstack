@@ -39,7 +39,7 @@ public:
 
 	void ClearParam();
 
-	SIP_PARAMETER_LIST m_clsList;
+	SIP_PARAMETER_LIST m_clsParamList;
 };
 
 #endif
