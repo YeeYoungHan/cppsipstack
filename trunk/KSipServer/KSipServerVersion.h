@@ -19,9 +19,12 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.13"
+#define KSIP_SERVER_VERSION	"0.14"
 
 /* 버전 정보 
+
+= 버전 0.14 ( 2013년 5월 10일 ) =
+ * SIP REGISTER timeout 시간을 설정하는 기능을 추가함
 
 = 버전 0.13 ( 2013년 5월 10일 ) =
  * SIP transaction list 에 저장하지 않을 SIP User Agent 를 설정하는 기능을 추가함

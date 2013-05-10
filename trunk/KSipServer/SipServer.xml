@@ -11,6 +11,7 @@
 		<TlsPort>5061</TlsPort>
 		<TlsAcceptTimeout>10</TlsAcceptTimeout>
 		<CertFile>c:\OpenProject\CppSipStack\trunk\KSipServer\SipServer.pem</CertFile>
+		<MinRegisterTimeout>300</MinRegisterTimeout>
 	</Sip>
 	<RtpRelay>
 		<UseRtpRelay>true</UseRtpRelay>

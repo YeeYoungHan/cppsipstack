@@ -147,6 +147,16 @@ ECheckAuthResult CheckAuthorization( CSipCredential * pclsCredential, const char
  */
 bool CSipServer::RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage )
 {
+	if( pclsMessage->m_iExpires < gclsSetup.m_iMinRegisterTimeout )
+	{
+		CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_INTERVAL_TOO_BRIEF );
+		if( pclsResponse == NULL ) return false;
+
+		pclsResponse->AddHeader( "Min-Expires", gclsSetup.m_iMinRegisterTimeout );
+		gclsSipStack.SendSipMessage( pclsResponse );
+		return true;
+	}
+
 	SIP_CREDENTIAL_LIST::iterator	itCL = pclsMessage->m_clsAuthorizationList.begin();
 
 	if( itCL == pclsMessage->m_clsAuthorizationList.end() )
@@ -166,7 +176,6 @@ bool CSipServer::RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage )
 	default:
 		break;
 	}
-
 
 	if( pclsMessage->GetExpires() == 0 )
 	{
