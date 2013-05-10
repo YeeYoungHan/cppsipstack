@@ -31,6 +31,7 @@ CSipServerSetup gclsSetup;
 CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10)
 	, m_iTcpPort(5060), m_iTcpThreadCount(10), m_iTcpRecvTimeout(300)
 	, m_iTlsPort(5061), m_iTlsAcceptTimeout(10)
+	, m_iMinRegisterTimeout(300)
 	, m_bUseRtpRelay(false), m_iBeginRtpPort(10000), m_iEndRtpPort(60000)
 	, m_iDbPort(3306), m_iLogLevel(0), m_iLogMaxSize(20000000)
 {
@@ -71,6 +72,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "TlsPort", m_iTlsPort );
 	pclsElement->SelectElementData( "TlsAcceptTimeout", m_iTlsAcceptTimeout );
 	pclsElement->SelectElementData( "CertFile", m_strCertFile );
+	pclsElement->SelectElementData( "MinRegisterTimeout", m_iMinRegisterTimeout );
 
 	// RTP relay ¼³Á¤
 	pclsElement = clsXml.SelectElement( "RtpRelay" );

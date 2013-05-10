@@ -71,6 +71,9 @@ public:
 	/** SIP 통신을 위한 realm */
 	std::string	m_strRealm;
 
+	/** SIP REGISTER timeout 최소 시간 */
+	int					m_iMinRegisterTimeout;
+
 	/** RTP relay 기능 사용 여부 */
 	bool				m_bUseRtpRelay;
 
