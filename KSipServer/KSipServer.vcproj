@@ -214,7 +214,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib mysqlclient.lib"
+				AdditionalDependencies="ws2_32.lib mysqlclient.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../MySQL Server 5.0/lib/opt;../openssl-32bit/lib"
 				GenerateDebugInformation="true"

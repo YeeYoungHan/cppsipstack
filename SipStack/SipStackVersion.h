@@ -19,9 +19,13 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.12"
+#define SIP_STACK_VERSION "0.13"
 
 /* 버전 정보
+
+= 버전 0.13 ( 2013년 5월 10일 ) =
+ * SIP transaction list 에 저장하지 않을 SIP User Agent 리스트 설정 기능을 추가함
+ * SIP 메시지를 생성할 때에 compact form 으로 생성할지 설정하는 기능을 추가함
 
 = 버전 0.12 ( 2013년 4월 27일 ) =
  * ACK 수신 timeout callback 기능을 추가함
