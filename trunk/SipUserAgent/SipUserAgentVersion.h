@@ -19,9 +19,12 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.12"
+#define SIP_USER_AGENT_VERSION "0.13"
 
 /* 버전 정보
+
+= 버전 0.13 ( 2013년 5월 10일 ) =
+ * ACK 전송 timeout 이 발생하면 해당 전화 연결을 종료하는 기능을 추가함
 
 = 버전 0.12 ( 2013년 4월 27일 ) =
  * Delete 메소드 리턴값이 부정확한 오류를 수정함
