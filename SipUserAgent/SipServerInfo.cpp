@@ -162,7 +162,7 @@ bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, const CSipMessage * pcl
 	clsCredential.m_strAlgorithm = itAT->m_strAlgorithm;
 
 	clsCredential.m_strUri = "sip:";
-	clsCredential.m_strUri.append( gclsSipStack.m_clsSetup.m_strLocalIp );
+	clsCredential.m_strUri.append( m_strDomain );
 
 	char	szA1[1024], szA2[1024], szMd5[33], szResponse[1024];
 
