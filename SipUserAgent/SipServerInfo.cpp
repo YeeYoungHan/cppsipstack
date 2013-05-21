@@ -86,7 +86,7 @@ void CSipServerInfo::ClearLogin()
  * @param pclsResponse SIP REGISTER 요청에 대한 응답 메시지
  * @returns 성공하면 REGISTER 메시지를 리턴하고 실패하면 NULL 을 리턴한다.
  */
-CSipMessage * CSipServerInfo::CreateRegister( const CSipMessage * pclsResponse )
+CSipMessage * CSipServerInfo::CreateRegister( CSipMessage * pclsResponse )
 {
 	CSipMessage * pclsRequest = new CSipMessage();
 	if( pclsRequest == NULL ) return NULL;
@@ -127,6 +127,13 @@ CSipMessage * CSipServerInfo::CreateRegister( const CSipMessage * pclsResponse )
 	if( pclsResponse )
 	{
 		AddAuth( pclsRequest, pclsResponse );
+
+		std::string	strToTag;
+
+		if( pclsResponse->m_clsTo.SelectParam( "tag", strToTag ) )
+		{
+			pclsRequest->m_clsTo.InsertParam( "tag", strToTag.c_str() );
+		}
 	}
 
 	return pclsRequest;
@@ -139,7 +146,7 @@ CSipMessage * CSipServerInfo::CreateRegister( const CSipMessage * pclsResponse )
  * @param pclsResponse	SIP 응답 메시지
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, const CSipMessage * pclsResponse )
+bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, CSipMessage * pclsResponse )
 {
 	SIP_CHALLENGE_LIST::const_iterator itAT;
 	CSipCredential clsCredential;
