@@ -62,8 +62,8 @@ public:
 
 	bool					m_bDelete;
 
-	CSipMessage * CreateRegister( const CSipMessage * pclsResponse );
-	bool AddAuth( CSipMessage * pclsRequest, const CSipMessage * pclsResponse );
+	CSipMessage * CreateRegister( CSipMessage * pclsResponse );
+	bool AddAuth( CSipMessage * pclsRequest, CSipMessage * pclsResponse );
 };
 
 typedef std::list< CSipServerInfo > SIP_SERVER_INFO_LIST;
