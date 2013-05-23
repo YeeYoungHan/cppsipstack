@@ -1,0 +1,9 @@
+C++ SIP stack 을 이용하여서 SIP 클라이언트를 개발하고 싶으시면 소스 코드의 SipClient 폴더를 참조하시면 됩니다. 
+
+SipClient 폴더에는 아래의 소스 코드가 포함되어 있습니다. 
+
+* SipClient.cpp / SipClient.h 
+  - SipUserAgent 라이브러리에서 전달하는 callback 이벤트 수신 클래스 
+
+* SipClientMain.cpp 
+  - SipUserAgent 라이브러리를 이용한 SIP 로그인, 통화 요청/취소/수락/거절/종료, SMS 보내기 기능 예제 소스 코드 
