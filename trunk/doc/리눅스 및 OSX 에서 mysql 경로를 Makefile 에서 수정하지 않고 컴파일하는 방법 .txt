@@ -1,0 +1,12 @@
+KSipServer 의 mysql 경로는 다음과 같이 Makefile 에 설정되어 있습니다. 
+
+/usr/include/mysql 
+/usr/lib/mysql 
+
+mysql 을 rpm 패키지로 인스톨하지 않은 경우 위의 폴더에 mysql 을 위한 헤더 파일과 라이브러리가 존재하지 않거나 위의 폴더 자체가 없겠죠. 이런 경우 간단하게 아래와 같이 심벌릭 링크를 걸어 주시면 Makefile 을 수정하지 않고 KSipServer 를 컴파일할 수 있습니다.
+ 
+# cd /usr/include 
+# ln -s /usr/local/mysql-5.5.28-osx10.6-x86_64/include/ mysql 
+
+# cd /usr/lib 
+# ln -s /usr/local/mysql-5.5.28-osx10.6-x86_64/lib/ mysql 
