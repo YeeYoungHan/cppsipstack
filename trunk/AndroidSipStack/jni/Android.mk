@@ -24,7 +24,11 @@ LOCAL_PATH := ../../SipPlatform
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := libsipplatform
-LOCAL_SRC_FILES := Directory.cpp Log.cpp ServerUtility.cpp SipMd5.cpp SipMutex.cpp SipTcp.cpp SipUdp.cpp StringMap.cpp StringUtility.cpp TimeString.cpp TimeUtility.cpp
+LOCAL_SRC_FILES := Directory.cpp Log.cpp ServerUtility.cpp \
+	SipMd5.cpp SipMutex.cpp \
+	SipTcp.cpp SipUdp.cpp \
+	StringUtility.cpp StringMap.cpp \
+	TimeString.cpp TimeUtility.cpp
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -36,9 +40,31 @@ LOCAL_PATH := ../../SipParser
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := libsipparser
-LOCAL_SRC_FILES := SipAcceptData.cpp SipCallId.cpp SipChallenge.cpp SipContentType.cpp SipCredential.cpp SipCSeq.cpp SipFrom.cpp SipHeader.cpp SipMessage.cpp \
-	SipParameter.cpp SipParameterList.cpp SipReason.cpp SipStatusCode.cpp SipUri.cpp SipUtility.cpp SipVia.cpp
+LOCAL_SRC_FILES := SipAcceptData.cpp SipCallId.cpp SipChallenge.cpp SipContentType.cpp \
+	SipCredential.cpp SipCSeq.cpp SipFrom.cpp SipHeader.cpp SipMessage.cpp \
+	SipParameter.cpp SipUri.cpp SipVia.cpp SipStatusCode.cpp SipReason.cpp \
+	SipUtility.cpp SipParameterList.cpp
 LOCAL_C_INCLUDES := ../../SipPlatform
+
+include $(BUILD_STATIC_LIBRARY)
+
+##############################################################################
+# SipStack
+
+LOCAL_PATH := ../../SipStack
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE    := libsipstack
+LOCAL_SRC_FILES := SipDeleteQueue.cpp \
+	SipICTList.cpp SipISTList.cpp SipNICTList.cpp SipNISTList.cpp \
+	SipInviteTransaction.cpp SipNonInviteTransaction.cpp SipTransactionList.cpp \
+	SipStack.cpp SipStackSetup.cpp \
+	SipStackThread.cpp SipUdpThread.cpp SipTcpThread.cpp SipTlsThread.cpp \
+	TcpSessionList.cpp TcpSocketMap.cpp TcpThreadList.cpp \
+	SipBuffer.cpp \
+	TlsFunction.cpp
+LOCAL_C_INCLUDES := ../../SipPlatform ../../SipParser include
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -48,7 +74,7 @@ include $(BUILD_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := CppSipStack
-LOCAL_STATIC_LIBRARIES := libsipplatform libsipparser
+LOCAL_STATIC_LIBRARIES := libsipplatform libsipparser libsipstack
 
 include $(BUILD_SHARED_LIBRARY)
 
