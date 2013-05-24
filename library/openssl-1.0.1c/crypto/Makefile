@@ -5,9 +5,9 @@
 DIR=		crypto
 TOP=		..
 CC=		cc
-INCLUDE=	-I. -I$(TOP) -I../include $(ZLIB_INCLUDE)
+INCLUDE=	-I. -I$(TOP) -I../include $(ZLIB_INCLUDE) -I/android-ndk-r3/build/platforms/android-5/arch-arm/usr/include
 # INCLUDES targets sudbirs!
-INCLUDES=	-I.. -I../.. -I../modes -I../asn1 -I../evp -I../../include $(ZLIB_INCLUDE)
+INCLUDES=	-I.. -I../.. -I../modes -I../asn1 -I../evp -I../../include $(ZLIB_INCLUDE) -I/android-ndk-r3/build/platforms/android-5/arch-arm/usr/include
 CFLAG=		-g
 MAKEDEPPROG=	makedepend
 MAKEDEPEND=	$(TOP)/util/domd $(TOP) -MD $(MAKEDEPPROG)

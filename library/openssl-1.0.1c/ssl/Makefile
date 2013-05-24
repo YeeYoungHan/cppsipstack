@@ -5,7 +5,7 @@
 DIR=	ssl
 TOP=	..
 CC=	cc
-INCLUDES= -I../crypto -I$(TOP) -I../include $(KRB5_INCLUDES)
+INCLUDES= -I../crypto -I$(TOP) -I../include $(KRB5_INCLUDES) -I/android-ndk-r3/build/platforms/android-5/arch-arm/usr/include
 CFLAG=-g
 MAKEFILE=	Makefile
 AR=		ar r

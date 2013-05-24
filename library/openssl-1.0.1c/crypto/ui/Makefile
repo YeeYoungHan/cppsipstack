@@ -21,8 +21,8 @@ COMPATSRC= ui_compat.c
 COMPATOBJ= ui_compat.o
 
 LIB=$(TOP)/libcrypto.a
-LIBSRC= ui_err.c ui_lib.c ui_openssl.c ui_util.c $(COMPATSRC)
-LIBOBJ= ui_err.o ui_lib.o ui_openssl.o ui_util.o $(COMPATOBJ)
+LIBSRC= ui_err.c ui_lib.c ui_util.c $(COMPATSRC)
+LIBOBJ= ui_err.o ui_lib.o ui_util.o $(COMPATOBJ)
 
 SRC= $(LIBSRC)
 
