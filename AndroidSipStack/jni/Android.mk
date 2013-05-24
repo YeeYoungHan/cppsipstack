@@ -69,12 +69,42 @@ LOCAL_C_INCLUDES := ../../SipPlatform ../../SipParser include
 include $(BUILD_STATIC_LIBRARY)
 
 ##############################################################################
+# SdpParser
+
+LOCAL_PATH := ../../SdpParser
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE    := libsdpparser
+LOCAL_SRC_FILES := SdpAttribute.cpp SdpBandWidth.cpp SdpConnection.cpp SdpMedia.cpp \
+	SdpMessage.cpp SdpOrigin.cpp SdpTime.cpp
+LOCAL_C_INCLUDES := ../../SipPlatform ../../SipParser
+
+include $(BUILD_STATIC_LIBRARY)
+
+##############################################################################
+# SipUserAgent
+
+LOCAL_PATH := ../../SipUserAgent
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE    := libsipuseragent
+LOCAL_SRC_FILES := SipDialog.cpp \
+	SipRegisterThread.cpp SipServerInfo.cpp \
+	SipUserAgent.cpp \
+	SipDialog.cpp SipCdr.cpp
+LOCAL_C_INCLUDES := ../../SipPlatform ../../SipParser ../../SipStack ../../SdpParser include
+
+include $(BUILD_STATIC_LIBRARY)
+
+##############################################################################
 # CppSipStack
 
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := CppSipStack
-LOCAL_STATIC_LIBRARIES := libsipplatform libsipparser libsipstack
+LOCAL_STATIC_LIBRARIES := libsipplatform libsipparser libsipstack libsdpparser libsipuseragent
 
 include $(BUILD_SHARED_LIBRARY)
 
