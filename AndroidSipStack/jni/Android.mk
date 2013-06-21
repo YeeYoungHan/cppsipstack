@@ -101,10 +101,14 @@ include $(BUILD_STATIC_LIBRARY)
 ##############################################################################
 # CppSipStack
 
+LOCAL_PATH := .
+
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := CppSipStack
 LOCAL_STATIC_LIBRARIES := libsipplatform libsipparser libsipstack libsdpparser libsipuseragent
+LOCAL_SRC_FILES := AndroidSipStack.cpp
+LOCAL_LDLIBS    := -llog -ldl
 
 include $(BUILD_SHARED_LIBRARY)
 
