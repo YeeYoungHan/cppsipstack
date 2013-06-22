@@ -106,9 +106,10 @@ LOCAL_PATH := .
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := CppSipStack
-LOCAL_STATIC_LIBRARIES := libsipplatform libsipparser libsipstack libsdpparser libsipuseragent
-LOCAL_SRC_FILES := AndroidSipStack.cpp
-LOCAL_LDLIBS    := -llog -ldl
+LOCAL_STATIC_LIBRARIES := libsipuseragent libsdpparser libsipstack libsipparser libsipplatform
+LOCAL_SRC_FILES := AndroidSipStack.cpp AndroidSipUserAgent.cpp
+LOCAL_LDLIBS    := lib/libssl.a lib/libcrypto.a -llog -ldl
+LOCAL_C_INCLUDES := ../../SipPlatform ../../SipParser ../../SipStack ../../SdpParser ../../SipUserAgent include
 
 include $(BUILD_SHARED_LIBRARY)
 
