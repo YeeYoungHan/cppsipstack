@@ -599,7 +599,7 @@ const UI_METHOD *UI_get_default_method(void)
 	{
 	if (default_UI_meth == NULL)
 		{
-		default_UI_meth=UI_OpenSSL();
+		//default_UI_meth=UI_OpenSSL();
 		}
 	return default_UI_meth;
 	}
