@@ -79,6 +79,12 @@ C++ SIP stack 프로젝트
    - TestSipServer 소스 코드를 가져와서 테스트용으로 사용할 IP-PBX 를 개발함.
    - Radvision MCU 와 연동하여서 영상 디바이스 연결 테스트용으로 개발됨.
 
+ * AndroidCppSipStack
+   - 안드로이드 NDK 빌드를 위한 sip stack static library 빌드용
+
+ * AndroidSipStack
+   - 안드로이드용 sip stack 개발 프로젝트
+
 3. 컴파일 방법
 
  * VC++ 2008
