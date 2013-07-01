@@ -18,6 +18,9 @@
 
 package com.example.testandroidsipstack;
 
+import com.cppsipstack.SipServerInfo;
+import com.cppsipstack.SipUserAgent;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -30,6 +33,13 @@ public class MainActivity extends Activity
 	{
 		super.onCreate( savedInstanceState );
 		setContentView( R.layout.activity_main );
+		
+		SipServerInfo clsInfo = new SipServerInfo();
+		
+		clsInfo.m_strIp = "127.0.0.1";
+		clsInfo.m_iPort = 5060;
+		
+		SipUserAgent.InsertRegisterInfo( clsInfo );
 	}
 
 	@Override
