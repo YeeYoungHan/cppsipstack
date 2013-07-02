@@ -16,6 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "AndroidGet.h"
+#include "AndroidLog.h"
+
 bool GetString( JNIEnv * env, jobject clsSipServerInfo, jclass clsJava, const char * pszName, std::string & strOutput )
 {
 	jfieldID fid = env->GetFieldID( clsJava, pszName, "Ljava/lang/String;" );
@@ -45,28 +48,6 @@ bool GetInt( JNIEnv * env, jobject clsSipServerInfo, jclass clsJava, const char 
 	}
 
 	iOutput = env->GetIntField( clsSipServerInfo, fid );
-
-	return true;
-}
-
-bool GetSipServerInfo( JNIEnv * env, jobject clsSipServerInfo, CSipServerInfo & clsOutput )
-{
-	jclass clsJava = env->GetObjectClass( clsSipServerInfo );
-	if( clsJava == NULL )
-	{
-		AndroidErrorLog( "clsSipServerInfo is not found" );
-		return false;
-	}
-
-	if( GetString( env, clsSipServerInfo, clsJava, "m_strIp", clsOutput.m_strIp ) == false ) return false;
-	if( GetInt( env, clsSipServerInfo, clsJava, "m_iPort", clsOutput.m_iPort ) == false ) return false;
-	if( GetString( env, clsSipServerInfo, clsJava, "m_strDomain", clsOutput.m_strDomain ) == false ) return false;
-	if( GetString( env, clsSipServerInfo, clsJava, "m_strUserId", clsOutput.m_strUserId ) == false ) return false;
-	if( GetString( env, clsSipServerInfo, clsJava, "m_strPassWord", clsOutput.m_strPassWord ) == false ) return false;
-	
-	AndroidDebugLog( "ip(%s) port(%d) domain(%s) userid(%s) password(%s)"
-		, clsOutput.m_strIp.c_str(), clsOutput.m_iPort, clsOutput.m_strDomain.c_str()
-		, clsOutput.m_strUserId.c_str(), clsOutput.m_strPassWord.c_str() );
 
 	return true;
 }
