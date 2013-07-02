@@ -51,3 +51,26 @@ bool GetInt( JNIEnv * env, jobject clsSipServerInfo, jclass clsJava, const char 
 
 	return true;
 }
+
+bool GetBool( JNIEnv * env, jobject clsSipServerInfo, jclass clsJava, const char * pszName, bool & bOutput )
+{
+	jfieldID fid = env->GetFieldID( clsJava, pszName, "Z" );
+	if( fid == NULL )
+	{
+		AndroidErrorLog( "fid(%s) is not found", pszName );
+		return false;
+	}
+
+	jboolean b = env->GetBooleanField( clsSipServerInfo, fid );
+
+	if( b == JNI_TRUE )
+	{
+		bOutput = true;
+	}
+	else
+	{
+		bOutput = false;
+	}
+
+	return true;
+}

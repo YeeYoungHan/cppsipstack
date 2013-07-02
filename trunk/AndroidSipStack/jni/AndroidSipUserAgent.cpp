@@ -22,6 +22,7 @@
 #include "AndroidGet.h"
 
 CSipUserAgent gclsUserAgent;
+bool gbAndroidDebug = false;
 
 #include "AndroidSipUserAgent.hpp"
 
@@ -36,3 +37,13 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_InsertRegisterInfo(
 	return JNI_TRUE;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Start( JNIEnv * env, jclass, jobject clsSipStackSetup )
+{
+	CSipStackSetup clsSetup;
+
+	if( GetSipStackSetup( env, clsSipStackSetup, clsSetup ) == false ) return JNI_FALSE;
+
+	gclsUserAgent.Start( clsSetup );
+
+	return JNI_TRUE;
+}
