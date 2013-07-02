@@ -178,6 +178,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AndroidSipServerInfo.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\AndroidSipStack.cpp"
 				>
 			</File>
