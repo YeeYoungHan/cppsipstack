@@ -27,7 +27,6 @@ import android.view.Menu;
 
 public class MainActivity extends Activity
 {
-
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
 	{
@@ -38,7 +37,10 @@ public class MainActivity extends Activity
 		
 		clsInfo.m_strIp = "127.0.0.1";
 		clsInfo.m_iPort = 5060;
-		
+		clsInfo.m_strDomain = "test.com";
+		clsInfo.m_strUserId = "userid";
+		clsInfo.m_strPassWord = "password";
+
 		SipUserAgent.InsertRegisterInfo( clsInfo );
 	}
 
