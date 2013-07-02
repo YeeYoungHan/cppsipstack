@@ -18,20 +18,20 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <pthread.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <android/log.h>
 #include <jni.h>
-
-#define LOG_TAG  			"SipStack"
+#include "AndroidLog.h"
 
 /** JNI_OnLoad */
-jint JNI_OnLoad( JavaVM* vm, void* /*reserved*/ )
+#ifdef WIN32
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
+#else
+jint JNI_OnLoad( JavaVM * vm, void* reserved )
+#endif
 {
   if( !vm )
   {
-    __android_log_write( ANDROID_LOG_ERROR, LOG_TAG, "JNI_OnLoad did not receive a valid VM pointer" );
+		AndroidErrorLog( "JNI_OnLoad did not receive a valid VM pointer" );
     return -1;
   }
   
@@ -39,7 +39,7 @@ jint JNI_OnLoad( JavaVM* vm, void* /*reserved*/ )
   JNIEnv* env;
   if( JNI_OK != vm->GetEnv( reinterpret_cast<void**>(&env), JNI_VERSION_1_4 ) )
   {
-    __android_log_write( ANDROID_LOG_ERROR, LOG_TAG, "JNI_OnLoad could not get JNI env" );
+    AndroidErrorLog( "JNI_OnLoad could not get JNI env" );
     return -1;
   }
   
