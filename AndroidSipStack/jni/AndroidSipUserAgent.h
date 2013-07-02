@@ -26,6 +26,7 @@ extern "C" {
 #endif
 
 JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_InsertRegisterInfo( JNIEnv * env, jclass, jobject clsSipServerInfo );
+JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Start( JNIEnv * env, jclass, jobject clsSipStackSetup );
 
 #ifdef __cplusplus
 }

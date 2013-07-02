@@ -20,12 +20,13 @@ package com.example.testandroidsipstack;
 
 import com.cppsipstack.SipServerInfo;
 import com.cppsipstack.SipUserAgent;
+import com.cppsipstack.SipUserAgentCallBack;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.app.Activity;
-import android.view.Menu;
 
-public class MainActivity extends Activity
+public class MainActivity extends Activity implements SipUserAgentCallBack
 {
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
@@ -40,16 +41,13 @@ public class MainActivity extends Activity
 		clsInfo.m_strDomain = "test.com";
 		clsInfo.m_strUserId = "userid";
 		clsInfo.m_strPassWord = "password";
-
+		
 		SipUserAgent.InsertRegisterInfo( clsInfo );
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu( Menu menu )
+	public void EventRegister( SipServerInfo clsInfo, int iStatus )
 	{
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater( ).inflate( R.menu.main, menu );
-		return true;
+		Log.d( "debug", "EventRegister(" + iStatus + ")" );
 	}
-
 }

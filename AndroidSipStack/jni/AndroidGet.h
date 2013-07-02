@@ -24,5 +24,6 @@
 
 bool GetString( JNIEnv * env, jobject clsSipServerInfo, jclass clsJava, const char * pszName, std::string & strOutput );
 bool GetInt( JNIEnv * env, jobject clsSipServerInfo, jclass clsJava, const char * pszName, int & iOutput );
+bool GetBool( JNIEnv * env, jobject clsSipServerInfo, jclass clsJava, const char * pszName, bool & bOutput );
 
 #endif

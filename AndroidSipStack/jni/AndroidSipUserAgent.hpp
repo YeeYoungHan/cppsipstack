@@ -30,10 +30,38 @@ bool GetSipServerInfo( JNIEnv * env, jobject clsSipServerInfo, CSipServerInfo & 
 	if( GetString( env, clsSipServerInfo, clsJava, "m_strDomain", clsOutput.m_strDomain ) == false ) return false;
 	if( GetString( env, clsSipServerInfo, clsJava, "m_strUserId", clsOutput.m_strUserId ) == false ) return false;
 	if( GetString( env, clsSipServerInfo, clsJava, "m_strPassWord", clsOutput.m_strPassWord ) == false ) return false;
-	
-	AndroidDebugLog( "ip(%s) port(%d) domain(%s) userid(%s) password(%s)"
-		, clsOutput.m_strIp.c_str(), clsOutput.m_iPort, clsOutput.m_strDomain.c_str()
-		, clsOutput.m_strUserId.c_str(), clsOutput.m_strPassWord.c_str() );
 
+	if( gbAndroidDebug )
+	{
+		AndroidDebugLog( "ip(%s) port(%d) domain(%s) userid(%s) password(%s)"
+			, clsOutput.m_strIp.c_str(), clsOutput.m_iPort, clsOutput.m_strDomain.c_str()
+			, clsOutput.m_strUserId.c_str(), clsOutput.m_strPassWord.c_str() );
+	}
+
+	return true;
+}
+
+bool GetSipStackSetup( JNIEnv * env, jobject clsSipStackSetup, CSipStackSetup & clsOutput )
+{
+	jclass clsJava = env->GetObjectClass( clsSipStackSetup );
+	if( clsJava == NULL )
+	{
+		AndroidErrorLog( "clsSipStackSetup is not found" );
+		return false;
+	}
+
+	if( GetString( env, clsSipStackSetup, clsJava, "m_strLocalIp", clsOutput.m_strLocalIp ) == false ) return false;
+	if( GetInt( env, clsSipStackSetup, clsJava, "m_iLocalUdpPort", clsOutput.m_iLocalUdpPort ) == false ) return false;
+	if( GetInt( env, clsSipStackSetup, clsJava, "m_iUdpThreadCount", clsOutput.m_iUdpThreadCount ) == false ) return false;
+	if( GetInt( env, clsSipStackSetup, clsJava, "m_iLocalTcpPort", clsOutput.m_iLocalTcpPort ) == false ) return false;
+	if( GetInt( env, clsSipStackSetup, clsJava, "m_iLocalTlsPort", clsOutput.m_iLocalTlsPort ) == false ) return false;
+	if( GetInt( env, clsSipStackSetup, clsJava, "m_iTcpThreadCount", clsOutput.m_iTcpThreadCount ) == false ) return false;
+	if( GetInt( env, clsSipStackSetup, clsJava, "m_iTcpMaxSocketPerThread", clsOutput.m_iTcpMaxSocketPerThread ) == false ) return false;
+	if( GetInt( env, clsSipStackSetup, clsJava, "m_iTcpRecvTimeout", clsOutput.m_iTcpRecvTimeout ) == false ) return false;
+	if( GetInt( env, clsSipStackSetup, clsJava, "m_iTlsAcceptTimeout", clsOutput.m_iTlsAcceptTimeout ) == false ) return false;
+	if( GetString( env, clsSipStackSetup, clsJava, "m_strCertFile", clsOutput.m_strCertFile ) == false ) return false;
+	if( GetString( env, clsSipStackSetup, clsJava, "m_strUserAgent", clsOutput.m_strUserAgent ) == false ) return false;
+	if( GetBool( env, clsSipStackSetup, clsJava, "m_bUseSipCompactForm", clsOutput.m_bUseSipCompactForm ) == false ) return false;
+	
 	return true;
 }
