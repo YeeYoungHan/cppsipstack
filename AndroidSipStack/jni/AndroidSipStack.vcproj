@@ -178,15 +178,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AndroidSipServerInfo.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\AndroidSipStack.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\AndroidSipUserAgent.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AndroidSipUserAgent.hpp"
 				>
 			</File>
 		</Filter>
@@ -201,6 +201,18 @@
 			</File>
 			<File
 				RelativePath=".\AndroidSipUserAgent.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="라이브러리"
+			>
+			<File
+				RelativePath=".\AndroidGet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AndroidGet.h"
 				>
 			</File>
 		</Filter>

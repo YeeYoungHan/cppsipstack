@@ -16,23 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "AndroidSipUserAgent.h"
-#include "SipUserAgent.h"
-#include "AndroidLog.h"
-#include "AndroidGet.h"
+#ifndef _ANDROID_GET_H_
+#define _ANDROID_GET_H_
 
-CSipUserAgent gclsUserAgent;
+#include <jni.h>
+#include <string>
 
-#include "AndroidSipUserAgent.hpp"
+bool GetString( JNIEnv * env, jobject clsSipServerInfo, jclass clsJava, const char * pszName, std::string & strOutput );
+bool GetInt( JNIEnv * env, jobject clsSipServerInfo, jclass clsJava, const char * pszName, int & iOutput );
 
-JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_InsertRegisterInfo( JNIEnv * env, jclass, jobject clsSipServerInfo )
-{
-	CSipServerInfo clsInfo;
-
-	if( GetSipServerInfo( env, clsSipServerInfo, clsInfo ) == false ) return JNI_FALSE;
-
-	gclsUserAgent.InsertRegisterInfo( clsInfo );
-
-	return JNI_TRUE;
-}
-
+#endif
