@@ -189,6 +189,14 @@
 				RelativePath=".\AndroidSipUserAgent.hpp"
 				>
 			</File>
+			<File
+				RelativePath=".\SipClient.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipClient.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="헤더 파일"
