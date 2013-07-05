@@ -18,15 +18,13 @@
 
 package com.cppsipstack;
 
-import android.util.Log;
-
 public class SipUserAgent
 {
 	public static SipUserAgentCallBack m_clsCallBack;
 	
 	public static native boolean InsertRegisterInfo( SipServerInfo clsInfo );
 	public static native boolean Start( SipStackSetup clsSetup );
-	
+
 	public static void SetCallBack( SipUserAgentCallBack clsCallBack )
 	{
 		m_clsCallBack = clsCallBack;
@@ -34,12 +32,12 @@ public class SipUserAgent
 	
 	public static void EventRegister( SipServerInfo clsInfo, int iStatus )
 	{
-		
+		SipLog.Debug( "EventRegister server_ip(" + clsInfo.m_strIp + ") status(" + iStatus + ")" );
 	}
 	
 	static
 	{
-  	System.out.println( "load AndroidSipStack" );
+		SipLog.Debug( "load AndroidSipStack" );
 		
 		try
 		{
@@ -47,7 +45,7 @@ public class SipUserAgent
 		}
 		catch( Throwable e )
 		{
-			Log.e( "AndroidSipStack", "loadLibrary error - " + e.toString( ) );
+			SipLog.Error( "loadLibrary error - " + e.toString( ) );
 		}
   }
 }

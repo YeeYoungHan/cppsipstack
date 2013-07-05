@@ -19,6 +19,7 @@
 package com.example.testandroidsipstack;
 
 import com.cppsipstack.SipServerInfo;
+import com.cppsipstack.SipStackSetup;
 import com.cppsipstack.SipUserAgent;
 import com.cppsipstack.SipUserAgentCallBack;
 
@@ -43,6 +44,10 @@ public class MainActivity extends Activity implements SipUserAgentCallBack
 		clsInfo.m_strPassWord = "password";
 		
 		SipUserAgent.InsertRegisterInfo( clsInfo );
+		
+		SipStackSetup clsSetup = new SipStackSetup();
+		
+		SipUserAgent.Start( clsSetup );
 	}
 
 	@Override

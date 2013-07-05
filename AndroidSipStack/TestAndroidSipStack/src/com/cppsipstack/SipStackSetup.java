@@ -24,35 +24,35 @@ public class SipStackSetup
 	public String m_strLocalIp;
 
 	/** SIP 메시지 전송/수신용 UDP 포트 번호 */
-	public int	m_iLocalUdpPort;
+	public int	m_iLocalUdpPort = 5060;
 
 	/** SIP 메시지 수신용 UDP 쓰레드 개수 */
-	public int	m_iUdpThreadCount;
+	public int	m_iUdpThreadCount = 2;
 
 	/** SIP 메시지 전송/수신용 TCP 포트 번호 */
-	public int	m_iLocalTcpPort;
+	public int	m_iLocalTcpPort = 0;
 
 	/** SIP 메시지 전송/수신용 TLS 포트 번호 */
-	public int	m_iLocalTlsPort;
+	public int	m_iLocalTlsPort = 0;
 
 	/** SIP 메시지 수신용 TCP 쓰레드 개수 */
-	public int	m_iTcpThreadCount;
+	public int	m_iTcpThreadCount = 0;
 
 	/** SIP 메시지 수신용 TCP 쓰레드 하나에 포함될 수 있는 최대 소켓 개수 */
-	public int	m_iTcpMaxSocketPerThread;
+	public int	m_iTcpMaxSocketPerThread = 0;
 
 	/** SIP 메시지 수신용 TCP 소켓의 수신 대기 시간 (초단위) */
-	public int	m_iTcpRecvTimeout;
+	public int	m_iTcpRecvTimeout = 0;
 
 	/** TLS 세션 handshake 대기 시간 (초단위) */
-	public int	m_iTlsAcceptTimeout;
+	public int	m_iTlsAcceptTimeout = 0;
 
 	/** TLS 세션을 위한 서버 인증서 + 개인키를 포함한 PEM 파일 */
-	public String	m_strCertFile;
+	public String	m_strCertFile = null;
 
 	/** SIP UserAgent 헤더에 저장될 문자열 */
-	public String	m_strUserAgent;
+	public String	m_strUserAgent = "";
 
 	/** SIP 메시지를 생성할 때에 compact form 으로 생성할지 설정 */
-	public boolean	m_bUseSipCompactForm;
+	public boolean	m_bUseSipCompactForm = false;
 }

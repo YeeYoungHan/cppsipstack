@@ -36,7 +36,7 @@ jint JNI_OnLoad( JavaVM * vm, void* reserved )
   }
   
   // Get JNI
-  JNIEnv* env;
+  JNIEnv * env;
   if( JNI_OK != vm->GetEnv( reinterpret_cast<void**>(&env), JNI_VERSION_1_4 ) )
   {
     AndroidErrorLog( "JNI_OnLoad could not get JNI env" );

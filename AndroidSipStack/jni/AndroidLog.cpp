@@ -18,6 +18,8 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
+#define LOG_MAX_SIZE	8192
+
 #include "AndroidLog.h"
 #include <stdarg.h>
 #include <stdio.h>

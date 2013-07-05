@@ -20,7 +20,9 @@
 #include "SipUserAgent.h"
 #include "AndroidLog.h"
 #include "AndroidGet.h"
+#include "AndroidPut.h"
 #include "SipClient.h"
+#include "Log.h"
 
 CSipUserAgent gclsUserAgent;
 bool gbAndroidDebug = false;
@@ -38,14 +40,43 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_InsertRegisterInfo(
 	return JNI_TRUE;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Start( JNIEnv * env, jclass, jobject clsSipStackSetup )
+JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Start( JNIEnv * env, jclass clsSipUserAgent, jobject clsSipStackSetup )
 {
 	CSipStackSetup clsSetup;
 
-	if( GetSipStackSetup( env, clsSipStackSetup, clsSetup ) == false ) return JNI_FALSE;
+	if( GetSipStackSetup( env, clsSipStackSetup, clsSetup ) == false ) 
+	{
+		AndroidErrorLog( "Start - GetSipStackSetup error" );
+		return JNI_FALSE;
+	}
+
+	if( clsSetup.m_strLocalIp.empty() )
+	{
+		GetLocalIp( clsSetup.m_strLocalIp );
+	}
+
+	AndroidDebugLog( "local ip[%s]", clsSetup.m_strLocalIp.c_str() );
+
+	CLog::SetLevel( LOG_DEBUG | LOG_INFO | LOG_NETWORK | LOG_SYSTEM );
 
 	gclsUserAgent.m_pclsCallBack = &gclsSipClient;
-	if( gclsUserAgent.Start( clsSetup ) == false ) return JNI_FALSE;
+	if( gclsUserAgent.Start( clsSetup ) == false ) 
+	{
+		AndroidErrorLog( "Start - Start error" );
+		return JNI_FALSE;
+	}
+
+	jmethodID mid = env->GetStaticMethodID( clsSipUserAgent, "EventRegister", "(Lcom/cppsipstack/SipServerInfo;I)V" );
+
+	jclass jClass = env->FindClass( "com/cppsipstack/SipServerInfo" );
+	jmethodID cid = env->GetMethodID( jClass, "<init>", "()V" );
+
+	jobject clsInfo = env->NewObject( jClass, cid );
+
+	PutString( env, clsInfo, jClass, "m_strIp", "127.0.0.1" );
+
+	env->CallStaticVoidMethod( clsSipUserAgent, mid, clsInfo, 200 );
+	env->DeleteLocalRef( clsInfo );
 
 	return JNI_TRUE;
 }
