@@ -174,10 +174,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\AndroidLog.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\AndroidSipStack.cpp"
 				>
 			</File>
@@ -204,10 +200,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\AndroidLog.h"
-				>
-			</File>
-			<File
 				RelativePath=".\AndroidSipUserAgent.h"
 				>
 			</File>
@@ -221,6 +213,22 @@
 			</File>
 			<File
 				RelativePath=".\AndroidGet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AndroidLog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AndroidLog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AndroidPut.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AndroidPut.h"
 				>
 			</File>
 		</Filter>

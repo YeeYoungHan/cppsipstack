@@ -19,16 +19,23 @@
 #include "AndroidGet.h"
 #include "AndroidLog.h"
 
-bool GetString( JNIEnv * env, jobject clsSipServerInfo, jclass clsJava, const char * pszName, std::string & strOutput )
+bool GetString( JNIEnv * env, jobject jObject, jclass jClass, const char * pszName, std::string & strOutput )
 {
-	jfieldID fid = env->GetFieldID( clsJava, pszName, "Ljava/lang/String;" );
+	strOutput.clear();
+
+	jfieldID fid = env->GetFieldID( jClass, pszName, "Ljava/lang/String;" );
 	if( fid == NULL )
 	{
 		AndroidErrorLog( "fid(%s) is not found", pszName );
 		return false;
 	}
 	
-	jstring strData = (jstring)env->GetObjectField( clsSipServerInfo, fid );
+	jstring strData = (jstring)env->GetObjectField( jObject, fid );
+	if( strData == NULL )
+	{
+		return true;
+	}
+
 	const char * pszData = env->GetStringUTFChars( strData, NULL );
 	
 	strOutput = pszData;
@@ -38,30 +45,30 @@ bool GetString( JNIEnv * env, jobject clsSipServerInfo, jclass clsJava, const ch
 	return true;
 }
 
-bool GetInt( JNIEnv * env, jobject clsSipServerInfo, jclass clsJava, const char * pszName, int & iOutput )
+bool GetInt( JNIEnv * env, jobject jObject, jclass jClass, const char * pszName, int & iOutput )
 {
-	jfieldID fid = env->GetFieldID( clsJava, pszName, "I" );
+	jfieldID fid = env->GetFieldID( jClass, pszName, "I" );
 	if( fid == NULL )
 	{
 		AndroidErrorLog( "fid(%s) is not found", pszName );
 		return false;
 	}
 
-	iOutput = env->GetIntField( clsSipServerInfo, fid );
+	iOutput = env->GetIntField( jObject, fid );
 
 	return true;
 }
 
-bool GetBool( JNIEnv * env, jobject clsSipServerInfo, jclass clsJava, const char * pszName, bool & bOutput )
+bool GetBool( JNIEnv * env, jobject jObject, jclass jClass, const char * pszName, bool & bOutput )
 {
-	jfieldID fid = env->GetFieldID( clsJava, pszName, "Z" );
+	jfieldID fid = env->GetFieldID( jClass, pszName, "Z" );
 	if( fid == NULL )
 	{
 		AndroidErrorLog( "fid(%s) is not found", pszName );
 		return false;
 	}
 
-	jboolean b = env->GetBooleanField( clsSipServerInfo, fid );
+	jboolean b = env->GetBooleanField( jObject, fid );
 
 	if( b == JNI_TRUE )
 	{
