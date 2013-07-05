@@ -20,6 +20,7 @@
 #include "SipUserAgent.h"
 #include "AndroidLog.h"
 #include "AndroidGet.h"
+#include "SipClient.h"
 
 CSipUserAgent gclsUserAgent;
 bool gbAndroidDebug = false;
@@ -43,7 +44,8 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Start( JNIEnv * env
 
 	if( GetSipStackSetup( env, clsSipStackSetup, clsSetup ) == false ) return JNI_FALSE;
 
-	gclsUserAgent.Start( clsSetup );
+	gclsUserAgent.m_pclsCallBack = &gclsSipClient;
+	if( gclsUserAgent.Start( clsSetup ) == false ) return JNI_FALSE;
 
 	return JNI_TRUE;
 }
