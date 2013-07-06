@@ -21,6 +21,8 @@
 
 #define LOG_TAG				"SipStack"
 
+extern bool gbAndroidDebug;
+
 void AndroidDebugLog( const char * fmt, ... );
 void AndroidErrorLog( const char * fmt, ... );
 

@@ -24,7 +24,7 @@
 
 /** JNI_OnLoad */
 #ifdef WIN32
-JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
+JNIEXPORT jint JNICALL JNI_OnLoad( JavaVM *vm, void *reserved )
 #else
 jint JNI_OnLoad( JavaVM * vm, void* reserved )
 #endif
