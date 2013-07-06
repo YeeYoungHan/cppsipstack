@@ -81,3 +81,16 @@ bool GetBool( JNIEnv * env, jobject jObject, jclass jClass, const char * pszName
 
 	return true;
 }
+
+bool GetString( JNIEnv * env, jstring js, std::string & strOutput )
+{
+	strOutput.clear();
+
+	const char * pszData = env->GetStringUTFChars( js, NULL );
+	
+	strOutput = pszData;
+	
+	env->ReleaseStringUTFChars( js, pszData );
+
+	return true;
+}

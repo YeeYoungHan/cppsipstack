@@ -26,4 +26,6 @@ bool GetString( JNIEnv * env, jobject jObject, jclass jClass, const char * pszNa
 bool GetInt( JNIEnv * env, jobject jObject, jclass jClass, const char * pszName, int & iOutput );
 bool GetBool( JNIEnv * env, jobject jObject, jclass jClass, const char * pszName, bool & bOutput );
 
+bool GetString( JNIEnv * env, jstring js, std::string & strOutput );
+
 #endif

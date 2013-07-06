@@ -87,3 +87,69 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Start( JNIEnv * env
 
 	return JNI_TRUE;
 }
+
+JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Stop( JNIEnv * env, jclass )
+{
+	gclsUserAgent.Stop();
+
+	return JNI_TRUE;
+}
+
+JNIEXPORT jstring JNICALL Java_com_cppsipstack_SipUserAgent_StartCall( JNIEnv * env, jclass, jstring jsFrom, jstring jsTo, jobject joSipCallRtp )
+{
+	std::string	strFrom, strTo, strCallId;
+	CSipCallRtp clsRtp;
+	CSipCallRoute clsRoute;
+
+	if( GetString( env, jsFrom, strFrom ) == false ) return NULL;
+	if( GetString( env, jsTo, strTo ) == false ) return NULL;
+	if( GetSipCallRtp( env, joSipCallRtp, clsRtp ) == false ) return NULL;
+
+	SIP_SERVER_INFO_LIST::iterator	itList;
+	bool bRouteFound = false;
+
+	for( itList = gclsUserAgent.m_clsRegisterList.begin(); itList != gclsUserAgent.m_clsRegisterList.end(); ++itList )
+	{
+		if( itList->m_bLogin )
+		{
+			clsRoute.m_strDestIp = itList->m_strIp;
+			clsRoute.m_iDestPort = itList->m_iPort;
+			bRouteFound = true;
+			break;
+		}
+	}
+
+	if( bRouteFound == false )
+	{
+		AndroidErrorLog( "StartCall - call route is not found" );
+		return NULL;
+	}
+
+	if( gclsUserAgent.StartCall( strFrom.c_str(), strTo.c_str(), &clsRtp, &clsRoute, strCallId ) == false )
+	{
+		AndroidErrorLog( "StartCall - StartCall error" );
+		return NULL;
+	}
+
+	jstring jsCallId = env->NewStringUTF( strCallId.c_str() );
+	if( jsCallId == NULL )
+	{
+		AndroidErrorLog( "StartCall - NewStringUTF error" );
+		gclsUserAgent.StopCall( strCallId.c_str(), SIP_INTERNAL_SERVER_ERROR );
+		return NULL;
+	}
+
+	env->DeleteLocalRef( jsCallId );
+
+	return jsCallId;
+}
+
+JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_StopCall( JNIEnv * env, jclass, jstring jsCallId, jint iSipCode )
+{
+	return JNI_TRUE;
+}
+
+JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_AcceptCall( JNIEnv * env, jclass, jstring jsCallId )
+{
+	return JNI_TRUE;
+}

@@ -45,20 +45,18 @@ void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 	iRet = gjVm->AttachCurrentThread( &env, NULL );
 #endif
 
-	AndroidDebugLog( "AttachCurrentThread return(%d)", iRet );
+	AndroidDebugLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
 
 	joSipServerInfo = env->NewObject( gclsClass.m_jcSipServerInfo, gclsClass.m_jmSipServerInfoInit );
 	if( joSipServerInfo == NULL )
 	{
-		AndroidErrorLog( "EventRegister NewObject error" );
+		AndroidErrorLog( "%s NewObject error", __FUNCTION__ );
 		goto FUNC_END;
 	}
 
-	AndroidDebugLog( "NewObject" );
-
 	if( PutSipServerInfo( env, joSipServerInfo, *pclsInfo ) == false )
 	{
-		AndroidErrorLog( "EventRegister PutSipServerInfo error" );
+		AndroidErrorLog( "%s PutSipServerInfo error", __FUNCTION__ );
 		goto FUNC_END;
 	}
 
@@ -95,33 +93,62 @@ void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	jstring jstrCallId = NULL, jstrFrom = NULL, jstrTo = NULL;
 	jobject joSipCallRtp = NULL;
 
-	jstrCallId = gclsClass.m_jEnv->NewStringUTF( pszCallId );
+	JNIEnv * env;
+	int iRet;
+
+	gclsMutex.acquire();
+#ifdef WIN32
+	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
+#else
+	iRet = gjVm->AttachCurrentThread( &env, NULL );
+#endif
+
+	AndroidDebugLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+
+	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
 	{
-		AndroidErrorLog( "EventIncomingCall NewStringUTF(%s) error", pszCallId );
-		return;
+		AndroidErrorLog( "%s NewStringUTF(%s) error", __FUNCTION__, pszCallId );
+		goto FUNC_END;
 	}
 
-	joSipCallRtp = gclsClass.m_jEnv->NewObject( gclsClass.m_jcSipCallRtp, gclsClass.m_jmSipCallRtpInit );
+	jstrFrom = env->NewStringUTF( pszFrom );
+	if( jstrFrom == NULL )
+	{
+		AndroidErrorLog( "%s NewStringUTF(%s) error", __FUNCTION__, pszFrom );
+		goto FUNC_END;
+	}
+
+	jstrTo = env->NewStringUTF( pszTo );
+	if( jstrTo == NULL )
+	{
+		AndroidErrorLog( "%s NewStringUTF(%s) error", __FUNCTION__, pszTo );
+		goto FUNC_END;
+	}
+
+	joSipCallRtp = env->NewObject( gclsClass.m_jcSipCallRtp, gclsClass.m_jmSipCallRtpInit );
 	if( joSipCallRtp == NULL )
 	{
-		AndroidErrorLog( "EventIncomingCall NewObject error" );
+		AndroidErrorLog( "%s NewObject error", __FUNCTION__ );
 		goto FUNC_END;
 	}
 
-	if( PutSipCallRtp( gclsClass.m_jEnv, joSipCallRtp, *pclsRtp ) == false )
+	if( PutSipCallRtp( env, joSipCallRtp, *pclsRtp ) == false )
 	{
-		AndroidErrorLog( "EventIncomingCall PutSipCallRtp error" );
+		AndroidErrorLog( "%s PutSipCallRtp error", __FUNCTION__ );
 		goto FUNC_END;
 	}
 
-	gclsClass.m_jEnv->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventIncomingCall, joSipCallRtp );
+	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventIncomingCall, jstrCallId, jstrFrom, jstrTo, joSipCallRtp );
 
 FUNC_END:
-	if( jstrCallId ) gclsClass.m_jEnv->DeleteLocalRef( jstrCallId );
-	if( jstrFrom ) gclsClass.m_jEnv->DeleteLocalRef( jstrFrom );
-	if( jstrTo ) gclsClass.m_jEnv->DeleteLocalRef( jstrTo );
-	if( joSipCallRtp ) gclsClass.m_jEnv->DeleteLocalRef( joSipCallRtp );
+	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
+	if( jstrFrom ) env->DeleteLocalRef( jstrFrom );
+	if( jstrTo ) env->DeleteLocalRef( jstrTo );
+	if( joSipCallRtp ) env->DeleteLocalRef( joSipCallRtp );
+
+	gjVm->DetachCurrentThread();
+	gclsMutex.release();
 }
 
 /**
@@ -133,12 +160,49 @@ FUNC_END:
  */
 void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
 {
-	printf( "EventCallRing(%s,%d)\n", pszCallId, iSipStatus );
+	jstring jstrCallId = NULL;
+	jobject joSipCallRtp = NULL;
 
-	if( pclsRtp )
+	JNIEnv * env;
+	int iRet;
+
+	gclsMutex.acquire();
+#ifdef WIN32
+	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
+#else
+	iRet = gjVm->AttachCurrentThread( &env, NULL );
+#endif
+
+	AndroidDebugLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+
+	jstrCallId = env->NewStringUTF( pszCallId );
+	if( jstrCallId == NULL )
 	{
-		printf( "=> RTP(%s:%d) codec(%d)\n", pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort, pclsRtp->m_iCodec );
+		AndroidErrorLog( "%s NewStringUTF(%s) error", __FUNCTION__, pszCallId );
+		goto FUNC_END;
 	}
+
+	joSipCallRtp = env->NewObject( gclsClass.m_jcSipCallRtp, gclsClass.m_jmSipCallRtpInit );
+	if( joSipCallRtp == NULL )
+	{
+		AndroidErrorLog( "%s NewObject error", __FUNCTION__ );
+		goto FUNC_END;
+	}
+
+	if( PutSipCallRtp( env, joSipCallRtp, *pclsRtp ) == false )
+	{
+		AndroidErrorLog( "%s PutSipCallRtp error", __FUNCTION__ );
+		goto FUNC_END;
+	}
+
+	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventCallRing, jstrCallId, iSipStatus, joSipCallRtp );
+
+FUNC_END:
+	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
+	if( joSipCallRtp ) env->DeleteLocalRef( joSipCallRtp );
+
+	gjVm->DetachCurrentThread();
+	gclsMutex.release();	
 }
 
 /**
@@ -149,12 +213,49 @@ void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
  */
 void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
-	printf( "EventCallStart(%s)\n", pszCallId );
+	jstring jstrCallId = NULL;
+	jobject joSipCallRtp = NULL;
 
-	if( pclsRtp )
+	JNIEnv * env;
+	int iRet;
+
+	gclsMutex.acquire();
+#ifdef WIN32
+	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
+#else
+	iRet = gjVm->AttachCurrentThread( &env, NULL );
+#endif
+
+	AndroidDebugLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+
+	jstrCallId = env->NewStringUTF( pszCallId );
+	if( jstrCallId == NULL )
 	{
-		printf( "=> RTP(%s:%d) codec(%d)\n", pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort, pclsRtp->m_iCodec );
+		AndroidErrorLog( "%s NewStringUTF(%s) error", __FUNCTION__, pszCallId );
+		goto FUNC_END;
 	}
+
+	joSipCallRtp = env->NewObject( gclsClass.m_jcSipCallRtp, gclsClass.m_jmSipCallRtpInit );
+	if( joSipCallRtp == NULL )
+	{
+		AndroidErrorLog( "%s NewObject error", __FUNCTION__ );
+		goto FUNC_END;
+	}
+
+	if( PutSipCallRtp( env, joSipCallRtp, *pclsRtp ) == false )
+	{
+		AndroidErrorLog( "%s PutSipCallRtp error", __FUNCTION__ );
+		goto FUNC_END;
+	}
+
+	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventCallRing, jstrCallId, joSipCallRtp );
+
+FUNC_END:
+	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
+	if( joSipCallRtp ) env->DeleteLocalRef( joSipCallRtp );
+
+	gjVm->DetachCurrentThread();
+	gclsMutex.release();	
 }
 
 /**
@@ -165,7 +266,34 @@ void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
  */
 void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
-	printf( "EventCallEnd(%s,%d)\n", pszCallId, iSipStatus );
+	jstring jstrCallId = NULL;
+
+	JNIEnv * env;
+	int iRet;
+
+	gclsMutex.acquire();
+#ifdef WIN32
+	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
+#else
+	iRet = gjVm->AttachCurrentThread( &env, NULL );
+#endif
+
+	AndroidDebugLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+
+	jstrCallId = env->NewStringUTF( pszCallId );
+	if( jstrCallId == NULL )
+	{
+		AndroidErrorLog( "%s NewStringUTF(%s) error", __FUNCTION__, pszCallId );
+		goto FUNC_END;
+	}
+
+	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventCallRing, jstrCallId, iSipStatus );
+
+FUNC_END:
+	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
+
+	gjVm->DetachCurrentThread();
+	gclsMutex.release();	
 }
 
 /**
@@ -176,12 +304,6 @@ void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
  */
 void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
-	printf( "EventReInvite(%s)\n", pszCallId );
-
-	if( pclsRtp )
-	{
-		printf( "=> RTP(%s:%d) codec(%d)\n", pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort, pclsRtp->m_iCodec );
-	}
 }
 
 /**
@@ -194,8 +316,6 @@ void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
  */
 bool CSipClient::EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer )
 {
-	printf( "EventTransfer(%s,%s)\n", pszCallId, pszReferToCallId );
-
 	return false;
 }
 
@@ -208,8 +328,6 @@ bool CSipClient::EventTransfer( const char * pszCallId, const char * pszReferToC
  */
 bool CSipClient::EventBlindTransfer( const char * pszCallId, const char * pszReferToId )
 {
-	printf( "EventBlindTransfer(%s,%s)\n", pszCallId, pszReferToId );
-
 	return false;
 }
 
@@ -223,14 +341,5 @@ bool CSipClient::EventBlindTransfer( const char * pszCallId, const char * pszRef
  */
 bool CSipClient::EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage )
 {
-	char	szContentType[255];
-
-	memset( szContentType, 0, sizeof(szContentType) );
-	pclsMessage->m_clsContentType.ToString( szContentType, sizeof(szContentType) );
-
-	printf( "EventMessage(%s,%s)\n", pszFrom, pszTo );
-	printf( "content-type[%s]\n", szContentType );
-	printf( "body[%s]\n", pclsMessage->m_strBody.c_str() );
-
 	return true;
 }

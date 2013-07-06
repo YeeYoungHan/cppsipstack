@@ -11,7 +11,6 @@ public:
 
 	bool Init( JNIEnv * env );
 
-	JNIEnv * m_jEnv;
 	jclass m_jcSipUserAgent;
 	jclass m_jcSipServerInfo;
 	jclass m_jcSipCallRtp;
