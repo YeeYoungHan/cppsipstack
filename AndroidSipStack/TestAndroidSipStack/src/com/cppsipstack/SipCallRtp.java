@@ -18,19 +18,15 @@
 
 package com.cppsipstack;
 
-import android.util.Log;
-
-public class SipLog
+public class SipCallRtp
 {
-	public static String LOG_TAG = "AndroidSipStack";
+	public final int E_RTP_SEND_RECV = 0;
+	public final int E_RTP_SEND = 1;
+	public final int E_RTP_RECV = 2;
+	public final int E_RTP_INACTIVE = 3;
 	
-	public static void Debug( String strText )
-	{
-		Log.d( LOG_TAG, strText );
-	}
-	
-	public static void Error( String strText )
-	{
-		Log.e( LOG_TAG, strText );
-	}
+	public String m_strIp;
+	public int m_iPort;
+	public int m_iCodec;
+	public int m_iDirection;
 }

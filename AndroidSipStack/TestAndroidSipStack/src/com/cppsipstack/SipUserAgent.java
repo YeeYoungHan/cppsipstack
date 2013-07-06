@@ -32,7 +32,56 @@ public class SipUserAgent
 	
 	public static void EventRegister( SipServerInfo clsInfo, int iStatus )
 	{
-		SipLog.Debug( "EventRegister server_ip(" + clsInfo.m_strIp + ") status(" + iStatus + ")" );
+		SipLog.Debug( "EventRegister sipserver(" + clsInfo.m_strIp + ":" + clsInfo.m_iPort + ") userid(" + 
+				clsInfo.m_strUserId + ") status(" + iStatus + ")" );
+		
+		if( m_clsCallBack != null )
+		{
+			m_clsCallBack.EventRegister( clsInfo, iStatus );
+		}
+	}
+	
+	public static void EventIncomingCall( String strCallId, String strFrom, String strTo, SipCallRtp clsRtp )
+	{
+		SipLog.Debug( "EventIncomingCall callid(" + strCallId + ") from(" + strFrom + ") to(" + strTo + ") rtp("
+				+ clsRtp.m_strIp + ":" + clsRtp.m_iPort + ") codec(" + clsRtp.m_iCodec + ") direction(" + clsRtp.m_iDirection + ")" );
+		
+		if( m_clsCallBack != null )
+		{
+			m_clsCallBack.EventIncomingCall( strCallId, strFrom, strTo, clsRtp );
+		}
+	}
+	
+	public static void EventCallRing( String strCallId, int iSipStatus, SipCallRtp clsRtp )
+	{
+		SipLog.Debug( "EventCallRing callid(" + strCallId + ") status(" + iSipStatus + ") rtp("
+				+ clsRtp.m_strIp + ":" + clsRtp.m_iPort + ") codec(" + clsRtp.m_iCodec + ") direction(" + clsRtp.m_iDirection + ")" );
+		
+		if( m_clsCallBack != null )
+		{
+			m_clsCallBack.EventCallRing( strCallId, iSipStatus, clsRtp );
+		}
+	}
+	
+	public static void EventCallStart( String strCallId, SipCallRtp clsRtp )
+	{
+		SipLog.Debug( "EventCallStart callid(" + strCallId + ") rtp("
+				+ clsRtp.m_strIp + ":" + clsRtp.m_iPort + ") codec(" + clsRtp.m_iCodec + ") direction(" + clsRtp.m_iDirection + ")" );
+		
+		if( m_clsCallBack != null )
+		{
+			m_clsCallBack.EventCallStart( strCallId, clsRtp );
+		}
+	}
+	
+	public static void EventCallEnd( String strCallId, int iSipStatus )
+	{
+		SipLog.Debug( "EventCallStart callid(" + strCallId + ") status(" + iSipStatus + ")" );
+				
+		if( m_clsCallBack != null )
+		{
+			m_clsCallBack.EventCallEnd( strCallId, iSipStatus );
+		}
 	}
 	
 	static
