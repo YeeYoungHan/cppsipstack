@@ -17,6 +17,8 @@
  */
 
 #include "SipClient.h"
+#include "AndroidClass.h"
+#include "AndroidPut.h"
 #include <time.h>
 
 std::string	gstrInviteId;
@@ -31,6 +33,13 @@ CSipClient gclsSipClient;
 void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
 	printf( "EventRegister(%s) : %d\n", pclsInfo->m_strUserId.c_str(), iStatus );
+
+	jobject joSipServerInfo = gclsClass.m_jEnv->NewObject( gclsClass.m_jcSipServerInfo, gclsClass.m_jmSipServerInfoInit );
+
+	//PutString( env, clsInfo, jClass, "m_strIp", "127.0.0.1" );
+
+	gclsClass.m_jEnv->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventRegister, joSipServerInfo, 200 );
+	gclsClass.m_jEnv->DeleteLocalRef( joSipServerInfo );
 }
 
 /**

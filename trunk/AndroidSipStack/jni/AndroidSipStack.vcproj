@@ -174,15 +174,23 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\AndroidClass.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AndroidClassConvert.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AndroidClassConvert.h"
+				>
+			</File>
+			<File
 				RelativePath=".\AndroidSipStack.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\AndroidSipUserAgent.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\AndroidSipUserAgent.hpp"
 				>
 			</File>
 			<File
@@ -199,6 +207,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\AndroidClass.h"
+				>
+			</File>
 			<File
 				RelativePath=".\AndroidSipUserAgent.h"
 				>

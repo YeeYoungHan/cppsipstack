@@ -28,6 +28,8 @@
 #include <android/log.h>
 #endif
 
+bool gbAndroidDebug = false;
+
 void AndroidDebugLog( const char * fmt, ... )
 {
 	char	szBuf[LOG_MAX_SIZE];

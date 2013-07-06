@@ -16,6 +16,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "AndroidClassConvert.h"
+#include "AndroidLog.h"
+#include "AndroidGet.h"
+#include "AndroidPut.h"
+
+/**
+ * @brief Java SipServerInfo 객체를 C++ CSipServerInfo 객체로 복사한다.
+ * @param env								JNI
+ * @param clsSipServerInfo	Java SipServerInfo 객체
+ * @param clsOutput					C++ CSipServerInfo 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool GetSipServerInfo( JNIEnv * env, jobject clsSipServerInfo, CSipServerInfo & clsOutput )
 {
 	jclass clsJava = env->GetObjectClass( clsSipServerInfo );
@@ -41,6 +53,13 @@ bool GetSipServerInfo( JNIEnv * env, jobject clsSipServerInfo, CSipServerInfo & 
 	return true;
 }
 
+/**
+ * @brief Java SipStackSetup 객체를 C++ CSipStackSetup 객체로 복사한다.
+ * @param env								JNI
+ * @param clsSipStackSetup	Java SipStackSetup 객체
+ * @param clsOutput					C++ CSipStackSetup 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool GetSipStackSetup( JNIEnv * env, jobject clsSipStackSetup, CSipStackSetup & clsOutput )
 {
 	jclass clsJava = env->GetObjectClass( clsSipStackSetup );
