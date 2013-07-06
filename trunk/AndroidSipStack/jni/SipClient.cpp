@@ -18,11 +18,13 @@
 
 #include "SipClient.h"
 #include "AndroidClass.h"
-#include "AndroidPut.h"
+#include "AndroidLog.h"
+#include "AndroidClassConvert.h"
 #include <time.h>
 
-std::string	gstrInviteId;
 CSipClient gclsSipClient;
+static CSipMutex gclsMutex;
+extern JavaVM * gjVm;
 
 /**
  * @ingroup SipClient
@@ -32,14 +34,41 @@ CSipClient gclsSipClient;
  */
 void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
-	printf( "EventRegister(%s) : %d\n", pclsInfo->m_strUserId.c_str(), iStatus );
+	JNIEnv * env;
+	int iRet;
+	jobject joSipServerInfo = NULL;
 
-	jobject joSipServerInfo = gclsClass.m_jEnv->NewObject( gclsClass.m_jcSipServerInfo, gclsClass.m_jmSipServerInfoInit );
+	gclsMutex.acquire();
+#ifdef WIN32
+	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
+#else
+	iRet = gjVm->AttachCurrentThread( &env, NULL );
+#endif
 
-	//PutString( env, clsInfo, jClass, "m_strIp", "127.0.0.1" );
+	AndroidDebugLog( "AttachCurrentThread return(%d)", iRet );
 
-	gclsClass.m_jEnv->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventRegister, joSipServerInfo, 200 );
-	gclsClass.m_jEnv->DeleteLocalRef( joSipServerInfo );
+	joSipServerInfo = env->NewObject( gclsClass.m_jcSipServerInfo, gclsClass.m_jmSipServerInfoInit );
+	if( joSipServerInfo == NULL )
+	{
+		AndroidErrorLog( "EventRegister NewObject error" );
+		goto FUNC_END;
+	}
+
+	AndroidDebugLog( "NewObject" );
+
+	if( PutSipServerInfo( env, joSipServerInfo, *pclsInfo ) == false )
+	{
+		AndroidErrorLog( "EventRegister PutSipServerInfo error" );
+		goto FUNC_END;
+	}
+
+	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventRegister, joSipServerInfo, iStatus );
+
+FUNC_END:
+	if( joSipServerInfo ) env->DeleteLocalRef( joSipServerInfo );
+
+	gjVm->DetachCurrentThread();
+	gclsMutex.release();
 }
 
 /**
@@ -63,14 +92,36 @@ bool CSipClient::EventIncomingRequestAuth( CSipMessage * pclsMessage )
  */
 void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
 {
-	printf( "EventIncomingCall(%s,%s)\n", pszCallId, pszFrom );
+	jstring jstrCallId = NULL, jstrFrom = NULL, jstrTo = NULL;
+	jobject joSipCallRtp = NULL;
 
-	gstrInviteId = pszCallId;
-
-	if( pclsRtp )
+	jstrCallId = gclsClass.m_jEnv->NewStringUTF( pszCallId );
+	if( jstrCallId == NULL )
 	{
-		printf( "=> RTP(%s:%d) codec(%d)\n", pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort, pclsRtp->m_iCodec );
+		AndroidErrorLog( "EventIncomingCall NewStringUTF(%s) error", pszCallId );
+		return;
 	}
+
+	joSipCallRtp = gclsClass.m_jEnv->NewObject( gclsClass.m_jcSipCallRtp, gclsClass.m_jmSipCallRtpInit );
+	if( joSipCallRtp == NULL )
+	{
+		AndroidErrorLog( "EventIncomingCall NewObject error" );
+		goto FUNC_END;
+	}
+
+	if( PutSipCallRtp( gclsClass.m_jEnv, joSipCallRtp, *pclsRtp ) == false )
+	{
+		AndroidErrorLog( "EventIncomingCall PutSipCallRtp error" );
+		goto FUNC_END;
+	}
+
+	gclsClass.m_jEnv->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventIncomingCall, joSipCallRtp );
+
+FUNC_END:
+	if( jstrCallId ) gclsClass.m_jEnv->DeleteLocalRef( jstrCallId );
+	if( jstrFrom ) gclsClass.m_jEnv->DeleteLocalRef( jstrFrom );
+	if( jstrTo ) gclsClass.m_jEnv->DeleteLocalRef( jstrTo );
+	if( joSipCallRtp ) gclsClass.m_jEnv->DeleteLocalRef( joSipCallRtp );
 }
 
 /**

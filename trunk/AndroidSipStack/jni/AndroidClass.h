@@ -9,7 +9,7 @@ public:
 	CAndroidClass();
 	~CAndroidClass();
 
-	bool Init( JNIEnv * env, jclass jcSipUserAgent );
+	bool Init( JNIEnv * env );
 
 	JNIEnv * m_jEnv;
 	jclass m_jcSipUserAgent;
