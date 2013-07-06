@@ -55,7 +55,7 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_InsertRegisterInfo(
  */
 JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Start( JNIEnv * env, jclass jcSipUserAgent, jobject joSipStackSetup )
 {
-	if( gclsClass.Init( env, jcSipUserAgent ) == false )
+	if( gclsClass.Init( env ) == false )
 	{
 		AndroidErrorLog( "Start - gclsClass.Init error" );
 		return false;
@@ -84,18 +84,6 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Start( JNIEnv * env
 		AndroidErrorLog( "Start - Start error" );
 		return JNI_FALSE;
 	}
-
-	jmethodID mid = env->GetStaticMethodID( jcSipUserAgent, "EventRegister", "(Lcom/cppsipstack/SipServerInfo;I)V" );
-
-	jclass jClass = env->FindClass( "com/cppsipstack/SipServerInfo" );
-	jmethodID cid = env->GetMethodID( jClass, "<init>", "()V" );
-
-	jobject clsInfo = env->NewObject( jClass, cid );
-
-	PutString( env, clsInfo, jClass, "m_strIp", "127.0.0.1" );
-
-	env->CallStaticVoidMethod( jcSipUserAgent, mid, clsInfo, 200 );
-	env->DeleteLocalRef( clsInfo );
 
 	return JNI_TRUE;
 }

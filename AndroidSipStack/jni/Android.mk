@@ -27,7 +27,7 @@ LOCAL_MODULE    := CppSipStack
 #LOCAL_STATIC_LIBRARIES := libsipuseragent libsdpparser libsipstack libsipparser libsipplatform
 LOCAL_SRC_FILES := AndroidSipStack.cpp AndroidSipUserAgent.cpp \
 									AndroidGet.cpp AndroidPut.cpp AndroidLog.cpp \
-									AndroidClass.cpp \
+									AndroidClass.cpp AndroidClassConvert.cpp \
 									SipClient.cpp
 LOCAL_C_INCLUDES := ../../SipPlatform ../../SipParser ../../SipStack ../../SdpParser ../../SipUserAgent include
 LOCAL_LDLIBS    := lib/libsipuseragent.a \

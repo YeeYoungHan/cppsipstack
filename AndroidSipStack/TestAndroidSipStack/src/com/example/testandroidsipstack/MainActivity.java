@@ -38,12 +38,12 @@ public class MainActivity extends Activity implements SipUserAgentCallBack
 		
 		SipServerInfo clsInfo = new SipServerInfo();
 		
-		clsInfo.m_strIp = "127.0.0.1";
+		clsInfo.m_strIp = "192.168.0.8";
 		clsInfo.m_iPort = 5060;
-		clsInfo.m_strDomain = "test.com";
-		clsInfo.m_strUserId = "userid";
-		clsInfo.m_strPassWord = "password";
-		
+		clsInfo.m_strDomain = "192.168.0.8";
+		clsInfo.m_strUserId = "1010";
+		clsInfo.m_strPassWord = "1234";
+	
 		SipUserAgent.InsertRegisterInfo( clsInfo );
 		
 		SipStackSetup clsSetup = new SipStackSetup();

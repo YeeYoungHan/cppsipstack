@@ -22,6 +22,8 @@
 #include <jni.h>
 #include "AndroidLog.h"
 
+JavaVM * gjVm;
+
 /** JNI_OnLoad */
 #ifdef WIN32
 JNIEXPORT jint JNICALL JNI_OnLoad( JavaVM *vm, void *reserved )
@@ -34,6 +36,8 @@ jint JNI_OnLoad( JavaVM * vm, void* reserved )
 		AndroidErrorLog( "JNI_OnLoad did not receive a valid VM pointer" );
     return -1;
   }
+
+	gjVm = vm;
   
   // Get JNI
   JNIEnv * env;

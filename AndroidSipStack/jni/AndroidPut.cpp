@@ -30,9 +30,29 @@ bool PutString( JNIEnv * env, jobject jObject, jclass jClass, const char * pszNa
 	}
 
 	jfieldID fid = env->GetFieldID( jClass, pszName, "Ljava/lang/String;" );
+	if( fid == NULL )
+	{
+		AndroidErrorLog( "PutString(%s) GetFieldID error", pszName );
+		return false;
+	}
+
 	env->SetObjectField( jObject, fid, strValue );
 
 	env->DeleteLocalRef( strValue );
+
+	return true;
+}
+
+bool PutInt( JNIEnv * env, jobject jObject, jclass jClass, const char * pszName, int iValue )
+{
+	jfieldID fid = env->GetFieldID( jClass, pszName, "I" );
+	if( fid == NULL )
+	{
+		AndroidErrorLog( "PutInt(%s) GetFieldID error", pszName );
+		return false;
+	}
+
+	env->SetIntField( jObject, fid, iValue );
 
 	return true;
 }

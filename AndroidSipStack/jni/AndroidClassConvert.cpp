@@ -23,25 +23,25 @@
 
 /**
  * @brief Java SipServerInfo 객체를 C++ CSipServerInfo 객체로 복사한다.
- * @param env								JNI
- * @param clsSipServerInfo	Java SipServerInfo 객체
- * @param clsOutput					C++ CSipServerInfo 객체
+ * @param env							JNI
+ * @param joSipServerInfo	Java SipServerInfo 객체
+ * @param clsOutput				C++ CSipServerInfo 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool GetSipServerInfo( JNIEnv * env, jobject clsSipServerInfo, CSipServerInfo & clsOutput )
+bool GetSipServerInfo( JNIEnv * env, jobject joSipServerInfo, CSipServerInfo & clsOutput )
 {
-	jclass clsJava = env->GetObjectClass( clsSipServerInfo );
-	if( clsJava == NULL )
+	jclass jc = env->GetObjectClass( joSipServerInfo );
+	if( jc == NULL )
 	{
-		AndroidErrorLog( "clsSipServerInfo is not found" );
+		AndroidErrorLog( "joSipServerInfo is not found" );
 		return false;
 	}
 
-	if( GetString( env, clsSipServerInfo, clsJava, "m_strIp", clsOutput.m_strIp ) == false ) return false;
-	if( GetInt( env, clsSipServerInfo, clsJava, "m_iPort", clsOutput.m_iPort ) == false ) return false;
-	if( GetString( env, clsSipServerInfo, clsJava, "m_strDomain", clsOutput.m_strDomain ) == false ) return false;
-	if( GetString( env, clsSipServerInfo, clsJava, "m_strUserId", clsOutput.m_strUserId ) == false ) return false;
-	if( GetString( env, clsSipServerInfo, clsJava, "m_strPassWord", clsOutput.m_strPassWord ) == false ) return false;
+	if( GetString( env, joSipServerInfo, jc, "m_strIp", clsOutput.m_strIp ) == false ) return false;
+	if( GetInt( env, joSipServerInfo, jc, "m_iPort", clsOutput.m_iPort ) == false ) return false;
+	if( GetString( env, joSipServerInfo, jc, "m_strDomain", clsOutput.m_strDomain ) == false ) return false;
+	if( GetString( env, joSipServerInfo, jc, "m_strUserId", clsOutput.m_strUserId ) == false ) return false;
+	if( GetString( env, joSipServerInfo, jc, "m_strPassWord", clsOutput.m_strPassWord ) == false ) return false;
 
 	if( gbAndroidDebug )
 	{
@@ -53,34 +53,86 @@ bool GetSipServerInfo( JNIEnv * env, jobject clsSipServerInfo, CSipServerInfo & 
 	return true;
 }
 
-/**
- * @brief Java SipStackSetup 객체를 C++ CSipStackSetup 객체로 복사한다.
- * @param env								JNI
- * @param clsSipStackSetup	Java SipStackSetup 객체
- * @param clsOutput					C++ CSipStackSetup 객체
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool GetSipStackSetup( JNIEnv * env, jobject clsSipStackSetup, CSipStackSetup & clsOutput )
+bool PutSipServerInfo( JNIEnv * env, jobject joSipServerInfo, CSipServerInfo & clsInput )
 {
-	jclass clsJava = env->GetObjectClass( clsSipStackSetup );
-	if( clsJava == NULL )
+	jclass jc = env->GetObjectClass( joSipServerInfo );
+	if( jc == NULL )
 	{
-		AndroidErrorLog( "clsSipStackSetup is not found" );
+		AndroidErrorLog( "joSipServerInfo is not found" );
 		return false;
 	}
 
-	if( GetString( env, clsSipStackSetup, clsJava, "m_strLocalIp", clsOutput.m_strLocalIp ) == false ) return false;
-	if( GetInt( env, clsSipStackSetup, clsJava, "m_iLocalUdpPort", clsOutput.m_iLocalUdpPort ) == false ) return false;
-	if( GetInt( env, clsSipStackSetup, clsJava, "m_iUdpThreadCount", clsOutput.m_iUdpThreadCount ) == false ) return false;
-	if( GetInt( env, clsSipStackSetup, clsJava, "m_iLocalTcpPort", clsOutput.m_iLocalTcpPort ) == false ) return false;
-	if( GetInt( env, clsSipStackSetup, clsJava, "m_iLocalTlsPort", clsOutput.m_iLocalTlsPort ) == false ) return false;
-	if( GetInt( env, clsSipStackSetup, clsJava, "m_iTcpThreadCount", clsOutput.m_iTcpThreadCount ) == false ) return false;
-	if( GetInt( env, clsSipStackSetup, clsJava, "m_iTcpMaxSocketPerThread", clsOutput.m_iTcpMaxSocketPerThread ) == false ) return false;
-	if( GetInt( env, clsSipStackSetup, clsJava, "m_iTcpRecvTimeout", clsOutput.m_iTcpRecvTimeout ) == false ) return false;
-	if( GetInt( env, clsSipStackSetup, clsJava, "m_iTlsAcceptTimeout", clsOutput.m_iTlsAcceptTimeout ) == false ) return false;
-	if( GetString( env, clsSipStackSetup, clsJava, "m_strCertFile", clsOutput.m_strCertFile ) == false ) return false;
-	if( GetString( env, clsSipStackSetup, clsJava, "m_strUserAgent", clsOutput.m_strUserAgent ) == false ) return false;
-	if( GetBool( env, clsSipStackSetup, clsJava, "m_bUseSipCompactForm", clsOutput.m_bUseSipCompactForm ) == false ) return false;
+	if( PutString( env, joSipServerInfo, jc, "m_strIp", clsInput.m_strIp.c_str() ) == false ) return false;
+	if( PutInt( env, joSipServerInfo, jc, "m_iPort", clsInput.m_iPort ) == false ) return false;
+	if( PutString( env, joSipServerInfo, jc, "m_strDomain", clsInput.m_strDomain.c_str() ) == false ) return false;
+	if( PutString( env, joSipServerInfo, jc, "m_strUserId", clsInput.m_strUserId.c_str() ) == false ) return false;
+	if( PutString( env, joSipServerInfo, jc, "m_strPassWord", clsInput.m_strPassWord.c_str() ) == false ) return false;
+	
+	return true;
+}
+
+/**
+ * @brief Java SipStackSetup 객체를 C++ CSipStackSetup 객체로 복사한다.
+ * @param env								JNI
+ * @param joSipStackSetup	Java SipStackSetup 객체
+ * @param clsOutput					C++ CSipStackSetup 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool GetSipStackSetup( JNIEnv * env, jobject joSipStackSetup, CSipStackSetup & clsOutput )
+{
+	jclass jc = env->GetObjectClass( joSipStackSetup );
+	if( jc == NULL )
+	{
+		AndroidErrorLog( "joSipStackSetup is not found" );
+		return false;
+	}
+
+	if( GetString( env, joSipStackSetup, jc, "m_strLocalIp", clsOutput.m_strLocalIp ) == false ) return false;
+	if( GetInt( env, joSipStackSetup, jc, "m_iLocalUdpPort", clsOutput.m_iLocalUdpPort ) == false ) return false;
+	if( GetInt( env, joSipStackSetup, jc, "m_iUdpThreadCount", clsOutput.m_iUdpThreadCount ) == false ) return false;
+	if( GetInt( env, joSipStackSetup, jc, "m_iLocalTcpPort", clsOutput.m_iLocalTcpPort ) == false ) return false;
+	if( GetInt( env, joSipStackSetup, jc, "m_iLocalTlsPort", clsOutput.m_iLocalTlsPort ) == false ) return false;
+	if( GetInt( env, joSipStackSetup, jc, "m_iTcpThreadCount", clsOutput.m_iTcpThreadCount ) == false ) return false;
+	if( GetInt( env, joSipStackSetup, jc, "m_iTcpMaxSocketPerThread", clsOutput.m_iTcpMaxSocketPerThread ) == false ) return false;
+	if( GetInt( env, joSipStackSetup, jc, "m_iTcpRecvTimeout", clsOutput.m_iTcpRecvTimeout ) == false ) return false;
+	if( GetInt( env, joSipStackSetup, jc, "m_iTlsAcceptTimeout", clsOutput.m_iTlsAcceptTimeout ) == false ) return false;
+	if( GetString( env, joSipStackSetup, jc, "m_strCertFile", clsOutput.m_strCertFile ) == false ) return false;
+	if( GetString( env, joSipStackSetup, jc, "m_strUserAgent", clsOutput.m_strUserAgent ) == false ) return false;
+	if( GetBool( env, joSipStackSetup, jc, "m_bUseSipCompactForm", clsOutput.m_bUseSipCompactForm ) == false ) return false;
+	
+	return true;
+}
+
+bool GetSipCallRtp( JNIEnv * env, jobject joSipCallRtp, CSipCallRtp & clsOutput )
+{
+	jclass jc = env->GetObjectClass( joSipCallRtp );
+	if( jc == NULL )
+	{
+		AndroidErrorLog( "joSipCallRtp is not found" );
+		return false;
+	}
+
+	if( GetString( env, joSipCallRtp, jc, "m_strIp", clsOutput.m_strIp ) == false ) return false;
+	if( GetInt( env, joSipCallRtp, jc, "m_iPort", clsOutput.m_iPort ) == false ) return false;
+	if( GetInt( env, joSipCallRtp, jc, "m_iCodec", clsOutput.m_iCodec ) == false ) return false;
+	if( GetInt( env, joSipCallRtp, jc, "m_iDirection", (int &)clsOutput.m_eDirection ) == false ) return false;
+	
+	return true;
+}
+
+bool PutSipCallRtp( JNIEnv * env, jobject joSipCallRtp, CSipCallRtp & clsInput )
+{
+	jclass jc = env->GetObjectClass( joSipCallRtp );
+	if( jc == NULL )
+	{
+		AndroidErrorLog( "joSipCallRtp is not found" );
+		return false;
+	}
+
+	if( PutString( env, joSipCallRtp, jc, "m_strIp", clsInput.m_strIp.c_str() ) == false ) return false;
+	if( PutInt( env, joSipCallRtp, jc, "m_iPort", clsInput.m_iPort ) == false ) return false;
+	if( PutInt( env, joSipCallRtp, jc, "m_iCodec", clsInput.m_iCodec ) == false ) return false;
+	if( PutInt( env, joSipCallRtp, jc, "m_iDirection", clsInput.m_eDirection ) == false ) return false;
 	
 	return true;
 }
