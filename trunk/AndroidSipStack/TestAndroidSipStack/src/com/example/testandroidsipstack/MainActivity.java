@@ -18,6 +18,7 @@
 
 package com.example.testandroidsipstack;
 
+import com.cppsipstack.SipCallRtp;
 import com.cppsipstack.SipServerInfo;
 import com.cppsipstack.SipStackSetup;
 import com.cppsipstack.SipUserAgent;
@@ -54,5 +55,33 @@ public class MainActivity extends Activity implements SipUserAgentCallBack
 	public void EventRegister( SipServerInfo clsInfo, int iStatus )
 	{
 		Log.d( "debug", "EventRegister(" + iStatus + ")" );
+	}
+
+	@Override
+	public void EventIncomingCall( String strCallId, String strFrom, String strTo, SipCallRtp clsRtp )
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void EventCallRing( String strCallId, int iSipStatus, SipCallRtp clsRtp )
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void EventCallStart( String strCallId, SipCallRtp clsRtp )
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void EventCallEnd( String strCallId, int iSipStatus )
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
