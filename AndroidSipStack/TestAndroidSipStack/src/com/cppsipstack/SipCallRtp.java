@@ -27,6 +27,6 @@ public class SipCallRtp
 	
 	public String m_strIp;
 	public int m_iPort;
-	public int m_iCodec;
-	public int m_iDirection;
+	public int m_iCodec = 0;
+	public int m_iDirection = 0;
 }

@@ -163,7 +163,7 @@ void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
 	jstring jstrCallId = NULL;
 	jobject joSipCallRtp = NULL;
 
-	JNIEnv * env;
+	JNIEnv * env = NULL;
 	int iRet;
 
 	gclsMutex.acquire();
@@ -173,7 +173,7 @@ void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
 	iRet = gjVm->AttachCurrentThread( &env, NULL );
 #endif
 
-	AndroidDebugLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+	AndroidDebugLog( "%s AttachCurrentThread return(%d) (%p)", __FUNCTION__, iRet, env );
 
 	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
@@ -189,10 +189,13 @@ void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
 		goto FUNC_END;
 	}
 
-	if( PutSipCallRtp( env, joSipCallRtp, *pclsRtp ) == false )
+	if( pclsRtp )
 	{
-		AndroidErrorLog( "%s PutSipCallRtp error", __FUNCTION__ );
-		goto FUNC_END;
+		if( PutSipCallRtp( env, joSipCallRtp, *pclsRtp ) == false )
+		{
+			AndroidErrorLog( "%s PutSipCallRtp error", __FUNCTION__ );
+			goto FUNC_END;
+		}
 	}
 
 	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventCallRing, jstrCallId, iSipStatus, joSipCallRtp );
@@ -242,10 +245,13 @@ void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 		goto FUNC_END;
 	}
 
-	if( PutSipCallRtp( env, joSipCallRtp, *pclsRtp ) == false )
+	if( pclsRtp )
 	{
-		AndroidErrorLog( "%s PutSipCallRtp error", __FUNCTION__ );
-		goto FUNC_END;
+		if( PutSipCallRtp( env, joSipCallRtp, *pclsRtp ) == false )
+		{
+			AndroidErrorLog( "%s PutSipCallRtp error", __FUNCTION__ );
+			goto FUNC_END;
+		}
 	}
 
 	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventCallRing, jstrCallId, joSipCallRtp );
@@ -287,7 +293,7 @@ void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
 		goto FUNC_END;
 	}
 
-	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventCallRing, jstrCallId, iSipStatus );
+	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventCallEnd, jstrCallId, iSipStatus );
 
 FUNC_END:
 	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
