@@ -23,8 +23,14 @@ public class SipUserAgent
 	public static SipUserAgentCallBack m_clsCallBack;
 	
 	public static native boolean InsertRegisterInfo( SipServerInfo clsInfo );
+	
 	public static native boolean Start( SipStackSetup clsSetup );
-
+	public static native boolean Stop( );
+	
+	public static native String StartCall( String strFrom, String strTo, SipCallRtp clsRtp );
+	public static native boolean StopCall( String strCallId, int iSipCode );
+	public static native boolean AcceptCall( String strCallId, SipCallRtp clsRtp );
+	
 	public static void SetCallBack( SipUserAgentCallBack clsCallBack )
 	{
 		m_clsCallBack = clsCallBack;

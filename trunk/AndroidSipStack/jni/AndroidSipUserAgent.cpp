@@ -139,17 +139,37 @@ JNIEXPORT jstring JNICALL Java_com_cppsipstack_SipUserAgent_StartCall( JNIEnv * 
 		return NULL;
 	}
 
-	env->DeleteLocalRef( jsCallId );
-
 	return jsCallId;
 }
 
 JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_StopCall( JNIEnv * env, jclass, jstring jsCallId, jint iSipCode )
 {
+	std::string	strCallId;
+
+	if( GetString( env, jsCallId, strCallId ) == false ) return JNI_FALSE;
+
+	if( gclsUserAgent.StopCall( strCallId.c_str(), iSipCode ) == false )
+	{
+		AndroidErrorLog( "StopCall - gclsUserAgent.StopCall error" );
+		return JNI_FALSE;
+	}
+
 	return JNI_TRUE;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_AcceptCall( JNIEnv * env, jclass, jstring jsCallId )
+JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_AcceptCall( JNIEnv * env, jclass, jstring jsCallId, jobject joSipCallRtp )
 {
+	std::string	strCallId;
+	CSipCallRtp clsRtp;
+
+	if( GetString( env, jsCallId, strCallId ) == false ) return JNI_FALSE;
+	if( GetSipCallRtp( env, joSipCallRtp, clsRtp ) == false ) return JNI_FALSE;
+
+	if( gclsUserAgent.AcceptCall( strCallId.c_str(), &clsRtp ) == false )
+	{
+		AndroidErrorLog( "StopCall - gclsUserAgent.AcceptCall error" );
+		return JNI_FALSE;
+	}
+
 	return JNI_TRUE;
 }
