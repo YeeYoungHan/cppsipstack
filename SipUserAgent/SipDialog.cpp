@@ -248,7 +248,7 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
  * @ingroup SipUserAgent
  * @brief local RTP 정보를 저장한다.
  * @param pclsRtp RTP 정보를 저장한 객체
- * @returns true 를 리턴한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool CSipDialog::SetLocalRtp( CSipCallRtp * pclsRtp )
 {
@@ -281,10 +281,12 @@ bool CSipDialog::SetLocalRtp( CSipCallRtp * pclsRtp )
  * @ingroup SipUserAgent
  * @brief remote RTP 정보를 저장한다.
  * @param pclsRtp RTP 정보를 저장한 객체
- * @returns true 를 리턴한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool CSipDialog::SetRemoteRtp( CSipCallRtp * pclsRtp )
 {
+	if( pclsRtp == NULL ) return false;
+
 	// ReINVITE 에서 hold 인 경우 IP 주소가 0.0.0.0 으로 수신되어서 Transfer 할 때에 정상적으로 SDP IP 주소가 전달되지 않기 위해서 수정함.
 	if( strcmp( pclsRtp->m_strIp.c_str(), "0.0.0.0" ) )
 	{
