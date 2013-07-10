@@ -18,6 +18,9 @@
 
 package com.cppsipstack;
 
+/** SipUserAgent 의 이벤트 수신용 callback interface
+ * @author websearch (websearch@naver.com)
+ */
 public interface SipUserAgentCallBack
 {
 	public void EventRegister( SipServerInfo clsInfo, int iStatus );

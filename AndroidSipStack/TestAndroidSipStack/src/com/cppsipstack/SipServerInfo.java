@@ -18,11 +18,24 @@
 
 package com.cppsipstack;
 
+/** SIP 서버 정보 저장 클래스
+ * @author websearch (websearch@naver.com)
+ *
+ */
 public class SipServerInfo
 {
+	/** SIP 서버의 IP 주소 */
 	public String m_strIp;
+	
+	/** SIP 서버의 포트 번호 */
 	public int		m_iPort;
+	
+	/** SIP 서버의 도메인 */
 	public String m_strDomain;
+	
+	/** 로그인 아이디 */
 	public String m_strUserId;
+	
+	/** 로그인 비밀번호 */
 	public String m_strPassWord;
 }

@@ -20,15 +20,25 @@ package com.cppsipstack;
 
 import android.util.Log;
 
+/** 안드로이드 로그 출력 클래스
+ * @author websearch (websearch@naver.com)
+ *
+ */
 public class SipLog
 {
 	public static String LOG_TAG = "AndroidSipStack";
 	
+	/** 디버그 로그를 출력한다.
+	 * @param strText	로그 메시지
+	 */
 	public static void Debug( String strText )
 	{
 		Log.d( LOG_TAG, strText );
 	}
 	
+	/** 에러 로그를 출력한다.
+	 * @param strText 로그 메시지
+	 */
 	public static void Error( String strText )
 	{
 		Log.e( LOG_TAG, strText );

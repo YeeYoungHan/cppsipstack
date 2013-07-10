@@ -18,6 +18,10 @@
 
 package com.cppsipstack;
 
+/** RTP 정보 저장 클래스
+ * @author websearch (websearch@naver.com)
+ *
+ */
 public class SipCallRtp
 {
 	public final int E_RTP_SEND_RECV = 0;
@@ -25,8 +29,15 @@ public class SipCallRtp
 	public final int E_RTP_RECV = 2;
 	public final int E_RTP_INACTIVE = 3;
 	
+	/** IP 주소 */
 	public String m_strIp;
+	
+	/** 포트 번호 */
 	public int m_iPort;
+	
+	/** 선택된 코덱 번호 */
 	public int m_iCodec = 0;
+	
+	/** 전송/수신 */
 	public int m_iDirection = 0;
 }

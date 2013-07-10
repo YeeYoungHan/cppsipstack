@@ -136,11 +136,19 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 
 				m_strCallId = SipUserAgent.StartCall( "1010", strPhoneNumber, clsRtp );
 				Log.d( "test", "callid(" + m_strCallId + ")" );
+				
+				if( m_strCallId != null )
+				{
+					m_txtLog.setText( "StartCall" );
+				}
 			}
 			break;
 		case R.id.btnStopCall:
 			{
-				SipUserAgent.StopCall( m_strCallId, 200 );
+				if( SipUserAgent.StopCall( m_strCallId, 200 ) )
+				{
+					m_txtLog.setText( "Call end" );
+				}
 			}
 			break;
 		case R.id.btnAcceptCall:
@@ -151,7 +159,10 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 				clsRtp.m_iPort = 10000;
 				clsRtp.m_iCodec = 0;
 				
-				SipUserAgent.AcceptCall( m_strCallId, clsRtp );
+				if( SipUserAgent.AcceptCall( m_strCallId, clsRtp ) )
+				{
+					m_txtLog.setText( "Call connected" );
+				}
 			}
 			break;
 		}
@@ -160,8 +171,6 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	@Override
 	public void EventRegister( SipServerInfo clsInfo, int iStatus )
 	{
-		Log.d( "debug", "EventRegister(" + iStatus + ")" );
-		
 		Send( "log", "EventRegister(" + iStatus + ")" );
 	}
 
@@ -185,7 +194,6 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	public void EventCallStart( String strCallId, SipCallRtp clsRtp )
 	{
 		Send( "log", "EventCallStart" );
-		
 		Send( "start_call", "" );
 	}
 
@@ -193,7 +201,6 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	public void EventCallEnd( String strCallId, int iSipStatus )
 	{
 		Send( "log", "EventCallEnd" );
-		
 		Send( "stop_call", "" );
 	}
 	
