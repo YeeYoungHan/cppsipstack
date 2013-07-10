@@ -30,6 +30,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.app.Activity;
@@ -37,6 +38,7 @@ import android.app.Activity;
 public class MainActivity extends Activity implements OnClickListener, SipUserAgentCallBack 
 {
 	EditText m_txtPhoneNumber;
+	Button m_btnStartCall, m_btnStopCall, m_btnAcceptCall;
 	TextView m_txtLog;
 	String m_strCallId = "";
 	Handler	 m_clsHandler;
@@ -50,9 +52,15 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 		m_txtPhoneNumber = (EditText)findViewById( R.id.txtPhoneNumber );
 		m_txtLog = (TextView)findViewById( R.id.txtLog );
 		
-		findViewById( R.id.btnStartCall ).setOnClickListener( this );
-		findViewById( R.id.btnStopCall ).setOnClickListener( this );
-		findViewById( R.id.btnAcceptCall ).setOnClickListener( this );
+		m_btnStartCall = (Button)findViewById( R.id.btnStartCall );
+		m_btnStopCall = (Button)findViewById( R.id.btnStopCall );
+		m_btnAcceptCall = (Button)findViewById( R.id.btnAcceptCall );
+		
+		m_btnStartCall.setOnClickListener( this );
+		m_btnStopCall.setOnClickListener( this );
+		m_btnAcceptCall.setOnClickListener( this );
+		
+		SetButtonInit();
 		
 		m_clsHandler = new Handler()
     {
@@ -66,6 +74,22 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
     		if( strCommand.equals( "log" ) )
     		{
     			m_txtLog.setText( strData );
+    		}
+    		else if( strCommand.equals( "incoming_call" ) )
+    		{
+    			m_btnStartCall.setEnabled( false );
+    			m_btnStopCall.setEnabled( true );
+    			m_btnAcceptCall.setEnabled( true );
+    		}
+    		else if( strCommand.equals( "start_call" ) )
+    		{
+    			m_btnStartCall.setEnabled( false );
+    			m_btnStopCall.setEnabled( true );
+    			m_btnAcceptCall.setEnabled( false );
+    		}
+    		else if( strCommand.equals( "stop_call" ) )
+    		{
+    			SetButtonInit();
     		}
     	}
     };
@@ -147,6 +171,8 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 		Send( "log", "EventIncomingCall " + strFrom );
 		
 		m_strCallId = strCallId;
+		
+		Send( "incoming_call", "" );
 	}
 
 	@Override
@@ -159,12 +185,16 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	public void EventCallStart( String strCallId, SipCallRtp clsRtp )
 	{
 		Send( "log", "EventCallStart" );
+		
+		Send( "start_call", "" );
 	}
 
 	@Override
 	public void EventCallEnd( String strCallId, int iSipStatus )
 	{
 		Send( "log", "EventCallEnd" );
+		
+		Send( "stop_call", "" );
 	}
 	
 	void Send( String strCommand, String strData )
@@ -177,4 +207,11 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
   	m.setData( b );
   	m_clsHandler.sendMessage( m );
   }
+	
+	void SetButtonInit( )
+	{
+		m_btnStartCall.setEnabled( true );
+		m_btnStopCall.setEnabled( false );
+		m_btnAcceptCall.setEnabled( false );
+	}
 }
