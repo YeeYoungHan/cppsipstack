@@ -252,6 +252,8 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
  */
 bool CSipDialog::SetLocalRtp( CSipCallRtp * pclsRtp )
 {
+	if( pclsRtp == NULL ) return false;
+	
 	m_strLocalRtpIp = pclsRtp->m_strIp;
 	m_iLocalRtpPort = pclsRtp->m_iPort;
 	m_iCodec = pclsRtp->m_iCodec;
