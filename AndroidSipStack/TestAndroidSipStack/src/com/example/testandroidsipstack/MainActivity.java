@@ -40,7 +40,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	TextView m_txtLog;
 	String m_strCallId = "";
 	Handler	 m_clsHandler;
-	
+
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
 	{
@@ -86,6 +86,14 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 		SipStackSetup clsSetup = new SipStackSetup();
 		
 		SipUserAgent.Start( clsSetup );
+	}
+	
+	@Override
+	protected void onDestroy()
+	{
+		SipUserAgent.Stop( );
+		
+		super.onDestroy( );
 	}
 
 	@Override
