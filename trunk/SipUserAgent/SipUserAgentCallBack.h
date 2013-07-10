@@ -46,10 +46,19 @@ public:
 	CSipCallRtp() : m_iPort(-1), m_iCodec(-1), m_eDirection( E_RTP_SEND_RECV )
 	{}
 
+	/** IP 주소 */
 	std::string	m_strIp;
+
+	/** 포트 번호 */
 	int					m_iPort;
+
+	/** 선택된 코덱 번호 */
 	int					m_iCodec;
+
+	/** 전송/수신 */
 	ERtpDirection	m_eDirection;
+
+	/** 전체 코덱 리스트 */
 	CODEC_LIST	m_clsCodecList;
 };
 

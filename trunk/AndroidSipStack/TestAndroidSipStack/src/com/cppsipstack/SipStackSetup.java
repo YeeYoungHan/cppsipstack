@@ -18,6 +18,10 @@
 
 package com.cppsipstack;
 
+/** SIP stack 설정 클래스
+ * @author websearch (websearch@naver.com)
+ *
+ */
 public class SipStackSetup
 {
 	/** SIP 메시지에 저장되는 로컬 IP 주소 */
