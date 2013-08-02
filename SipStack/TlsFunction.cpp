@@ -16,9 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipStackDefine.h"
+
 #ifdef USE_TLS
 
-#include "SipStackDefine.h"
 #include "TlsFunction.h"
 #include "SipMutex.h"
 #include "Log.h"
