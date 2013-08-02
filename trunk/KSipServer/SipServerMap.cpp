@@ -90,18 +90,22 @@ bool CSipServerMap::Load( )
 {
 	bool	bRes = false;
 
-	CLog::Print( LOG_DEBUG, "SipServerMap Load" );
-
 	ReSetFlag( );
 
 	if( gclsSetup.m_eType == E_DT_XML )
 	{
-		bRes = ReadDir( gclsSetup.m_strSipServerXmlFolder.c_str() );
+		if( gclsSetup.m_strSipServerXmlFolder.length() > 0 )
+		{
+			CLog::Print( LOG_DEBUG, "SipServerMap Load" );
+			bRes = ReadDir( gclsSetup.m_strSipServerXmlFolder.c_str() );
+		}
 	}
 #ifdef USE_MYSQL
 	else if( gclsSetup.m_eType == E_DT_MYSQL )
 	{
 		char szSQL[255];
+
+		CLog::Print( LOG_DEBUG, "SipServerMap Load" );
 
 		snprintf( szSQL, sizeof(szSQL), "SELECT Id, Ip, Port, Domain, UserId, PassWord, LoginTimeout FROM SipServer" );
 		if( gclsReadDB.Query( szSQL, NULL, SipServerFetchRow ) )
