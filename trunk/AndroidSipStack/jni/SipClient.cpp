@@ -238,16 +238,12 @@ void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 		goto FUNC_END;
 	}
 
-	AndroidDebugLog( "1" );
-
 	joSipCallRtp = env->NewObject( gclsClass.m_jcSipCallRtp, gclsClass.m_jmSipCallRtpInit );
 	if( joSipCallRtp == NULL )
 	{
 		AndroidErrorLog( "%s NewObject error", __FUNCTION__ );
 		goto FUNC_END;
 	}
-
-	AndroidDebugLog( "2" );
 
 	if( pclsRtp )
 	{
@@ -257,8 +253,6 @@ void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 			goto FUNC_END;
 		}
 	}
-
-	AndroidDebugLog( "3" );
 
 	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventCallStart, jstrCallId, joSipCallRtp );
 
