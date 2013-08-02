@@ -53,7 +53,10 @@ bool CTcpSocketMap::Insert( const char * pszIp, int iPort, Socket hSocket, SSL *
 	if( it == m_clsMap.end() )
 	{
 		clsTcpSocketInfo.m_hSocket = hSocket;
+
+#ifdef USE_TLS
 		clsTcpSocketInfo.m_psttSsl = psttSsl;
+#endif
 
 		m_clsMap.insert( TCP_SOCKET_MAP::value_type( strKey, clsTcpSocketInfo ) );
 	}
@@ -89,6 +92,7 @@ bool CTcpSocketMap::Select( const char * pszIp, int iPort, Socket & hSocket )
 	return bRes;
 }
 
+#ifdef USE_TLS
 bool CTcpSocketMap::Select( const char * pszIp, int iPort, SSL ** psttSsl )
 {
 	bool	bRes = false;
@@ -108,6 +112,7 @@ bool CTcpSocketMap::Select( const char * pszIp, int iPort, SSL ** psttSsl )
 
 	return bRes;
 }
+#endif
 
 /**
  * @brief 자료구조에서 클라이언트 IP 주소와 포트번호에 해당하는 정보를 삭제한다.

@@ -76,16 +76,19 @@ public:
 
 	Socket m_hUdpSocket;					// UDP SIP 메시지 전송/수신 소켓 핸들
 	Socket m_hTcpSocket;					// TCP SIP 메시지를 위한 서버 소켓 핸들
-	Socket m_hTlsSocket;					// TLS SIP 메시지를 위한 서버 소켓 핸들
 
 	CSipMutex m_clsUdpRecvMutex;	// SIP 메시지 수신 뮤텍스
 	CSipStackSetup	m_clsSetup;		// SIP stack 설정
 
 	CThreadList		m_clsTcpThreadList;
-	CThreadList		m_clsTlsThreadList;
-
 	CTcpSocketMap	m_clsTcpSocketMap;
+
+#ifdef USE_TLS
+	Socket m_hTlsSocket;					// TLS SIP 메시지를 위한 서버 소켓 핸들
+
+	CThreadList		m_clsTlsThreadList;
 	CTcpSocketMap	m_clsTlsSocketMap;
+#endif
 
 private:
 	bool	 m_bStarted;

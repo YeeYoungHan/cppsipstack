@@ -20,7 +20,11 @@
 #include "TcpSessionList.h"
 #include <time.h>
 
-CTcpSessionListInfo::CTcpSessionListInfo() : m_iPort(0), m_psttSsl(NULL), m_iConnectTime(0), m_iRecvTime(0)
+CTcpSessionListInfo::CTcpSessionListInfo() : m_iPort(0)
+#ifdef USE_TLS
+, m_psttSsl(NULL)
+#endif
+, m_iConnectTime(0), m_iRecvTime(0)
 {
 
 }
@@ -116,7 +120,10 @@ bool CTcpSessionList::Insert( CTcpComm & clsTcpComm, SSL * psttSsl )
 				m_clsList[i].m_iPort = clsTcpComm.m_iPort;
 				m_clsList[i].m_iConnectTime = iTime;
 				m_clsList[i].m_iRecvTime = iTime;
+
+#ifdef USE_TLS
 				m_clsList[i].m_psttSsl = psttSsl;
+#endif
 
 				return true;
 			}
@@ -130,7 +137,10 @@ bool CTcpSessionList::Insert( CTcpComm & clsTcpComm, SSL * psttSsl )
 	m_clsList[m_iPoolFdCount].m_iPort = clsTcpComm.m_iPort;
 	m_clsList[m_iPoolFdCount].m_iConnectTime = iTime;
 	m_clsList[m_iPoolFdCount].m_iRecvTime = iTime;
+
+#ifdef USE_TLS
 	m_clsList[m_iPoolFdCount].m_psttSsl = psttSsl;
+#endif
 
 	++m_iPoolFdCount;
 
@@ -148,11 +158,13 @@ bool CTcpSessionList::Delete( int iIndex, CThreadListEntry * pclsEntry )
 {
 	if( iIndex >= m_iPoolFdCount || iIndex < 0 ) return false;
 
+#ifdef USE_TLS
 	if( m_clsList[iIndex].m_psttSsl )
 	{
 		SSLClose( m_clsList[iIndex].m_psttSsl );
 		m_clsList[iIndex].m_psttSsl = NULL;
 	}
+#endif
 
 	closesocket( m_psttPollFd[iIndex].fd );
 
@@ -184,11 +196,13 @@ void CTcpSessionList::DeleteAll( CThreadListEntry * pclsEntry )
 {
 	for( int i = 0; i < m_iPoolFdCount; ++i )
 	{
+#ifdef USE_TLS
 		if( m_clsList[i].m_psttSsl )
 		{
 			SSLClose( m_clsList[i].m_psttSsl );
 			m_clsList[i].m_psttSsl = NULL;
 		}
+#endif
 
 		if( m_psttPollFd[i].fd != INVALID_SOCKET )
 		{

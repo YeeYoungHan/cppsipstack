@@ -32,7 +32,11 @@ CSipStack::CSipStack()
 	m_bStackThreadRun = false;
 	m_hUdpSocket = INVALID_SOCKET;
 	m_hTcpSocket = INVALID_SOCKET;
+
+#ifdef USE_TLS
 	m_hTlsSocket = INVALID_SOCKET;
+#endif
+
 	m_bStarted = false;
 	m_iUdpThreadRunCount = 0;
 	m_iTcpThreadRunCount = 0;
@@ -92,6 +96,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 		}
 	}
 
+#ifdef USE_TLS
 	if( m_clsSetup.m_iLocalTlsPort > 0 )
 	{
 		if( SSLServerStart( m_clsSetup.m_strCertFile.c_str(), "" ) == false )
@@ -120,6 +125,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 			return false;
 		}
 	}
+#endif
 
 	if( StartSipUdpThread( this ) == false )
 	{
@@ -455,6 +461,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 	}
 	else if( eTransport == E_SIP_TLS )
 	{
+#ifdef USE_TLS
 		SSL * psttSsl = NULL;
 
 		if( m_clsTlsSocketMap.Select( pszIp, iPort, &psttSsl ) )
@@ -471,6 +478,9 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 				CLog::Print( LOG_NETWORK, "TlsSend(%s:%d) [%s] error(%d)", pszIp, iPort, pclsMessage->m_strPacket.c_str(), GetError() );
 			}
 		}
+#else
+		CLog::Print( LOG_ERROR, "TLS is not supported. rebuild with USE_TLS option" );
+#endif
 	}
 	
 	return bRes;
@@ -652,14 +662,17 @@ bool CSipStack::_Stop( )
 		m_hTcpSocket = INVALID_SOCKET;
 	}
 
+	m_clsTcpThreadList.Final();
+
+#ifdef USE_TLS
 	if( m_hTlsSocket != INVALID_SOCKET )
 	{
 		closesocket( m_hTlsSocket );
 		m_hTlsSocket = INVALID_SOCKET;
 	}
 
-	m_clsTcpThreadList.Final();
 	m_clsTlsThreadList.Final();
+#endif
 
 	m_clsICT.DeleteAll();
 	m_clsNICT.DeleteAll();

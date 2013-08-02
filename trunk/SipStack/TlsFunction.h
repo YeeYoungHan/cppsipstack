@@ -19,6 +19,8 @@
 #ifndef _TLS_FUNCTION_H_
 #define _TLS_FUNCTION_H_
 
+#ifdef USE_TLS
+
 #include "SipTcp.h"
 #include <openssl/rsa.h>
 #include <openssl/crypto.h>
@@ -33,5 +35,11 @@ bool SSLAccept( Socket iFd, SSL ** ppsttSsl, bool bCheckClientCert, int iVerifyD
 int SSLSend( SSL * ssl, const char * szBuf, int iBufLen );
 int SSLRecv( SSL * ssl, char * szBuf, int iBufLen );
 bool SSLClose( SSL * ssl );
+
+#else
+
+#define SSL void
+
+#endif
 
 #endif

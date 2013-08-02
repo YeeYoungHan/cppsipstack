@@ -35,7 +35,10 @@ public:
 	CTcpSocketInfo();
 
 	Socket	m_hSocket;
+
+#ifdef USE_TLS
 	SSL			* m_psttSsl;
+#endif
 };
 
 typedef std::map< std::string, CTcpSocketInfo > TCP_SOCKET_MAP;
@@ -52,7 +55,11 @@ public:
 
 	bool Insert( const char * pszIp, int iPort, Socket hSocket, SSL * psttSsl = NULL );
 	bool Select( const char * pszIp, int iPort, Socket & hSocket );
+
+#ifdef USE_TLS
 	bool Select( const char * pszIp, int iPort, SSL ** psttSsl );
+#endif
+
 	bool Delete( const char * pszIp, int iPort );
 	void GetString( std::string & strText );
 
