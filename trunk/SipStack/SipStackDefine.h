@@ -18,6 +18,9 @@
 
 #ifndef _SIP_STACK_DEFINE_H_
 
+// TLS 기능 없이 SIP stack 을 빌드하고 싶으면 아래의 선언을 주석 처리하세요.
+#define USE_TLS
+
 #include "SipParserDefine.h"
 #include "SipStackVersion.h"
 
