@@ -29,11 +29,11 @@
 CSipUserAgent gclsUserAgent;
 
 /**
- * @brief 
- * @param env 
- * @param jcSipUserAgent 
- * @param joSipServerInfo 
- * @returns 
+ * @brief SIP 서버 정보를 저장한다.
+ * @param env							JNIEnv
+ * @param jcSipUserAgent	java SipUserAgent 클래스
+ * @param joSipServerInfo java SipServerInfo 객체
+ * @returns 성공하면 JNI_TRUE 를 리턴하고 실패하면 JNI_FALSE 를 리턴한다.
  */
 JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_InsertRegisterInfo( JNIEnv * env, jclass, jobject joSipServerInfo )
 {
@@ -47,18 +47,18 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_InsertRegisterInfo(
 }
 
 /**
- * @brief 
- * @param env 
- * @param jcSipUserAgent 
- * @param joSipStackSetup 
- * @returns 
+ * @brief SIP stack 을 시작한다.
+ * @param env							JNIEnv
+ * @param jcSipUserAgent	java SipUserAgent 클래스
+ * @param joSipStackSetup java SipStackSetup 객체
+ * @returns 성공하면 JNI_TRUE 를 리턴하고 실패하면 JNI_FALSE 를 리턴한다.
  */
 JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Start( JNIEnv * env, jclass jcSipUserAgent, jobject joSipStackSetup )
 {
 	if( gclsClass.Init( env ) == false )
 	{
 		AndroidErrorLog( "Start - gclsClass.Init error" );
-		return false;
+		return JNI_FALSE;
 	}
 
 	CSipStackSetup clsSetup;
@@ -88,6 +88,12 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Start( JNIEnv * env
 	return JNI_TRUE;
 }
 
+/**
+ * @brief SIP stack 을 종료한다.
+ * @param env							JNIEnv
+ * @param jcSipUserAgent	java SipUserAgent 클래스
+ * @returns 성공하면 JNI_TRUE 를 리턴하고 실패하면 JNI_FALSE 를 리턴한다.
+ */
 JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Stop( JNIEnv * env, jclass )
 {
 	gclsUserAgent.Stop();
@@ -95,6 +101,15 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Stop( JNIEnv * env,
 	return JNI_TRUE;
 }
 
+/**
+ * @brief 전화 통화 요청한다.
+ * @param env							JNIEnv
+ * @param jcSipUserAgent	java SipUserAgent 클래스
+ * @param strFrom					발신자 아이디
+ * @param strTo						수신자 아이디
+ * @param joSipCallRtp		RTP 정보
+ * @returns 성공하면 SIP call-id 를 저장한 문자열 객체를 리턴하고 실패하면 NULL 을 리턴한다.
+ */
 JNIEXPORT jstring JNICALL Java_com_cppsipstack_SipUserAgent_StartCall( JNIEnv * env, jclass, jstring jsFrom, jstring jsTo, jobject joSipCallRtp )
 {
 	std::string	strFrom, strTo, strCallId;
@@ -142,6 +157,14 @@ JNIEXPORT jstring JNICALL Java_com_cppsipstack_SipUserAgent_StartCall( JNIEnv * 
 	return jsCallId;
 }
 
+/**
+ * @brief 전화 통화를 종료한다.
+ * @param env							JNIEnv
+ * @param jcSipUserAgent	java SipUserAgent 클래스
+ * @param strCallId				SIP call-id
+ * @param iSipCode				SIP status code
+ * @returns 성공하면 JNI_TRUE 를 리턴하고 실패하면 JNI_FALSE 를 리턴한다.
+ */
 JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_StopCall( JNIEnv * env, jclass, jstring jsCallId, jint iSipCode )
 {
 	std::string	strCallId;
@@ -157,6 +180,14 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_StopCall( JNIEnv * 
 	return JNI_TRUE;
 }
 
+/**
+ * @brief 통화 요청을 수락한다.
+ * @param env							JNIEnv
+ * @param jcSipUserAgent	java SipUserAgent 클래스
+ * @param strCallId				SIP call-id
+ * @param joSipCallRtp		RTP 정보
+ * @returns 성공하면 JNI_TRUE 를 리턴하고 실패하면 JNI_FALSE 를 리턴한다.
+ */
 JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_AcceptCall( JNIEnv * env, jclass, jstring jsCallId, jobject joSipCallRtp )
 {
 	std::string	strCallId;

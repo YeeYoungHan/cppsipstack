@@ -178,6 +178,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AndroidClass.h"
+				>
+			</File>
+			<File
 				RelativePath=".\AndroidClassConvert.cpp"
 				>
 			</File>
@@ -194,25 +198,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AndroidSipUserAgent.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SipClient.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\SipClient.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="헤더 파일"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
-			<File
-				RelativePath=".\AndroidClass.h"
-				>
-			</File>
-			<File
-				RelativePath=".\AndroidSipUserAgent.h"
 				>
 			</File>
 		</Filter>
