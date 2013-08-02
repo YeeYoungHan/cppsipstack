@@ -30,6 +30,11 @@
 
 bool gbAndroidDebug = false;
 
+/**
+ * @brief 안드로이드 디버그 로그를 출력한다.
+ * @param fmt 로그 문자열
+ * @param		로그 문자열 변수
+ */
 void AndroidDebugLog( const char * fmt, ... )
 {
 	char	szBuf[LOG_MAX_SIZE];
@@ -45,6 +50,11 @@ void AndroidDebugLog( const char * fmt, ... )
 #endif
 }
 
+/**
+ * @brief 안드로이드 에러 로그를 출력한다.
+ * @param fmt 로그 문자열
+ * @param		로그 문자열 변수
+ */
 void AndroidErrorLog( const char * fmt, ... )
 {
 	char	szBuf[LOG_MAX_SIZE];

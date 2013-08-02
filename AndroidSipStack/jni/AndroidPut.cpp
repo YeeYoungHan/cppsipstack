@@ -20,6 +20,15 @@
 #include "AndroidLog.h"
 #include <string.h>
 
+/**
+ * @brief java 객체의 문자열 멤버 변수에 값을 입력한다.
+ * @param env				JNIEnv
+ * @param jObject		java 객체
+ * @param jClass		java 클래스
+ * @param pszName		java 객체의 문자열 멤버 변수 이름
+ * @param pszValue	저장할 문자열
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool PutString( JNIEnv * env, jobject jObject, jclass jClass, const char * pszName, const char * pszValue )
 {
 	jstring strValue = env->NewStringUTF( pszValue );
@@ -43,6 +52,15 @@ bool PutString( JNIEnv * env, jobject jObject, jclass jClass, const char * pszNa
 	return true;
 }
 
+/**
+ * @brief java 객체의 정수 멤버 변수에 값을 입력한다.
+ * @param env				JNIEnv
+ * @param jObject		java 객체
+ * @param jClass		java 클래스
+ * @param pszName		java 객체의 정수 멤버 변수 이름
+ * @param iValue		저장할 정수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool PutInt( JNIEnv * env, jobject jObject, jclass jClass, const char * pszName, int iValue )
 {
 	jfieldID fid = env->GetFieldID( jClass, pszName, "I" );

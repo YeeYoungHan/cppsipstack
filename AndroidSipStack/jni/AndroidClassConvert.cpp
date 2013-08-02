@@ -53,6 +53,13 @@ bool GetSipServerInfo( JNIEnv * env, jobject joSipServerInfo, CSipServerInfo & c
 	return true;
 }
 
+/**
+ * @brief C++ CSipServerInfo °´Ã¼¸¦ Java SipServerInfo °´Ã¼·Î º¹»çÇÑ´Ù.
+ * @param env							JNIEnv
+ * @param joSipServerInfo Java SipServerInfo °´Ã¼
+ * @param clsInput				C++ CSipServerInfo °´Ã¼
+ * @returns 
+ */
 bool PutSipServerInfo( JNIEnv * env, jobject joSipServerInfo, CSipServerInfo & clsInput )
 {
 	jclass jc = env->GetObjectClass( joSipServerInfo );
@@ -73,9 +80,9 @@ bool PutSipServerInfo( JNIEnv * env, jobject joSipServerInfo, CSipServerInfo & c
 
 /**
  * @brief Java SipStackSetup °´Ã¼¸¦ C++ CSipStackSetup °´Ã¼·Î º¹»çÇÑ´Ù.
- * @param env								JNI
+ * @param env							JNI
  * @param joSipStackSetup	Java SipStackSetup °´Ã¼
- * @param clsOutput					C++ CSipStackSetup °´Ã¼
+ * @param clsOutput				C++ CSipStackSetup °´Ã¼
  * @returns ¼º°øÇÏ¸é true ¸¦ ¸®ÅÏÇÏ°í ½ÇÆÐÇÏ¸é false ¸¦ ¸®ÅÏÇÑ´Ù.
  */
 bool GetSipStackSetup( JNIEnv * env, jobject joSipStackSetup, CSipStackSetup & clsOutput )
@@ -103,6 +110,13 @@ bool GetSipStackSetup( JNIEnv * env, jobject joSipStackSetup, CSipStackSetup & c
 	return true;
 }
 
+/**
+ * @brief Java SipCallRtp °´Ã¼¸¦ C++ CSipCallRtp °´Ã¼·Î º¹»çÇÑ´Ù.
+ * @param env						JNI
+ * @param joSipCallRtp	Java SipCallRtp °´Ã¼
+ * @param clsOutput			C++ CSipCallRtp °´Ã¼
+ * @returns ¼º°øÇÏ¸é true ¸¦ ¸®ÅÏÇÏ°í ½ÇÆÐÇÏ¸é false ¸¦ ¸®ÅÏÇÑ´Ù.
+ */
 bool GetSipCallRtp( JNIEnv * env, jobject joSipCallRtp, CSipCallRtp & clsOutput )
 {
 	jclass jc = env->GetObjectClass( joSipCallRtp );
@@ -120,6 +134,13 @@ bool GetSipCallRtp( JNIEnv * env, jobject joSipCallRtp, CSipCallRtp & clsOutput 
 	return true;
 }
 
+/**
+ * @brief C++ CSipCallRtp °´Ã¼¸¦ Java SipCallRtp °´Ã¼·Î º¹»çÇÑ´Ù.
+ * @param env						JNI
+ * @param joSipCallRtp	Java SipCallRtp °´Ã¼
+ * @param clsInput			C++ CSipCallRtp °´Ã¼
+ * @returns ¼º°øÇÏ¸é true ¸¦ ¸®ÅÏÇÏ°í ½ÇÆÐÇÏ¸é false ¸¦ ¸®ÅÏÇÑ´Ù.
+ */
 bool PutSipCallRtp( JNIEnv * env, jobject joSipCallRtp, CSipCallRtp & clsInput )
 {
 	jclass jc = env->GetObjectClass( joSipCallRtp );
