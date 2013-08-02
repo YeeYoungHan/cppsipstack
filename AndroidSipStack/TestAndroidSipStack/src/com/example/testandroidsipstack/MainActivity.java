@@ -140,6 +140,9 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 				if( m_strCallId != null )
 				{
 					m_txtLog.setText( "StartCall" );
+					
+					m_btnStartCall.setEnabled( false );
+    			m_btnStopCall.setEnabled( true );
 				}
 			}
 			break;
@@ -148,6 +151,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 				if( SipUserAgent.StopCall( m_strCallId, 200 ) )
 				{
 					m_txtLog.setText( "Call end" );
+					SetButtonInit();
 				}
 			}
 			break;
