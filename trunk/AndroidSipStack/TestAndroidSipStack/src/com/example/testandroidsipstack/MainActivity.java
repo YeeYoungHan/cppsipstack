@@ -108,7 +108,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 		SipUserAgent.SetCallBack( this );
 		
 		SipStackSetup clsSetup = new SipStackSetup();
-		
+
 		SipUserAgent.Start( clsSetup );
 	}
 	
@@ -148,7 +148,14 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 			break;
 		case R.id.btnStopCall:
 			{
-				if( SipUserAgent.StopCall( m_strCallId, 200 ) )
+				int iStatusCode = 200;
+				
+				if( m_btnAcceptCall.isEnabled( ) )
+				{
+					iStatusCode = 603;
+				}
+				
+				if( SipUserAgent.StopCall( m_strCallId, iStatusCode ) )
 				{
 					m_txtLog.setText( "Call end" );
 					SetButtonInit();
@@ -166,6 +173,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 				if( SipUserAgent.AcceptCall( m_strCallId, clsRtp ) )
 				{
 					m_txtLog.setText( "Call connected" );
+					m_btnAcceptCall.setEnabled( false );
 				}
 			}
 			break;
