@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#ifdef USE_TLS
+
 #include "SipStackDefine.h"
 #include "TlsFunction.h"
 #include "SipMutex.h"
@@ -346,3 +348,5 @@ bool SSLClose( SSL * ssl )
 
 	return true;
 }
+
+#endif

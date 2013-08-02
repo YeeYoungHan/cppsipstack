@@ -50,7 +50,10 @@ public:
 
 	std::string		m_strIp;
 	int						m_iPort;
+
+#ifdef USE_TLS
 	SSL						* m_psttSsl;
+#endif
 
 	CSipBuffer		m_clsSipBuf;
 

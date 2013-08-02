@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#ifdef USE_TLS
+
 #include "SipStackThread.h"
 #include "TcpSessionList.h"
 #include "Log.h"
@@ -251,3 +253,5 @@ bool StartSipTlsListenThread( CSipStack * pclsSipStack )
 {
 	return StartThread( "SipTlsListenThread", SipTlsListenThread, pclsSipStack );
 }
+
+#endif
