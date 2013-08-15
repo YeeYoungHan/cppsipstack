@@ -18,6 +18,7 @@
 
 #include "SipServer.h"
 #include "SipUtility.h"
+#include "SipServerMap.h"
 #include "UserMap.h"
 
 CSipStack	gclsSipStack;
@@ -56,6 +57,12 @@ bool CSipServer::Start( CSipStackSetup & clsSetup )
 bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
 	CUserInfo clsUserInfo;
+	bool bSipServerSent = false;
+
+	if( gclsSipServerMap.Select( pclsMessage->m_strClientIp.c_str(), pclsMessage->m_iClientPort ) )
+	{
+		bSipServerSent = true;
+	}
 
 	if( gclsUserMap.Select( pclsMessage, clsUserInfo ) )
 	{
@@ -77,7 +84,15 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 				*pclsRequest = *pclsMessage;
 				
 				pclsRequest->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, strBranch.c_str() );
-				pclsRequest->AddRoute( clsUserInfo.m_strSipServerIp.c_str(), 5060 );
+
+				if( bSipServerSent )
+				{
+					pclsRequest->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, clsUserInfo.m_eTransport );
+				}
+				else
+				{
+					pclsRequest->AddRoute( clsUserInfo.m_strSipServerIp.c_str(), clsUserInfo.m_iSipServerPort );
+				}
 
 				SIP_FROM_LIST::iterator itContact = pclsRequest->m_clsContactList.begin();
 				if( itContact != pclsRequest->m_clsContactList.end() )

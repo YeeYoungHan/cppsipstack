@@ -21,7 +21,7 @@
 
 CUserMap gclsUserMap;
 
-CUserInfo::CUserInfo() : m_iSipServerPort(5060)
+CUserInfo::CUserInfo() : m_iSipServerPort(5060), m_iPort(0), m_eTransport(E_SIP_UDP)
 {
 }
 
@@ -67,6 +67,9 @@ bool CUserMap::Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
 		{
 			clsUserInfo.m_strSipServerIp = clsSipServerInfo.m_strIp;
 			clsUserInfo.m_iSipServerPort = clsSipServerInfo.m_iPort;
+			clsUserInfo.m_strIp = pclsRequest->m_strClientIp;
+			clsUserInfo.m_iPort = pclsRequest->m_iClientPort;
+			clsUserInfo.m_eTransport = pclsRequest->m_eTransport;
 
 			m_clsMap.insert( USER_MAP::value_type( strUserId, clsUserInfo ) );
 		}

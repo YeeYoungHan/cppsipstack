@@ -35,6 +35,10 @@ public:
 
 	std::string m_strSipServerIp;
 	int					m_iSipServerPort;
+
+	std::string	m_strIp;
+	int					m_iPort;
+	ESipTransport m_eTransport;
 };
 
 // key ´Â user_id ÀÌ´Ù.
