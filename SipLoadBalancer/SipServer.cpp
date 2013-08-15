@@ -20,6 +20,7 @@
 #include "SipUtility.h"
 #include "SipServerMap.h"
 #include "UserMap.h"
+#include "Log.h"
 
 CSipStack	gclsSipStack;
 CSipServer gclsSipServer;
@@ -58,13 +59,19 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
 	CUserInfo clsUserInfo;
 	bool bSipServerSent = false;
+	bool bRes = false;
 
 	if( gclsSipServerMap.Select( pclsMessage->m_strClientIp.c_str(), pclsMessage->m_iClientPort ) )
 	{
 		bSipServerSent = true;
+		bRes = gclsUserMap.Select( pclsMessage, clsUserInfo );
+	}
+	else
+	{
+		bRes = gclsUserMap.Insert( pclsMessage, clsUserInfo );
 	}
 
-	if( gclsUserMap.Select( pclsMessage, clsUserInfo ) )
+	if( bRes )
 	{
 		SIP_VIA_LIST::iterator itVia = pclsMessage->m_clsViaList.begin();
 		if( itVia != pclsMessage->m_clsViaList.end() )
@@ -105,6 +112,14 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 				return true;
 			}
 		}
+		else
+		{
+			CLog::Print( LOG_ERROR, "Via list count is 0" );
+		}
+	}
+	else
+	{
+		CLog::Print( LOG_ERROR, "user is not found" );
 	}
 
 	return false;

@@ -41,12 +41,12 @@ CUserMap::~CUserMap()
 }
 
 /**
- * @brief SIP 메시지과 관련된 SIP 클라이언트 정보를 가져온다.
+ * @brief SIP 메시지로 SIP 클라이언트 정보를 저장한다.
  * @param pclsRequest SIP 메시지
  * @param clsUserInfo SIP 클라이언트 정보 저장 변수
- * @returns 검색되면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool CUserMap::Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
+bool CUserMap::Insert( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
 {
 	bool								bRes = true;
 	USER_MAP::iterator	itMap;
@@ -77,6 +77,49 @@ bool CUserMap::Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
 		{
 			bRes = false;
 		}
+	}
+	else
+	{
+		if( strcmp( pclsRequest->m_strClientIp.c_str(), itMap->second.m_strIp.c_str() ) )
+		{
+			itMap->second.m_strIp = pclsRequest->m_strClientIp;
+		}
+
+		if( pclsRequest->m_iClientPort != itMap->second.m_iPort )
+		{
+			itMap->second.m_iPort = pclsRequest->m_iClientPort;
+		}
+
+		clsUserInfo = itMap->second;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+
+/**
+ * @brief SIP 메시지과 관련된 SIP 클라이언트 정보를 가져온다.
+ * @param pclsRequest SIP 메시지
+ * @param clsUserInfo SIP 클라이언트 정보 저장 변수
+ * @returns 검색되면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CUserMap::Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
+{
+	bool								bRes = true;
+	USER_MAP::iterator	itMap;
+	std::string & strUserId = pclsRequest->m_clsTo.m_clsUri.m_strUser;
+
+	if( pclsRequest->IsMethod( "REGISTER" ) )
+	{
+		strUserId = pclsRequest->m_clsFrom.m_clsUri.m_strUser;
+	}
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( strUserId );
+	if( itMap == m_clsMap.end() )
+	{
+		bRes = false;
 	}
 	else
 	{
