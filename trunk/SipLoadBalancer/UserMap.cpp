@@ -40,6 +40,12 @@ CUserMap::~CUserMap()
 {
 }
 
+/**
+ * @brief SIP 메시지과 관련된 SIP 클라이언트 정보를 가져온다.
+ * @param pclsRequest SIP 메시지
+ * @param clsUserInfo SIP 클라이언트 정보 저장 변수
+ * @returns 검색되면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CUserMap::Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
 {
 	bool								bRes = true;
@@ -78,6 +84,11 @@ bool CUserMap::Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
 	return bRes;
 }
 
+/**
+ * @brief SIP 서버의 IP 주소/포트 번호를 가지고 있는 SIP 클라이언트를 삭제한다.
+ * @param pszIp SIP 서버 IP 주소
+ * @param iPort SIP 서버 포트 번호
+ */
 void CUserMap::DeleteSipServer( const char * pszIp, int iPort )
 {
 	USER_MAP::iterator	itMap, itNext;

@@ -22,6 +22,10 @@
 #include "SipMutex.h"
 #include <vector>
 
+/**
+ * @ingroup SipLoadBalancer
+ * @brief SIP 서버 정보 저장 클래스
+ */
 class CSipServerInfo
 {
 public:
@@ -36,6 +40,10 @@ public:
 
 typedef std::vector< CSipServerInfo > SIP_SERVER_LIST;
 
+/**
+ * @ingroup SipLoadBalancer
+ * @brief SIP 서버 맵 저장 클래스
+ */
 class CSipServerMap
 {
 public:
@@ -52,6 +60,8 @@ private:
 	SIP_SERVER_LIST m_clsList;
 	CSipMutex m_clsMutex;
 	int				m_iIndex;
+
+	bool Select( const char * pszIp, int iPort, bool bUse );
 };
 
 extern CSipServerMap gclsSipServerMap;
