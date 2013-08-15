@@ -68,7 +68,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 			if( pszBranch )
 			{
 				strBranch = pszBranch;
-				strBranch.append( "_copy" );
+				strBranch.append( "slb" );
 			}
 
 			CSipMessage * pclsRequest = new CSipMessage();

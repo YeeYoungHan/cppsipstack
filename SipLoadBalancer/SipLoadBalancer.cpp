@@ -18,48 +18,199 @@
 
 #include "SipServer.h"
 #include "SipServerMap.h"
+#include "SipServerSetup.h"
+#include "SipLoadBalancer.h"
+#include "SipLoadBalancerVersion.h"
+#include "ServerThread.h"
+#include "ServerUtility.h"
+#include "Log.h"
+#include <signal.h>
+
+bool gbStop = false;
+static std::string gstrConfigFileName;
 
 /**
  * @ingroup SipLoadBalancer
- * @brief C++ SIP stack 을 이용한 초간단 SIP Load Balancer
+ * @brief signal function
+ * @param sig 신호 번호
+ */
+void LastMethod( int sig )
+{
+	char	szText[21];
+
+	szText[0] = '\0';
+	switch( sig )
+	{
+	case SIGINT:
+		snprintf( szText, sizeof(szText), "SIGINT" );
+		break;
+	case SIGSEGV:
+		snprintf( szText, sizeof(szText), "SIGSEGV" );
+		break;
+	case SIGTERM:
+		snprintf( szText, sizeof(szText), "SIGTERM" );
+		break;
+#ifndef WIN32
+	case SIGQUIT:
+		snprintf( szText, sizeof(szText), "SIGQUIT" );
+		break;
+#endif
+	case SIGABRT:
+		snprintf( szText, sizeof(szText), "SIGABRT" );
+		break;
+	}
+	CLog::Print( LOG_ERROR, "signal%s%s(%d) is received. terminated", strlen(szText) > 0 ? "-" : "", szText, sig );
+
+	gbStop = true;
+}
+
+/**
+ * @ingroup SipLoadBalancer
+ * @brief C++ SIP stack 을 이용한 한국형 IP-PBX
+ * @returns 정상 종료하면 0 을 리턴하고 오류가 발생하면 -1 를 리턴한다.
+ */
+int ServerMain( )
+{
+	if( gclsSetup.Read( gstrConfigFileName.c_str() ) == false )
+	{
+		printf( "config filename(%s) read error\n", gstrConfigFileName.c_str() );
+		return -1;
+	}
+
+	CLog::SetDirectory( gclsSetup.m_strLogFolder.c_str() );
+	CLog::SetLevel( gclsSetup.m_iLogLevel );
+
+	CLog::Print( LOG_SYSTEM, "SipLoadBalancer is started ( version-%s %s %s )", SIP_LOAD_BALANCER_VERSION, __DATE__, __TIME__ );
+
+	CSipStackSetup clsSetup;
+
+	if( gclsSetup.m_strLocalIp.empty() )
+	{
+		// N개의 IP주소를 사용하는 호스트에서는 SIP 프로토콜로 사용할 IP주소를 직접 입력해 주세요.
+		// Vmware 등을 사용하는 경우 N개의 IP주소가 호스트에 존재합니다.
+		GetLocalIp( clsSetup.m_strLocalIp );
+		gclsSetup.m_strLocalIp = clsSetup.m_strLocalIp;
+	}
+	else
+	{
+		clsSetup.m_strLocalIp = gclsSetup.m_strLocalIp;
+	}
+
+	clsSetup.m_iLocalUdpPort = gclsSetup.m_iUdpPort;
+	clsSetup.m_iUdpThreadCount = gclsSetup.m_iUdpThreadCount;
+
+	clsSetup.m_iLocalTcpPort = gclsSetup.m_iTcpPort;
+	clsSetup.m_iTcpThreadCount = gclsSetup.m_iTcpThreadCount;
+
+	clsSetup.m_iLocalTlsPort = gclsSetup.m_iTlsPort;
+	clsSetup.m_iTlsAcceptTimeout = gclsSetup.m_iTlsAcceptTimeout;
+	clsSetup.m_strCertFile = gclsSetup.m_strCertFile;
+	
+	clsSetup.m_strUserAgent = "SipLoadBalancer_";
+	clsSetup.m_strUserAgent.append( SIP_LOAD_BALANCER_VERSION );
+
+	clsSetup.m_clsDenySipUserAgentMap = gclsSetup.m_clsDenySipUserAgentMap;
+
+	Fork( true );
+	SetCoreDumpEnable();
+
+	signal( SIGINT, LastMethod );
+	signal( SIGTERM, LastMethod );
+	signal( SIGABRT, LastMethod );
+#ifndef WIN32
+	signal( SIGKILL, LastMethod );
+	signal( SIGQUIT, LastMethod );
+	signal( SIGPIPE, SIG_IGN );
+#endif
+
+	if( gclsSipServer.Start( clsSetup ) == false )
+	{
+		CLog::Print( LOG_ERROR, "SipServer start error\n" );
+		return -1;
+	}
+
+	if( gclsSetup.m_iMonitorPort > 0 )
+	{
+		StartServerThread();
+	}
+
+	int iSecond = 0;
+
+	while( gbStop == false )
+	{
+		sleep(1);
+		++iSecond;
+
+		if( iSecond == 3600 )
+		{
+			iSecond = 0;
+		}
+
+		// QQQ: 설정 파일 수정 여부를 검사한다.
+	}
+
+	CLog::Print( LOG_SYSTEM, "SipLoadBalancer is terminated" );
+
+	return 0;
+}
+
+
+/**
+ * @ingroup SipLoadBalancer
+ * @brief C++ SIP stack 을 이용한 SIP 로드밸런서
  * @param argc 
  * @param argv 
  * @returns 정상 종료하면 0 을 리턴하고 오류가 발생하면 -1 를 리턴한다.
  */
 int main( int argc, char * argv[] )
 {
-	CSipStackSetup clsSetup;
-
+#ifdef WIN32
 	if( argc == 1 )
 	{
-		printf( "[Usage] %s {SipServer1 IP} {SipServer2 IP} ... {SipServerN IP}\n", argv[0] );
+		gstrConfigFileName = GetConfigFileName();
+		if( IsExistFile( gstrConfigFileName.c_str() ) == false )
+		{
+			printf( "setup file(%s) is not exist", gstrConfigFileName.c_str() );
+			return -1;
+		}
+
+		ServiceStart();
+		return 0;
+	}
+#endif
+	 
+	if( argc != 2 )
+	{
+		printf( "[Usage] %s {config filename}\n", argv[0] );
 		return -1;
 	}
 
-	for( int i = 1; i < argc; ++i )
+	gstrConfigFileName = argv[1];
+	if( !strcmp( gstrConfigFileName.c_str(), "-h" ) || !strcmp( gstrConfigFileName.c_str(), "-v" ) )
 	{
-		gclsSipServerMap.Insert( argv[i] );
+		printf( "%s version-%s ( build %s %s )\n", argv[0], SIP_LOAD_BALANCER_VERSION, __DATE__, __TIME__ );
+		printf( "[Usage] %s {config filename}\n", argv[0] );
+#ifdef WIN32
+		printf( "        %s -i : install service\n", argv[0] );
+		printf( "        %s -u : uninstall service\n", argv[0] );
+#endif
+		return 0;
 	}
-
-	// N개의 IP주소를 사용하는 호스트에서는 SIP 프로토콜로 사용할 IP주소를 직접 입력해 주세요.
-	// Vmware 등을 사용하는 경우 N개의 IP주소가 호스트에 존재합니다.
-	GetLocalIp( clsSetup.m_strLocalIp );
-
-	// SIP 서버의 listen port 로 사용할 UDP 포트 번호를 넣어주세요.
-	clsSetup.m_iLocalUdpPort = 5060;
-
-	// UDP 수신 쓰레드의 기본 개수는 1개이다. 이를 수정하려면 CSipStackSetup.m_iUdpThreadCount 를 수정하면 된다.
-
-	if( gclsSipServer.Start( clsSetup ) == false )
+#ifdef WIN32
+	if( !strcmp( gstrConfigFileName.c_str(), "-i" ) )
 	{
-		printf( "SipServer start error\n" );
-		return -1;
+		InstallService();
+		return 0;
 	}
-
-	while( 1 )
+	else if( !strcmp( gstrConfigFileName.c_str(), "-u" ) )
 	{
-		sleep(1);
+		InitNetwork();
+		UninstallService();
+		return 0;
 	}
+#endif
+
+	ServerMain( );
 
 	return 0;
 }

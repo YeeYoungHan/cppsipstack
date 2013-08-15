@@ -16,35 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_SERVER_H_
-#define _SIP_SERVER_H_
+#ifndef _SIP_LOAD_BALANCER_VERSION_H_
+#define _SIP_LOAD_BALANCER_VERSION_H_
 
-#include "SipStack.h"
-
-/**
- * @defgroup SipLoadBalancer SipLoadBalancer
- * SIP Stack 을 이용한 초간단 SIP 서버 예제 프로그램
- */
-
-/**
- * @ingroup SipLoadBalancer
- * @brief SIP Stack 을 이용한 초간단 SIP 서버 클래스
- */
-class CSipServer : public ISipStackCallBack
-{
-public:
-	CSipServer();
-	~CSipServer();
-
-	bool Start( CSipStackSetup & clsSetup );
-
-	// ISipStackCallBack
-	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
-	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
-	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage );
-};
-
-extern CSipStack	gclsSipStack;
-extern CSipServer gclsSipServer;
+#define SIP_LOAD_BALANCER_VERSION	"0.10"
 
 #endif
