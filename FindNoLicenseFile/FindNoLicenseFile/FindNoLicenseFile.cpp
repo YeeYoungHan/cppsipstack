@@ -24,7 +24,7 @@
 
 char * gpszLicense = "Copyright (C) 2012 Yee Young Han <websearch@naver.com>";
 char * garrExt[] = { ".h", ".hpp", ".cpp", NULL };
-char * garrExcludeFolder[] = { "Curio", "MySQL Server 5.0", NULL };
+char * garrExcludeFolder[] = { "Curio", "MySQL Server 5.0", "MySQL Server 5.5", "openssl-32bit", "openssl-64bit", "openssl", ".metadata", NULL };
 
 bool IsFileExt( const char * pszFileName )
 {
