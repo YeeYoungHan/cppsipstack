@@ -29,7 +29,7 @@ DWORD					g_iNowState;
 extern int ServerMain( );
 
 /**
- * @ingroup KSipServer
+ * @ingroup SipLoadBalancer
  * @brief change service current status 
  * @param dwState		status
  * @param dwAccept	afforded status
@@ -52,7 +52,7 @@ void ServiceSetStatus( DWORD dwState, DWORD dwAccept = SERVICE_ACCEPT_STOP | SER
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup SipLoadBalancer
  * @brief handler function. This function handle command from service control window.
  * @param fdwControl request status
  */
@@ -79,8 +79,8 @@ void ServiceHandler( DWORD fdwControl )
 }
 
 /**
- * @ingroup KSipServer
- * @brief MS 윈도우에서 서비스 실행시 호출되는 메소드. KSipServer 를 시작한다.
+ * @ingroup SipLoadBalancer
+ * @brief MS 윈도우에서 서비스 실행시 호출되는 메소드. SipLoadBalancer 를 시작한다.
  * @param  
  * @param  
  */
@@ -106,8 +106,8 @@ void ServiceMain( DWORD , LPTSTR * )
 }
 
 /**
- * @ingroup KSipServer
- * @brief MS 윈도우용 서비스로 KSipServer 를 시작한다.
+ * @ingroup SipLoadBalancer
+ * @brief MS 윈도우용 서비스로 SipLoadBalancer 를 시작한다.
  */
 void ServiceStart()
 {
@@ -120,7 +120,7 @@ void ServiceStart()
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup SipLoadBalancer
  * @brief 프로그램 실행 폴더를 리턴한다.
  * @returns 프로그램 실행 폴더를 리턴한다.
  */
@@ -150,7 +150,7 @@ char * GetProgramDirectory( )
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup SipLoadBalancer
  * @brief 설정 파일 이름을 리턴한다.
  * @returns 설정 파일 이름을 리턴한다.
  */
