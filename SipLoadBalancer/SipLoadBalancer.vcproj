@@ -333,30 +333,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\InstallService.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MonitorDefine.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MonitorThread.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ServerThread.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ServerThread.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Service.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\SipLoadBalancer.cpp"
 				>
 			</File>
@@ -366,14 +342,6 @@
 			</File>
 			<File
 				RelativePath=".\SipLoadBalancerVersion.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SipServer.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SipServer.h"
 				>
 			</File>
 			<File
@@ -402,6 +370,50 @@
 			</File>
 			<File
 				RelativePath=".\UserMap.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="서비스"
+			>
+			<File
+				RelativePath=".\InstallService.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Service.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="SIP"
+			>
+			<File
+				RelativePath=".\SipServer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipServer.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="모니터링"
+			>
+			<File
+				RelativePath=".\MonitorDefine.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MonitorThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ServerThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ServerThread.h"
 				>
 			</File>
 		</Filter>

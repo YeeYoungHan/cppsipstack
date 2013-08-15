@@ -18,7 +18,7 @@
 
 #include "SipServer.h"
 #include "SipServerSetup.h"
-#include "XmlElement.h"
+#include "SipServerMap.h"
 #include "Log.h"
 #include <string.h>
 
@@ -57,7 +57,11 @@ bool CSipServerSetup::Read( const char * pszFileName )
 
 	// SIP 설정
 	pclsElement = clsXml.SelectElement( "Sip" );
-	if( pclsElement == NULL ) return false;
+	if( pclsElement == NULL ) 
+	{
+		CLog::Print( LOG_ERROR, "file(%s) does not contain Sip element", pszFileName );
+		return false;
+	}
 
 	pclsElement->SelectElementData( "LocalIp", m_strLocalIp );
 	pclsElement->SelectElementData( "UdpPort", m_iUdpPort );
@@ -69,9 +73,15 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "TlsAcceptTimeout", m_iTlsAcceptTimeout );
 	pclsElement->SelectElementData( "CertFile", m_strCertFile );
 
+	if( ReadSipServer( clsXml ) == false ) return false;
+
 	// 로그
 	pclsElement = clsXml.SelectElement( "Log" );
-	if( pclsElement == NULL ) return false;
+	if( pclsElement == NULL ) 
+	{
+		CLog::Print( LOG_ERROR, "file(%s) does not contain Log element", pszFileName );
+		return false;
+	}
 
 	pclsElement->SelectElementData( "Folder", m_strLogFolder );
 	pclsClient = pclsElement->SelectElement( "Level" );
@@ -96,49 +106,104 @@ bool CSipServerSetup::Read( const char * pszFileName )
 
 	// 모니터링
 	pclsElement = clsXml.SelectElement( "Monitor" );
-	if( pclsElement == NULL ) return false;
-
-	pclsElement->SelectElementData( "Port", m_iMonitorPort );
-	pclsClient = pclsElement->SelectElement( "ClientIpList" );
-	if( pclsClient )
+	if( pclsElement ) 
 	{
-		XML_ELEMENT_LIST clsList;
-		XML_ELEMENT_LIST::iterator	itList;
-
-		if( pclsClient->SelectElementList( "ClientIp", clsList ) )
+		pclsElement->SelectElementData( "Port", m_iMonitorPort );
+		pclsClient = pclsElement->SelectElement( "ClientIpList" );
+		if( pclsClient )
 		{
-			for( itList = clsList.begin(); itList != clsList.end(); ++itList )
-			{
-				if( itList->IsDataEmpty() ) continue;
+			XML_ELEMENT_LIST clsList;
+			XML_ELEMENT_LIST::iterator	itList;
 
-				m_clsMonitorIpList.push_back( itList->GetData() );
+			if( pclsClient->SelectElementList( "ClientIp", clsList ) )
+			{
+				for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+				{
+					if( itList->IsDataEmpty() ) continue;
+
+					m_clsMonitorIpList.push_back( itList->GetData() );
+				}
 			}
 		}
 	}
 
 	// 보안
 	pclsElement = clsXml.SelectElement( "Security" );
-	if( pclsElement == NULL ) return false;
-
-	pclsClient = pclsElement->SelectElement( "DenySipUserAgentList" );
-	if( pclsClient )
+	if( pclsElement )
 	{
-		XML_ELEMENT_LIST clsList;
-		XML_ELEMENT_LIST::iterator	itList;
-
-		if( pclsClient->SelectElementList( "SipUserAgent", clsList ) )
+		pclsClient = pclsElement->SelectElement( "DenySipUserAgentList" );
+		if( pclsClient )
 		{
-			for( itList = clsList.begin(); itList != clsList.end(); ++itList )
-			{
-				if( itList->IsDataEmpty() ) continue;
+			XML_ELEMENT_LIST clsList;
+			XML_ELEMENT_LIST::iterator	itList;
 
-				m_clsDenySipUserAgentMap.Insert( itList->GetData(), "" );
+			if( pclsClient->SelectElementList( "SipUserAgent", clsList ) )
+			{
+				for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+				{
+					if( itList->IsDataEmpty() ) continue;
+
+					m_clsDenySipUserAgentMap.Insert( itList->GetData(), "" );
+				}
 			}
 		}
 	}
 
 	return true;
 }
+
+/**
+ * @ingroup SipLoadBalancer
+ * @brief 설정 파일에서 SipServer 정보를 읽어서 SipServerMap 에 저장한다.
+ * @param pszFileName 설정 파일 이름
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipServerSetup::ReadSipServer( const char * pszFileName )
+{
+	CXmlElement clsXml;
+
+	if( clsXml.ParseFile( pszFileName ) == false ) return false;
+
+	return ReadSipServer( clsXml );
+}
+
+/**
+ * @ingroup SipLoadBalancer
+ * @brief 설정 파일에서 SipServer 정보를 읽어서 SipServerMap 에 저장한다.
+ * @param clsXml 설정파일을 읽은 XML 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipServerSetup::ReadSipServer( CXmlElement & clsXml )
+{
+	CXmlElement * pclsElement;
+
+	pclsElement = clsXml.SelectElement( "SipServerList" );
+	if( pclsElement == NULL ) 
+	{
+		CLog::Print( LOG_ERROR, "does not contain SipServerList element" );
+		return false;
+	}
+
+	XML_ELEMENT_LIST clsList;
+	XML_ELEMENT_LIST::iterator	itList;
+
+	if( pclsElement->SelectElementList( "SipServer", clsList ) )
+	{
+		for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+		{
+			const char * pszIp = itList->SelectAttribute( "Ip" );
+			if( pszIp == NULL || strlen(pszIp) == 0 ) continue;
+
+			int iPort = 5060;
+			itList->SelectAttribute( "Port", iPort );
+
+			gclsSipServerMap.Insert( pszIp, iPort );
+		}
+	}
+
+	return true;
+}
+
 
 /**
  * @ingroup SipLoadBalancer
