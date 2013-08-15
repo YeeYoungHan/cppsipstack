@@ -27,13 +27,14 @@ class CUserInfo
 {
 public:
 	CUserInfo();
+	bool EqualSipServer( const char * pszIp, int iPort );
 
 	std::string m_strSipServerIp;
 	int					m_iSipServerPort;
 };
 
+// key ´Â user_id ÀÌ´Ù.
 typedef std::map< std::string, CUserInfo > USER_MAP;
-
 
 class CUserMap
 {
@@ -42,6 +43,7 @@ public:
 	~CUserMap();
 
 	bool Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo );
+	void DeleteSipServer( const char * pszIp, int iPort );
 
 private:
 	USER_MAP	m_clsMap;

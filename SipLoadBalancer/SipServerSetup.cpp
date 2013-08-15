@@ -197,7 +197,13 @@ bool CSipServerSetup::ReadSipServer( CXmlElement & clsXml )
 			int iPort = 5060;
 			itList->SelectAttribute( "Port", iPort );
 
-			gclsSipServerMap.Insert( pszIp, iPort );
+			bool bUse = true;
+			itList->SelectAttribute( "Use", bUse );
+
+			if( gclsSipServerMap.Insert( pszIp, iPort, bUse ) == false )
+			{
+				CLog::Print( LOG_ERROR, "sipserver(%s:%d) is not inserted to sipservermap" );
+			}
 		}
 	}
 

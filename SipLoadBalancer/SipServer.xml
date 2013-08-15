@@ -11,7 +11,7 @@
 		<CertFile>c:\OpenProject\CppSipStack\trunk\KSipServer\SipServer.pem</CertFile>
 	</Sip>
 	<SipServerList>
-		<SipServer Ip="192.168.184.128" Port="5060" />
+		<SipServer Ip="192.168.184.128" Port="5060" Use="true" />
 	</SipServerList>
 	<Log>
 		<Folder>c:\temp\sipserver</Folder>

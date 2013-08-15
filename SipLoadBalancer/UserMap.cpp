@@ -25,6 +25,13 @@ CUserInfo::CUserInfo() : m_iSipServerPort(5060)
 {
 }
 
+bool CUserInfo::EqualSipServer( const char * pszIp, int iPort )
+{
+	if( !strcmp( m_strSipServerIp.c_str(), pszIp ) && m_iSipServerPort == iPort ) return true;
+
+	return false;
+}
+
 CUserMap::CUserMap()
 {
 }
@@ -37,7 +44,12 @@ bool CUserMap::Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
 {
 	bool								bRes = true;
 	USER_MAP::iterator	itMap;
-	std::string & strUserId = pclsRequest->m_clsFrom.m_clsUri.m_strUser;
+	std::string & strUserId = pclsRequest->m_clsTo.m_clsUri.m_strUser;
+
+	if( pclsRequest->IsMethod( "REGISTER" ) )
+	{
+		strUserId = pclsRequest->m_clsFrom.m_clsUri.m_strUser;
+	}
 
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( strUserId );
@@ -64,4 +76,27 @@ bool CUserMap::Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
 	m_clsMutex.release();
 
 	return bRes;
+}
+
+void CUserMap::DeleteSipServer( const char * pszIp, int iPort )
+{
+	USER_MAP::iterator	itMap, itNext;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+LOOP_START:
+		if( itMap->second.EqualSipServer( pszIp, iPort ) == false ) continue;
+
+		itNext = itMap;
+		++itNext;
+
+		m_clsMap.erase( itMap );
+
+		if( itNext == m_clsMap.end() ) break;
+		itMap = itNext;
+
+		goto LOOP_START;
+	}
+	m_clsMutex.release();
 }
