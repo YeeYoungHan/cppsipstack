@@ -1,0 +1,29 @@
+<Setup>
+	<Sip>
+		<LocalIp>192.168.0.7</LocalIp>
+		<UdpPort>5060</UdpPort>
+		<UdpThreadCount>1</UdpThreadCount>
+		<TcpPort>5060</TcpPort>
+		<TcpThreadCount>1</TcpThreadCount>
+		<TcpRecvTimeout>600</TcpRecvTimeout>
+		<TlsPort>5061</TlsPort>
+		<TlsAcceptTimeout>10</TlsAcceptTimeout>
+		<CertFile>c:\OpenProject\CppSipStack\trunk\KSipServer\SipServer.pem</CertFile>
+	</Sip>
+	<Log>
+		<Folder>c:\temp\sipserver</Folder>
+		<Level Debug="true" Info="true" Network="true" Sql="true" />
+		<MaxSize>10000000</MaxSize>
+	</Log>
+	<Monitor>
+	  <Port>6000</Port>
+	  <ClientIpList>
+	    <ClientIp>127.0.0.1</ClientIp>
+	  </ClientIpList>
+	</Monitor>
+	<Security>
+		<DenySipUserAgentList>
+			<SipUserAgent>friendly-scanner</SipUserAgent>
+		</DenySipUserAgentList>
+	</Security>
+</Setup>
