@@ -20,8 +20,15 @@
 
 CSipServerMap gclsSipServerMap;
 
-CSipServerInfo::CSipServerInfo() : m_iPort(5060)
+CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_bUse(true), m_bDelete(false)
 {
+}
+
+bool CSipServerInfo::Equal( const char * pszIp, int iPort )
+{
+	if( !strcmp( m_strIp.c_str(), pszIp ) && m_iPort == iPort ) return true;
+
+	return false;
 }
 
 CSipServerMap::CSipServerMap() : m_iIndex(0)
@@ -32,12 +39,16 @@ CSipServerMap::~CSipServerMap()
 {
 }
 
-bool CSipServerMap::Insert( const char * pszIp, int iPort )
+bool CSipServerMap::Insert( const char * pszIp, int iPort, bool bUse )
 {
+	if( pszIp == NULL || strlen(pszIp) == 0 ) return false;
+	if( iPort <= 0 || iPort > 65535 ) return false;
+
 	CSipServerInfo clsInfo;
 
 	clsInfo.m_strIp = pszIp;
 	clsInfo.m_iPort = iPort;
+	clsInfo.m_bUse = bUse;
 	
 	m_clsMutex.acquire();
 	m_clsList.push_back( clsInfo );
@@ -67,4 +78,58 @@ bool CSipServerMap::SelectNext( CSipServerInfo & clsInfo )
 	m_clsMutex.release();
 
 	return bRes;
+}
+
+bool CSipServerMap::Select( const char * pszIp, int iPort )
+{
+	SIP_SERVER_LIST::iterator itList;
+	bool bFound = false;
+
+	m_clsMutex.acquire();
+	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
+	{
+		if( itList->Equal( pszIp, iPort ) )
+		{
+			bFound = true;
+			break;
+		}
+	}
+	m_clsMutex.release();
+
+	return bFound;
+}
+
+void CSipServerMap::SetDeleteAll( )
+{
+	SIP_SERVER_LIST::iterator itList;
+
+	m_clsMutex.acquire();
+	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
+	{
+		itList->m_bDelete = true;
+	}
+	m_clsMutex.release();
+}
+
+void CSipServerMap::DeleteIfSet( )
+{
+	SIP_SERVER_LIST::iterator itList, itNext;
+
+	m_clsMutex.acquire();
+	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
+	{
+LOOP_START:
+		if( itList->m_bDelete == false ) continue;
+
+		itNext = itList;
+		++itNext;
+
+		m_clsList.erase( itList );
+
+		if( itNext == m_clsList.end() ) break;
+
+		itList = itNext;
+		goto LOOP_START;
+	}
+	m_clsMutex.release();
 }

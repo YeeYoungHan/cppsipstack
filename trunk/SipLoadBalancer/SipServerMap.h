@@ -26,9 +26,12 @@ class CSipServerInfo
 {
 public:
 	CSipServerInfo();
+	bool Equal( const char * pszIp, int iPort );
 
 	std::string m_strIp;
 	int					m_iPort;
+	bool				m_bUse;
+	bool				m_bDelete;
 };
 
 typedef std::vector< CSipServerInfo > SIP_SERVER_LIST;
@@ -39,8 +42,11 @@ public:
 	CSipServerMap();
 	~CSipServerMap();
 
-	bool Insert( const char * pszIp, int iPort );
+	bool Insert( const char * pszIp, int iPort, bool bUse );
 	bool SelectNext( CSipServerInfo & clsInfo );
+	bool Select( const char * pszIp, int iPort );
+	void SetDeleteAll( );
+	void DeleteIfSet( );
 
 private:
 	SIP_SERVER_LIST m_clsList;
