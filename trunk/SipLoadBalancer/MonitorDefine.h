@@ -16,35 +16,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_SERVER_H_
-#define _SIP_SERVER_H_
+#ifndef _MONITOR_DEFINE_H_
+#define _MONITOR_DEFINE_H_
 
-#include "SipStack.h"
+#define MC_CALL_MAP_LIST				"call_map_list"
+#define MC_NONCE_MAP_LIST				"nonce_map_list"
+#define MC_SIP_SERVER_MAP_LIST	"sip_server_map_list"
+#define MC_USER_MAP_LIST				"user_map_list"
+#define MC_RTP_MAP_LIST					"rtp_map_list"
 
-/**
- * @defgroup SipLoadBalancer SipLoadBalancer
- * SIP Stack 을 이용한 초간단 SIP 서버 예제 프로그램
- */
+#define MC_DIALOG_MAP_LIST			"dialog_map_list"
 
-/**
- * @ingroup SipLoadBalancer
- * @brief SIP Stack 을 이용한 초간단 SIP 서버 클래스
- */
-class CSipServer : public ISipStackCallBack
-{
-public:
-	CSipServer();
-	~CSipServer();
-
-	bool Start( CSipStackSetup & clsSetup );
-
-	// ISipStackCallBack
-	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
-	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
-	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage );
-};
-
-extern CSipStack	gclsSipStack;
-extern CSipServer gclsSipServer;
+#define MC_SIP_STACK_COUNT_LIST	"sip_stack_count_list"
 
 #endif

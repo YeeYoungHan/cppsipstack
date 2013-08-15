@@ -16,35 +16,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_SERVER_H_
-#define _SIP_SERVER_H_
+#ifndef _SERVER_THREAD_H_
+#define _SERVER_THREAD_H_
 
-#include "SipStack.h"
+#include "SipTcp.h"
 
-/**
- * @defgroup SipLoadBalancer SipLoadBalancer
- * SIP Stack 을 이용한 초간단 SIP 서버 예제 프로그램
- */
+// DbInsertThread.cpp
+void DbInsert( const char * pszSQL );
+void DbSignal( );
+bool StartDbInsertThread();
+bool IsDbInsertThreadRun();
 
-/**
- * @ingroup SipLoadBalancer
- * @brief SIP Stack 을 이용한 초간단 SIP 서버 클래스
- */
-class CSipServer : public ISipStackCallBack
-{
-public:
-	CSipServer();
-	~CSipServer();
+// MonitorThread.cpp
+bool StartMonitorThread( Socket hSocket, const char * pszIp, int iPort );
+bool IsMonitorThreadRun();
 
-	bool Start( CSipStackSetup & clsSetup );
+// RtpThread.cpp
+bool StartRtpThread( int iPort );
+bool IsRtpThreadRun();
 
-	// ISipStackCallBack
-	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
-	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
-	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage );
-};
-
-extern CSipStack	gclsSipStack;
-extern CSipServer gclsSipServer;
+// ServerThread.cpp
+bool StartServerThread( );
 
 #endif
