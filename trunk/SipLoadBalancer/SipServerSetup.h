@@ -20,8 +20,7 @@
 #define _SIP_SERVER_SETUP_H_
 
 #include "StringMap.h"
-#include <string>
-#include <list>
+#include "XmlElement.h"
 
 typedef std::list< std::string > CLIENT_IP_LIST;
 
@@ -81,7 +80,11 @@ public:
 	CStringMap		 m_clsDenySipUserAgentMap;
 
 	bool Read( const char * pszFileName );
+	bool ReadSipServer( const char * pszFileName );
 	bool IsMonitorIp( const char * pszIp );
+
+private:
+	bool ReadSipServer( CXmlElement & clsXml );
 };
 
 extern CSipServerSetup gclsSetup;

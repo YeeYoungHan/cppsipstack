@@ -26,7 +26,10 @@
 class CUserInfo
 {
 public:
+	CUserInfo();
+
 	std::string m_strSipServerIp;
+	int					m_iSipServerPort;
 };
 
 typedef std::map< std::string, CUserInfo > USER_MAP;

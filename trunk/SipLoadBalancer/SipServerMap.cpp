@@ -20,6 +20,10 @@
 
 CSipServerMap gclsSipServerMap;
 
+CSipServerInfo::CSipServerInfo() : m_iPort(5060)
+{
+}
+
 CSipServerMap::CSipServerMap() : m_iIndex(0)
 {
 }
@@ -28,11 +32,12 @@ CSipServerMap::~CSipServerMap()
 {
 }
 
-bool CSipServerMap::Insert( const char * pszIp )
+bool CSipServerMap::Insert( const char * pszIp, int iPort )
 {
 	CSipServerInfo clsInfo;
 
 	clsInfo.m_strIp = pszIp;
+	clsInfo.m_iPort = iPort;
 	
 	m_clsMutex.acquire();
 	m_clsList.push_back( clsInfo );
