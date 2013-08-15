@@ -17,6 +17,7 @@
  */
 
 #include "SipServerMap.h"
+#include "UserMap.h"
 
 CSipServerMap gclsSipServerMap;
 
@@ -24,6 +25,12 @@ CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_bUse(true), m_bDelete(false)
 {
 }
 
+/**
+ * @brief 입력된 IP 주소 및 포트 번호가 SIP 서버 정보와 일치하는지 검사한다.
+ * @param pszIp IP 주소
+ * @param iPort 포트 번호
+ * @returns 입력됮 정보가 SIP 서버 정보와 일치하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServerInfo::Equal( const char * pszIp, int iPort )
 {
 	if( !strcmp( m_strIp.c_str(), pszIp ) && m_iPort == iPort ) return true;
@@ -39,10 +46,20 @@ CSipServerMap::~CSipServerMap()
 {
 }
 
+/**
+ * @brief SIP 서버 정보를 리스트에 추가한다.
+ * @param pszIp IP 주소
+ * @param iPort 포트 번호
+ * @param bUse	사용 유무
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServerMap::Insert( const char * pszIp, int iPort, bool bUse )
 {
 	if( pszIp == NULL || strlen(pszIp) == 0 ) return false;
 	if( iPort <= 0 || iPort > 65535 ) return false;
+
+	// 이미 리스트에 존재하면 추가하지 않는다.
+	if( Select( pszIp, iPort, bUse ) ) return true;
 
 	CSipServerInfo clsInfo;
 
@@ -57,6 +74,11 @@ bool CSipServerMap::Insert( const char * pszIp, int iPort, bool bUse )
 	return true;
 }
 
+/**
+ * @brief 접속할 SIP 서버 정보를 가져온다.
+ * @param clsInfo SIP 서버 정보를 저장하는 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipServerMap::SelectNext( CSipServerInfo & clsInfo )
 {
 	bool bRes = false;
@@ -80,6 +102,12 @@ bool CSipServerMap::SelectNext( CSipServerInfo & clsInfo )
 	return bRes;
 }
 
+/**
+ * @brief 입력된 IP 주소, 포트번호와 일치하는 SIP 서버 정보가 존재하는지 검사한다.
+ * @param pszIp IP 주소
+ * @param iPort 포트 번호
+ * @returns SIP 서버가 검색되면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServerMap::Select( const char * pszIp, int iPort )
 {
 	SIP_SERVER_LIST::iterator itList;
@@ -99,6 +127,37 @@ bool CSipServerMap::Select( const char * pszIp, int iPort )
 	return bFound;
 }
 
+/**
+ * @brief 입력된 IP 주소, 포트번호와 일치하는 SIP 서버 정보가 존재하면 사용 유무 및 삭제 유무를 업데이트한다.
+ * @param pszIp IP 주소
+ * @param iPort 포트 번호
+ * @param bUse	사용 유무
+ * @returns SIP 서버가 검색되면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipServerMap::Select( const char * pszIp, int iPort, bool bUse )
+{
+	SIP_SERVER_LIST::iterator itList;
+	bool bFound = false;
+
+	m_clsMutex.acquire();
+	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
+	{
+		if( itList->Equal( pszIp, iPort ) )
+		{
+			itList->m_bUse = bUse;
+			itList->m_bDelete = false;
+			bFound = true;
+			break;
+		}
+	}
+	m_clsMutex.release();
+
+	return bFound;
+}
+
+/**
+ * @brief 모든 SIP 서버 정보에 삭제 표시를 한다.
+ */
 void CSipServerMap::SetDeleteAll( )
 {
 	SIP_SERVER_LIST::iterator itList;
@@ -111,6 +170,9 @@ void CSipServerMap::SetDeleteAll( )
 	m_clsMutex.release();
 }
 
+/**
+ * @brief 삭제 표시가 된 SIP 서버를 삭제한다.
+ */
 void CSipServerMap::DeleteIfSet( )
 {
 	SIP_SERVER_LIST::iterator itList, itNext;
@@ -124,6 +186,7 @@ LOOP_START:
 		itNext = itList;
 		++itNext;
 
+		gclsUserMap.DeleteSipServer( itList->m_strIp.c_str(), itList->m_iPort );
 		m_clsList.erase( itList );
 
 		if( itNext == m_clsList.end() ) break;

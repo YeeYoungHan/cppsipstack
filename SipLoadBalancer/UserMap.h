@@ -23,6 +23,10 @@
 #include "SipMessage.h"
 #include <map>
 
+/**
+ * @ingroup SipLoadBalancer
+ * @brief SIP 클라이언트 정보 저장 클래스
+ */
 class CUserInfo
 {
 public:
@@ -36,6 +40,10 @@ public:
 // key 는 user_id 이다.
 typedef std::map< std::string, CUserInfo > USER_MAP;
 
+/**
+ * @ingroup SipLoadBalancer
+ * @brief SIP 클라이언트 맵 저장 클래스
+ */
 class CUserMap
 {
 public:
