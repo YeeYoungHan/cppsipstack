@@ -669,6 +669,34 @@ bool CSipMessage::AddRoute( const char * pszIp, int iPort, ESipTransport eTransp
 
 /**
  * @ingroup SipParser
+ * @brief RecordRoute 헤더를 추가한다.
+ * @param pszIp		Route 헤더에 저장할 IP 주소
+ * @param iPort		Route 헤더에 저장할 포트 번호
+ * @param eTransport SIP 메시지를 발신할 transport
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipMessage::AddRecordRoute( const char * pszIp, int iPort, ESipTransport eTransport )
+{
+	if( pszIp == NULL || strlen(pszIp) == 0 ) return false;
+	if( iPort <= 0 ) return false;
+
+	CSipFrom clsFrom;
+
+	clsFrom.m_clsUri.m_strProtocol = "sip";
+	clsFrom.m_clsUri.m_strHost = pszIp;
+	clsFrom.m_clsUri.m_iPort = iPort;
+
+	clsFrom.m_clsUri.InsertParam( "lr", NULL );
+	clsFrom.m_clsUri.InsertTransport( eTransport );
+
+	m_clsRecordRouteList.push_front( clsFrom );
+
+	return true;
+}
+
+
+/**
+ * @ingroup SipParser
  * @brief SIP 헤더 자료구조에 이름과 값을 추가한다.
  * @param pszName		SIP 헤더 이름
  * @param pszValue	SIP 헤더 값
