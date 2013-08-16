@@ -56,6 +56,8 @@ public:
 	void SetDeleteAll( );
 	void DeleteIfSet( );
 
+	void GetString( std::string & strBuf );
+
 private:
 	SIP_SERVER_LIST m_clsList;
 	CSipMutex m_clsMutex;
