@@ -21,6 +21,7 @@
 #include "SipServerMap.h"
 #include "Log.h"
 #include <string.h>
+#include <sys/stat.h>
 
 CSipServerSetup gclsSetup;
 
@@ -149,20 +150,22 @@ bool CSipServerSetup::Read( const char * pszFileName )
 		}
 	}
 
+	m_strFileName = pszFileName;
+	SetFileSizeTime();
+
 	return true;
 }
 
 /**
  * @ingroup SipLoadBalancer
  * @brief 설정 파일에서 SipServer 정보를 읽어서 SipServerMap 에 저장한다.
- * @param pszFileName 설정 파일 이름
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CSipServerSetup::ReadSipServer( const char * pszFileName )
+bool CSipServerSetup::ReadSipServer( )
 {
 	CXmlElement clsXml;
 
-	if( clsXml.ParseFile( pszFileName ) == false ) return false;
+	if( clsXml.ParseFile( m_strFileName.c_str() ) == false ) return false;
 
 	return ReadSipServer( clsXml );
 }
@@ -183,6 +186,8 @@ bool CSipServerSetup::ReadSipServer( CXmlElement & clsXml )
 		CLog::Print( LOG_ERROR, "does not contain SipServerList element" );
 		return false;
 	}
+
+	gclsSipServerMap.SetDeleteAll();
 
 	XML_ELEMENT_LIST clsList;
 	XML_ELEMENT_LIST::iterator	itList;
@@ -207,9 +212,12 @@ bool CSipServerSetup::ReadSipServer( CXmlElement & clsXml )
 		}
 	}
 
+	gclsSipServerMap.DeleteIfSet();
+
+	SetFileSizeTime();
+
 	return true;
 }
-
 
 /**
  * @ingroup SipLoadBalancer
@@ -230,4 +238,27 @@ bool CSipServerSetup::IsMonitorIp( const char * pszIp )
 	}
 
 	return false;
+}
+
+bool CSipServerSetup::IsChange()
+{
+	struct stat	clsStat;
+
+	if( stat( m_strFileName.c_str(), &clsStat ) == 0 )
+	{
+		if( m_iFileSize != clsStat.st_size || m_iFileTime != clsStat.st_mtime ) return true;
+	}
+
+	return false;
+}
+
+void CSipServerSetup::SetFileSizeTime( )
+{
+	struct stat	clsStat;
+
+	if( stat( m_strFileName.c_str(), &clsStat ) == 0 )
+	{
+		m_iFileSize = clsStat.st_size;
+		m_iFileTime = clsStat.st_mtime;
+	}
 }
