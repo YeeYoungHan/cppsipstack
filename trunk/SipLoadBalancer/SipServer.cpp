@@ -93,10 +93,14 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 				if( bSipServerSent )
 				{
 					pclsRequest->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, clsUserInfo.m_eTransport );
+					
+					pclsRequest->AddRecordRoute( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, clsUserInfo.m_eTransport );
+					pclsRequest->AddRecordRoute( pclsRequest->m_strClientIp.c_str(), pclsRequest->m_iClientPort );
 				}
 				else
 				{
 					pclsRequest->AddRoute( clsUserInfo.m_strSipServerIp.c_str(), clsUserInfo.m_iSipServerPort );
+					pclsRequest->m_clsRecordRouteList.clear();
 				}
 
 				SIP_FROM_LIST::iterator itContact = pclsRequest->m_clsContactList.begin();
@@ -132,12 +136,20 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
  */
 bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 {
+	if( pclsMessage->m_iStatusCode == SIP_TRYING && pclsMessage->IsMethod( "INVITE" ) )
+	{
+		// SIP stack 에서 100 Trying 을 전송하였으므로 추가로 100 Trying 을 전송하지 않는다.
+		return true;
+	}
+
 	CSipMessage * pclsResponse = new CSipMessage();
 	if( pclsResponse )
 	{
 		// SIP 요청 메시지를 전송한 호스트로 전달한다.
 		*pclsResponse = *pclsMessage;
 		pclsResponse->m_clsViaList.pop_front();
+
+		pclsResponse->m_clsRecordRouteList.clear();
 
 		SIP_FROM_LIST::iterator itContact = pclsResponse->m_clsContactList.begin();
 		if( itContact != pclsResponse->m_clsContactList.end() )
