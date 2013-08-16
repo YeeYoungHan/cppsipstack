@@ -34,11 +34,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.app.Activity;
+import android.content.Intent;
 
 public class MainActivity extends Activity implements OnClickListener, SipUserAgentCallBack 
 {
 	EditText m_txtPhoneNumber;
 	Button m_btnStartCall, m_btnStopCall, m_btnAcceptCall;
+	Button m_btnStartStack, m_btnStopStack;
 	TextView m_txtLog;
 	String m_strCallId = "";
 	Handler	 m_clsHandler;
@@ -49,16 +51,24 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 		super.onCreate( savedInstanceState );
 		setContentView( R.layout.activity_main );
 		
+		Setup.Get( this );
+		
 		m_txtPhoneNumber = (EditText)findViewById( R.id.txtPhoneNumber );
 		m_txtLog = (TextView)findViewById( R.id.txtLog );
 		
 		m_btnStartCall = (Button)findViewById( R.id.btnStartCall );
 		m_btnStopCall = (Button)findViewById( R.id.btnStopCall );
 		m_btnAcceptCall = (Button)findViewById( R.id.btnAcceptCall );
+		m_btnStartStack = (Button)findViewById( R.id.btnStartStack );
+		m_btnStopStack = (Button)findViewById( R.id.btnStopStack );
 		
 		m_btnStartCall.setOnClickListener( this );
 		m_btnStopCall.setOnClickListener( this );
 		m_btnAcceptCall.setOnClickListener( this );
+		m_btnStartStack.setOnClickListener( this );
+		m_btnStopStack.setOnClickListener( this );
+		
+		findViewById( R.id.btnSetup ).setOnClickListener( this );
 		
 		SetButtonInit();
 		
@@ -95,21 +105,8 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
     };
     
     m_txtPhoneNumber.setText( "1001" );
-		
-		SipServerInfo clsInfo = new SipServerInfo();
-		
-		clsInfo.m_strIp = "192.168.0.7";
-		clsInfo.m_iPort = 5060;
-		clsInfo.m_strDomain = "192.168.0.7";
-		clsInfo.m_strUserId = "1010";
-		clsInfo.m_strPassWord = "1234";
-	
-		SipUserAgent.InsertRegisterInfo( clsInfo );
-		SipUserAgent.SetCallBack( this );
-		
-		SipStackSetup clsSetup = new SipStackSetup();
-
-		SipUserAgent.Start( clsSetup );
+    
+    m_btnStopStack.setEnabled( false );
 	}
 	
 	@Override
@@ -130,7 +127,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 				String strPhoneNumber = m_txtPhoneNumber.getText( ).toString( );
 				SipCallRtp clsRtp = new SipCallRtp();
 				
-				clsRtp.m_strIp = "127.0.0.1";
+				clsRtp.m_strIp = Setup.m_strLocalIp;
 				clsRtp.m_iPort = 10000;
 				clsRtp.m_iCodec = 0;
 
@@ -166,7 +163,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 			{
 				SipCallRtp clsRtp = new SipCallRtp();
 				
-				clsRtp.m_strIp = "127.0.0.1";
+				clsRtp.m_strIp = Setup.m_strLocalIp;
 				clsRtp.m_iPort = 10000;
 				clsRtp.m_iCodec = 0;
 				
@@ -175,6 +172,48 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 					m_txtLog.setText( "Call connected" );
 					m_btnAcceptCall.setEnabled( false );
 				}
+			}
+			break;
+		case R.id.btnSetup:
+			{
+				Intent clsIntent = new Intent( this, SetupActivity.class );
+				startActivity( clsIntent );
+			}
+			break;
+		case R.id.btnStartStack:
+			{
+				if( Setup.IsSet( ) == false )
+				{
+					Alert.ShowError( this, "Please click Setup button and setup SIP Server IP and User ID" );
+					return;
+				}
+				
+				SipServerInfo clsInfo = new SipServerInfo();
+				
+				clsInfo.m_strIp = Setup.m_strSipServerIp;
+				clsInfo.m_iPort = Setup.m_iSipServerPort;
+				clsInfo.m_strDomain = Setup.m_strSipDomain;
+				clsInfo.m_strUserId = Setup.m_strSipUserId;
+				clsInfo.m_strPassWord = Setup.m_strSipPassWord;
+			
+				SipUserAgent.InsertRegisterInfo( clsInfo );
+				SipUserAgent.SetCallBack( this );
+				
+				SipStackSetup clsSetup = new SipStackSetup();
+
+				if( SipUserAgent.Start( clsSetup ) )
+				{
+					m_btnStartStack.setEnabled( false );
+					m_btnStopStack.setEnabled( true );
+				}
+			}
+			break;
+		case R.id.btnStopStack:
+			{
+				SipUserAgent.Stop( );
+				
+				m_btnStartStack.setEnabled( true );
+				m_btnStopStack.setEnabled( false );
 			}
 			break;
 		}
