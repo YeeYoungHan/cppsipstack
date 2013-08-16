@@ -118,20 +118,11 @@ bool CTcpSocket::AddCommand( ECommType cCommType, CListCtrl * pclsListCtrl )
 
 	switch( cCommType )
 	{
-	case E_COMM_CALL_LIST:
-		clsCommand.m_strCommand = MC_CALL_MAP_LIST;
-		break;
 	case E_COMM_SIP_SERVER_LIST:
 		clsCommand.m_strCommand = MC_SIP_SERVER_MAP_LIST;
 		break;
 	case E_COMM_USER_LIST:
 		clsCommand.m_strCommand = MC_USER_MAP_LIST;
-		break;
-	case E_COMM_RTP_LIST:
-		clsCommand.m_strCommand = MC_RTP_MAP_LIST;
-		break;
-	case E_COMM_DIALOG_LIST:
-		clsCommand.m_strCommand = MC_DIALOG_MAP_LIST;
 		break;
 	case E_COMM_SIP_STACK_COUNT_LIST:
 		clsCommand.m_strCommand = MC_SIP_STACK_COUNT_LIST;
