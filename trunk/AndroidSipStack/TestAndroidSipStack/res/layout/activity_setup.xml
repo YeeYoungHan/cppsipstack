@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity"
+    android:orientation="vertical" >
+    
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" >
+	    <TextView android:layout_width="110dp" android:layout_height="wrap_content"
+	        android:text="SIP Server IP" />
+	    <EditText android:id="@+id/txtSipServerIp" 
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"
+	        android:layout_weight="1" android:inputType="phone" />"
+    </LinearLayout>
+    
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" >
+	    <TextView android:layout_width="110dp" android:layout_height="wrap_content"
+	        android:text="SIP Server Port" />
+	    <EditText android:id="@+id/txtSipServerPort" 
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"
+	        android:layout_weight="1" android:inputType="number" />
+    </LinearLayout>
+    
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" >
+	    <TextView android:layout_width="110dp" android:layout_height="wrap_content"
+	        android:text="SIP Domain" />
+	    <EditText android:id="@+id/txtSipDomain" 
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"
+	        android:layout_weight="1" />
+    </LinearLayout>
+    
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" >
+	    <TextView android:layout_width="110dp" android:layout_height="wrap_content"
+	        android:text="SIP User ID" />
+	    <EditText android:id="@+id/txtSipUserId" 
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"
+	        android:layout_weight="1" />
+    </LinearLayout>
+    
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" >
+	    <TextView android:layout_width="110dp" android:layout_height="wrap_content"
+	        android:text="SIP PassWord" />
+	    <EditText android:id="@+id/txtSipPassWord" 
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"
+	        android:layout_weight="1" android:password="true" />
+    </LinearLayout>
+    
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" >
+	    <Button android:id="@+id/btnOk"
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"
+	        android:text="OK" android:layout_weight="1" />
+	    <Button android:id="@+id/btnCancel"
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"
+	        android:text="Cancel" android:layout_weight="1" />
+    </LinearLayout>
+    
+</LinearLayout>

@@ -14,13 +14,16 @@
     
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
         <Button android:id="@+id/btnStartCall" android:text="Start Call"
-        	android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        	android:layout_width="wrap_content" android:layout_height="wrap_content"
+        	android:layout_weight="1" />
     
 	    <Button android:id="@+id/btnStopCall" android:text="Stop Call"
-	        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"
+	        android:layout_weight="1" />
 	    
 	    <Button android:id="@+id/btnAcceptCall" android:text="Accept Call"
-	        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"
+	        android:layout_weight="1" />
     </LinearLayout>
     
     <TextView android:id="@+id/txtLog"
@@ -28,11 +31,14 @@
     
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
 	    <Button android:id="@+id/btnSetup" android:text="Setup"
-	        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"
+	        android:layout_weight="1" />
 	    <Button android:id="@+id/btnStartStack" android:text="Start Stack"
-	        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"
+	        android:layout_weight="1" />
 	    <Button android:id="@+id/btnStopStack" android:text="Stop Stack"
-	        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"
+	        android:layout_weight="1" />
 	</LinearLayout>
 	
 </LinearLayout>
