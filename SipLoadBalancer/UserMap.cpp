@@ -51,19 +51,13 @@ CUserMap::~CUserMap()
  * @ingroup SipLoadBalancer
  * @brief SIP 메시지로 SIP 클라이언트 정보를 저장한다.
  * @param pclsRequest SIP 메시지
- * @param clsUserInfo SIP 클라이언트 정보 저장 변수
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool CUserMap::Insert( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
+bool CUserMap::Insert( CSipMessage * pclsRequest )
 {
 	bool								bRes = true;
 	USER_MAP::iterator	itMap;
-	std::string & strUserId = pclsRequest->m_clsTo.m_clsUri.m_strUser;
-
-	if( pclsRequest->IsMethod( "REGISTER" ) )
-	{
-		strUserId = pclsRequest->m_clsFrom.m_clsUri.m_strUser;
-	}
+	std::string & strUserId = pclsRequest->m_clsFrom.m_clsUri.m_strUser;
 
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( strUserId );
@@ -73,6 +67,8 @@ bool CUserMap::Insert( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
 
 		if( gclsSipServerMap.SelectNext( clsSipServerInfo ) )
 		{
+			CUserInfo clsUserInfo;
+
 			clsUserInfo.m_strSipServerIp = clsSipServerInfo.m_strIp;
 			clsUserInfo.m_iSipServerPort = clsSipServerInfo.m_iPort;
 			clsUserInfo.m_strIp = pclsRequest->m_strClientIp;
@@ -97,8 +93,6 @@ bool CUserMap::Insert( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
 		{
 			itMap->second.m_iPort = pclsRequest->m_iClientPort;
 		}
-
-		clsUserInfo = itMap->second;
 	}
 	m_clsMutex.release();
 

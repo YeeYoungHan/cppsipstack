@@ -54,7 +54,7 @@ public:
 	CUserMap();
 	~CUserMap();
 
-	bool Insert( CSipMessage * pclsRequest, CUserInfo & clsUserInfo );
+	bool Insert( CSipMessage * pclsRequest );
 	bool Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo );
 	void DeleteSipServer( const char * pszIp, int iPort );
 

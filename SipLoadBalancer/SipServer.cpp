@@ -59,19 +59,17 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
 	CUserInfo clsUserInfo;
 	bool bSipServerSent = false;
-	bool bRes = false;
 
 	if( gclsSipServerMap.Select( pclsMessage->m_strClientIp.c_str(), pclsMessage->m_iClientPort ) )
 	{
 		bSipServerSent = true;
-		bRes = gclsUserMap.Select( pclsMessage, clsUserInfo );
 	}
 	else
 	{
-		bRes = gclsUserMap.Insert( pclsMessage, clsUserInfo );
+		gclsUserMap.Insert( pclsMessage );
 	}
 
-	if( bRes )
+	if( gclsUserMap.Select( pclsMessage, clsUserInfo ) )
 	{
 		SIP_VIA_LIST::iterator itVia = pclsMessage->m_clsViaList.begin();
 		if( itVia != pclsMessage->m_clsViaList.end() )
