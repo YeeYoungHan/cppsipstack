@@ -80,11 +80,17 @@ public:
 	CStringMap		 m_clsDenySipUserAgentMap;
 
 	bool Read( const char * pszFileName );
-	bool ReadSipServer( const char * pszFileName );
+	bool ReadSipServer( );
 	bool IsMonitorIp( const char * pszIp );
+	bool IsChange();
 
 private:
 	bool ReadSipServer( CXmlElement & clsXml );
+	void SetFileSizeTime( );
+
+	std::string	m_strFileName;	// 설정 파일 이름
+	time_t			m_iFileTime;		// 설정 파일 저장 시간
+	int					m_iFileSize;		// 설정 파일 크기
 };
 
 extern CSipServerSetup gclsSetup;

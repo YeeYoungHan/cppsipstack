@@ -189,7 +189,14 @@ void CSipServerMap::DeleteIfSet( )
 	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
 	{
 LOOP_START:
-		if( itList->m_bDelete == false ) continue;
+		if( itList->m_bDelete == false ) 
+		{
+			if( itList->m_bUse == false )
+			{
+				gclsUserMap.DeleteSipServer( itList->m_strIp.c_str(), itList->m_iPort );
+			}
+			continue;
+		}
 
 		itNext = itList;
 		++itNext;

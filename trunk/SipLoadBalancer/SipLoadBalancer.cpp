@@ -146,7 +146,10 @@ int ServerMain( )
 			iSecond = 0;
 		}
 
-		// QQQ: 설정 파일 수정 여부를 검사한다.
+		if( gclsSetup.IsChange() )
+		{
+			gclsSetup.ReadSipServer();
+		}
 	}
 
 	CLog::Print( LOG_SYSTEM, "SipLoadBalancer is terminated" );
