@@ -316,6 +316,50 @@ bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 }
 
 /**
+ * @brief 네트워크에서 수신한 SIP 메시지를 파싱한 후, SIP stack 에 입력한다.
+ * @param iThreadId		쓰레드 번호
+ * @param pszBuf			네트워크에서 수신된 SIP 메시지
+ * @param iBufLen			네트워크에서 수신된 SIP 메시지의 길이
+ * @param pszIp				IP 주소
+ * @param iPort				포트 번호
+ * @param eTransport	Transport
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipStack::RecvSipMessage( int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort, ESipTransport eTransport )
+{
+	CSipMessage	* pclsMessage = new CSipMessage();
+	if( pclsMessage == NULL ) return false;
+
+	if( pclsMessage->Parse( pszBuf, iBufLen ) == -1 )
+	{
+		delete pclsMessage;
+		return false;
+	}
+
+	if( m_clsSetup.IsDenySipUserAgent( pclsMessage->m_strUserAgent.c_str() ) )
+	{
+		delete pclsMessage;
+		return false;
+	}
+
+	if( pclsMessage->IsRequest() )
+	{
+		pclsMessage->AddIpPortToTopVia( pszIp, iPort );
+	}
+
+	pclsMessage->m_strClientIp = pszIp;
+	pclsMessage->m_iClientPort = iPort;
+	pclsMessage->m_eTransport = eTransport;
+
+	if( RecvSipMessage( iThreadId, pclsMessage ) == false )
+	{
+		delete pclsMessage;
+	}
+
+	return true;
+}
+
+/**
  * @ingroup SipStack
  * @brief SIP stack 을 실행한다.
  *				SIP stack 이 관리하는 Transaction List 를 주기적으로 점검하여서 Re-Transmit 또는 Timeout 등을 처리하기 위해서 본 함수를 20ms 간격으로 호출해 주어야 한다.

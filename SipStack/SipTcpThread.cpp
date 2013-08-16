@@ -36,36 +36,7 @@ static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const ch
 {
 	CLog::Print( LOG_NETWORK, "TcpRecv(%s:%d) [%.*s]", pszIp, iPort, iBufLen, pszBuf );
 
-	CSipMessage	* pclsMessage = new CSipMessage();
-	if( pclsMessage == NULL ) return false;
-
-	if( pclsMessage->Parse( pszBuf, iBufLen ) == -1 )
-	{
-		delete pclsMessage;
-		return false;
-	}
-
-	if( pclsSipStack->m_clsSetup.IsDenySipUserAgent( pclsMessage->m_strUserAgent.c_str() ) )
-	{
-		delete pclsMessage;
-		return false;
-	}
-
-	if( pclsMessage->IsRequest() )
-	{
-		pclsMessage->AddIpPortToTopVia( pszIp, iPort );
-	}
-
-	pclsMessage->m_eTransport = E_SIP_TCP;
-	pclsMessage->m_strClientIp = pszIp;
-	pclsMessage->m_iClientPort = iPort;
-
-	if( pclsSipStack->RecvSipMessage( iThreadId, pclsMessage ) == false )
-	{
-		delete pclsMessage;
-	}
-
-	return true;
+	return pclsSipStack->RecvSipMessage( iThreadId, pszBuf, iBufLen, pszIp, iPort, E_SIP_TCP );
 }
 
 /**
