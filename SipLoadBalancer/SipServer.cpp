@@ -94,13 +94,20 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 				{
 					pclsRequest->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, clsUserInfo.m_eTransport );
 					
-					pclsRequest->AddRecordRoute( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, clsUserInfo.m_eTransport );
 					pclsRequest->AddRecordRoute( pclsRequest->m_strClientIp.c_str(), pclsRequest->m_iClientPort );
+					pclsRequest->AddRecordRoute( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, clsUserInfo.m_eTransport );
 				}
 				else
 				{
-					pclsRequest->AddRoute( clsUserInfo.m_strSipServerIp.c_str(), clsUserInfo.m_iSipServerPort );
-					pclsRequest->m_clsRecordRouteList.clear();
+					if( pclsRequest->m_clsRouteList.size() > 0 )
+					{
+						pclsRequest->m_clsRouteList.pop_front();
+					}
+
+					if( pclsRequest->m_clsRouteList.size() == 0 )
+					{
+						pclsRequest->AddRoute( clsUserInfo.m_strSipServerIp.c_str(), clsUserInfo.m_iSipServerPort );
+					}
 				}
 
 				SIP_FROM_LIST::iterator itContact = pclsRequest->m_clsContactList.begin();
