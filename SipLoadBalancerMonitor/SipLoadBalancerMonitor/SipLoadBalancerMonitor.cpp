@@ -96,7 +96,7 @@ BOOL CKSipServerMonitorApp::InitInstance()
 	// 해당 설정이 저장된 레지스트리 키를 변경하십시오.
 	// TODO: 이 문자열을 회사 또는 조직의 이름과 같은
 	// 적절한 내용으로 수정해야 합니다.
-	SetRegistryKey(_T("KSipServerMonitor"));
+	SetRegistryKey(_T("SipLoadBalancerMonitor"));
 	LoadStdProfileSettings(0);  // MRU를 포함하여 표준 INI 파일 옵션을 로드합니다.
 
 	gclsSetup.GetFile();
@@ -114,7 +114,7 @@ BOOL CKSipServerMonitorApp::InitInstance()
 
 	if( gclsSocket.Connect( gclsLogInDlg.m_strIp, gclsLogInDlg.m_iPort ) == FALSE )
 	{
-		MessageBox( NULL, _T("Connect KSipServer Error"), _T("Error"), MB_OK | MB_ICONERROR );
+		MessageBox( NULL, _T("Connect SipLoadBalancer Error"), _T("Error"), MB_OK | MB_ICONERROR );
 		return FALSE;
 	}
 
