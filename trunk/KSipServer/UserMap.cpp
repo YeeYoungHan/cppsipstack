@@ -220,6 +220,7 @@ LOOP_START:
 typedef std::list< std::string > USER_ID_LIST;
 
 /**
+ * @ingroup KSipServer
  * @brief 로그인된 모든 사용자에게 OPTIONS 메시지를 전송한다.
  */
 void CUserMap::SendOptions(  )
@@ -289,6 +290,11 @@ void CUserMap::SendOptions(  )
 	}
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 자료구조 모니터링용 문자열을 생성한다. 
+ * @param strBuf 자료구조 모니터링용 문자열 변수
+ */
 void CUserMap::GetString( std::string & strBuf )
 {
 	USER_MAP::iterator	itMap;
