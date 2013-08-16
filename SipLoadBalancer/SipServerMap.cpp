@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipStackDefine.h"
 #include "SipServerMap.h"
 #include "UserMap.h"
 
@@ -26,6 +27,7 @@ CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_bUse(true), m_bDelete(false)
 }
 
 /**
+ * @ingroup SipLoadBalancer
  * @brief 입력된 IP 주소 및 포트 번호가 SIP 서버 정보와 일치하는지 검사한다.
  * @param pszIp IP 주소
  * @param iPort 포트 번호
@@ -47,6 +49,7 @@ CSipServerMap::~CSipServerMap()
 }
 
 /**
+ * @ingroup SipLoadBalancer
  * @brief SIP 서버 정보를 리스트에 추가한다.
  * @param pszIp IP 주소
  * @param iPort 포트 번호
@@ -75,6 +78,7 @@ bool CSipServerMap::Insert( const char * pszIp, int iPort, bool bUse )
 }
 
 /**
+ * @ingroup SipLoadBalancer
  * @brief 접속할 SIP 서버 정보를 가져온다.
  * @param clsInfo SIP 서버 정보를 저장하는 변수
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -103,6 +107,7 @@ bool CSipServerMap::SelectNext( CSipServerInfo & clsInfo )
 }
 
 /**
+ * @ingroup SipLoadBalancer
  * @brief 입력된 IP 주소, 포트번호와 일치하는 SIP 서버 정보가 존재하는지 검사한다.
  * @param pszIp IP 주소
  * @param iPort 포트 번호
@@ -128,6 +133,7 @@ bool CSipServerMap::Select( const char * pszIp, int iPort )
 }
 
 /**
+ * @ingroup SipLoadBalancer
  * @brief 입력된 IP 주소, 포트번호와 일치하는 SIP 서버 정보가 존재하면 사용 유무 및 삭제 유무를 업데이트한다.
  * @param pszIp IP 주소
  * @param iPort 포트 번호
@@ -156,6 +162,7 @@ bool CSipServerMap::Select( const char * pszIp, int iPort, bool bUse )
 }
 
 /**
+ * @ingroup SipLoadBalancer
  * @brief 모든 SIP 서버 정보에 삭제 표시를 한다.
  */
 void CSipServerMap::SetDeleteAll( )
@@ -171,6 +178,7 @@ void CSipServerMap::SetDeleteAll( )
 }
 
 /**
+ * @ingroup SipLoadBalancer
  * @brief 삭제 표시가 된 SIP 서버를 삭제한다.
  */
 void CSipServerMap::DeleteIfSet( )
@@ -193,6 +201,35 @@ LOOP_START:
 
 		itList = itNext;
 		goto LOOP_START;
+	}
+	m_clsMutex.release();
+}
+
+/**
+ * @ingroup SipLoadBalancer
+ * @brief 자료구조 모니터링용 문자열을 생성한다. 
+ * @param strBuf 자료구조 모니터링용 문자열 변수
+ */
+void CSipServerMap::GetString( std::string & strBuf )
+{
+	SIP_SERVER_LIST::iterator itList;
+	char	szTemp[51];
+
+	strBuf.clear();
+
+	m_clsMutex.acquire();
+	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
+	{
+		strBuf.append( itList->m_strIp );
+		snprintf( szTemp, sizeof(szTemp), ":%d", itList->m_iPort );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itList->m_bUse ? "use" : "no use" );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itList->m_bDelete ? "del" : "" );
+		strBuf.append( MR_ROW_SEP );
 	}
 	m_clsMutex.release();
 }

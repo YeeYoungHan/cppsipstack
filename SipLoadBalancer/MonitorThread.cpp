@@ -43,11 +43,11 @@ static bool MonitorCommand( CMonitorSocket * pclsArg, const char * pszPacket )
 
 	if( !strcmp( pszPacket, MC_SIP_SERVER_MAP_LIST ) )
 	{
-		//gclsSipServerMap.GetString( strBuf );
+		gclsSipServerMap.GetString( strBuf );
 	}
 	else if( !strcmp( pszPacket, MC_USER_MAP_LIST ) )
 	{
-		//gclsUserMap.GetString( strBuf );
+		gclsUserMap.GetString( strBuf );
 	}
 	else if( !strcmp( pszPacket, MC_SIP_STACK_COUNT_LIST ) )
 	{

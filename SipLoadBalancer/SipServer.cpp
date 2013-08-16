@@ -164,5 +164,7 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
  */
 bool CSipServer::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 {
+	// QQQ: SIP 서버로 전송한 요청 메시지에 대한 응답 메시지가 없으면 해당 SIP 서버를 사용하지 않으므로 수정한다.
+
 	return false;
 }

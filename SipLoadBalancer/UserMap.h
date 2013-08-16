@@ -58,6 +58,8 @@ public:
 	bool Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo );
 	void DeleteSipServer( const char * pszIp, int iPort );
 
+	void GetString( std::string & strBuf );
+
 private:
 	USER_MAP	m_clsMap;
 	CSipMutex m_clsMutex;

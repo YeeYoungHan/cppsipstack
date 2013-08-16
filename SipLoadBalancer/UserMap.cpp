@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipStackDefine.h"
 #include "UserMap.h"
 #include "SipServerMap.h"
 
@@ -25,6 +26,12 @@ CUserInfo::CUserInfo() : m_iSipServerPort(5060), m_iPort(0), m_eTransport(E_SIP_
 {
 }
 
+/**
+ * @brief 입력된 SIP 서버 정보와 일치하는지 검사한다.
+ * @param pszIp SIP 서버 IP 주소
+ * @param iPort SIP 서버 포트 번호
+ * @returns 일치하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CUserInfo::EqualSipServer( const char * pszIp, int iPort )
 {
 	if( !strcmp( m_strSipServerIp.c_str(), pszIp ) && m_iSipServerPort == iPort ) return true;
@@ -41,6 +48,7 @@ CUserMap::~CUserMap()
 }
 
 /**
+ * @ingroup SipLoadBalancer
  * @brief SIP 메시지로 SIP 클라이언트 정보를 저장한다.
  * @param pclsRequest SIP 메시지
  * @param clsUserInfo SIP 클라이언트 정보 저장 변수
@@ -99,6 +107,7 @@ bool CUserMap::Insert( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
 
 
 /**
+ * @ingroup SipLoadBalancer
  * @brief SIP 메시지과 관련된 SIP 클라이언트 정보를 가져온다.
  * @param pclsRequest SIP 메시지
  * @param clsUserInfo SIP 클라이언트 정보 저장 변수
@@ -131,6 +140,7 @@ bool CUserMap::Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
 }
 
 /**
+ * @ingroup SipLoadBalancer
  * @brief SIP 서버의 IP 주소/포트 번호를 가지고 있는 SIP 클라이언트를 삭제한다.
  * @param pszIp SIP 서버 IP 주소
  * @param iPort SIP 서버 포트 번호
@@ -154,6 +164,37 @@ LOOP_START:
 		itMap = itNext;
 
 		goto LOOP_START;
+	}
+	m_clsMutex.release();
+}
+
+/**
+ * @ingroup SipLoadBalancer
+ * @brief 자료구조 모니터링용 문자열을 생성한다. 
+ * @param strBuf 자료구조 모니터링용 문자열 변수
+ */
+void CUserMap::GetString( std::string & strBuf )
+{
+	USER_MAP::iterator	itMap;
+	char	szTemp[51];
+
+	strBuf.clear();
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		strBuf.append( itMap->first );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itMap->second.m_strIp );
+		snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iPort );
+		strBuf.append( szTemp );
+		strBuf.append( MR_COL_SEP );
+
+		strBuf.append( itMap->second.m_strSipServerIp );
+		snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iSipServerPort );
+		strBuf.append( szTemp );
+		strBuf.append( MR_ROW_SEP );
 	}
 	m_clsMutex.release();
 }
