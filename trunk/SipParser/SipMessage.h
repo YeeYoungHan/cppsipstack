@@ -151,6 +151,7 @@ public:
 	bool AddIpPortToTopVia( const char * pszIp, int iPort, ESipTransport eTransport = E_SIP_UDP );
 	bool AddVia( const char * pszIp, int iPort, const char * pszBranch = NULL, ESipTransport eTransport = E_SIP_UDP );
 	bool AddRoute( const char * pszIp, int iPort, ESipTransport eTransport = E_SIP_UDP );
+	bool AddRecordRoute( const char * pszIp, int iPort, ESipTransport eTransport = E_SIP_UDP );
 	bool AddHeader( const char * pszName, const char * pszValue );
 	bool AddHeader( const char * pszName, int iValue );
 
