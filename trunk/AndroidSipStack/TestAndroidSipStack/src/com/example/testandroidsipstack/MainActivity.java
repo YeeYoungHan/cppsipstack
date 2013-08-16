@@ -36,6 +36,9 @@ import android.widget.TextView;
 import android.app.Activity;
 import android.content.Intent;
 
+/** SIP 클라이언트
+ * @author 이영한 ( http://blog.naver.com/websearch )
+ */
 public class MainActivity extends Activity implements OnClickListener, SipUserAgentCallBack 
 {
 	EditText m_txtPhoneNumber;
