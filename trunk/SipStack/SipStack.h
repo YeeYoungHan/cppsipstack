@@ -54,6 +54,7 @@ public:
 
 	bool SendSipMessage( CSipMessage * pclsMessage );
 	bool RecvSipMessage( int iThreadId, CSipMessage * pclsMessage );
+	bool RecvSipMessage( int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort, ESipTransport eTransport );
 
 	bool Execute( struct timeval * psttTime );
 	bool Send( CSipMessage * pclsMessage, bool bCheckMessage = true );
