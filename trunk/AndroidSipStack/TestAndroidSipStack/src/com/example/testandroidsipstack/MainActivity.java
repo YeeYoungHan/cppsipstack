@@ -214,6 +214,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 		case R.id.btnStopStack:
 			{
 				SipUserAgent.Stop( );
+				Log.d( "test", "SipUserAgent.Stop( ) end" );
 				
 				m_btnStartStack.setEnabled( true );
 				m_btnStopStack.setEnabled( false );
