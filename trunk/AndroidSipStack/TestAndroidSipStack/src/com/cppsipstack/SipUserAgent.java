@@ -145,7 +145,7 @@ public class SipUserAgent
 	 */
 	public static void EventCallEnd( String strCallId, int iSipStatus )
 	{
-		SipLog.Debug( "EventCallStart callid(" + strCallId + ") status(" + iSipStatus + ")" );
+		SipLog.Debug( "EventCallEnd callid(" + strCallId + ") status(" + iSipStatus + ")" );
 				
 		if( m_clsCallBack != null )
 		{

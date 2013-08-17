@@ -47,7 +47,7 @@ public class SetupActivity extends Activity implements OnClickListener
 		findViewById( R.id.btnCancel ).setOnClickListener( this );
 		
 		m_txtSipServerIp.setText( Setup.m_strSipServerIp );
-		m_txtSipServerPort.setText( Setup.m_iSipServerPort );
+		m_txtSipServerPort.setText( "" + Setup.m_iSipServerPort );
 		m_txtSipDomain.setText( Setup.m_strSipDomain );
 		m_txtSipUserId.setText( Setup.m_strSipUserId );
 		m_txtSipPassWord.setText( Setup.m_strSipPassWord );
