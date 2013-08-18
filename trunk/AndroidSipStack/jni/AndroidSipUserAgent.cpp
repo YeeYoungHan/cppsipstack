@@ -27,6 +27,7 @@
 #include "Log.h"
 
 CSipUserAgent gclsUserAgent;
+LogCallBack gclsLogCallBack;
 
 /**
  * @brief SIP 서버 정보를 저장한다.
@@ -77,6 +78,7 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Start( JNIEnv * env
 	AndroidDebugLog( "local ip[%s]", clsSetup.m_strLocalIp.c_str() );
 
 	CLog::SetLevel( LOG_DEBUG | LOG_INFO | LOG_NETWORK | LOG_SYSTEM );
+	CLog::SetCallBack( &gclsLogCallBack );
 
 	gclsUserAgent.m_pclsCallBack = &gclsSipClient;
 	if( gclsUserAgent.Start( clsSetup ) == false ) 

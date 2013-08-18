@@ -48,6 +48,14 @@ enum EnumLogLevel
 	LOG_SQL = 0x800
 };
 
+class ILogCallBack
+{
+public:
+	virtual ~ILogCallBack(){};
+
+	virtual void Print( EnumLogLevel eLevel, const char * fmt, ... ) = 0;
+};
+
 /** 
  * @ingroup SipPlatform
  * @brief 로그 관련 클래스
@@ -66,9 +74,14 @@ private:
 	static int				m_iLogSize;			// 현재까지 저장된 로그 크기
 	static int				m_iIndex;				// 로그 파일 인덱스
 
+	static ILogCallBack * m_pclsCallBack;	// 로그 callback
+
 public:
 	static bool SetDirectory( const char * pszDirName );
 	static void Release();
+
+	static void SetCallBack( ILogCallBack * pclsCallBack );
+
 	static int Print( EnumLogLevel iLevel, const char * fmt, ... );
 	static void SetLevel( int iLevel );
 	static void SetNullLevel();

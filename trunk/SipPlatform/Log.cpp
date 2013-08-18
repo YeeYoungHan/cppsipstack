@@ -38,6 +38,7 @@ int CLog::m_iLevel = LOG_ERROR;
 int CLog::m_iMaxLogSize = 0;
 int CLog::m_iLogSize = 0;
 int CLog::m_iIndex = 1;
+ILogCallBack * CLog::m_pclsCallBack = NULL;
 
 /** 
  * @ingroup SipPlatform
@@ -98,6 +99,16 @@ void CLog::Release()
 		delete CLog::m_pThreadMutex;
 		CLog::m_pThreadMutex = NULL;
 	}
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 로그 출력 callback 인터페이스를 등록한다.
+ * @param pclsCallBack 로그 출력 callback 인터페이스
+ */
+void CLog::SetCallBack( ILogCallBack * pclsCallBack )
+{
+	m_pclsCallBack = pclsCallBack;
 }
 
 /** 
@@ -250,6 +261,14 @@ OPEN_FILE:
 			, sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec, (unsigned int)sttTime.tv_usec, szHeader, (unsigned long)pthread_self(), szBuf );
 #endif
 		fflush( m_sttFd );
+	}
+	else if( m_pclsCallBack )
+	{
+#ifdef WIN32
+		m_pclsCallBack->Print( iLevel, "[%u] %s", GetCurrentThreadId(), szBuf );
+#else
+		m_pclsCallBack->Print( iLevel, "[%u] %s", (unsigned long)pthread_self(), szBuf );
+#endif
 	}
 	else
 	{

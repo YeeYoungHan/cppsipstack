@@ -19,12 +19,20 @@
 #ifndef _ANDROID_LOG_H_
 #define _ANDROID_LOG_H_
 
+#include "Log.h"
+
 #define LOG_TAG				"SipStack"
 
 extern bool gbAndroidDebug;
 
 void AndroidDebugLog( const char * fmt, ... );
 void AndroidErrorLog( const char * fmt, ... );
+
+class LogCallBack : public ILogCallBack
+{
+public:
+	virtual void Print( EnumLogLevel eLevel, const char * fmt, ... );
+};
 
 #endif
 
