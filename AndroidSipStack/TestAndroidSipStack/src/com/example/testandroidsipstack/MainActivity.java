@@ -53,9 +53,9 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	{
 		super.onCreate( savedInstanceState );
 		setContentView( R.layout.activity_main );
-		
+
 		Setup.Get( this );
-		
+	
 		m_txtPhoneNumber = (EditText)findViewById( R.id.txtPhoneNumber );
 		m_txtLog = (TextView)findViewById( R.id.txtLog );
 		

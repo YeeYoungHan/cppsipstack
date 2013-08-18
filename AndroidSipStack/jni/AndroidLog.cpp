@@ -18,8 +18,6 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
-#define LOG_MAX_SIZE	8192
-
 #include "AndroidLog.h"
 #include <stdarg.h>
 #include <stdio.h>
@@ -29,6 +27,28 @@
 #endif
 
 bool gbAndroidDebug = false;
+
+void LogCallBack::Print( EnumLogLevel eLevel, const char * fmt, ... )
+{
+	char	szBuf[LOG_MAX_SIZE];
+
+	va_list		ap;
+
+	va_start( ap, fmt );
+	vsnprintf( szBuf, sizeof(szBuf)-1, fmt, ap );
+	va_end( ap );
+
+#ifndef WIN32
+	if( eLevel == LOG_ERROR )
+	{
+		__android_log_write( ANDROID_LOG_ERROR, LOG_TAG, szBuf );
+	}
+	else
+	{
+		__android_log_write( ANDROID_LOG_DEBUG, LOG_TAG, szBuf );
+	}
+#endif
+}
 
 /**
  * @brief 안드로이드 디버그 로그를 출력한다.
