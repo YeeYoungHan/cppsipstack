@@ -167,6 +167,19 @@ void CSipUserAgent::DeleteRegisterInfoAll( )
 	SIP_SERVER_INFO_LIST::iterator	it;
 
 	m_clsRegisterMutex.acquire();
+	m_clsRegisterList.clear();
+	m_clsRegisterMutex.release();
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief 로그아웃한다.
+ */
+void CSipUserAgent::DeRegister( )
+{
+	SIP_SERVER_INFO_LIST::iterator	it;
+
+	m_clsRegisterMutex.acquire();
 	for( it = m_clsRegisterList.begin(); it != m_clsRegisterList.end(); ++it )
 	{
 		it->m_bDelete = true;
@@ -202,7 +215,7 @@ bool CSipUserAgent::Stop( )
 	SIP_SERVER_INFO_LIST::iterator	it;
 	int	iCount;
 
-	DeleteRegisterInfoAll();
+	DeRegister();
 
 	for( int i = 0; i < 10; ++i )
 	{
@@ -225,6 +238,7 @@ bool CSipUserAgent::Stop( )
 	}
 
 	gclsSipStack.Stop();
+	DeleteRegisterInfoAll( );
 
 	return true;
 }
