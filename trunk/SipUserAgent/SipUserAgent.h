@@ -65,7 +65,6 @@ public:
 	bool InsertRegisterInfo( CSipServerInfo & clsInfo );
 	bool UpdateRegisterInfo( CSipServerInfo & clsInfo );
 	bool DeleteRegisterInfo( CSipServerInfo & clsInfo );
-	void DeleteRegisterInfoAll( );
 
 	// 로그인 관련
 	bool Start( CSipStackSetup & clsSetup );
@@ -104,6 +103,9 @@ public:
 	ISipUserAgentCallBack * m_pclsCallBack;
 
 private:
+	void DeleteRegisterInfoAll( );
+	void DeRegister( );
+
 	bool RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessage );
 
 	bool RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage );
