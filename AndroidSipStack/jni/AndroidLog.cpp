@@ -28,6 +28,12 @@
 
 bool gbAndroidDebug = false;
 
+/**
+ * @brief SIP stack 의 로그를 DDMS 로그로 출력한다.
+ * @param eLevel 로그 레벨
+ * @param fmt		 로그 문자열
+ * @param				 로그 문자열 변수 
+ */
 void LogCallBack::Print( EnumLogLevel eLevel, const char * fmt, ... )
 {
 	char	szBuf[LOG_MAX_SIZE];

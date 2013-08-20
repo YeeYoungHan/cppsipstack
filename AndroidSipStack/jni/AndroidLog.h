@@ -28,6 +28,9 @@ extern bool gbAndroidDebug;
 void AndroidDebugLog( const char * fmt, ... );
 void AndroidErrorLog( const char * fmt, ... );
 
+/**
+ * @brief SIP stack 의 로그를 DDMS 로그로 출력하는 클래스
+ */
 class LogCallBack : public ILogCallBack
 {
 public:
