@@ -48,6 +48,10 @@ enum EnumLogLevel
 	LOG_SQL = 0x800
 };
 
+/**
+ * @ingroup SipPlatform
+ * @brief 로그 메시지를 프로그램에서 처리하고 싶은 경우에 사용한다.
+ */
 class ILogCallBack
 {
 public:
