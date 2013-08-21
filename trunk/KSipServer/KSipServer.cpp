@@ -30,7 +30,6 @@
 #include "KSipServerVersion.h"
 #include "SipUserAgentVersion.h"
 #include "ServerThread.h"
-#include <signal.h>
 #include "ServerService.h"
 
 /**
