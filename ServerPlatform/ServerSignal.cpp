@@ -58,3 +58,15 @@ void LastMethod( int sig )
 
 	gbStop = true;
 }
+
+void ServerSignal()
+{
+	signal( SIGINT, LastMethod );
+	signal( SIGTERM, LastMethod );
+	signal( SIGABRT, LastMethod );
+#ifndef WIN32
+	signal( SIGKILL, LastMethod );
+	signal( SIGQUIT, LastMethod );
+	signal( SIGPIPE, SIG_IGN );
+#endif
+}

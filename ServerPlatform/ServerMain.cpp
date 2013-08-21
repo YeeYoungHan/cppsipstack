@@ -31,8 +31,9 @@ ServerFunc gpServerFunc;
  * @param argv 
  * @returns 정상 종료하면 0 을 리턴하고 오류가 발생하면 -1 를 리턴한다.
  */
-int ServerMain( int argc, char * argv[], ServerFunc pFunc )
+int ServerMain( int argc, char * argv[], CServerService & clsService, ServerFunc pFunc )
 {
+	gclsService = clsService;
 	gpServerFunc = pFunc;
 
 #ifdef WIN32

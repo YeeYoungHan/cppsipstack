@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser;../MySQL Server 5.0/include;../openssl-32bit/include"
+				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser;../ServerPlatform;../MySQL Server 5.0/include;../openssl-32bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -195,7 +195,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser;../MySQL Server 5.0/include;../openssl-32bit/include"
+				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser;../ServerPlatform;../MySQL Server 5.0/include;../openssl-32bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -333,10 +333,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\InstallService.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\KSipServer.cpp"
 				>
 			</File>
@@ -346,10 +342,6 @@
 			</File>
 			<File
 				RelativePath=".\KSipServerVersion.h"
-				>
-			</File>
-			<File
-				RelativePath=".\KSipService.cpp"
 				>
 			</File>
 		</Filter>

@@ -19,9 +19,12 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.14"
+#define KSIP_SERVER_VERSION	"0.15"
 
 /* 버전 정보 
+
+= 버전 0.15 ( 2013년 8월 21일 ) =
+ * ServerPlatform 라이브러리를 이용하도록 수정함
 
 = 버전 0.14 ( 2013년 5월 10일 ) =
  * SIP REGISTER timeout 시간을 설정하는 기능을 추가함

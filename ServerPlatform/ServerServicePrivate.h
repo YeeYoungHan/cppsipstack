@@ -27,7 +27,6 @@ bool UninstallService( );
 
 // ServerService.h
 void ServiceStart();
-char * GetConfigFileName();
 
 // ServerSignal.h
 extern bool gbStop;
