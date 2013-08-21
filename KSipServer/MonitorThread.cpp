@@ -27,6 +27,7 @@
 #include "UserMap.h"
 #include "RtpMap.h"
 #include "SipServer.h"
+#include "ServerService.h"
 
 static int giMonitorThreadCount = 0;
 CSipMutex gclsCountMutex;

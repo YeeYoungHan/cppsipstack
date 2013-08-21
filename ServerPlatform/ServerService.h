@@ -33,8 +33,11 @@ public:
 
 typedef int (*ServerFunc)();
 
+// ServerSignal.h
+extern bool gbStop;
+
 int ServerMain( int argc, char * argv[], CServerService & clsService, ServerFunc pFunc );
-char * GetConfigFileName();
+const char * GetConfigFileName();
 void ServerSignal();
 
 #endif

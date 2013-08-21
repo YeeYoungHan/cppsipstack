@@ -19,10 +19,18 @@
 #include "ServerServicePrivate.h"
 #include "ServerUtility.h"
 #include "SipUdp.h"
+#include <stdio.h>
 
 static std::string gstrConfigFileName;
 CServerService gclsService;
 ServerFunc gpServerFunc;
+
+#ifndef WIN32
+const char * GetConfigFileName()
+{
+	return gstrConfigFileName.c_str();
+}
+#endif
 
 /**
  * @ingroup ServerPlatform

@@ -21,6 +21,7 @@
 #include "DbMySQL.h"
 #include "SipServerSetup.h"
 #include "SipStackDefine.h"
+#include "ServerService.h"
 
 typedef std::list< std::string > SQL_LIST;
 static bool gbDbThreadRun = false;

@@ -21,6 +21,7 @@
 #include "KSipServer.h"
 #include "Log.h"
 #include "RtpMap.h"
+#include "ServerService.h"
 
 static int giRtpThreadCount = 0;
 extern CSipMutex gclsCountMutex;

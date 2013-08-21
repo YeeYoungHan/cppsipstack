@@ -123,7 +123,7 @@ void ServiceStart()
  * @brief 설정 파일 이름을 리턴한다.
  * @returns 설정 파일 이름을 리턴한다.
  */
-char * GetConfigFileName()
+const char * GetConfigFileName()
 {
 	static char szConfigFileName[1024];
 
