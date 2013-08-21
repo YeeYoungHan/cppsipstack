@@ -31,8 +31,10 @@ public:
 	std::string m_strConfigFileName;
 };
 
-typedef void (*ServerFunc)();
+typedef int (*ServerFunc)();
 
-int ServerMain( int argc, char * argv[], ServerFunc pFunc );
+int ServerMain( int argc, char * argv[], CServerService & clsService, ServerFunc pFunc );
+char * GetConfigFileName();
+void ServerSignal();
 
 #endif

@@ -59,7 +59,7 @@ bool InstallService( )
 {
 	if( IsExistService() )
 	{
-		printf( "KSipServer is already installed.\n" );
+		printf( "%s is already installed.\n", gclsService.m_strName.c_str() );
 		return false;
 	}
 
@@ -131,7 +131,7 @@ bool UninstallService( )
 	if( hSrv == NULL ) 
 	{
 		CloseServiceHandle(hScm);
-		printf( "KSipServer is not installed.\n" );
+		printf( "%s is not installed.\n", gclsService.m_strName.c_str() );
 		return false;
 	}
 
