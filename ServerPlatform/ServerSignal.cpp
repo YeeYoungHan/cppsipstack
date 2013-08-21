@@ -24,7 +24,7 @@
 bool gbStop = false;
 
 /**
- * @ingroup KSipServer
+ * @ingroup ServerPlatform
  * @brief signal function
  * @param sig 신호 번호
  */
@@ -53,6 +53,7 @@ void LastMethod( int sig )
 		snprintf( szText, sizeof(szText), "SIGABRT" );
 		break;
 	}
+
 	CLog::Print( LOG_ERROR, "signal%s%s(%d) is received. terminated", strlen(szText) > 0 ? "-" : "", szText, sig );
 
 	gbStop = true;

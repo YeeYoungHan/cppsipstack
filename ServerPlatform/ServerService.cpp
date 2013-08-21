@@ -24,11 +24,11 @@
 #include <windows.h>
 #include <stdio.h>
 
-SERVICE_STATUS_HANDLE	g_hSrv;
-DWORD					g_iNowState;
+static SERVICE_STATUS_HANDLE	ghServiceStatus;
+static DWORD					giNowState;
 
 /**
- * @ingroup KSipServer
+ * @ingroup ServerPlatform
  * @brief change service current status 
  * @param dwState		status
  * @param dwAccept	afforded status
@@ -46,19 +46,19 @@ void ServiceSetStatus( DWORD dwState, DWORD dwAccept = SERVICE_ACCEPT_STOP | SER
 	ss.dwWaitHint = 0;
 
 	// save current status.
-	g_iNowState = dwState;
-	SetServiceStatus( g_hSrv, &ss );
+	giNowState = dwState;
+	SetServiceStatus( ghServiceStatus, &ss );
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup ServerPlatform
  * @brief handler function. This function handle command from service control window.
  * @param fdwControl request status
  */
 void ServiceHandler( DWORD fdwControl )
 {
 	// if current status is equal input status, there is nothing to do.
-	if( fdwControl == g_iNowState ) return;
+	if( fdwControl == giNowState ) return;
 
 	switch( fdwControl ) 
 	{
@@ -72,13 +72,13 @@ void ServiceHandler( DWORD fdwControl )
 		break;
 	case SERVICE_CONTROL_INTERROGATE:
 	default:
-		ServiceSetStatus( g_iNowState );
+		ServiceSetStatus( giNowState );
 		break;
 	}
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup ServerPlatform
  * @brief MS 윈도우에서 서비스 실행시 호출되는 메소드. KSipServer 를 시작한다.
  * @param  
  * @param  
@@ -86,8 +86,8 @@ void ServiceHandler( DWORD fdwControl )
 void ServiceMain( DWORD , LPTSTR * )
 {
 	// regist service handler.
-	g_hSrv = RegisterServiceCtrlHandler( gclsService.m_strName.c_str(), (LPHANDLER_FUNCTION)ServiceHandler );
-	if( g_hSrv == 0 ) 
+	ghServiceStatus = RegisterServiceCtrlHandler( gclsService.m_strName.c_str(), (LPHANDLER_FUNCTION)ServiceHandler );
+	if( ghServiceStatus == 0 ) 
 	{
 		return;
 	}
@@ -105,7 +105,7 @@ void ServiceMain( DWORD , LPTSTR * )
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup ServerPlatform
  * @brief MS 윈도우용 서비스로 KSipServer 를 시작한다.
  */
 void ServiceStart()
@@ -119,7 +119,7 @@ void ServiceStart()
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup ServerPlatform
  * @brief 설정 파일 이름을 리턴한다.
  * @returns 설정 파일 이름을 리턴한다.
  */
