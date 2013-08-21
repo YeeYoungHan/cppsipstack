@@ -7,12 +7,13 @@
 include ../Makefile.mk
 
 INC=-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser -I../SipPlatform \
-	-I../XmlParser -I/usr/include/mysql
+	-I../XmlParser -I../ServerPlatform -I/usr/include/mysql
 LIB=-L../SipUserAgent -lsipuseragent \
 	-L../SipStack -lsipstack \
 	-L../SipParser -lsipparser \
 	-L../SdpParser -lsdpparser \
 	-L../XmlParser -lxmlparser \
+	-L../ServerPlatform -lserverplatform \
 	-L../SipPlatform -lsipplatform \
 	-L/usr/lib/mysql -lmysqlclient \
 	-lssl -lpthread

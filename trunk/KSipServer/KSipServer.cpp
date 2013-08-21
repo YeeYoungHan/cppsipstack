@@ -40,11 +40,9 @@
  */
 int ServiceMain( )
 {
-	char * pszConfigFileName = GetConfigFileName();
-
-	if( gclsSetup.Read( pszConfigFileName ) == false )
+	if( gclsSetup.Read( GetConfigFileName() ) == false )
 	{
-		printf( "config filename(%s) read error\n", pszConfigFileName );
+		printf( "config filename(%s) read error\n", GetConfigFileName() );
 		return -1;
 	}
 

@@ -28,16 +28,4 @@
 
 #define CONFIG_FILENAME						"SipServer.xml"
 
-extern bool gbStop;
-
-#ifdef WIN32
-// KSipService.cpp
-void KSipServiceStart();
-char * GetConfigFileName();
-
-// InstallService.cpp
-bool InstallService( );
-bool UninstallService( );
-#endif
-
 #endif

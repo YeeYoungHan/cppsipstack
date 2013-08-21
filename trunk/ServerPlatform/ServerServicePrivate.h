@@ -29,8 +29,6 @@ bool UninstallService( );
 void ServiceStart();
 
 // ServerSignal.h
-extern bool gbStop;
-
 void LastMethod( int sig );
 
 // ServerMain.cpp

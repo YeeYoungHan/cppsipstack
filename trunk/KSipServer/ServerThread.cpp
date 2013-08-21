@@ -22,6 +22,7 @@
 #include "SipServerSetup.h"
 #include "Log.h"
 #include "ServerThread.h"
+#include "ServerService.h"
 
 /**
  * @ingroup KSipServer

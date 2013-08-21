@@ -11,6 +11,7 @@ all:
 	cd XmlParser && make
 	cd SipStack && make
 	cd SipUserAgent && make
+	cd ServerPlatform && make
 	cd TestSipParser && make
 	cd SipClient && make
 	cd SimpleSipServer && make
@@ -25,6 +26,7 @@ clean:
 	cd XmlParser && make clean
 	cd SipStack && make clean
 	cd SipUserAgent && make clean
+	cd ServerPlatform && make clean
 	cd TestSipParser && make clean
 	cd SipClient && make clean
 	cd SimpleSipServer && make clean
