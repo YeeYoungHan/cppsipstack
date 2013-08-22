@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipParser;../SipPlatform"
+				AdditionalIncludeDirectories="../SipStack;../SipParser;../SipPlatform;../openssl-32bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -308,6 +308,26 @@
 			</File>
 			<File
 				RelativePath=".\ServerServicePrivate.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="모니터링"
+			>
+			<File
+				RelativePath=".\MonitorCallBack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MonitorThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ServerThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ServerThread.h"
 				>
 			</File>
 		</Filter>
