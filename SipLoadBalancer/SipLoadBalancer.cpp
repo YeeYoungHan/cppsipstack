@@ -24,56 +24,18 @@
 #include "ServerThread.h"
 #include "ServerUtility.h"
 #include "Log.h"
-#include <signal.h>
-
-bool gbStop = false;
-static std::string gstrConfigFileName;
-
-/**
- * @ingroup SipLoadBalancer
- * @brief signal function
- * @param sig 신호 번호
- */
-void LastMethod( int sig )
-{
-	char	szText[21];
-
-	szText[0] = '\0';
-	switch( sig )
-	{
-	case SIGINT:
-		snprintf( szText, sizeof(szText), "SIGINT" );
-		break;
-	case SIGSEGV:
-		snprintf( szText, sizeof(szText), "SIGSEGV" );
-		break;
-	case SIGTERM:
-		snprintf( szText, sizeof(szText), "SIGTERM" );
-		break;
-#ifndef WIN32
-	case SIGQUIT:
-		snprintf( szText, sizeof(szText), "SIGQUIT" );
-		break;
-#endif
-	case SIGABRT:
-		snprintf( szText, sizeof(szText), "SIGABRT" );
-		break;
-	}
-	CLog::Print( LOG_ERROR, "signal%s%s(%d) is received. terminated", strlen(szText) > 0 ? "-" : "", szText, sig );
-
-	gbStop = true;
-}
+#include "ServerService.h"
 
 /**
  * @ingroup SipLoadBalancer
  * @brief C++ SIP stack 을 이용한 한국형 IP-PBX
  * @returns 정상 종료하면 0 을 리턴하고 오류가 발생하면 -1 를 리턴한다.
  */
-int ServerMain( )
+int ServiceMain( )
 {
-	if( gclsSetup.Read( gstrConfigFileName.c_str() ) == false )
+	if( gclsSetup.Read( GetConfigFileName() ) == false )
 	{
-		printf( "config filename(%s) read error\n", gstrConfigFileName.c_str() );
+		printf( "config filename(%s) read error\n", GetConfigFileName() );
 		return -1;
 	}
 
@@ -113,15 +75,7 @@ int ServerMain( )
 
 	Fork( true );
 	SetCoreDumpEnable();
-
-	signal( SIGINT, LastMethod );
-	signal( SIGTERM, LastMethod );
-	signal( SIGABRT, LastMethod );
-#ifndef WIN32
-	signal( SIGKILL, LastMethod );
-	signal( SIGQUIT, LastMethod );
-	signal( SIGPIPE, SIG_IGN );
-#endif
+	ServerSignal();
 
 	if( gclsSipServer.Start( clsSetup ) == false )
 	{
@@ -167,53 +121,15 @@ int ServerMain( )
  */
 int main( int argc, char * argv[] )
 {
-#ifdef WIN32
-	if( argc == 1 )
-	{
-		gstrConfigFileName = GetConfigFileName();
-		if( IsExistFile( gstrConfigFileName.c_str() ) == false )
-		{
-			printf( "setup file(%s) is not exist", gstrConfigFileName.c_str() );
-			return -1;
-		}
+	CServerService clsService;
 
-		ServiceStart();
-		return 0;
-	}
-#endif
-	 
-	if( argc != 2 )
-	{
-		printf( "[Usage] %s {config filename}\n", argv[0] );
-		return -1;
-	}
+	clsService.m_strName = SERVICE_NAME;
+	clsService.m_strDisplayName = SERVICE_DISPLAY_NAME;
+	clsService.m_strDescription = SERVICE_DESCRIPTION_STRING;
+	clsService.m_strConfigFileName = CONFIG_FILENAME;
+	clsService.m_strVersion = SIP_LOAD_BALANCER_VERSION;
 
-	gstrConfigFileName = argv[1];
-	if( !strcmp( gstrConfigFileName.c_str(), "-h" ) || !strcmp( gstrConfigFileName.c_str(), "-v" ) )
-	{
-		printf( "%s version-%s ( build %s %s )\n", argv[0], SIP_LOAD_BALANCER_VERSION, __DATE__, __TIME__ );
-		printf( "[Usage] %s {config filename}\n", argv[0] );
-#ifdef WIN32
-		printf( "        %s -i : install service\n", argv[0] );
-		printf( "        %s -u : uninstall service\n", argv[0] );
-#endif
-		return 0;
-	}
-#ifdef WIN32
-	if( !strcmp( gstrConfigFileName.c_str(), "-i" ) )
-	{
-		InstallService();
-		return 0;
-	}
-	else if( !strcmp( gstrConfigFileName.c_str(), "-u" ) )
-	{
-		InitNetwork();
-		UninstallService();
-		return 0;
-	}
-#endif
-
-	ServerMain( );
+	ServerMain( argc, argv, clsService, ServiceMain );
 
 	return 0;
 }

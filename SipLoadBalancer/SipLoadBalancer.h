@@ -28,14 +28,4 @@
 
 extern bool gbStop;
 
-#ifdef WIN32
-// Service.cpp
-void ServiceStart();
-char * GetConfigFileName();
-
-// InstallService.cpp
-bool InstallService( );
-bool UninstallService( );
-#endif
-
 #endif
