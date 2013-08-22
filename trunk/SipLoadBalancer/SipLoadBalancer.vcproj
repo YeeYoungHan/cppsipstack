@@ -389,19 +389,15 @@
 			Name="모니터링"
 			>
 			<File
+				RelativePath=".\Monitor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Monitor.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MonitorDefine.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MonitorThread.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ServerThread.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ServerThread.h"
 				>
 			</File>
 		</Filter>
