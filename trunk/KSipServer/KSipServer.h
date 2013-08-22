@@ -28,4 +28,14 @@
 
 #define CONFIG_FILENAME						"SipServer.xml"
 
+// DbInsertThread.cpp
+void DbInsert( const char * pszSQL );
+void DbSignal( );
+bool StartDbInsertThread();
+bool IsDbInsertThreadRun();
+
+// RtpThread.cpp
+bool StartRtpThread( int iPort );
+bool IsRtpThreadRun();
+
 #endif

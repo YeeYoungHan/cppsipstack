@@ -31,6 +31,7 @@
 #include "SipUserAgentVersion.h"
 #include "ServerThread.h"
 #include "ServerService.h"
+#include "Monitor.h"
 
 /**
  * @ingroup KSipServer
@@ -110,7 +111,8 @@ int ServiceMain( )
 
 	if( gclsSetup.m_iMonitorPort > 0 )
 	{
-		StartServerThread();
+		gclsMonitor.m_iMonitorPort = gclsSetup.m_iMonitorPort;
+		StartMonitorServerThread( &gclsMonitor );
 	}
 
 	int iSecond = 0;

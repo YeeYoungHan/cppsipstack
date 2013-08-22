@@ -344,6 +344,14 @@
 				RelativePath=".\KSipServerVersion.h"
 				>
 			</File>
+			<File
+				RelativePath=".\Monitor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Monitor.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="자료구조"
@@ -465,19 +473,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MonitorThread.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\RtpThread.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ServerThread.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ServerThread.h"
 				>
 			</File>
 		</Filter>
