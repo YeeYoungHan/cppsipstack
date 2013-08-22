@@ -29,7 +29,6 @@
 #include "Directory.h"
 #include "KSipServerVersion.h"
 #include "SipUserAgentVersion.h"
-#include "ServerThread.h"
 #include "ServerService.h"
 #include "Monitor.h"
 

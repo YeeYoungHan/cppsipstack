@@ -29,7 +29,7 @@
 #include "XmlUser.h"
 #include "Directory.h"
 #include "TimeString.h"
-#include "ServerThread.h"
+#include "KSipServer.h"
 
 CSipServer gclsSipServer;
 CSipUserAgent gclsUserAgent;

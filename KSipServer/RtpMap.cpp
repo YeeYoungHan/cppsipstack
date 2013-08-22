@@ -19,8 +19,8 @@
 #include "SipStackDefine.h"
 #include "RtpMap.h"
 #include "SipServerSetup.h"
-#include "ServerThread.h"
 #include "Log.h"
+#include "KSipServer.h"
 
 CRtpMap gclsRtpMap;
 
