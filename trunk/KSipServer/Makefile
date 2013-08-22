@@ -28,7 +28,7 @@ SRV_OBJ=KSipServer.o SipServer.o \
 	SipServerSetup.o XmlUser.o XmlSipServer.o \
 	CallMap.o NonceMap.o UserMap.o SipServerMap.o RtpMap.o \
 	DbMySQL.o DbInsertThread.o \
-  ServerThread.o MonitorThread.o RtpThread.o
+  RtpThread.o Monitor.o
 
 KSipServer.exe: $(SRV_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)

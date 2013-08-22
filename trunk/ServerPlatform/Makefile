@@ -6,7 +6,7 @@
 
 include ../Makefile.mk
 
-INC=-I../SipParser -I../SipPlatform
+INC=-I../SipStack -I../SipParser -I../SipPlatform
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
@@ -14,7 +14,8 @@ INC=-I../SipParser -I../SipPlatform
 
 all: libserverplatform.a
 
-LIB_OBJ=ServerMain.o ServerSignal.o
+LIB_OBJ=ServerMain.o ServerSignal.o \
+	ServerThread.o MonitorThread.o
 
 libserverplatform.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)
