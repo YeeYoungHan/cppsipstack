@@ -7,11 +7,12 @@
 include ../Makefile.mk
 
 INC=-I../SipStack -I../SipParser -I../SipPlatform \
-	-I../XmlParser
+	-I../XmlParser -I../ServerPlatform
 LIB=-L../SipStack -lsipstack \
 	-L../SipParser -lsipparser \
 	-L../XmlParser -lxmlparser \
 	-L../SipPlatform -lsipplatform \
+	-L../ServerPlatform -lserverplatform \
 	-lssl -lpthread
 
 .SUFFIXES: .o .cpp
