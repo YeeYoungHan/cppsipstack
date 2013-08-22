@@ -21,10 +21,10 @@
 #include "SipServerSetup.h"
 #include "SipLoadBalancer.h"
 #include "SipLoadBalancerVersion.h"
-#include "ServerThread.h"
 #include "ServerUtility.h"
 #include "Log.h"
 #include "ServerService.h"
+#include "Monitor.h"
 
 /**
  * @ingroup SipLoadBalancer
@@ -85,7 +85,8 @@ int ServiceMain( )
 
 	if( gclsSetup.m_iMonitorPort > 0 )
 	{
-		StartServerThread();
+		gclsMonitor.m_iMonitorPort = gclsSetup.m_iMonitorPort;
+		StartMonitorServerThread( &gclsMonitor );
 	}
 
 	int iSecond = 0;

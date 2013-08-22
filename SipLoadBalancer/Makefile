@@ -24,7 +24,7 @@ all: SipLoadBalancer.exe
 SRV_OBJ=SipLoadBalancer.o SipServer.o \
 	SipServerSetup.o \
 	UserMap.o SipServerMap.o \
-  ServerThread.o MonitorThread.o
+  Monitor.o
 
 SipLoadBalancer.exe: $(SRV_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)
