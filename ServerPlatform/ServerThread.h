@@ -24,9 +24,5 @@
 
 // MonitorThread.cpp
 bool StartMonitorThread( Socket hSocket, const char * pszIp, int iPort, IMonitorCallBack * pclsCallBack );
-bool IsMonitorThreadRun();
-
-// ServerThread.cpp
-bool StartMonitorServerThread( IMonitorCallBack * pclsCallBack );
 
 #endif
