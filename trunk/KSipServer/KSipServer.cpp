@@ -204,4 +204,6 @@ int main( int argc, char * argv[] )
 	clsService.m_strVersion = KSIP_SERVER_VERSION;
 
 	ServerMain( argc, argv, clsService, ServiceMain );
+
+	return 0;
 }
