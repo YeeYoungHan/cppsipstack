@@ -131,8 +131,13 @@ public:
 	/** SIP transaction list 에 저장하지 않을 SIP User Agent 맵 */
 	CStringMap		 m_clsDenySipUserAgentMap;
 
+	/** SIP transaction list 에 저장할 SIP User Agent 맵 */
+	CStringMap		 m_clsAllowSipUserAgentMap;
+
 	bool Read( const char * pszFileName );
 	bool IsMonitorIp( const char * pszIp );
+
+	bool IsAllowUserAgent( const char * pszSipUserAgent );
 	bool IsDenyUserAgent( const char * pszSipUserAgent );
 };
 

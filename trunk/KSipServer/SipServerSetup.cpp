@@ -24,6 +24,28 @@
 
 CSipServerSetup gclsSetup;
 
+void InsertStringMap( CXmlElement * pclsElement, const char * pszTagName, const char * pszSubTagName, CStringMap & clsMap )
+{
+	CXmlElement * pclsClient;
+
+	pclsClient = pclsElement->SelectElement( pszTagName );
+	if( pclsClient )
+	{
+		XML_ELEMENT_LIST clsList;
+		XML_ELEMENT_LIST::iterator	itList;
+
+		if( pclsClient->SelectElementList( pszSubTagName, clsList ) )
+		{
+			for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+			{
+				if( itList->IsDataEmpty() ) continue;
+
+				clsMap.Insert( itList->GetData(), "" );
+			}
+		}
+	}
+}
+
 /**
  * @ingroup KSipServer
  * @brief 생성자
@@ -202,22 +224,8 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement = clsXml.SelectElement( "Security" );
 	if( pclsElement == NULL ) return false;
 
-	pclsClient = pclsElement->SelectElement( "DenySipUserAgentList" );
-	if( pclsClient )
-	{
-		XML_ELEMENT_LIST clsList;
-		XML_ELEMENT_LIST::iterator	itList;
-
-		if( pclsClient->SelectElementList( "SipUserAgent", clsList ) )
-		{
-			for( itList = clsList.begin(); itList != clsList.end(); ++itList )
-			{
-				if( itList->IsDataEmpty() ) continue;
-
-				m_clsDenySipUserAgentMap.Insert( itList->GetData(), "" );
-			}
-		}
-	}
+	InsertStringMap( pclsElement, "DenySipUserAgentList", "SipUserAgent", m_clsDenySipUserAgentMap );
+	InsertStringMap( pclsElement, "AllowSipUserAgentList", "SipUserAgent", m_clsAllowSipUserAgentMap );
 
 	return true;
 }
@@ -241,6 +249,14 @@ bool CSipServerSetup::IsMonitorIp( const char * pszIp )
 	}
 
 	return false;
+}
+
+bool CSipServerSetup::IsAllowUserAgent( const char * pszSipUserAgent )
+{
+	// 허용된 SIP UserAgent 자료구조가 저장되어 있지 않으면 모두 허용한다.
+	if( m_clsAllowSipUserAgentMap.GetCount() == 0 ) return true;
+
+	return m_clsAllowSipUserAgentMap.Select( pszSipUserAgent );
 }
 
 bool CSipServerSetup::IsDenyUserAgent( const char * pszSipUserAgent )

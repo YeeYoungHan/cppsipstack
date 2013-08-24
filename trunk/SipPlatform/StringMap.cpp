@@ -76,3 +76,19 @@ bool CStringMap::Select( const char * pszKey )
 
 	return bRes;
 }
+
+/**
+ * @ingroup SipPlatform
+ * @brief 문자열 맵 자료구조에 저장된 문자열 개수를 리턴한다.
+ * @returns 문자열 맵 자료구조에 저장된 문자열 개수를 리턴한다.
+ */
+int CStringMap::GetCount( )
+{
+	int iCount;
+
+	m_clsMutex.acquire();
+	iCount = m_clsMap.size();
+	m_clsMutex.release();
+
+	return iCount;
+}
