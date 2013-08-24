@@ -111,6 +111,28 @@ bool TestXml()
 		"<log folder=\"/usr/local/bin/log\" max_size=\"4321\"/>\n"
 		"</setup>\n" ) == false ) return false;
 
+	if( Test(
+		"<Setup>\r\n"
+		"  <Security>\r\n"
+		"    <DenySipUserAgentList>\r\n"
+		"	     <SipUserAgent>friendly-scanner</SipUserAgent>\r\n"
+		"    </DenySipUserAgentList>\r\n"
+		"    <AllowSipUserAgentList>\r\n"
+		"	     <SipUserAgent>friendly-scanner</SipUserAgent>\r\n"
+		"    </AllowSipUserAgentList>\r\n"
+		"  </Security>\r\n"
+		"</Setup>\r\n",
+		"<Setup>\n"
+		"<Security>\n"
+		"<DenySipUserAgentList>\n"
+		"<SipUserAgent>friendly-scanner</SipUserAgent>\n"
+		"</DenySipUserAgentList>\n"
+		"<AllowSipUserAgentList>\n"
+		"<SipUserAgent>friendly-scanner</SipUserAgent>\n"
+		"</AllowSipUserAgentList>\n"
+		"</Security>\n"
+		"</Setup>\n" ) == false ) return false;
+
 	const char * pszXml = "<userlist>\r\n"
 		"  <user id=\"1000\">\r\n"
 		"    <password>1234</password>\r\n"
