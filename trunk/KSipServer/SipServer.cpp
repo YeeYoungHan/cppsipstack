@@ -36,6 +36,7 @@ CSipUserAgent gclsUserAgent;
 
 #include "SipServerRegister.hpp"
 #include "SipServerUserAgent.hpp"
+#include "SipServerSecurity.hpp"
 
 CSipServer::CSipServer()
 {
@@ -56,7 +57,7 @@ bool CSipServer::Start( CSipStackSetup & clsSetup )
 	gclsSipServerMap.SetSipUserAgentRegisterInfo();
 
 	gclsUserAgent.m_pclsCallBack = this;
-	if( gclsUserAgent.Start( clsSetup ) == false ) return false;
+	if( gclsUserAgent.Start( clsSetup, this ) == false ) return false;
 
 	gclsSipStack.AddCallBack( this );
 

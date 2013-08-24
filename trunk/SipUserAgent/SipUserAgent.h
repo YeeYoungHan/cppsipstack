@@ -67,7 +67,7 @@ public:
 	bool DeleteRegisterInfo( CSipServerInfo & clsInfo );
 
 	// 로그인 관련
-	bool Start( CSipStackSetup & clsSetup );
+	bool Start( CSipStackSetup & clsSetup, ISipStackSecurityCallBack * pclsSecurityCallBack = NULL );
 	bool Stop( );
 
 	// 통화 관련

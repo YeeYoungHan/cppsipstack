@@ -133,6 +133,7 @@ public:
 
 	bool Read( const char * pszFileName );
 	bool IsMonitorIp( const char * pszIp );
+	bool IsDenyUserAgent( const char * pszSipUserAgent );
 };
 
 extern CSipServerSetup gclsSetup;

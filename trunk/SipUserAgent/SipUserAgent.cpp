@@ -193,11 +193,13 @@ void CSipUserAgent::DeRegister( )
  * @ingroup SipUserAgent
  * @brief SIP stack 을 시작하고 SIP 로그인 쓰레드를 시작한다.
  * @param clsSetup	SIP stack 설정 객체
+ * @param pclsSecurityCallBack	SIP stack 보안 callback 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CSipUserAgent::Start( CSipStackSetup & clsSetup )
+bool CSipUserAgent::Start( CSipStackSetup & clsSetup, ISipStackSecurityCallBack * pclsSecurityCallBack )
 {
 	gclsSipStack.AddCallBack( this );
+	gclsSipStack.SetSecurityCallBack( pclsSecurityCallBack );
 
 	if( gclsSipStack.Start( clsSetup ) == false ) return false;
 
