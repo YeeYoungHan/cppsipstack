@@ -61,10 +61,6 @@ typedef char int8_t;
 #define LINUX_64
 #endif
 
-#ifdef WIN32
-int gettimeofday( struct timeval *tv, struct timezone *tz );
-#endif
-
 #endif
 
 /**

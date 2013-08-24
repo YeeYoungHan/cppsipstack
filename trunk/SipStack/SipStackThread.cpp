@@ -18,6 +18,7 @@
 
 #include "SipStackThread.h"
 #include "SipDeleteQueue.h"
+#include "TimeUtility.h"
 
 time_t giTime = 0;
 
