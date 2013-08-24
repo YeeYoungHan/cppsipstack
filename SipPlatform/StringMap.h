@@ -37,6 +37,7 @@ public:
 
 	bool Insert( const char * pszKey, const char * pszValue );
 	bool Select( const char * pszKey );
+	int GetCount( );
 
 private:
 	CSipMutex	m_clsMutex;
