@@ -22,6 +22,7 @@
 #include "SdpMessage.h"
 #include "StringUtility.h"
 #include "TimeString.h"
+#include "TimeUtility.h"
 
 CSipStack	gclsSipStack;
 

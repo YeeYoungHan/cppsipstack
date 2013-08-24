@@ -22,6 +22,7 @@
 #include <stdarg.h>
 #include "Log.h"
 #include "Directory.h"
+#include "TimeUtility.h"
 
 #ifdef WIN32
 #include <time.h>
