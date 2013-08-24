@@ -26,6 +26,35 @@
 CSipServerSetup gclsSetup;
 
 /**
+ * @brief XML 에 저장된 element 리스트를 문자열 맵 자료구조에 저장한다.
+ * @param pclsElement		리스트를 저장한 XML element
+ * @param pszTagName		문자열 리스트 tag 이름
+ * @param pszSubTagName 문자열 리스트의 항목 tag 이름
+ * @param clsMap				문자열 맵 자료구조
+ */
+void InsertStringMap( CXmlElement * pclsElement, const char * pszTagName, const char * pszSubTagName, CStringMap & clsMap )
+{
+	CXmlElement * pclsClient;
+
+	pclsClient = pclsElement->SelectElement( pszTagName );
+	if( pclsClient )
+	{
+		XML_ELEMENT_LIST clsList;
+		XML_ELEMENT_LIST::iterator	itList;
+
+		if( pclsClient->SelectElementList( pszSubTagName, clsList ) )
+		{
+			for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+			{
+				if( itList->IsDataEmpty() ) continue;
+
+				clsMap.Insert( itList->GetData(), "" );
+			}
+		}
+	}
+}
+
+/**
  * @ingroup SipLoadBalancer
  * @brief 생성자
  */
@@ -110,44 +139,14 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	if( pclsElement ) 
 	{
 		pclsElement->SelectElementData( "Port", m_iMonitorPort );
-		pclsClient = pclsElement->SelectElement( "ClientIpList" );
-		if( pclsClient )
-		{
-			XML_ELEMENT_LIST clsList;
-			XML_ELEMENT_LIST::iterator	itList;
-
-			if( pclsClient->SelectElementList( "ClientIp", clsList ) )
-			{
-				for( itList = clsList.begin(); itList != clsList.end(); ++itList )
-				{
-					if( itList->IsDataEmpty() ) continue;
-
-					m_clsMonitorIpList.push_back( itList->GetData() );
-				}
-			}
-		}
+		InsertStringMap( pclsElement, "ClientIpList", "ClientIp", m_clsMonitorIpMap );
 	}
 
 	// 보안
 	pclsElement = clsXml.SelectElement( "Security" );
 	if( pclsElement )
 	{
-		pclsClient = pclsElement->SelectElement( "DenySipUserAgentList" );
-		if( pclsClient )
-		{
-			XML_ELEMENT_LIST clsList;
-			XML_ELEMENT_LIST::iterator	itList;
-
-			if( pclsClient->SelectElementList( "SipUserAgent", clsList ) )
-			{
-				for( itList = clsList.begin(); itList != clsList.end(); ++itList )
-				{
-					if( itList->IsDataEmpty() ) continue;
-
-					m_clsDenySipUserAgentMap.Insert( itList->GetData(), "" );
-				}
-			}
-		}
+		InsertStringMap( pclsElement, "DenySipUserAgentList", "SipUserAgent", m_clsDenySipUserAgentMap );
 	}
 
 	m_strFileName = pszFileName;
@@ -227,19 +226,14 @@ bool CSipServerSetup::ReadSipServer( CXmlElement & clsXml )
  */
 bool CSipServerSetup::IsMonitorIp( const char * pszIp )
 {
-	CLIENT_IP_LIST::iterator	itList;
-
-	for( itList = m_clsMonitorIpList.begin(); itList != m_clsMonitorIpList.end(); ++itList )
-	{
-		if( !strcmp( itList->c_str(), pszIp ) )
-		{
-			return true;
-		}
-	}
-
-	return false;
+	return m_clsMonitorIpMap.Select( pszIp );
 }
 
+/**
+ * @ingroup SipLoadBalancer
+ * @brief 설정파일이 수정되었는지 확인한다.
+ * @returns 설정파일이 수정되었으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServerSetup::IsChange()
 {
 	struct stat	clsStat;
@@ -252,6 +246,9 @@ bool CSipServerSetup::IsChange()
 	return false;
 }
 
+/**
+ * @brief 설정파일의 저장 시간을 저장한다.
+ */
 void CSipServerSetup::SetFileSizeTime( )
 {
 	struct stat	clsStat;

@@ -22,8 +22,6 @@
 #include "StringMap.h"
 #include "XmlElement.h"
 
-typedef std::list< std::string > CLIENT_IP_LIST;
-
 /**
  * @ingroup SipLoadBalancer
  * @brief SipLoadBalancer 설정 파일의 내용을 저장하는 클래스
@@ -74,7 +72,7 @@ public:
 	int					m_iMonitorPort;
 
 	/** 모니터링 TCP 포트에 접속 허용할 IP 주소 리스트 */
-	CLIENT_IP_LIST m_clsMonitorIpList;
+	CStringMap		 m_clsMonitorIpMap;
 
 	/** SIP transaction list 에 저장하지 않을 SIP User Agent 맵 */
 	CStringMap		 m_clsDenySipUserAgentMap;
