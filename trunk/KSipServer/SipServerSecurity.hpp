@@ -45,3 +45,9 @@ bool CSipServer::IsAllowIp( const char * pszIp )
 {
 	return true;
 }
+
+bool CSipServer::IsDenyIp( const char * pszIp )
+{
+	return false;
+}
+

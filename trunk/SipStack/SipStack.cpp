@@ -350,6 +350,7 @@ bool CSipStack::RecvSipMessage( int iThreadId, const char * pszBuf, int iBufLen,
 
 		if( m_pclsSecurityCallBack->IsDenyUserAgent( pszUserAgent ) ||
 				m_pclsSecurityCallBack->IsAllowUserAgent( pszUserAgent ) == false ||
+				m_pclsSecurityCallBack->IsDenyIp( pszIp ) ||
 				m_pclsSecurityCallBack->IsAllowIp( pszIp ) == false )
 		{
 			bDelete = true;

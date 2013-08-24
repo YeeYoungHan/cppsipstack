@@ -134,11 +134,16 @@ public:
 	/** SIP transaction list 에 저장할 SIP User Agent 맵 */
 	CStringMap		 m_clsAllowSipUserAgentMap;
 
+	/** 로그인을 허용하는 클라이언트 IP 주소 맵 */
+	CStringMap		 m_clsAllowClientIpMap;
+
 	bool Read( const char * pszFileName );
 	bool IsMonitorIp( const char * pszIp );
 
 	bool IsAllowUserAgent( const char * pszSipUserAgent );
 	bool IsDenyUserAgent( const char * pszSipUserAgent );
+
+	bool IsAllowClientIp( const char * pszClientIp );
 };
 
 extern CSipServerSetup gclsSetup;

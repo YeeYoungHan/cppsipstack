@@ -59,6 +59,7 @@ public:
 	virtual bool IsAllowUserAgent( const char * pszSipUserAgent );
 	virtual bool IsDenyUserAgent( const char * pszSipUserAgent );
 	virtual bool IsAllowIp( const char * pszIp );
+	virtual bool IsDenyIp( const char * pszIp );
 	
 private:
 	CSipMutex	m_clsMutex;
