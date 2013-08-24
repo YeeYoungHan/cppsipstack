@@ -29,8 +29,6 @@ enum EDbType
 	E_DT_MYSQL
 };
 
-typedef std::list< std::string > CLIENT_IP_LIST;
-
 /**
  * @ingroup KSipServer
  * @brief KSipServer 설정 파일의 내용을 저장하는 클래스
@@ -125,17 +123,17 @@ public:
 	/** 모니터링 TCP 포트 번호 */
 	int					m_iMonitorPort;
 
-	/** 모니터링 TCP 포트에 접속 허용할 IP 주소 리스트 */
-	CLIENT_IP_LIST m_clsMonitorIpList;
+	/** 모니터링 TCP 포트에 접속 허용할 IP 주소 맵 */
+	CStringMap	m_clsMonitorIpMap;
 
 	/** SIP transaction list 에 저장하지 않을 SIP User Agent 맵 */
-	CStringMap		 m_clsDenySipUserAgentMap;
+	CStringMap	m_clsDenySipUserAgentMap;
 
 	/** SIP transaction list 에 저장할 SIP User Agent 맵 */
-	CStringMap		 m_clsAllowSipUserAgentMap;
+	CStringMap	m_clsAllowSipUserAgentMap;
 
 	/** 로그인을 허용하는 클라이언트 IP 주소 맵 */
-	CStringMap		 m_clsAllowClientIpMap;
+	CStringMap	m_clsAllowClientIpMap;
 
 	bool Read( const char * pszFileName );
 	bool IsMonitorIp( const char * pszIp );
