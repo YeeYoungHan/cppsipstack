@@ -51,6 +51,7 @@ public:
 	bool Start( CSipStackSetup & clsSetup );
 	bool Stop( );
 	bool AddCallBack( ISipStackCallBack * pclsCallBack );
+	void SetSecurityCallBack( ISipStackSecurityCallBack * pclsSecurityCallBack );
 
 	bool SendSipMessage( CSipMessage * pclsMessage );
 	bool RecvSipMessage( int iThreadId, CSipMessage * pclsMessage );
@@ -105,6 +106,7 @@ private:
 	CSipNISTList	m_clsNIST;
 
 	SIP_STACK_CALLBACK_LIST	m_clsCallBackList;
+	ISipStackSecurityCallBack * m_pclsSecurityCallBack;
 
 	bool _Stop( );
 	void CheckSipMessage( CSipMessage * pclsMessage );

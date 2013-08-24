@@ -58,4 +58,15 @@ public:
 	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage ) = 0;
 };
 
+class ISipStackSecurityCallBack
+{
+public:
+	virtual ~ISipStackSecurityCallBack(){};
+
+	virtual bool IsAllowUserAgent( const char * pszSipUserAgent ) = 0;
+	virtual bool IsDenyUserAgent( const char * pszSipUserAgent ) = 0;
+
+	virtual bool IsAllowIp( const char * pszIp ) = 0;
+};
+
 #endif
