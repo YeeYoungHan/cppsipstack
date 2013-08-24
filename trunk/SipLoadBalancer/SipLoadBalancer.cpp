@@ -71,8 +71,6 @@ int ServiceMain( )
 	clsSetup.m_strUserAgent = "SipLoadBalancer_";
 	clsSetup.m_strUserAgent.append( SIP_LOAD_BALANCER_VERSION );
 
-	clsSetup.m_clsDenySipUserAgentMap = gclsSetup.m_clsDenySipUserAgentMap;
-
 	Fork( true );
 	SetCoreDumpEnable();
 	ServerSignal();

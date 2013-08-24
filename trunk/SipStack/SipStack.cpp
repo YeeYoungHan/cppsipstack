@@ -45,6 +45,8 @@ CSipStack::CSipStack()
 	m_clsNICT.SetSipStack( this );
 	m_clsIST.SetSipStack( this );
 	m_clsNIST.SetSipStack( this );
+
+	m_pclsSecurityCallBack = NULL;
 }
 
 /**
@@ -188,6 +190,11 @@ bool CSipStack::AddCallBack( ISipStackCallBack * pclsCallBack )
 	}
 
 	return true;
+}
+
+void CSipStack::SetSecurityCallBack( ISipStackSecurityCallBack * pclsSecurityCallBack )
+{
+	m_pclsSecurityCallBack = pclsSecurityCallBack;
 }
 
 /**
@@ -336,10 +343,23 @@ bool CSipStack::RecvSipMessage( int iThreadId, const char * pszBuf, int iBufLen,
 		return false;
 	}
 
-	if( m_clsSetup.IsDenySipUserAgent( pclsMessage->m_strUserAgent.c_str() ) )
+	if( m_pclsSecurityCallBack )
 	{
-		delete pclsMessage;
-		return false;
+		const char * pszUserAgent = pclsMessage->m_strUserAgent.c_str();
+		bool bDelete = false;
+
+		if( m_pclsSecurityCallBack->IsDenyUserAgent( pszUserAgent ) ||
+				m_pclsSecurityCallBack->IsAllowUserAgent( pszUserAgent ) == false ||
+				m_pclsSecurityCallBack->IsAllowIp( pszIp ) == false )
+		{
+			bDelete = true;
+		}
+
+		if( bDelete )
+		{
+			delete pclsMessage;
+			return false;
+		}
 	}
 
 	if( pclsMessage->IsRequest() )

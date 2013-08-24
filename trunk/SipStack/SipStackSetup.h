@@ -19,8 +19,6 @@
 #ifndef _SIP_STACK_SETUP_H_
 #define _SIP_STACK_SETUP_H_
 
-#include "StringMap.h"
-
 /**
  * @ingroup SipStack
  * @brief SIP stack 설정 클래스
@@ -33,7 +31,6 @@ public:
 
 	bool Check( );
 	int GetLocalPort( ESipTransport eTransport );
-	bool IsDenySipUserAgent( const char * pszSipUserAgent );
 
 	/** SIP 메시지에 저장되는 로컬 IP 주소 */
 	std::string m_strLocalIp;
@@ -70,9 +67,6 @@ public:
 
 	/** SIP 메시지를 생성할 때에 compact form 으로 생성할지 설정 */
 	bool				m_bUseSipCompactForm;
-
-	/** SIP 메시지를 SIP transaction 에 포함하지 않을 SIP User Agent 정보 저장 자료구조 */
-	CStringMap	m_clsDenySipUserAgentMap;
 };
 
 #endif
