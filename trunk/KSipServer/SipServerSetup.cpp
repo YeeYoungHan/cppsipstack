@@ -24,6 +24,13 @@
 
 CSipServerSetup gclsSetup;
 
+/**
+ * @brief XML 에 저장된 element 리스트를 문자열 맵 자료구조에 저장한다.
+ * @param pclsElement		리스트를 저장한 XML element
+ * @param pszTagName		문자열 리스트 tag 이름
+ * @param pszSubTagName 문자열 리스트의 항목 tag 이름
+ * @param clsMap				문자열 맵 자료구조
+ */
 void InsertStringMap( CXmlElement * pclsElement, const char * pszTagName, const char * pszSubTagName, CStringMap & clsMap )
 {
 	CXmlElement * pclsClient;
@@ -203,22 +210,8 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	if( pclsElement == NULL ) return false;
 
 	pclsElement->SelectElementData( "Port", m_iMonitorPort );
-	pclsClient = pclsElement->SelectElement( "ClientIpList" );
-	if( pclsClient )
-	{
-		XML_ELEMENT_LIST clsList;
-		XML_ELEMENT_LIST::iterator	itList;
 
-		if( pclsClient->SelectElementList( "ClientIp", clsList ) )
-		{
-			for( itList = clsList.begin(); itList != clsList.end(); ++itList )
-			{
-				if( itList->IsDataEmpty() ) continue;
-
-				m_clsMonitorIpList.push_back( itList->GetData() );
-			}
-		}
-	}
+	InsertStringMap( pclsElement, "ClientIpList", "ClientIp", m_clsMonitorIpMap );
 
 	// 보안
 	pclsElement = clsXml.SelectElement( "Security" );
@@ -239,17 +232,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
  */
 bool CSipServerSetup::IsMonitorIp( const char * pszIp )
 {
-	CLIENT_IP_LIST::iterator	itList;
-
-	for( itList = m_clsMonitorIpList.begin(); itList != m_clsMonitorIpList.end(); ++itList )
-	{
-		if( !strcmp( itList->c_str(), pszIp ) )
-		{
-			return true;
-		}
-	}
-
-	return false;
+	return m_clsMonitorIpMap.Select( pszIp );
 }
 
 bool CSipServerSetup::IsAllowUserAgent( const char * pszSipUserAgent )
