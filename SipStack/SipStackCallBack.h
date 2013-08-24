@@ -87,6 +87,13 @@ public:
 	 * @returns SIP stack 에서 허용하는 IP 주소이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
 	 */
 	virtual bool IsAllowIp( const char * pszIp ) = 0;
+
+	/**
+	 * @brief SIP stack 에서 허용하지 않는 IP 주소인가?
+	 * @param pszIp 클라이언트 IP 주소
+	 * @returns SIP stack 에서 허용하지 않는 IP 주소이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+	 */
+	virtual bool IsDenyIp( const char * pszIp ) = 0;
 };
 
 #endif

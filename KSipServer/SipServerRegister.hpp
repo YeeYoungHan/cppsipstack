@@ -160,6 +160,12 @@ bool CSipServer::RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage )
 		}
 	}
 
+	if( pclsMessage->m_iExpires > 0 && gclsSetup.IsAllowClientIp( pclsMessage->m_strClientIp.c_str() ) == false )
+	{
+		SendResponse( pclsMessage, SIP_FORBIDDEN );
+		return true;
+	}
+
 	SIP_CREDENTIAL_LIST::iterator	itCL = pclsMessage->m_clsAuthorizationList.begin();
 
 	if( itCL == pclsMessage->m_clsAuthorizationList.end() )

@@ -226,6 +226,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 
 	InsertStringMap( pclsElement, "DenySipUserAgentList", "SipUserAgent", m_clsDenySipUserAgentMap );
 	InsertStringMap( pclsElement, "AllowSipUserAgentList", "SipUserAgent", m_clsAllowSipUserAgentMap );
+	InsertStringMap( pclsElement, "AllowClientIpList", "Ip", m_clsAllowClientIpMap );
 
 	return true;
 }
@@ -262,4 +263,11 @@ bool CSipServerSetup::IsAllowUserAgent( const char * pszSipUserAgent )
 bool CSipServerSetup::IsDenyUserAgent( const char * pszSipUserAgent )
 {
 	return m_clsDenySipUserAgentMap.Select( pszSipUserAgent );
+}
+
+bool CSipServerSetup::IsAllowClientIp( const char * pszClientIp )
+{
+	if( m_clsAllowClientIpMap.GetCount() == 0 ) return true;
+
+	return m_clsAllowClientIpMap.Select( pszClientIp );
 }
