@@ -58,14 +58,34 @@ public:
 	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage ) = 0;
 };
 
+/**
+ * @ingroup SipStack
+ * @brief SIP stack 보안 callback 인터페이스
+ */
 class ISipStackSecurityCallBack
 {
 public:
 	virtual ~ISipStackSecurityCallBack(){};
 
+	/**
+	 * @brief SIP stack 에서 허용하는 SIP User Agent 인가?
+	 * @param pszSipUserAgent SIP UserAgent 헤더
+	 * @returns SIP stack 에서 허용하는 SIP User Agent 이면 true 를 리턴하고 그렇지 않으면 false 한다.
+	 */
 	virtual bool IsAllowUserAgent( const char * pszSipUserAgent ) = 0;
+
+	/**
+	 * @brief SIP stack 에서 허용하지 않는 SIP User Agent 인가?
+	 * @param pszSipUserAgent SIP UserAgent 헤더
+	 * @returns SIP stack 에서 허용하지 않는 SIP User Agent 이면 true 를 리턴하고 그렇지 않으면 false 한다.
+	 */
 	virtual bool IsDenyUserAgent( const char * pszSipUserAgent ) = 0;
 
+	/**
+	 * @brief SIP stack 에서 허용하는 IP 주소인가?
+	 * @param pszIp 클라이언트 IP 주소
+	 * @returns SIP stack 에서 허용하는 IP 주소이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+	 */
 	virtual bool IsAllowIp( const char * pszIp ) = 0;
 };
 

@@ -16,35 +16,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _MONITOR_CALLBACK_H_
-#define _MONITOR_CALLBACK_H_
-
-#include <string>
-
-/**
- * @brief 서버 모니터링 요청 이벤트 callback 인터페이스
- */
-class IMonitorCallBack
+bool CSipServer::IsAllowUserAgent( const char * pszSipUserAgent )
 {
-public:
-	virtual ~IMonitorCallBack(){};
+	return true;
+}
 
-	/**
-	 * @brief 서버 모니터링 요청 명령 수신 이벤트 핸들러
-	 * @param pszRequest	요청 명령 문자열
-	 * @param strResponse 응답 문자열 저장 변수
-	 * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
-	 */
-	virtual bool RecvRequest( const char * pszRequest, std::string & strResponse ) = 0;
+bool CSipServer::IsDenyUserAgent( const char * pszSipUserAgent )
+{
+	return gclsSetup.IsDenyUserAgent( pszSipUserAgent );
+}
 
-	/**
-	 * @brief 허용된 클라이언트인가?
-	 * @param pszIp 클라이언트 IP 주소
-	 * @returns 허용된 클라이언트이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
-	 */
-	virtual bool IsMonitorIp( const char * pszIp ) = 0;
-
-	int m_iMonitorPort;
-};
-
-#endif
+bool CSipServer::IsAllowIp( const char * pszIp )
+{
+	return true;
+}

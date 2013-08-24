@@ -21,6 +21,9 @@
 
 #include "MonitorCallBack.h"
 
+/**
+ * @brief 서버 자료구조 모니터링 callback 클래스
+ */
 class CMonitor : public IMonitorCallBack
 {
 public:

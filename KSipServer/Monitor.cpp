@@ -36,6 +36,12 @@ CMonitor::~CMonitor()
 {
 }
 
+/**
+ * @brief 서버 모니터링 요청 명령 수신 이벤트 핸들러
+ * @param pszRequest	요청 명령 문자열
+ * @param strResponse 응답 문자열 저장 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CMonitor::RecvRequest( const char * pszRequest, std::string & strResponse )
 {
 	if( !strcmp( pszRequest, MC_CALL_MAP_LIST ) )
@@ -70,6 +76,11 @@ bool CMonitor::RecvRequest( const char * pszRequest, std::string & strResponse )
 	return true;
 }
 
+/**
+ * @brief 허용된 클라이언트인가?
+ * @param pszIp 클라이언트 IP 주소
+ * @returns 허용된 클라이언트이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CMonitor::IsMonitorIp( const char * pszIp )
 {
 	return gclsSetup.IsMonitorIp( pszIp );

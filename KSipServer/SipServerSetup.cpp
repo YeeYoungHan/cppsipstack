@@ -242,3 +242,8 @@ bool CSipServerSetup::IsMonitorIp( const char * pszIp )
 
 	return false;
 }
+
+bool CSipServerSetup::IsDenyUserAgent( const char * pszSipUserAgent )
+{
+	return m_clsDenySipUserAgentMap.Select( pszSipUserAgent );
+}

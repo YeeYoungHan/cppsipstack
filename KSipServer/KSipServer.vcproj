@@ -417,6 +417,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipServerSecurity.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipServerUserAgent.hpp"
 				>
 			</File>
