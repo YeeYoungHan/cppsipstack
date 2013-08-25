@@ -29,6 +29,7 @@ bool TestSipVia();
 bool TestSipMessage();
 bool TestSdp();
 bool TestXml();
+bool TestXml2();
 bool TestInt();
 bool TestMd5();
 bool TestString();
@@ -54,6 +55,7 @@ int main( int argc, char * argv[] )
 	if( TestSipMessage() == false ) goto FUNC_END;
 	if( TestSdp() == false ) goto FUNC_END;
 	if( TestXml() == false ) goto FUNC_END;
+	if( TestXml2() == false ) goto FUNC_END;
 
 	printf( "All test is O.K.\n" );
 
