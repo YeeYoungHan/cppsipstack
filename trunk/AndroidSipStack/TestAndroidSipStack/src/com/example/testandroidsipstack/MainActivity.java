@@ -261,7 +261,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 		//    : 멀티쓰레드 환경이므로 랜덤하게 발생한다.
 		Send( "log", "EventCallEnd" );
 	}
-	
+
 	void Send( String strCommand, String strData )
   {
   	Bundle b = new Bundle();
