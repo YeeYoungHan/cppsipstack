@@ -82,7 +82,7 @@ CSipServerSetup::~CSipServerSetup()
  */
 bool CSipServerSetup::Read( const char * pszFileName )
 {
-	CXmlElement clsXml, * pclsElement, * pclsClient;
+	CXmlElement clsXml, * pclsElement;
 
 	if( clsXml.ParseFile( pszFileName ) == false ) return false;
 
@@ -117,25 +117,6 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	if( pclsElement == NULL ) return false;
 
 	pclsElement->SelectElementData( "Folder", m_strLogFolder );
-	pclsClient = pclsElement->SelectElement( "Level" );
-	if( pclsClient )
-	{
-		bool bTemp;
-
-		pclsClient->SelectAttribute( "Debug", bTemp );
-		if( bTemp ) m_iLogLevel |= LOG_DEBUG;
-
-		pclsClient->SelectAttribute( "Info", bTemp );
-		if( bTemp ) m_iLogLevel |= LOG_INFO;
-
-		pclsClient->SelectAttribute( "Network", bTemp );
-		if( bTemp ) m_iLogLevel |= LOG_NETWORK;
-
-		pclsClient->SelectAttribute( "Sql", bTemp );
-		if( bTemp ) m_iLogLevel |= LOG_SQL;
-	}
-
-	pclsElement->SelectElementData( "MaxSize", m_iLogMaxSize );
 
 	// XML 폴더
 	pclsElement = clsXml.SelectElement( "XmlFolder" );
@@ -247,6 +228,36 @@ bool CSipServerSetup::Read( )
 bool CSipServerSetup::Read( CXmlElement & clsXml )
 {
 	CXmlElement * pclsElement;
+
+	// 로그
+	pclsElement = clsXml.SelectElement( "Log" );
+	if( pclsElement ) 
+	{
+		m_iLogLevel = 0;
+
+		CXmlElement * pclsClient = pclsElement->SelectElement( "Level" );
+		if( pclsClient )
+		{
+			bool bTemp;
+
+			pclsClient->SelectAttribute( "Debug", bTemp );
+			if( bTemp ) m_iLogLevel |= LOG_DEBUG;
+
+			pclsClient->SelectAttribute( "Info", bTemp );
+			if( bTemp ) m_iLogLevel |= LOG_INFO;
+
+			pclsClient->SelectAttribute( "Network", bTemp );
+			if( bTemp ) m_iLogLevel |= LOG_NETWORK;
+
+			pclsClient->SelectAttribute( "Sql", bTemp );
+			if( bTemp ) m_iLogLevel |= LOG_SQL;
+		}
+
+		pclsElement->SelectElementData( "MaxSize", m_iLogMaxSize );
+
+		CLog::SetLevel( m_iLogLevel );
+		CLog::SetMaxLogSize( m_iLogMaxSize );
+	}
 
 	// 모니터링
 	m_clsMonitorIpMap.DeleteAll();
