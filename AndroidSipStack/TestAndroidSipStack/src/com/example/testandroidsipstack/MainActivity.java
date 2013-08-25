@@ -55,7 +55,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 		setContentView( R.layout.activity_main );
 
 		Setup.Get( this );
-	
+
 		m_txtPhoneNumber = (EditText)findViewById( R.id.txtPhoneNumber );
 		m_txtLog = (TextView)findViewById( R.id.txtLog );
 		
@@ -248,15 +248,15 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	@Override
 	public void EventCallStart( String strCallId, SipCallRtp clsRtp )
 	{
-		Send( "log", "EventCallStart" );
 		Send( "start_call", "" );
+		Send( "log", "EventCallStart" );
 	}
 
 	@Override
 	public void EventCallEnd( String strCallId, int iSipStatus )
 	{
-		Send( "log", "EventCallEnd" );
 		Send( "stop_call", "" );
+		Send( "log", "EventCallEnd" );
 	}
 	
 	void Send( String strCommand, String strData )
