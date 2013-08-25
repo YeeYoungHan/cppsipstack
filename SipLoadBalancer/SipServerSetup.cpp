@@ -81,7 +81,7 @@ CSipServerSetup::~CSipServerSetup()
  */
 bool CSipServerSetup::Read( const char * pszFileName )
 {
-	CXmlElement clsXml, * pclsElement, * pclsClient;
+	CXmlElement clsXml, * pclsElement;
 
 	if( clsXml.ParseFile( pszFileName ) == false ) return false;
 
@@ -114,40 +114,15 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	}
 
 	pclsElement->SelectElementData( "Folder", m_strLogFolder );
-	pclsClient = pclsElement->SelectElement( "Level" );
-	if( pclsClient )
-	{
-		bool bTemp;
-
-		pclsClient->SelectAttribute( "Debug", bTemp );
-		if( bTemp ) m_iLogLevel |= LOG_DEBUG;
-
-		pclsClient->SelectAttribute( "Info", bTemp );
-		if( bTemp ) m_iLogLevel |= LOG_INFO;
-
-		pclsClient->SelectAttribute( "Network", bTemp );
-		if( bTemp ) m_iLogLevel |= LOG_NETWORK;
-
-		pclsClient->SelectAttribute( "Sql", bTemp );
-		if( bTemp ) m_iLogLevel |= LOG_SQL;
-	}
-
-	pclsElement->SelectElementData( "MaxSize", m_iLogMaxSize );
 
 	// 모니터링
 	pclsElement = clsXml.SelectElement( "Monitor" );
 	if( pclsElement ) 
 	{
 		pclsElement->SelectElementData( "Port", m_iMonitorPort );
-		InsertStringMap( pclsElement, "ClientIpList", "ClientIp", m_clsMonitorIpMap );
 	}
 
-	// 보안
-	pclsElement = clsXml.SelectElement( "Security" );
-	if( pclsElement )
-	{
-		InsertStringMap( pclsElement, "DenySipUserAgentList", "SipUserAgent", m_clsDenySipUserAgentMap );
-	}
+	Read( clsXml );
 
 	m_strFileName = pszFileName;
 	SetFileSizeTime();
@@ -157,16 +132,80 @@ bool CSipServerSetup::Read( const char * pszFileName )
 
 /**
  * @ingroup SipLoadBalancer
- * @brief 설정 파일에서 SipServer 정보를 읽어서 SipServerMap 에 저장한다.
+ * @brief 설정 파일에서 실시간으로 수정 가능한 항목을 읽는다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CSipServerSetup::ReadSipServer( )
+bool CSipServerSetup::Read( )
 {
 	CXmlElement clsXml;
 
 	if( clsXml.ParseFile( m_strFileName.c_str() ) == false ) return false;
+	if( ReadSipServer( clsXml ) == false ) return false;
+	if( Read( clsXml ) == false ) return false;
 
-	return ReadSipServer( clsXml );
+	SetFileSizeTime();
+
+	return true;
+}
+
+/**
+ * @ingroup SipLoadBalancer
+ * @brief 설정 파일에서 SIP 서버 리스트를 제외한 실시간으로 수정 가능한 항목을 읽는다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipServerSetup::Read( CXmlElement & clsXml )
+{
+	CXmlElement * pclsElement;
+
+	// 로그
+	pclsElement = clsXml.SelectElement( "Log" );
+	if( pclsElement ) 
+	{
+		m_iLogLevel = 0;
+
+		CXmlElement * pclsClient = pclsElement->SelectElement( "Level" );
+		if( pclsClient )
+		{
+			bool bTemp;
+
+			pclsClient->SelectAttribute( "Debug", bTemp );
+			if( bTemp ) m_iLogLevel |= LOG_DEBUG;
+
+			pclsClient->SelectAttribute( "Info", bTemp );
+			if( bTemp ) m_iLogLevel |= LOG_INFO;
+
+			pclsClient->SelectAttribute( "Network", bTemp );
+			if( bTemp ) m_iLogLevel |= LOG_NETWORK;
+
+			pclsClient->SelectAttribute( "Sql", bTemp );
+			if( bTemp ) m_iLogLevel |= LOG_SQL;
+		}
+
+		pclsElement->SelectElementData( "MaxSize", m_iLogMaxSize );
+
+		CLog::SetLevel( m_iLogLevel );
+		CLog::SetMaxLogSize( m_iLogMaxSize );
+	}
+
+	// 모니터링
+	m_clsMonitorIpMap.DeleteAll();
+
+	pclsElement = clsXml.SelectElement( "Monitor" );
+	if( pclsElement ) 
+	{
+		InsertStringMap( pclsElement, "ClientIpList", "ClientIp", m_clsMonitorIpMap );
+	}
+
+	// 보안
+	m_clsDenySipUserAgentMap.DeleteAll();
+
+	pclsElement = clsXml.SelectElement( "Security" );
+	if( pclsElement )
+	{
+		InsertStringMap( pclsElement, "DenySipUserAgentList", "SipUserAgent", m_clsDenySipUserAgentMap );
+	}
+
+	return true;
 }
 
 /**
@@ -212,8 +251,6 @@ bool CSipServerSetup::ReadSipServer( CXmlElement & clsXml )
 	}
 
 	gclsSipServerMap.DeleteIfSet();
-
-	SetFileSizeTime();
 
 	return true;
 }
