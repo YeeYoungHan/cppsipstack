@@ -18,9 +18,9 @@
 
 #include "KSipServer.h"
 #include "SipServerSetup.h"
-#include "XmlElement.h"
 #include "Log.h"
 #include <string.h>
+#include <sys/stat.h>
 
 CSipServerSetup gclsSetup;
 
@@ -207,19 +207,68 @@ bool CSipServerSetup::Read( const char * pszFileName )
 
 	// 모니터링
 	pclsElement = clsXml.SelectElement( "Monitor" );
-	if( pclsElement == NULL ) return false;
+	if( pclsElement )
+	{
+		pclsElement->SelectElementData( "Port", m_iMonitorPort );
+	}
 
-	pclsElement->SelectElementData( "Port", m_iMonitorPort );
+	Read( clsXml );
 
-	InsertStringMap( pclsElement, "ClientIpList", "ClientIp", m_clsMonitorIpMap );
+	m_strFileName = pszFileName;
+	SetFileSizeTime();
+
+	return true;
+}
+
+/**
+ * @ingroup KSipServer
+ * @brief 수정된 설정 파일을 읽는다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipServerSetup::Read( )
+{
+	if( m_strFileName.length() == 0 ) return false;
+
+	CXmlElement clsXml;
+
+	if( clsXml.ParseFile( m_strFileName.c_str() ) == false ) return false;
+
+	Read( clsXml );
+	SetFileSizeTime();
+
+	return true;
+}
+
+/**
+ * @brief 설정 파일의 정보 중에서 실시간으로 변경 가능한 항목을 다시 저장한다.
+ * @param clsXml 설정 파일의 내용을 저장한 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipServerSetup::Read( CXmlElement & clsXml )
+{
+	CXmlElement * pclsElement;
+
+	// 모니터링
+	m_clsMonitorIpMap.DeleteAll();
+
+	pclsElement = clsXml.SelectElement( "Monitor" );
+	if( pclsElement )
+	{
+		InsertStringMap( pclsElement, "ClientIpList", "ClientIp", m_clsMonitorIpMap );
+	}
 
 	// 보안
-	pclsElement = clsXml.SelectElement( "Security" );
-	if( pclsElement == NULL ) return false;
+	m_clsDenySipUserAgentMap.DeleteAll();
+	m_clsAllowSipUserAgentMap.DeleteAll();
+	m_clsAllowClientIpMap.DeleteAll();
 
-	InsertStringMap( pclsElement, "DenySipUserAgentList", "SipUserAgent", m_clsDenySipUserAgentMap );
-	InsertStringMap( pclsElement, "AllowSipUserAgentList", "SipUserAgent", m_clsAllowSipUserAgentMap );
-	InsertStringMap( pclsElement, "AllowClientIpList", "Ip", m_clsAllowClientIpMap );
+	pclsElement = clsXml.SelectElement( "Security" );
+	if( pclsElement )
+	{
+		InsertStringMap( pclsElement, "DenySipUserAgentList", "SipUserAgent", m_clsDenySipUserAgentMap );
+		InsertStringMap( pclsElement, "AllowSipUserAgentList", "SipUserAgent", m_clsAllowSipUserAgentMap );
+		InsertStringMap( pclsElement, "AllowClientIpList", "Ip", m_clsAllowClientIpMap );
+	}
 
 	return true;
 }
@@ -235,6 +284,12 @@ bool CSipServerSetup::IsMonitorIp( const char * pszIp )
 	return m_clsMonitorIpMap.Select( pszIp );
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 허용된 SIP User-Agent 인지 검사한다.
+ * @param pszSipUserAgent SIP User-Agent 문자열
+ * @returns 허용된 SIP User-Agent 이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServerSetup::IsAllowUserAgent( const char * pszSipUserAgent )
 {
 	// 허용된 SIP UserAgent 자료구조가 저장되어 있지 않으면 모두 허용한다.
@@ -243,14 +298,59 @@ bool CSipServerSetup::IsAllowUserAgent( const char * pszSipUserAgent )
 	return m_clsAllowSipUserAgentMap.Select( pszSipUserAgent );
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 허용되지 않은 SIP User-Agent 인지 검사한다.
+ * @param pszSipUserAgent SIP User-Agent 문자열
+ * @returns 허용되지 않은 SIP User-Agent 이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServerSetup::IsDenyUserAgent( const char * pszSipUserAgent )
 {
 	return m_clsDenySipUserAgentMap.Select( pszSipUserAgent );
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 허용된 SIP 클라이언트 IP 주소인지 검사한다.
+ * @param pszClientIp SIP 클라이언트 IP 주소
+ * @returns 허용된 SIP 클라이언트 IP 주소이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServerSetup::IsAllowClientIp( const char * pszClientIp )
 {
+	// 허용된 클라이언트 IP 주소가 저장되어 있지 않으면 모두 허용한다.
 	if( m_clsAllowClientIpMap.GetCount() == 0 ) return true;
 
 	return m_clsAllowClientIpMap.Select( pszClientIp );
+}
+
+/**
+ * @ingroup KSipServer
+ * @brief 설정파일이 수정되었는지 확인한다.
+ * @returns 설정파일이 수정되었으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipServerSetup::IsChange()
+{
+	struct stat	clsStat;
+
+	if( stat( m_strFileName.c_str(), &clsStat ) == 0 )
+	{
+		if( m_iFileSize != clsStat.st_size || m_iFileTime != clsStat.st_mtime ) return true;
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup KSipServer
+ * @brief 설정파일의 저장 시간을 저장한다.
+ */
+void CSipServerSetup::SetFileSizeTime( )
+{
+	struct stat	clsStat;
+
+	if( stat( m_strFileName.c_str(), &clsStat ) == 0 )
+	{
+		m_iFileSize = clsStat.st_size;
+		m_iFileTime = clsStat.st_mtime;
+	}
 }

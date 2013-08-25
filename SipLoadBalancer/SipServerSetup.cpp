@@ -247,6 +247,7 @@ bool CSipServerSetup::IsChange()
 }
 
 /**
+ * @ingroup SipLoadBalancer
  * @brief 설정파일의 저장 시간을 저장한다.
  */
 void CSipServerSetup::SetFileSizeTime( )

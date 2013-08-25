@@ -92,3 +92,14 @@ int CStringMap::GetCount( )
 
 	return iCount;
 }
+
+/**
+ * @ingroup SipPlatform
+ * @brief 자료구조에 저장된 데이터를 모두 삭제한다.
+ */
+void CStringMap::DeleteAll( )
+{
+	m_clsMutex.acquire();
+	m_clsMap.clear();
+	m_clsMutex.release();
+}
