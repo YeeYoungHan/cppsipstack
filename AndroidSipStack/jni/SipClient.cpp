@@ -43,7 +43,11 @@ void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 	iRet = gjVm->AttachCurrentThread( &env, NULL );
 #endif
 
-	AndroidDebugLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+	if( iRet != 0 )
+	{
+		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+		return;
+	}
 
 	joSipServerInfo = env->NewObject( gclsClass.m_jcSipServerInfo, gclsClass.m_jmSipServerInfoInit );
 	if( joSipServerInfo == NULL )
@@ -97,7 +101,11 @@ void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	iRet = gjVm->AttachCurrentThread( &env, NULL );
 #endif
 
-	AndroidDebugLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+	if( iRet != 0 )
+	{
+		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+		return;
+	}
 
 	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
@@ -163,7 +171,11 @@ void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
 	iRet = gjVm->AttachCurrentThread( &env, NULL );
 #endif
 
-	AndroidDebugLog( "%s AttachCurrentThread return(%d) (%p)", __FUNCTION__, iRet, env );
+	if( iRet != 0 )
+	{
+		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+		return;
+	}
 
 	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
@@ -215,7 +227,11 @@ void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 	iRet = gjVm->AttachCurrentThread( &env, NULL );
 #endif
 
-	AndroidDebugLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+	if( iRet != 0 )
+	{
+		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+		return;
+	}
 
 	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
@@ -265,7 +281,11 @@ void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
 	iRet = gjVm->AttachCurrentThread( &env, NULL );
 #endif
 
-	AndroidDebugLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+	if( iRet != 0 )
+	{
+		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+		return;
+	}
 
 	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
@@ -344,7 +364,11 @@ void CSipClient::EventCallBackThreadEnd( int iThreadId )
 	iRet = gjVm->AttachCurrentThread( &env, NULL );
 #endif
 
-	AndroidDebugLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+	if( iRet != 0 )
+	{
+		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+		return;
+	}
 
 	gjVm->DetachCurrentThread();
 }
