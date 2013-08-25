@@ -172,3 +172,7 @@ bool CSipServer::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 {
 	return false;
 }
+
+void CSipServer::CallThreadEnd( int iThreadId )
+{
+}

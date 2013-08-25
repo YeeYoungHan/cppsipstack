@@ -529,3 +529,8 @@ bool CSipServer::EventMessage( const char * pszFrom, const char * pszTo, CSipMes
 
 	return gclsUserAgent.SendSms( pszFrom, pszTo, pclsMessage->m_strBody.c_str(), &clsRoute );
 }
+
+void CSipServer::EventCallThreadEnd( int iThreadId )
+{
+
+}

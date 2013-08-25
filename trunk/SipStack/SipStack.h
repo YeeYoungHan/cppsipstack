@@ -63,6 +63,7 @@ public:
 	void RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	void RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 	void SendTimeout( int iThreadId, CSipMessage * pclsMessage );
+	void CallThreadEnd( int iThreadId );
 
 	void IncreateUdpThreadCount( int & iThreadId );
 	void DecreateUdpThreadCount();

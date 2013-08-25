@@ -92,6 +92,10 @@ bool CSipServer::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 	return false;
 }
 
+void CSipServer::CallThreadEnd( int iThreadId )
+{
+}
+
 #else
 
 /**
@@ -381,6 +385,10 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 bool CSipServer::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 {
 	return false;
+}
+
+void CSipServer::CallThreadEnd( int iThreadId )
+{
 }
 
 #endif

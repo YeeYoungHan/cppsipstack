@@ -158,6 +158,12 @@ public:
 	 */
 	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage ) = 0;
 
+	/**
+	 * @ingroup SipUserAgent
+	 * @brief SIP 메시지 수신 쓰레드가 종료됨을 알려주는 이벤트 핸들러
+	 * @param iThreadId UDP 쓰레드 번호
+	 */
+	virtual void EventCallThreadEnd( int iThreadId ) = 0;
 };
 
 #endif

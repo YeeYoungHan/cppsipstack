@@ -614,6 +614,16 @@ void CSipStack::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 	}
 }
 
+void CSipStack::CallThreadEnd( int iThreadId )
+{
+	SIP_STACK_CALLBACK_LIST::iterator itList;
+
+	for( itList = m_clsCallBackList.begin(); itList != m_clsCallBackList.end(); ++itList )
+	{
+		(*itList)->CallThreadEnd( iThreadId );
+	}
+}
+
 /**
  * @ingroup SipStack
  * @brief UDP SIP 메시지 수신 쓰레드 개수를 증가시킨다.

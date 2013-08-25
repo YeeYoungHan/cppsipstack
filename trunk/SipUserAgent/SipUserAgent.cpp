@@ -340,6 +340,11 @@ bool CSipUserAgent::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 	return false;
 }
 
+void CSipUserAgent::CallThreadEnd( int iThreadId )
+{
+	if( m_pclsCallBack ) m_pclsCallBack->EventCallThreadEnd( iThreadId );
+}
+
 /**
  * @ingroup SipUserAgent
  * @brief CSipDialog 에서 SIP INVITE 메시지를 생성하여 전송한다.

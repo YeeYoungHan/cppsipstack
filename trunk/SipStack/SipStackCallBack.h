@@ -56,6 +56,13 @@ public:
 	 * @returns SIP 응답 메시지를 처리하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
 	 */
 	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage ) = 0;
+
+	/**
+	 * @ingroup SipStack
+	 * @brief SIP 메시지 수신 쓰레드가 종료됨을 알려주는 이벤트 핸들러
+	 * @param iThreadId UDP 쓰레드 번호
+	 */
+	virtual void CallThreadEnd( int iThreadId ) = 0;
 };
 
 /**
