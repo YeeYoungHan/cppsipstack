@@ -42,6 +42,7 @@ public:
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage );
+	virtual void CallThreadEnd( int iThreadId );
 
 private:
 	// SipServerRegister.hpp

@@ -256,6 +256,9 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	public void EventCallEnd( String strCallId, int iSipStatus )
 	{
 		Send( "stop_call", "" );
+		
+		// QQQ: 로그가 EventCallRing 때문에 보이지 않는 경우가 있다.
+		//    : 멀티쓰레드 환경이므로 랜덤하게 발생한다.
 		Send( "log", "EventCallEnd" );
 	}
 	

@@ -374,3 +374,7 @@ bool CSipClient::EventMessage( const char * pszFrom, const char * pszTo, CSipMes
 {
 	return true;
 }
+
+void CSipClient::EventCallThreadEnd( int iThreadId )
+{
+}

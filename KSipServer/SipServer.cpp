@@ -98,6 +98,10 @@ bool CSipServer::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 	return false;
 }
 
+void CSipServer::CallThreadEnd( int iThreadId )
+{
+}
+
 /**
  * @ingroup KSipServer
  * @brief SIP 응답 메시지를 생성하여서 전송한다.
