@@ -382,4 +382,18 @@ bool CSipClient::EventMessage( const char * pszFrom, const char * pszTo, CSipMes
  */
 void CSipClient::EventCallBackThreadEnd( int iThreadId )
 {
+#ifndef ATTACH_SINGLE_THREAD
+	JNIEnv * env;
+	int iRet;
+
+#ifdef WIN32
+	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
+#else
+	iRet = gjVm->AttachCurrentThread( &env, NULL );
+#endif
+
+	AndroidDebugLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+
+	gjVm->DetachCurrentThread();
+#endif
 }
