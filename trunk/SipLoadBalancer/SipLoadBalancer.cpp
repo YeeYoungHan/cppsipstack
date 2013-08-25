@@ -40,8 +40,6 @@ int ServiceMain( )
 	}
 
 	CLog::SetDirectory( gclsSetup.m_strLogFolder.c_str() );
-	CLog::SetLevel( gclsSetup.m_iLogLevel );
-
 	CLog::Print( LOG_SYSTEM, "SipLoadBalancer is started ( version-%s %s %s )", SIP_LOAD_BALANCER_VERSION, __DATE__, __TIME__ );
 
 	CSipStackSetup clsSetup;
@@ -101,7 +99,7 @@ int ServiceMain( )
 
 		if( gclsSetup.IsChange() )
 		{
-			gclsSetup.ReadSipServer();
+			gclsSetup.Read();
 		}
 	}
 

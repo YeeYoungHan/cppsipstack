@@ -78,11 +78,12 @@ public:
 	CStringMap		 m_clsDenySipUserAgentMap;
 
 	bool Read( const char * pszFileName );
-	bool ReadSipServer( );
+	bool Read( );
 	bool IsMonitorIp( const char * pszIp );
 	bool IsChange();
 
 private:
+	bool Read( CXmlElement & clsXml );
 	bool ReadSipServer( CXmlElement & clsXml );
 	void SetFileSizeTime( );
 
