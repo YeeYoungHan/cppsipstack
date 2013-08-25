@@ -272,7 +272,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
   	m.setData( b );
   	m_clsHandler.sendMessage( m );
   }
-	
+
 	void SetButtonInit( )
 	{
 		m_btnStartCall.setEnabled( true );
