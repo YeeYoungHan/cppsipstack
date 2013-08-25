@@ -23,7 +23,6 @@
 #include <time.h>
 
 CSipClient gclsSipClient;
-static CSipMutex gclsMutex;
 extern JavaVM * gjVm;
 
 /**
@@ -37,10 +36,6 @@ void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 	JNIEnv * env;
 	int iRet;
 	jobject joSipServerInfo = NULL;
-
-#ifdef ATTACH_SINGLE_THREAD
-	gclsMutex.acquire();
-#endif
 
 #ifdef WIN32
 	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
@@ -67,11 +62,6 @@ void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 
 FUNC_END:
 	if( joSipServerInfo ) env->DeleteLocalRef( joSipServerInfo );
-
-#ifdef ATTACH_SINGLE_THREAD
-	gjVm->DetachCurrentThread();
-	gclsMutex.release();
-#endif
 }
 
 /**
@@ -100,10 +90,6 @@ void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 	JNIEnv * env;
 	int iRet;
-
-#ifdef ATTACH_SINGLE_THREAD
-	gclsMutex.acquire();
-#endif
 
 #ifdef WIN32
 	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
@@ -154,11 +140,6 @@ FUNC_END:
 	if( jstrFrom ) env->DeleteLocalRef( jstrFrom );
 	if( jstrTo ) env->DeleteLocalRef( jstrTo );
 	if( joSipCallRtp ) env->DeleteLocalRef( joSipCallRtp );
-
-#ifdef ATTACH_SINGLE_THREAD
-	gjVm->DetachCurrentThread();
-	gclsMutex.release();
-#endif
 }
 
 /**
@@ -175,10 +156,6 @@ void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
 
 	JNIEnv * env = NULL;
 	int iRet;
-
-#ifdef ATTACH_SINGLE_THREAD
-	gclsMutex.acquire();
-#endif
 
 #ifdef WIN32
 	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
@@ -216,11 +193,6 @@ void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
 FUNC_END:
 	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
 	if( joSipCallRtp ) env->DeleteLocalRef( joSipCallRtp );
-
-#ifdef ATTACH_SINGLE_THREAD
-	gjVm->DetachCurrentThread();
-	gclsMutex.release();
-#endif
 }
 
 /**
@@ -236,10 +208,6 @@ void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 	JNIEnv * env;
 	int iRet;
-
-#ifdef ATTACH_SINGLE_THREAD
-	gclsMutex.acquire();
-#endif
 
 #ifdef WIN32
 	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
@@ -277,11 +245,6 @@ void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 FUNC_END:
 	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
 	if( joSipCallRtp ) env->DeleteLocalRef( joSipCallRtp );
-
-#ifdef ATTACH_SINGLE_THREAD
-	gjVm->DetachCurrentThread();
-	gclsMutex.release();
-#endif
 }
 
 /**
@@ -293,13 +256,8 @@ FUNC_END:
 void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
 	jstring jstrCallId = NULL;
-
 	JNIEnv * env;
 	int iRet;
-
-#ifdef ATTACH_SINGLE_THREAD
-	gclsMutex.acquire();
-#endif
 
 #ifdef WIN32
 	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
@@ -320,11 +278,6 @@ void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
 
 FUNC_END:
 	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
-
-#ifdef ATTACH_SINGLE_THREAD
-	gjVm->DetachCurrentThread();
-	gclsMutex.release();
-#endif
 }
 
 /**
@@ -382,7 +335,6 @@ bool CSipClient::EventMessage( const char * pszFrom, const char * pszTo, CSipMes
  */
 void CSipClient::EventCallBackThreadEnd( int iThreadId )
 {
-#ifndef ATTACH_SINGLE_THREAD
 	JNIEnv * env;
 	int iRet;
 
@@ -395,5 +347,4 @@ void CSipClient::EventCallBackThreadEnd( int iThreadId )
 	AndroidDebugLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
 
 	gjVm->DetachCurrentThread();
-#endif
 }
