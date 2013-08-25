@@ -152,7 +152,10 @@ int ServiceMain( )
 		}
 #endif
 
-		// QQQ: 설정 파일 수정 여부를 검사한다.
+		if( gclsSetup.IsChange() )
+		{
+			gclsSetup.Read();
+		}
 	}
 
 	gclsCallMap.StopCallAll();

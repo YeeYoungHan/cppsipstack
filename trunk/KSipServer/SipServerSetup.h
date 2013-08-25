@@ -19,6 +19,7 @@
 #ifndef _SIP_SERVER_SETUP_H_
 #define _SIP_SERVER_SETUP_H_
 
+#include "XmlElement.h"
 #include "StringMap.h"
 #include <string>
 #include <list>
@@ -136,12 +137,24 @@ public:
 	CStringMap	m_clsAllowClientIpMap;
 
 	bool Read( const char * pszFileName );
+	bool Read( );
+
 	bool IsMonitorIp( const char * pszIp );
 
 	bool IsAllowUserAgent( const char * pszSipUserAgent );
 	bool IsDenyUserAgent( const char * pszSipUserAgent );
 
 	bool IsAllowClientIp( const char * pszClientIp );
+	
+	bool IsChange();
+
+private:
+	bool Read( CXmlElement & clsXml );
+	void SetFileSizeTime( );
+
+	std::string	m_strFileName;	// 설정 파일 이름
+	time_t			m_iFileTime;		// 설정 파일 저장 시간
+	int					m_iFileSize;		// 설정 파일 크기
 };
 
 extern CSipServerSetup gclsSetup;
