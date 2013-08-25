@@ -614,13 +614,13 @@ void CSipStack::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 	}
 }
 
-void CSipStack::CallThreadEnd( int iThreadId )
+void CSipStack::CallBackThreadEnd( int iThreadId )
 {
 	SIP_STACK_CALLBACK_LIST::iterator itList;
 
 	for( itList = m_clsCallBackList.begin(); itList != m_clsCallBackList.end(); ++itList )
 	{
-		(*itList)->CallThreadEnd( iThreadId );
+		(*itList)->CallBackThreadEnd( iThreadId );
 	}
 }
 
