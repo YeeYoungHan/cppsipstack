@@ -82,7 +82,7 @@ void * SipUdpThread( void * lpParameter )
 		}
 	}
 
-	pclsSipStack->CallThreadEnd( iThreadId );
+	pclsSipStack->CallBackThreadEnd( iThreadId );
 	pclsSipStack->DecreateUdpThreadCount();
 
 	return 0;

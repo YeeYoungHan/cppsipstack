@@ -42,7 +42,7 @@ public:
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage );
-	virtual void CallThreadEnd( int iThreadId );
+	virtual void CallBackThreadEnd( int iThreadId );
 
 	// ISipUserAgentCallBack
 	virtual void EventRegister( CSipServerInfo * pclsInfo, int iStatus );
@@ -55,7 +55,7 @@ public:
 	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer );
 	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId );
 	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage );
-	virtual void EventCallThreadEnd( int iThreadId );
+	virtual void EventCallBackThreadEnd( int iThreadId );
 
 	// ISipStackSecurityCallBack
 	virtual bool IsAllowUserAgent( const char * pszSipUserAgent );

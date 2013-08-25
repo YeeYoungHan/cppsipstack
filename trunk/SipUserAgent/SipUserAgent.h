@@ -94,7 +94,7 @@ public:
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage );
-	virtual void CallThreadEnd( int iThreadId );
+	virtual void CallBackThreadEnd( int iThreadId );
 
 	/** IP-PBX 로그인 정보 저장 자료구조 */
 	SIP_SERVER_INFO_LIST	m_clsRegisterList;

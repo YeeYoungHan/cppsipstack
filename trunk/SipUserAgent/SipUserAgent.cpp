@@ -340,9 +340,9 @@ bool CSipUserAgent::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 	return false;
 }
 
-void CSipUserAgent::CallThreadEnd( int iThreadId )
+void CSipUserAgent::CallBackThreadEnd( int iThreadId )
 {
-	if( m_pclsCallBack ) m_pclsCallBack->EventCallThreadEnd( iThreadId );
+	if( m_pclsCallBack ) m_pclsCallBack->EventCallBackThreadEnd( iThreadId );
 }
 
 /**
