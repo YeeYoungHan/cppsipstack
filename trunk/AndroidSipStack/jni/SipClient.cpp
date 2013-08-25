@@ -38,7 +38,10 @@ void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 	int iRet;
 	jobject joSipServerInfo = NULL;
 
+#ifdef ATTACH_SINGLE_THREAD
 	gclsMutex.acquire();
+#endif
+
 #ifdef WIN32
 	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
 #else
@@ -65,8 +68,10 @@ void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 FUNC_END:
 	if( joSipServerInfo ) env->DeleteLocalRef( joSipServerInfo );
 
+#ifdef ATTACH_SINGLE_THREAD
 	gjVm->DetachCurrentThread();
 	gclsMutex.release();
+#endif
 }
 
 /**
@@ -96,7 +101,10 @@ void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	JNIEnv * env;
 	int iRet;
 
+#ifdef ATTACH_SINGLE_THREAD
 	gclsMutex.acquire();
+#endif
+
 #ifdef WIN32
 	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
 #else
@@ -147,8 +155,10 @@ FUNC_END:
 	if( jstrTo ) env->DeleteLocalRef( jstrTo );
 	if( joSipCallRtp ) env->DeleteLocalRef( joSipCallRtp );
 
+#ifdef ATTACH_SINGLE_THREAD
 	gjVm->DetachCurrentThread();
 	gclsMutex.release();
+#endif
 }
 
 /**
@@ -166,7 +176,10 @@ void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
 	JNIEnv * env = NULL;
 	int iRet;
 
+#ifdef ATTACH_SINGLE_THREAD
 	gclsMutex.acquire();
+#endif
+
 #ifdef WIN32
 	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
 #else
@@ -204,8 +217,10 @@ FUNC_END:
 	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
 	if( joSipCallRtp ) env->DeleteLocalRef( joSipCallRtp );
 
+#ifdef ATTACH_SINGLE_THREAD
 	gjVm->DetachCurrentThread();
-	gclsMutex.release();	
+	gclsMutex.release();
+#endif
 }
 
 /**
@@ -222,7 +237,10 @@ void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 	JNIEnv * env;
 	int iRet;
 
+#ifdef ATTACH_SINGLE_THREAD
 	gclsMutex.acquire();
+#endif
+
 #ifdef WIN32
 	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
 #else
@@ -260,8 +278,10 @@ FUNC_END:
 	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
 	if( joSipCallRtp ) env->DeleteLocalRef( joSipCallRtp );
 
+#ifdef ATTACH_SINGLE_THREAD
 	gjVm->DetachCurrentThread();
-	gclsMutex.release();	
+	gclsMutex.release();
+#endif
 }
 
 /**
@@ -277,7 +297,10 @@ void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
 	JNIEnv * env;
 	int iRet;
 
+#ifdef ATTACH_SINGLE_THREAD
 	gclsMutex.acquire();
+#endif
+
 #ifdef WIN32
 	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
 #else
@@ -298,8 +321,10 @@ void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
 FUNC_END:
 	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
 
+#ifdef ATTACH_SINGLE_THREAD
 	gjVm->DetachCurrentThread();
-	gclsMutex.release();	
+	gclsMutex.release();
+#endif
 }
 
 /**
