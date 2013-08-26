@@ -67,7 +67,7 @@ public:
 	bool DeleteRegisterInfo( CSipServerInfo & clsInfo );
 
 	// 로그인 관련
-	bool Start( CSipStackSetup & clsSetup, ISipStackSecurityCallBack * pclsSecurityCallBack = NULL );
+	bool Start( CSipStackSetup & clsSetup, ISipUserAgentCallBack * pclsCallBack, ISipStackSecurityCallBack * pclsSecurityCallBack = NULL );
 	bool Stop( );
 
 	// 통화 관련
@@ -100,9 +100,6 @@ public:
 	SIP_SERVER_INFO_LIST	m_clsRegisterList;
 	CSipMutex							m_clsRegisterMutex;
 
-	/** 응용 프로그램 callback 인터페이스 */
-	ISipUserAgentCallBack * m_pclsCallBack;
-
 private:
 	void DeleteRegisterInfoAll( );
 	void DeRegister( );
@@ -128,6 +125,9 @@ private:
 	bool GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsRtp );
 
 	int GetSeqNum( );
+
+	/** 응용 프로그램 callback 인터페이스 */
+	ISipUserAgentCallBack * m_pclsCallBack;
 
 	/** SIP Dialog 맵 */
 	SIP_DIALOG_MAP			m_clsMap;
