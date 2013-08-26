@@ -63,10 +63,9 @@ int main( int argc, char * argv[] )
 
 	// UDP 수신 쓰레드의 기본 개수는 1개이다. 이를 수정하려면 CSipStackSetup.m_iUdpThreadCount 를 수정하면 된다.
 
-	clsUserAgent.m_pclsCallBack = &clsSipClient;
 	clsUserAgent.InsertRegisterInfo( clsServerInfo );
 
-	clsUserAgent.Start( clsSetup );
+	clsUserAgent.Start( clsSetup, &clsSipClient );
 
 	char	szCommand[1024];
 	int		iLen;

@@ -56,8 +56,7 @@ bool CSipServer::Start( CSipStackSetup & clsSetup )
 {
 	gclsSipServerMap.SetSipUserAgentRegisterInfo();
 
-	gclsUserAgent.m_pclsCallBack = this;
-	if( gclsUserAgent.Start( clsSetup, this ) == false ) return false;
+	if( gclsUserAgent.Start( clsSetup, this, this ) == false ) return false;
 
 	gclsSipStack.AddCallBack( this );
 
