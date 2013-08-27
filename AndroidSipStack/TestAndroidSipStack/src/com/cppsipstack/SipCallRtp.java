@@ -18,11 +18,13 @@
 
 package com.cppsipstack;
 
+import java.io.Serializable;
+
 /** RTP 정보 저장 클래스
  * @author websearch (websearch@naver.com)
  *
  */
-public class SipCallRtp
+public class SipCallRtp implements Serializable
 {
 	public final int E_RTP_SEND_RECV = 0;
 	public final int E_RTP_SEND = 1;
