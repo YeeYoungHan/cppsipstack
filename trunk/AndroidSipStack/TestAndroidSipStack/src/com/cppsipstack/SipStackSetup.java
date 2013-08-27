@@ -31,7 +31,7 @@ public class SipStackSetup
 	public int	m_iLocalUdpPort = 5060;
 
 	/** SIP 메시지 수신용 UDP 쓰레드 개수 */
-	public int	m_iUdpThreadCount = 2;
+	public int	m_iUdpThreadCount = 1;
 
 	/** SIP 메시지 전송/수신용 TCP 포트 번호 */
 	public int	m_iLocalTcpPort = 0;

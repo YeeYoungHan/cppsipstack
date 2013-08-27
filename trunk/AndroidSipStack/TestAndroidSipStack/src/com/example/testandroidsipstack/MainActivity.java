@@ -20,13 +20,12 @@ package com.example.testandroidsipstack;
 
 import com.cppsipstack.SipCallRtp;
 import com.cppsipstack.SipServerInfo;
+import com.cppsipstack.SipUserAgentHandler;
 import com.cppsipstack.SipStackSetup;
 import com.cppsipstack.SipUserAgent;
 import com.cppsipstack.SipUserAgentCallBack;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,7 +45,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	Button m_btnStartStack, m_btnStopStack;
 	TextView m_txtLog;
 	String m_strCallId = "";
-	Handler	 m_clsHandler;
+	SipUserAgentHandler	 m_clsHandler;
 
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
@@ -75,39 +74,9 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 		
 		SetButtonInit();
 		
-		m_clsHandler = new Handler()
-    {
-    	public void handleMessage( Message m )
-    	{
-    		Bundle b = m.getData( );
-    		
-    		String strCommand = (String)b.get( "command" );
-    		String strData = (String)b.get( "data" );
-    		
-    		if( strCommand.equals( "log" ) )
-    		{
-    			m_txtLog.setText( strData );
-    		}
-    		else if( strCommand.equals( "incoming_call" ) )
-    		{
-    			m_btnStartCall.setEnabled( false );
-    			m_btnStopCall.setEnabled( true );
-    			m_btnAcceptCall.setEnabled( true );
-    		}
-    		else if( strCommand.equals( "start_call" ) )
-    		{
-    			m_btnStartCall.setEnabled( false );
-    			m_btnStopCall.setEnabled( true );
-    			m_btnAcceptCall.setEnabled( false );
-    		}
-    		else if( strCommand.equals( "stop_call" ) )
-    		{
-    			SetButtonInit();
-    		}
-    	}
-    };
-    
-    m_txtPhoneNumber.setText( "1001" );
+		m_clsHandler = new SipUserAgentHandler( this );
+
+		m_txtPhoneNumber.setText( "1001" );
     
     m_btnStopStack.setEnabled( false );
 	}
@@ -200,7 +169,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 				clsInfo.m_strPassWord = Setup.m_strSipPassWord;
 			
 				SipUserAgent.InsertRegisterInfo( clsInfo );
-				SipUserAgent.SetCallBack( this );
+				SipUserAgent.SetCallBack( m_clsHandler );
 				
 				SipStackSetup clsSetup = new SipStackSetup();
 
@@ -226,52 +195,46 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	@Override
 	public void EventRegister( SipServerInfo clsInfo, int iStatus )
 	{
-		Send( "log", "EventRegister(" + iStatus + ")" );
+		m_txtLog.setText( "EventRegister(" + iStatus + ")" );
 	}
 
 	@Override
 	public void EventIncomingCall( String strCallId, String strFrom, String strTo, SipCallRtp clsRtp )
 	{
-		Send( "log", "EventIncomingCall " + strFrom );
+		m_txtLog.setText( "EventIncomingCall " + strFrom );
 		
 		m_strCallId = strCallId;
 		
-		Send( "incoming_call", "" );
+		m_btnStartCall.setEnabled( false );
+		m_btnStopCall.setEnabled( true );
+		m_btnAcceptCall.setEnabled( true );
 	}
 
 	@Override
 	public void EventCallRing( String strCallId, int iSipStatus, SipCallRtp clsRtp )
 	{
-		Send( "log", "EventCallRing(" + iSipStatus + ")" );
+		m_txtLog.setText( "EventCallRing(" + iSipStatus + ")" );
 	}
 
 	@Override
 	public void EventCallStart( String strCallId, SipCallRtp clsRtp )
 	{
-		Send( "start_call", "" );
-		Send( "log", "EventCallStart" );
+		m_txtLog.setText( "EventCallStart" );
+		
+		m_btnStartCall.setEnabled( false );
+		m_btnStopCall.setEnabled( true );
+		m_btnAcceptCall.setEnabled( false );
 	}
 
 	@Override
 	public void EventCallEnd( String strCallId, int iSipStatus )
 	{
-		Send( "stop_call", "" );
+		SetButtonInit();
 		
 		// QQQ: 로그가 EventCallRing 때문에 보이지 않는 경우가 있다.
 		//    : 멀티쓰레드 환경이므로 랜덤하게 발생한다.
-		Send( "log", "EventCallEnd" );
+		m_txtLog.setText( "EventCallEnd" );
 	}
-
-	void Send( String strCommand, String strData )
-  {
-  	Bundle b = new Bundle();
-  	
-  	Message m = m_clsHandler.obtainMessage( );
-  	b.putString( "command", strCommand );
-  	b.putString( "data", strData );
-  	m.setData( b );
-  	m_clsHandler.sendMessage( m );
-  }
 	
 	void SetButtonInit( )
 	{

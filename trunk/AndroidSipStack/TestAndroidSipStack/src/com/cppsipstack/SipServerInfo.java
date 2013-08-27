@@ -18,11 +18,13 @@
 
 package com.cppsipstack;
 
+import java.io.Serializable;
+
 /** SIP 서버 정보 저장 클래스
  * @author websearch (websearch@naver.com)
  *
  */
-public class SipServerInfo
+public class SipServerInfo implements Serializable
 {
 	/** SIP 서버의 IP 주소 */
 	public String m_strIp;
