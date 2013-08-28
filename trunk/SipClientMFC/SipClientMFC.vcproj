@@ -186,11 +186,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Setup.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipClientMFC.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\SipClientMFCDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipSetupDlg.cpp"
 				>
 			</File>
 			<File
@@ -224,11 +232,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Setup.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SipClientMFC.h"
 				>
 			</File>
 			<File
 				RelativePath=".\SipClientMFCDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipSetupDlg.h"
 				>
 			</File>
 			<File
@@ -264,5 +280,9 @@
 		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="SipClientMFC.rc"
+		/>
 	</Globals>
 </VisualStudioProject>
