@@ -1,0 +1,25 @@
+KSipServer 를 리눅스에서 실행하는 방법은 다음과 같습니다. 
+
+1. KSipServer 소스 코드를 다운로드한 후, 압축을 해제한다. 
+
+2. 컴파일한다. 
+
+  # make 
+
+  컴파일에 성공하면 KSipServer 폴더에 KSipServer.exe 파일이 존재하는지 확인한다. 
+
+3. 설정 파일을 수정한다. 
+
+  설정 파일은 KSipServer 폴더의 KSipServer.xml 이다. 
+
+4. ksipserver.sh 스크립트를 수정한다. 
+
+  ksipserver.sh 스크립트의 아래의 라인을 각자의 환경에 적합하도록 수정한다. 
+
+  root_dir=/home/websearch/OpenProject/CppSipStack/KSipServer 
+
+5. ksipserver.sh 스크립트에 실행 권한을 부여한다. 
+
+6. ksipserver.sh 을 아래와 같이 실행하여서 KSipServer 를 실행한다. 
+
+  # ./ksipserver.sh start 

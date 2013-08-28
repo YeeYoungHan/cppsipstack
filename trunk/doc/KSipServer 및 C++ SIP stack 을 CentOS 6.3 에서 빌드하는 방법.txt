@@ -1,0 +1,21 @@
+KSipServer 및 C++ SIP stack 을 CentOS 6.3 에서 빌드하는 방법는 방법은 다음과 같습니다. 
+
+1. 빌드 환경 구성 
+
+ root 권한으로 아래와 같이 실행하여서 KSipServer 및 C++ SIP stack 을 빌드하기 위한 라이브러리를 설치합니다. 
+
+ # yum install svn 
+ # yum install gcc-c++ 
+ # yum install openssl-devel 
+ # yum install mysql-devel 
+
+2. svn 에서 소스 코드 다운로드 
+
+ # svn checkout --username anonsvn https://dev.naver.com/svn/sipstack/trunk 
+
+ 비밀번호는 anonsvn 입니다. 
+
+3. 빌드 
+
+ # cd trunk 
+ # make 

@@ -1,0 +1,118 @@
+본 포스트는 아래의 사이트에서 다운로드받거나 C++ SIP stack 에 포함된 XML 파서 라이브러리를 이용하여서 XML 문자열의 값을 가져오는 방법을 기술합니다. 
+
+http://dev.naver.com/projects/sipstack/download/note/5051
+
+1. XML element 의 내용을 가져오는 예제
+
+XML element 의 내용을 가져오려면 SelectElementData 메소드를 이용하면 된다. 아래의 XML 문서에 포함된 LocalIp 태그에 대한 내용을 가져오는 방법에 대한 예제는 다음과 같다.
+
+<Setup>
+ <Sip>
+  <LocalIp>192.168.0.1</LocalIp>
+ </Sip>
+</Setup>
+
+static bool TestXmlGetElementData()
+{
+ const char * pszXml = "<Setup>\n"
+ " <Sip>\n"
+  "  <LocalIp>192.168.0.1</LocalIp>\n"
+  " </Sip>\n"
+ "</Setup>\n";
+ CXmlElement clsXml, * pclsElement;
+ std::string strLocalIp;
+
+ // XML 문자열을 파싱한다.
+
+ if( clsXml.Parse( pszXml, (int)strlen(pszXml) ) == -1 )
+ {
+  printf( "xml(%s) parser error\n", pszXml );
+  return false;
+ }
+
+ // Setup element 에 포함된 Sip tag element 를 검색한다.
+
+ pclsElement = clsXml.SelectElement( "Sip" );
+ if( pclsElement == NULL ) 
+ {
+  printf( "Sip is not found\n" );
+  return false;
+ }
+
+ // Sip tag element 에서 LocalIp element data 를 가져온다.
+
+ if( pclsElement->SelectElementData( "LocalIp", strLocalIp ) == false )
+ {
+  printf( "LocalIp is not found\n" );
+  return false;
+ }
+
+ if( strcmp( strLocalIp.c_str(), "192.168.0.1" ) )
+ {
+  printf( "LocalIp is not correct\n" );
+  return false;
+ }
+
+ return true;
+}
+
+ 
+
+2. XML element 의 attribute 가져오는 방법
+
+XML element 의 attribute 를 가져오려면 SelectAttribute 메소드를 사용하면 된다. 아래의 XML 문서에 포함된 Level 태그의 Debug 애트리뷰트 값을 가져오는 방법은 다음과 같다.
+
+<Setup>
+ <Log>
+  <Level Debug="true" />
+ </Log>
+</Setup> 
+
+static bool TestXmlGetElementAttribute()
+{
+ const char * pszXml = "<Setup>\n"
+ " <Log>\n"
+  "  <Level Debug=\"true\" />\n"
+ " </Log>\n"
+ "</Setup>\n";
+ CXmlElement clsXml, * pclsElement, * pclsClient;
+ bool bDebug;
+
+ // XML 문자열을 파싱한다.
+ if( clsXml.Parse( pszXml, (int)strlen(pszXml) ) == -1 )
+ {
+  printf( "xml(%s) parser error\n", pszXml );
+  return false;
+ }
+
+ // Setup element 에 포함된 Log element 를 가져온다.
+ pclsElement = clsXml.SelectElement( "Log" );
+ if( pclsElement == NULL ) 
+ {
+  printf( "Log is not found\n" );
+  return false;
+ }
+
+ // Log element 에 포함된 Level element 를 가져온다.
+ pclsClient = pclsElement->SelectElement( "Level" );
+ if( pclsClient == NULL )
+ {
+  printf( "Level is not found\n" );
+  return false;
+ }
+
+ // Level element 에서 Debug attribute 를 검색한다.
+ if( pclsClient->SelectAttribute( "Debug", bDebug ) == false )
+ {
+  printf( "Debug is not found\n" );
+  return false;
+ }
+
+ if( bDebug == false )
+ {
+  printf( "bDebug is not correct\n" );
+  return false;
+ }
+
+ return true;
+}

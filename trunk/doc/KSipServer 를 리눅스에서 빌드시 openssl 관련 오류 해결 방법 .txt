@@ -1,0 +1,5 @@
+KSipServer 를 리눅스에서 빌드시 openssl 관련 오류 해결 방법은 다음과 같습니다. 
+
+1. root 권한으로 아래와 같이 실행하여서 openssl-devel 패키지를 설치한다. 
+
+  # yum install openssl-devel 
