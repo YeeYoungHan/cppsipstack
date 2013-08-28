@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "SipClientMFC.h"
 #include "SipClientMFCDlg.h"
+#include "SipSetupDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -31,6 +32,7 @@ BEGIN_MESSAGE_MAP(CSipClientMFCDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_SETUP, &CSipClientMFCDlg::OnBnClickedSetup)
 END_MESSAGE_MAP()
 
 
@@ -86,3 +88,15 @@ HCURSOR CSipClientMFCDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+void CSipClientMFCDlg::OnOK()
+{
+
+}
+
+void CSipClientMFCDlg::OnBnClickedSetup()
+{
+	CSipSetupDlg clsDlg;
+
+	clsDlg.DoModal();
+}
