@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "afxwin.h"
 
 
 // CSipClientMFCDlg dialog
@@ -31,4 +32,14 @@ protected:
 	virtual void OnOK();
 public:
 	afx_msg void OnBnClickedSetup();
+	CButton m_btnStartStack;
+	CButton m_btnStopStack;
+	CButton m_btnStartCall;
+	CButton m_btnStopCall;
+	CButton m_btnAcceptCall;
+	afx_msg void OnBnClickedStartStack();
+	afx_msg void OnBnClickedStopStack();
+	afx_msg void OnBnClickedStartCall();
+	afx_msg void OnBnClickedStopCall();
+	afx_msg void OnBnClickedAcceptCall();
 };

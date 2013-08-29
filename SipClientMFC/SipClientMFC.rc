@@ -135,14 +135,40 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_SIPCLIENTMFC_DIALOG DIALOGEX 0, 0, 320, 200
+IDD_SIPCLIENTMFC_DIALOG DIALOGEX 0, 0, 186, 90
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "SipClientMFC"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    PUSHBUTTON      "Setup",IDC_SETUP,7,179,54,14
+    PUSHBUTTON      "Setup",IDC_SETUP,7,47,56,17
+    EDITTEXT        IDC_EDIT1,7,7,172,15,ES_AUTOHSCROLL
+    PUSHBUTTON      "Start Call",IDC_START_CALL,7,26,56,17
+    PUSHBUTTON      "Stop Call",IDC_STOP_CALL,65,26,56,17
+    PUSHBUTTON      "Accept Call",IDC_ACCEPT_CALL,123,26,56,17
+    PUSHBUTTON      "Start Stack",IDC_START_STACK,65,47,56,17
+    PUSHBUTTON      "Stop Stack",IDC_STOP_STACK,123,47,56,17
+    EDITTEXT        IDC_LOG,7,68,172,15,ES_AUTOHSCROLL | ES_READONLY
 END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_SIPCLIENTMFC_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 83
+    END
+END
+#endif    // APSTUDIO_INVOKED
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -182,25 +208,6 @@ BEGIN
         VALUE "Translation", 0x409, 1252
     END
 END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
-BEGIN
-    IDD_SIPCLIENTMFC_DIALOG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 313
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 193
-    END
-END
-#endif    // APSTUDIO_INVOKED
 
 
 /////////////////////////////////////////////////////////////////////////////
