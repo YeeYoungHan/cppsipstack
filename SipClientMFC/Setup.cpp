@@ -21,12 +21,42 @@
 
 CSetup gclsSetup;
 
-CSetup::CSetup(void)
+CSetup::CSetup() : m_iSipServerPort(5060)
 {
 }
 
-CSetup::~CSetup(void)
+CSetup::~CSetup()
 {
+}
+
+bool CSetup::Get()
+{
+	if( GetFile() == false ) return false;
+
+	GetString( ST_SIP_SERVER_IP, m_strSipServerIp );
+	m_iSipServerPort = GetInt( ST_SIP_SERVER_PORT, 5060 );
+	GetString( ST_SIP_DOMAIN, m_strSipDomain );
+	GetString( ST_USER_ID, m_strUserId );
+	GetString( ST_PASSWORD, m_strPassWord );
+
+	m_clsMap.clear();
+
+	return true;
+}
+
+bool CSetup::Put()
+{
+	PutString( ST_SIP_SERVER_IP, m_strSipServerIp.c_str() );
+	PutInt( ST_SIP_SERVER_PORT, m_iSipServerPort );
+	PutString( ST_SIP_DOMAIN, m_strSipDomain.c_str() );
+	PutString( ST_USER_ID, m_strUserId.c_str() );
+	PutString( ST_PASSWORD, m_strPassWord.c_str() );
+
+	bool bRes = PutFile();
+
+	m_clsMap.clear();
+
+	return bRes;
 }
 
 bool CSetup::GetFile()

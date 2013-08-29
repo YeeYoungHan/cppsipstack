@@ -18,4 +18,12 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedOk();
+	virtual BOOL OnInitDialog();
+	CString m_strSipServerIp;
+	int m_iSipServerPort;
+	CString m_strSipDomain;
+	CString m_strUserId;
+	CString m_strPassWord;
 };
