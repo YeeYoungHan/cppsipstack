@@ -21,24 +21,32 @@
 #include <string>
 #include <map>
 
-#define SETUP_FILENAME	"SipLoadBalancerMonitor.ini"
+#define SETUP_FILENAME	"SipClient.ini"
 
-#define SSR_IP					"ip"
-#define SSR_PORT				"port"
-#define SSR_PERIOD			"period"
-
-#define ST_SIP_SERVER_LIST	"sipserver"
-#define ST_USER_LIST				"user"
-#define ST_SIP_STACK_COUNT	"sipstack"
+#define ST_SIP_SERVER_IP		"sip_server_ip"
+#define ST_SIP_SERVER_PORT	"sip_server_port"
+#define ST_SIP_DOMAIN				"sip_domain"
+#define ST_USER_ID					"user_id"
+#define ST_PASSWORD					"password"
 
 typedef std::map< std::string, std::string > SETUP_MAP;
 
 class CSetup
 {
 public:
-	CSetup(void);
-	~CSetup(void);
+	CSetup();
+	~CSetup();
 
+	bool Get();
+	bool Put();
+
+	std::string m_strSipServerIp;
+	int         m_iSipServerPort;
+	std::string m_strSipDomain;
+	std::string m_strUserId;
+	std::string m_strPassWord;
+
+private:
 	bool GetFile();
 	bool PutFile();
 
@@ -50,7 +58,6 @@ public:
 	bool PutInt( const char * pszName, int iValue );
 	bool PutString( const char * pszName, const char * pszValue );
 
-private:
 	SETUP_MAP	m_clsMap;
 };
 
