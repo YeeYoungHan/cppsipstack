@@ -11,11 +11,7 @@
 #define new DEBUG_NEW
 #endif
 
-
 // CSipClientMFCDlg dialog
-
-
-
 
 CSipClientMFCDlg::CSipClientMFCDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSipClientMFCDlg::IDD, pParent)
@@ -26,6 +22,11 @@ CSipClientMFCDlg::CSipClientMFCDlg(CWnd* pParent /*=NULL*/)
 void CSipClientMFCDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_START_STACK, m_btnStartStack);
+	DDX_Control(pDX, IDC_STOP_STACK, m_btnStopStack);
+	DDX_Control(pDX, IDC_START_CALL, m_btnStartCall);
+	DDX_Control(pDX, IDC_STOP_CALL, m_btnStopCall);
+	DDX_Control(pDX, IDC_ACCEPT_CALL, m_btnAcceptCall);
 }
 
 BEGIN_MESSAGE_MAP(CSipClientMFCDlg, CDialog)
@@ -33,6 +34,11 @@ BEGIN_MESSAGE_MAP(CSipClientMFCDlg, CDialog)
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDC_SETUP, &CSipClientMFCDlg::OnBnClickedSetup)
+	ON_BN_CLICKED(IDC_START_STACK, &CSipClientMFCDlg::OnBnClickedStartStack)
+	ON_BN_CLICKED(IDC_STOP_STACK, &CSipClientMFCDlg::OnBnClickedStopStack)
+	ON_BN_CLICKED(IDC_START_CALL, &CSipClientMFCDlg::OnBnClickedStartCall)
+	ON_BN_CLICKED(IDC_STOP_CALL, &CSipClientMFCDlg::OnBnClickedStopCall)
+	ON_BN_CLICKED(IDC_ACCEPT_CALL, &CSipClientMFCDlg::OnBnClickedAcceptCall)
 END_MESSAGE_MAP()
 
 
@@ -99,4 +105,29 @@ void CSipClientMFCDlg::OnBnClickedSetup()
 	CSipSetupDlg clsDlg;
 
 	clsDlg.DoModal();
+}
+
+void CSipClientMFCDlg::OnBnClickedStartStack()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+void CSipClientMFCDlg::OnBnClickedStopStack()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+void CSipClientMFCDlg::OnBnClickedStartCall()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+void CSipClientMFCDlg::OnBnClickedStopCall()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+void CSipClientMFCDlg::OnBnClickedAcceptCall()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
