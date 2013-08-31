@@ -18,7 +18,8 @@
 
 #pragma once
 #include "afxwin.h"
-
+#include "SipUserAgent.h"
+#include "SipUserAgentMFC.h"
 
 // CSipClientMFCDlg dialog
 class CSipClientMFCDlg : public CDialog
@@ -37,6 +38,8 @@ public:
 // Implementation
 protected:
 	HICON m_hIcon;
+	CSipUserAgentMFC m_clsSipUserAgentMFC;
+	CSipUserAgent		 m_clsSipUserAgent;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
