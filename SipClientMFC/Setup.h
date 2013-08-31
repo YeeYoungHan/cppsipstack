@@ -39,6 +39,7 @@ public:
 
 	bool Get();
 	bool Put();
+	bool IsSet();
 
 	std::string m_strSipServerIp;
 	int         m_iSipServerPort;

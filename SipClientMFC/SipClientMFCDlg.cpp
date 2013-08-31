@@ -20,6 +20,7 @@
 #include "SipClientMFC.h"
 #include "SipClientMFCDlg.h"
 #include "SipSetupDlg.h"
+#include "Setup.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -53,6 +54,7 @@ BEGIN_MESSAGE_MAP(CSipClientMFCDlg, CDialog)
 	ON_BN_CLICKED(IDC_START_CALL, &CSipClientMFCDlg::OnBnClickedStartCall)
 	ON_BN_CLICKED(IDC_STOP_CALL, &CSipClientMFCDlg::OnBnClickedStopCall)
 	ON_BN_CLICKED(IDC_ACCEPT_CALL, &CSipClientMFCDlg::OnBnClickedAcceptCall)
+	ON_MESSAGE(SIP_MESSAGE_ID, &CSipClientMFCDlg::OnSipMessage)
 END_MESSAGE_MAP()
 
 
@@ -67,7 +69,10 @@ BOOL CSipClientMFCDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	// TODO: Add extra initialization here
+	m_btnStartCall.EnableWindow( FALSE );
+	m_btnStopCall.EnableWindow( FALSE );
+	m_btnAcceptCall.EnableWindow( FALSE );
+	m_btnStopStack.EnableWindow( FALSE );
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -123,25 +128,100 @@ void CSipClientMFCDlg::OnBnClickedSetup()
 
 void CSipClientMFCDlg::OnBnClickedStartStack()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if( gclsSetup.IsSet() == false )
+	{
+		MessageBox( "Please~ click setup button", "Information", MB_OK );
+		return;
+	}
+
+	m_clsSipUserAgentMFC.SetWindowHandle( GetSafeHwnd() );
+	m_clsSipUserAgentMFC.SetCallBack( this );
+
+	CSipStackSetup clsSetup;
+	CSipServerInfo clsInfo;
+
+	clsInfo.m_strIp = gclsSetup.m_strSipServerIp;
+	clsInfo.m_iPort = gclsSetup.m_iSipServerPort;
+	clsInfo.m_strDomain = gclsSetup.m_strSipDomain;
+	clsInfo.m_strUserId = gclsSetup.m_strUserId;
+	clsInfo.m_strPassWord = gclsSetup.m_strPassWord;
+
+	m_clsSipUserAgent.InsertRegisterInfo( clsInfo );
+	if( m_clsSipUserAgent.Start( clsSetup, &m_clsSipUserAgentMFC ) == false )
+	{
+		MessageBox( "sip stack start error", "Error", MB_OK );
+		return;
+	}
+
+	m_btnStartStack.EnableWindow( FALSE );
+	m_btnStopStack.EnableWindow( TRUE );
 }
 
 void CSipClientMFCDlg::OnBnClickedStopStack()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
 
 void CSipClientMFCDlg::OnBnClickedStartCall()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
 
 void CSipClientMFCDlg::OnBnClickedStopCall()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
 
 void CSipClientMFCDlg::OnBnClickedAcceptCall()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+LRESULT CSipClientMFCDlg::OnSipMessage( WPARAM wParam, LPARAM lParam )
+{
+	return 0;
+}
+
+void CSipClientMFCDlg::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
+{
+}
+
+bool CSipClientMFCDlg::EventIncomingRequestAuth( CSipMessage * pclsMessage )
+{
+	return true;
+}
+
+void CSipClientMFCDlg::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
+{
+}
+
+void CSipClientMFCDlg::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
+{
+}
+
+void CSipClientMFCDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
+{
+}
+
+void CSipClientMFCDlg::EventCallEnd( const char * pszCallId, int iSipStatus )
+{
+}
+
+void CSipClientMFCDlg::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
+{
+}
+
+bool CSipClientMFCDlg::EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer )
+{
+	return false;
+}
+
+bool CSipClientMFCDlg::EventBlindTransfer( const char * pszCallId, const char * pszReferToId )
+{
+	return false;
+}
+
+bool CSipClientMFCDlg::EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage )
+{
+	return false;
+}
+
+void CSipClientMFCDlg::EventCallBackThreadEnd( int iThreadId )
+{
 }

@@ -18,6 +18,8 @@
 
 #pragma once
 
+#define SIP_MESSAGE_ID	WM_USER+0x200
+
 #include "SipUserAgentCallBack.h"
 
 class CSipUserAgentMFC : public ISipUserAgentCallBack
@@ -29,7 +31,7 @@ public:
 	void SetWindowHandle( HWND hWnd );
 	void SetCallBack( ISipUserAgentCallBack * pclsCallBack );
 
-	
+	LRESULT OnSipMessage( WPARAM wParam, LPARAM lParam );
 
 	virtual void EventRegister( CSipServerInfo * pclsInfo, int iStatus );
 	virtual bool EventIncomingRequestAuth( CSipMessage * pclsMessage );

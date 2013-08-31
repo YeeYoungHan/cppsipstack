@@ -59,6 +59,14 @@ bool CSetup::Put()
 	return bRes;
 }
 
+bool CSetup::IsSet()
+{
+	if( m_strSipServerIp.length() == 0 ) return false;
+	if( m_strUserId.length() == 0 ) return false;
+
+	return true;
+}
+
 bool CSetup::GetFile()
 {
 	FILE	* fd = fopen( SETUP_FILENAME, "r" );

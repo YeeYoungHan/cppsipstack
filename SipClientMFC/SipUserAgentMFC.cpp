@@ -19,7 +19,7 @@
 #include "StdAfx.h"
 #include "SipUserAgentMFC.h"
 
-CSipUserAgentMFC::CSipUserAgentMFC()
+CSipUserAgentMFC::CSipUserAgentMFC() : m_hWnd(0), m_pclsCallBack(NULL)
 {
 }
 
@@ -35,6 +35,16 @@ void CSipUserAgentMFC::SetWindowHandle( HWND hWnd )
 void CSipUserAgentMFC::SetCallBack( ISipUserAgentCallBack * pclsCallBack )
 {
 	m_pclsCallBack = pclsCallBack;
+}
+
+LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
+{
+	if( m_pclsCallBack )
+	{
+		
+	}
+
+	return 0;
 }
 
 void CSipUserAgentMFC::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
@@ -84,3 +94,4 @@ bool CSipUserAgentMFC::EventMessage( const char * pszFrom, const char * pszTo, C
 void CSipUserAgentMFC::EventCallBackThreadEnd( int iThreadId )
 {
 }
+

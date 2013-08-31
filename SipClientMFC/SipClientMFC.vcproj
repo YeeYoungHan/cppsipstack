@@ -205,10 +205,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SipUserAgentMFC.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -255,10 +251,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SipUserAgentMFC.h"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
@@ -288,6 +280,14 @@
 		<Filter
 			Name="SIP"
 			>
+			<File
+				RelativePath=".\SipUserAgentMFC.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUserAgentMFC.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
