@@ -18,6 +18,8 @@
 
 #include "StdAfx.h"
 #include "SipUserAgentMFC.h"
+#include "SipUserAgentMFCDefine.h"
+#include "SipUserAgentMFCEventClass.h"
 
 CSipUserAgentMFC::CSipUserAgentMFC() : m_hWnd(0), m_pclsCallBack(NULL)
 {
@@ -41,14 +43,25 @@ LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
 {
 	if( m_pclsCallBack )
 	{
-		
+		switch( wParam )
+		{
+		case SMC_REGISER:
+			{
+				CEventRegister * pclsParam = (CEventRegister *)lParam;
+				m_pclsCallBack->EventRegister( pclsParam->m_pclsInfo, pclsParam->m_iStatus );
+			}
+			break;
+		}
 	}
 
-	return 0;
+	return WMR_TRUE;
 }
 
 void CSipUserAgentMFC::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
+	CEventRegister clsParam( pclsInfo, iStatus );
+
+	_SendMessage( SMC_REGISER, (LPARAM)&clsParam );
 }
 
 bool CSipUserAgentMFC::EventIncomingRequestAuth( CSipMessage * pclsMessage )
@@ -95,3 +108,9 @@ void CSipUserAgentMFC::EventCallBackThreadEnd( int iThreadId )
 {
 }
 
+LRESULT CSipUserAgentMFC::_SendMessage( WPARAM wParam, LPARAM lParam )
+{
+	if( m_hWnd == 0 ) return WMR_FALSE;
+
+	return SendMessage( m_hWnd, SIP_MESSAGE_ID, wParam, lParam );
+}
