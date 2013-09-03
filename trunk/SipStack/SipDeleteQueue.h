@@ -53,6 +53,7 @@ public:
 
 	void Insert( CSipMessage * pclsMessage );
 	void DeleteTimeout( );
+	void DeleteAll( );
 	int GetSize();
 
 private:

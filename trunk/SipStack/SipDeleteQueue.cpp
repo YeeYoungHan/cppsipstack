@@ -81,6 +81,23 @@ void CSipDeleteQueue::DeleteTimeout( )
 
 /**
  * @ingroup SipStack
+ * @brief 대기 SIP 메시지를 모두 삭제한다.
+ */
+void CSipDeleteQueue::DeleteAll( )
+{
+	SIP_DELETE_QUEUE::iterator	it;
+
+	m_clsMutex.acquire();
+	for( it = m_clsList.begin(); it != m_clsList.end(); ++it )
+	{
+		delete it->m_pclsMessage;
+	}
+	m_clsList.clear();
+	m_clsMutex.release();
+}
+
+/**
+ * @ingroup SipStack
  * @brief		자료구조에 저장된 SIP 메시지의 개수를 리턴한다.
  * @returns 자료구조에 저장된 SIP 메시지의 개수를 리턴한다.
  */
