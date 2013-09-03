@@ -22,13 +22,31 @@
 class CEventRegister
 {
 public:
-	CEventRegister( CSipServerInfo * pclsInfo, int iStatus ) : m_iStatus(iStatus)
+	CEventRegister( CSipServerInfo * pclsInfo, int iStatus )
 	{
 		m_clsInfo = *pclsInfo;
+		m_iStatus = iStatus;
 	}
 
 	CSipServerInfo m_clsInfo;
 	int		m_iStatus;
+};
+
+class CEventIncomingCall
+{
+public:
+	CEventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
+	{
+		m_pszCallId = pszCallId;
+		m_pszFrom = pszFrom;
+		m_pszTo = pszTo;
+		m_pclsRtp = pclsRtp;
+	}
+
+	const char * m_pszCallId;
+	const char * m_pszFrom;
+	const char * m_pszTo;
+	CSipCallRtp * m_pclsRtp;
 };
 
 #endif

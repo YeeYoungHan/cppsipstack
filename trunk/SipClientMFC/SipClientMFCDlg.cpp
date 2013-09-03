@@ -204,6 +204,17 @@ void CSipClientMFCDlg::SetLog( const char * fmt, ... )
 
 void CSipClientMFCDlg::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
+	if( pclsInfo->m_bLogin && iStatus == SIP_OK )
+	{
+		m_btnStartCall.EnableWindow( TRUE );
+	}
+	else
+	{
+		m_btnStartCall.EnableWindow( FALSE );
+		m_btnStopCall.EnableWindow( FALSE );
+		m_btnAcceptCall.EnableWindow( FALSE );
+	}
+
 	SetLog( "%s status(%d)", __FUNCTION__, iStatus );
 }
 
@@ -214,6 +225,11 @@ bool CSipClientMFCDlg::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 
 void CSipClientMFCDlg::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
 {
+	m_btnStartCall.EnableWindow( FALSE );
+	m_btnStopCall.EnableWindow( TRUE );
+	m_btnAcceptCall.EnableWindow( TRUE );
+
+	SetLog( "%s (%s)", __FUNCTION__, pszFrom );
 }
 
 void CSipClientMFCDlg::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )

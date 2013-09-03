@@ -52,6 +52,12 @@ LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
 				delete pclsParam;
 			}
 			break;
+		case SMC_INCOMING_CALL:
+			{
+				CEventIncomingCall * pclsParam = (CEventIncomingCall *)lParam;
+				m_pclsCallBack->EventIncomingCall( pclsParam->m_pszCallId, pclsParam->m_pszFrom, pclsParam->m_pszTo, pclsParam->m_pclsRtp );
+			}
+			break;
 		}
 	}
 
@@ -73,6 +79,9 @@ bool CSipUserAgentMFC::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 
 void CSipUserAgentMFC::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
 {
+	CEventIncomingCall clsParam( pszCallId, pszFrom, pszTo, pclsRtp );
+
+	_SendMessage( SMC_INCOMING_CALL, (LPARAM)&clsParam );
 }
 
 void CSipUserAgentMFC::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
