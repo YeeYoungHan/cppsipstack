@@ -14,12 +14,12 @@
 #define IDC_EDIT5                       1005
 #define IDC_PASSWORD                    1005
 #define IDC_EDIT1                       1005
+#define IDC_CALL_NUMBER                 1005
 #define IDC_START_CALL                  1006
 #define IDC_STOP_CALL                   1007
 #define IDC_ACCEPT_CALL                 1008
 #define IDC_START_STACK                 1009
 #define IDC_STOP_STACK                  1010
-#define IDC_EDIT2                       1011
 #define IDC_LOG                         1011
 
 // Next default values for new objects
