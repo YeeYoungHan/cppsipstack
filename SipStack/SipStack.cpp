@@ -754,6 +754,8 @@ bool CSipStack::_Stop( )
 	m_clsIST.DeleteAll();
 	m_clsNIST.DeleteAll();
 
+	gclsSipDeleteQueue.DeleteAll();
+
 	m_bStopEvent = false;
 
 	return true;
