@@ -165,6 +165,7 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 
 void CSipClientMFCDlg::OnBnClickedStopStack()
 {
+	// QQQ: SIP 서버에 로그아웃한 결과 이벤트를 수신할 때에 SendMessage 에서 blocking 걸린다.
 	m_clsSipUserAgent.Stop();
 
 	m_btnStartStack.EnableWindow( TRUE );
