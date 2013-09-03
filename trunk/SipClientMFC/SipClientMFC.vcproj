@@ -288,6 +288,14 @@
 				RelativePath=".\SipUserAgentMFC.h"
 				>
 			</File>
+			<File
+				RelativePath=".\SipUserAgentMFCDefine.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUserAgentMFCEventClass.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

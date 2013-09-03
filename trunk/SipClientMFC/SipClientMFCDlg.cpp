@@ -30,6 +30,7 @@
 
 CSipClientMFCDlg::CSipClientMFCDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSipClientMFCDlg::IDD, pParent)
+	, m_strLog(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -42,6 +43,7 @@ void CSipClientMFCDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_START_CALL, m_btnStartCall);
 	DDX_Control(pDX, IDC_STOP_CALL, m_btnStopCall);
 	DDX_Control(pDX, IDC_ACCEPT_CALL, m_btnAcceptCall);
+	DDX_Text(pDX, IDC_LOG, m_strLog);
 }
 
 BEGIN_MESSAGE_MAP(CSipClientMFCDlg, CDialog)
@@ -68,6 +70,8 @@ BOOL CSipClientMFCDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
+
+	gclsSetup.Get();
 
 	m_btnStartCall.EnableWindow( FALSE );
 	m_btnStopCall.EnableWindow( FALSE );
@@ -140,6 +144,8 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 	CSipStackSetup clsSetup;
 	CSipServerInfo clsInfo;
 
+	GetLocalIp( clsSetup.m_strLocalIp );
+
 	clsInfo.m_strIp = gclsSetup.m_strSipServerIp;
 	clsInfo.m_iPort = gclsSetup.m_iSipServerPort;
 	clsInfo.m_strDomain = gclsSetup.m_strSipDomain;
@@ -159,6 +165,10 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 
 void CSipClientMFCDlg::OnBnClickedStopStack()
 {
+	m_clsSipUserAgent.Stop();
+
+	m_btnStartStack.EnableWindow( TRUE );
+	m_btnStopStack.EnableWindow( FALSE );
 }
 
 void CSipClientMFCDlg::OnBnClickedStartCall()
@@ -175,11 +185,25 @@ void CSipClientMFCDlg::OnBnClickedAcceptCall()
 
 LRESULT CSipClientMFCDlg::OnSipMessage( WPARAM wParam, LPARAM lParam )
 {
-	return 0;
+	return m_clsSipUserAgentMFC.OnSipMessage( wParam, lParam );
+}
+
+void CSipClientMFCDlg::SetLog( const char * fmt, ... )
+{
+	va_list		ap;
+	char			szBuf[8192];
+
+	va_start( ap, fmt );
+	vsnprintf( szBuf, sizeof(szBuf)-1, fmt, ap );
+	va_end( ap );
+
+	m_strLog = szBuf;
+	UpdateData(FALSE);
 }
 
 void CSipClientMFCDlg::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
+	SetLog( "%s status(%d)", __FUNCTION__, iStatus );
 }
 
 bool CSipClientMFCDlg::EventIncomingRequestAuth( CSipMessage * pclsMessage )

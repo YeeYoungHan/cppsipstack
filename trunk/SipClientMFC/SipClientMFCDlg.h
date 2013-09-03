@@ -34,7 +34,6 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
-
 // Implementation
 protected:
 	HICON m_hIcon;
@@ -53,6 +52,7 @@ public:
 	CButton m_btnStartCall;
 	CButton m_btnStopCall;
 	CButton m_btnAcceptCall;
+	CString m_strLog;
 
 	afx_msg void OnBnClickedSetup();
 	afx_msg void OnBnClickedStartStack();
@@ -62,6 +62,7 @@ public:
 	afx_msg void OnBnClickedAcceptCall();
 
 	LRESULT OnSipMessage( WPARAM wParam, LPARAM lParam );
+	void SetLog( const char * fmt, ... );
 
 	virtual void EventRegister( CSipServerInfo * pclsInfo, int iStatus );
 	virtual bool EventIncomingRequestAuth( CSipMessage * pclsMessage );

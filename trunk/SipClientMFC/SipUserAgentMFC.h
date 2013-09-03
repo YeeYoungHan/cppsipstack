@@ -48,4 +48,6 @@ public:
 private:
 	HWND	m_hWnd;
 	ISipUserAgentCallBack * m_pclsCallBack;
+
+	LRESULT _SendMessage( WPARAM wParam, LPARAM lParam );
 };
