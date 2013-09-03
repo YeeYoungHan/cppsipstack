@@ -49,4 +49,45 @@ public:
 	CSipCallRtp * m_pclsRtp;
 };
 
+class CEventCallRing
+{
+public:
+	CEventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
+	{
+		m_pszCallId = pszCallId;
+		m_iSipStatus = iSipStatus;
+		m_pclsRtp = pclsRtp;
+	}
+
+	const char * m_pszCallId;
+	int m_iSipStatus;
+	CSipCallRtp * m_pclsRtp;
+};
+
+class CEventCallStart
+{
+public:
+	CEventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
+	{
+		m_pszCallId = pszCallId;
+		m_pclsRtp = pclsRtp;
+	}
+
+	const char * m_pszCallId;
+	CSipCallRtp * m_pclsRtp;
+};
+
+class CEventCallEnd
+{
+public:
+	CEventCallEnd( const char * pszCallId, int iSipStatus )
+	{
+		m_pszCallId = pszCallId;
+		m_iSipStatus = iSipStatus;
+	}
+
+	const char * m_pszCallId;
+	int m_iSipStatus;
+};
+
 #endif

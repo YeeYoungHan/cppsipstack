@@ -53,6 +53,7 @@ public:
 	CButton m_btnStopCall;
 	CButton m_btnAcceptCall;
 	CString m_strLog;
+	CString m_strCallNumber;
 
 	afx_msg void OnBnClickedSetup();
 	afx_msg void OnBnClickedStartStack();

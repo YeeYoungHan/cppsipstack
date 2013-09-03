@@ -58,6 +58,24 @@ LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
 				m_pclsCallBack->EventIncomingCall( pclsParam->m_pszCallId, pclsParam->m_pszFrom, pclsParam->m_pszTo, pclsParam->m_pclsRtp );
 			}
 			break;
+		case SMC_CALL_RINGING:
+			{
+				CEventCallRing * pclsParam = (CEventCallRing *)lParam;
+				m_pclsCallBack->EventCallRing( pclsParam->m_pszCallId, pclsParam->m_iSipStatus, pclsParam->m_pclsRtp );
+			}
+			break;
+		case SMC_CALL_START:
+			{
+				CEventCallStart * pclsParam = (CEventCallStart *)lParam;
+				m_pclsCallBack->EventCallStart( pclsParam->m_pszCallId, pclsParam->m_pclsRtp );
+			}
+			break;
+		case SMC_CALL_END:
+			{
+				CEventCallEnd * pclsParam = (CEventCallEnd *)lParam;
+				m_pclsCallBack->EventCallEnd( pclsParam->m_pszCallId, pclsParam->m_iSipStatus );
+			}
+			break;
 		}
 	}
 
@@ -86,14 +104,23 @@ void CSipUserAgentMFC::EventIncomingCall( const char * pszCallId, const char * p
 
 void CSipUserAgentMFC::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
 {
+	CEventCallRing clsParam( pszCallId, iSipStatus, pclsRtp );
+
+	_SendMessage( SMC_CALL_RINGING, (LPARAM)&clsParam );
 }
 
 void CSipUserAgentMFC::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
+	CEventCallStart clsParam( pszCallId, pclsRtp );
+
+	_SendMessage( SMC_CALL_START, (LPARAM)&clsParam );
 }
 
 void CSipUserAgentMFC::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
+	CEventCallEnd clsParam( pszCallId, iSipStatus );
+
+	_SendMessage( SMC_CALL_END, (LPARAM)&clsParam );
 }
 
 void CSipUserAgentMFC::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )

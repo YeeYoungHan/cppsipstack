@@ -31,6 +31,7 @@
 CSipClientMFCDlg::CSipClientMFCDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSipClientMFCDlg::IDD, pParent)
 	, m_strLog(_T(""))
+	, m_strCallNumber(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -44,6 +45,7 @@ void CSipClientMFCDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STOP_CALL, m_btnStopCall);
 	DDX_Control(pDX, IDC_ACCEPT_CALL, m_btnAcceptCall);
 	DDX_Text(pDX, IDC_LOG, m_strLog);
+	DDX_Text(pDX, IDC_CALL_NUMBER, m_strCallNumber);
 }
 
 BEGIN_MESSAGE_MAP(CSipClientMFCDlg, CDialog)
@@ -174,6 +176,19 @@ void CSipClientMFCDlg::OnBnClickedStopStack()
 
 void CSipClientMFCDlg::OnBnClickedStartCall()
 {
+	UpdateData(TRUE);
+
+	if( m_strCallNumber.GetLength() <= 0 )
+	{
+		MessageBox( "Please~ insert call number", "Info", MB_OK );
+		return;
+	}
+
+	std::string	strCallId;
+	CSipCallRtp clsRtp;
+	CSipCallRoute clsRoute;
+
+	m_clsSipUserAgent.StartCall( gclsSetup.m_strUserId.c_str(), m_strCallNumber, &clsRtp, &clsRoute, strCallId );
 }
 
 void CSipClientMFCDlg::OnBnClickedStopCall()
@@ -234,14 +249,25 @@ void CSipClientMFCDlg::EventIncomingCall( const char * pszCallId, const char * p
 
 void CSipClientMFCDlg::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
 {
+	SetLog( "%s (%d)", __FUNCTION__, iSipStatus );
 }
 
 void CSipClientMFCDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
+	m_btnStartCall.EnableWindow( FALSE );
+	m_btnStopCall.EnableWindow( TRUE );
+	m_btnAcceptCall.EnableWindow( FALSE );
+
+	SetLog( "%s", __FUNCTION__ );
 }
 
 void CSipClientMFCDlg::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
+	m_btnStartCall.EnableWindow( TRUE );
+	m_btnStopCall.EnableWindow( FALSE );
+	m_btnAcceptCall.EnableWindow( FALSE );
+
+	SetLog( "%s (%d)", __FUNCTION__, iSipStatus );
 }
 
 void CSipClientMFCDlg::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
