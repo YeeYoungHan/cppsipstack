@@ -48,7 +48,8 @@ LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
 		case SMC_REGISER:
 			{
 				CEventRegister * pclsParam = (CEventRegister *)lParam;
-				m_pclsCallBack->EventRegister( pclsParam->m_pclsInfo, pclsParam->m_iStatus );
+				m_pclsCallBack->EventRegister( &pclsParam->m_clsInfo, pclsParam->m_iStatus );
+				delete pclsParam;
 			}
 			break;
 		}
@@ -59,9 +60,10 @@ LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
 
 void CSipUserAgentMFC::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
-	CEventRegister clsParam( pclsInfo, iStatus );
+	CEventRegister * pclsParam = new CEventRegister( pclsInfo, iStatus );
+	if( pclsParam == NULL ) return;
 
-	_SendMessage( SMC_REGISER, (LPARAM)&clsParam );
+	_SendMessage( SMC_REGISER, (LPARAM)pclsParam );
 }
 
 bool CSipUserAgentMFC::EventIncomingRequestAuth( CSipMessage * pclsMessage )
@@ -111,6 +113,12 @@ void CSipUserAgentMFC::EventCallBackThreadEnd( int iThreadId )
 LRESULT CSipUserAgentMFC::_SendMessage( WPARAM wParam, LPARAM lParam )
 {
 	if( m_hWnd == 0 ) return WMR_FALSE;
+
+	if( wParam == SMC_REGISER )
+	{
+		PostMessage( m_hWnd, SIP_MESSAGE_ID, wParam, lParam );
+		return WMR_TRUE;
+	}
 
 	return SendMessage( m_hWnd, SIP_MESSAGE_ID, wParam, lParam );
 }
