@@ -36,7 +36,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	if( GetSipCallRtp( pclsMessage, clsRtp ) == false )
 	{
-		pclsResponse->m_iStatusCode = SIP_NOT_ACCEPTABLE_HERE;
+		pclsResponse = pclsMessage->CreateResponse( SIP_NOT_ACCEPTABLE_HERE );
 		gclsSipStack.SendSipMessage( pclsResponse );
 		return true;
 	}
