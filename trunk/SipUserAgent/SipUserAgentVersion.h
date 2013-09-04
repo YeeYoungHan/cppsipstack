@@ -19,9 +19,21 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.13"
+#define SIP_USER_AGENT_VERSION "0.16"
 
 /* 버전 정보
+
+= 버전 0.16 ( 2013년 9월 4일 ) =
+ * SIP INVITE 메시지의 SDP 가 비정상적인 경우, 이에 대한 응답 메시지를 전송 시도에서 메모리 오류가 발생하는 버그를 패치함
+ * Start 메소드가 호출된 경우에만 정상적으로 Stop 메소드가 처리되도록 수정함
+ * callback 인터페이스를 Start 메소드의 인자로 추가함
+ * callback 쓰레드가 종료할 때의 이벤트 메소드를 추가함
+ * 차단 UserAgent 기능을 security 인터페이스로 수정함
+ * SipUserAgent 가 종료될 때에 SIP 서버 정보를 모두 삭제하는 기능을 추가함
+ * 로그아웃 처리되는 과정에서 메모리 오류가 발생할 수 있는 버그를 패치함
+ * CSipCallRtp 객체가 존재하지 않아서 비정상 종료되는 버그를 패치함
+ * SIP REGISTER 에 대한 401 응답을 수신한 후, 인증 정보를 포함한 SIP REGISTER 메시지를 전송할 때에 to tag 를 포함한다.
+ * credential 의 uri 에 IP-PBX 도메인 주소를 입력하도록 수정함.
 
 = 버전 0.13 ( 2013년 5월 10일 ) =
  * ACK 전송 timeout 이 발생하면 해당 전화 연결을 종료하는 기능을 추가함

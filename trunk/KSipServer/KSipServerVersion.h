@@ -19,9 +19,16 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.15"
+#define KSIP_SERVER_VERSION	"0.16"
 
 /* 버전 정보 
+
+= 버전 0.16 ( 2013년 9월 4일 ) =
+ * 로그레벨, 로그파일크기도 실시간으로 수정 가능하다.
+ * 클라이언트 IP 필터링 기능을 추가함
+ * 허용 User Agent 기능을 추가함
+ * SIP 서버 파일 경로를 설정하지 않았을 경우 SipServerMap Load 디버그 로그가 출력되지 않도록 수정함
+ * 로그아웃시키지 못 하는 버그를 패치함
 
 = 버전 0.15 ( 2013년 8월 21일 ) =
  * ServerPlatform 라이브러리를 이용하도록 수정함
