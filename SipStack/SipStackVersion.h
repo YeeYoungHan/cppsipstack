@@ -19,9 +19,16 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.13"
+#define SIP_STACK_VERSION "0.16"
 
 /* 버전 정보
+
+= 버전 0.16 ( 2013년 9월 4일 ) =
+ * SIP stack 을 종료한 후, 대기 SIP 메시지 큐의 SIP 메시지를 제거하는 기능을 추가함
+ * callback 쓰레드가 종료할 때의 이벤트 메소드를 추가함
+ * SIP stack 에 허용하지 않을 클라이언트 IP 주소 필터링 기능을 추가함
+ * 차단 UserAgent 기능을 security 인터페이스로 수정함
+ * openssl 없이 빌드할 수 있는 기능을 추가함
 
 = 버전 0.13 ( 2013년 5월 10일 ) =
  * SIP transaction list 에 저장하지 않을 SIP User Agent 리스트 설정 기능을 추가함
