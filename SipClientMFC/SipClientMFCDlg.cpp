@@ -147,6 +147,7 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 	CSipServerInfo clsInfo;
 
 	GetLocalIp( clsSetup.m_strLocalIp );
+	m_strLocalIp = clsSetup.m_strLocalIp;
 
 	clsInfo.m_strIp = gclsSetup.m_strSipServerIp;
 	clsInfo.m_iPort = gclsSetup.m_iSipServerPort;
@@ -167,7 +168,6 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 
 void CSipClientMFCDlg::OnBnClickedStopStack()
 {
-	// QQQ: SIP 서버에 로그아웃한 결과 이벤트를 수신할 때에 SendMessage 에서 blocking 걸린다.
 	m_clsSipUserAgent.Stop();
 
 	m_btnStartStack.EnableWindow( TRUE );
@@ -184,19 +184,34 @@ void CSipClientMFCDlg::OnBnClickedStartCall()
 		return;
 	}
 
-	std::string	strCallId;
 	CSipCallRtp clsRtp;
 	CSipCallRoute clsRoute;
 
-	m_clsSipUserAgent.StartCall( gclsSetup.m_strUserId.c_str(), m_strCallNumber, &clsRtp, &clsRoute, strCallId );
+	clsRtp.m_strIp = m_strLocalIp;
+	clsRtp.m_iPort = 4000;
+
+	clsRoute.m_strDestIp = gclsSetup.m_strSipServerIp;
+	clsRoute.m_iDestPort = gclsSetup.m_iSipServerPort;
+
+	if( m_clsSipUserAgent.StartCall( gclsSetup.m_strUserId.c_str(), m_strCallNumber, &clsRtp, &clsRoute, m_strCallId ) == false )
+	{
+		MessageBox( "StartCall error", "Error", MB_OK );
+	}
 }
 
 void CSipClientMFCDlg::OnBnClickedStopCall()
 {
+	m_clsSipUserAgent.StopCall( m_strCallId.c_str() );
 }
 
 void CSipClientMFCDlg::OnBnClickedAcceptCall()
 {
+	CSipCallRtp clsRtp;
+
+	clsRtp.m_strIp = m_strLocalIp;
+	clsRtp.m_iPort = 4000;	
+
+	m_clsSipUserAgent.AcceptCall( m_strCallId.c_str(), &clsRtp );
 }
 
 LRESULT CSipClientMFCDlg::OnSipMessage( WPARAM wParam, LPARAM lParam )

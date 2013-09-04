@@ -39,6 +39,8 @@ protected:
 	HICON m_hIcon;
 	CSipUserAgentMFC m_clsSipUserAgentMFC;
 	CSipUserAgent		 m_clsSipUserAgent;
+	std::string			 m_strLocalIp;
+	std::string			 m_strCallId;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
