@@ -41,7 +41,7 @@ CSipStack	gclsSipStack;
  * @ingroup SipUserAgent
  * @brief »ý¼ºÀÚ
  */
-CSipUserAgent::CSipUserAgent() : m_pclsCallBack(NULL), m_iSeq(0)
+CSipUserAgent::CSipUserAgent() : m_pclsCallBack(NULL), m_iSeq(0), m_bStart(false)
 {
 }
 
@@ -208,6 +208,8 @@ bool CSipUserAgent::Start( CSipStackSetup & clsSetup, ISipUserAgentCallBack * pc
 
 	StartSipRegisterThread( this );
 
+	m_bStart = true;
+
 	return true;
 }
 
@@ -218,6 +220,8 @@ bool CSipUserAgent::Start( CSipStackSetup & clsSetup, ISipUserAgentCallBack * pc
  */
 bool CSipUserAgent::Stop( )
 {
+	if( m_bStart == false ) return true;
+
 	SIP_SERVER_INFO_LIST::iterator	it;
 	int	iCount;
 
@@ -245,6 +249,8 @@ bool CSipUserAgent::Stop( )
 
 	gclsSipStack.Stop();
 	DeleteRegisterInfoAll( );
+
+	m_bStart = false;
 
 	return true;
 }
