@@ -136,6 +136,8 @@ private:
 	/** */
 	int									m_iSeq;
 	CSipMutex						m_clsOtherMutex;
+
+	bool								m_bStart;
 };
 
 extern CSipStack	gclsSipStack;
