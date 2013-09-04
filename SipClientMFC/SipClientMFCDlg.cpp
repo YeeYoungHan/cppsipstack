@@ -59,17 +59,13 @@ BEGIN_MESSAGE_MAP(CSipClientMFCDlg, CDialog)
 	ON_BN_CLICKED(IDC_STOP_CALL, &CSipClientMFCDlg::OnBnClickedStopCall)
 	ON_BN_CLICKED(IDC_ACCEPT_CALL, &CSipClientMFCDlg::OnBnClickedAcceptCall)
 	ON_MESSAGE(SIP_MESSAGE_ID, &CSipClientMFCDlg::OnSipMessage)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
-
-
-// CSipClientMFCDlg message handlers
 
 BOOL CSipClientMFCDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// Set the icon for this dialog.  The framework does this automatically
-	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
@@ -82,10 +78,6 @@ BOOL CSipClientMFCDlg::OnInitDialog()
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
-
-// If you add a minimize button to your dialog, you will need the code below
-//  to draw the icon.  For MFC applications using the document/view model,
-//  this is automatically done for you by the framework.
 
 void CSipClientMFCDlg::OnPaint()
 {
@@ -112,8 +104,6 @@ void CSipClientMFCDlg::OnPaint()
 	}
 }
 
-// The system calls this function to obtain the cursor to display while the user drags
-//  the minimized window.
 HCURSOR CSipClientMFCDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
@@ -148,7 +138,7 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 
 	GetLocalIp( clsSetup.m_strLocalIp );
 	m_strLocalIp = clsSetup.m_strLocalIp;
-
+	
 	clsInfo.m_strIp = gclsSetup.m_strSipServerIp;
 	clsInfo.m_iPort = gclsSetup.m_iSipServerPort;
 	clsInfo.m_strDomain = gclsSetup.m_strSipDomain;
@@ -156,7 +146,21 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 	clsInfo.m_strPassWord = gclsSetup.m_strPassWord;
 
 	m_clsSipUserAgent.InsertRegisterInfo( clsInfo );
-	if( m_clsSipUserAgent.Start( clsSetup, &m_clsSipUserAgentMFC ) == false )
+
+	bool bSuccess = false;
+
+	for( int i = 0; i < 100; ++i )
+	{
+		clsSetup.m_iLocalUdpPort = i + 10000;
+
+		if( m_clsSipUserAgent.Start( clsSetup, &m_clsSipUserAgentMFC ) )
+		{
+			bSuccess = true;
+			break;
+		}
+	}
+
+	if( bSuccess == false )
 	{
 		MessageBox( "sip stack start error", "Error", MB_OK );
 		return;
@@ -189,6 +193,7 @@ void CSipClientMFCDlg::OnBnClickedStartCall()
 
 	clsRtp.m_strIp = m_strLocalIp;
 	clsRtp.m_iPort = 4000;
+	clsRtp.m_iCodec = 0;
 
 	clsRoute.m_strDestIp = gclsSetup.m_strSipServerIp;
 	clsRoute.m_iDestPort = gclsSetup.m_iSipServerPort;
@@ -196,12 +201,21 @@ void CSipClientMFCDlg::OnBnClickedStartCall()
 	if( m_clsSipUserAgent.StartCall( gclsSetup.m_strUserId.c_str(), m_strCallNumber, &clsRtp, &clsRoute, m_strCallId ) == false )
 	{
 		MessageBox( "StartCall error", "Error", MB_OK );
+		return;
 	}
+
+	m_btnStartCall.EnableWindow( FALSE );
+	m_btnStopCall.EnableWindow( TRUE );
 }
 
 void CSipClientMFCDlg::OnBnClickedStopCall()
 {
 	m_clsSipUserAgent.StopCall( m_strCallId.c_str() );
+	m_strCallId.clear();
+
+	m_btnStartCall.EnableWindow( TRUE );
+	m_btnStopCall.EnableWindow( FALSE );
+	m_btnAcceptCall.EnableWindow( FALSE );
 }
 
 void CSipClientMFCDlg::OnBnClickedAcceptCall()
@@ -210,8 +224,12 @@ void CSipClientMFCDlg::OnBnClickedAcceptCall()
 
 	clsRtp.m_strIp = m_strLocalIp;
 	clsRtp.m_iPort = 4000;	
+	clsRtp.m_iCodec = 0;
 
-	m_clsSipUserAgent.AcceptCall( m_strCallId.c_str(), &clsRtp );
+	if( m_clsSipUserAgent.AcceptCall( m_strCallId.c_str(), &clsRtp ) )
+	{
+		m_btnAcceptCall.EnableWindow( FALSE );
+	}
 }
 
 LRESULT CSipClientMFCDlg::OnSipMessage( WPARAM wParam, LPARAM lParam )
@@ -255,9 +273,17 @@ bool CSipClientMFCDlg::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 
 void CSipClientMFCDlg::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
 {
+	if( m_strCallId.empty() == false )
+	{
+		m_clsSipUserAgent.StopCall( pszCallId, SIP_BUSY_HERE );
+		return;
+	}
+
 	m_btnStartCall.EnableWindow( FALSE );
 	m_btnStopCall.EnableWindow( TRUE );
 	m_btnAcceptCall.EnableWindow( TRUE );
+
+	m_strCallId = pszCallId;
 
 	SetLog( "%s (%s)", __FUNCTION__, pszFrom );
 }
@@ -281,6 +307,8 @@ void CSipClientMFCDlg::EventCallEnd( const char * pszCallId, int iSipStatus )
 	m_btnStartCall.EnableWindow( TRUE );
 	m_btnStopCall.EnableWindow( FALSE );
 	m_btnAcceptCall.EnableWindow( FALSE );
+
+	m_strCallId.clear();
 
 	SetLog( "%s (%d)", __FUNCTION__, iSipStatus );
 }
@@ -306,4 +334,11 @@ bool CSipClientMFCDlg::EventMessage( const char * pszFrom, const char * pszTo, C
 
 void CSipClientMFCDlg::EventCallBackThreadEnd( int iThreadId )
 {
+}
+
+void CSipClientMFCDlg::OnDestroy()
+{
+	m_clsSipUserAgent.Stop();
+
+	__super::OnDestroy();
 }
