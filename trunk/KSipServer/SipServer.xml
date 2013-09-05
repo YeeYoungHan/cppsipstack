@@ -45,6 +45,7 @@
 	<Security>
 		<DenySipUserAgentList>
 			<SipUserAgent>friendly-scanner</SipUserAgent>
+			<SipUserAgent>sundayddr</SipUserAgent>
 		</DenySipUserAgentList>
 	</Security>
 </Setup>
