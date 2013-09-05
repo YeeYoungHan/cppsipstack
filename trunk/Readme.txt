@@ -113,3 +113,9 @@ C++ SIP stack 프로젝트
    - 이미 해제되어 있으면 컴파일만 하면 된다.
 
    #define USE_MYSQL
+
+5. TLS 없이 빌드하고 싶은 경우
+
+ SipStack/SipStackDefine.h 에서 아래의 소스 코드를 주석 처리한 후, 컴파일한다.
+
+ #define USE_TLS
