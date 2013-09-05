@@ -87,7 +87,7 @@ int CStringMap::GetCount( )
 	int iCount;
 
 	m_clsMutex.acquire();
-	iCount = m_clsMap.size();
+	iCount = (int)m_clsMap.size();
 	m_clsMutex.release();
 
 	return iCount;
