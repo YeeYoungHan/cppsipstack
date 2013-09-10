@@ -31,6 +31,11 @@ bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCal
 	if( pszFrom == NULL || pszTo == NULL ) return false;
 	if( pclsRtp == NULL || pclsRoute == NULL ) return false;
 
+	if( strlen( pszFrom ) == 0 || strlen( pszTo ) == 0 ) return false;
+
+	if( pclsRoute->m_strDestIp.empty() ) return false;
+	if( pclsRoute->m_iDestPort <= 0 || pclsRoute->m_iDestPort > 65535 ) return false;
+
 	CSipDialog	clsDialog;
 
 	clsDialog.m_strFromId = pszFrom;
