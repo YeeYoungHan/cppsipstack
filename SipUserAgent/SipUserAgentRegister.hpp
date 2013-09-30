@@ -47,6 +47,12 @@ LOOP_START:
 				{
 					itSL->m_bLogin = true;
 					time( &itSL->m_iLoginTime );
+
+					int iExpires = pclsMessage->GetExpires();
+					if( iExpires != itSL->m_iLoginTimeout )
+					{
+						itSL->m_iLoginTimeout = iExpires;
+					}
 				}
 
 				if( m_pclsCallBack ) m_pclsCallBack->EventRegister( &(*itSL), iStatusCode );
