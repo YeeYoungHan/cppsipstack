@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+
+#ifdef USE_MYSQL
 #include <list>
 #include "ServerUtility.h"
 #include "DbMySQL.h"
@@ -24,14 +26,14 @@
 #include "ServerService.h"
 
 typedef std::list< std::string > SQL_LIST;
-static bool gbDbThreadRun = false;
-
-#ifdef USE_MYSQL
 static CSipMutexSignal gclsMutex;
 static SQL_LIST gclsSqlList;
 static size_t		giMaxSqlCount = 99;
 #endif
 
+static bool gbDbThreadRun = false;
+
+#ifdef USE_MYSQL
 /**
  * @ingroup KSipServer
  * @brief DB INSERT/UPDATE/DELETE SQL 문장을 추가한다.
@@ -39,7 +41,6 @@ static size_t		giMaxSqlCount = 99;
  */
 void DbInsertString( std::string & strSQL )
 {
-#ifdef USE_MYSQL
 	gclsMutex.acquire();
 	gclsSqlList.push_back( strSQL );
 	if( gclsSqlList.size() > giMaxSqlCount )
@@ -49,8 +50,8 @@ void DbInsertString( std::string & strSQL )
 	}
 	if( gclsSqlList.size() == 1 ) gclsMutex.signal();
 	gclsMutex.release();
-#endif
 }
+#endif
 
 /**
  * @ingroup KSipServer
