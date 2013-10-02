@@ -359,6 +359,14 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 		pclsMessage->m_clsTo.InsertParam( "tag", m_strToTag.c_str() );
 	}
 
+	// SK 브로드밴드 IP-PBX 와 연동하기 위해서 필요한 기능 ( RFC3325 )
+	char szUri[1024];
+
+	snprintf( szUri, sizeof(szUri), "<sip:%s@%s:%d>", m_strFromId.c_str(), gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort );
+
+	pclsMessage->AddHeader( "P-Asserted-Identity", szUri );
+	pclsMessage->AddHeader( "Diversion", szUri );
+
 	// Route
 	pclsMessage->AddRoute( m_strContactIp.c_str(), m_iContactPort, m_eTransport );
 
