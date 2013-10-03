@@ -192,6 +192,11 @@ bool CSipStack::AddCallBack( ISipStackCallBack * pclsCallBack )
 	return true;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SIP stack 의 보안 기능을 수행할 callback 인터페이스를 등록한다.
+ * @param pclsSecurityCallBack 
+ */
 void CSipStack::SetSecurityCallBack( ISipStackSecurityCallBack * pclsSecurityCallBack )
 {
 	m_pclsSecurityCallBack = pclsSecurityCallBack;
