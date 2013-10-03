@@ -17,6 +17,7 @@
  */
 
 /**
+ * @ingroup KSipServer
  * @brief SIP stack 에서 허용하는 SIP User Agent 인가?
  * @param pszSipUserAgent SIP UserAgent 헤더
  * @returns SIP stack 에서 허용하는 SIP User Agent 이면 true 를 리턴하고 그렇지 않으면 false 한다.
@@ -27,6 +28,7 @@ bool CSipServer::IsAllowUserAgent( const char * pszSipUserAgent )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief SIP stack 에서 허용하지 않는 SIP User Agent 인가?
  * @param pszSipUserAgent SIP UserAgent 헤더
  * @returns SIP stack 에서 허용하지 않는 SIP User Agent 이면 true 를 리턴하고 그렇지 않으면 false 한다.
@@ -37,6 +39,7 @@ bool CSipServer::IsDenyUserAgent( const char * pszSipUserAgent )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief SIP stack 에서 허용하는 IP 주소인가?
  * @param pszIp 클라이언트 IP 주소
  * @returns SIP stack 에서 허용하는 IP 주소이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
@@ -46,6 +49,12 @@ bool CSipServer::IsAllowIp( const char * pszIp )
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief SIP stack 에서 허용하지 않는 IP 주소인가?
+ * @param pszIp 클라이언트 IP 주소
+ * @returns SIP stack 에서 허용하지 않는 IP 주소이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServer::IsDenyIp( const char * pszIp )
 {
 	return false;
