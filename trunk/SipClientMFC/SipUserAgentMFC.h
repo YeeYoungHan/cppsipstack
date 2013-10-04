@@ -22,6 +22,11 @@
 
 #include "SipUserAgentCallBack.h"
 
+/**
+ * @ingroup SipClientMFC
+ * @brief SipUserAgent callback 이벤트를 윈도우 이벤트로 전달하여서 MFC 클래스에서 SipUserAgent callback 을 편리하게 사용할 수 있는 클래스
+ *				SipUserAgent callback 은 윈도우 쓰레드가 아니므로 윈도우 쓰레드로 변환하기 위해서 윈도우 이벤트로 전달한다.
+ */
 class CSipUserAgentMFC : public ISipUserAgentCallBack
 {
 public:

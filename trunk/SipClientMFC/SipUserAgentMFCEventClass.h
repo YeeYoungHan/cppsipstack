@@ -19,6 +19,10 @@
 #ifndef _SIP_USER_AGENT_MFC_EVENT_CLASS_H_
 #define _SIP_USER_AGENT_MFC_EVENT_CLASS_H_
 
+/**
+ * @ingroup SipClientMFC
+ * @brief EventRegister 정보 전달 클래스
+ */
 class CEventRegister
 {
 public:
@@ -32,6 +36,10 @@ public:
 	int		m_iStatus;
 };
 
+/**
+ * @ingroup SipClientMFC
+ * @brief EventIncomingCall 정보 전달 클래스
+ */
 class CEventIncomingCall
 {
 public:
@@ -49,6 +57,10 @@ public:
 	CSipCallRtp * m_pclsRtp;
 };
 
+/**
+ * @ingroup SipClientMFC
+ * @brief EventCallRing 정보 전달 클래스
+ */
 class CEventCallRing
 {
 public:
@@ -64,6 +76,10 @@ public:
 	CSipCallRtp * m_pclsRtp;
 };
 
+/**
+ * @ingroup SipClientMFC
+ * @brief EventCallStart 정보 전달 클래스
+ */
 class CEventCallStart
 {
 public:
@@ -77,6 +93,10 @@ public:
 	CSipCallRtp * m_pclsRtp;
 };
 
+/**
+ * @ingroup SipClientMFC
+ * @brief EventCallEnd 정보 전달 클래스
+ */
 class CEventCallEnd
 {
 public:

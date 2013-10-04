@@ -31,6 +31,10 @@
 
 typedef std::map< std::string, std::string > SETUP_MAP;
 
+/**
+ * @ingroup SipClientMFC
+ * @brief 설정 파일 저장/읽기 클래스
+ */
 class CSetup
 {
 public:

@@ -29,16 +29,33 @@ CSipUserAgentMFC::~CSipUserAgentMFC()
 {
 }
 
+/**
+ * @ingroup SipClientMFC
+ * @brief SipUserAgent 의 윈도우 이벤트를 수신할 윈도우 핸들을 등록한다.
+ * @param hWnd 윈도우 핸들
+ */
 void CSipUserAgentMFC::SetWindowHandle( HWND hWnd )
 {
 	m_hWnd = hWnd;
 }
 
+/**
+ * @ingroup SipClientMFC
+ * @brief 윈도우 쓰레드 실행될 SipUserAgent callback 인터페이스를 등록한다.
+ * @param pclsCallBack SipUserAgent callback 인터페이스
+ */
 void CSipUserAgentMFC::SetCallBack( ISipUserAgentCallBack * pclsCallBack )
 {
 	m_pclsCallBack = pclsCallBack;
 }
 
+/**
+ * @ingroup SipClientMFC
+ * @brief 윈도우 메시지 수신 callback 메소드
+ * @param wParam 
+ * @param lParam 
+ * @returns 0 를 리턴한다.
+ */
 LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
 {
 	if( m_pclsCallBack )
