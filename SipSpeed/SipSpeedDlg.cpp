@@ -49,6 +49,15 @@ END_MESSAGE_MAP()
 
 CSipSpeedDlg::CSipSpeedDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSipSpeedDlg::IDD, pParent)
+	, m_strSipServerIp(_T(""))
+	, m_iSipServerPort(0)
+	, m_strSipDomain(_T(""))
+	, m_strCallerId(_T(""))
+	, m_strCallerPassWord(_T(""))
+	, m_strCalleeId(_T(""))
+	, m_strCalleePassWord(_T(""))
+	, m_iCallTotalCount(0)
+	, m_iCallConcurrentCount(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -56,6 +65,19 @@ CSipSpeedDlg::CSipSpeedDlg(CWnd* pParent /*=NULL*/)
 void CSipSpeedDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_SIP_SERVER_IP, m_strSipServerIp);
+	DDX_Text(pDX, IDC_SIP_SERVER_PORT, m_iSipServerPort);
+	DDX_Text(pDX, IDC_SIP_DOMAIN, m_strSipDomain);
+	DDX_Text(pDX, IDC_CALLER_ID, m_strCallerId);
+	DDX_Text(pDX, IDC_CALLER_PW, m_strCallerPassWord);
+	DDX_Text(pDX, IDC_CALLEE_ID, m_strCalleeId);
+	DDX_Text(pDX, IDC_CALLEE_PW, m_strCalleePassWord);
+	DDX_Text(pDX, IDC_CALL_TOTAL_COUNT, m_iCallTotalCount);
+	DDX_Text(pDX, IDC_CALL_CONCURRENT_COUNT, m_iCallConcurrentCount);
+	DDX_Control(pDX, IDC_START_SIP_STACK, m_btnStartSipStack);
+	DDX_Control(pDX, IDC_STOP_SIP_STACK, m_btnStopSipStack);
+	DDX_Control(pDX, IDC_START_TEST, m_btnStartTest);
+	DDX_Control(pDX, IDC_STOP_TEST, m_btnStopTest);
 }
 
 BEGIN_MESSAGE_MAP(CSipSpeedDlg, CDialog)
@@ -63,6 +85,10 @@ BEGIN_MESSAGE_MAP(CSipSpeedDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_START_SIP_STACK, &CSipSpeedDlg::OnBnClickedStartSipStack)
+	ON_BN_CLICKED(IDC_STOP_SIP_STACK, &CSipSpeedDlg::OnBnClickedStopSipStack)
+	ON_BN_CLICKED(IDC_START_TEST, &CSipSpeedDlg::OnBnClickedStartTest)
+	ON_BN_CLICKED(IDC_STOP_TEST, &CSipSpeedDlg::OnBnClickedStopTest)
 END_MESSAGE_MAP()
 
 
@@ -151,3 +177,23 @@ HCURSOR CSipSpeedDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+void CSipSpeedDlg::OnBnClickedStartSipStack()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+void CSipSpeedDlg::OnBnClickedStopSipStack()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+void CSipSpeedDlg::OnBnClickedStartTest()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+void CSipSpeedDlg::OnBnClickedStopTest()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
