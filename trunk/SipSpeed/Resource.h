@@ -16,8 +16,13 @@
 #define IDC_CALLEE_PW                   1005
 #define IDC_SIP_DOMAIN                  1006
 #define IDC_CALL_TOTAL_COUNT            1007
-#define IDC_EDIT9                       1008
 #define IDC_CALL_CONCURRENT_COUNT       1008
+#define IDC_LOG                         1009
+#define IDC_START_SIP_STACK             1010
+#define IDC_STOP_SIP_STACK2             1011
+#define IDC_STOP_SIP_STACK              1011
+#define IDC_START_TEST                  1012
+#define IDC_STOP_TEST                   1013
 
 // Next default values for new objects
 // 
@@ -25,7 +30,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        129
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_CONTROL_VALUE         1011
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

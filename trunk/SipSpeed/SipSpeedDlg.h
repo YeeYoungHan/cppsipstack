@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "afxwin.h"
 
 
 // CSipSpeedDlg dialog
@@ -29,4 +30,22 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	CString m_strSipServerIp;
+	int m_iSipServerPort;
+	CString m_strSipDomain;
+	CString m_strCallerId;
+	CString m_strCallerPassWord;
+	CString m_strCalleeId;
+	CString m_strCalleePassWord;
+	int m_iCallTotalCount;
+	int m_iCallConcurrentCount;
+	CButton m_btnStartSipStack;
+	CButton m_btnStopSipStack;
+	CButton m_btnStartTest;
+	CButton m_btnStopTest;
+	afx_msg void OnBnClickedStartSipStack();
+	afx_msg void OnBnClickedStopSipStack();
+	afx_msg void OnBnClickedStartTest();
+	afx_msg void OnBnClickedStopTest();
 };
