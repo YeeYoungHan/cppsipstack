@@ -48,6 +48,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SipUserAgentMFC;../openssl-32bit/include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -70,7 +71,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="libeay32.lib ssleay32.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories=";../openssl-32bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -354,6 +357,14 @@
 			</File>
 			<File
 				RelativePath=".\SipSpeedDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipSpeedDlgSip.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipSpeedDlgUtil.hpp"
 				>
 			</File>
 			<File
