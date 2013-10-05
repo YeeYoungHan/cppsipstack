@@ -65,6 +65,11 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	while( gclsSipUserAgent.GetCallCount() > 0 )
 	{
 		Sleep(20);
+
+		if( gbStopTestThread )
+		{
+			gclsSipUserAgent.StopCallAll();
+		}
 	}
 
 	gettimeofday( &sttEnd, NULL );
