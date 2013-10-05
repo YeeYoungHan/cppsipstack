@@ -33,7 +33,7 @@ CSipUserAgent		 gclsSipUserAgent;
 
 CSipSpeedDlg::CSipSpeedDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSipSpeedDlg::IDD, pParent)
-	, m_bCallerLogin(false), m_bCalleeLogin(false), m_bTest(false)
+	, m_bCallerLogin(false), m_bCalleeLogin(false), m_bTest(false), m_iCallSuccess(0), m_iCallError(0)
 	, m_strSipServerIp(_T(""))
 	, m_iSipServerPort(5060)
 	, m_strSipDomain(_T(""))
@@ -42,7 +42,7 @@ CSipSpeedDlg::CSipSpeedDlg(CWnd* pParent /*=NULL*/)
 	, m_strCalleeId(_T(""))
 	, m_strCalleePassWord(_T(""))
 	, m_iCallTotalCount(100)
-	, m_iCallConcurrentCount(100)
+	, m_iCallConcurrentCount(10)
 	, m_strLog(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -186,6 +186,7 @@ HCURSOR CSipSpeedDlg::OnQueryDragIcon()
 
 void CSipSpeedDlg::OnBnClickedStartSipStack()
 {
+	// 입력값이 유효한지 검사한다.
 	UpdateData(TRUE);
 
 	if( CheckInput( m_strSipServerIp, "SIP Server IP" ) == false ||
@@ -201,13 +202,15 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 		return;
 	}
 
+	// 유효하지 않는 입력값을 수정한다.
 	if( m_strSipDomain.IsEmpty() ) m_strSipDomain = m_strSipServerIp;
 	if( m_iSipServerPort <= 0 || m_iSipServerPort > 65535 ) m_iSipServerPort = 5060;
 	if( m_iCallTotalCount <= 0 ) m_iCallTotalCount = 100;
-	if( m_iCallConcurrentCount <= 0 ) m_iCallConcurrentCount = 100;
+	if( m_iCallConcurrentCount <= 0 ) m_iCallConcurrentCount = 10;
 
 	UpdateData(FALSE);
 
+	// 설정 파일에 저장한다.
 	gclsSetup.m_strSipServerIp = m_strSipServerIp;
 	gclsSetup.m_iSipServerPort = m_iSipServerPort;
 	gclsSetup.m_strSipDomain = m_strSipDomain;
@@ -220,6 +223,7 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 
 	gclsSetup.Put();
 
+	// SipStack 을 시작한다.
 	gclsSipUserAgentMFC.SetWindowHandle( GetSafeHwnd() );
 	gclsSipUserAgentMFC.SetCallBack( this );
 
@@ -270,11 +274,32 @@ void CSipSpeedDlg::OnBnClickedStopSipStack()
 
 	m_btnStartSipStack.EnableWindow( TRUE );
 	m_btnStopSipStack.EnableWindow( FALSE );
+	m_btnStartTest.EnableWindow( FALSE );
+	m_btnStopTest.EnableWindow( FALSE );
 }
 
 void CSipSpeedDlg::OnBnClickedStartTest()
 {
+	UpdateData(TRUE);
 
+	if( m_iCallTotalCount <= 0 ) m_iCallTotalCount = 100;
+	if( m_iCallConcurrentCount <= 0 ) m_iCallConcurrentCount = 10;
+
+	UpdateData(FALSE);
+
+	gclsSetup.m_iCallTotalCount = m_iCallTotalCount;
+	gclsSetup.m_iCallConcurrentCount = m_iCallConcurrentCount;
+
+	gclsSetup.Put();
+
+	m_iCallSuccess = 0;
+	m_iCallError = 0;
+
+	if( StartTestThread( GetSafeHwnd() ) == false )
+	{
+		MessageBox( "Start Test thread error", "Error", MB_OK | MB_ICONERROR );
+		return;
+	}
 	
 	m_bTest = true;
 
@@ -284,6 +309,7 @@ void CSipSpeedDlg::OnBnClickedStartTest()
 
 void CSipSpeedDlg::OnBnClickedStopTest()
 {
+	StopTestThread();
 	
 	m_bTest = false;
 
@@ -302,7 +328,12 @@ LRESULT CSipSpeedDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
 {
 	if( wParam == WM_TEST_END )
 	{
-		
+		double fCps = (double)( m_iCallSuccess + m_iCallError ) / ( (double)lParam / 1000 );
+
+		SetLog( "call success(%d) / error(%d) / cps(%.3f) / time(%d ms)", m_iCallSuccess, m_iCallError, fCps, lParam );
+
+		m_btnStartTest.EnableWindow( TRUE );
+		m_btnStopTest.EnableWindow( FALSE );
 	}
 
 	return 0;

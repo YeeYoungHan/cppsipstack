@@ -21,7 +21,7 @@
 
 CSetup gclsSetup;
 
-CSetup::CSetup() : m_iSipServerPort(5060)
+CSetup::CSetup() : m_iSipServerPort(5060), m_iCallTotalCount(100), m_iCallConcurrentCount(10)
 {
 }
 

@@ -65,6 +65,6 @@
 #define WM_TEST_END	1
 
 // SipTestThread.cpp
-bool StartTestThread( const char * pszCallerId, const char * pszCalleeId, int iCallTotalCount, int iCallConcurrentCount );
+bool StartTestThread( HWND hWnd );
 void StopTestThread();
 bool IsTestThreadRun();
