@@ -50,6 +50,7 @@ public:
 	// SipSpeedDlgSip.hpp
 	bool	m_bCallerLogin, m_bCalleeLogin;
 	bool	m_bTest;
+	int		m_iCallSuccess, m_iCallError;
 
 	LRESULT OnSipMessage( WPARAM wParam, LPARAM lParam );
 

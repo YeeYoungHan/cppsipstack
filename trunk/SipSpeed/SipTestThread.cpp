@@ -2,6 +2,7 @@
 #include "SipStackDefine.h"
 #include "SipUserAgent.h"
 #include "Setup.h"
+#include "TimeUtility.h"
 
 static bool gbStopTestThread = false;
 static bool gbTestThreadRun = false;
@@ -13,6 +14,7 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	CSipCallRtp clsRtp;
 	CSipCallRoute clsRoute;
 	std::string strCallId;
+	struct timeval sttStart, sttEnd;
 
 	gbTestThreadRun = true;
 
@@ -22,6 +24,8 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 
 	clsRoute.m_strDestIp = gclsSetup.m_strSipServerIp;
 	clsRoute.m_iDestPort = gclsSetup.m_iSipServerPort;
+
+	gettimeofday( &sttStart, NULL );
 
 	for( int i = 0; i < gclsSetup.m_iCallTotalCount; ++i )
 	{
@@ -45,9 +49,13 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 		Sleep(20);
 	}
 
+	gettimeofday( &sttEnd, NULL );
+
+	int iDiff = DiffTimeval( &sttStart, &sttEnd );
+
 	gbTestThreadRun = false;
 
-	SendMessage( ghWnd, SIP_TEST_ID, WM_TEST_END, 0 );
+	SendMessage( ghWnd, SIP_TEST_ID, WM_TEST_END, iDiff );
 
 	return 0;
 }

@@ -115,6 +115,10 @@ void CSipSpeedDlg::EventCallRing( const char * pszCallId, int iSipStatus, CSipCa
  */
 void CSipSpeedDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
+	m_clsMutex.acquire();
+	++m_iCallSuccess;
+	m_clsMutex.release();
+
 	gclsSipUserAgent.StopCall( pszCallId );
 }
 
@@ -126,6 +130,12 @@ void CSipSpeedDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp
  */
 void CSipSpeedDlg::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
+	if( iSipStatus != SIP_OK )
+	{
+		m_clsMutex.acquire();
+		++m_iCallError;
+		m_clsMutex.release();
+	}
 }
 
 /**
