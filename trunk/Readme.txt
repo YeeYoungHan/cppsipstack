@@ -7,8 +7,9 @@ C++ SIP stack 프로젝트
  본 프로젝트의 목표는 다음과 같다.
 
  * C++ STL 기반 SIP stack 개발
- * C++ STL 기반 SIP stack 기반 IP-PBX 개발
- * C++ STL 기반 SIP stack 기반 로드밸런서 개발
+ * C++ SIP stack 기반 IP-PBX 개발
+ * C++ SIP stack 기반 로드밸런서 개발
+ * C++ SIP stack 기반 SIP 서버 성능 측정 프로그램 개발
 
  본 프로젝트의 라이선스는 GPLv3 이다.
  본 프로젝트를 진행하는 개발자 정보는 다음과 같다.
@@ -35,6 +36,9 @@ C++ SIP stack 프로젝트
 
  * SipUserAgent
    - SIP 로그인 / 통화 관리 라이브러리
+
+ * SipUserAgentMFC
+   - SipUserAgent callback 을 MFC 용으로 사용할 수 있는 라이브러리
 
  * SdpParser
    - SDP 메시지 파서/생성 라이브러리
@@ -94,6 +98,9 @@ C++ SIP stack 프로젝트
 
  * AndroidSipStack
    - 안드로이드용 sip stack 개발 프로젝트
+
+ * SipSpeed
+   - SIP 서버 성능 측정 프로그램
 
 3. 컴파일 방법
 
