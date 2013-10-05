@@ -49,7 +49,7 @@ LOOP_START:
 					time( &itSL->m_iLoginTime );
 
 					int iExpires = pclsMessage->GetExpires();
-					if( iExpires != itSL->m_iLoginTimeout )
+					if( iExpires > 0 && iExpires != itSL->m_iLoginTimeout )
 					{
 						itSL->m_iLoginTimeout = iExpires;
 					}
