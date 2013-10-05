@@ -174,3 +174,39 @@ int CSipUserAgent::GetCallCount( )
 
 	return iCallCount;
 }
+
+/**
+ * @ingroup SipUserAgent
+ * @brief 모든 통화의 SIP Call-ID 를 리스트에 저장한다.
+ * @param clsList SIP Call-ID 를 저장할 변수
+ */
+void CSipUserAgent::GetCallIdList( SIP_CALL_ID_LIST & clsList )
+{
+	SIP_DIALOG_MAP::iterator	itMap;
+
+	clsList.clear();
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		clsList.push_back( itMap->first );
+	}
+	m_clsMutex.release();
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief 모든 통화를 종료시킨다.
+ */
+void CSipUserAgent::StopCallAll( )
+{
+	SIP_CALL_ID_LIST	clsList;
+	SIP_CALL_ID_LIST::iterator	itList;
+
+	GetCallIdList( clsList );
+
+	for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+	{
+		StopCall( itList->c_str() );
+	}
+}
