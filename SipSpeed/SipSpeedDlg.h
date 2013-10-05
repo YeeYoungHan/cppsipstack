@@ -38,8 +38,7 @@ public:
 // Implementation
 protected:
 	HICON m_hIcon;
-	CSipUserAgentMFC m_clsSipUserAgentMFC;
-	CSipUserAgent		 m_clsSipUserAgent;
+	CSipUserAgentMFC gclsSipUserAgentMFC;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
@@ -49,6 +48,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	// SipSpeedDlgSip.hpp
+	bool	m_bCallerLogin, m_bCalleeLogin;
+	bool	m_bTest;
+
 	LRESULT OnSipMessage( WPARAM wParam, LPARAM lParam );
 
 	virtual void EventRegister( CSipServerInfo * pclsInfo, int iStatus );
@@ -64,7 +66,12 @@ public:
 	virtual void EventCallBackThreadEnd( int iThreadId );
 
 	// SipSpeedDlgUtil.hpp
+	CSipMutex	m_clsMutex;
+
 	bool CheckInput( CString & strInput, const char * pszName );
+	void SetLog( const char * fmt, ... );
+
+	// SipSpeedDlgThread.hpp
 
 	// SipSpeedDlg.cpp
 	CString m_strSipServerIp;
@@ -80,10 +87,12 @@ public:
 	CButton m_btnStopSipStack;
 	CButton m_btnStartTest;
 	CButton m_btnStopTest;
+	CString m_strLog;
 
 	afx_msg void OnBnClickedStartSipStack();
 	afx_msg void OnBnClickedStopSipStack();
 	afx_msg void OnBnClickedStartTest();
 	afx_msg void OnBnClickedStopTest();
 	afx_msg void OnDestroy();
+	LRESULT OnTestMessage( WPARAM wParam, LPARAM lParam );
 };

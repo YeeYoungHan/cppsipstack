@@ -158,3 +158,19 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 	return bRes;
 }
+
+/**
+ * @ingroup SipUserAgent
+ * @brief	통화 개수를 리턴한다.
+ * @returns 통화 개수를 리턴한다.
+ */
+int CSipUserAgent::GetCallCount( )
+{
+	int iCallCount;
+
+	m_clsMutex.acquire();
+	iCallCount = m_clsMap.size();
+	m_clsMutex.release();
+
+	return iCallCount;
+}

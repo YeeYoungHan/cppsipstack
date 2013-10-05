@@ -352,6 +352,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Setup.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipSpeed.cpp"
 				>
 			</File>
@@ -360,11 +364,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipSpeedDlgAbout.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipSpeedDlgSip.hpp"
 				>
 			</File>
 			<File
 				RelativePath=".\SipSpeedDlgUtil.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipTestThread.cpp"
 				>
 			</File>
 			<File
@@ -395,6 +407,10 @@
 			>
 			<File
 				RelativePath=".\Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Setup.h"
 				>
 			</File>
 			<File

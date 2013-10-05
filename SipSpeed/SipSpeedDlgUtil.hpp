@@ -30,3 +30,22 @@ bool CSipSpeedDlg::CheckInput( CString & strInput, const char * pszName )
 
 	return true;
 }
+
+void CSipSpeedDlg::SetLog( const char * fmt, ... )
+{
+	va_list		ap;
+	char			szBuf[8192];
+
+	va_start( ap, fmt );
+	vsnprintf( szBuf, sizeof(szBuf)-1, fmt, ap );
+	va_end( ap );
+
+	m_clsMutex.acquire();
+
+	UpdateData(TRUE);
+	m_strLog.Append( szBuf );
+	m_strLog.Append( "\r\n" );
+	UpdateData(FALSE);
+
+	m_clsMutex.release();
+}
