@@ -50,7 +50,10 @@ public:
 	ESipTransport	m_eTransport;
 };
 
+// key ´Â SIP Call-ID ÀÌ´Ù.
 typedef std::map< std::string, CSipDialog > SIP_DIALOG_MAP;
+
+typedef std::list< std::string > SIP_CALL_ID_LIST;
 
 /**
  * @ingroup SipUserAgent
@@ -75,6 +78,8 @@ public:
 	bool StopCall( const char * pszCallId, int iSipCode = 0 );
 	bool AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp );
 	int GetCallCount( );
+	void GetCallIdList( SIP_CALL_ID_LIST & clsList );
+	void StopCallAll( );
 
 	bool SendSms( const char * pszFrom, const char * pszTo, const char * pszText, CSipCallRoute * pclsRoute );
 	
