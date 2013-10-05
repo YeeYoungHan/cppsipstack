@@ -44,6 +44,7 @@ CSipSpeedDlg::CSipSpeedDlg(CWnd* pParent /*=NULL*/)
 	, m_iCallTotalCount(100)
 	, m_iCallConcurrentCount(10)
 	, m_strLog(_T(""))
+	, m_strPercent(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -65,6 +66,9 @@ void CSipSpeedDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_START_TEST, m_btnStartTest);
 	DDX_Control(pDX, IDC_STOP_TEST, m_btnStopTest);
 	DDX_Text(pDX, IDC_LOG, m_strLog);
+	DDX_Control(pDX, IDC_PROGRESS, m_clsProgress);
+	DDX_Text(pDX, IDC_PERCENT, m_strPercent);
+	DDX_Control(pDX, IDC_LOG, m_txtLog);
 }
 
 BEGIN_MESSAGE_MAP(CSipSpeedDlg, CDialog)
@@ -79,6 +83,7 @@ BEGIN_MESSAGE_MAP(CSipSpeedDlg, CDialog)
 	ON_MESSAGE(SIP_MESSAGE_ID, &CSipSpeedDlg::OnSipMessage)
 	ON_MESSAGE(SIP_TEST_ID, &CSipSpeedDlg::OnTestMessage)
 	ON_WM_DESTROY()
+	ON_BN_CLICKED(IDC_CLEAR_LOG, &CSipSpeedDlg::OnBnClickedClearLog)
 END_MESSAGE_MAP()
 
 
@@ -112,6 +117,8 @@ BOOL CSipSpeedDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
+
+	m_clsProgress.SetRange( 0, 100 );
 
 	gclsSetup.Get();
 
@@ -276,6 +283,8 @@ void CSipSpeedDlg::OnBnClickedStopSipStack()
 	m_btnStopSipStack.EnableWindow( FALSE );
 	m_btnStartTest.EnableWindow( FALSE );
 	m_btnStopTest.EnableWindow( FALSE );
+
+	m_bTest = false;
 }
 
 void CSipSpeedDlg::OnBnClickedStartTest()
@@ -284,8 +293,11 @@ void CSipSpeedDlg::OnBnClickedStartTest()
 
 	if( m_iCallTotalCount <= 0 ) m_iCallTotalCount = 100;
 	if( m_iCallConcurrentCount <= 0 ) m_iCallConcurrentCount = 10;
+	m_strPercent = "0 %";
 
 	UpdateData(FALSE);
+
+	m_clsProgress.SetPos( 0 );
 
 	gclsSetup.m_iCallTotalCount = m_iCallTotalCount;
 	gclsSetup.m_iCallConcurrentCount = m_iCallConcurrentCount;
@@ -337,4 +349,14 @@ LRESULT CSipSpeedDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
 	}
 
 	return 0;
+}
+
+void CSipSpeedDlg::OnBnClickedClearLog()
+{
+	m_clsMutex.acquire();
+
+	m_strLog = "";
+	UpdateData(FALSE);
+
+	m_clsMutex.release();
 }

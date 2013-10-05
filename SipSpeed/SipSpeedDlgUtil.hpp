@@ -47,5 +47,18 @@ void CSipSpeedDlg::SetLog( const char * fmt, ... )
 	m_strLog.Append( "\r\n" );
 	UpdateData(FALSE);
 
+	int iLine = m_txtLog.GetLineCount();
+	m_txtLog.LineScroll( iLine );
+
 	m_clsMutex.release();
+}
+
+void CSipSpeedDlg::SetPercent( )
+{
+	int iPercent = 100 * ( m_iCallSuccess + m_iCallError ) / m_iCallTotalCount;
+
+	m_clsProgress.SetPos( iPercent );
+
+	m_strPercent.Format( "%d %%", iPercent );
+	UpdateData(FALSE);
 }

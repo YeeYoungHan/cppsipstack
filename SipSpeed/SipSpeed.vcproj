@@ -129,6 +129,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SipUserAgentMFC;../openssl-64bit/include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -151,7 +152,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="libeay32.lib ssleay32.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories=";../openssl-64bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="17"
@@ -209,6 +212,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SipUserAgentMFC;../openssl-32bit/include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="false"
 				RuntimeLibrary="0"
@@ -231,7 +235,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="libeay32.lib ssleay32.lib"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories=";../openssl-32bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -291,6 +297,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SipUserAgentMFC;../openssl-64bit/include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="false"
 				RuntimeLibrary="0"
@@ -313,7 +320,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="libeay32.lib ssleay32.lib"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories=";../openssl-64bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
