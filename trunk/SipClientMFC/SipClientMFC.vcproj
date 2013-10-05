@@ -297,7 +297,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SipUserAgentMFC;../openssl-32bit/include"
+				AdditionalIncludeDirectories="../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SipUserAgentMFC;../openssl-64bit/include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="false"
 				RuntimeLibrary="0"

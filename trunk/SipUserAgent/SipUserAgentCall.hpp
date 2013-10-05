@@ -169,7 +169,7 @@ int CSipUserAgent::GetCallCount( )
 	int iCallCount;
 
 	m_clsMutex.acquire();
-	iCallCount = m_clsMap.size();
+	iCallCount = (int)m_clsMap.size();
 	m_clsMutex.release();
 
 	return iCallCount;
