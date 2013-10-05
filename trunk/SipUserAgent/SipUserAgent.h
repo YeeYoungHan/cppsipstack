@@ -74,6 +74,7 @@ public:
 	bool StartCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId );
 	bool StopCall( const char * pszCallId, int iSipCode = 0 );
 	bool AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp );
+	int GetCallCount( );
 
 	bool SendSms( const char * pszFrom, const char * pszTo, const char * pszText, CSipCallRoute * pclsRoute );
 	

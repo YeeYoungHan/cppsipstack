@@ -18,7 +18,7 @@
 
 LRESULT CSipSpeedDlg::OnSipMessage( WPARAM wParam, LPARAM lParam )
 {
-	return m_clsSipUserAgentMFC.OnSipMessage( wParam, lParam );
+	return gclsSipUserAgentMFC.OnSipMessage( wParam, lParam );
 }
 
 /**
@@ -29,6 +29,41 @@ LRESULT CSipSpeedDlg::OnSipMessage( WPARAM wParam, LPARAM lParam )
  */
 void CSipSpeedDlg::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
+	if( !strcmp( pclsInfo->m_strUserId.c_str(), m_strCallerId ) )
+	{
+		if( iStatus == SIP_OK )
+		{
+			m_bCallerLogin = true;
+			SetLog( "Caller(%s) login success", m_strCallerId );
+		}
+		else
+		{
+			m_bCallerLogin = false;
+			SetLog( "Caller(%s) login error(%d)", m_strCallerId, iStatus );
+		}
+	}
+	else if( !strcmp( pclsInfo->m_strUserId.c_str(), m_strCalleeId ) )
+	{
+		if( iStatus == SIP_OK )
+		{
+			m_bCalleeLogin = true;
+			SetLog( "Callee(%s) login success", m_strCalleeId );
+		}
+		else
+		{
+			m_bCalleeLogin = false;
+			SetLog( "Callee(%s) login error(%d)", m_strCalleeId, iStatus );
+		}
+	}
+
+	// Caller, Callee 가 모두 로그인되면 테스트를 시작할 수 있다.
+	if( m_bCallerLogin && m_bCalleeLogin )
+	{
+		if( m_bTest == false )
+		{
+			m_btnStartTest.EnableWindow( TRUE );
+		}
+	}
 }
 
 /**
@@ -52,6 +87,13 @@ bool CSipSpeedDlg::EventIncomingRequestAuth( CSipMessage * pclsMessage )
  */
 void CSipSpeedDlg::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
 {
+	CSipCallRtp clsRtp;
+
+	clsRtp.m_strIp = gclsSipStack.m_clsSetup.m_strLocalIp;
+	clsRtp.m_iPort = 4002;	
+	clsRtp.m_iCodec = 0;
+
+	gclsSipUserAgent.AcceptCall( pszCallId, &clsRtp );
 }
 
 /**
@@ -73,6 +115,7 @@ void CSipSpeedDlg::EventCallRing( const char * pszCallId, int iSipStatus, CSipCa
  */
 void CSipSpeedDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
+	gclsSipUserAgent.StopCall( pszCallId );
 }
 
 /**

@@ -19,50 +19,21 @@
 #include "stdafx.h"
 #include "SipSpeed.h"
 #include "SipSpeedDlg.h"
+#include "Setup.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+CSipUserAgent		 gclsSipUserAgent;
 
-// CAboutDlg dialog used for App About
-
-class CAboutDlg : public CDialog
-{
-public:
-	CAboutDlg();
-
-// Dialog Data
-	enum { IDD = IDD_ABOUTBOX };
-
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-// Implementation
-protected:
-	DECLARE_MESSAGE_MAP()
-};
-
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
-{
-}
-
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-}
-
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-END_MESSAGE_MAP()
-
-
-// CSipSpeedDlg dialog
-
+#include "SipSpeedDlgAbout.hpp"
 #include "SipSpeedDlgSip.hpp"
 #include "SipSpeedDlgUtil.hpp"
 
 CSipSpeedDlg::CSipSpeedDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSipSpeedDlg::IDD, pParent)
+	, m_bCallerLogin(false), m_bCalleeLogin(false), m_bTest(false)
 	, m_strSipServerIp(_T(""))
 	, m_iSipServerPort(5060)
 	, m_strSipDomain(_T(""))
@@ -72,6 +43,7 @@ CSipSpeedDlg::CSipSpeedDlg(CWnd* pParent /*=NULL*/)
 	, m_strCalleePassWord(_T(""))
 	, m_iCallTotalCount(100)
 	, m_iCallConcurrentCount(100)
+	, m_strLog(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -92,6 +64,7 @@ void CSipSpeedDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STOP_SIP_STACK, m_btnStopSipStack);
 	DDX_Control(pDX, IDC_START_TEST, m_btnStartTest);
 	DDX_Control(pDX, IDC_STOP_TEST, m_btnStopTest);
+	DDX_Text(pDX, IDC_LOG, m_strLog);
 }
 
 BEGIN_MESSAGE_MAP(CSipSpeedDlg, CDialog)
@@ -103,6 +76,8 @@ BEGIN_MESSAGE_MAP(CSipSpeedDlg, CDialog)
 	ON_BN_CLICKED(IDC_STOP_SIP_STACK, &CSipSpeedDlg::OnBnClickedStopSipStack)
 	ON_BN_CLICKED(IDC_START_TEST, &CSipSpeedDlg::OnBnClickedStartTest)
 	ON_BN_CLICKED(IDC_STOP_TEST, &CSipSpeedDlg::OnBnClickedStopTest)
+	ON_MESSAGE(SIP_MESSAGE_ID, &CSipSpeedDlg::OnSipMessage)
+	ON_MESSAGE(SIP_TEST_ID, &CSipSpeedDlg::OnTestMessage)
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
@@ -138,7 +113,23 @@ BOOL CSipSpeedDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	// TODO: Add extra initialization here
+	gclsSetup.Get();
+
+	m_strSipServerIp = gclsSetup.m_strSipServerIp.c_str();
+	m_iSipServerPort = gclsSetup.m_iSipServerPort;
+	m_strSipDomain = gclsSetup.m_strSipDomain.c_str();
+	m_strCallerId = gclsSetup.m_strCallerId.c_str();
+	m_strCallerPassWord = gclsSetup.m_strCallerPassWord.c_str();
+	m_strCalleeId = gclsSetup.m_strCalleeId.c_str();
+	m_strCalleePassWord = gclsSetup.m_strCalleePassWord.c_str();
+	m_iCallTotalCount = gclsSetup.m_iCallTotalCount;
+	m_iCallConcurrentCount = gclsSetup.m_iCallConcurrentCount;
+
+	UpdateData(FALSE);
+
+	m_btnStopSipStack.EnableWindow( FALSE );
+	m_btnStartTest.EnableWindow( FALSE );
+	m_btnStopTest.EnableWindow( FALSE );
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -217,8 +208,20 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 
 	UpdateData(FALSE);
 
-	m_clsSipUserAgentMFC.SetWindowHandle( GetSafeHwnd() );
-	m_clsSipUserAgentMFC.SetCallBack( this );
+	gclsSetup.m_strSipServerIp = m_strSipServerIp;
+	gclsSetup.m_iSipServerPort = m_iSipServerPort;
+	gclsSetup.m_strSipDomain = m_strSipDomain;
+	gclsSetup.m_strCallerId = m_strCallerId;
+	gclsSetup.m_strCallerPassWord = m_strCallerPassWord;
+	gclsSetup.m_strCalleeId = m_strCalleeId;
+	gclsSetup.m_strCalleePassWord = m_strCalleePassWord;
+	gclsSetup.m_iCallTotalCount = m_iCallTotalCount;
+	gclsSetup.m_iCallConcurrentCount = m_iCallConcurrentCount;
+
+	gclsSetup.Put();
+
+	gclsSipUserAgentMFC.SetWindowHandle( GetSafeHwnd() );
+	gclsSipUserAgentMFC.SetCallBack( this );
 
 	CSipStackSetup clsSetup;
 	CSipServerInfo clsInfo;
@@ -231,32 +234,76 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 	clsInfo.m_strUserId = m_strCallerId;
 	clsInfo.m_strPassWord = m_strCallerPassWord;
 
-	m_clsSipUserAgent.InsertRegisterInfo( clsInfo );
+	gclsSipUserAgent.InsertRegisterInfo( clsInfo );
 
 	clsInfo.m_strUserId = m_strCalleeId;
 	clsInfo.m_strPassWord = m_strCalleePassWord;
 
-	m_clsSipUserAgent.InsertRegisterInfo( clsInfo );
+	gclsSipUserAgent.InsertRegisterInfo( clsInfo );
 
+	bool bSuccess = false;
 
+	for( int i = 0; i < 100; ++i )
+	{
+		clsSetup.m_iLocalUdpPort = i + 10000;
+
+		if( gclsSipUserAgent.Start( clsSetup, &gclsSipUserAgentMFC ) )
+		{
+			bSuccess = true;
+			break;
+		}
+	}
+
+	if( bSuccess == false )
+	{
+		MessageBox( "sip stack start error", "Error", MB_OK );
+		return;
+	}
+
+	m_btnStartSipStack.EnableWindow( FALSE );
+	m_btnStopSipStack.EnableWindow( TRUE );
 }
 
 void CSipSpeedDlg::OnBnClickedStopSipStack()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	gclsSipUserAgent.Stop();
+
+	m_btnStartSipStack.EnableWindow( TRUE );
+	m_btnStopSipStack.EnableWindow( FALSE );
 }
 
 void CSipSpeedDlg::OnBnClickedStartTest()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	
+	m_bTest = true;
+
+	m_btnStartTest.EnableWindow( FALSE );
+	m_btnStopTest.EnableWindow( TRUE );
 }
 
 void CSipSpeedDlg::OnBnClickedStopTest()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	
+	m_bTest = false;
+
+	m_btnStartTest.EnableWindow( TRUE );
+	m_btnStopTest.EnableWindow( FALSE );
 }
 
 void CSipSpeedDlg::OnDestroy()
 {
+	gclsSipUserAgent.Stop();
+
 	__super::OnDestroy();
+}
+
+LRESULT CSipSpeedDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
+{
+	if( wParam == WM_TEST_END )
+	{
+		
+	}
+
+	return 0;
 }
