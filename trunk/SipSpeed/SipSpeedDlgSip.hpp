@@ -29,17 +29,28 @@ LRESULT CSipSpeedDlg::OnSipMessage( WPARAM wParam, LPARAM lParam )
  */
 void CSipSpeedDlg::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
+	std::string	strCommand;
+
+	if( pclsInfo->m_bLogin )
+	{
+		strCommand = "login";
+	}
+	else
+	{
+		strCommand = "logout";
+	}
+
 	if( !strcmp( pclsInfo->m_strUserId.c_str(), m_strCallerId ) )
 	{
 		if( iStatus == SIP_OK )
 		{
 			m_bCallerLogin = true;
-			SetLog( "Caller(%s) login success", m_strCallerId );
+			SetLog( "Caller(%s) %s success", m_strCallerId, strCommand.c_str() );
 		}
 		else
 		{
 			m_bCallerLogin = false;
-			SetLog( "Caller(%s) login error(%d)", m_strCallerId, iStatus );
+			SetLog( "Caller(%s) %s error(%d)", m_strCallerId, strCommand.c_str(), iStatus );
 		}
 	}
 	else if( !strcmp( pclsInfo->m_strUserId.c_str(), m_strCalleeId ) )
@@ -47,17 +58,17 @@ void CSipSpeedDlg::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 		if( iStatus == SIP_OK )
 		{
 			m_bCalleeLogin = true;
-			SetLog( "Callee(%s) login success", m_strCalleeId );
+			SetLog( "Callee(%s) %s success", m_strCalleeId, strCommand.c_str() );
 		}
 		else
 		{
 			m_bCalleeLogin = false;
-			SetLog( "Callee(%s) login error(%d)", m_strCalleeId, iStatus );
+			SetLog( "Callee(%s) %s error(%d)", m_strCalleeId, strCommand.c_str(), iStatus );
 		}
 	}
 
 	// Caller, Callee 가 모두 로그인되면 테스트를 시작할 수 있다.
-	if( m_bCallerLogin && m_bCalleeLogin )
+	if( pclsInfo->m_bLogin && m_bCallerLogin && m_bCalleeLogin )
 	{
 		if( m_bTest == false )
 		{
@@ -117,6 +128,7 @@ void CSipSpeedDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp
 {
 	m_clsMutex.acquire();
 	++m_iCallSuccess;
+	SetPercent( );
 	m_clsMutex.release();
 
 	gclsSipUserAgent.StopCall( pszCallId );
@@ -134,6 +146,7 @@ void CSipSpeedDlg::EventCallEnd( const char * pszCallId, int iSipStatus )
 	{
 		m_clsMutex.acquire();
 		++m_iCallError;
+		SetPercent( );
 		m_clsMutex.release();
 	}
 }

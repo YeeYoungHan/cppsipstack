@@ -20,6 +20,7 @@
 #include "afxwin.h"
 #include "SipUserAgent.h"
 #include "SipUserAgentMFC.h"
+#include "afxcmn.h"
 
 // CSipSpeedDlg dialog
 class CSipSpeedDlg : public CDialog, ISipUserAgentCallBack
@@ -71,6 +72,7 @@ public:
 
 	bool CheckInput( CString & strInput, const char * pszName );
 	void SetLog( const char * fmt, ... );
+	void SetPercent( );
 
 	// SipSpeedDlgThread.hpp
 
@@ -89,6 +91,8 @@ public:
 	CButton m_btnStartTest;
 	CButton m_btnStopTest;
 	CString m_strLog;
+	CProgressCtrl m_clsProgress;
+	CString m_strPercent;
 
 	afx_msg void OnBnClickedStartSipStack();
 	afx_msg void OnBnClickedStopSipStack();
@@ -96,4 +100,6 @@ public:
 	afx_msg void OnBnClickedStopTest();
 	afx_msg void OnDestroy();
 	LRESULT OnTestMessage( WPARAM wParam, LPARAM lParam );
+	CEdit m_txtLog;
+	afx_msg void OnBnClickedClearLog();
 };
