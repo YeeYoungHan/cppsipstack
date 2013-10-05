@@ -18,10 +18,11 @@
 
 #pragma once
 #include "afxwin.h"
-
+#include "SipUserAgent.h"
+#include "SipUserAgentMFC.h"
 
 // CSipSpeedDlg dialog
-class CSipSpeedDlg : public CDialog
+class CSipSpeedDlg : public CDialog, ISipUserAgentCallBack
 {
 // Construction
 public:
@@ -37,6 +38,8 @@ public:
 // Implementation
 protected:
 	HICON m_hIcon;
+	CSipUserAgentMFC m_clsSipUserAgentMFC;
+	CSipUserAgent		 m_clsSipUserAgent;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
@@ -45,6 +48,25 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
+	// SipSpeedDlgSip.hpp
+	LRESULT OnSipMessage( WPARAM wParam, LPARAM lParam );
+
+	virtual void EventRegister( CSipServerInfo * pclsInfo, int iStatus );
+	virtual bool EventIncomingRequestAuth( CSipMessage * pclsMessage );
+	virtual void EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp );
+	virtual void EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
+	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );
+	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
+	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
+	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer );
+	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId );
+	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage );
+	virtual void EventCallBackThreadEnd( int iThreadId );
+
+	// SipSpeedDlgUtil.hpp
+	bool CheckInput( CString & strInput, const char * pszName );
+
+	// SipSpeedDlg.cpp
 	CString m_strSipServerIp;
 	int m_iSipServerPort;
 	CString m_strSipDomain;
@@ -58,8 +80,10 @@ public:
 	CButton m_btnStopSipStack;
 	CButton m_btnStartTest;
 	CButton m_btnStopTest;
+
 	afx_msg void OnBnClickedStartSipStack();
 	afx_msg void OnBnClickedStopSipStack();
 	afx_msg void OnBnClickedStartTest();
 	afx_msg void OnBnClickedStopTest();
+	afx_msg void OnDestroy();
 };

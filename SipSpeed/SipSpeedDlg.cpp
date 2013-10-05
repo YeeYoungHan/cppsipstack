@@ -58,20 +58,20 @@ END_MESSAGE_MAP()
 
 // CSipSpeedDlg dialog
 
-
-
+#include "SipSpeedDlgSip.hpp"
+#include "SipSpeedDlgUtil.hpp"
 
 CSipSpeedDlg::CSipSpeedDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSipSpeedDlg::IDD, pParent)
 	, m_strSipServerIp(_T(""))
-	, m_iSipServerPort(0)
+	, m_iSipServerPort(5060)
 	, m_strSipDomain(_T(""))
 	, m_strCallerId(_T(""))
 	, m_strCallerPassWord(_T(""))
 	, m_strCalleeId(_T(""))
 	, m_strCalleePassWord(_T(""))
-	, m_iCallTotalCount(0)
-	, m_iCallConcurrentCount(0)
+	, m_iCallTotalCount(100)
+	, m_iCallConcurrentCount(100)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -103,6 +103,7 @@ BEGIN_MESSAGE_MAP(CSipSpeedDlg, CDialog)
 	ON_BN_CLICKED(IDC_STOP_SIP_STACK, &CSipSpeedDlg::OnBnClickedStopSipStack)
 	ON_BN_CLICKED(IDC_START_TEST, &CSipSpeedDlg::OnBnClickedStartTest)
 	ON_BN_CLICKED(IDC_STOP_TEST, &CSipSpeedDlg::OnBnClickedStopTest)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -194,7 +195,50 @@ HCURSOR CSipSpeedDlg::OnQueryDragIcon()
 
 void CSipSpeedDlg::OnBnClickedStartSipStack()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+
+	if( CheckInput( m_strSipServerIp, "SIP Server IP" ) == false ||
+			CheckInput( m_strCallerId, "Caller ID" ) == false ||
+			CheckInput( m_strCalleeId, "Callee ID" ) == false ) 
+	{
+		return;
+	}
+
+	if( m_strCallerId == m_strCalleeId )
+	{
+		MessageBox( "CallerId is equal to CalleeId", "ID Error", MB_OK | MB_ICONERROR );
+		return;
+	}
+
+	if( m_strSipDomain.IsEmpty() ) m_strSipDomain = m_strSipServerIp;
+	if( m_iSipServerPort <= 0 || m_iSipServerPort > 65535 ) m_iSipServerPort = 5060;
+	if( m_iCallTotalCount <= 0 ) m_iCallTotalCount = 100;
+	if( m_iCallConcurrentCount <= 0 ) m_iCallConcurrentCount = 100;
+
+	UpdateData(FALSE);
+
+	m_clsSipUserAgentMFC.SetWindowHandle( GetSafeHwnd() );
+	m_clsSipUserAgentMFC.SetCallBack( this );
+
+	CSipStackSetup clsSetup;
+	CSipServerInfo clsInfo;
+
+	GetLocalIp( clsSetup.m_strLocalIp );
+
+	clsInfo.m_strIp = m_strSipServerIp;
+	clsInfo.m_iPort = m_iSipServerPort;
+	clsInfo.m_strDomain = m_strSipDomain;
+	clsInfo.m_strUserId = m_strCallerId;
+	clsInfo.m_strPassWord = m_strCallerPassWord;
+
+	m_clsSipUserAgent.InsertRegisterInfo( clsInfo );
+
+	clsInfo.m_strUserId = m_strCalleeId;
+	clsInfo.m_strPassWord = m_strCalleePassWord;
+
+	m_clsSipUserAgent.InsertRegisterInfo( clsInfo );
+
+
 }
 
 void CSipSpeedDlg::OnBnClickedStopSipStack()
@@ -210,4 +254,9 @@ void CSipSpeedDlg::OnBnClickedStartTest()
 void CSipSpeedDlg::OnBnClickedStopTest()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+void CSipSpeedDlg::OnDestroy()
+{
+	__super::OnDestroy();
 }
