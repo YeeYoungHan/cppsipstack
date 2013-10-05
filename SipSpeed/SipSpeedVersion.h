@@ -16,37 +16,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "SipSpeedVersion.h"
+#ifndef _SIP_SPEED_VERSION_H_
+#define _SIP_SPEED_VERSION_H_
 
-class CAboutDlg : public CDialog
-{
-public:
-	CAboutDlg();
+#define SIP_SPEED_VERSION "0.1"
 
-// Dialog Data
-	enum { IDD = IDD_ABOUTBOX };
+/* 버전 정보 
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+= 버전 0.01 ( 2013년 10월 5일 ) =
+ * 최초 버전
 
-// Implementation
-protected:
-	DECLARE_MESSAGE_MAP()
-public:
-	CString m_strVersion;
-};
+*/
 
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
-, m_strVersion(SIP_SPEED_VERSION)
-{
-}
-
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_VERSION, m_strVersion);
-}
-
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-END_MESSAGE_MAP()
-
+#endif

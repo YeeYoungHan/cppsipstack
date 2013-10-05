@@ -431,6 +431,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipSpeedVersion.h"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
