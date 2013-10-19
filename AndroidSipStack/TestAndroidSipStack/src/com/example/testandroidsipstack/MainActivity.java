@@ -248,4 +248,10 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	{
 		m_txtLog.setText( "EventReInvite" );
 	}
+
+	@Override
+	public void EventBlindTransfer( String strCallId, String strReferToId )
+	{
+		m_txtLog.setText( "EventBlindTransfer" );
+	}
 }

@@ -366,7 +366,7 @@ FUNC_END:
  */
 bool CSipClient::EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer )
 {
-	return false;
+	return true;
 }
 
 /**
@@ -378,7 +378,44 @@ bool CSipClient::EventTransfer( const char * pszCallId, const char * pszReferToC
  */
 bool CSipClient::EventBlindTransfer( const char * pszCallId, const char * pszReferToId )
 {
-	return false;
+	jstring jstrCallId = NULL, jstrReferToId = NULL;
+
+	JNIEnv * env;
+	int iRet;
+
+#ifdef WIN32
+	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
+#else
+	iRet = gjVm->AttachCurrentThread( &env, NULL );
+#endif
+
+	if( iRet != 0 )
+	{
+		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+		return true;
+	}
+
+	jstrCallId = env->NewStringUTF( pszCallId );
+	if( jstrCallId == NULL )
+	{
+		AndroidErrorLog( "%s NewStringUTF(%s) error", __FUNCTION__, pszCallId );
+		goto FUNC_END;
+	}
+
+	jstrReferToId = env->NewStringUTF( pszReferToId );
+	if( jstrReferToId == NULL )
+	{
+		AndroidErrorLog( "%s NewStringUTF(%s) error", __FUNCTION__, pszReferToId );
+		goto FUNC_END;
+	}
+
+	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventBlindTransfer, jstrCallId, jstrReferToId );
+
+FUNC_END:
+	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
+	if( jstrReferToId ) env->DeleteLocalRef( jstrReferToId );
+
+	return true;
 }
 
 /**

@@ -168,6 +168,20 @@ public class SipUserAgent
 		}
 	}
 	
+	/** Blind Transfer 요청 수신 이벤트 핸들러
+	 * @param strCallId			SIP Call-ID
+	 * @param strReferToId	통화 전환될 상대방 아이디
+	 */
+	public static void EventBlindTransfer( String strCallId, String strReferToId )
+	{
+		SipLog.Debug( "EventBlindTransfer callid(" + strCallId + ") refertodi(" + strReferToId + ")" );
+		
+		if( m_clsCallBack != null )
+		{
+			m_clsCallBack.EventBlindTransfer( strCallId, strReferToId );
+		}
+	}
+	
 	static
 	{
 		SipLog.Debug( "load AndroidSipStack" );
