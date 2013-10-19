@@ -80,7 +80,7 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Start( JNIEnv * env
 	CLog::SetLevel( LOG_DEBUG | LOG_INFO | LOG_NETWORK | LOG_SYSTEM );
 	CLog::SetCallBack( &gclsLogCallBack );
 
-	if( gclsUserAgent.Start( clsSetup, &gclsSipClient ) == false ) 
+	if( gclsUserAgent.Start( clsSetup, &gclsSipClient, NULL ) == false ) 
 	{
 		AndroidErrorLog( "Start - Start error" );
 		return JNI_FALSE;

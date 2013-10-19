@@ -57,6 +57,13 @@ public class SipUserAgentHandler extends Handler implements SipUserAgentCallBack
 			
 			m_clsCallBack.EventCallEnd( strCallId, iSipStatus );
 		}
+		else if( strCommand.equals( "EventReInvite" ) )
+		{
+			String strCallId = b.getString( "strCallId" );
+			SipCallRtp clsRtp = (SipCallRtp)b.getSerializable( "clsRtp" );
+			
+			m_clsCallBack.EventReInvite( strCallId, clsRtp );
+		}
 	}
 
 	@Override
@@ -123,6 +130,19 @@ public class SipUserAgentHandler extends Handler implements SipUserAgentCallBack
   	b.putString( "command", "EventCallEnd" );
   	b.putString( "strCallId", strCallId );
   	b.putInt( "iSipStatus", iSipStatus );
+  	m.setData( b );
+  	sendMessage( m );
+	}
+
+	@Override
+	public void EventReInvite( String strCallId, SipCallRtp clsRtp )
+	{
+		Bundle b = new Bundle();
+  	
+  	Message m = obtainMessage( );
+  	b.putString( "command", "EventReInvite" );
+  	b.putString( "strCallId", strCallId );
+  	b.putSerializable( "clsRtp", clsRtp );
   	m.setData( b );
   	sendMessage( m );
 	}

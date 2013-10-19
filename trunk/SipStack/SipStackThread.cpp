@@ -54,6 +54,7 @@ void * SipStackThread( void * lpParameter )
 		}
 	}
 
+	pclsSipStack->CallBackThreadEnd( -1 );
 	pclsSipStack->m_bStackThreadRun = false;
 
 	return 0;

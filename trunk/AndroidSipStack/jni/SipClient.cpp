@@ -308,6 +308,52 @@ FUNC_END:
  */
 void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
+	jstring jstrCallId = NULL;
+	jobject joSipCallRtp = NULL;
+
+	JNIEnv * env;
+	int iRet;
+
+#ifdef WIN32
+	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
+#else
+	iRet = gjVm->AttachCurrentThread( &env, NULL );
+#endif
+
+	if( iRet != 0 )
+	{
+		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+		return;
+	}
+
+	jstrCallId = env->NewStringUTF( pszCallId );
+	if( jstrCallId == NULL )
+	{
+		AndroidErrorLog( "%s NewStringUTF(%s) error", __FUNCTION__, pszCallId );
+		goto FUNC_END;
+	}
+
+	joSipCallRtp = env->NewObject( gclsClass.m_jcSipCallRtp, gclsClass.m_jmSipCallRtpInit );
+	if( joSipCallRtp == NULL )
+	{
+		AndroidErrorLog( "%s NewObject error", __FUNCTION__ );
+		goto FUNC_END;
+	}
+
+	if( pclsRtp )
+	{
+		if( PutSipCallRtp( env, joSipCallRtp, *pclsRtp ) == false )
+		{
+			AndroidErrorLog( "%s PutSipCallRtp error", __FUNCTION__ );
+			goto FUNC_END;
+		}
+	}
+
+	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventReInvite, jstrCallId, joSipCallRtp );
+
+FUNC_END:
+	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
+	if( joSipCallRtp ) env->DeleteLocalRef( joSipCallRtp );
 }
 
 /**

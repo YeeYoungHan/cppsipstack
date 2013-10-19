@@ -23,9 +23,42 @@ package com.cppsipstack;
  */
 public interface SipUserAgentCallBack
 {
+	/** SIP REGISTER 응답 메시지 수신 이벤트 핸들러
+	 * @param clsInfo	SIP REGISTER 응답 메시지를 전송한 IP-PBX 정보 저장 객체
+	 * @param iStatus SIP REGISTER 응답 코드
+	 */
 	public void EventRegister( SipServerInfo clsInfo, int iStatus );
+	
+	/** SIP 통화 요청 수신 이벤트 핸들러
+	 * @param strCallId	SIP Call-ID
+	 * @param strFrom		SIP From 사용자 아이디
+	 * @param strTo			SIP To 사용자 아이디
+	 * @param clsRtp		RTP 정보 저장 객체
+	 */
 	public void EventIncomingCall( String strCallId, String strFrom, String strTo, SipCallRtp clsRtp );
+	
+	/** SIP Ring / Session Progress 수신 이벤트 핸들러
+	 * @param strCallId		SIP Call-ID
+	 * @param iSipStatus	SIP 응답 코드
+	 * @param clsRtp			RTP 정보 저장 객체
+	 */
 	public void EventCallRing( String strCallId, int iSipStatus, SipCallRtp clsRtp );
+	
+	/** SIP 통화 연결 이벤트 핸들러
+	 * @param strCallId	SIP Call-ID
+	 * @param clsRtp		RTP 정보 저장 객체
+	 */
 	public void EventCallStart( String strCallId, SipCallRtp clsRtp );
+	
+	/** SIP 통화 종료 이벤트 핸들러
+	 * @param strCallId		SIP Call-ID
+	 * @param iSipStatus	SIP 응답 코드. INVITE 에 대한 오류 응답으로 전화가 종료된 경우, INVITE 의 응답 코드를 저장한다.
+	 */
 	public void EventCallEnd( String strCallId, int iSipStatus );
+	
+	/** SIP ReINVITE 수신 이벤트 핸들러
+	 * @param strCallId	SIP Call-ID
+	 * @param clsRtp		RTP 정보 저장 객체
+	 */
+	public void EventReInvite( String strCallId, SipCallRtp clsRtp );
 }
