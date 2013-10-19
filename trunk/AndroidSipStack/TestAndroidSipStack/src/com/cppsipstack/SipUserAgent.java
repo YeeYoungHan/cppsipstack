@@ -168,13 +168,29 @@ public class SipUserAgent
 		}
 	}
 	
+	/** Screened / Unscreened Transfer 요청 수신 이벤트 핸들러
+	 * @param strCallId					SIP Call-ID
+	 * @param strReferToCallId	전화가 전달될 SIP Call-ID
+	 * @param bScreenedTransfer	Screened Transfer 이면 true 가 입력되고 Unscreened Transfer 이면 false 가 입력된다.
+	 */
+	public static void EventTransfer( String strCallId, String strReferToCallId, boolean bScreenedTransfer )
+	{
+		SipLog.Debug( "EventBlindTransfer callid(" + strCallId + ") refertocallid(" + strReferToCallId + ") screened("
+				+ ( bScreenedTransfer ? "true" : "false" ) + ")" );
+		
+		if( m_clsCallBack != null )
+		{
+			m_clsCallBack.EventTransfer( strCallId, strReferToCallId, bScreenedTransfer );
+		}
+	}
+	
 	/** Blind Transfer 요청 수신 이벤트 핸들러
 	 * @param strCallId			SIP Call-ID
 	 * @param strReferToId	통화 전환될 상대방 아이디
 	 */
 	public static void EventBlindTransfer( String strCallId, String strReferToId )
 	{
-		SipLog.Debug( "EventBlindTransfer callid(" + strCallId + ") refertodi(" + strReferToId + ")" );
+		SipLog.Debug( "EventBlindTransfer callid(" + strCallId + ") refertoid(" + strReferToId + ")" );
 		
 		if( m_clsCallBack != null )
 		{
