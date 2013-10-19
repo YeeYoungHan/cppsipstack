@@ -253,11 +253,15 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	public void EventTransfer( String strCallId, String strReferToCallId, boolean bScreenedTransfer )
 	{
 		m_txtLog.setText( "EventTransfer" );
+		
+		// QQQ: 현재 통화를 교체해야 한다.
 	}
 
 	@Override
 	public void EventBlindTransfer( String strCallId, String strReferToId )
 	{
 		m_txtLog.setText( "EventBlindTransfer" );
+		
+		// QQQ: strReferToId 로 전화호출하여야 한다.
 	}
 }
