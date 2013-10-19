@@ -109,6 +109,13 @@ bool CAndroidClass::Init( JNIEnv * env )
 		return false;
 	}
 
+	m_jmEventTransfer = env->GetStaticMethodID( m_jcSipUserAgent, "EventTransfer", "(Ljava/lang/String;Ljava/lang/String;Z)V" );
+	if( m_jmEventTransfer == NULL )
+	{
+		AndroidErrorLog( "EventTransfer is not found" );
+		return false;
+	}
+
 	m_jmEventBlindTransfer = env->GetStaticMethodID( m_jcSipUserAgent, "EventBlindTransfer", "(Ljava/lang/String;Ljava/lang/String;)V" );
 	if( m_jmEventBlindTransfer == NULL )
 	{

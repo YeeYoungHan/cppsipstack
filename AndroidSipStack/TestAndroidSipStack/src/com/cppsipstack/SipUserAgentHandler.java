@@ -64,6 +64,14 @@ public class SipUserAgentHandler extends Handler implements SipUserAgentCallBack
 			
 			m_clsCallBack.EventReInvite( strCallId, clsRtp );
 		}
+		else if( strCommand.equals( "EventTransfer" ) )
+		{
+			String strCallId = b.getString( "strCallId" );
+			String strReferToCallId = b.getString( "strReferToCallId" );
+			boolean bScreenedTransfer = b.getBoolean( "bScreenedTransfer" );
+			
+			m_clsCallBack.EventTransfer( strCallId, strReferToCallId, bScreenedTransfer );
+		}
 		else if( strCommand.equals( "EventBlindTransfer" ) )
 		{
 			String strCallId = b.getString( "strCallId" );
@@ -162,7 +170,21 @@ public class SipUserAgentHandler extends Handler implements SipUserAgentCallBack
   	Message m = obtainMessage( );
   	b.putString( "command", "EventBlindTransfer" );
   	b.putString( "strCallId", strCallId );
-  	b.putSerializable( "strReferToId", strReferToId );
+  	b.putString( "strReferToId", strReferToId );
+  	m.setData( b );
+  	sendMessage( m );
+	}
+
+	@Override
+	public void EventTransfer( String strCallId, String strReferToCallId, boolean bScreenedTransfer )
+	{
+		Bundle b = new Bundle();
+  	
+  	Message m = obtainMessage( );
+  	b.putString( "command", "EventTransfer" );
+  	b.putString( "strCallId", strCallId );
+  	b.putString( "strReferToId", strReferToCallId );
+  	b.putBoolean( "bScreenedTransfer", bScreenedTransfer );
   	m.setData( b );
   	sendMessage( m );
 	}
