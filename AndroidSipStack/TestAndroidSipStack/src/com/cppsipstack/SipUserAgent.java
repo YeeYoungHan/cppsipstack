@@ -25,13 +25,13 @@ package com.cppsipstack;
 public class SipUserAgent
 {
 	public static SipUserAgentCallBack m_clsCallBack;
-	
+
 	/** 로그인할 SIP 서버 정보를 저장한다.
 	 * @param clsInfo	SIP 서버 정보 저장 객체
 	 * @return 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
 	 */
 	public static native boolean InsertRegisterInfo( SipServerInfo clsInfo );
-	
+
 	/** SIP stack 을 시작한다.
 	 * @param clsSetup SIP stack 설정 정보 저장 객체
 	 * @return 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -150,6 +150,21 @@ public class SipUserAgent
 		if( m_clsCallBack != null )
 		{
 			m_clsCallBack.EventCallEnd( strCallId, iSipStatus );
+		}
+	}
+	
+	/** SIP ReINVITE 수신 이벤트 핸들러
+	 * @param strCallId	SIP Call-ID
+	 * @param clsRtp		RTP 정보 저장 객체
+	 */
+	public static void EventReInvite( String strCallId, SipCallRtp clsRtp )
+	{
+		SipLog.Debug( "EventReInvite callid(" + strCallId + ") rtp("
+				+ clsRtp.m_strIp + ":" + clsRtp.m_iPort + ") codec(" + clsRtp.m_iCodec + ") direction(" + clsRtp.m_iDirection + ")" );
+		
+		if( m_clsCallBack != null )
+		{
+			m_clsCallBack.EventReInvite( strCallId, clsRtp );
 		}
 	}
 	

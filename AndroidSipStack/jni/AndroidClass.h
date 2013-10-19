@@ -41,6 +41,7 @@ public:
 	jmethodID m_jmEventCallRing;
 	jmethodID m_jmEventCallStart;
 	jmethodID m_jmEventCallEnd;
+	jmethodID m_jmEventReInvite;
 	
 	jmethodID m_jmSipServerInfoInit;
 	jmethodID m_jmSipCallRtpInit;

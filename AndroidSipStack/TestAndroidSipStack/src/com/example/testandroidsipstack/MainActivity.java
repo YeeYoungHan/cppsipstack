@@ -242,4 +242,10 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 		m_btnStopCall.setEnabled( false );
 		m_btnAcceptCall.setEnabled( false );
 	}
+
+	@Override
+	public void EventReInvite( String strCallId, SipCallRtp clsRtp )
+	{
+		m_txtLog.setText( "EventReInvite" );
+	}
 }
