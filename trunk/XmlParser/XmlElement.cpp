@@ -162,7 +162,7 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 			{
 				iStartPos = iPos;
 			}
-			else if( pszText[iPos] == '=' )
+			else if( pszText[iPos] == '=' && strName.empty() )
 			{
 				if( pszText[iPos+1] != '"' ) return -1;
 
