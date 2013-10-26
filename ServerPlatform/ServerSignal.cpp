@@ -59,6 +59,10 @@ void LastMethod( int sig )
 	gbStop = true;
 }
 
+/**
+ * @ingroup ServerPlatform
+ * @brief 서버를 위한 signal 함수를 호출한다.
+ */
 void ServerSignal()
 {
 	signal( SIGINT, LastMethod );

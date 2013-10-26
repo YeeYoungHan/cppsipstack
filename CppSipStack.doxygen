@@ -32,7 +32,7 @@ PROJECT_NAME           = "C++ SIP Stack"
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER         = 0.07
+PROJECT_NUMBER         = 0.17
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description 
 # for a project that appears at the top of each page and should give viewer 
@@ -709,9 +709,15 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which doxygen is 
 # run.
 
-EXCLUDE                = c:/OpenProject/CppSipStack/trunk/Curio \
-                         c:/OpenProject/CppSipStack/trunk/SimpleSipServer \
-                         c:/OpenProject/CppSipStack/trunk/KSipServerAdmin
+EXCLUDE                = "MySQL Server 5.0" \
+                         "MySQL Server 5.5" \
+                         openssl-32bit \
+                         openssl-64bit \
+                         Debug \
+                         Release \
+                         html \
+                         doc \
+                         KSipServerAdmin
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or 
 # directories that are symbolic links (a Unix file system feature) are excluded 
@@ -725,7 +731,7 @@ EXCLUDE_SYMLINKS       = NO
 # against the file with absolute path, so to exclude all test directories 
 # for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       = 
+EXCLUDE_PATTERNS       = *_jsp.java
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names 
 # (namespaces, classes, functions, etc.) that should be excluded from the 

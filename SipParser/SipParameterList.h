@@ -21,6 +21,10 @@
 
 #include "SipParameter.h"
 
+/**
+ * @ingroup SipParser
+ * @brief SIP parameter 리스트 저장 클래스
+ */
 class CSipParameterList
 {
 public:
