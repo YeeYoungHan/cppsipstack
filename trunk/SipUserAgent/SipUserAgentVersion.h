@@ -19,9 +19,18 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.16"
+#define SIP_USER_AGENT_VERSION "0.17"
 
 /* 버전 정보
+
+= 버전 0.17 ( 2013년 10월 26일 ) =
+ * FreeSwitch 에 REGISTER 되지 않는 버그를 패치함
+ * StartCall 입력 인자 분석 기능을 추가함
+ * SIP REGISTER 응답 메시지에 Expires 가 존재하면 이를 저장하는 기능을 추가함
+ * SK 브로드밴드 IP-PBX 와 연동하기 위한 기능을 추가함
+ * 통화 개수를 리턴하는 메소드를 추가함
+ * 전체 통화를 종료하는 기능을 추가함
+ * 전체 통화의 Call-ID 를 가져오는 기능을 추가함
 
 = 버전 0.16 ( 2013년 9월 4일 ) =
  * SIP INVITE 메시지의 SDP 가 비정상적인 경우, 이에 대한 응답 메시지를 전송 시도에서 메모리 오류가 발생하는 버그를 패치함

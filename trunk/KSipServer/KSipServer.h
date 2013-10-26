@@ -19,7 +19,7 @@
 #ifndef _K_SIP_SERVER_H_
 #define _K_SIP_SERVER_H_
 
-//#define USE_MYSQL
+#define USE_MYSQL
 
 // MS 윈도우 서비스 선언
 #define SERVICE_NAME								"KSipServer"		// 서비스 이름
