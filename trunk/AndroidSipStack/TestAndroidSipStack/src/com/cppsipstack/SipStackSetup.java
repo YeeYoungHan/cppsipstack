@@ -19,8 +19,8 @@
 package com.cppsipstack;
 
 /** SIP stack 설정 클래스
+ * @ingroup SipUserAgentAndroid
  * @author websearch (websearch@naver.com)
- *
  */
 public class SipStackSetup
 {

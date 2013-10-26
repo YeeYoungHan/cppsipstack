@@ -20,7 +20,7 @@
 #define _SIP_USER_AGENT_MFC_EVENT_CLASS_H_
 
 /**
- * @ingroup SipClientMFC
+ * @ingroup SipUserAgentMFC
  * @brief EventRegister 정보 전달 클래스
  */
 class CEventRegister
@@ -37,7 +37,7 @@ public:
 };
 
 /**
- * @ingroup SipClientMFC
+ * @ingroup SipUserAgentMFC
  * @brief EventIncomingCall 정보 전달 클래스
  */
 class CEventIncomingCall
@@ -58,7 +58,7 @@ public:
 };
 
 /**
- * @ingroup SipClientMFC
+ * @ingroup SipUserAgentMFC
  * @brief EventCallRing 정보 전달 클래스
  */
 class CEventCallRing
@@ -77,7 +77,7 @@ public:
 };
 
 /**
- * @ingroup SipClientMFC
+ * @ingroup SipUserAgentMFC
  * @brief EventCallStart 정보 전달 클래스
  */
 class CEventCallStart
@@ -94,7 +94,7 @@ public:
 };
 
 /**
- * @ingroup SipClientMFC
+ * @ingroup SipUserAgentMFC
  * @brief EventCallEnd 정보 전달 클래스
  */
 class CEventCallEnd

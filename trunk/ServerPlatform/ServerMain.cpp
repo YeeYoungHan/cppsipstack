@@ -35,8 +35,10 @@ const char * GetConfigFileName()
 /**
  * @ingroup ServerPlatform
  * @brief 서버 서비스 main function
- * @param argc 
- * @param argv 
+ * @param argc				터미널 입력 인자 개수
+ * @param argv				터미널 입력 인자
+ * @param clsService	서비스 정의 객체
+ * @param pFunc				서비스 main 함수
  * @returns 정상 종료하면 0 을 리턴하고 오류가 발생하면 -1 를 리턴한다.
  */
 int ServerMain( int argc, char * argv[], CServerService & clsService, ServerFunc pFunc )

@@ -21,8 +21,8 @@ package com.cppsipstack;
 import java.io.Serializable;
 
 /** SIP 서버 정보 저장 클래스
+ * @ingroup SipUserAgentAndroid
  * @author websearch (websearch@naver.com)
- *
  */
 public class SipServerInfo implements Serializable
 {
