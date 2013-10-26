@@ -1,0 +1,32 @@
+MFC 환경에서 C++ SIP stack 을 편리하게 사용하는 방법은 다음과 같습니다.
+
+ * SipUserAgentMFC 라이브러리를 사용한다.
+   - SipUserAgentMFC 는 SipUserAgent 라이브러리를 MFC 환경에서 편리하게 사용하기 위해서 개발된 라이브러리입니다.
+
+ * SipClientMFC 소스 코드를 읽고 SipUserAgentMFC 를 이용하여서 개발하는 방법 학습하기
+   - SipClientMFC 는 SipUserAgentMFC 라이브러리를 사용하여서 MFC 환경에서 개발한 SIP 클라이언트 입니다.
+
+SipClientMFC 에서 SipUserAgentMFC 라이브러리를 사용하는 방법을 요약하면 다음과 같습니다.
+
+ 1. CSipClientMFCDlg 클래스는 ISipUserAgentCallBack 를 상속받는다. 
+
+ 2. 아래의 멤버변수를 CSipClientMFCDlg 클래스에 포함시킨다.
+
+   CSipUserAgentMFC m_clsSipUserAgentMFC;
+   CSipUserAgent   m_clsSipUserAgent;
+
+ 3. SipUserAgentMFC 라이브러리에서 전달하는 윈도우 메시지를 수신받을 메소드를 CSipClientMFCDlg 에 아래와 같이 추가한다.
+
+   LRESULT CSipClientMFCDlg::OnSipMessage( WPARAM wParam, LPARAM lParam )
+   {
+      return m_clsSipUserAgentMFC.OnSipMessage( wParam, lParam );
+   }
+
+ 4. SipUserAgentMFC 라이브러리에서 전달하는 윈도우 메시지를 수신받을 메소드를 MESSAGE_MAP 에 아래와 같이 추가한다.
+
+   BEGIN_MESSAGE_MAP(CSipClientMFCDlg, CDialog)
+         // {생략}
+        ON_MESSAGE(SIP_MESSAGE_ID, &CSipClientMFCDlg::OnSipMessage)
+   END_MESSAGE_MAP()
+
+ 5. ISipUserAgentCallBack 상속한 메소드를 개발한다. 
