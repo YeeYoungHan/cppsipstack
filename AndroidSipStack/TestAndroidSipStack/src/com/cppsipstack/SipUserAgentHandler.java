@@ -5,8 +5,8 @@ import android.os.Handler;
 import android.os.Message;
 
 /** SipUserAgent callback 으로 호출된 이벤트를 GUI SipUserAgent callback 으로 호출하는 클래스
+ * @ingroup SipUserAgentAndroid
  * @author 이영한 ( http://blog.naver.com/websearch )
- *
  */
 public class SipUserAgentHandler extends Handler implements SipUserAgentCallBack, SipUserAgentHandlerDefine
 {

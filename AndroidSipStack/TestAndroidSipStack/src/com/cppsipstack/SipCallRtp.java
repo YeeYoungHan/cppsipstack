@@ -21,8 +21,8 @@ package com.cppsipstack;
 import java.io.Serializable;
 
 /** RTP 정보 저장 클래스
+ * @ingroup SipUserAgentAndroid
  * @author websearch (websearch@naver.com)
- *
  */
 public class SipCallRtp implements Serializable
 {

@@ -19,6 +19,11 @@
 #ifndef _SERVER_SERVICE_PRIVATE_H_
 #define _SERVER_SERVICE_PRIVATE_H_
 
+/**
+ * @defgroup ServerPlatform ServerPlatform
+ * 서비스 개발 라이브러리
+ */
+
 #include "ServerService.h"
 
 // InstallService.h

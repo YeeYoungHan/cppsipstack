@@ -18,7 +18,13 @@
 
 package com.cppsipstack;
 
+/**
+ * @defgroup SipUserAgentAndroid SipUserAgentAndroid
+ * 안드로이드용 SIP User Agent 라이브러리
+ */
+
 /** NDK 와 연동하는 SIP User Agent 클래스
+ * @ingroup SipUserAgentAndroid
  * @author websearch (websearch@naver.com)
  */
 public class SipUserAgent

@@ -21,8 +21,8 @@ package com.cppsipstack;
 import android.util.Log;
 
 /** 안드로이드 로그 출력 클래스
+ * @ingroup SipUserAgentAndroid
  * @author websearch (websearch@naver.com)
- *
  */
 public class SipLog
 {
