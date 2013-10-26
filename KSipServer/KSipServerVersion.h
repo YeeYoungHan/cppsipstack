@@ -19,9 +19,12 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.16"
+#define KSIP_SERVER_VERSION	"0.17"
 
 /* 버전 정보 
+
+= 버전 0.17 ( 2013년 10월 26일 ) =
+ * MySQL 을 사용하지 않는 경우 빌드 오류가 발생하는 버그를 패치함
 
 = 버전 0.16 ( 2013년 9월 4일 ) =
  * 로그레벨, 로그파일크기도 실시간으로 수정 가능하다.
