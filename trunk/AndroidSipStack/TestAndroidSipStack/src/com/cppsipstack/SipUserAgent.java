@@ -18,9 +18,8 @@
 
 package com.cppsipstack;
 
-/**
+/** NDK 와 연동하는 SIP User Agent 클래스
  * @author websearch (websearch@naver.com)
- *
  */
 public class SipUserAgent
 {
