@@ -74,7 +74,7 @@ void MiliSleep( int iMiliSecond )
 	struct timespec rem;
 
 	req.tv_sec = (int) iMiliSecond / 1000;
-	req.tv_nsec = (int)( iMiliSecond % 1000 ) * 1000;
+	req.tv_nsec = (int)( iMiliSecond % 1000 ) * 1000000;
 
 	nanosleep( &req, &rem );
 #endif
