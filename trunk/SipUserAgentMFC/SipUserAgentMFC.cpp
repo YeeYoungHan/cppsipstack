@@ -93,6 +93,24 @@ LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
 				m_pclsCallBack->EventCallEnd( pclsParam->m_pszCallId, pclsParam->m_iSipStatus );
 			}
 			break;
+		case SMC_REINVITE:
+			{		
+				CEventCallStart * pclsParam = (CEventCallStart *)lParam;
+				m_pclsCallBack->EventReInvite( pclsParam->m_pszCallId, pclsParam->m_pclsRtp );
+			}
+			break;
+		case SMC_TRANSFER:
+			{
+				CEventTransfer * pclsParam = (CEventTransfer *)lParam;
+				m_pclsCallBack->EventTransfer( pclsParam->m_pszCallId, pclsParam->m_pszReferToCallId, pclsParam->m_bScreenedTransfer );
+			}
+			break;
+		case SMC_BLIND_TRANSFER:
+			{
+				CEventBlindTransfer * pclsParam = (CEventBlindTransfer *)lParam;
+				m_pclsCallBack->EventBlindTransfer( pclsParam->m_pszCallId, pclsParam->m_pszReferToId );
+			}
+			break;
 		}
 	}
 
@@ -187,6 +205,9 @@ void CSipUserAgentMFC::EventCallEnd( const char * pszCallId, int iSipStatus )
  */
 void CSipUserAgentMFC::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
+	CEventCallStart clsParam( pszCallId, pclsRtp );
+
+	_SendMessage( SMC_REINVITE, (LPARAM)&clsParam );
 }
 
 /**
@@ -199,7 +220,11 @@ void CSipUserAgentMFC::EventReInvite( const char * pszCallId, CSipCallRtp * pcls
  */
 bool CSipUserAgentMFC::EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer )
 {
-	return false;
+	CEventTransfer clsParam( pszCallId, pszReferToCallId, bScreenedTransfer );
+
+	_SendMessage( SMC_TRANSFER, (LPARAM)&clsParam );
+
+	return true;
 }
 
 /**
@@ -211,7 +236,11 @@ bool CSipUserAgentMFC::EventTransfer( const char * pszCallId, const char * pszRe
  */
 bool CSipUserAgentMFC::EventBlindTransfer( const char * pszCallId, const char * pszReferToId )
 {
-	return false;
+	CEventBlindTransfer clsParam( pszCallId, pszReferToId );
+
+	_SendMessage( SMC_BLIND_TRANSFER, (LPARAM)&clsParam );
+
+	return true;
 }
 
 /**
