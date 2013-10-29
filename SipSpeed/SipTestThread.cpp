@@ -101,6 +101,10 @@ void StopTestThread()
 	gbStopTestThread = true;
 }
 
+/**
+ * @brief 테스트 쓰레드가 실행되고 있는가?
+ * @returns 테스트 쓰레드가 실행되고 있으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool IsTestThreadRun()
 {
 	return gbTestThreadRun;
