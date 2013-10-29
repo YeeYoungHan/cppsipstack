@@ -21,6 +21,7 @@
 #include "Log.h"
 #include "MonitorCallBack.h"
 #include "ServerService.h"
+#include "ServerUtility.h"
 
 static int giMonitorThreadCount = 0;
 CSipMutex gclsCountMutex;

@@ -17,6 +17,7 @@
  */
 
 #include "SipRegisterThread.h"
+#include "ServerUtility.h"
 #include <time.h>
 
 /**

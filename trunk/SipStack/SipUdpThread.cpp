@@ -17,6 +17,7 @@
  */
 
 #include "SipStackThread.h"
+#include "ServerUtility.h"
 #include "Log.h"
 
 /**

@@ -21,6 +21,7 @@
 #include "SipUserAgent.h"
 #include "Setup.h"
 #include "TimeUtility.h"
+#include "ServerUtility.h"
 
 static bool gbStopTestThread = false;
 static bool gbTestThreadRun = false;

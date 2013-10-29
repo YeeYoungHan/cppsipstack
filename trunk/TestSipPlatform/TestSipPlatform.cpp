@@ -16,42 +16,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include <stdio.h>
+
 /**
- * @ingroup SipStack
- * @brief 쓰레드를 시작한다.
- * @param pszName					쓰레드 이름
- * @param lpStartAddress	쓰레드 함수
- * @param lpParameter			쓰레드 인자
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ * @defgroup TestSipPlatform TestSipPlatform
+ * SipPlatform 라이브러리 기능을 테스트한다.
  */
-#ifdef WIN32
-bool StartThread( const char * pszName, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter )
+
+bool TestSipMutex();
+
+/**
+ * @ingroup TestSipParser
+ * @brief SipParser / SdpParser / XmlParser 라이브러리 기능을 테스트한다.
+ * @param argc 
+ * @param argv 
+ * @returns 0 을 리턴한다.
+ */
+int main( int argc, char * argv[] )
 {
-	DWORD		dwThreadId;
-	HANDLE	hThread;
+	if( TestSipMutex() == false ) goto FUNC_END;
 
-	hThread = CreateThread( NULL, 0, lpStartAddress, lpParameter, 0, &dwThreadId );
-	if( hThread == NULL )
-	{
-		return false;
-	}
+	printf( "All test is O.K.\n" );
 
-	CloseHandle( hThread );
-	
-	return true;
+FUNC_END:
+	return 0;
 }
-#else
-bool StartThread( const char * pszName, void *(*lpStartAddress)(void*), void * lpParameter )
-{
-	pthread_t	iThread;
-
-	if( pthread_create( &iThread, NULL, lpStartAddress, lpParameter ) != 0 )
-	{
-		return false;
-	}
-
-	pthread_detach( iThread );
-
-	return true;
-}
-#endif

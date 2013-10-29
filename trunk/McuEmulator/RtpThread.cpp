@@ -21,6 +21,7 @@
 #include "CallMap.h"
 #include "RoomMap.h"
 #include "Log.h"
+#include "ServerUtility.h"
 
 #define MAX_POLL_COUNT	16
 

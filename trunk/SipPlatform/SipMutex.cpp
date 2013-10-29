@@ -89,6 +89,7 @@ bool CSipMutex::release()
 CSipMutexSignal::CSipMutexSignal()
 {
 #ifdef WIN32
+	m_sttCond = CreateEvent( NULL, FALSE, FALSE, NULL );
 #else
 	pthread_cond_init( &m_sttCond, NULL );
 #endif
@@ -101,6 +102,10 @@ CSipMutexSignal::CSipMutexSignal()
 CSipMutexSignal::~CSipMutexSignal()
 {
 #ifdef WIN32
+	if( m_sttCond )
+	{
+		CloseHandle( m_sttCond );
+	}
 #else
 	pthread_cond_destroy( &m_sttCond );
 #endif
@@ -114,7 +119,18 @@ CSipMutexSignal::~CSipMutexSignal()
 bool CSipMutexSignal::wait()
 {
 #ifdef WIN32
-	Sleep(20);
+	if( m_sttCond == NULL )
+	{
+		Sleep(20);
+		return true;
+	}
+
+	if( WaitForSingleObject( m_sttCond, INFINITE ) == WAIT_FAILED )
+	{
+		return false;
+	}
+
+	return true;
 #else
 	int n = pthread_cond_wait( &m_sttCond, &m_sttMutex );
 	if( n != 0 )
@@ -134,6 +150,10 @@ bool CSipMutexSignal::wait()
 bool CSipMutexSignal::signal()
 {
 #ifdef WIN32
+	if( m_sttCond )
+	{
+		SetEvent( m_sttCond );
+	}
 #else
 	int n = pthread_cond_signal( &m_sttCond );
 	if( n != 0 )
@@ -153,6 +173,10 @@ bool CSipMutexSignal::signal()
 bool CSipMutexSignal::broadcast()
 {
 #ifdef WIN32
+	if( m_sttCond )
+	{
+		SetEvent( m_sttCond );
+	}
 #else
 	int n = pthread_cond_broadcast( &m_sttCond );
 	if( n != 0 )
