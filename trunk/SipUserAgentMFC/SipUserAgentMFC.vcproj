@@ -178,7 +178,7 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="1"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
