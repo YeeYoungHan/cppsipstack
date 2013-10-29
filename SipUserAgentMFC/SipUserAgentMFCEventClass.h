@@ -110,4 +110,40 @@ public:
 	int m_iSipStatus;
 };
 
+/**
+ * @ingroup SipUserAgentMFC
+ * @brief EventTransfer 정보 전달 클래스
+ */
+class CEventTransfer
+{
+public:
+	CEventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer )
+	{
+		m_pszCallId = pszCallId;
+		m_pszReferToCallId = pszReferToCallId;
+		m_bScreenedTransfer = bScreenedTransfer;
+	}
+
+	const char * m_pszCallId;
+	const char * m_pszReferToCallId;
+	bool m_bScreenedTransfer;
+};
+
+/**
+ * @ingroup SipUserAgentMFC
+ * @brief EventBlindTransfer 정보 전달 클래스
+ */
+class CEventBlindTransfer
+{
+public:
+	CEventBlindTransfer( const char * pszCallId, const char * pszReferToId )
+	{
+		m_pszCallId = pszCallId;
+		m_pszReferToId = pszReferToId;
+	}
+
+	const char * m_pszCallId;
+	const char * m_pszReferToId;
+};
+
 #endif
