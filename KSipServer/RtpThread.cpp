@@ -22,6 +22,7 @@
 #include "Log.h"
 #include "RtpMap.h"
 #include "ServerService.h"
+#include "ServerUtility.h"
 
 static int giRtpThreadCount = 0;
 extern CSipMutex gclsCountMutex;

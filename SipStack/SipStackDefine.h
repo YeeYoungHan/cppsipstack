@@ -39,19 +39,13 @@
 
 #include <map>
 
-#ifdef WIN32
-bool StartThread( const char * pszName, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter );
-#else
-bool StartThread( const char * pszName, void *(*lpStartAddress)(void*), void * lpParameter );
-#endif
-
 void MiliSleep( int iMiliSecond );
-
-#endif
 
 // 자료구조 모니터링
 #define MR_COL_SEP							"|"
 #define MR_ROW_SEP							"\n"
+
+#endif
 
 /**
 @mainpage C++ SIP Stack

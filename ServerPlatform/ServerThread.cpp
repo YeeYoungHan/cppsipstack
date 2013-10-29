@@ -21,6 +21,7 @@
 #include "Log.h"
 #include "ServerThread.h"
 #include "ServerService.h"
+#include "ServerUtility.h"
 
 /**
  * @ingroup ServerPlatform
