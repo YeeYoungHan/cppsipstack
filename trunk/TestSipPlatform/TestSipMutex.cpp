@@ -17,9 +17,38 @@
  */
 
 #include "SipMutex.h"
+#include "ServerUtility.h"
+
+#define TEST_COUNT 10
+
+static CSipMutexSignal gclsMutexSignal;
+
+void PrintTickCount( const char * pszName )
+{
+	printf( "%s tick[%u]\n", pszName, GetTickCount() );
+}
+
+DWORD WINAPI TestSipMutexThread( LPVOID lpParameter )
+{
+	for( int i = 0; i < TEST_COUNT; ++i )
+	{
+		Sleep(20);
+		gclsMutexSignal.signal();
+	}
+
+	return 0;
+}
 
 bool TestSipMutex()
 {
+	if( StartThread( "TestSipMutexThread", TestSipMutexThread, NULL ) == false ) return false;
+
+	for( int i = 0; i < TEST_COUNT; ++i )
+	{
+		PrintTickCount( "Start" );
+		gclsMutexSignal.wait();
+		PrintTickCount( "End  " );
+	}
 
 	return true;
 }
