@@ -191,6 +191,9 @@ HCURSOR CSipSpeedDlg::OnQueryDragIcon()
 }
 
 
+/**
+ * @brief SIP stack 을 시작한다.
+ */
 void CSipSpeedDlg::OnBnClickedStartSipStack()
 {
 	// 입력값이 유효한지 검사한다.
@@ -275,6 +278,9 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 	m_btnStopSipStack.EnableWindow( TRUE );
 }
 
+/**
+ * @brief SIP stack 을 중지시킨다.
+ */
 void CSipSpeedDlg::OnBnClickedStopSipStack()
 {
 	gclsSipUserAgent.Stop();
@@ -287,6 +293,9 @@ void CSipSpeedDlg::OnBnClickedStopSipStack()
 	m_bTest = false;
 }
 
+/**
+ * @brief 테스트를 시작한다.
+ */
 void CSipSpeedDlg::OnBnClickedStartTest()
 {
 	UpdateData(TRUE);
@@ -319,6 +328,9 @@ void CSipSpeedDlg::OnBnClickedStartTest()
 	m_btnStopTest.EnableWindow( TRUE );
 }
 
+/**
+ * @brief 테스트를 중지한다.
+ */
 void CSipSpeedDlg::OnBnClickedStopTest()
 {
 	StopTestThread();
@@ -336,6 +348,12 @@ void CSipSpeedDlg::OnDestroy()
 	__super::OnDestroy();
 }
 
+/**
+ * @brief 테스트 결과 이벤트 수신 핸들러
+ * @param wParam 
+ * @param lParam 
+ * @returns 0 을 리턴한다.
+ */
 LRESULT CSipSpeedDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
 {
 	if( wParam == WM_TEST_END )
@@ -351,6 +369,9 @@ LRESULT CSipSpeedDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
 	return 0;
 }
 
+/**
+ * @brief 로그를 삭제한다.
+ */
 void CSipSpeedDlg::OnBnClickedClearLog()
 {
 	m_clsMutex.acquire();

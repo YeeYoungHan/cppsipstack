@@ -29,6 +29,10 @@ CSetup::~CSetup()
 {
 }
 
+/**
+ * @brief 설정 파일을 읽어서 멤버변수에 저장한다.
+ * @return 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSetup::Get()
 {
 	if( GetFile() == false ) return false;
@@ -48,6 +52,10 @@ bool CSetup::Get()
 	return true;
 }
 
+/**
+ * @brief 멤버변수를 설정 파일로 저장한다.
+ * @return 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSetup::Put()
 {
 	PutString( ST_SIP_SERVER_IP, m_strSipServerIp.c_str() );
@@ -67,6 +75,10 @@ bool CSetup::Put()
 	return bRes;
 }
 
+/**
+ * @brief 설정 파일을 읽어서 키/값 자료구조에 저장한다.
+ * @return 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSetup::GetFile()
 {
 	FILE	* fd = fopen( SETUP_FILENAME, "r" );
@@ -121,6 +133,10 @@ bool CSetup::GetFile()
 	return true;
 }
 
+/**
+ * @brief 키/값 자료구조를 설정 파일에 저장한다.
+ * @return 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSetup::PutFile()
 {
 	FILE	* fd = fopen( SETUP_FILENAME, "w" );
