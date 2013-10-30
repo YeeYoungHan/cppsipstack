@@ -1,10 +1,10 @@
 ﻿=================
-TestSipParser 라이브러리
+TestSipPlatform 프로젝트
 =================
 
 1. 개요
 
- * C++ SIP Parser / SDP Parser / Xmll Parser 라이브러리 기능 테스트
+ * C++ SIP Platform 라이브러리 기능 테스트
  
 2. 개발자 정보
   
