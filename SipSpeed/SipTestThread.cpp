@@ -28,6 +28,11 @@ static bool gbTestThreadRun = false;
 static HWND ghWnd = NULL;
 extern CSipUserAgent		 gclsSipUserAgent;
 
+/**
+ * @brief 테스트 쓰레드
+ * @param lpParameter 
+ * @returns 0 을 리턴한다.
+ */
 DWORD WINAPI SipTestThread( LPVOID lpParameter )
 {
 	CSipCallRtp clsRtp;
@@ -46,6 +51,7 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 
 	gettimeofday( &sttStart, NULL );
 
+	// 통화 연결 테스트
 	for( int i = 0; i < gclsSetup.m_iCallTotalCount; ++i )
 	{
 		// 동시 통화 개수가 설정된 개수와 같거나 큰 경우에는 대기한다.
@@ -63,6 +69,7 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 		}
 	}
 
+	// 모든 통화가 종료될 때까지 대기한다.
 	while( gclsSipUserAgent.GetCallCount() > 0 )
 	{
 		Sleep(20);
@@ -84,6 +91,11 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	return 0;
 }
 
+/**
+ * @brief 테스트 쓰레드를 시작한다.
+ * @param hWnd 테스트 결과를 전달할 윈도우 핸들
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool StartTestThread( HWND hWnd )
 {
 	if( gbTestThreadRun ) return false;
@@ -96,6 +108,9 @@ bool StartTestThread( HWND hWnd )
 	return true;
 }
 
+/**
+ * @brief 테스트 쓰레드 실행 중지 요청한다.
+ */
 void StopTestThread()
 {
 	gbStopTestThread = true;

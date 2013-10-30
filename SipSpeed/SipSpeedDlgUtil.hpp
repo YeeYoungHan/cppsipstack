@@ -16,6 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+/**
+ * @brief 입력값이 유효한지 검사한다.
+ * @param strInput	입력값
+ * @param pszName		입력 이름
+ * @returns 입력값이 유효하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipSpeedDlg::CheckInput( CString & strInput, const char * pszName )
 {
 	if( strInput.IsEmpty() )
@@ -31,6 +37,10 @@ bool CSipSpeedDlg::CheckInput( CString & strInput, const char * pszName )
 	return true;
 }
 
+/**
+ * @brief 로그를 저장한다.
+ * @param fmt 로그 메시지
+ */
 void CSipSpeedDlg::SetLog( const char * fmt, ... )
 {
 	va_list		ap;
@@ -53,6 +63,9 @@ void CSipSpeedDlg::SetLog( const char * fmt, ... )
 	m_clsMutex.release();
 }
 
+/**
+ * @brief 테스트 진행 상태를 보여준다.
+ */
 void CSipSpeedDlg::SetPercent( )
 {
 	int iPercent = 100 * ( m_iCallSuccess + m_iCallError ) / m_iCallTotalCount;
