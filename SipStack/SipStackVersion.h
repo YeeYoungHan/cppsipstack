@@ -19,9 +19,13 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.16"
+#define SIP_STACK_VERSION "0.18"
 
 /* 버전 정보
+
+= 버전 0.18 ( 2013년 10월 31일 ) =
+ * CallBackThreadEnd 를 순수 가상 함수에서 가상 함수로 수정함
+ * SipStack.Stop 메소드를 호출하면 SipStack callback 리스트를 초기화시킨다.
 
 = 버전 0.16 ( 2013년 9월 4일 ) =
  * SIP stack 을 종료한 후, 대기 SIP 메시지 큐의 SIP 메시지를 제거하는 기능을 추가함
