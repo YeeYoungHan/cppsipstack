@@ -400,15 +400,6 @@ bool CSipClientMFCDlg::EventMessage( const char * pszFrom, const char * pszTo, C
 	return false;
 }
 
-/**
- * @ingroup SipClientMFC
- * @brief SIP 메시지 수신 쓰레드가 종료됨을 알려주는 이벤트 핸들러
- * @param iThreadId UDP 쓰레드 번호
- */
-void CSipClientMFCDlg::EventCallBackThreadEnd( int iThreadId )
-{
-}
-
 void CSipClientMFCDlg::OnDestroy()
 {
 	m_clsSipUserAgent.Stop();

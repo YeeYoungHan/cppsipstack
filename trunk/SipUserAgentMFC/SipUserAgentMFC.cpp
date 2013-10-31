@@ -258,15 +258,6 @@ bool CSipUserAgentMFC::EventMessage( const char * pszFrom, const char * pszTo, C
 
 /**
  * @ingroup SipUserAgentMFC
- * @brief SIP 메시지 수신 쓰레드가 종료됨을 알려주는 이벤트 핸들러
- * @param iThreadId UDP 쓰레드 번호
- */
-void CSipUserAgentMFC::EventCallBackThreadEnd( int iThreadId )
-{
-}
-
-/**
- * @ingroup SipUserAgentMFC
  * @brief 윈도우 메시지로 SIP 이벤트를 전달한다.
  * @param wParam SIP 이벤트 명령 코드
  * @param lParam SIP 이벤트 데이터

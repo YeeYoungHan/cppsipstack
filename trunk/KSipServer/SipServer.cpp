@@ -106,15 +106,6 @@ bool CSipServer::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 
 /**
  * @ingroup KSipServer
- * @brief SIP 메시지 수신 쓰레드가 종료됨을 알려주는 이벤트 핸들러
- * @param iThreadId UDP 쓰레드 번호
- */
-void CSipServer::CallBackThreadEnd( int iThreadId )
-{
-}
-
-/**
- * @ingroup KSipServer
  * @brief SIP 응답 메시지를 생성하여서 전송한다.
  * @param pclsMessage SIP 요청 메시지
  * @param iStatusCode SIP 응답 코드
