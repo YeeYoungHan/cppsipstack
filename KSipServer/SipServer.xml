@@ -16,7 +16,7 @@
 	<RtpRelay>
 		<UseRtpRelay>true</UseRtpRelay>
 		<BeginPort>10000</BeginPort>
-		<EndPort>10010</EndPort>
+		<EndPort>60000</EndPort>
 	</RtpRelay>
 	<Log>
 		<Folder>c:\temp\sipserver</Folder>

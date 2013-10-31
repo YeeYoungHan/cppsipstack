@@ -103,15 +103,6 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "CertFile", m_strCertFile );
 	pclsElement->SelectElementData( "MinRegisterTimeout", m_iMinRegisterTimeout );
 
-	// RTP relay 설정
-	pclsElement = clsXml.SelectElement( "RtpRelay" );
-	if( pclsElement )
-	{
-		pclsElement->SelectElementData( "UseRtpRelay", m_bUseRtpRelay );
-		pclsElement->SelectElementData( "BeginPort", m_iBeginRtpPort );
-		pclsElement->SelectElementData( "EndPort", m_iEndRtpPort );
-	}
-
 	// 로그
 	pclsElement = clsXml.SelectElement( "Log" );
 	if( pclsElement == NULL ) return false;
@@ -257,6 +248,15 @@ bool CSipServerSetup::Read( CXmlElement & clsXml )
 
 		CLog::SetLevel( m_iLogLevel );
 		CLog::SetMaxLogSize( m_iLogMaxSize );
+	}
+
+	// RTP relay 설정
+	pclsElement = clsXml.SelectElement( "RtpRelay" );
+	if( pclsElement )
+	{
+		pclsElement->SelectElementData( "UseRtpRelay", m_bUseRtpRelay );
+		pclsElement->SelectElementData( "BeginPort", m_iBeginRtpPort );
+		pclsElement->SelectElementData( "EndPort", m_iEndRtpPort );
 	}
 
 	// 모니터링
