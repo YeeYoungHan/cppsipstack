@@ -349,6 +349,11 @@ bool CSipUserAgent::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 	return false;
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief SIP 쓰레드 종료 이벤트 핸들러
+ * @param iThreadId 쓰레드 번호
+ */
 void CSipUserAgent::CallBackThreadEnd( int iThreadId )
 {
 	if( m_pclsCallBack ) m_pclsCallBack->EventCallBackThreadEnd( iThreadId );
