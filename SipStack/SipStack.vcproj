@@ -359,10 +359,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SipStack.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\SipStackCallBack.h"
 				>
 			</File>
