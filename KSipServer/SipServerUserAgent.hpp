@@ -171,7 +171,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 				pclsResponse->m_clsContactList.push_back( clsContact );
 
-				gclsSipStack.SendSipMessage( pclsResponse );
+				gclsUserAgent.m_clsSipStack.SendSipMessage( pclsResponse );
 				return;
 			}
 		}

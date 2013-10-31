@@ -29,7 +29,7 @@ bool CSipUserAgent::RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	if( pclsMessage->GetCallId( strCallId ) == false )
 	{
-		gclsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_BAD_REQUEST ) );
+		m_clsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_BAD_REQUEST ) );
 		return true;
 	}
 
@@ -44,7 +44,7 @@ bool CSipUserAgent::RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage 
 	CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );
 	if( pclsResponse )
 	{
-		gclsSipStack.SendSipMessage( pclsResponse );
+		m_clsSipStack.SendSipMessage( pclsResponse );
 		pclsResponse = NULL;
 	}
 
@@ -64,7 +64,7 @@ bool CSipUserAgent::RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	if( pclsResponse )
 	{
-		gclsSipStack.SendSipMessage( pclsResponse );
+		m_clsSipStack.SendSipMessage( pclsResponse );
 		if( m_pclsCallBack ) m_pclsCallBack->EventCallEnd( strCallId.c_str(), SIP_REQUEST_TERMINATED );
 
 		Delete( strCallId.c_str() );

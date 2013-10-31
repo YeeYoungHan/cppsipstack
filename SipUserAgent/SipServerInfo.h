@@ -20,6 +20,7 @@
 #define _SIP_REGISTER_INFO_H_
 
 #include "SipMessage.h"
+#include "SipStack.h"
 
 /**
  * @ingroup SipUserAgent
@@ -62,7 +63,7 @@ public:
 
 	bool					m_bDelete;
 
-	CSipMessage * CreateRegister( CSipMessage * pclsResponse );
+	CSipMessage * CreateRegister( CSipStack * pclsSipStack, CSipMessage * pclsResponse );
 	bool AddAuth( CSipMessage * pclsRequest, CSipMessage * pclsResponse );
 };
 

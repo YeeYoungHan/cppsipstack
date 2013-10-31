@@ -58,7 +58,7 @@ bool CSipServer::Start( CSipStackSetup & clsSetup )
 
 	if( gclsUserAgent.Start( clsSetup, this, this ) == false ) return false;
 
-	gclsSipStack.AddCallBack( this );
+	gclsUserAgent.m_clsSipStack.AddCallBack( this );
 
 	return true;
 }
@@ -116,7 +116,7 @@ bool CSipServer::SendResponse( CSipMessage * pclsMessage, int iStatusCode )
 	CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( iStatusCode );
 	if( pclsResponse == NULL ) return false;
 
-	gclsSipStack.SendSipMessage( pclsResponse );
+	gclsUserAgent.m_clsSipStack.SendSipMessage( pclsResponse );
 
 	return true;
 }

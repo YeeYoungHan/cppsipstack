@@ -66,7 +66,7 @@ bool CMonitor::RecvRequest( const char * pszRequest, std::string & strResponse )
 	}
 	else if( !strcmp( pszRequest, MC_SIP_STACK_COUNT_LIST ) )
 	{
-		gclsSipStack.GetString( strResponse );
+		gclsUserAgent.m_clsSipStack.GetString( strResponse );
 	}
 	else
 	{

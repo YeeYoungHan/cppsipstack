@@ -31,24 +31,24 @@ bool CSipUserAgent::SendSms( const char * pszFrom, const char * pszTo, const cha
 	if( pclsRequest == NULL ) return false;
 
 	pclsRequest->m_strSipMethod = "MESSAGE";
-	pclsRequest->m_clsReqUri.Set( "sip", pszTo, gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort );
+	pclsRequest->m_clsReqUri.Set( "sip", pszTo, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
 
-	pclsRequest->m_clsFrom.m_clsUri.Set( "sip", pszFrom, gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort );
+	pclsRequest->m_clsFrom.m_clsUri.Set( "sip", pszFrom, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
 	pclsRequest->m_clsFrom.InsertTag();
 
-	pclsRequest->m_clsTo.m_clsUri.Set( "sip", pszTo, gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort );
+	pclsRequest->m_clsTo.m_clsUri.Set( "sip", pszTo, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
 
 	pclsRequest->m_clsCSeq.m_iDigit = GetSeqNum();
 	pclsRequest->m_clsCSeq.m_strMethod = pclsRequest->m_strSipMethod;
 
 	pclsRequest->AddRoute( pclsRoute->m_strDestIp.c_str(), pclsRoute->m_iDestPort, pclsRoute->m_eTransport );
-	pclsRequest->m_clsCallId.Make( gclsSipStack.m_clsSetup.m_strLocalIp.c_str() );
+	pclsRequest->m_clsCallId.Make( m_clsSipStack.m_clsSetup.m_strLocalIp.c_str() );
 
 	pclsRequest->m_clsContentType.Set( "text", "plain" );
 	pclsRequest->m_strBody = pszText;
 	pclsRequest->m_iContentLength = (int)pclsRequest->m_strBody.length();
 
-	if( gclsSipStack.SendSipMessage( pclsRequest ) == false ) return false;
+	if( m_clsSipStack.SendSipMessage( pclsRequest ) == false ) return false;
 
 	return true;
 }

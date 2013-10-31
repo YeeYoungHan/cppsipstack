@@ -72,8 +72,8 @@ LOOP_START:
 			}
 			else if( iStatusCode == SIP_UNAUTHORIZED || iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
 			{
-				CSipMessage * pclsRequest = itSL->CreateRegister( pclsMessage );
-				gclsSipStack.SendSipMessage( pclsRequest );
+				CSipMessage * pclsRequest = itSL->CreateRegister( &m_clsSipStack, pclsMessage );
+				m_clsSipStack.SendSipMessage( pclsRequest );
 			}
 			else
 			{

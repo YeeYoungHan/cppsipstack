@@ -83,10 +83,11 @@ void CSipServerInfo::ClearLogin()
 /**
  * @ingroup SipUserAgent
  * @brief SIP REGISTER 메시지를 생성한다.
+ * @param pclsSipStack SIP stack
  * @param pclsResponse SIP REGISTER 요청에 대한 응답 메시지
  * @returns 성공하면 REGISTER 메시지를 리턴하고 실패하면 NULL 을 리턴한다.
  */
-CSipMessage * CSipServerInfo::CreateRegister( CSipMessage * pclsResponse )
+CSipMessage * CSipServerInfo::CreateRegister( CSipStack * pclsSipStack, CSipMessage * pclsResponse )
 {
 	CSipMessage * pclsRequest = new CSipMessage();
 	if( pclsRequest == NULL ) return NULL;
@@ -116,7 +117,7 @@ CSipMessage * CSipServerInfo::CreateRegister( CSipMessage * pclsResponse )
 	// Call-Id
 	if( m_clsCallId.Empty() )
 	{
-		pclsRequest->m_clsCallId.Make( gclsSipStack.m_clsSetup.m_strLocalIp.c_str() );
+		pclsRequest->m_clsCallId.Make( pclsSipStack->m_clsSetup.m_strLocalIp.c_str() );
 		m_clsCallId = pclsRequest->m_clsCallId;
 	}
 	else

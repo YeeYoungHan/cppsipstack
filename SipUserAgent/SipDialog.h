@@ -30,7 +30,7 @@
 class CSipDialog
 {
 public:
-	CSipDialog();
+	CSipDialog( CSipStack * pclsSipStack );
 	~CSipDialog();
 
 	/** SIP From 헤더에 저장되는 사용자 아이디 */
@@ -103,6 +103,8 @@ public:
 
 	/** 수신된 INVITE 메시지 */
 	CSipMessage * m_pclsInvite;
+
+	CSipStack		* m_pclsSipStack;
 
 	CSipMessage * CreateInvite( );
 	CSipMessage * CreateAck( );

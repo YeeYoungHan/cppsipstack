@@ -56,7 +56,7 @@ bool SendUnAuthorizedResponse( CSipMessage * pclsMessage )
 
 	AddChallenge( pclsResponse );
 
-	gclsSipStack.SendSipMessage( pclsResponse );
+	gclsUserAgent.m_clsSipStack.SendSipMessage( pclsResponse );
 
 	return true;
 }
@@ -155,7 +155,7 @@ bool CSipServer::RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage )
 			if( pclsResponse == NULL ) return false;
 
 			pclsResponse->AddHeader( "Min-Expires", gclsSetup.m_iMinRegisterTimeout );
-			gclsSipStack.SendSipMessage( pclsResponse );
+			gclsUserAgent.m_clsSipStack.SendSipMessage( pclsResponse );
 			return true;
 		}
 	}
@@ -203,7 +203,7 @@ bool CSipServer::RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage )
 
 			pclsResponse->m_clsContactList.push_back( clsContact );
 
-			gclsSipStack.SendSipMessage( pclsResponse );
+			gclsUserAgent.m_clsSipStack.SendSipMessage( pclsResponse );
 		}
 		else
 		{

@@ -42,7 +42,7 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 
 	gbTestThreadRun = true;
 
-	clsRtp.m_strIp = gclsSipStack.m_clsSetup.m_strLocalIp;
+	clsRtp.m_strIp = gclsSipUserAgent.m_clsSipStack.m_clsSetup.m_strLocalIp;
 	clsRtp.m_iPort = 4000;
 	clsRtp.m_iCodec = 0;
 

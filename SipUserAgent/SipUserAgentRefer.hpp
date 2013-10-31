@@ -62,7 +62,7 @@ bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 
 	if( pclsMessage->GetCallId( strCallId ) == false )
 	{
-		gclsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_BAD_REQUEST ) );
+		m_clsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_BAD_REQUEST ) );
 		return true;
 	}
 
@@ -164,7 +164,7 @@ bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 
 	if( pclsResponse )
 	{
-		gclsSipStack.SendSipMessage( pclsResponse );
+		m_clsSipStack.SendSipMessage( pclsResponse );
 		return true;
 	}
 

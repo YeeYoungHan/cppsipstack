@@ -24,8 +24,6 @@
 #include "TimeString.h"
 #include "TimeUtility.h"
 
-CSipStack	gclsSipStack;
-
 #include "SipUserAgentCall.hpp"
 #include "SipUserAgentSms.hpp"
 #include "SipUserAgentPbx.hpp"
@@ -199,12 +197,12 @@ void CSipUserAgent::DeRegister( )
  */
 bool CSipUserAgent::Start( CSipStackSetup & clsSetup, ISipUserAgentCallBack * pclsCallBack, ISipStackSecurityCallBack * pclsSecurityCallBack )
 {
-	gclsSipStack.AddCallBack( this );
+	m_clsSipStack.AddCallBack( this );
 
 	m_pclsCallBack = pclsCallBack;
-	gclsSipStack.SetSecurityCallBack( pclsSecurityCallBack );
+	m_clsSipStack.SetSecurityCallBack( pclsSecurityCallBack );
 
-	if( gclsSipStack.Start( clsSetup ) == false ) return false;
+	if( m_clsSipStack.Start( clsSetup ) == false ) return false;
 
 	StartSipRegisterThread( this );
 
@@ -247,7 +245,7 @@ bool CSipUserAgent::Stop( )
 		sleep(1);
 	}
 
-	gclsSipStack.Stop();
+	m_clsSipStack.Stop();
 	DeleteRegisterInfoAll( );
 
 	m_bStart = false;
@@ -388,7 +386,7 @@ bool CSipUserAgent::SendInvite( CSipDialog & clsDialog )
 
 		clsDialog.m_strCallId = szCallIdName;
 		clsDialog.m_strCallId.append( "@" );
-		clsDialog.m_strCallId.append( gclsSipStack.m_clsSetup.m_strLocalIp );
+		clsDialog.m_strCallId.append( m_clsSipStack.m_clsSetup.m_strLocalIp );
 
 		m_clsMutex.acquire();
 		itMap = m_clsMap.find( clsDialog.m_strCallId );
@@ -406,7 +404,7 @@ bool CSipUserAgent::SendInvite( CSipDialog & clsDialog )
 		if( bInsert ) break;
 	}
 
-	if( gclsSipStack.SendSipMessage( pclsMessage ) == false )
+	if( m_clsSipStack.SendSipMessage( pclsMessage ) == false )
 	{
 		Delete( clsDialog.m_strCallId.c_str() );
 		return false;
@@ -548,12 +546,12 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 
 	if( pclsAck )
 	{
-		gclsSipStack.SendSipMessage( pclsAck );
+		m_clsSipStack.SendSipMessage( pclsAck );
 	}
 
 	if( pclsInvite )
 	{
-		gclsSipStack.SendSipMessage( pclsInvite );
+		m_clsSipStack.SendSipMessage( pclsInvite );
 	}
 
 	if( bReInvite ) return false;

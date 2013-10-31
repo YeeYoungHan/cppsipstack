@@ -36,12 +36,12 @@ bool CSipUserAgent::RecvMessageRequest( int iThreadId, CSipMessage * pclsMessage
 
 		if( m_pclsCallBack->EventMessage( pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str(), pclsMessage ) )
 		{
-			gclsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_OK ) );
+			m_clsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_OK ) );
 			return true;
 		}
 	}
 
-	gclsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_DECLINE ) );
+	m_clsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_DECLINE ) );
 
 	return true;
 }
