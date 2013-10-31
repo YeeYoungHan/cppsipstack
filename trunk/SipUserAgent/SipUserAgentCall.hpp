@@ -36,7 +36,7 @@ bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCal
 	if( pclsRoute->m_strDestIp.empty() ) return false;
 	if( pclsRoute->m_iDestPort <= 0 || pclsRoute->m_iDestPort > 65535 ) return false;
 
-	CSipDialog	clsDialog;
+	CSipDialog	clsDialog( &m_clsSipStack );
 
 	clsDialog.m_strFromId = pszFrom;
 	clsDialog.m_strToId = pszTo;
@@ -109,7 +109,7 @@ bool CSipUserAgent::StopCall( const char * pszCallId, int iSipCode )
 
 	if( pclsMessage )
 	{
-		gclsSipStack.SendSipMessage( pclsMessage );
+		m_clsSipStack.SendSipMessage( pclsMessage );
 	}
 
 	return bRes;
@@ -153,7 +153,7 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 	if( pclsMessage )
 	{
-		gclsSipStack.SendSipMessage( pclsMessage );
+		m_clsSipStack.SendSipMessage( pclsMessage );
 	}
 
 	return bRes;

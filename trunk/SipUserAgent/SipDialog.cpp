@@ -25,8 +25,8 @@
  * @ingroup SipUserAgent
  * @brief 생성자
  */
-CSipDialog::CSipDialog() : m_iSeq(0), m_iContactPort(-1), m_eTransport(E_SIP_UDP)
-	, m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1), m_pclsInvite(NULL)
+CSipDialog::CSipDialog( CSipStack * pclsSipStack ) : m_iSeq(0), m_iContactPort(-1), m_eTransport(E_SIP_UDP)
+	, m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1), m_pclsInvite(NULL), m_pclsSipStack( pclsSipStack )
 {
 	memset( &m_sttInviteTime, 0, sizeof(m_sttInviteTime) );
 	memset( &m_sttCancelTime, 0, sizeof(m_sttCancelTime) );
@@ -57,7 +57,7 @@ CSipMessage * CSipDialog::CreateInvite( )
 
 	SipMakeBranch( szBranch, sizeof(szBranch) );
 
-	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.GetLocalPort( m_eTransport ), szBranch, m_eTransport );
+	pclsMessage->AddVia( m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.GetLocalPort( m_eTransport ), szBranch, m_eTransport );
 	m_strViaBranch = szBranch;
 
 	AddSdp( pclsMessage );
@@ -75,7 +75,7 @@ CSipMessage * CSipDialog::CreateAck( )
 	CSipMessage * pclsMessage = CreateMessage( "ACK" );
 	if( pclsMessage == NULL ) return NULL;
 
-	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.GetLocalPort( m_eTransport ), m_strViaBranch.c_str(), m_eTransport );
+	pclsMessage->AddVia( m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.GetLocalPort( m_eTransport ), m_strViaBranch.c_str(), m_eTransport );
 
 	return pclsMessage;
 }
@@ -90,7 +90,7 @@ CSipMessage * CSipDialog::CreateCancel( )
 	CSipMessage * pclsMessage = CreateMessage( "CANCEL" );
 	if( pclsMessage == NULL ) return NULL;
 
-	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.GetLocalPort( m_eTransport ), m_strViaBranch.c_str(), m_eTransport );
+	pclsMessage->AddVia( m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.GetLocalPort( m_eTransport ), m_strViaBranch.c_str(), m_eTransport );
 
 	return pclsMessage;
 }
@@ -350,7 +350,7 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	}
 	pclsMessage->m_clsCSeq.Set( m_iSeq, pszSipMethod );
 
-	pclsMessage->m_clsFrom.m_clsUri.Set( "sip", m_strFromId.c_str(), gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort );
+	pclsMessage->m_clsFrom.m_clsUri.Set( "sip", m_strFromId.c_str(), m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.m_iLocalUdpPort );
 	pclsMessage->m_clsFrom.InsertParam( "tag", m_strFromTag.c_str() );
 
 	pclsMessage->m_clsTo.m_clsUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
@@ -362,7 +362,7 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	// SK 브로드밴드 IP-PBX 와 연동하기 위해서 필요한 기능 ( RFC3325 )
 	char szUri[1024];
 
-	snprintf( szUri, sizeof(szUri), "<sip:%s@%s:%d>", m_strFromId.c_str(), gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort );
+	snprintf( szUri, sizeof(szUri), "<sip:%s@%s:%d>", m_strFromId.c_str(), m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.m_iLocalUdpPort );
 
 	pclsMessage->AddHeader( "P-Asserted-Identity", szUri );
 	pclsMessage->AddHeader( "Diversion", szUri );

@@ -286,7 +286,7 @@ void CUserMap::SendOptions(  )
 		pclsMessage->m_clsCSeq.Set( clsUserInfo.m_iOptionsSeq, "OPTIONS" );
 		pclsMessage->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
 
-		gclsSipStack.SendSipMessage( pclsMessage );
+		gclsUserAgent.m_clsSipStack.SendSipMessage( pclsMessage );
 	}
 }
 

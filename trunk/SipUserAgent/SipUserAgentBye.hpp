@@ -29,7 +29,7 @@ bool CSipUserAgent::RecvByeRequest( int iThreadId, CSipMessage * pclsMessage )
 
 	if( pclsMessage->GetCallId( strCallId ) == false )
 	{
-		gclsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_BAD_REQUEST ) );
+		m_clsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_BAD_REQUEST ) );
 		return true;
 	}
 
@@ -41,7 +41,7 @@ bool CSipUserAgent::RecvByeRequest( int iThreadId, CSipMessage * pclsMessage )
 		}
 	}
 
-	gclsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_OK ) );
+	m_clsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_OK ) );
 
 	if( SetCallEnd( strCallId.c_str() ) )
 	{

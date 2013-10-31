@@ -37,7 +37,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	if( GetSipCallRtp( pclsMessage, clsRtp ) == false )
 	{
 		pclsResponse = pclsMessage->CreateResponse( SIP_NOT_ACCEPTABLE_HERE );
-		gclsSipStack.SendSipMessage( pclsResponse );
+		m_clsSipStack.SendSipMessage( pclsResponse );
 		return true;
 	}
 
@@ -57,7 +57,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	if( bReINVITE )
 	{
-		if( pclsResponse ) gclsSipStack.SendSipMessage( pclsResponse );
+		if( pclsResponse ) m_clsSipStack.SendSipMessage( pclsResponse );
 		m_pclsCallBack->EventReInvite( strCallId.c_str(), &clsRtp );
 		return true;
 	}
@@ -75,13 +75,13 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	pclsResponse = pclsMessage->CreateResponse( SIP_RINGING, szTag );
 	if( pclsResponse == NULL ) return false;
-	gclsSipStack.SendSipMessage( pclsResponse );
+	m_clsSipStack.SendSipMessage( pclsResponse );
 
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( strCallId );
 	if( itMap == m_clsMap.end() )
 	{
-		CSipDialog	clsDialog;
+		CSipDialog	clsDialog( &m_clsSipStack );
 
 		clsDialog.m_strFromId = pclsMessage->m_clsTo.m_clsUri.m_strUser;
 		clsDialog.m_strFromTag = szTag;

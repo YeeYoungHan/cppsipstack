@@ -92,6 +92,7 @@ public:
 	CString m_strLog;
 	CProgressCtrl m_clsProgress;
 	CString m_strPercent;
+	CEdit m_txtLog;
 
 	afx_msg void OnBnClickedStartSipStack();
 	afx_msg void OnBnClickedStopSipStack();
@@ -99,6 +100,5 @@ public:
 	afx_msg void OnBnClickedStopTest();
 	afx_msg void OnDestroy();
 	LRESULT OnTestMessage( WPARAM wParam, LPARAM lParam );
-	CEdit m_txtLog;
 	afx_msg void OnBnClickedClearLog();
 };

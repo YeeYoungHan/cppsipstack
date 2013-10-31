@@ -36,7 +36,7 @@ void * SipRegisterThread( void * lpParameter )
 	SIP_SERVER_INFO_LIST::iterator itList;
 	time_t	iTime;
 
-	while( gclsSipStack.m_bStopEvent == false )
+	while( pclsSipUserAgent->m_clsSipStack.m_bStopEvent == false )
 	{
 		time( &iTime );
 
@@ -52,10 +52,10 @@ void * SipRegisterThread( void * lpParameter )
 						if( itList->m_iNextSendTime > iTime ) continue;
 					}
 
-					CSipMessage * pclsRequest = itList->CreateRegister( NULL );
+					CSipMessage * pclsRequest = itList->CreateRegister( &pclsSipUserAgent->m_clsSipStack, NULL );
 					if( pclsRequest )
 					{
-						gclsSipStack.SendSipMessage( pclsRequest );
+						pclsSipUserAgent->m_clsSipStack.SendSipMessage( pclsRequest );
 					}
 
 					itList->m_iSendTime = iTime;
@@ -65,10 +65,10 @@ void * SipRegisterThread( void * lpParameter )
 			{
 				if( ( ( iTime - itList->m_iLoginTime ) > ( itList->m_iLoginTimeout / 2 ) ) || itList->m_iLoginTimeout == 0 )
 				{
-					CSipMessage * pclsRequest = itList->CreateRegister( NULL );
+					CSipMessage * pclsRequest = itList->CreateRegister( &pclsSipUserAgent->m_clsSipStack, NULL );
 					if( pclsRequest )
 					{
-						gclsSipStack.SendSipMessage( pclsRequest );
+						pclsSipUserAgent->m_clsSipStack.SendSipMessage( pclsRequest );
 					}
 				}
 			}

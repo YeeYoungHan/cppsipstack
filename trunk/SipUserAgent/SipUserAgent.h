@@ -106,6 +106,8 @@ public:
 	SIP_SERVER_INFO_LIST	m_clsRegisterList;
 	CSipMutex							m_clsRegisterMutex;
 
+	CSipStack							m_clsSipStack;
+
 private:
 	void DeleteRegisterInfoAll( );
 	void DeRegister( );
@@ -145,7 +147,5 @@ private:
 
 	bool								m_bStart;
 };
-
-extern CSipStack	gclsSipStack;
 
 #endif

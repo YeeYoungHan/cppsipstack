@@ -100,7 +100,7 @@ void CSipSpeedDlg::EventIncomingCall( const char * pszCallId, const char * pszFr
 {
 	CSipCallRtp clsRtp;
 
-	clsRtp.m_strIp = gclsSipStack.m_clsSetup.m_strLocalIp;
+	clsRtp.m_strIp = gclsSipUserAgent.m_clsSipStack.m_clsSetup.m_strLocalIp;
 	clsRtp.m_iPort = 4002;	
 	clsRtp.m_iCodec = 0;
 

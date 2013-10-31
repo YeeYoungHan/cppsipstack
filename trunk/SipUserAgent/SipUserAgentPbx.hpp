@@ -84,7 +84,7 @@ bool CSipUserAgent::RingCall( const char * pszCallId, int iSipStatus, CSipCallRt
 
 	if( pclsMessage )
 	{
-		gclsSipStack.SendSipMessage( pclsMessage );
+		m_clsSipStack.SendSipMessage( pclsMessage );
 	}
 
 	return bRes;
@@ -192,7 +192,7 @@ bool CSipUserAgent::SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp 
 
 	if( pclsRequest )
 	{
-		gclsSipStack.SendSipMessage( pclsRequest );
+		m_clsSipStack.SendSipMessage( pclsRequest );
 	}
 
 	return bRes;
@@ -240,7 +240,7 @@ bool CSipUserAgent::SendNotify( const char * pszCallId, int iSipCode )
 		pclsRequest->m_iContentLength = snprintf( szBuf, sizeof(szBuf), "SIP/2.0 %d %s", iSipCode, GetReasonPhrase( iSipCode ) );
 		pclsRequest->m_strBody = szBuf;
 
-		gclsSipStack.SendSipMessage( pclsRequest );
+		m_clsSipStack.SendSipMessage( pclsRequest );
 	}
 
 	return bRes;
