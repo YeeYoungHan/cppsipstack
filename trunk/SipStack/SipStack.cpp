@@ -156,6 +156,8 @@ bool CSipStack::Stop( )
 
 	_Stop();
 
+	m_clsCallBackList.clear();
+
 	m_bStarted = false;
 
 	return true;
