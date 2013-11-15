@@ -49,6 +49,7 @@ bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId, i
 	CALL_MAP::iterator	itMap;
 
 	m_clsMutex.acquire();
+	// INVITE 메시지를 수신한 Dialog 를 저장한다.
 	itMap = m_clsMap.find( pszRecvCallId );
 	if( itMap == m_clsMap.end() )
 	{
@@ -63,6 +64,7 @@ bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId, i
 		m_clsMap.insert( CALL_MAP::value_type( pszRecvCallId, clsCallInfo ) );
 	}
 
+	// INVITE 메시지를 전송한 Dialog 를 저장한다.
 	itMap = m_clsMap.find( pszSendCallId );
 	if( itMap == m_clsMap.end() )
 	{

@@ -120,17 +120,15 @@ enum ECheckAuthResult
  * @brief 
  * @param pclsCredential	SIP 인증 정보 저장 객체
  * @param pszMethod				SIP 메소드
+ * @param clsXmlUser			사용자 정보 저장 객체
  * @returns 인증에 성공하면 E_AUTH_OK 를 리턴한다.
  *					존재하지 않는 nonce 인 경우 E_AUTH_NONCE_NOT_FOUND 를 리턴한다.
  *					그 외의 오류는 E_AUTH_ERROR 를 리턴한다.
  */
-ECheckAuthResult CheckAuthorization( CSipCredential * pclsCredential, const char * pszMethod )
+ECheckAuthResult CheckAuthorization( CSipCredential * pclsCredential, const char * pszMethod, CXmlUser & clsXmlUser )
 {
 	if( pclsCredential->m_strUserName.empty() ) return E_AUTH_ERROR;
 	if( gclsNonceMap.Select( pclsCredential->m_strNonce.c_str() ) == false ) return E_AUTH_NONCE_NOT_FOUND;
-
-	CXmlUser	clsXmlUser;
-
 	if( SelectUser( pclsCredential->m_strUserName.c_str(), clsXmlUser ) == false ) return E_AUTH_ERROR;
 	if( CheckAuthorizationResponse( pclsCredential->m_strUserName.c_str(), pclsCredential->m_strRealm.c_str(), pclsCredential->m_strNonce.c_str(), pclsCredential->m_strUri.c_str()
 				, pclsCredential->m_strResponse.c_str(), clsXmlUser.m_strPassWord.c_str(), pszMethod ) == false ) return E_AUTH_ERROR;
@@ -173,7 +171,9 @@ bool CSipServer::RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage )
 		return SendUnAuthorizedResponse( pclsMessage );
 	}
 
-	ECheckAuthResult eRes = CheckAuthorization( &(*itCL), pclsMessage->m_strSipMethod.c_str() );
+	CXmlUser	clsXmlUser;
+
+	ECheckAuthResult eRes = CheckAuthorization( &(*itCL), pclsMessage->m_strSipMethod.c_str(), clsXmlUser );
 	switch( eRes )
 	{
 	case E_AUTH_NONCE_NOT_FOUND:
@@ -196,7 +196,7 @@ bool CSipServer::RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage )
 	{
 		CSipFrom clsContact;
 
-		if( gclsUserMap.Insert( pclsMessage, &clsContact ) )
+		if( gclsUserMap.Insert( pclsMessage, &clsContact, &clsXmlUser ) )
 		{
 			CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );
 			if( pclsResponse == NULL ) return false;

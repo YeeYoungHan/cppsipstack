@@ -49,9 +49,10 @@ CUserMap::~CUserMap()
  * @brief 로그인된 클라이언트 정보를 저장한다.
  * @param pclsMessage SIP REGISTER 메시지
  * @param pclsContact	SIP REGISTER 응답 메시지에 포함될 Contact Url
+ * @param pclsXmlUser	XML 에 저장된 사용자 정보
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact )
+bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact, CXmlUser * pclsXmlUser )
 {
 	CUserInfo			clsInfo;
 	std::string		strUserId;
@@ -71,16 +72,21 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact )
 	clsInfo.m_eTransport = pclsMessage->m_eTransport;
 	time( &clsInfo.m_iLoginTime );
 
+	clsInfo.m_strGroupId = pclsXmlUser->m_strGroupId;
+
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( strUserId );
 	if( itMap == m_clsMap.end() )
 	{
 		m_clsMap.insert( USER_MAP::value_type( strUserId, clsInfo ) );
-		CLog::Print( LOG_DEBUG, "user(%s) is inserted (%s:%d:%d)", strUserId.c_str(), clsInfo.m_strIp.c_str(), clsInfo.m_iPort, clsInfo.m_eTransport );
+		CLog::Print( LOG_DEBUG, "user(%s) is inserted (%s:%d:%d) group(%s)"
+			, strUserId.c_str(), clsInfo.m_strIp.c_str(), clsInfo.m_iPort, clsInfo.m_eTransport, clsInfo.m_strGroupId );
 	}
 	else
 	{
 		itMap->second = clsInfo;
+		CLog::Print( LOG_DEBUG, "user(%s) is updated (%s:%d:%d) group(%s)"
+			, strUserId.c_str(), clsInfo.m_strIp.c_str(), clsInfo.m_iPort, clsInfo.m_eTransport, clsInfo.m_strGroupId );
 	}
 	m_clsMutex.release();
 
@@ -140,6 +146,22 @@ bool CUserMap::Select( const char * pszUserId )
 	m_clsMutex.release();
 
 	return bRes;
+}
+
+bool CUserMap::SelectGroup( const char * pszGroudId, USER_ID_LIST & clsList )
+{
+	USER_MAP::iterator	itMap;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		//if( !strcmp( pszGroupId, 
+	}
+	m_clsMutex.release();
+
+	if( clsList.size() > 0 ) return true;
+
+	return false;
 }
 
 /**
@@ -216,8 +238,6 @@ LOOP_START:
 	}
 	m_clsMutex.release();
 }
-
-typedef std::list< std::string > USER_ID_LIST;
 
 /**
  * @ingroup KSipServer

@@ -22,7 +22,10 @@
 #include "SipMutex.h"
 #include "SipMessage.h"
 #include "SipUserAgent.h"
+#include "XmlUser.h"
 #include <map>
+
+typedef std::list< std::string > USER_ID_LIST;
 
 /**
  * @ingroup KSipServer
@@ -34,15 +37,29 @@ public:
 	CUserInfo();
 	void GetCallRoute( CSipCallRoute & clsRoute );
 
+	/** 클라이언트 IP 주소 */
 	std::string m_strIp;
+
+	/** 클라이언트 포트 번호 */
 	int					m_iPort;
+
+	/** 클라이언트 연결 트랜스포트 */
 	ESipTransport	m_eTransport;
 
+	/** 로그인 시간 */
 	time_t			m_iLoginTime;
+
+	/** 로그인 timeout 시간 (초단위) */
 	int					m_iLoginTimeout;
 
+	/** OPTIONS 메시지 전송 SEQ 번호 */
 	int					m_iOptionsSeq;
+
+	/** OPTIONS 메시지 전송 시간 */
 	time_t			m_iSendOptionsTime;
+
+	/** Call Pickup 을 위한 그룹 아이디 */
+	std::string	m_strGroupId;
 };
 
 typedef std::map< std::string, CUserInfo > USER_MAP;
@@ -57,9 +74,10 @@ public:
 	CUserMap();
 	~CUserMap();
 
-	bool Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact );
+	bool Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact, CXmlUser * pclsXmlUser );
 	bool Select( const char * pszUserId, CUserInfo & clsInfo );
 	bool Select( const char * pszUserId );
+	bool SelectGroup( const char * pszGroudId, USER_ID_LIST & clsList );
 	bool Delete( const char * pszUserId );
 
 	bool SetIpPort( const char * pszUserId, const char * pszIp, int iPort );

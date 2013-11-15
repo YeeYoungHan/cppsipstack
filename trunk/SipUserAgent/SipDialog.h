@@ -115,6 +115,7 @@ public:
 	bool SetLocalRtp( CSipCallRtp * pclsRtp );
 	bool SetRemoteRtp( CSipCallRtp * pclsRtp );
 	void GetCdr( CSipCdr * pclsCdr );
+	bool IsConnected( );
 
 private:
 	CSipMessage * CreateMessage( const char * pszSipMethod );
