@@ -35,6 +35,7 @@ bool TestMd5();
 bool TestString();
 bool TestSipHeader();
 bool TestSipReason();
+bool TestSipCallId();
 
 /**
  * @ingroup TestSipParser
@@ -45,6 +46,7 @@ bool TestSipReason();
  */
 int main( int argc, char * argv[] )
 {
+	if( TestSipCallId() == false ) goto FUNC_END;
 	if( TestSipReason() == false ) goto FUNC_END;
 	if( TestString() == false ) goto FUNC_END;
 	if( TestMd5() == false ) goto FUNC_END;
