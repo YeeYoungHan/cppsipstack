@@ -19,6 +19,7 @@
 #ifndef _SIP_MESSAGE_H_
 #define _SIP_MESSAGE_H_
 
+#include "SipParserDefine.h"
 #include "SipFrom.h"
 #include "SipVia.h"
 #include "SipAcceptData.h"

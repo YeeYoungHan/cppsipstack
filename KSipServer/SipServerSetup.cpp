@@ -62,7 +62,7 @@ CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10)
 	, m_iTlsPort(5061), m_iTlsAcceptTimeout(10)
 	, m_iMinRegisterTimeout(300)
 	, m_bUseRtpRelay(false), m_iBeginRtpPort(10000), m_iEndRtpPort(60000)
-	, m_iDbPort(3306), m_iLogLevel(0), m_iLogMaxSize(20000000)
+	, m_iDbPort(3306), m_eType(E_DT_XML), m_iLogLevel(0), m_iLogMaxSize(20000000)
 {
 }
 
@@ -102,6 +102,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "TlsAcceptTimeout", m_iTlsAcceptTimeout );
 	pclsElement->SelectElementData( "CertFile", m_strCertFile );
 	pclsElement->SelectElementData( "MinRegisterTimeout", m_iMinRegisterTimeout );
+	pclsElement->SelectElementData( "CallPickupId", m_strCallPickupId );
 
 	// 로그
 	pclsElement = clsXml.SelectElement( "Log" );
@@ -282,6 +283,21 @@ bool CSipServerSetup::Read( CXmlElement & clsXml )
 	}
 
 	return true;
+}
+
+/**
+ * @ingroup KSipServer
+ * @brief 입력된 아이디가 Call PickUp 아이디인지 검사한다.
+ * @param pszId 아이디
+ * @returns 입력된 아이디가 Call PickUp 아이디이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipServerSetup::IsCallPickupId( const char * pszId )
+{
+	if( m_strCallPickupId.empty() ) return false;
+
+	if( !strcmp( m_strCallPickupId.c_str(), pszId ) ) return true;
+
+	return false;
 }
 
 /**

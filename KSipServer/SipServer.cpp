@@ -193,3 +193,15 @@ void CSipServer::SaveCdr( const char * pszCallId, int iSipStatus )
 		}
 	}
 }
+
+/**
+ * @ingroup KSipServer
+ * @brief 통화를 종료시킨다.
+ * @param pszCallId		SIP Call-ID
+ * @param iSipStatus	응답 코드
+ */
+void CSipServer::StopCall( const char * pszCallId, int iResponseCode )
+{
+	SaveCdr( pszCallId, iResponseCode );
+	gclsUserAgent.StopCall( pszCallId, iResponseCode );
+}

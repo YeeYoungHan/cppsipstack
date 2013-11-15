@@ -66,6 +66,7 @@ private:
 
 	bool SendResponse( CSipMessage * pclsMessage, int iStatusCode );
 	void SaveCdr( const char * pszCallId, int iSipStatus );
+	void StopCall( const char * pszCallId, int iResponseCode );
 
 	// SipServerRegister.hpp
 	bool RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage );

@@ -91,6 +91,15 @@ public:
 	/** IP-PBX 정보 저장 폴더 - m_strUserXmlFolder 가 설정되어 있지 않으면 본 항목은 사용되지 않는다. */
 	std::string	m_strSipServerXmlFolder;
 
+	/** CDR 파일 저장 폴더 - m_strUserXmlFolder 가 설정되어 있지 않으면 본 항목은 사용되지 않는다. */
+	std::string	m_strCdrFolder;
+
+	/** Call Pickup 을 위한 아이디 ( 전화번호 ) */
+	std::string	m_strCallPickupId;
+
+	// ================================================================
+	// DB 연동 기능
+
 	/** DB 서버 IP 주소 */
 	std::string	m_strDbHost;
 
@@ -106,6 +115,12 @@ public:
 	/** DB 서버 포트 번호 */
 	int					m_iDbPort;
 
+	/** SIP 통신을 위한 정보 저장 방법 */
+	EDbType			m_eType;
+
+	// ================================================================
+	// 로그 기능
+
 	/** 로그 폴더 */
 	std::string	m_strLogFolder;
 
@@ -115,17 +130,17 @@ public:
 	/** 로그 파일의 최대 크기 */
 	int					m_iLogMaxSize;
 
-	/** SIP 통신을 위한 정보 저장 방법 */
-	EDbType			m_eType;
-
-	/** CDR 파일 저장 폴더 - m_strUserXmlFolder 가 설정되어 있지 않으면 본 항목은 사용되지 않는다. */
-	std::string	m_strCdrFolder;
+	// ================================================================
+	// 모니터링 기능
 
 	/** 모니터링 TCP 포트 번호 */
 	int					m_iMonitorPort;
 
 	/** 모니터링 TCP 포트에 접속 허용할 IP 주소 맵 */
 	CStringMap	m_clsMonitorIpMap;
+
+	// ================================================================
+	// 보안 기능
 
 	/** SIP transaction list 에 저장하지 않을 SIP User Agent 맵 */
 	CStringMap	m_clsDenySipUserAgentMap;
@@ -138,6 +153,8 @@ public:
 
 	bool Read( const char * pszFileName );
 	bool Read( );
+
+	bool IsCallPickupId( const char * pszId );
 
 	bool IsMonitorIp( const char * pszIp );
 

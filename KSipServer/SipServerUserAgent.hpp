@@ -111,6 +111,15 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 	CLog::Print( LOG_DEBUG, "EventIncomingCall(%s,%s,%s)", pszCallId, pszFrom, pszTo );
 
+	if( strlen( pszTo ) == 0 )
+	{
+		CLog::Print( LOG_DEBUG, "EventIncomingCall to(%s) is not defined", pszTo );
+
+		SaveCdr( pszCallId, SIP_DECLINE );
+		gclsUserAgent.StopCall( pszCallId );
+		return;
+	}
+
 	if( SelectUser( pszTo, clsXmlUser ) == false )
 	{
 		CXmlSipServer clsXmlSipServer;
@@ -131,13 +140,26 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 			bRoutePrefix = true;
 			CLog::Print( LOG_DEBUG, "EventIncomingCall routePrefix IP-PBX(%s:%d)", clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
 		}
+		else if( gclsSetup.IsCallPickupId( pszTo ) )
+		{
+			CXmlUser	xmlFrom;
+
+			CLog::Print( LOG_DEBUG, "EventIncomingCall CallPickup" );
+
+			if( SelectUser( pszFrom, xmlFrom ) )
+			{
+
+			}
+			else
+			{
+				CLog::Print( LOG_DEBUG, "EventIncomingCall CallPickup from(%s) is not found", pszFrom );
+				return StopCall( pszCallId, SIP_NOT_FOUND );
+			}
+		}
 		else
 		{
 			CLog::Print( LOG_DEBUG, "EventIncomingCall to(%s) is not found in XML or DB", pszTo );
-
-			SaveCdr( pszCallId, SIP_NOT_FOUND );
-			gclsUserAgent.StopCall( pszCallId, SIP_NOT_FOUND );
-			return;
+			return StopCall( pszCallId, SIP_NOT_FOUND );
 		}
 	}
 
@@ -145,10 +167,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	{
 		// 사용자가 DND 로 설정되어 있으면 통화 요청을 거절한다.
 		CLog::Print( LOG_DEBUG, "EventIncomingCall to(%s) is DND", pszTo );
-
-		SaveCdr( pszCallId, SIP_DECLINE );
-		gclsUserAgent.StopCall( pszCallId );
-		return;
+		return StopCall( pszCallId, SIP_DECLINE );
 	}
 
 	if( clsXmlUser.IsCallForward() )
@@ -180,9 +199,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 			CLog::Print( LOG_ERROR, "EventIncomingCall(%s) INVITE it not found", pszCallId );
 		}
 
-		SaveCdr( pszCallId, SIP_MOVED_TEMPORARILY );
-		gclsUserAgent.StopCall( pszCallId );
-		return;
+		return StopCall( pszCallId, SIP_MOVED_TEMPORARILY );
 	}
 
 	if( bRoutePrefix == false )
@@ -190,9 +207,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 		if( gclsUserMap.Select( pszTo, clsUserInfo ) == false )
 		{
 			CLog::Print( LOG_DEBUG, "EventIncomingCall(%s) to(%s) is not found", pszCallId, pszTo );
-			SaveCdr( pszCallId, SIP_NOT_FOUND );
-			gclsUserAgent.StopCall( pszCallId, SIP_NOT_FOUND );
-			return;
+			return StopCall( pszCallId, SIP_NOT_FOUND );
 		}
 	}
 
@@ -205,9 +220,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 		iStartPort = gclsRtpMap.CreatePort();
 		if( iStartPort == -1 )
 		{
-			SaveCdr( pszCallId, SIP_INTERNAL_SERVER_ERROR );
-			gclsUserAgent.StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
-			return;
+			return StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
 		}
 
 		pclsRtp->m_iPort = iStartPort;
@@ -219,10 +232,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	if( gclsUserAgent.StartCall( pszFrom, pszTo, pclsRtp, &clsRoute, strCallId ) == false )
 	{
 		CLog::Print( LOG_ERROR, "EventIncomingCall(%s) StartCall errr", pszCallId );
-
-		SaveCdr( pszCallId, SIP_INTERNAL_SERVER_ERROR );
-		gclsUserAgent.StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
-		return;
+		return StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
 	}
 
 	gclsCallMap.Insert( pszCallId, strCallId.c_str(), iStartPort );
