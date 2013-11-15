@@ -43,6 +43,9 @@ public:
 	/** 착신전환 ( Call Forward ) */
 	std::string m_strCallForward;
 
+	/** 그룹 아이디 */
+	std::string	m_strGroupId;
+
 	bool Parse( const char * pszFileName );
 	void Clear();
 

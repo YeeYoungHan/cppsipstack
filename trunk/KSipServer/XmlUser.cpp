@@ -60,6 +60,7 @@ bool CXmlUser::Parse( const char * pszFileName )
 	}
 
 	clsXml.SelectElementData( "CallForward", m_strCallForward );
+	clsXml.SelectElementData( "GroupId", m_strGroupId );
 
 	if( m_strId.empty() ) return false;
 
