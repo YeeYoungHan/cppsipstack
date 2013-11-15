@@ -16,8 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipParserDefine.h"
+#include "SipUdp.h"
 #include "SipUtility.h"
 #include <string.h>
+#include <stdio.h>
+#include <string>
+#include "TimeUtility.h"
 
 bool TestMd5()
 {
@@ -30,6 +35,22 @@ bool TestMd5()
 	{
 		return false;
 	}
+
+	/*
+	char	szTemp[255], szMd5[255];
+	std::string strLocalIp;
+	int iLocalUdpPort = 5060;
+	struct timeval sttTime;
+
+	GetLocalIp( strLocalIp );
+	gettimeofday( &sttTime, NULL );
+
+	int iLen = snprintf( szTemp, sizeof(szTemp), "%s:%d:%d:%d", strLocalIp.c_str(), iLocalUdpPort, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
+
+	SipMd5String21( szTemp, szMd5 );
+
+	printf( "[%s]\n", szMd5 );
+	*/
 
 	return true;
 }
