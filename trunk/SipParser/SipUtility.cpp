@@ -178,7 +178,7 @@ void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 
 	if( iCallIdSize > ( iLen + (int)sizeof(sttTime) * 8 / 6 ) )
 	{
-		SipMakePrintString( ( unsigned char *)&sttTime, sizeof(sttTime), pszCallId + iLen, iCallIdSize - iLen );
+		SipMakePrintString( (( unsigned char *)&sttTime) + 2, sizeof(sttTime) - 2, pszCallId + iLen, iCallIdSize - iLen );
 	}
 }
 
