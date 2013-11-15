@@ -33,6 +33,7 @@
 void FetchRow( void * pclsData, MYSQL_ROW & sttRow );
 
 /**
+ * @ingroup KSipServer
  * @brief MySQL 데이터베이스 연동 클래스
  */
 class CMySQL
