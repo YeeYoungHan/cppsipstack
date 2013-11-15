@@ -35,6 +35,7 @@ CMySQL::~CMySQL(void)
 }
 
 /**
+ * @ingroup KSipServer
  * @brief MySQL 데이터베이스에 연결한다.
  * @param pszHost			MySQL 호스트 이름 or IP 주소
  * @param pszUserId		MySQL 접속 아이디
@@ -77,6 +78,7 @@ bool CMySQL::Connect( const char * pszHost, const char * pszUserId, const char *
 }
 
 /**
+ * @ingroup KSipServer
  * @brief MySQL 데이터베이스 연결을 종료한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
@@ -93,6 +95,7 @@ bool CMySQL::Close( bool bLock )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief INSERT, UPDATE, DELETE SQL 문장을 실행한다.
  * @param pszSQL SQL 문장
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -139,6 +142,7 @@ QUERY_START:
 }
 
 /**
+ * @ingroup KSipServer
  * @brief INSERT SQL 문장을 실행하고 AUTO_INCREMENT 필드의 값을 저장한다.
  * @param pszSQL	SQL 문장
  * @param piId		AUTO_INCREMENT 로 생성된 정수 저장 변수
@@ -190,6 +194,7 @@ QUERY_START:
 }
 
 /**
+ * @ingroup KSipServer
  * @brief SELECT SQL 문장을 실행한다.
  * @param pszSQL SQL 문장
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -244,6 +249,14 @@ QUERY_START:
 	return bRes;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief SELECT SQL 문장을 실행한다.
+ * @param pszSQL		SQL 문장
+ * @param pclsData	응용 데이터
+ * @param FetchRow	하나의 Row fetch callback
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CMySQL::Query( const char * pszSQL, void * pclsData, bool (*FetchRow)( void *, MYSQL_ROW & sttRow ) )
 {
 	if( m_bConnected == false ) return false;
@@ -302,6 +315,7 @@ QUERY_START:
 }
 
 /**
+ * @ingroup KSipServer
  * @brief SELECT SQL 문 질의 결과에서 하나의 Row 를 가져온다.
  * @param sttRow 하나의 Row 를 저장하는 구조체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -321,6 +335,7 @@ bool CMySQL::FetchRow( MYSQL_ROW & sttRow )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief SELECT SQL 문 질의 결과를 삭제한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
@@ -334,17 +349,28 @@ bool CMySQL::FreeResult( )
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief SQL 로그 레벨을 설정한다.
+ * @param eLogLevel 로그 레벨
+ */
 void CMySQL::SetLogLevel( EnumLogLevel eLogLevel )
 {
 	m_eLogLevel = eLogLevel;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief MySQL 서버에 로그인되어 있는지 확인한다.
+ * @return MySQL 서버에 로그인되어 있으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CMySQL::IsConnected()
 {
 	return m_bConnected;
 }
 
 /**
+ * @ingroup KSipServer
  * @brief MySQL 데이터베이스에 연결한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
