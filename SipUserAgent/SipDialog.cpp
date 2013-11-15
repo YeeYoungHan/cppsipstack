@@ -388,3 +388,15 @@ void CSipDialog::GetCdr( CSipCdr * pclsCdr )
 	pclsCdr->m_sttStartTime = m_sttStartTime;
 	pclsCdr->m_sttEndTime = m_sttEndTime;
 }
+
+/**
+ * @ingroup SipUserAgent
+ * @brief 통화 연결된 Dialog 인가?
+ * @returns 통화 연결된 Dialog 이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipDialog::IsConnected( )
+{
+	if( m_sttStartTime.tv_sec != 0 && m_sttEndTime.tv_sec == 0 ) return true;
+
+	return false;
+}

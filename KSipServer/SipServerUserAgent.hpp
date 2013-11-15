@@ -63,7 +63,9 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 			return false;
 		}
 
-		ECheckAuthResult eRes = CheckAuthorization( &(*itCL), pclsMessage->m_strSipMethod.c_str() );
+		CXmlUser clsXmlUser;
+
+		ECheckAuthResult eRes = CheckAuthorization( &(*itCL), pclsMessage->m_strSipMethod.c_str(), clsXmlUser );
 		switch( eRes )
 		{
 		case E_AUTH_NONCE_NOT_FOUND:
@@ -114,10 +116,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	if( strlen( pszTo ) == 0 )
 	{
 		CLog::Print( LOG_DEBUG, "EventIncomingCall to(%s) is not defined", pszTo );
-
-		SaveCdr( pszCallId, SIP_DECLINE );
-		gclsUserAgent.StopCall( pszCallId );
-		return;
+		return StopCall( pszCallId, SIP_DECLINE );
 	}
 
 	if( SelectUser( pszTo, clsXmlUser ) == false )
