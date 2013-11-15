@@ -32,11 +32,20 @@ static int	giCallId;
 static std::string gstrSystemId;
 static char garrChar[64];
 
+/**
+ * @ingroup SipParser
+ * @brief 다른 시스템과 구분되는 현재 시스템의 유일한 값을 설정한다.
+ * @param pszId 현재 시스템의 유일한 값
+ */
 void SipSetSystemId( const char * pszId )
 {
 	gstrSystemId = pszId;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief byte 로 구성된 변수를 알파벳으로 구성된 문자열로 변환하기 위한 매핑 테이블을 생성한다.
+ */
 static void InitRandomString()
 {
 	struct timeval sttTime;

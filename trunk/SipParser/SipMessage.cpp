@@ -868,6 +868,13 @@ CSipHeader * CSipMessage::GetHeader( const char * pszName )
 	return NULL;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP status line 을 파싱한다.
+ * @param pszText		SIP 헤더의 값을 저장한 문자열
+ * @param iTextLen	pszText 문자열의 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSipMessage::ParseStatusLine( const char * pszText, int iTextLen )
 {
 	int		iPos, iStartPos = -1;
@@ -913,6 +920,13 @@ int CSipMessage::ParseStatusLine( const char * pszText, int iTextLen )
 	return -1;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP request line 을 파싱한다.
+ * @param pszText		SIP 헤더의 값을 저장한 문자열
+ * @param iTextLen	pszText 문자열의 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSipMessage::ParseRequestLine( const char * pszText, int iTextLen )
 {
 	int		iPos, iStartPos = -1;

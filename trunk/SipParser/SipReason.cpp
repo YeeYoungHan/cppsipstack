@@ -28,6 +28,13 @@ CSipReason::~CSipReason()
 {
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP Reason 헤더를 파싱하여서 멤버 변수에 저장한다.
+ * @param pszText		SIP 헤더의 값을 저장한 문자열
+ * @param iTextLen	pszText 문자열의 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSipReason::Parse( const char * pszText, int iTextLen )
 {
 	Clear();

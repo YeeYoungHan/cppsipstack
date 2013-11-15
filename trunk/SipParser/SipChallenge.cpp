@@ -163,6 +163,12 @@ void CSipChallenge::Clear()
 	m_strQop.clear();
 }
 
+/**
+ * @ingroup SipParser
+ * @brief 입력된 문자열에서 " 를 제거한 출력 문자열을 저장한다.
+ * @param strInput	입력 문자열
+ * @param strOutput 출력 문자열
+ */
 void CSipChallenge::DeQuoteString( std::string & strInput, std::string & strOutput )
 {
 	int iLen = (int)strInput.length();
@@ -182,6 +188,16 @@ void CSipChallenge::DeQuoteString( std::string & strInput, std::string & strOutp
 	}
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP challenge 문자열에 이름, 값을 저장한다.
+ * @param pszText		SIP chanllenge 문자열
+ * @param iTextPos	SIP chanllenge 문자열 변수의 쓰기 위치
+ * @param iTextSize SIP chanllenge 문자열 변수 크기
+ * @param pszName		이름
+ * @param strValue	값
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipChallenge::SetString( char * pszText, int & iTextPos, int iTextSize, const char * pszName, std::string & strValue )
 {
 	if( strValue.empty() ) return true;
@@ -202,6 +218,16 @@ bool CSipChallenge::SetString( char * pszText, int & iTextPos, int iTextSize, co
 	return true;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP challenge 문자열에 이름, " 가 포함된 값을 저장한다.
+ * @param pszText		SIP chanllenge 문자열
+ * @param iTextPos	SIP chanllenge 문자열 변수의 쓰기 위치
+ * @param iTextSize SIP chanllenge 문자열 변수 크기
+ * @param pszName		이름
+ * @param strValue	값
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipChallenge::SetQuoteString( char * pszText, int & iTextPos, int iTextSize, const char * pszName, std::string & strValue )
 {
 	if( strValue.empty() ) return true;
@@ -222,6 +248,14 @@ bool CSipChallenge::SetQuoteString( char * pszText, int & iTextPos, int iTextSiz
 	return true;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP challenge 문자열을 파싱하여서 challenge 리스트에 저장한다.
+ * @param clsList		challenge 리스트
+ * @param pszText		SIP challenge 문자열
+ * @param iTextLen	SIP challenge 문자열 길이 
+ * @returns 성공하면 파싱한 문자열 길이를 리턴하고 그렇지 않으면 -1 을 리턴한다.
+ */
 int ParseSipChallenge( SIP_CHALLENGE_LIST & clsList, const char * pszText, int iTextLen )
 {
 	int iPos;

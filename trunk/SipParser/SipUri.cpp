@@ -174,6 +174,11 @@ void CSipUri::InsertParam( const char * pszName, const char * pszValue )
 	InsertSipParameter( m_clsUriParamList, pszName, pszValue );
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP URI 에 transport tag 를 추가한다.
+ * @param eTransport 프로토콜
+ */
 void CSipUri::InsertTransport( ESipTransport eTransport )
 {
 	if( eTransport == E_SIP_TCP )
@@ -182,6 +187,11 @@ void CSipUri::InsertTransport( ESipTransport eTransport )
 	}
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP URI 에서 전송 프로토콜을 가져온다.
+ * @returns 전송 프로토콜을 리턴한다.
+ */
 ESipTransport CSipUri::SelectTransport( )
 {
 	std::string	strValue;
@@ -238,6 +248,13 @@ void CSipUri::Set( const char * pszProtocol, const char * pszUser, const char * 
 	}
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP URI 의 프로토콜을 파싱한다.
+ * @param pszText		SIP 헤더의 값을 저장한 문자열
+ * @param iTextLen	pszText 문자열의 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSipUri::ParseProtocol( const char * pszText, int iTextLen )
 {
 	for( int iPos = 0; iPos < iTextLen; ++iPos )
@@ -252,6 +269,13 @@ int CSipUri::ParseProtocol( const char * pszText, int iTextLen )
 	return -1;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP URI 의 사용자 아이디를 파싱한다.
+ * @param pszText		SIP 헤더의 값을 저장한 문자열
+ * @param iTextLen	pszText 문자열의 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSipUri::ParseUser( const char * pszText, int iTextLen )
 {
 	for( int iPos = 0; iPos < iTextLen; ++iPos )
@@ -266,6 +290,13 @@ int CSipUri::ParseUser( const char * pszText, int iTextLen )
 	return -1;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief SIP URI 의 호스트를 파싱한다.
+ * @param pszText		SIP 헤더의 값을 저장한 문자열
+ * @param iTextLen	pszText 문자열의 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CSipUri::ParseHost( const char * pszText, int iTextLen )
 {
 	int iPos, iPortPos = -1;
