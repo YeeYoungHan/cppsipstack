@@ -182,6 +182,13 @@ void CSipCredential::Clear()
 	m_strNonceCount.clear();
 }
 
+/**
+ * @brief SIP credential 문자열을 파싱하여서 credential 리스트에 저장한다.
+ * @param clsList credential 리스트
+ * @param pszText credential 문자열
+ * @param iTextLen credential 문자열 길이 
+ * @returns 성공하면 파싱한 문자열 길이를 리턴하고 그렇지 않으면 -1 을 리턴한다.
+ */
 int ParseSipCredential( SIP_CREDENTIAL_LIST & clsList, const char * pszText, int iTextLen )
 {
 	int iPos;

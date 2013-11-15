@@ -22,6 +22,7 @@
 #include "SipParameterList.h"
 
 /**
+ * @ingroup SipParser
  * @brief SIP Reason 헤더를 파싱하고 생성하는 클래스
  */
 class CSipReason : public CSipParameterList

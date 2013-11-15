@@ -65,6 +65,8 @@ bool TestSipUri()
 	if( Test( "sip:atlanta.com;method=REGISTER?to=alice%40atlanta.com" ) == false ) return false;
 	if( Test( "sip:alice;day=tuesday@atlanta.com" ) == false ) return false;
 	if( Test( "sip:alice@atlanta.com;maddr=239.255.255.1;ttl=15" ) == false ) return false;
+	if( Test( "sip:alice@atlanta.com" ) == false ) return false;
+	if( Test( "tel:1212@gateway.com" ) == false ) return false;
 
 	return true;
 }
