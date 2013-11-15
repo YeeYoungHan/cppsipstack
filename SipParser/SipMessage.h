@@ -136,7 +136,7 @@ public:
 	bool						m_bUseCompact;
 
 	/** 객체 사용 개수 */
-	int							m_iUseCount;
+	int8_t					m_iUseCount;
 
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
