@@ -44,7 +44,8 @@ void CSipServer::PickUp( const char * pszCallId, const char * pszFrom, const cha
 			{
 				if( gclsCallMap.SelectToRing( itUIL->c_str(), strOldCallId ) )
 				{
-						
+					
+
 					break;
 				}
 			}
