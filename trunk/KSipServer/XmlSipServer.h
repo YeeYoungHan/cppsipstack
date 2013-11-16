@@ -28,6 +28,10 @@
 #define FLAG_DELETE			0x04
 #define FLAG_NO_CHANGE	0x10
 
+/**
+ * @ingroup KSipServer
+ * @brief 전화번호 prefix 를 저장하는 클래스
+ */
 class CRoutePrefix
 {
 public:
@@ -49,8 +53,13 @@ public:
 	CXmlSipServer();
 	~CXmlSipServer();
 
+	/** IP-PBX 이름 */
 	std::string		m_strName;
+
+	/** 자료구조 관리를 위해서 사용되는 Flag */
 	int						m_iFlag;
+
+	/** 사용 유무 */
 	bool					m_bUse;
 
 	/** Call 라우팅을 위한 전화번호 prefix 리스트 */

@@ -37,7 +37,8 @@
 class CNonceInfo
 {
 public:
-	time_t	m_iTime;	// nonce 저장 시간
+	/** nonce 저장 시간 */
+	time_t	m_iTime;
 };
 
 typedef std::map< std::string, CNonceInfo >	NONCE_MAP;

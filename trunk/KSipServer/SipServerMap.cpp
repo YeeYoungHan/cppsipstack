@@ -63,7 +63,7 @@ bool SipServerFetchRow( void * pclsData, MYSQL_ROW & sttRow )
  * @ingroup KSipServer
  * @brief RoutePrefix 테이블에서 읽은 하나의 row 를 처리한다.
  * @param pclsData 
- * @param sttRow 
+ * @param sttRow		
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool RoutePrefixFetchRow( void * pclsData, MYSQL_ROW & sttRow )
@@ -350,6 +350,7 @@ bool CSipServerMap::Insert( CXmlSipServer & clsXmlSipServer )
 }
 
 /**
+ * @ingroup KSipServer
  * @brief IP-PBX 라우팅 정보를 저장한다.
  * @param pszName					IP-PBX 이름
  * @param clsRoutePrefix	라우팅 정보
@@ -375,6 +376,7 @@ bool CSipServerMap::InsertRoutePrefix( const char * pszName, CRoutePrefix & clsR
 }
 
 /**
+ * @ingroup KSipServer
  * @brief 자료구조 모니터링을 위한 문자열을 가져온다.
  * @param strBuf 자료구조 모니터링을 위한 문자열 저장 변수
  */

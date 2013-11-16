@@ -26,6 +26,10 @@
 
 #define RTP_INFO_SOCKET_COUNT	4
 
+/**
+ * @ingroup KSipServer
+ * @brief RTP relay 를 위한 RTP 소켓 정보 저장 클래스
+ */
 class CRtpInfo
 {
 public:
@@ -46,6 +50,10 @@ public:
 
 typedef std::map< int, CRtpInfo > RTP_MAP;
 
+/**
+ * @ingroup KSipServer
+ * @brief RTP relay 를 위한 RTP 맵 자료구조 저장 클래스
+ */
 class CRtpMap
 {
 public:
