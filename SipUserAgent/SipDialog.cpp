@@ -314,6 +314,18 @@ bool CSipDialog::SetRemoteRtp( CSipCallRtp * pclsRtp )
 	return true;
 }
 
+bool CSipDialog::SelectRemoteRtp( CSipCallRtp * pclsRtp )
+{
+	if( pclsRtp == NULL ) return false;
+
+	pclsRtp->m_strIp = m_strRemoteRtpIp;
+	pclsRtp->m_iPort = m_iRemoteRtpPort;
+	pclsRtp->m_iCodec = m_iCodec;
+	pclsRtp->m_eDirection = m_eRemoteDirection;
+
+	return true;
+}
+
 /**
  * @ingroup SipUserAgent
  * @brief SIP 요청 메시지를 생성한다.

@@ -83,6 +83,23 @@ bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId, i
 	return true;
 }
 
+bool CCallMap::Insert( const char * pszCallId, CCallInfo & clsCallInfo )
+{
+	CALL_MAP::iterator	itMap;
+	bool bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap == m_clsMap.end() )
+	{
+		m_clsMap.insert( CALL_MAP::value_type( pszCallId, clsCallInfo ) );
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
 /**
  * @ingroup KSipServer
  * @brief Call-ID 와 연결된 Call-ID 를 검색한다.
@@ -204,6 +221,23 @@ bool CCallMap::Delete( const char * pszCallId, bool bStopPort )
 	{
 		gclsRtpMap.SetStop( iPort );
 	}
+
+	return bRes;
+}
+
+bool CCallMap::DeleteOne( const char * pszCallId )
+{
+	CALL_MAP::iterator	itMap;
+	bool	bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		m_clsMap.erase( itMap );
+		bRes = true;
+	}
+	m_clsMutex.release();
 
 	return bRes;
 }

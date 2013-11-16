@@ -27,28 +27,73 @@
 void CSipServer::PickUp( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
 {
 	CXmlUser	xmlFrom;
+	USER_ID_LIST	clsUserIdList;
 	bool bCallPickup = false;
 
-	CLog::Print( LOG_DEBUG, "EventIncomingCall CallPickup" );
+	CLog::Print( LOG_DEBUG, "EventIncomingCall(%s,%s,%s)  CallPickup", pszCallId, pszFrom, pszTo );
 
-	if( SelectUser( pszFrom, xmlFrom ) )
+	if( SelectUser( pszFrom, xmlFrom ) && gclsUserMap.SelectGroup( xmlFrom.m_strGroupId.c_str(), clsUserIdList ) )
 	{
-		USER_ID_LIST	clsUserIdList;
+		USER_ID_LIST::iterator	itUIL;
+		std::string strOldCallId;
 
-		if( gclsUserMap.SelectGroup( xmlFrom.m_strGroupId.c_str(), clsUserIdList ) )
+		for( itUIL = clsUserIdList.begin(); itUIL != clsUserIdList.end(); ++itUIL )
 		{
-			USER_ID_LIST::iterator	itUIL;
-			std::string strOldCallId;
+			if( gclsCallMap.SelectToRing( itUIL->c_str(), strOldCallId ) == false ) continue;
 
-			for( itUIL = clsUserIdList.begin(); itUIL != clsUserIdList.end(); ++itUIL )
+			CCallInfo clsOldCallInfo;
+
+			if( gclsCallMap.Select( strOldCallId.c_str(), clsOldCallInfo ) && gclsCallMap.Insert( pszCallId, clsOldCallInfo ) )
 			{
-				if( gclsCallMap.SelectToRing( itUIL->c_str(), strOldCallId ) )
-				{
-					
+				gclsCallMap.DeleteOne( strOldCallId.c_str() );
+				gclsUserAgent.StopCall( strOldCallId.c_str() );
 
-					break;
+				CSipCallRtp clsRemoteRtp;
+
+				if( gclsUserAgent.GetRemoteCallRtp( clsOldCallInfo.m_strPeerCallId.c_str(), &clsRemoteRtp ) )
+				{
+					if( pclsRtp )
+					{
+						if( clsOldCallInfo.m_iPeerRtpPort > 0 )
+						{
+							pclsRtp->m_iPort = clsOldCallInfo.m_iPeerRtpPort;
+							pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
+						}
+
+						pclsRtp->m_iCodec = clsRemoteRtp.m_iCodec;
+					}
+
+					if( gclsUserAgent.AcceptCall( clsOldCallInfo.m_strPeerCallId.c_str(), pclsRtp ) )
+					{
+						CCallInfo clsPeerCallInfo;
+
+						if( gclsCallMap.Select( clsOldCallInfo.m_strPeerCallId.c_str(), clsPeerCallInfo ) )
+						{
+							if( pclsRtp )
+							{
+								if( clsOldCallInfo.m_iPeerRtpPort > 0 )
+								{
+									pclsRtp->m_iPort = clsPeerCallInfo.m_iPeerRtpPort;
+								}
+								else
+								{
+									pclsRtp = &clsRemoteRtp;
+								}
+							}
+
+							gclsUserAgent.AcceptCall( pszCallId, pclsRtp );
+							bCallPickup = true;
+						}
+						
+						if( bCallPickup == false )
+						{
+							gclsUserAgent.StopCall( clsOldCallInfo.m_strPeerCallId.c_str() );	
+						}
+					}
 				}
 			}
+
+			break;
 		}
 	}
 	

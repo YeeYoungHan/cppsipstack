@@ -114,6 +114,7 @@ public:
 	bool AddSdp( CSipMessage * pclsMessage );
 	bool SetLocalRtp( CSipCallRtp * pclsRtp );
 	bool SetRemoteRtp( CSipCallRtp * pclsRtp );
+	bool SelectRemoteRtp( CSipCallRtp * pclsRtp );
 	void GetCdr( CSipCdr * pclsCdr );
 	bool IsConnected( );
 
