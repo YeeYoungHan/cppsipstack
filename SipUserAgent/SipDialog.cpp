@@ -314,6 +314,12 @@ bool CSipDialog::SetRemoteRtp( CSipCallRtp * pclsRtp )
 	return true;
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief SIP 클라이언트의 RTP 정보를 가져온다.
+ * @param pclsRtp SIP 클라이언트의 RTP 정보를 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipDialog::SelectRemoteRtp( CSipCallRtp * pclsRtp )
 {
 	if( pclsRtp == NULL ) return false;

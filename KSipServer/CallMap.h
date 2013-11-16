@@ -23,13 +23,22 @@
 #include <map>
 #include "SipMutex.h"
 
+/**
+ * @ingroup KSipServer
+ * @brief 통화 정보 저장 클래스
+ */
 class CCallInfo
 {
 public:
 	CCallInfo();
 
+	/** 상대 SIP 클라이언트와 연결된 통화 SIP Call-ID */
 	std::string	m_strPeerCallId;
+
+	/** 최소 INVITE 를 수신하였는가? */
 	bool				m_bRecv;
+
+	/** 상대 SIP 클라이언트와 연동하는 RTP relay 포트 번호. RTP relay 기능을 사용하지 않으면 -1 이 저장된다. */
 	int					m_iPeerRtpPort;
 };
 
