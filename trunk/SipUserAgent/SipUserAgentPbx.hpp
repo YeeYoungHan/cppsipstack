@@ -106,11 +106,7 @@ bool CSipUserAgent::GetRemoteCallRtp( const char * pszCallId, CSipCallRtp * pcls
 	itMap = m_clsMap.find( pszCallId );
 	if( itMap != m_clsMap.end() )
 	{
-		pclsRtp->m_strIp = itMap->second.m_strRemoteRtpIp;
-		pclsRtp->m_iPort = itMap->second.m_iRemoteRtpPort;
-		pclsRtp->m_iCodec = itMap->second.m_iCodec;
-		pclsRtp->m_eDirection = itMap->second.m_eRemoteDirection;
-		bRes = true;
+		bRes = itMap->second.SelectRemoteRtp( pclsRtp );
 	}
 	m_clsMutex.release();
 
