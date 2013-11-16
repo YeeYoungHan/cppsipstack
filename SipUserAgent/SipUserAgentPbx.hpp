@@ -168,6 +168,41 @@ bool CSipUserAgent::GetCdr( const char * pszCallId, CSipCdr * pclsCdr )
 }
 
 /**
+ * @brief 통화가 연결 요청 중인지 확인한다.
+ * @param pszCallId SIP Call-ID
+ * @param pszTo			SIP TO 아이디
+ * @returns 통화가 연결되었으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipUserAgent::IsRingCall( const char * pszCallId, const char * pszTo )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		if( itMap->second.IsConnected() == false )
+		{
+			if( pszTo )
+			{
+				if( !strcmp( pszTo, itMap->second.m_strToId.c_str() ) )
+				{
+					bRes = true;
+				}
+			}
+			else
+			{
+				bRes = true;
+			}
+		}
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+/**
  * @ingroup SipUserAgent
  * @brief ReINVITE 메시지를 전송한다.
  * @param pszCallId SIP Call-ID

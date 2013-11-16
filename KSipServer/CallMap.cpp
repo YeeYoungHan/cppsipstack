@@ -109,6 +109,13 @@ bool CCallMap::Select( const char * pszCallId, std::string & strCallId )
 	return bRes;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief Call-ID 에 대한 정보를 저장한다.
+ * @param pszCallId SIP Call-ID
+ * @param clsCallInfo Call-ID 정보를 저장할 객체
+ * @returns 검색되면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CCallMap::Select( const char * pszCallId, CCallInfo & clsCallInfo )
 {
 	CALL_MAP::iterator	itMap;
@@ -120,6 +127,32 @@ bool CCallMap::Select( const char * pszCallId, CCallInfo & clsCallInfo )
 	{
 		clsCallInfo = itMap->second;
 		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+/**
+ * @brief 
+ * @param pszTo 
+ * @param strCallId 
+ * @returns 
+ */
+bool CCallMap::SelectToRing( const char * pszTo, std::string & strCallId )
+{
+	CALL_MAP::iterator	itMap;
+	bool	bRes = false;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		if( itMap->second.m_bRecv ) continue;
+		if( gclsUserAgent.IsRingCall( itMap->first.c_str(), pszTo ) == false ) continue;
+
+		strCallId = itMap->first;
+		bRes = true;
+		break;
 	}
 	m_clsMutex.release();
 
