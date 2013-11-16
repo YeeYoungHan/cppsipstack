@@ -134,10 +134,10 @@ bool CCallMap::Select( const char * pszCallId, CCallInfo & clsCallInfo )
 }
 
 /**
- * @brief 
- * @param pszTo 
- * @param strCallId 
- * @returns 
+ * @brief INVITE 메시지를 전송하고 통화 Ring 중인 Call ID 를 검색한다.
+ * @param pszTo			SIP TO 아이디
+ * @param strCallId SIP Call-ID 를 저장할 변수
+ * @returns INVITE 메시지를 전송하고 통화 Ring 중인 Call ID 가 검색되면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
 bool CCallMap::SelectToRing( const char * pszTo, std::string & strCallId )
 {
@@ -208,6 +208,10 @@ bool CCallMap::Delete( const char * pszCallId, bool bStopPort )
 	return bRes;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 모든 통화를 종료시킨다.
+ */
 void CCallMap::StopCallAll()
 {
 	CALL_MAP::iterator	itMap;
@@ -220,6 +224,11 @@ void CCallMap::StopCallAll()
 	m_clsMutex.release();
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 통화 개수를 리턴한다.
+ * @returns 통화 개수를 리턴한다.
+ */
 int CCallMap::GetCount()
 {
 	int iCount;
@@ -231,6 +240,11 @@ int CCallMap::GetCount()
 	return iCount;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 통화 맵 모니터링용 문자열을 생성한다.
+ * @param strBuf 통화 맵 모니터링용 문자열 저장 변수
+ */
 void CCallMap::GetString( std::string & strBuf )
 {
 	CALL_MAP::iterator	itMap;
