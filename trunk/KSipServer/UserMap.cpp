@@ -148,14 +148,26 @@ bool CUserMap::Select( const char * pszUserId )
 	return bRes;
 }
 
-bool CUserMap::SelectGroup( const char * pszGroudId, USER_ID_LIST & clsList )
+/**
+ * @ingroup KSipServer
+ * @brief 그룹 아이디에 포함된 사용자 아이디 리스트를 저장한다.
+ * @param pszGroupId	그룹 아이디
+ * @param clsList			사용자 아이디 리스트 저장 객체
+ * @returns 그룹 아이디에 포함된 사용자 리스트가 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CUserMap::SelectGroup( const char * pszGroupId, USER_ID_LIST & clsList )
 {
 	USER_MAP::iterator	itMap;
+
+	clsList.clear();
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
-		//if( !strcmp( pszGroupId, 
+		if( !strcmp( pszGroupId, itMap->second.m_strGroupId.c_str() ) )
+		{
+			clsList.push_back( itMap->first );
+		}
 	}
 	m_clsMutex.release();
 

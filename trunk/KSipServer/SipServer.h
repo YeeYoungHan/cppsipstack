@@ -70,6 +70,9 @@ private:
 
 	// SipServerRegister.hpp
 	bool RecvRequestRegister( int iThreadId, CSipMessage * pclsMessage );
+
+	// SipServerPickUp.hpp
+	void PickUp( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp );
 };
 
 extern CSipServer gclsSipServer;

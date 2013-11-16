@@ -37,6 +37,7 @@ CSipUserAgent gclsUserAgent;
 #include "SipServerRegister.hpp"
 #include "SipServerUserAgent.hpp"
 #include "SipServerSecurity.hpp"
+#include "SipServerPickUp.hpp"
 
 CSipServer::CSipServer()
 {

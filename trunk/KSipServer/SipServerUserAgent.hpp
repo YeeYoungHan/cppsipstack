@@ -141,19 +141,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 		}
 		else if( gclsSetup.IsCallPickupId( pszTo ) )
 		{
-			CXmlUser	xmlFrom;
-
-			CLog::Print( LOG_DEBUG, "EventIncomingCall CallPickup" );
-
-			if( SelectUser( pszFrom, xmlFrom ) )
-			{
-
-			}
-			else
-			{
-				CLog::Print( LOG_DEBUG, "EventIncomingCall CallPickup from(%s) is not found", pszFrom );
-				return StopCall( pszCallId, SIP_NOT_FOUND );
-			}
+			return PickUp( pszCallId, pszFrom, pszTo, pclsRtp );
 		}
 		else
 		{

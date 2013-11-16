@@ -77,7 +77,7 @@ public:
 	bool Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact, CXmlUser * pclsXmlUser );
 	bool Select( const char * pszUserId, CUserInfo & clsInfo );
 	bool Select( const char * pszUserId );
-	bool SelectGroup( const char * pszGroudId, USER_ID_LIST & clsList );
+	bool SelectGroup( const char * pszGroupId, USER_ID_LIST & clsList );
 	bool Delete( const char * pszUserId );
 
 	bool SetIpPort( const char * pszUserId, const char * pszIp, int iPort );
