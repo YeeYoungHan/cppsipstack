@@ -60,6 +60,7 @@ public:
 
 	bool Insert( const char * pszRecvCallId, const char * pszSendCallId, int iStartRtpPort );
 	bool Insert( const char * pszCallId, CCallInfo & clsCallInfo );
+	bool Update( const char * pszCallId, const char * pszPeerCallId );
 	bool Select( const char * pszCallId, std::string & strCallId );
 	bool Select( const char * pszCallId, CCallInfo & clsCallInfo );
 	bool SelectToRing( const char * pszTo, std::string & strCallId );

@@ -16,6 +16,25 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+/*
+ SIP Pick UP 시나리오
+
+        INVITE                       INVITE
+ (#1) ----------------> KSipServer --------------> (#2)
+
+        INVITE to **
+ (#3) ----------------> KSipServer
+
+                                     CANCEL
+												KSipServer --------------> (#2)
+                        
+        200 OK
+ (#3) <---------------- KSipServer
+        200 OK
+ (#1) <---------------- KSipServer
+
+ */
+
 /**
  * @ingroup KSipServer
  * @brief SIP Call Pick up 통화 요청 수신 이벤트 핸들러
@@ -45,6 +64,7 @@ void CSipServer::PickUp( const char * pszCallId, const char * pszFrom, const cha
 
 			if( gclsCallMap.Select( strOldCallId.c_str(), clsOldCallInfo ) && gclsCallMap.Insert( pszCallId, clsOldCallInfo ) )
 			{
+				// #2 통화를 종료시킨다.
 				gclsCallMap.DeleteOne( strOldCallId.c_str() );
 				gclsUserAgent.StopCall( strOldCallId.c_str() );
 
@@ -63,12 +83,15 @@ void CSipServer::PickUp( const char * pszCallId, const char * pszFrom, const cha
 						pclsRtp->m_iCodec = clsRemoteRtp.m_iCodec;
 					}
 
+					// #1 통화 연결
 					if( gclsUserAgent.AcceptCall( clsOldCallInfo.m_strPeerCallId.c_str(), pclsRtp ) )
 					{
 						CCallInfo clsPeerCallInfo;
 
 						if( gclsCallMap.Select( clsOldCallInfo.m_strPeerCallId.c_str(), clsPeerCallInfo ) )
 						{
+							gclsCallMap.Update( clsOldCallInfo.m_strPeerCallId.c_str(), pszCallId );
+
 							if( pclsRtp )
 							{
 								if( clsOldCallInfo.m_iPeerRtpPort > 0 )
@@ -81,6 +104,7 @@ void CSipServer::PickUp( const char * pszCallId, const char * pszFrom, const cha
 								}
 							}
 
+							// #3 통화 연결
 							gclsUserAgent.AcceptCall( pszCallId, pclsRtp );
 							bCallPickup = true;
 						}

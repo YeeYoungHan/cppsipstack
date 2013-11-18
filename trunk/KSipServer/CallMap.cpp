@@ -83,6 +83,13 @@ bool CCallMap::Insert( const char * pszRecvCallId, const char * pszSendCallId, i
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief SIP Call-ID 와 이와 연관된 통화 정보를 자료구조에 저장한다.
+ * @param pszCallId		SIP Call-ID
+ * @param clsCallInfo 통화 정보
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CCallMap::Insert( const char * pszCallId, CCallInfo & clsCallInfo )
 {
 	CALL_MAP::iterator	itMap;
@@ -93,6 +100,30 @@ bool CCallMap::Insert( const char * pszCallId, CCallInfo & clsCallInfo )
 	if( itMap == m_clsMap.end() )
 	{
 		m_clsMap.insert( CALL_MAP::value_type( pszCallId, clsCallInfo ) );
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+/**
+ * @ingroup KSipServer
+ * @brief 상대방 Call-ID 를 수정한다.
+ * @param pszCallId			SIP Call-ID
+ * @param pszPeerCallId 상대방 SIP Call-ID
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CCallMap::Update( const char * pszCallId, const char * pszPeerCallId )
+{
+	CALL_MAP::iterator	itMap;
+	bool bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		itMap->second.m_strPeerCallId = pszPeerCallId;
 		bRes = true;
 	}
 	m_clsMutex.release();
