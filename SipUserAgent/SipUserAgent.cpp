@@ -591,6 +591,11 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 			{
 				clsRtp.m_iCodec = iCodec;
 			}
+			else if( iCodec == 0 )
+			{
+				// PCMU 가 존재하면 PCMU 를 무조건 선택한다.
+				clsRtp.m_iCodec = iCodec;
+			}
 
 			clsRtp.m_clsCodecList.push_back( iCodec );
 		}
