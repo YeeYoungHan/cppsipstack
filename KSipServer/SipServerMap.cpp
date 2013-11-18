@@ -37,9 +37,9 @@ CSipServerMap::~CSipServerMap()
 #ifdef USE_MYSQL
 /**
  * @ingroup KSipServer
- * @brief 
+ * @brief SipServer 테이블에서 읽은 하나의 row 를 처리한다.
  * @param pclsData 
- * @param sttRow 
+ * @param sttRow		하나의 Row 정보
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool SipServerFetchRow( void * pclsData, MYSQL_ROW & sttRow )
@@ -62,8 +62,8 @@ bool SipServerFetchRow( void * pclsData, MYSQL_ROW & sttRow )
 /**
  * @ingroup KSipServer
  * @brief RoutePrefix 테이블에서 읽은 하나의 row 를 처리한다.
- * @param pclsData 
- * @param sttRow		
+ * @param pclsData	
+ * @param sttRow		하나의 Row 정보
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool RoutePrefixFetchRow( void * pclsData, MYSQL_ROW & sttRow )

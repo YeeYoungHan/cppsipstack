@@ -80,13 +80,13 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact, CXmlUs
 	{
 		m_clsMap.insert( USER_MAP::value_type( strUserId, clsInfo ) );
 		CLog::Print( LOG_DEBUG, "user(%s) is inserted (%s:%d:%d) group(%s)"
-			, strUserId.c_str(), clsInfo.m_strIp.c_str(), clsInfo.m_iPort, clsInfo.m_eTransport, clsInfo.m_strGroupId );
+			, strUserId.c_str(), clsInfo.m_strIp.c_str(), clsInfo.m_iPort, clsInfo.m_eTransport, clsInfo.m_strGroupId.c_str() );
 	}
 	else
 	{
 		itMap->second = clsInfo;
 		CLog::Print( LOG_DEBUG, "user(%s) is updated (%s:%d:%d) group(%s)"
-			, strUserId.c_str(), clsInfo.m_strIp.c_str(), clsInfo.m_iPort, clsInfo.m_eTransport, clsInfo.m_strGroupId );
+			, strUserId.c_str(), clsInfo.m_strIp.c_str(), clsInfo.m_iPort, clsInfo.m_eTransport, clsInfo.m_strGroupId.c_str() );
 	}
 	m_clsMutex.release();
 
