@@ -79,11 +79,21 @@ void CXmlUser::Clear()
 	m_strCallForward.clear();
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 착신거부 ( Do Not Disturb ) 인가?
+ * @returns 착신거부이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CXmlUser::IsDnd()
 {
 	return m_bDnd;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 착신전환 ( Call Forward ) 인가?
+ * @returns 착신전환이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CXmlUser::IsCallForward()
 {
 	if( m_strCallForward.empty() ) return false;
@@ -94,9 +104,9 @@ bool CXmlUser::IsCallForward()
 #ifdef USE_MYSQL
 /**
  * @ingroup KSipServer
- * @brief 
+ * @brief SipUser 테이블의 한 row 를 자료구조에 저장한다.
  * @param pclsData 
- * @param sttRow 
+ * @param sttRow		SipUser 테이블의 한 row
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 static bool SipUserFetchRow( void * pclsData, MYSQL_ROW & sttRow )
@@ -106,6 +116,7 @@ static bool SipUserFetchRow( void * pclsData, MYSQL_ROW & sttRow )
 	if( sttRow[0] ) pclsUser->m_strPassWord = sttRow[0];
 	if( sttRow[1] && sttRow[1][0] == 'Y' ) pclsUser->m_bDnd = true;
 	if( sttRow[2] ) pclsUser->m_strCallForward = sttRow[2];
+	if( sttRow[3] ) pclsUser->m_strGroupId = sttRow[3];
 
 	return true;
 }
@@ -136,7 +147,7 @@ bool SelectUser( const char * pszUserId, CXmlUser & clsUser )
 
 		clsUser.Clear();
 
-		snprintf( szSQL, sizeof(szSQL), "SELECT PassWord, DND, CallForward FROM SipUser WHERE Id = '%s'", pszUserId );
+		snprintf( szSQL, sizeof(szSQL), "SELECT PassWord, DND, CallForward, GroupId FROM SipUser WHERE Id = '%s'", pszUserId );
 		if( gclsReadDB.Query( szSQL, &clsUser, SipUserFetchRow ) )
 		{
 			clsUser.m_strId = pszUserId;
