@@ -19,9 +19,12 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.17"
+#define KSIP_SERVER_VERSION	"0.18"
 
 /* 버전 정보 
+
+= 버전 0.18 ( 2013년 11월 18일 ) =
+ * Call Pickup 기능을 추가함
 
 = 버전 0.17 ( 2013년 10월 26일 ) =
  * MySQL 을 사용하지 않는 경우 빌드 오류가 발생하는 버그를 패치함
