@@ -628,8 +628,10 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 			}
 		}
 
+#ifdef USE_MEDIA_LIST
 		clsRtp.m_clsMediaList = clsSdp.m_clsMediaList;
-		
+#endif
+
 		return true;
 	}
 

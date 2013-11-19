@@ -62,8 +62,10 @@ public:
 	/** 전체 코덱 리스트 */
 	CODEC_LIST	m_clsCodecList;
 
+#ifdef USE_MEDIA_LIST
 	/** 전체 미디어 리스트 */
 	SDP_MEDIA_LIST	m_clsMediaList;
+#endif
 };
 
 /**

@@ -139,6 +139,7 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "c=IN IP4 %s\r\n", m_strLocalRtpIp.c_str() );
 	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "t=0 0\r\n" );
 
+#ifdef USE_MEDIA_LIST
 	if( m_clsLocalMediaList.size() > 0 )
 	{
 		SDP_MEDIA_LIST::iterator	itList;
@@ -150,6 +151,7 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 		}
 	}
 	else
+#endif
 	{
 		if( pclsMessage->IsRequest() && m_clsCodecList.size() > 0 )
 		{
@@ -287,7 +289,9 @@ bool CSipDialog::SetLocalRtp( CSipCallRtp * pclsRtp )
 		break;
 	}
 
+#ifdef USE_MEDIA_LIST
 	m_clsLocalMediaList = pclsRtp->m_clsMediaList;
+#endif
 
 	return true;
 }
@@ -326,7 +330,9 @@ bool CSipDialog::SetRemoteRtp( CSipCallRtp * pclsRtp )
 		break;
 	}
 
+#ifdef USE_MEDIA_LIST
 	m_clsRemoteMediaList = pclsRtp->m_clsMediaList;
+#endif
 
 	return true;
 }
@@ -345,7 +351,10 @@ bool CSipDialog::SelectRemoteRtp( CSipCallRtp * pclsRtp )
 	pclsRtp->m_iPort = m_iRemoteRtpPort;
 	pclsRtp->m_iCodec = m_iCodec;
 	pclsRtp->m_eDirection = m_eRemoteDirection;
+
+#ifdef USE_MEDIA_LIST
 	pclsRtp->m_clsMediaList = m_clsRemoteMediaList;
+#endif
 
 	return true;
 }
