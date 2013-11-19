@@ -51,6 +51,8 @@ public:
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
 
+	bool DeleteAttribute( const char * pszName );
+
 private:
 	void SetData( const char * pszData, int iLen, int iType );
 };

@@ -167,6 +167,39 @@ void CSdpMedia::Clear()
 	m_clsAttributeList.clear();
 }
 
+bool CSdpMedia::DeleteAttribute( const char * pszName )
+{
+	SDP_ATTRIBUTE_LIST::iterator	itAttr, itNext;
+	bool bRes = false;
+
+	for( itAttr = m_clsAttributeList.begin(); itAttr != m_clsAttributeList.end(); ++itAttr )
+	{
+LOOP_START:
+		if( !strcmp( itAttr->m_strName.c_str(), pszName ) )
+		{
+			bRes = true;
+
+			itNext = itAttr;
+			++itNext;
+
+			m_clsAttributeList.erase( itAttr );
+
+			if( itNext == m_clsAttributeList.end() ) break;
+			itAttr = itNext;
+			goto LOOP_START;
+		}
+	}
+
+	return bRes;
+}
+
+/**
+ * @ingroup SdpParser
+ * @brief SDP media 문자열을 파싱한 각 항목을 저장한다.
+ * @param pszData 문자열
+ * @param iLen		문자열 길이
+ * @param iType		SDP media 문자열을 파싱한 문자열 배열의 인덱스
+ */
 void CSdpMedia::SetData( const char * pszData, int iLen, int iType )
 {
 	switch( iType )

@@ -129,7 +129,7 @@ CSipMessage * CSipDialog::CreateNotify( )
  */
 bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 {
-	char	szSdp[1024];
+	char	szSdp[4096];
 	int		iLen = 0;
 
 	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "v=0\r\n"
@@ -139,102 +139,115 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "c=IN IP4 %s\r\n", m_strLocalRtpIp.c_str() );
 	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "t=0 0\r\n" );
 
-	if( pclsMessage->IsRequest() && m_clsCodecList.size() > 0 )
+	if( m_clsLocalMediaList.size() > 0 )
 	{
-		CODEC_LIST::iterator	itList;
-		bool bFound;
+		SDP_MEDIA_LIST::iterator	itList;
 
-		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP", m_iLocalRtpPort );
-
-		for( itList = m_clsCodecList.begin(); itList != m_clsCodecList.end(); ++itList )
+		for( itList = m_clsLocalMediaList.begin(); itList != m_clsLocalMediaList.end(); ++itList )
 		{
-			bFound = false;
-
-			switch( *itList )
-			{
-			case 0:
-			case 3:
-			case 4:
-			case 8:
-			case 18:
-				bFound = true;
-				break;
-			}
-
-			if( bFound )
-			{
-				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, " %d", *itList );
-			}
-		}
-
-		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, " 101\r\n" );
-
-		for( itList = m_clsCodecList.begin(); itList != m_clsCodecList.end(); ++itList )
-		{
-			switch( *itList )
-			{
-			case 0:
-				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:0 PCMU/8000\r\n" );
-				break;
-			case 3:
-				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:3 GSM/8000\r\n" );
-				break;
-			case 4:
-				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:4 G723/8000\r\n" );
-				break;
-			case 8:
-				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:8 PCMA/8000\r\n" );
-				break;
-			case 18:
-				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:18 G729/8000\r\n" );
-				break;
-			}
+			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=" );
+			iLen += itList->ToString( szSdp + iLen, sizeof(szSdp)-iLen );
 		}
 	}
 	else
 	{
-		switch( m_iCodec )
+		if( pclsMessage->IsRequest() && m_clsCodecList.size() > 0 )
 		{
-		case 0:
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 0 101\r\n", m_iLocalRtpPort );
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:0 PCMU/8000\r\n" );
+			CODEC_LIST::iterator	itList;
+			bool bFound;
+
+			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP", m_iLocalRtpPort );
+
+			for( itList = m_clsCodecList.begin(); itList != m_clsCodecList.end(); ++itList )
+			{
+				bFound = false;
+
+				switch( *itList )
+				{
+				case 0:
+				case 3:
+				case 4:
+				case 8:
+				case 18:
+					bFound = true;
+					break;
+				}
+
+				if( bFound )
+				{
+					iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, " %d", *itList );
+				}
+			}
+
+			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, " 101\r\n" );
+
+			for( itList = m_clsCodecList.begin(); itList != m_clsCodecList.end(); ++itList )
+			{
+				switch( *itList )
+				{
+				case 0:
+					iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:0 PCMU/8000\r\n" );
+					break;
+				case 3:
+					iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:3 GSM/8000\r\n" );
+					break;
+				case 4:
+					iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:4 G723/8000\r\n" );
+					break;
+				case 8:
+					iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:8 PCMA/8000\r\n" );
+					break;
+				case 18:
+					iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:18 G729/8000\r\n" );
+					break;
+				}
+			}
+		}
+		else
+		{
+			switch( m_iCodec )
+			{
+			case 0:
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 0 101\r\n", m_iLocalRtpPort );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:0 PCMU/8000\r\n" );
+				break;
+			case 3:
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 3 101\r\n", m_iLocalRtpPort );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:3 GSM/8000\r\n" );
+				break;
+			case 4:
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 4 101\r\n", m_iLocalRtpPort );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:4 G723/8000\r\n" );
+				break;
+			case 8:
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 8 101\r\n", m_iLocalRtpPort );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:8 PCMA/8000\r\n" );
+				break;
+			case 18:
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 18 101\r\n", m_iLocalRtpPort );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:18 G729/8000\r\n" );
+				break;
+			}
+		}
+
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:101 telephone-event/8000\r\n"
+			"a=fmtp:101 0-15\r\n" );
+
+		switch( m_eLocalDirection )
+		{
+		case E_RTP_SEND_RECV:
+			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=sendrecv\r\n" );
 			break;
-		case 3:
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 3 101\r\n", m_iLocalRtpPort );
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:3 GSM/8000\r\n" );
+		case E_RTP_SEND:
+			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=sendonly\r\n" );
 			break;
-		case 4:
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 4 101\r\n", m_iLocalRtpPort );
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:4 G723/8000\r\n" );
+		case E_RTP_RECV:
+			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=recvonly\r\n" );
 			break;
-		case 8:
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 8 101\r\n", m_iLocalRtpPort );
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:8 PCMA/8000\r\n" );
-			break;
-		case 18:
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 18 101\r\n", m_iLocalRtpPort );
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:18 G729/8000\r\n" );
+		case E_RTP_INACTIVE:
+			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=inactive\r\n" );
 			break;
 		}
-	}
-
-	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:101 telephone-event/8000\r\n"
-		"a=fmtp:101 0-15\r\n" );
-
-	switch( m_eLocalDirection )
-	{
-	case E_RTP_SEND_RECV:
-		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=sendrecv\r\n" );
-		break;
-	case E_RTP_SEND:
-		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=sendonly\r\n" );
-		break;
-	case E_RTP_RECV:
-		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=recvonly\r\n" );
-		break;
-	case E_RTP_INACTIVE:
-		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=inactive\r\n" );
-		break;
 	}
 
 	pclsMessage->m_strBody = szSdp;
@@ -274,6 +287,8 @@ bool CSipDialog::SetLocalRtp( CSipCallRtp * pclsRtp )
 		break;
 	}
 
+	m_clsLocalMediaList = pclsRtp->m_clsMediaList;
+
 	return true;
 }
 
@@ -311,6 +326,8 @@ bool CSipDialog::SetRemoteRtp( CSipCallRtp * pclsRtp )
 		break;
 	}
 
+	m_clsRemoteMediaList = pclsRtp->m_clsMediaList;
+
 	return true;
 }
 
@@ -328,6 +345,7 @@ bool CSipDialog::SelectRemoteRtp( CSipCallRtp * pclsRtp )
 	pclsRtp->m_iPort = m_iRemoteRtpPort;
 	pclsRtp->m_iCodec = m_iCodec;
 	pclsRtp->m_eDirection = m_eRemoteDirection;
+	pclsRtp->m_clsMediaList = m_clsRemoteMediaList;
 
 	return true;
 }
