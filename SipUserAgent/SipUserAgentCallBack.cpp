@@ -18,6 +18,12 @@
 
 #include "SipUserAgent.h"
 
+/**
+ * @ingroup SipUserAgent
+ * @brief RTP IP/Port 를 수정한다.
+ * @param pszIp IP 주소
+ * @param iPort Port 번호
+ */
 void CSipCallRtp::SetIpPort( const char * pszIp, int iPort )
 {
 	m_strIp = pszIp;
@@ -33,4 +39,21 @@ void CSipCallRtp::SetIpPort( const char * pszIp, int iPort )
 		break;
 	}
 #endif
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief 미디어 개수를 리턴한다.
+ * @returns 미디어 개수를 리턴한다.
+ */
+int CSipCallRtp::GetMediaCount( )
+{
+	int iCount = 1;
+
+#ifdef USE_MEDIA_LIST
+	iCount = m_clsMediaList.size();
+	if( iCount == 0 ) iCount = 1;
+#endif
+
+	return iCount;
 }
