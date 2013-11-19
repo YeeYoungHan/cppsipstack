@@ -72,6 +72,9 @@ public:
 	/** local RTP direction ( sendrecv, sendonly, recvonly, inactive ) */
 	ERtpDirection	m_eLocalDirection;
 
+	/** local media list */
+	SDP_MEDIA_LIST	m_clsLocalMediaList;
+
 	/** remote RTP IP ÁÖ¼Ò */
 	std::string	m_strRemoteRtpIp;
 
@@ -80,6 +83,9 @@ public:
 
 	/** remote RTP direction ( sendrecv, sendonly, recvonly, inactive ) */
 	ERtpDirection	m_eRemoteDirection;
+
+	/** remote media list */
+	SDP_MEDIA_LIST	m_clsRemoteMediaList;
 
 	/** ÄÚµ¦ */
 	int					m_iCodec;

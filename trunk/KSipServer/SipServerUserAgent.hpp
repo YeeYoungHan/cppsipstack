@@ -212,6 +212,15 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 		pclsRtp->m_iPort = iStartPort;
 		pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
+
+		SDP_MEDIA_LIST::iterator itMedia;
+
+		for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
+		{
+			itMedia->m_iPort = iStartPort;
+			itMedia->DeleteAttribute( "rtcp" );
+			break;
+		}
 	}
 
 	clsUserInfo.GetCallRoute( clsRoute );
@@ -272,6 +281,15 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 		{
 			pclsRtp->m_iPort = clsCallInfo.m_iPeerRtpPort;
 			pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
+
+			SDP_MEDIA_LIST::iterator itMedia;
+
+			for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
+			{
+				itMedia->m_iPort = clsCallInfo.m_iPeerRtpPort;
+				itMedia->DeleteAttribute( "rtcp" );
+				break;
+			}
 		}
 
 		// QQQ: INVITE 200 OK 응답에서 SDP 가 존재하지 않으면 ReINVITE 메시지를 전송하는 버그가 있다.

@@ -51,51 +51,94 @@ static bool Test( const char * pszText, const char * pszResult )
 	return true;
 }
 
+static bool Test2( const char * pszText )
+{
+	CSdpMessage	clsSdp;
+	int		iPos, iTextLen = (int)strlen(pszText);
+	char	szResult[512];
+
+	memset( szResult, 0, sizeof(szResult) );
+
+	iPos = clsSdp.Parse( pszText, iTextLen );
+	if( iPos == -1 )
+	{
+		printf( "sdp(%s) parse error\n", pszText );
+		return false;
+	}
+
+	CSdpMedia clsNewMedia = *(clsSdp.m_clsMediaList.begin());
+	SDP_MEDIA_LIST clsMediaList = clsSdp.m_clsMediaList;
+
+	clsSdp.Clear();
+
+	return true;
+}
+
 bool TestSdp()
 {
-		if( Test( 
-			"v=0\r\n"
-			"o=jdoe 2890844526 2890842807 IN IP4 10.47.16.5\r\n"
-			"s=SDP Seminar\r\n"
-			"i=A Seminar on the session description protocol\r\n"
-			"u=http://www.example.com/seminars/sdp.pdf\r\n"
-			"e=j.doe@example.com (Jane Doe)\r\n"
-			"c=IN IP4 224.2.17.12/127\r\n"
-			"t=2873397496 2873404696\r\n"
-			"a=recvonly\r\n"
-			"m=audio 49170 RTP/AVP 0\r\n"
-			"m=video 51372 RTP/AVP 99\r\n"
-			"a=rtpmap:99 h263-1998/90000\r\n",
-			"v=0\r\n"
-			"o=jdoe 2890844526 2890842807 IN IP4 10.47.16.5\r\n"
-			"s=SDP Seminar\r\n"
-			"i=A Seminar on the session description protocol\r\n"
-			"u=http://www.example.com/seminars/sdp.pdf\r\n"
-			"e=j.doe@example.com (Jane Doe)\r\n"
-			"c=IN IP4 224.2.17.12/127\r\n"
-			"t=2873397496 2873404696\r\n"
-			"a=recvonly\r\n"
-			"m=audio 49170 RTP/AVP 0\r\n"
-			"m=video 51372 RTP/AVP 99\r\n"
-			"a=rtpmap:99 h263-1998/90000\r\n" ) == false ) return false;
-		if( Test( 
-			"v=0\r\n"
-			"o=jdoe 2890844526 2890842807 IN IP4 10.47.16.5\r\n"
-			"s=SDP Seminar\r\n"
-			"i=A Seminar on the session description protocol\r\n"
-			"u=http://www.example.com/seminars/sdp.pdf\r\n"
-			"e=j.doe@example.com (Jane Doe)\r\n"
-			"c=IN IP4 224.2.17.12/127\r\n"
-			"b=X-YZ:128\r\n",
-			"v=0\r\n"
-			"o=jdoe 2890844526 2890842807 IN IP4 10.47.16.5\r\n"
-			"s=SDP Seminar\r\n"
-			"i=A Seminar on the session description protocol\r\n"
-			"u=http://www.example.com/seminars/sdp.pdf\r\n"
-			"e=j.doe@example.com (Jane Doe)\r\n"
-			"c=IN IP4 224.2.17.12/127\r\n"
-			"b=X-YZ:128\r\n" ) == false ) return false;
+	if( Test( 
+		"v=0\r\n"
+		"o=jdoe 2890844526 2890842807 IN IP4 10.47.16.5\r\n"
+		"s=SDP Seminar\r\n"
+		"i=A Seminar on the session description protocol\r\n"
+		"u=http://www.example.com/seminars/sdp.pdf\r\n"
+		"e=j.doe@example.com (Jane Doe)\r\n"
+		"c=IN IP4 224.2.17.12/127\r\n"
+		"t=2873397496 2873404696\r\n"
+		"a=recvonly\r\n"
+		"m=audio 49170 RTP/AVP 0\r\n"
+		"m=video 51372 RTP/AVP 99\r\n"
+		"a=rtpmap:99 h263-1998/90000\r\n",
+		"v=0\r\n"
+		"o=jdoe 2890844526 2890842807 IN IP4 10.47.16.5\r\n"
+		"s=SDP Seminar\r\n"
+		"i=A Seminar on the session description protocol\r\n"
+		"u=http://www.example.com/seminars/sdp.pdf\r\n"
+		"e=j.doe@example.com (Jane Doe)\r\n"
+		"c=IN IP4 224.2.17.12/127\r\n"
+		"t=2873397496 2873404696\r\n"
+		"a=recvonly\r\n"
+		"m=audio 49170 RTP/AVP 0\r\n"
+		"m=video 51372 RTP/AVP 99\r\n"
+		"a=rtpmap:99 h263-1998/90000\r\n" ) == false ) return false;
+	if( Test( 
+		"v=0\r\n"
+		"o=jdoe 2890844526 2890842807 IN IP4 10.47.16.5\r\n"
+		"s=SDP Seminar\r\n"
+		"i=A Seminar on the session description protocol\r\n"
+		"u=http://www.example.com/seminars/sdp.pdf\r\n"
+		"e=j.doe@example.com (Jane Doe)\r\n"
+		"c=IN IP4 224.2.17.12/127\r\n"
+		"b=X-YZ:128\r\n",
+		"v=0\r\n"
+		"o=jdoe 2890844526 2890842807 IN IP4 10.47.16.5\r\n"
+		"s=SDP Seminar\r\n"
+		"i=A Seminar on the session description protocol\r\n"
+		"u=http://www.example.com/seminars/sdp.pdf\r\n"
+		"e=j.doe@example.com (Jane Doe)\r\n"
+		"c=IN IP4 224.2.17.12/127\r\n"
+		"b=X-YZ:128\r\n" ) == false ) return false;
 
+	Test2( "v=0\r\n"
+					"o=- 3593775777 3593775777 IN IP4 192.168.184.129\r\n"
+					"s=media\r\n"
+					"c=IN IP4 192.168.184.129\r\n"
+					"t=0 0\r\n"
+					"a=X-nat:0\r\n"
+					"m=audio 11263 RTP/AVP 103 102 104 117 3 0 8 9 101\r\n"
+					"a=rtcp:11264 IN IP4 192.168.184.129\r\n"
+					"a=rtpmap:103 speex/16000\r\n"
+					"a=rtpmap:102 speex/8000\r\n"
+					"a=rtpmap:104 speex/32000\r\n"
+					"a=rtpmap:117 iLBC/8000\r\n"
+					"a=fmtp:117 mode=30\r\n"
+					"a=rtpmap:3 GSM/8000\r\n"
+					"a=rtpmap:0 PCMU/8000\r\n"
+					"a=rtpmap:8 PCMA/8000\r\n"
+					"a=rtpmap:9 G722/8000\r\n"
+					"a=sendrecv\r\n"
+					"a=rtpmap:101 telephone-event/8000\r\n"
+					"a=fmtp:101 0-15\r\n" );
 
 	return true;
 }
