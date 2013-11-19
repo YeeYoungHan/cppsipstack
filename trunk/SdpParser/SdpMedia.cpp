@@ -167,6 +167,12 @@ void CSdpMedia::Clear()
 	m_clsAttributeList.clear();
 }
 
+/**
+ * @ingroup SdpParser
+ * @brief 애트리뷰트를 삭제한다.
+ * @param pszName 삭제할 애트리뷰트 이름
+ * @returns 애트리뷰트를 삭제하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSdpMedia::DeleteAttribute( const char * pszName )
 {
 	SDP_ATTRIBUTE_LIST::iterator	itAttr, itNext;

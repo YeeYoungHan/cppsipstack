@@ -218,7 +218,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 		for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
 		{
-			itMedia->m_iPort = iStartPort;
+			itMedia->m_iPort = pclsRtp->m_iPort;
 			itMedia->DeleteAttribute( "rtcp" );
 			break;
 		}
@@ -289,7 +289,7 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 			for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
 			{
-				itMedia->m_iPort = clsCallInfo.m_iPeerRtpPort;
+				itMedia->m_iPort = pclsRtp->m_iPort;
 				itMedia->DeleteAttribute( "rtcp" );
 				break;
 			}
@@ -321,6 +321,17 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 			pclsRtp->m_iPort = clsCallInfo.m_iPeerRtpPort;
 			pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
+
+#ifdef USE_MEDIA_LIST
+			SDP_MEDIA_LIST::iterator itMedia;
+
+			for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
+			{
+				itMedia->m_iPort = pclsRtp->m_iPort;
+				itMedia->DeleteAttribute( "rtcp" );
+				break;
+			}
+#endif
 		}
 
 		gclsUserAgent.SendReInvite( strReferToCallId.c_str(), pclsRtp );
@@ -386,6 +397,17 @@ void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 		{
 			pclsRtp->m_iPort = clsCallInfo.m_iPeerRtpPort;
 			pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
+
+#ifdef USE_MEDIA_LIST
+			SDP_MEDIA_LIST::iterator itMedia;
+
+			for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
+			{
+				itMedia->m_iPort = pclsRtp->m_iPort;
+				itMedia->DeleteAttribute( "rtcp" );
+				break;
+			}
+#endif
 		}
 
 		gclsUserAgent.SendReInvite( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp );
@@ -428,6 +450,17 @@ bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToC
 		{
 			clsRtp.m_iPort = clsReferToCallInfo.m_iPeerRtpPort + 2;
 		}
+
+#ifdef USE_MEDIA_LIST
+		SDP_MEDIA_LIST::iterator itMedia;
+
+		for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
+		{
+			itMedia->m_iPort = clsRtp.m_iPort;
+			itMedia->DeleteAttribute( "rtcp" );
+			break;
+		}
+#endif
 	}
 
 	if( bScreenedTransfer )
@@ -515,6 +548,17 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 
 		clsRtp.m_strIp = gclsSetup.m_strLocalIp;
 		clsRtp.m_iPort = iStartPort;
+
+#ifdef USE_MEDIA_LIST
+		SDP_MEDIA_LIST::iterator itMedia;
+
+		for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
+		{
+			itMedia->m_iPort = clsRtp.m_iPort;
+			itMedia->DeleteAttribute( "rtcp" );
+			break;
+		}
+#endif
 	}
 
 	clsUserInfo.GetCallRoute( clsRoute );
