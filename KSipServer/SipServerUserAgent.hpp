@@ -210,19 +210,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 			return StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
 		}
 
-		pclsRtp->m_iPort = iStartPort;
-		pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
-
-#ifdef USE_MEDIA_LIST
-		SDP_MEDIA_LIST::iterator itMedia;
-
-		for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
-		{
-			itMedia->m_iPort = pclsRtp->m_iPort;
-			itMedia->DeleteAttribute( "rtcp" );
-			break;
-		}
-#endif
+		pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), iStartPort );
 	}
 
 	clsUserInfo.GetCallRoute( clsRoute );
@@ -281,19 +269,7 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 	{
 		if( pclsRtp && clsCallInfo.m_iPeerRtpPort > 0 )
 		{
-			pclsRtp->m_iPort = clsCallInfo.m_iPeerRtpPort;
-			pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
-
-#ifdef USE_MEDIA_LIST
-			SDP_MEDIA_LIST::iterator itMedia;
-
-			for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
-			{
-				itMedia->m_iPort = pclsRtp->m_iPort;
-				itMedia->DeleteAttribute( "rtcp" );
-				break;
-			}
-#endif
+			pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsCallInfo.m_iPeerRtpPort );
 		}
 
 		// QQQ: INVITE 200 OK 응답에서 SDP 가 존재하지 않으면 ReINVITE 메시지를 전송하는 버그가 있다.
@@ -319,19 +295,7 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 		{
 			iStartPort = clsCallInfo.m_iPeerRtpPort - 2;
 
-			pclsRtp->m_iPort = clsCallInfo.m_iPeerRtpPort;
-			pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
-
-#ifdef USE_MEDIA_LIST
-			SDP_MEDIA_LIST::iterator itMedia;
-
-			for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
-			{
-				itMedia->m_iPort = pclsRtp->m_iPort;
-				itMedia->DeleteAttribute( "rtcp" );
-				break;
-			}
-#endif
+			pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsCallInfo.m_iPeerRtpPort );
 		}
 
 		gclsUserAgent.SendReInvite( strReferToCallId.c_str(), pclsRtp );
@@ -395,19 +359,7 @@ void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 	{
 		if( pclsRtp && clsCallInfo.m_iPeerRtpPort > 0 )
 		{
-			pclsRtp->m_iPort = clsCallInfo.m_iPeerRtpPort;
-			pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
-
-#ifdef USE_MEDIA_LIST
-			SDP_MEDIA_LIST::iterator itMedia;
-
-			for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
-			{
-				itMedia->m_iPort = pclsRtp->m_iPort;
-				itMedia->DeleteAttribute( "rtcp" );
-				break;
-			}
-#endif
+			pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsCallInfo.m_iPeerRtpPort );
 		}
 
 		gclsUserAgent.SendReInvite( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp );
@@ -440,27 +392,14 @@ bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToC
 
 	if( gclsSetup.m_bUseRtpRelay )
 	{
-		clsRtp.m_strIp = gclsSetup.m_strLocalIp;
-
 		if( bScreenedTransfer )
 		{
-			clsRtp.m_iPort = clsReferToCallInfo.m_iPeerRtpPort;
+			clsRtp.SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsReferToCallInfo.m_iPeerRtpPort );
 		}
 		else
 		{
-			clsRtp.m_iPort = clsReferToCallInfo.m_iPeerRtpPort + 2;
+			clsRtp.SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsReferToCallInfo.m_iPeerRtpPort + 2 );
 		}
-
-#ifdef USE_MEDIA_LIST
-		SDP_MEDIA_LIST::iterator itMedia;
-
-		for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
-		{
-			itMedia->m_iPort = clsRtp.m_iPort;
-			itMedia->DeleteAttribute( "rtcp" );
-			break;
-		}
-#endif
 	}
 
 	if( bScreenedTransfer )
@@ -546,19 +485,7 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 		iStartPort = gclsRtpMap.CreatePort();
 		if( iStartPort == -1 ) return false;
 
-		clsRtp.m_strIp = gclsSetup.m_strLocalIp;
-		clsRtp.m_iPort = iStartPort;
-
-#ifdef USE_MEDIA_LIST
-		SDP_MEDIA_LIST::iterator itMedia;
-
-		for( itMedia = pclsRtp->m_clsMediaList.begin(); itMedia != pclsRtp->m_clsMediaList.end(); ++itMedia )
-		{
-			itMedia->m_iPort = clsRtp.m_iPort;
-			itMedia->DeleteAttribute( "rtcp" );
-			break;
-		}
-#endif
+		clsRtp.SetIpPort( gclsSetup.m_strLocalIp.c_str(), iStartPort );
 	}
 
 	clsUserInfo.GetCallRoute( clsRoute );

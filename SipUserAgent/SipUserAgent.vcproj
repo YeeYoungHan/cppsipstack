@@ -331,6 +331,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipUserAgentCallBack.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipUserAgentCallBack.h"
 				>
 			</File>

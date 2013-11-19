@@ -47,6 +47,8 @@ public:
 	CSipCallRtp() : m_iPort(-1), m_iCodec(-1), m_eDirection( E_RTP_SEND_RECV )
 	{}
 
+	void SetIpPort( const char * pszIp, int iPort );
+
 	/** IP аж╪р */
 	std::string	m_strIp;
 
