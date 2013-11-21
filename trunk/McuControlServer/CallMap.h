@@ -19,10 +19,9 @@
 #ifndef _CALL_MAP_H_
 #define _CALL_MAP_H_
 
-#include <string>
-#include <map>
-#include "SipMutex.h"
 #include "SipMessage.h"
+#include "SipMutex.h"
+#include <map>
 
 class CCallInfo
 {
