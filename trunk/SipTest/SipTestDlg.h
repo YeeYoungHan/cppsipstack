@@ -18,9 +18,11 @@
 
 #pragma once
 
+#include "SipUserAgent.h"
+#include "SipUserAgentMFC.h"
 
 // CSipTestDlg dialog
-class CSipTestDlg : public CDialog
+class CSipTestDlg : public CDialog, ISipUserAgentCallBack
 {
 // Construction
 public:
@@ -32,10 +34,10 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
-
 // Implementation
 protected:
 	HICON m_hIcon;
+	CSipUserAgentMFC gclsSipUserAgentMFC;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
@@ -43,4 +45,53 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+
+public:
+	// SipTestDlgSip.hpp
+	bool	m_bCallerLogin, m_bCalleeLogin;
+	bool	m_bTest;
+
+	LRESULT OnSipMessage( WPARAM wParam, LPARAM lParam );
+
+	virtual void EventRegister( CSipServerInfo * pclsInfo, int iStatus );
+	virtual bool EventIncomingRequestAuth( CSipMessage * pclsMessage );
+	virtual void EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp );
+	virtual void EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
+	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );
+	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
+	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
+	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer );
+	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId );
+	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage );
+
+	// SipSpeedDlgUtil.hpp
+	CSipMutex	m_clsMutex;
+
+	bool CheckInput( CString & strInput, const char * pszName );
+	void SetLog( const char * fmt, ... );
+	void SetPercent( );
+
+	// SipTestDlg.cpp
+	CString m_strSipServerIp;
+	int m_iSipServerPort;
+	CString m_strSipDomain;
+	CString m_strCallerId;
+	CString m_strCallerPassWord;
+	CString m_strCalleeId;
+	CString m_strCalleePassWord;
+	CButton m_btnStartSipStack;
+	CButton m_btnStopSipStack;
+	CButton m_btnStartTest;
+	CButton m_btnStopTest;
+	CString m_strLog;
+	CProgressCtrl m_clsProgress;
+	CString m_strPercent;
+	CEdit m_txtLog;
+
+	LRESULT OnTestMessage( WPARAM wParam, LPARAM lParam );
+	afx_msg void OnBnClickedStartSipStack();
+	afx_msg void OnBnClickedStopSipStack();
+	afx_msg void OnBnClickedStartTest();
+	afx_msg void OnBnClickedStopTest();
+	afx_msg void OnBnClickedClearLog();
 };

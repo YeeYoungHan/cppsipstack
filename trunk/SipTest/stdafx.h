@@ -18,6 +18,8 @@
 
 #pragma once
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #ifndef _SECURE_ATL
 #define _SECURE_ATL 1
 #endif
@@ -36,10 +38,6 @@
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 
-
-
-
-
 #ifndef _AFX_NO_OLE_SUPPORT
 #include <afxdtctl.h>           // MFC support for Internet Explorer 4 Common Controls
 #endif
@@ -48,15 +46,7 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
-
-
 #include <afxsock.h>            // MFC socket extensions
-
-
-
-
-
-
 
 #ifdef _UNICODE
 #if defined _M_IX86
@@ -70,4 +60,10 @@
 #endif
 #endif
 
+#define SIP_TEST_ID	WM_USER+0x300
+#define WM_TEST_END	1
 
+// SipTestThread.cpp
+bool StartTestThread( HWND hWnd );
+void StopTestThread();
+bool IsTestThreadRun();
