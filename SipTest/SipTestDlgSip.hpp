@@ -18,7 +18,7 @@
 
 LRESULT CSipTestDlg::OnSipMessage( WPARAM wParam, LPARAM lParam )
 {
-	return gclsSipUserAgentMFC.OnSipMessage( wParam, lParam );
+	return m_clsSipUserAgentMFC.OnSipMessage( wParam, lParam );
 }
 
 /**

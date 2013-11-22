@@ -39,7 +39,7 @@ public:
 // Implementation
 protected:
 	HICON m_hIcon;
-	CSipUserAgentMFC gclsSipUserAgentMFC;
+	CSipUserAgentMFC m_clsSipUserAgentMFC;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();

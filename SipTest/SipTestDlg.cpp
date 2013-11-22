@@ -254,8 +254,8 @@ void CSipTestDlg::OnBnClickedStartSipStack()
 	gclsSetup.Put();
 
 	// SipStack 을 시작한다.
-	gclsSipUserAgentMFC.SetWindowHandle( GetSafeHwnd() );
-	gclsSipUserAgentMFC.SetCallBack( this );
+	m_clsSipUserAgentMFC.SetWindowHandle( GetSafeHwnd() );
+	m_clsSipUserAgentMFC.SetCallBack( this );
 
 	CSipStackSetup clsSetup;
 	CSipServerInfo clsInfo;
@@ -281,7 +281,7 @@ void CSipTestDlg::OnBnClickedStartSipStack()
 	{
 		clsSetup.m_iLocalUdpPort = i + 10000;
 
-		if( gclsSipUserAgent.Start( clsSetup, &gclsSipUserAgentMFC ) )
+		if( gclsSipUserAgent.Start( clsSetup, &m_clsSipUserAgentMFC ) )
 		{
 			bSuccess = true;
 			break;
