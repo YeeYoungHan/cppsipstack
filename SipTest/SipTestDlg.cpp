@@ -19,11 +19,16 @@
 #include "stdafx.h"
 #include "SipTest.h"
 #include "SipTestDlg.h"
+#include "Setup.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+CSipUserAgent		 gclsSipUserAgent;
+
+#include "SipTestDlgSip.hpp"
+#include "SipTestDlgUtil.hpp"
 
 // CAboutDlg dialog used for App About
 
@@ -63,6 +68,16 @@ END_MESSAGE_MAP()
 
 CSipTestDlg::CSipTestDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSipTestDlg::IDD, pParent)
+	, m_bCallerLogin(false), m_bCalleeLogin(false), m_bTest(false)
+	, m_strSipServerIp(_T(""))
+	, m_iSipServerPort(5060)
+	, m_strSipDomain(_T(""))
+	, m_strCallerId(_T(""))
+	, m_strCallerPassWord(_T(""))
+	, m_strCalleeId(_T(""))
+	, m_strCalleePassWord(_T(""))
+	, m_strLog(_T(""))
+	, m_strPercent(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -70,6 +85,21 @@ CSipTestDlg::CSipTestDlg(CWnd* pParent /*=NULL*/)
 void CSipTestDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_SIP_SERVER_IP, m_strSipServerIp);
+	DDX_Text(pDX, IDC_SIP_SERVER_PORT, m_iSipServerPort);
+	DDX_Text(pDX, IDC_SIP_DOMAIN, m_strSipDomain);
+	DDX_Text(pDX, IDC_CALLER_ID, m_strCallerId);
+	DDX_Text(pDX, IDC_CALLER_PW, m_strCallerPassWord);
+	DDX_Text(pDX, IDC_CALLEE_ID, m_strCalleeId);
+	DDX_Text(pDX, IDC_CALLEE_PW, m_strCalleePassWord);
+	DDX_Control(pDX, IDC_START_SIP_STACK, m_btnStartSipStack);
+	DDX_Control(pDX, IDC_STOP_SIP_STACK, m_btnStopSipStack);
+	DDX_Control(pDX, IDC_START_TEST, m_btnStartTest);
+	DDX_Control(pDX, IDC_STOP_TEST, m_btnStopTest);
+	DDX_Text(pDX, IDC_LOG, m_strLog);
+	DDX_Control(pDX, IDC_PROGRESS, m_clsProgress);
+	DDX_Text(pDX, IDC_PERCENT, m_strPercent);
+	DDX_Control(pDX, IDC_LOG, m_txtLog);
 }
 
 BEGIN_MESSAGE_MAP(CSipTestDlg, CDialog)
@@ -77,6 +107,13 @@ BEGIN_MESSAGE_MAP(CSipTestDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
+	ON_MESSAGE(SIP_MESSAGE_ID, &CSipTestDlg::OnSipMessage)
+	ON_MESSAGE(SIP_TEST_ID, &CSipTestDlg::OnTestMessage)
+	ON_BN_CLICKED(IDC_START_SIP_STACK, &CSipTestDlg::OnBnClickedStartSipStack)
+	ON_BN_CLICKED(IDC_STOP_SIP_STACK, &CSipTestDlg::OnBnClickedStopSipStack)
+	ON_BN_CLICKED(IDC_START_TEST, &CSipTestDlg::OnBnClickedStartTest)
+	ON_BN_CLICKED(IDC_STOP_TEST, &CSipTestDlg::OnBnClickedStopTest)
+	ON_BN_CLICKED(IDC_CLEAR_LOG, &CSipTestDlg::OnBnClickedClearLog)
 END_MESSAGE_MAP()
 
 
@@ -165,3 +202,152 @@ HCURSOR CSipTestDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+/**
+ * @brief 테스트 결과 이벤트 수신 핸들러
+ * @param wParam 
+ * @param lParam 
+ * @returns 0 을 리턴한다.
+ */
+LRESULT CSipTestDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
+{
+	if( wParam == WM_TEST_END )
+	{
+		m_btnStartTest.EnableWindow( TRUE );
+		m_btnStopTest.EnableWindow( FALSE );
+	}
+
+	return 0;
+}
+void CSipTestDlg::OnBnClickedStartSipStack()
+{
+	// 입력값이 유효한지 검사한다.
+	UpdateData(TRUE);
+
+	if( CheckInput( m_strSipServerIp, "SIP Server IP" ) == false ||
+			CheckInput( m_strCallerId, "Caller ID" ) == false ||
+			CheckInput( m_strCalleeId, "Callee ID" ) == false ) 
+	{
+		return;
+	}
+
+	if( m_strCallerId == m_strCalleeId )
+	{
+		MessageBox( "CallerId is equal to CalleeId", "ID Error", MB_OK | MB_ICONERROR );
+		return;
+	}
+
+	// 유효하지 않는 입력값을 수정한다.
+	if( m_strSipDomain.IsEmpty() ) m_strSipDomain = m_strSipServerIp;
+	if( m_iSipServerPort <= 0 || m_iSipServerPort > 65535 ) m_iSipServerPort = 5060;
+
+	UpdateData(FALSE);
+
+	// 설정 파일에 저장한다.
+	gclsSetup.m_strSipServerIp = m_strSipServerIp;
+	gclsSetup.m_iSipServerPort = m_iSipServerPort;
+	gclsSetup.m_strSipDomain = m_strSipDomain;
+	gclsSetup.m_strCallerId = m_strCallerId;
+	gclsSetup.m_strCallerPassWord = m_strCallerPassWord;
+	gclsSetup.m_strCalleeId = m_strCalleeId;
+	gclsSetup.m_strCalleePassWord = m_strCalleePassWord;
+
+	gclsSetup.Put();
+
+	// SipStack 을 시작한다.
+	gclsSipUserAgentMFC.SetWindowHandle( GetSafeHwnd() );
+	gclsSipUserAgentMFC.SetCallBack( this );
+
+	CSipStackSetup clsSetup;
+	CSipServerInfo clsInfo;
+
+	GetLocalIp( clsSetup.m_strLocalIp );
+
+	clsInfo.m_strIp = m_strSipServerIp;
+	clsInfo.m_iPort = m_iSipServerPort;
+	clsInfo.m_strDomain = m_strSipDomain;
+	clsInfo.m_strUserId = m_strCallerId;
+	clsInfo.m_strPassWord = m_strCallerPassWord;
+
+	gclsSipUserAgent.InsertRegisterInfo( clsInfo );
+
+	clsInfo.m_strUserId = m_strCalleeId;
+	clsInfo.m_strPassWord = m_strCalleePassWord;
+
+	gclsSipUserAgent.InsertRegisterInfo( clsInfo );
+
+	bool bSuccess = false;
+
+	for( int i = 0; i < 100; ++i )
+	{
+		clsSetup.m_iLocalUdpPort = i + 10000;
+
+		if( gclsSipUserAgent.Start( clsSetup, &gclsSipUserAgentMFC ) )
+		{
+			bSuccess = true;
+			break;
+		}
+	}
+
+	if( bSuccess == false )
+	{
+		MessageBox( "sip stack start error", "Error", MB_OK );
+		return;
+	}
+
+	m_btnStartSipStack.EnableWindow( FALSE );
+	m_btnStopSipStack.EnableWindow( TRUE );
+}
+
+void CSipTestDlg::OnBnClickedStopSipStack()
+{
+	gclsSipUserAgent.Stop();
+
+	m_btnStartSipStack.EnableWindow( TRUE );
+	m_btnStopSipStack.EnableWindow( FALSE );
+	m_btnStartTest.EnableWindow( FALSE );
+	m_btnStopTest.EnableWindow( FALSE );
+
+	m_bTest = false;
+}
+
+void CSipTestDlg::OnBnClickedStartTest()
+{
+	UpdateData(TRUE);
+
+	m_strPercent = "0 %";
+
+	UpdateData(FALSE);
+
+	m_clsProgress.SetPos( 0 );
+
+	if( StartTestThread( GetSafeHwnd() ) == false )
+	{
+		MessageBox( "Start Test thread error", "Error", MB_OK | MB_ICONERROR );
+		return;
+	}
+	
+	m_bTest = true;
+
+	m_btnStartTest.EnableWindow( FALSE );
+	m_btnStopTest.EnableWindow( TRUE );
+}
+
+void CSipTestDlg::OnBnClickedStopTest()
+{
+	StopTestThread();
+	
+	m_bTest = false;
+
+	m_btnStartTest.EnableWindow( TRUE );
+	m_btnStopTest.EnableWindow( FALSE );
+}
+
+void CSipTestDlg::OnBnClickedClearLog()
+{
+	m_clsMutex.acquire();
+
+	m_strLog = "";
+	UpdateData(FALSE);
+
+	m_clsMutex.release();
+}
