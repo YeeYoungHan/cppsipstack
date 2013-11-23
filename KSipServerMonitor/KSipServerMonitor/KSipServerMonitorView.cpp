@@ -171,6 +171,8 @@ void CKSipServerMonitorView::OnDestroy()
 {
 	CListCtrl & clsListCtrl = GetListCtrl();
 
+	gclsSocket.DeleteCommand( GetDocument()->m_eType, &clsListCtrl );
+
 	CHeaderCtrl * pclsHeaderCtrl = clsListCtrl.GetHeaderCtrl();
 	int i, iCount = pclsHeaderCtrl->GetItemCount();
 	std::string	strName;
