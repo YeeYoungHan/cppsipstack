@@ -147,6 +147,35 @@ bool CTcpSocket::AddCommand( ECommType cCommType, CListCtrl * pclsListCtrl )
 	return true;
 }
 
+bool CTcpSocket::DeleteCommand( ECommType cCommType, CListCtrl * pclsListCtrl )
+{
+	MONITOR_COMMAND_LIST::iterator	itList;
+	bool bRes = false;
+
+	m_clsMutex.Lock();
+	for( itList = m_clsSendCommandList.begin(); itList != m_clsSendCommandList.end(); ++itList )
+	{
+		if( itList->m_pclsListCtrl == pclsListCtrl )
+		{
+			m_clsSendCommandList.erase( itList );
+			break;
+		}
+	}
+
+	for( itList = m_clsCommandList.begin(); itList != m_clsCommandList.end(); ++itList )
+	{
+		if( itList->m_pclsListCtrl == pclsListCtrl )
+		{
+			m_clsCommandList.erase( itList );
+			bRes = true;
+			break;
+		}
+	}
+	m_clsMutex.Unlock();
+
+	return bRes;
+}
+
 bool CTcpSocket::Execute()
 {
 	int iSendCount;

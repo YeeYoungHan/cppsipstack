@@ -38,6 +38,7 @@ public:
 	virtual void OnReceive( int nErrorCode );
 
 	bool AddCommand( ECommType cCommType, CListCtrl * pclsListCtrl );
+	bool DeleteCommand( ECommType cCommType, CListCtrl * pclsListCtrl );
 	bool Execute();
 
 private:
