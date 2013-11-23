@@ -68,29 +68,29 @@ void * RtpThread( void * lpParameter )
 		goto FUNC_END;
 	}
 
-	for( int i = 0; i < RTP_INFO_SOCKET_COUNT; ++i )
+	for( uint8_t i = 0; i < pclsRtpInfo->m_iSocketCount; ++i )
 	{
-		sttPoll[i].fd = pclsRtpInfo->m_arrSocket[i];
+		sttPoll[i].fd = pclsRtpInfo->m_phSocket[i];
 		sttPoll[i].events = POLLIN;
 		sttPoll[i].revents = 0;
 	}
 
 	while( gbStop == false && pclsRtpInfo->m_bStop == false )
 	{
-		n = poll( sttPoll, RTP_INFO_SOCKET_COUNT, 1000 );
+		n = poll( sttPoll, pclsRtpInfo->m_iSocketCount, 1000 );
 		if( n <= 0 ) continue;
 
 		if( sttPoll[0].revents & POLLIN )
 		{
 			iPacketLen = sizeof(szPacket);
-			if( UdpRecv( pclsRtpInfo->m_arrSocket[0], szPacket, &iPacketLen, &iIp, &sPort ) )
+			if( UdpRecv( pclsRtpInfo->m_phSocket[0], szPacket, &iPacketLen, &iIp, &sPort ) )
 			{
-				if( pclsRtpInfo->m_arrIp[0] == 0 )
+				if( pclsRtpInfo->m_piIp[0] == 0 )
 				{
 					pclsRtpInfo->SetIpPort( 0, iIp, sPort );
 				}
 
-				if( pclsRtpInfo->m_arrIp[2] )
+				if( pclsRtpInfo->m_piIp[2] )
 				{
 					pclsRtpInfo->Send( 2, szPacket, iPacketLen );
 				}
@@ -100,14 +100,14 @@ void * RtpThread( void * lpParameter )
 		if( sttPoll[1].revents & POLLIN )
 		{
 			iPacketLen = sizeof(szPacket);
-			if( UdpRecv( pclsRtpInfo->m_arrSocket[1], szPacket, &iPacketLen, &iIp, &sPort ) )
+			if( UdpRecv( pclsRtpInfo->m_phSocket[1], szPacket, &iPacketLen, &iIp, &sPort ) )
 			{
-				if( pclsRtpInfo->m_arrIp[1] == 0 )
+				if( pclsRtpInfo->m_piIp[1] == 0 )
 				{
 					pclsRtpInfo->SetIpPort( 1, iIp, sPort );
 				}
 
-				if( pclsRtpInfo->m_arrIp[3] )
+				if( pclsRtpInfo->m_piIp[3] )
 				{
 					pclsRtpInfo->Send( 3, szPacket, iPacketLen );
 				}
@@ -117,14 +117,14 @@ void * RtpThread( void * lpParameter )
 		if( sttPoll[2].revents & POLLIN )
 		{
 			iPacketLen = sizeof(szPacket);
-			if( UdpRecv( pclsRtpInfo->m_arrSocket[2], szPacket, &iPacketLen, &iIp, &sPort ) )
+			if( UdpRecv( pclsRtpInfo->m_phSocket[2], szPacket, &iPacketLen, &iIp, &sPort ) )
 			{
-				if( pclsRtpInfo->m_arrIp[2] == 0 )
+				if( pclsRtpInfo->m_piIp[2] == 0 )
 				{
 					pclsRtpInfo->SetIpPort( 2, iIp, sPort );
 				}
 
-				if( pclsRtpInfo->m_arrIp[0] )
+				if( pclsRtpInfo->m_piIp[0] )
 				{
 					pclsRtpInfo->Send( 0, szPacket, iPacketLen );
 				}
@@ -134,14 +134,14 @@ void * RtpThread( void * lpParameter )
 		if( sttPoll[3].revents & POLLIN )
 		{
 			iPacketLen = sizeof(szPacket);
-			if( UdpRecv( pclsRtpInfo->m_arrSocket[3], szPacket, &iPacketLen, &iIp, &sPort ) )
+			if( UdpRecv( pclsRtpInfo->m_phSocket[3], szPacket, &iPacketLen, &iIp, &sPort ) )
 			{
-				if( pclsRtpInfo->m_arrIp[3] == 0 )
+				if( pclsRtpInfo->m_piIp[3] == 0 )
 				{
 					pclsRtpInfo->SetIpPort( 3, iIp, sPort );
 				}
 
-				if( pclsRtpInfo->m_arrIp[1] )
+				if( pclsRtpInfo->m_piIp[1] )
 				{
 					pclsRtpInfo->Send( 1, szPacket, iPacketLen );
 				}

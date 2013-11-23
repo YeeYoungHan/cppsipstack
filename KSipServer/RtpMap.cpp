@@ -24,13 +24,17 @@
 
 CRtpMap gclsRtpMap;
 
-CRtpInfo::CRtpInfo() : m_iStartPort(0), m_bStop(false)
+CRtpInfo::CRtpInfo( uint8_t iSocketCount ) : m_iStartPort(0), m_bStop(false), m_iSocketCount(iSocketCount)
 {
-	for( int i = 0; i < RTP_INFO_SOCKET_COUNT; ++i )
+	m_phSocket = new Socket[iSocketCount];
+	m_piIp = new uint32_t[iSocketCount];
+	m_piPort = new uint16_t[iSocketCount];
+
+	for( uint8_t i = 0; i < iSocketCount; ++i )
 	{
-		m_arrSocket[i] = INVALID_SOCKET;
-		m_arrIp[i] = 0;
-		m_arrPort[i] = 0;
+		m_phSocket[i] = INVALID_SOCKET;
+		m_piIp[i] = 0;
+		m_piPort[i] = 0;
 	}
 }
 
@@ -40,14 +44,23 @@ CRtpInfo::CRtpInfo() : m_iStartPort(0), m_bStop(false)
  */
 void CRtpInfo::CloseSocket()
 {
-	for( int i = 0; i < RTP_INFO_SOCKET_COUNT; ++i )
+	for( uint8_t i = 0; i < m_iSocketCount; ++i )
 	{
-		if( m_arrSocket[i] != INVALID_SOCKET )
+		if( m_phSocket[i] != INVALID_SOCKET )
 		{
-			closesocket( m_arrSocket[i] );
-			m_arrSocket[i] = INVALID_SOCKET;
+			closesocket( m_phSocket[i] );
+			m_phSocket[i] = INVALID_SOCKET;
 		}
 	}
+
+	delete [] m_phSocket;
+	m_phSocket = NULL;
+
+	delete [] m_piIp;
+	m_piIp = NULL;
+
+	delete [] m_piPort;
+	m_piPort = NULL;
 }
 
 /**
@@ -59,8 +72,8 @@ void CRtpInfo::CloseSocket()
  */
 void CRtpInfo::SetIpPort( int iIndex, uint32_t iIp, uint16_t sPort )
 {
-	m_arrIp[iIndex] = iIp;
-	m_arrPort[iIndex] = sPort;
+	m_piIp[iIndex] = iIp;
+	m_piPort[iIndex] = sPort;
 }
 
 /**
@@ -69,10 +82,10 @@ void CRtpInfo::SetIpPort( int iIndex, uint32_t iIp, uint16_t sPort )
  */
 void CRtpInfo::ReSetIPPort( )
 {
-	for( int i = 0; i < RTP_INFO_SOCKET_COUNT; ++i )
+	for( uint8_t i = 0; i < m_iSocketCount; ++i )
 	{
-		m_arrIp[i] = 0;
-		m_arrPort[i] = 0;
+		m_piIp[i] = 0;
+		m_piPort[i] = 0;
 	}
 }
 
@@ -86,7 +99,7 @@ void CRtpInfo::ReSetIPPort( )
  */
 bool CRtpInfo::Send( int iIndex, char * pszPacket, int iPacketLen )
 {
-	return UdpSend( m_arrSocket[iIndex], pszPacket, iPacketLen, m_arrIp[iIndex], m_arrPort[iIndex] );
+	return UdpSend( m_phSocket[iIndex], pszPacket, iPacketLen, m_piIp[iIndex], m_piPort[iIndex] );
 }
 
 CRtpMap::CRtpMap() : m_iStartPort(0)
@@ -99,13 +112,14 @@ CRtpMap::~CRtpMap()
 
 /**
  * @ingroup KSipServer
- * @brief RTP relay 를 위해서 UDP 소켓 4개를 생성한다.
+ * @brief RTP relay 를 위해서 UDP 소켓들을 생성한다.
+ * @param iSocketCount 생성할 UDP 소켓 개수
  * @returns RTP 포트 번호를 리턴한다.
  */
-int CRtpMap::CreatePort( )
+int CRtpMap::CreatePort( int iSocketCount )
 {
 	bool			bRes = false;
-	CRtpInfo	clsInfo;
+	CRtpInfo	clsInfo( iSocketCount );
 
 	m_clsMutex.acquire();
 	if( m_iStartPort == 0 ) m_iStartPort = gclsSetup.m_iBeginRtpPort;
@@ -124,7 +138,7 @@ int CRtpMap::CreatePort( )
 
 	if( bRes )
 	{
-		m_iStartPort = clsInfo.m_iStartPort + RTP_INFO_SOCKET_COUNT;
+		m_iStartPort = clsInfo.m_iStartPort + clsInfo.m_iSocketCount;
 		if( m_iStartPort > gclsSetup.m_iEndRtpPort ) m_iStartPort = gclsSetup.m_iBeginRtpPort;
 
 		m_clsMap.insert( RTP_MAP::value_type( clsInfo.m_iStartPort, clsInfo ) );
@@ -266,11 +280,11 @@ void CRtpMap::GetString( std::string & strBuf )
 		strBuf.append( szTemp );
 		strBuf.append( MR_COL_SEP );
 
-		for( i = 0; i < RTP_INFO_SOCKET_COUNT; ++i )
+		for( i = 0; i < itMap->second.m_iSocketCount; ++i )
 		{
-			iIp = itMap->second.m_arrIp[i];
+			iIp = itMap->second.m_piIp[i];
 
-			snprintf( szTemp, sizeof(szTemp), "%d.%d.%d.%d:%d", (iIp)&0xFF, (iIp>>8)&0xFF, (iIp>>16)&0xFF, (iIp>>24)&0xFF, ntohs(itMap->second.m_arrPort[i]) );
+			snprintf( szTemp, sizeof(szTemp), "%d.%d.%d.%d:%d", (iIp)&0xFF, (iIp>>8)&0xFF, (iIp>>16)&0xFF, (iIp>>24)&0xFF, ntohs(itMap->second.m_piPort[i]) );
 			strBuf.append( szTemp );
 			strBuf.append( MR_COL_SEP );
 		}
@@ -294,27 +308,27 @@ void CRtpMap::GetString( std::string & strBuf )
  */
 bool CRtpMap::CreatePort( CRtpInfo & clsInfo, int iStart, int iEnd )
 {
-	for( int iPort = iStart; iPort < iEnd; iPort += RTP_INFO_SOCKET_COUNT )
+	for( int iPort = iStart; iPort < iEnd; iPort += clsInfo.m_iSocketCount )
 	{
-		clsInfo.m_arrSocket[0] = UdpListen( iPort, NULL );
-		if( clsInfo.m_arrSocket[0] == INVALID_SOCKET ) continue;
+		clsInfo.m_phSocket[0] = UdpListen( iPort, NULL );
+		if( clsInfo.m_phSocket[0] == INVALID_SOCKET ) continue;
 
-		clsInfo.m_arrSocket[1] = UdpListen( iPort + 1, NULL );
-		if( clsInfo.m_arrSocket[1] == INVALID_SOCKET )
+		clsInfo.m_phSocket[1] = UdpListen( iPort + 1, NULL );
+		if( clsInfo.m_phSocket[1] == INVALID_SOCKET )
 		{
 			clsInfo.CloseSocket();
 			continue;
 		}
 
-		clsInfo.m_arrSocket[2] = UdpListen( iPort + 2, NULL );
-		if( clsInfo.m_arrSocket[2] == INVALID_SOCKET )
+		clsInfo.m_phSocket[2] = UdpListen( iPort + 2, NULL );
+		if( clsInfo.m_phSocket[2] == INVALID_SOCKET )
 		{
 			clsInfo.CloseSocket();
 			continue;
 		}
 
-		clsInfo.m_arrSocket[3] =  UdpListen( iPort + 3, NULL );
-		if( clsInfo.m_arrSocket[3] == INVALID_SOCKET )
+		clsInfo.m_phSocket[3] =  UdpListen( iPort + 3, NULL );
+		if( clsInfo.m_phSocket[3] == INVALID_SOCKET )
 		{
 			clsInfo.CloseSocket();
 			continue;

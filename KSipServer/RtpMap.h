@@ -33,14 +33,15 @@
 class CRtpInfo
 {
 public:
-	CRtpInfo();
+	CRtpInfo( uint8_t iSocketCount = RTP_INFO_SOCKET_COUNT );
 
-	Socket		m_arrSocket[RTP_INFO_SOCKET_COUNT];
-	uint32_t	m_arrIp[RTP_INFO_SOCKET_COUNT];
-	uint16_t	m_arrPort[RTP_INFO_SOCKET_COUNT];
+	Socket		* m_phSocket;
+	uint32_t	* m_piIp;
+	uint16_t	* m_piPort;
 
 	int			m_iStartPort;
 	bool		m_bStop;
+	uint8_t	m_iSocketCount;
 
 	void CloseSocket();
 	void SetIpPort( int iIndex, uint32_t iIp, uint16_t sPort );
@@ -60,7 +61,7 @@ public:
 	CRtpMap();
 	~CRtpMap();
 
-	int CreatePort( );
+	int CreatePort( int iSocketCount );
 
 	bool Select( int iPort, CRtpInfo ** ppclsRtpInfo );
 	bool SetStop( int iPort );

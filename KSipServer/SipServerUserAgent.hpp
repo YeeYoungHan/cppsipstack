@@ -204,7 +204,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 	if( gclsSetup.m_bUseRtpRelay )
 	{
-		iStartPort = gclsRtpMap.CreatePort();
+		iStartPort = gclsRtpMap.CreatePort( RTP_INFO_SOCKET_COUNT );
 		if( iStartPort == -1 )
 		{
 			return StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
@@ -482,7 +482,7 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 
 	if( gclsSetup.m_bUseRtpRelay )
 	{
-		iStartPort = gclsRtpMap.CreatePort();
+		iStartPort = gclsRtpMap.CreatePort( RTP_INFO_SOCKET_COUNT );
 		if( iStartPort == -1 ) return false;
 
 		clsRtp.SetIpPort( gclsSetup.m_strLocalIp.c_str(), iStartPort );
