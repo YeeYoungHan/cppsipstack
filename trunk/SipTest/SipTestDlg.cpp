@@ -210,10 +210,15 @@ HCURSOR CSipTestDlg::OnQueryDragIcon()
  */
 LRESULT CSipTestDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
 {
-	if( wParam == WM_TEST_END )
+	switch( wParam )
 	{
+	case WM_TEST_END:
 		m_btnStartTest.EnableWindow( TRUE );
 		m_btnStopTest.EnableWindow( FALSE );
+		break;
+	case WM_TEST_MSG:
+		SetLog( "%s", lParam );
+		break;
 	}
 
 	return 0;

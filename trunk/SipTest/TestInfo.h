@@ -16,4 +16,32 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "stdafx.h"
+#ifndef _TEST_INFO_H_
+#define _TEST_INFO_H_
+
+#include "SipUdp.h"
+
+class CTestRtpInfo
+{
+public:
+	CTestRtpInfo();
+
+	int	m_iPort;
+	Socket	m_hSocket;
+
+	bool Create( int iPort );
+	void Close( );
+};
+
+class CTestInfo
+{
+public:
+	CTestRtpInfo	m_clsCallerRtp;
+	CTestRtpInfo	m_clsCalleeRtp;
+
+	bool CreateRtp();
+};
+
+extern CTestInfo gclsTestInfo;
+
+#endif

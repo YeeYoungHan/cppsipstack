@@ -61,7 +61,8 @@
 #endif
 
 #define SIP_TEST_ID	WM_USER+0x300
-#define WM_TEST_END	1
+#define WM_TEST_END	0x01
+#define WM_TEST_MSG	0x02
 
 // SipTestThread.cpp
 bool StartTestThread( HWND hWnd );
