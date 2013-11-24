@@ -404,6 +404,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\TestInfo.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="헤더 파일"
@@ -436,6 +440,10 @@
 			</File>
 			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TestInfo.h"
 				>
 			</File>
 		</Filter>

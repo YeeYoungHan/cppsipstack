@@ -22,11 +22,24 @@
 #include "Setup.h"
 #include "TimeUtility.h"
 #include "ServerUtility.h"
+#include "TestInfo.h"
 
 static bool gbStopTestThread = false;
 static bool gbTestThreadRun = false;
 static HWND ghWnd = NULL;
 extern CSipUserAgent		 gclsSipUserAgent;
+
+void SendLog( const char * fmt, ... )
+{
+	va_list		ap;
+	char			szBuf[8192];
+
+	va_start( ap, fmt );
+	vsnprintf( szBuf, sizeof(szBuf)-1, fmt, ap );
+	va_end( ap );
+
+	SendMessage( ghWnd, SIP_TEST_ID, WM_TEST_MSG, (LPARAM)szBuf );
+}
 
 /**
  * @brief 테스트 쓰레드
@@ -38,20 +51,28 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	CSipCallRtp clsRtp;
 	CSipCallRoute clsRoute;
 	std::string strCallId;
-	struct timeval sttStart, sttEnd;
 
 	gbTestThreadRun = true;
 
+	if( gclsTestInfo.CreateRtp() == false ) 
+	{
+		SendLog( "gclsTestInfo.CreateRtp error" );
+		goto FUNC_END;
+	}
+
 	clsRtp.m_strIp = gclsSipUserAgent.m_clsSipStack.m_clsSetup.m_strLocalIp;
-	clsRtp.m_iPort = 4000;
+	clsRtp.m_iPort = gclsTestInfo.m_clsCallerRtp.m_iPort;
 	clsRtp.m_iCodec = 0;
 
 	clsRoute.m_strDestIp = gclsSetup.m_strSipServerIp;
 	clsRoute.m_iDestPort = gclsSetup.m_iSipServerPort;
 
-	gettimeofday( &sttStart, NULL );
-
 	// 통화 연결 테스트
+	if( gclsSipUserAgent.StartCall( gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strCalleeId.c_str(), &clsRtp, &clsRoute, strCallId ) == false )
+	{
+		SendLog( "gclsSipUserAgent.StartCall error" );
+		goto FUNC_END;
+	}
 
 	// 모든 통화가 종료될 때까지 대기한다.
 	while( gclsSipUserAgent.GetCallCount() > 0 )
@@ -64,13 +85,10 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 		}
 	}
 
-	gettimeofday( &sttEnd, NULL );
-
-	int iDiff = DiffTimeval( &sttStart, &sttEnd );
-
+FUNC_END:
 	gbTestThreadRun = false;
 
-	SendMessage( ghWnd, SIP_TEST_ID, WM_TEST_END, iDiff );
+	SendMessage( ghWnd, SIP_TEST_ID, WM_TEST_END, 0 );
 
 	return 0;
 }
