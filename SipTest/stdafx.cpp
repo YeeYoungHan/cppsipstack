@@ -17,3 +17,18 @@
  */
 
 #include "stdafx.h"
+
+void ShowWebBrowser( const char * pszUrl )
+{
+	SHELLEXECUTEINFO sttInfo;
+
+	memset( &sttInfo, 0, sizeof(sttInfo) );
+
+	sttInfo.cbSize = sizeof(sttInfo);
+	sttInfo.lpVerb = _T("open" );
+	sttInfo.lpFile = pszUrl;
+	sttInfo.nShow = SW_SHOW;
+	sttInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
+
+	ShellExecuteEx( &sttInfo );
+}

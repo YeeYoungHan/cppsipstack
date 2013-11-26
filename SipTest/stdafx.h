@@ -64,6 +64,9 @@
 #define WM_TEST_END	0x01
 #define WM_TEST_MSG	0x02
 
+// stdafx.cpp
+void ShowWebBrowser( const char * pszUrl );
+
 // SipTestThread.cpp
 bool StartTestThread( HWND hWnd );
 void StopTestThread();

@@ -34,6 +34,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CString m_strVersion;
+	afx_msg void OnStnClickedBlog();
+	afx_msg void OnStnClickedHomePage();
 };
 
 CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
@@ -48,5 +50,16 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
+	ON_STN_CLICKED(IDC_BLOG, &CAboutDlg::OnStnClickedBlog)
+	ON_STN_CLICKED(IDC_HOMEPAGE, &CAboutDlg::OnStnClickedHomePage)
 END_MESSAGE_MAP()
 
+void CAboutDlg::OnStnClickedBlog()
+{
+	ShowWebBrowser( "http://blog.naver.com/websearch" );
+}
+
+void CAboutDlg::OnStnClickedHomePage()
+{
+	ShowWebBrowser( "http://dev.naver.com/projects/sipstack" );
+}
