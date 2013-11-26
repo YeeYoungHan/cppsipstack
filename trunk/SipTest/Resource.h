@@ -9,13 +9,13 @@
 #define IDP_SOCKETS_INIT_FAILED         103
 #define IDR_MAINFRAME                   128
 #define IDC_CALLER_ID                   1000
+#define IDC_VERSION                     1000
 #define IDC_CALLER_PW                   1001
 #define IDC_SIP_SERVER_IP               1002
 #define IDC_SIP_SERVER_PORT             1003
 #define IDC_CALLEE_ID                   1004
 #define IDC_CALLEE_PW                   1005
 #define IDC_SIP_DOMAIN                  1006
-#define IDC_CALL_TOTAL_COUNT            1007
 #define IDC_LOG                         1009
 #define IDC_START_SIP_STACK             1010
 #define IDC_STOP_SIP_STACK              1011
@@ -31,7 +31,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        129
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

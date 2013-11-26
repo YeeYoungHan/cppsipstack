@@ -94,4 +94,5 @@ public:
 	afx_msg void OnBnClickedStartTest();
 	afx_msg void OnBnClickedStopTest();
 	afx_msg void OnBnClickedClearLog();
+	afx_msg void OnDestroy();
 };

@@ -373,6 +373,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipTestDlgAbout.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipTestDlgSip.hpp"
 				>
 			</File>
