@@ -27,44 +27,9 @@
 
 CSipUserAgent		 gclsSipUserAgent;
 
+#include "SipTestDlgAbout.hpp"
 #include "SipTestDlgSip.hpp"
 #include "SipTestDlgUtil.hpp"
-
-// CAboutDlg dialog used for App About
-
-class CAboutDlg : public CDialog
-{
-public:
-	CAboutDlg();
-
-// Dialog Data
-	enum { IDD = IDD_ABOUTBOX };
-
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-// Implementation
-protected:
-	DECLARE_MESSAGE_MAP()
-};
-
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
-{
-}
-
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-}
-
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-END_MESSAGE_MAP()
-
-
-// CSipTestDlg dialog
-
-
-
 
 CSipTestDlg::CSipTestDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSipTestDlg::IDD, pParent)
@@ -114,6 +79,7 @@ BEGIN_MESSAGE_MAP(CSipTestDlg, CDialog)
 	ON_BN_CLICKED(IDC_START_TEST, &CSipTestDlg::OnBnClickedStartTest)
 	ON_BN_CLICKED(IDC_STOP_TEST, &CSipTestDlg::OnBnClickedStopTest)
 	ON_BN_CLICKED(IDC_CLEAR_LOG, &CSipTestDlg::OnBnClickedClearLog)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -148,7 +114,23 @@ BOOL CSipTestDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	// TODO: Add extra initialization here
+		m_clsProgress.SetRange( 0, 100 );
+
+	gclsSetup.Get();
+
+	m_strSipServerIp = gclsSetup.m_strSipServerIp.c_str();
+	m_iSipServerPort = gclsSetup.m_iSipServerPort;
+	m_strSipDomain = gclsSetup.m_strSipDomain.c_str();
+	m_strCallerId = gclsSetup.m_strCallerId.c_str();
+	m_strCallerPassWord = gclsSetup.m_strCallerPassWord.c_str();
+	m_strCalleeId = gclsSetup.m_strCalleeId.c_str();
+	m_strCalleePassWord = gclsSetup.m_strCalleePassWord.c_str();
+
+	UpdateData(FALSE);
+
+	m_btnStopSipStack.EnableWindow( FALSE );
+	m_btnStartTest.EnableWindow( FALSE );
+	m_btnStopTest.EnableWindow( FALSE );
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -355,4 +337,11 @@ void CSipTestDlg::OnBnClickedClearLog()
 	UpdateData(FALSE);
 
 	m_clsMutex.release();
+}
+
+void CSipTestDlg::OnDestroy()
+{
+	gclsSipUserAgent.Stop();
+
+	__super::OnDestroy();
 }
