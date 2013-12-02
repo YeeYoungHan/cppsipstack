@@ -79,3 +79,9 @@ bool CTestInfo::CreateRtp()
 
 	return bRes;
 }
+
+void CTestInfo::CloseRtp()
+{
+	m_clsCallerRtp.Close();
+	m_clsCalleeRtp.Close();
+}

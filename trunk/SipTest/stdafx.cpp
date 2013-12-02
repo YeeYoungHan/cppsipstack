@@ -18,6 +18,8 @@
 
 #include "stdafx.h"
 
+CSipUserAgent		 gclsSipUserAgent;
+
 void ShowWebBrowser( const char * pszUrl )
 {
 	SHELLEXECUTEINFO sttInfo;

@@ -112,6 +112,7 @@ void CSipTestDlg::EventIncomingCall( const char * pszCallId, const char * pszFro
 	clsRtp.m_iCodec = 0;
 
 	gclsTestInfo.m_clsCalleePeerRtp = *pclsRtp;
+	gclsTestInfo.m_strCalleeCallId = pszCallId;
 
 	gclsSipUserAgent.AcceptCall( pszCallId, &clsRtp );
 }
@@ -144,7 +145,7 @@ void CSipTestDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp 
 
 	gclsTestInfo.m_clsCallerPeerRtp = *pclsRtp;
 
-	// QQQ: RTP 전송/수신 쓰레드를 실행한다.
+	StartRtpThread();
 }
 
 /**

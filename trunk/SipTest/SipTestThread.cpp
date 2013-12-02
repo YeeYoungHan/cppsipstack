@@ -27,7 +27,6 @@
 static bool gbStopTestThread = false;
 static bool gbTestThreadRun = false;
 static HWND ghWnd = NULL;
-extern CSipUserAgent		 gclsSipUserAgent;
 
 void SendLog( const char * fmt, ... )
 {
@@ -74,6 +73,8 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 		goto FUNC_END;
 	}
 
+	gclsTestInfo.m_strCallerCallId = strCallId;
+
 	// 모든 통화가 종료될 때까지 대기한다.
 	while( gclsSipUserAgent.GetCallCount() > 0 )
 	{
@@ -84,6 +85,8 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 			gclsSipUserAgent.StopCallAll();
 		}
 	}
+
+	gclsTestInfo.CloseRtp();
 
 FUNC_END:
 	gbTestThreadRun = false;
