@@ -98,11 +98,20 @@ bool CSipTestDlg::EventIncomingRequestAuth( CSipMessage * pclsMessage )
  */
 void CSipTestDlg::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
 {
+	if( pclsRtp == NULL )
+	{
+		SetLog( "[ERROR] EventIncomingCall CSipCallRtp is NULL" );
+		OnBnClickedStopTest();
+		return;
+	}
+
 	CSipCallRtp clsRtp;
 
 	clsRtp.m_strIp = gclsSipUserAgent.m_clsSipStack.m_clsSetup.m_strLocalIp;
-	clsRtp.m_iPort = 4002;	
+	clsRtp.m_iPort = gclsTestInfo.m_clsCalleeRtp.m_iPort;	
 	clsRtp.m_iCodec = 0;
+
+	gclsTestInfo.m_clsCalleePeerRtp = *pclsRtp;
 
 	gclsSipUserAgent.AcceptCall( pszCallId, &clsRtp );
 }
@@ -126,7 +135,16 @@ void CSipTestDlg::EventCallRing( const char * pszCallId, int iSipStatus, CSipCal
  */
 void CSipTestDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
-	gclsSipUserAgent.StopCall( pszCallId );
+	if( pclsRtp == NULL )
+	{
+		SetLog( "[ERROR] EventCallStart CSipCallRtp is NULL" );
+		OnBnClickedStopTest();
+		return;
+	}
+
+	gclsTestInfo.m_clsCallerPeerRtp = *pclsRtp;
+
+	// QQQ: RTP 전송/수신 쓰레드를 실행한다.
 }
 
 /**

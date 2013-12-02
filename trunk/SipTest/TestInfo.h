@@ -20,6 +20,7 @@
 #define _TEST_INFO_H_
 
 #include "SipUdp.h"
+#include "SipUserAgentCallBack.h"
 
 class CTestRtpInfo
 {
@@ -38,6 +39,9 @@ class CTestInfo
 public:
 	CTestRtpInfo	m_clsCallerRtp;
 	CTestRtpInfo	m_clsCalleeRtp;
+
+	CSipCallRtp		m_clsCallerPeerRtp;
+	CSipCallRtp		m_clsCalleePeerRtp;
 
 	bool CreateRtp();
 };
