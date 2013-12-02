@@ -51,7 +51,7 @@ int CSipCallRtp::GetMediaCount( )
 	int iCount = 1;
 
 #ifdef USE_MEDIA_LIST
-	iCount = m_clsMediaList.size();
+	iCount = (int)m_clsMediaList.size();
 	if( iCount == 0 ) iCount = 1;
 #endif
 
