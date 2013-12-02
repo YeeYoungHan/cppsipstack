@@ -17,6 +17,7 @@
  */
 
 /**
+ * @ingroup SipTest
  * @brief 입력값이 유효한지 검사한다.
  * @param strInput	입력값
  * @param pszName		입력 이름

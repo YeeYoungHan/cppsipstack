@@ -64,7 +64,7 @@ public:
 	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId );
 	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage );
 
-	// SipSpeedDlgUtil.hpp
+	// SipTestDlgUtil.hpp
 	CSipMutex	m_clsMutex;
 
 	bool CheckInput( CString & strInput, const char * pszName );
