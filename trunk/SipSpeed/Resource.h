@@ -10,7 +10,9 @@
 #define IDR_MAINFRAME                   128
 #define IDC_CALLER_ID                   1000
 #define IDC_CALLER_PW                   1001
+#define IDC_BLOG                        1001
 #define IDC_SIP_SERVER_IP               1002
+#define IDC_HOMEPAGE                    1002
 #define IDC_SIP_SERVER_PORT             1003
 #define IDC_CALLEE_ID                   1004
 #define IDC_CALLEE_PW                   1005
