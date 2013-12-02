@@ -74,11 +74,19 @@ BOOL CAboutDlg::OnInitDialog()
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
+/**
+ * @ingroup SipSpeed
+ * @brief 개발자 블로그를 보여준다.
+ */
 void CAboutDlg::OnStnClickedBlog()
 {
 	ShowWebBrowser( "http://blog.naver.com/websearch" );
 }
 
+/**
+ * @ingroup SipSpeed
+ * @brief 개발 홈페이지를 보여준다.
+ */
 void CAboutDlg::OnStnClickedHomepage()
 {
 	ShowWebBrowser( "http://dev.naver.com/projects/sipstack" );

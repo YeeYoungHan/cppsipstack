@@ -192,6 +192,7 @@ HCURSOR CSipSpeedDlg::OnQueryDragIcon()
 
 
 /**
+ * @ingroup SipSpeed
  * @brief SIP stack 을 시작한다.
  */
 void CSipSpeedDlg::OnBnClickedStartSipStack()
@@ -279,6 +280,7 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 }
 
 /**
+ * @ingroup SipSpeed
  * @brief SIP stack 을 중지시킨다.
  */
 void CSipSpeedDlg::OnBnClickedStopSipStack()
@@ -294,6 +296,7 @@ void CSipSpeedDlg::OnBnClickedStopSipStack()
 }
 
 /**
+ * @ingroup SipSpeed
  * @brief 테스트를 시작한다.
  */
 void CSipSpeedDlg::OnBnClickedStartTest()
@@ -329,6 +332,7 @@ void CSipSpeedDlg::OnBnClickedStartTest()
 }
 
 /**
+ * @ingroup SipSpeed
  * @brief 테스트를 중지한다.
  */
 void CSipSpeedDlg::OnBnClickedStopTest()
@@ -349,6 +353,7 @@ void CSipSpeedDlg::OnDestroy()
 }
 
 /**
+ * @ingroup SipSpeed
  * @brief 테스트 결과 이벤트 수신 핸들러
  * @param wParam 
  * @param lParam 
@@ -370,6 +375,7 @@ LRESULT CSipSpeedDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
 }
 
 /**
+ * @ingroup SipSpeed
  * @brief 로그를 삭제한다.
  */
 void CSipSpeedDlg::OnBnClickedClearLog()
