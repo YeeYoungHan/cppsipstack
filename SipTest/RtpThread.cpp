@@ -28,6 +28,11 @@
 static bool gbStopRtpThread = false;
 static bool gbRtpThreadRun = false;
 
+/**
+ * @ingroup SipTest
+ * @brief RTP 헤더를 초기화시킨다.
+ * @param pclsRtpHeader RTP 헤더
+ */
 void InitRtpHeader( CRtpHeader * pclsRtpHeader )
 {
 	pclsRtpHeader->SetVersion(2);
@@ -39,6 +44,7 @@ void InitRtpHeader( CRtpHeader * pclsRtpHeader )
 }
 
 /**
+ * @ingroup SipTest
  * @brief RTP 쓰레드
  * @param lpParameter 
  * @returns 0 을 리턴한다.
@@ -142,6 +148,7 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 }
 
 /**
+ * @ingroup SipTest
  * @brief RTP 쓰레드를 시작한다.
  * @param hWnd 테스트 결과를 전달할 윈도우 핸들
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -158,6 +165,7 @@ bool StartRtpThread( )
 }
 
 /**
+ * @ingroup SipTest
  * @brief RTP 쓰레드 실행 중지 요청한다.
  */
 void StopRtpThread()
@@ -166,6 +174,7 @@ void StopRtpThread()
 }
 
 /**
+ * @ingroup SipTest
  * @brief RTP 쓰레드가 실행되고 있는가?
  * @returns RTP 쓰레드가 실행되고 있으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */

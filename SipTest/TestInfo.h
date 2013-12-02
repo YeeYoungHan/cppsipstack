@@ -22,6 +22,10 @@
 #include "SipUdp.h"
 #include "SipUserAgentCallBack.h"
 
+/**
+ * @ingroup SipTest
+ * @brief 테스트용 RTP 정보 저장 클래스
+ */
 class CTestRtpInfo
 {
 public:
@@ -36,6 +40,10 @@ public:
 	void Clear( );
 };
 
+/**
+ * @ingroup SipTest
+ * @brief 테스트 정보 저장 클래스
+ */
 class CTestInfo
 {
 public:

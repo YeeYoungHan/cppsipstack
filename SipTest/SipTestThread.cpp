@@ -28,6 +28,10 @@ static bool gbStopTestThread = false;
 static bool gbTestThreadRun = false;
 static HWND ghWnd = NULL;
 
+/**
+ * @ingroup SipTest
+ * @brief 로그를 출력한다.
+ */
 void SendLog( const char * fmt, ... )
 {
 	va_list		ap;
@@ -41,6 +45,7 @@ void SendLog( const char * fmt, ... )
 }
 
 /**
+ * @ingroup SipTest
  * @brief 테스트 쓰레드
  * @param lpParameter 
  * @returns 0 을 리턴한다.
@@ -97,6 +102,7 @@ FUNC_END:
 }
 
 /**
+ * @ingroup SipTest
  * @brief 테스트 쓰레드를 시작한다.
  * @param hWnd 테스트 결과를 전달할 윈도우 핸들
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -114,6 +120,7 @@ bool StartTestThread( HWND hWnd )
 }
 
 /**
+ * @ingroup SipTest
  * @brief 테스트 쓰레드 실행 중지 요청한다.
  */
 void StopTestThread()
@@ -122,6 +129,7 @@ void StopTestThread()
 }
 
 /**
+ * @ingroup SipTest
  * @brief 테스트 쓰레드가 실행되고 있는가?
  * @returns 테스트 쓰레드가 실행되고 있으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
