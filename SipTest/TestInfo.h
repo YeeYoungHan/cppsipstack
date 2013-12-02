@@ -37,6 +37,9 @@ public:
 class CTestInfo
 {
 public:
+	std::string		m_strCallerCallId;
+	std::string		m_strCalleeCallId;
+
 	CTestRtpInfo	m_clsCallerRtp;
 	CTestRtpInfo	m_clsCalleeRtp;
 
@@ -44,6 +47,7 @@ public:
 	CSipCallRtp		m_clsCalleePeerRtp;
 
 	bool CreateRtp();
+	void CloseRtp();
 };
 
 extern CTestInfo gclsTestInfo;

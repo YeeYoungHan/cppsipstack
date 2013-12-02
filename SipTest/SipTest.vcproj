@@ -361,14 +361,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\RtpThread.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Setup.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\SipTest.cpp"
 				>
 			</File>
@@ -386,10 +378,6 @@
 			</File>
 			<File
 				RelativePath=".\SipTestDlgUtil.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SipTestThread.cpp"
 				>
 			</File>
 			<File
@@ -428,10 +416,6 @@
 			</File>
 			<File
 				RelativePath=".\RtpHeader.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Setup.h"
 				>
 			</File>
 			<File
@@ -474,6 +458,30 @@
 			</File>
 			<File
 				RelativePath=".\res\SipTest.rc2"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="설정파일"
+			>
+			<File
+				RelativePath=".\Setup.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Setup.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="쓰레드"
+			>
+			<File
+				RelativePath=".\RtpThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipTestThread.cpp"
 				>
 			</File>
 		</Filter>

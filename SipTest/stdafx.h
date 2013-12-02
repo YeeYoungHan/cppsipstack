@@ -65,9 +65,19 @@
 #define WM_TEST_MSG	0x02
 
 // stdafx.cpp
+#include "SipUserAgent.h"
+
+extern CSipUserAgent		 gclsSipUserAgent;
+
 void ShowWebBrowser( const char * pszUrl );
 
 // SipTestThread.cpp
+void SendLog( const char * fmt, ... );
 bool StartTestThread( HWND hWnd );
 void StopTestThread();
 bool IsTestThreadRun();
+
+// RtpThread.cpp
+bool StartRtpThread( );
+void StopRtpThread();
+bool IsRtpThreadRun();

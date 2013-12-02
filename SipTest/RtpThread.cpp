@@ -23,9 +23,20 @@
 #include "TimeUtility.h"
 #include "ServerUtility.h"
 #include "TestInfo.h"
+#include "RtpHeader.h"
 
 static bool gbStopRtpThread = false;
 static bool gbRtpThreadRun = false;
+
+void InitRtpHeader( CRtpHeader * pclsRtpHeader )
+{
+	pclsRtpHeader->SetVersion(2);
+	pclsRtpHeader->SetPadding(0);
+	pclsRtpHeader->SetExtension(0);
+	pclsRtpHeader->SetCC(0);
+	pclsRtpHeader->SetMarker(0);
+	pclsRtpHeader->ssrc = htonl( 100 );
+}
 
 /**
  * @brief RTP ¾²·¹µå
@@ -34,6 +45,80 @@ static bool gbRtpThreadRun = false;
  */
 DWORD WINAPI RtpThread( LPVOID lpParameter )
 {
+	struct pollfd arrPoll[2];
+	char	szSendPacket[1500], szRecvPacket[1500], szIp[41];
+	CRtpHeader * pclsRtpHeader = (CRtpHeader *)szSendPacket;
+	int iRtpCount = 0;
+	int iEvent, iRecvLen;
+	uint16_t	sPort;
+
+	InitRtpHeader( pclsRtpHeader );
+
+	TcpSetPollIn( arrPoll[0], gclsTestInfo.m_clsCallerRtp.m_hSocket );
+	TcpSetPollIn( arrPoll[1], gclsTestInfo.m_clsCalleeRtp.m_hSocket );
+
+	while( gbStopRtpThread == false )
+	{
+		++iRtpCount;
+		snprintf( szSendPacket + sizeof(CRtpHeader), sizeof(szSendPacket) - sizeof(CRtpHeader), "caller%d", iRtpCount );
+		UdpSend( gclsTestInfo.m_clsCallerRtp.m_hSocket, szSendPacket, sizeof(CRtpHeader) + 160
+			, gclsTestInfo.m_clsCallerPeerRtp.m_strIp.c_str(), gclsTestInfo.m_clsCallerPeerRtp.m_iPort );
+
+		snprintf( szSendPacket + sizeof(CRtpHeader), sizeof(szSendPacket) - sizeof(CRtpHeader), "callee%d", iRtpCount );
+		UdpSend( gclsTestInfo.m_clsCalleeRtp.m_hSocket, szSendPacket, sizeof(CRtpHeader) + 160
+			, gclsTestInfo.m_clsCalleePeerRtp.m_strIp.c_str(), gclsTestInfo.m_clsCalleePeerRtp.m_iPort );
+
+		iEvent = poll( arrPoll, 2, 20 );
+		if( iEvent > 0 )
+		{
+			if( arrPoll[0].revents & POLLIN )
+			{
+				iRecvLen = sizeof(szRecvPacket);
+				if( UdpRecv( gclsTestInfo.m_clsCallerRtp.m_hSocket, szRecvPacket, &iRecvLen, szIp, sizeof(szIp), &sPort ) == false )
+				{
+					SendLog( "[ERROR] caller RTP socket recv error" );
+					break;
+				}
+				else
+				{
+					if( strncmp( szRecvPacket + sizeof(CRtpHeader), "callee", 6 ) )
+					{
+						SendLog( "[ERROR] caller RTP socket recv error [%s]", szRecvPacket + sizeof(CRtpHeader) );
+						break;
+					}
+				}
+			}
+
+			if( arrPoll[1].revents & POLLIN )
+			{
+				iRecvLen = sizeof(szRecvPacket);
+				if( UdpRecv( gclsTestInfo.m_clsCalleeRtp.m_hSocket, szRecvPacket, &iRecvLen, szIp, sizeof(szIp), &sPort ) == false )
+				{
+					SendLog( "[ERROR] callee RTP socket recv error" );
+					break;
+				}
+				else
+				{
+					if( strncmp( szRecvPacket + sizeof(CRtpHeader), "caller", 6 ) )
+					{
+						SendLog( "[ERROR] callee RTP socket recv error [%s]", szRecvPacket + sizeof(CRtpHeader) );
+						break;
+					}
+				}
+			}
+		}
+
+		if( iRtpCount >= 100 ) break;
+	}
+
+	gclsSipUserAgent.StopCall( gclsTestInfo.m_strCallerCallId.c_str() );
+
+	if( iRtpCount >= 100 )
+	{
+		SendLog( "RTP send/recv success" );
+	}
+
+	gbRtpThreadRun = false;
 
 	return 0;
 }

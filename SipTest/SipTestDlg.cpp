@@ -26,8 +26,6 @@
 #define new DEBUG_NEW
 #endif
 
-CSipUserAgent		 gclsSipUserAgent;
-
 #include "SipTestDlgAbout.hpp"
 #include "SipTestDlgSip.hpp"
 #include "SipTestDlgUtil.hpp"

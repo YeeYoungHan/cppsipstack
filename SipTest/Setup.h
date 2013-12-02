@@ -21,7 +21,7 @@
 #include <string>
 #include <map>
 
-#define SETUP_FILENAME	"SipSpeed.ini"
+#define SETUP_FILENAME	"SipTest.ini"
 
 #define ST_SIP_SERVER_IP		"sip_server_ip"
 #define ST_SIP_SERVER_PORT	"sip_server_port"
