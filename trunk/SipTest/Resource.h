@@ -16,6 +16,7 @@
 #define IDC_BLOG2                       1002
 #define IDC_HOMEPAGE                    1002
 #define IDC_SIP_SERVER_PORT             1003
+#define IDC_SYSLINK1                    1003
 #define IDC_CALLEE_ID                   1004
 #define IDC_CALLEE_PW                   1005
 #define IDC_SIP_DOMAIN                  1006
@@ -34,7 +35,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        129
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1003
+#define _APS_NEXT_CONTROL_VALUE         1004
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -94,14 +94,14 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "About SipTest"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,20,20
     LTEXT           "SipTest, Version",IDC_STATIC,42,14,53,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2013",IDC_STATIC,42,26,114,8
     DEFPUSHBUTTON   "OK",IDOK,144,73,50,14,WS_GROUP
     LTEXT           "",IDC_VERSION,97,14,45,8,SS_NOPREFIX
-    LTEXT           "http://blog.naver.com/websearch",IDC_BLOG,61,45,110,8
+    LTEXT           "http://blog.naver.com/websearch",IDC_BLOG,61,45,110,8,SS_NOTIFY
     LTEXT           "Blog:",IDC_STATIC,15,45,17,8
-    LTEXT           "http://dev.naver.com/projects/sipstack",IDC_HOMEPAGE,61,57,128,8
+    LTEXT           "http://dev.naver.com/projects/sipstack",IDC_HOMEPAGE,61,57,128,8,SS_NOTIFY
     LTEXT           "Homepage:",IDC_STATIC,15,57,38,8
 END
 

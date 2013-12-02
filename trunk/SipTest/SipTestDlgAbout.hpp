@@ -31,11 +31,14 @@ public:
 
 // Implementation
 protected:
+	CFont m_clsFont;
+
 	DECLARE_MESSAGE_MAP()
 public:
 	CString m_strVersion;
 	afx_msg void OnStnClickedBlog();
 	afx_msg void OnStnClickedHomePage();
+	virtual BOOL OnInitDialog();
 };
 
 CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
@@ -53,6 +56,23 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	ON_STN_CLICKED(IDC_BLOG, &CAboutDlg::OnStnClickedBlog)
 	ON_STN_CLICKED(IDC_HOMEPAGE, &CAboutDlg::OnStnClickedHomePage)
 END_MESSAGE_MAP()
+
+BOOL CAboutDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+
+	LOGFONT sttFont;
+
+	GetFont()->GetLogFont(&sttFont);
+	sttFont.lfUnderline = TRUE;
+	m_clsFont.CreateFontIndirect(&sttFont);
+
+	GetDlgItem(IDC_BLOG)->SetFont(&m_clsFont);
+	GetDlgItem(IDC_HOMEPAGE)->SetFont(&m_clsFont);
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}
 
 void CAboutDlg::OnStnClickedBlog()
 {
