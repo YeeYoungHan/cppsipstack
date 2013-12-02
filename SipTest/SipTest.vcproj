@@ -361,6 +361,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\RtpThread.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Setup.cpp"
 				>
 			</File>
@@ -420,6 +424,10 @@
 			>
 			<File
 				RelativePath=".\Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RtpHeader.h"
 				>
 			</File>
 			<File

@@ -105,7 +105,7 @@ bool StartTestThread( HWND hWnd )
 	gbStopTestThread = false;
 	ghWnd = hWnd;
 
-	if( StartThread( "SipSpeedThread", SipTestThread, NULL ) == false ) return false;
+	if( StartThread( "SipTestThread", SipTestThread, NULL ) == false ) return false;
 
 	return true;
 }

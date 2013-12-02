@@ -20,6 +20,7 @@
 #include "SipTest.h"
 #include "SipTestDlg.h"
 #include "Setup.h"
+#include "TestInfo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
