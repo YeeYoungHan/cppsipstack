@@ -52,6 +52,8 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 	int iEvent, iRecvLen;
 	uint16_t	sPort;
 
+	gclsTestInfo.ClearRtp();
+
 	InitRtpHeader( pclsRtpHeader );
 
 	TcpSetPollIn( arrPoll[0], gclsTestInfo.m_clsCallerRtp.m_hSocket );
@@ -86,6 +88,10 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 						SendLog( "[ERROR] caller RTP socket recv error [%s]", szRecvPacket + sizeof(CRtpHeader) );
 						break;
 					}
+					else
+					{
+						++gclsTestInfo.m_clsCallerRtp.m_iRecvCount;
+					}
 				}
 			}
 
@@ -104,8 +110,14 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 						SendLog( "[ERROR] callee RTP socket recv error [%s]", szRecvPacket + sizeof(CRtpHeader) );
 						break;
 					}
+					else
+					{
+						++gclsTestInfo.m_clsCalleeRtp.m_iRecvCount;
+					}
 				}
 			}
+
+			Sleep(20);
 		}
 
 		if( iRtpCount >= 100 ) break;
@@ -113,9 +125,15 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 
 	gclsSipUserAgent.StopCall( gclsTestInfo.m_strCallerCallId.c_str() );
 
-	if( iRtpCount >= 100 )
+	if( iRtpCount >= 100 && gclsTestInfo.m_clsCallerRtp.m_iRecvCount >= 95 && gclsTestInfo.m_clsCalleeRtp.m_iRecvCount >= 95 )
 	{
-		SendLog( "RTP send/recv success" );
+		SendLog( "RTP caller recv count(%d) callee recv count(%d)"
+			, gclsTestInfo.m_clsCallerRtp.m_iRecvCount, gclsTestInfo.m_clsCalleeRtp.m_iRecvCount );
+	}
+	else
+	{
+		SendLog( "[ERROR] RTP caller recv count(%d) callee recv count(%d)"
+			, gclsTestInfo.m_clsCallerRtp.m_iRecvCount, gclsTestInfo.m_clsCalleeRtp.m_iRecvCount );
 	}
 
 	gbRtpThreadRun = false;

@@ -29,9 +29,11 @@ public:
 
 	int	m_iPort;
 	Socket	m_hSocket;
+	int m_iRecvCount;
 
 	bool Create( int iPort );
 	void Close( );
+	void Clear( );
 };
 
 class CTestInfo
@@ -46,8 +48,9 @@ public:
 	CSipCallRtp		m_clsCallerPeerRtp;
 	CSipCallRtp		m_clsCalleePeerRtp;
 
-	bool CreateRtp();
-	void CloseRtp();
+	bool CreateRtp( );
+	void CloseRtp( );
+	void ClearRtp( );
 };
 
 extern CTestInfo gclsTestInfo;

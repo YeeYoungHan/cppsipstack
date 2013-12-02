@@ -21,7 +21,7 @@
 
 CTestInfo gclsTestInfo;
 
-CTestRtpInfo::CTestRtpInfo() : m_iPort(0), m_hSocket(INVALID_SOCKET)
+CTestRtpInfo::CTestRtpInfo() : m_iPort(0), m_hSocket(INVALID_SOCKET), m_iRecvCount(0)
 {
 }
 
@@ -46,7 +46,12 @@ void CTestRtpInfo::Close( )
 	m_iPort = 0;
 }
 
-bool CTestInfo::CreateRtp()
+void CTestRtpInfo::Clear( )
+{
+	m_iRecvCount = 0;
+}
+
+bool CTestInfo::CreateRtp( )
 {
 	bool bRes = false;
 
@@ -80,8 +85,14 @@ bool CTestInfo::CreateRtp()
 	return bRes;
 }
 
-void CTestInfo::CloseRtp()
+void CTestInfo::CloseRtp( )
 {
 	m_clsCallerRtp.Close();
 	m_clsCalleeRtp.Close();
+}
+
+void CTestInfo::ClearRtp( )
+{
+	m_clsCallerRtp.Clear();
+	m_clsCalleeRtp.Clear();
 }
