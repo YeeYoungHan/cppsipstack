@@ -64,6 +64,9 @@
 #define SIP_TEST_ID	WM_USER+0x300
 #define WM_TEST_END	1
 
+// stdafx.cpp
+void ShowWebBrowser( const char * pszUrl );
+
 // SipTestThread.cpp
 bool StartTestThread( HWND hWnd );
 void StopTestThread();
