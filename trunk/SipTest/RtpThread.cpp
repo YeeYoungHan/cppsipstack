@@ -40,7 +40,7 @@ void InitRtpHeader( CRtpHeader * pclsRtpHeader )
 	pclsRtpHeader->SetExtension(0);
 	pclsRtpHeader->SetCC(0);
 	pclsRtpHeader->SetMarker(0);
-	pclsRtpHeader->ssrc = htonl( 100 );
+	pclsRtpHeader->m_iSsrc = htonl( 100 );
 }
 
 /**

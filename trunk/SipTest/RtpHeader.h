@@ -26,70 +26,70 @@
 class CRtpHeader
 {
 public:
-  unsigned char  flags;
-  unsigned char  mpt;
-  unsigned short seq;         // sequence number
-  unsigned int	 ts;         // timestamp
-  unsigned int   ssrc;       // synchronization source
+  unsigned char  m_cFlags;
+  unsigned char  m_cMpt;
+  unsigned short m_sSeq;         // sequence number
+  unsigned int	 m_iTimeStamp;   // timestamp
+  unsigned int   m_iSsrc;        // synchronization source
 
   inline unsigned char GetVersion() 
 	{
-		return flags >> 6; 
+		return m_cFlags >> 6; 
 	}
 
   inline void SetVersion( unsigned char nVersion )
   {    
-		flags = (nVersion << 6) | (flags & 0x3F);
+		m_cFlags = (nVersion << 6) | (m_cFlags & 0x3F);
   }
 
   inline unsigned char GetPadding() 
 	{ 
-		return (flags >> 5) & 0x1; 
+		return (m_cFlags >> 5) & 0x1; 
 	}
 
   inline void SetPadding( unsigned char bPadding ) 
   { 
-    flags = (bPadding << 5) | (flags & 0xDF);
+    m_cFlags = (bPadding << 5) | (m_cFlags & 0xDF);
   }
 
   inline unsigned char GetExtension() 
 	{ 
-		return (flags >> 4) & 0x01;
+		return (m_cFlags >> 4) & 0x01;
 	}
     
 	inline void SetExtension(unsigned char bExt)
   {
-    flags = (bExt << 4) | (flags & 0xEF);
+    m_cFlags = (bExt << 4) | (m_cFlags & 0xEF);
   }
 
   inline unsigned char GetCC() 
 	{ 
-		return flags & 0x0F;
+		return m_cFlags & 0x0F;
 	}
     
 	inline void SetCC(unsigned char nCC)
   {
-    flags = nCC | (flags & 0xF0);
+    m_cFlags = nCC | (m_cFlags & 0xF0);
   }
 
   inline unsigned char GetMarker() 
 	{ 
-		return mpt >> 7; 
+		return m_cMpt >> 7; 
 	}
 
   inline void SetMarker(unsigned char bMarker)
   {
-    mpt = (bMarker << 7) | (mpt & 0x7F);
+    m_cMpt = (bMarker << 7) | (m_cMpt & 0x7F);
   }
 
   inline unsigned char GetPT() 
 	{ 
-		return mpt & 0x7F;
+		return m_cMpt & 0x7F;
 	}
     
 	inline void SetPT(unsigned char nPT)
   {
-      mpt = nPT | (mpt & 0x80);
+    m_cMpt = nPT | (m_cMpt & 0x80);
   }
 };
 
