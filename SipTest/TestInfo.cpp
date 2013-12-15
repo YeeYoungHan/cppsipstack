@@ -65,6 +65,10 @@ void CTestRtpInfo::Clear( )
 	m_iRecvCount = 0;
 }
 
+CTestInfo::CTestInfo() : m_eTestType(E_TEST_NULL)
+{
+}
+
 /**
  * @ingroup SipTest
  * @brief 발신자/수신자 RTP 소켓을 생성한다.

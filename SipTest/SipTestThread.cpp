@@ -44,6 +44,20 @@ void SendLog( const char * fmt, ... )
 	SendMessage( ghWnd, SIP_TEST_ID, WM_TEST_MSG, (LPARAM)szBuf );
 }
 
+void WaitUntilAllCallStop()
+{
+	// 모든 통화가 종료될 때까지 대기한다.
+	while( gclsSipUserAgent.GetCallCount() > 0 )
+	{
+		Sleep(20);
+
+		if( gbStopTestThread )
+		{
+			gclsSipUserAgent.StopCallAll();
+		}
+	}
+}
+
 /**
  * @ingroup SipTest
  * @brief 테스트 쓰레드
@@ -72,6 +86,8 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	clsRoute.m_iDestPort = gclsSetup.m_iSipServerPort;
 
 	// 통화 연결 테스트
+	SendLog( "Call Established Test : Start" );
+
 	if( gclsSipUserAgent.StartCall( gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strCalleeId.c_str(), &clsRtp, &clsRoute, strCallId ) == false )
 	{
 		SendLog( "gclsSipUserAgent.StartCall error" );
@@ -80,16 +96,25 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 
 	gclsTestInfo.m_strCallerCallId = strCallId;
 
-	// 모든 통화가 종료될 때까지 대기한다.
-	while( gclsSipUserAgent.GetCallCount() > 0 )
-	{
-		Sleep(20);
+	WaitUntilAllCallStop();
 
-		if( gbStopTestThread )
-		{
-			gclsSipUserAgent.StopCallAll();
-		}
+	SendLog( "Call Established Test : Stop" );
+
+	// 통화 취소 테스트
+	SendLog( "Call Cancel Test : Start" );
+
+	gclsTestInfo.m_eTestType = E_TEST_CANCEL;
+	if( gclsSipUserAgent.StartCall( gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strCalleeId.c_str(), &clsRtp, &clsRoute, strCallId ) == false )
+	{
+		SendLog( "gclsSipUserAgent.StartCall error" );
+		goto FUNC_END;
 	}
+
+	gclsTestInfo.m_strCallerCallId = strCallId;
+
+	WaitUntilAllCallStop();
+
+	SendLog( "Call Cancel Test : Stop" );
 
 	gclsTestInfo.CloseRtp();
 

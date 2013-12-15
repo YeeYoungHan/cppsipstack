@@ -22,6 +22,13 @@
 #include "SipUdp.h"
 #include "SipUserAgentCallBack.h"
 
+enum ETestType
+{
+	E_TEST_NULL = 0,
+	E_TEST_CANCEL,
+	E_TEST_DECLINE
+};
+
 /**
  * @ingroup SipTest
  * @brief 테스트용 RTP 정보 저장 클래스
@@ -47,6 +54,8 @@ public:
 class CTestInfo
 {
 public:
+	CTestInfo();
+
 	std::string		m_strCallerCallId;
 	std::string		m_strCalleeCallId;
 
@@ -55,6 +64,8 @@ public:
 
 	CSipCallRtp		m_clsCallerPeerRtp;
 	CSipCallRtp		m_clsCalleePeerRtp;
+
+	ETestType			m_eTestType;
 
 	bool CreateRtp( );
 	void CloseRtp( );

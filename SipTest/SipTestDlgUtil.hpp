@@ -45,7 +45,12 @@ bool CSipTestDlg::CheckInput( CString & strInput, const char * pszName )
 void CSipTestDlg::SetLog( const char * fmt, ... )
 {
 	va_list		ap;
-	char			szBuf[8192];
+	char			szBuf[8192], szTime[51];
+	SYSTEMTIME	sttTime;
+
+	GetLocalTime( &sttTime );
+
+	snprintf( szTime, sizeof(szTime), "[%02d:%02d:%02d.%03d] ", sttTime.wHour, sttTime.wMinute, sttTime.wSecond, sttTime.wMilliseconds );
 
 	va_start( ap, fmt );
 	vsnprintf( szBuf, sizeof(szBuf)-1, fmt, ap );
@@ -54,6 +59,7 @@ void CSipTestDlg::SetLog( const char * fmt, ... )
 	m_clsMutex.acquire();
 
 	UpdateData(TRUE);
+	m_strLog.Append( szTime );
 	m_strLog.Append( szBuf );
 	m_strLog.Append( "\r\n" );
 	UpdateData(FALSE);
