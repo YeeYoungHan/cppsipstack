@@ -105,6 +105,8 @@ void CSipTestDlg::EventIncomingCall( const char * pszCallId, const char * pszFro
 		return;
 	}
 
+	if( gclsTestInfo.m_eTestType == E_TEST_CANCEL ) return;
+
 	CSipCallRtp clsRtp;
 
 	clsRtp.m_strIp = gclsSipUserAgent.m_clsSipStack.m_clsSetup.m_strLocalIp;
@@ -126,6 +128,10 @@ void CSipTestDlg::EventIncomingCall( const char * pszCallId, const char * pszFro
  */
 void CSipTestDlg::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
 {
+	if( gclsTestInfo.m_eTestType == E_TEST_CANCEL )
+	{
+		gclsSipUserAgent.StopCall( pszCallId );
+	}
 }
 
 /**
