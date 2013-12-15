@@ -44,9 +44,11 @@ void SendLog( const char * fmt, ... )
 	SendMessage( ghWnd, SIP_TEST_ID, WM_TEST_MSG, (LPARAM)szBuf );
 }
 
+/**
+ * @brief 모든 통화가 종료될 때까지 대기한다.
+ */
 void WaitUntilAllCallStop()
 {
-	// 모든 통화가 종료될 때까지 대기한다.
 	while( gclsSipUserAgent.GetCallCount() > 0 )
 	{
 		Sleep(20);
@@ -115,6 +117,22 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	WaitUntilAllCallStop();
 
 	SendLog( "Call Cancel Test : Stop" );
+
+	// 통화 거절 테스트
+	SendLog( "Call Decline Test : Start" );
+
+	gclsTestInfo.m_eTestType = E_TEST_DECLINE;
+	if( gclsSipUserAgent.StartCall( gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strCalleeId.c_str(), &clsRtp, &clsRoute, strCallId ) == false )
+	{
+		SendLog( "gclsSipUserAgent.StartCall error" );
+		goto FUNC_END;
+	}
+
+	gclsTestInfo.m_strCallerCallId = strCallId;
+
+	WaitUntilAllCallStop();
+
+	SendLog( "Call Decline Test : Stop" );
 
 	gclsTestInfo.CloseRtp();
 

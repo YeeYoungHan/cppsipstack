@@ -105,7 +105,15 @@ void CSipTestDlg::EventIncomingCall( const char * pszCallId, const char * pszFro
 		return;
 	}
 
-	if( gclsTestInfo.m_eTestType == E_TEST_CANCEL ) return;
+	if( gclsTestInfo.m_eTestType == E_TEST_CANCEL ) 
+	{
+		return;
+	}
+	else if( gclsTestInfo.m_eTestType == E_TEST_DECLINE ) 
+	{
+		gclsSipUserAgent.StopCall( pszCallId, SIP_DECLINE );
+		return;
+	}
 
 	CSipCallRtp clsRtp;
 
