@@ -47,17 +47,43 @@ void SendLog( const char * fmt, ... )
 /**
  * @brief 모든 통화가 종료될 때까지 대기한다.
  */
-void WaitUntilAllCallStop()
+int WaitUntilAllCallStop()
 {
+	int iMiliSecond = 0;
+
 	while( gclsSipUserAgent.GetCallCount() > 0 )
 	{
 		Sleep(20);
+		iMiliSecond += 20;
 
 		if( gbStopTestThread )
 		{
 			gclsSipUserAgent.StopCallAll();
 		}
 	}
+
+	return iMiliSecond;
+}
+
+int StartCall( const char * pszTestName, CSipCallRtp & clsRtp, CSipCallRoute & clsRoute )
+{
+	std::string	strCallId;
+
+	SendLog( "%s : Start", pszTestName );
+
+	if( gclsSipUserAgent.StartCall( gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strCalleeId.c_str(), &clsRtp, &clsRoute, strCallId ) == false )
+	{
+		SendLog( "gclsSipUserAgent.StartCall error" );
+		return -1;
+	}
+
+	gclsTestInfo.m_strCallerCallId = strCallId;
+
+	int iMiliSecond = WaitUntilAllCallStop();
+
+	SendLog( "%s : Stop", pszTestName );
+
+	return iMiliSecond;
 }
 
 /**
@@ -71,6 +97,7 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	CSipCallRtp clsRtp;
 	CSipCallRoute clsRoute;
 	std::string strCallId;
+	int iMiliSecond;
 
 	gbTestThreadRun = true;
 
@@ -88,51 +115,34 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	clsRoute.m_iDestPort = gclsSetup.m_iSipServerPort;
 
 	// 통화 연결 테스트
-	SendLog( "Call Established Test : Start" );
-
-	if( gclsSipUserAgent.StartCall( gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strCalleeId.c_str(), &clsRtp, &clsRoute, strCallId ) == false )
-	{
-		SendLog( "gclsSipUserAgent.StartCall error" );
-		goto FUNC_END;
-	}
-
-	gclsTestInfo.m_strCallerCallId = strCallId;
-
-	WaitUntilAllCallStop();
-
-	SendLog( "Call Established Test : Stop" );
+	iMiliSecond = StartCall( "Call Established Test", clsRtp, clsRoute );
+	if( iMiliSecond == -1 ) goto FUNC_END;
 
 	// 통화 취소 테스트
-	SendLog( "Call Cancel Test : Start" );
-
 	gclsTestInfo.m_eTestType = E_TEST_CANCEL;
-	if( gclsSipUserAgent.StartCall( gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strCalleeId.c_str(), &clsRtp, &clsRoute, strCallId ) == false )
+	iMiliSecond = StartCall( "Call Cancel Test", clsRtp, clsRoute );
+	if( iMiliSecond == -1 ) goto FUNC_END;
+	if( iMiliSecond <= 200 )
 	{
-		SendLog( "gclsSipUserAgent.StartCall error" );
-		goto FUNC_END;
+		SendLog( "Call Cancel Test : OK" );
 	}
-
-	gclsTestInfo.m_strCallerCallId = strCallId;
-
-	WaitUntilAllCallStop();
-
-	SendLog( "Call Cancel Test : Stop" );
+	else
+	{
+		SendLog( "Call Cancel Test : ERROR" );
+	}
 
 	// 통화 거절 테스트
-	SendLog( "Call Decline Test : Start" );
-
 	gclsTestInfo.m_eTestType = E_TEST_DECLINE;
-	if( gclsSipUserAgent.StartCall( gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strCalleeId.c_str(), &clsRtp, &clsRoute, strCallId ) == false )
+	iMiliSecond = StartCall( "Call Decline Test", clsRtp, clsRoute );
+	if( iMiliSecond == -1 ) goto FUNC_END;
+	if( iMiliSecond <= 200 )
 	{
-		SendLog( "gclsSipUserAgent.StartCall error" );
-		goto FUNC_END;
+		SendLog( "Call Decline Test : OK" );
 	}
-
-	gclsTestInfo.m_strCallerCallId = strCallId;
-
-	WaitUntilAllCallStop();
-
-	SendLog( "Call Decline Test : Stop" );
+	else
+	{
+		SendLog( "Call Decline Test : ERROR" );
+	}
 
 	gclsTestInfo.CloseRtp();
 
