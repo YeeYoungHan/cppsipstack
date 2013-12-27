@@ -115,6 +115,7 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	clsRoute.m_iDestPort = gclsSetup.m_iSipServerPort;
 
 	// 통화 연결 테스트
+	gclsTestInfo.m_eTestType = E_TEST_ESTABLISHED;
 	iMiliSecond = StartCall( "Call Established Test", clsRtp, clsRoute );
 	if( iMiliSecond == -1 ) goto FUNC_END;
 
