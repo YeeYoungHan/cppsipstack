@@ -22,9 +22,8 @@
 #include "SipParserDefine.h"
 #include "SipUdp.h"
 #include "SipMutex.h"
+#include "SipUserAgentCallBack.h"
 #include <map>
-
-#define RTP_INFO_SOCKET_COUNT	4
 
 /**
  * @ingroup KSipServer
@@ -33,7 +32,7 @@
 class CRtpInfo
 {
 public:
-	CRtpInfo( uint8_t iSocketCount = RTP_INFO_SOCKET_COUNT );
+	CRtpInfo( uint8_t iSocketCount = SOCKET_COUNT_PER_MEDIA );
 
 	Socket		* m_phSocket;
 	uint32_t	* m_piIp;
