@@ -109,6 +109,9 @@ public:
 
 	CSipStack							m_clsSipStack;
 
+	/** 중지 이벤트 */
+	bool m_bStopEvent;
+
 private:
 	void DeleteRegisterInfoAll( );
 	void DeRegister( );

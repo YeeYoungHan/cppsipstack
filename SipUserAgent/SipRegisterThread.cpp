@@ -36,7 +36,7 @@ void * SipRegisterThread( void * lpParameter )
 	SIP_SERVER_INFO_LIST::iterator itList;
 	time_t	iTime;
 
-	while( pclsSipUserAgent->m_clsSipStack.m_bStopEvent == false )
+	while( pclsSipUserAgent->m_bStopEvent == false )
 	{
 		time( &iTime );
 
@@ -77,6 +77,8 @@ void * SipRegisterThread( void * lpParameter )
 
 		sleep(1);
 	}
+
+	pclsSipUserAgent->m_bStopEvent = false;
 
 	return 0;
 }
