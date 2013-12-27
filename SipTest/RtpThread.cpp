@@ -135,11 +135,15 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 	{
 		SendLog( "RTP caller recv count(%d) callee recv count(%d)"
 			, gclsTestInfo.m_clsCallerRtp.m_iRecvCount, gclsTestInfo.m_clsCalleeRtp.m_iRecvCount );
+
+		gclsTestInfo.m_bResult = true;
 	}
 	else
 	{
 		SendLog( "[ERROR] RTP caller recv count(%d) callee recv count(%d)"
 			, gclsTestInfo.m_clsCallerRtp.m_iRecvCount, gclsTestInfo.m_clsCalleeRtp.m_iRecvCount );
+
+		gclsTestInfo.m_bResult = false;
 	}
 
 	gbRtpThreadRun = false;

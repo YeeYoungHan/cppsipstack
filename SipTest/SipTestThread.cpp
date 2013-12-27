@@ -119,6 +119,14 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	iMiliSecond = StartCall( "Call Established Test", clsRtp, clsRoute );
 	if( iMiliSecond == -1 ) goto FUNC_END;
 
+	if( gclsTestInfo.m_bResult == false )
+	{
+		SendLog( "Call Established Test : ERROR" );
+		goto FUNC_END;
+	}
+
+	SendLog( "Call Established Test : OK" );
+
 	// 통화 취소 테스트
 	gclsTestInfo.m_eTestType = E_TEST_CANCEL;
 	iMiliSecond = StartCall( "Call Cancel Test", clsRtp, clsRoute );

@@ -67,6 +67,7 @@ public:
 	CSipCallRtp		m_clsCalleePeerRtp;
 
 	ETestType			m_eTestType;
+	bool					m_bResult;
 
 	bool CreateRtp( );
 	void CloseRtp( );
