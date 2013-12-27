@@ -39,7 +39,7 @@
  * @ingroup SipUserAgent
  * @brief 생성자
  */
-CSipUserAgent::CSipUserAgent() : m_pclsCallBack(NULL), m_iSeq(0), m_bStart(false)
+CSipUserAgent::CSipUserAgent() : m_pclsCallBack(NULL), m_bStopEvent(false), m_iSeq(0), m_bStart(false)
 {
 }
 
@@ -245,8 +245,16 @@ bool CSipUserAgent::Stop( )
 		sleep(1);
 	}
 
+	m_bStopEvent = true;
 	m_clsSipStack.Stop();
 	DeleteRegisterInfoAll( );
+
+	// SipRegisterThread 가 종료할 때까지 대기한다.
+	for( int i = 0; i < 10; ++i )
+	{
+		if( m_bStopEvent == false ) break;
+		sleep(1);
+	}
 
 	m_bStart = false;
 
