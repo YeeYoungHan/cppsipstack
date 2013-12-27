@@ -48,11 +48,12 @@ void * RtpThread( void * lpParameter )
 	CRtpThreadInfo * pclsThreadInfo = (CRtpThreadInfo *)lpParameter;
 	int				iPort = pclsThreadInfo->m_iPort;
 	CRtpInfo	* pclsRtpInfo;
-	pollfd		sttPoll[4];
+	pollfd		* psttPoll = NULL;
 	int				n, iPacketLen;
 	char			szPacket[1500];
 	uint32_t	iIp;
 	uint16_t	sPort;
+	uint8_t		cPos, cNext;
 
 	delete pclsThreadInfo;
 
@@ -68,86 +69,65 @@ void * RtpThread( void * lpParameter )
 		goto FUNC_END;
 	}
 
-	for( uint8_t i = 0; i < pclsRtpInfo->m_iSocketCount; ++i )
+	psttPoll = (pollfd *)malloc( sizeof(pollfd) * pclsRtpInfo->m_iSocketCount );
+	if( psttPoll == NULL )
 	{
-		sttPoll[i].fd = pclsRtpInfo->m_phSocket[i];
-		sttPoll[i].events = POLLIN;
-		sttPoll[i].revents = 0;
+		CLog::Print( LOG_ERROR, "rtp port(%d) memory error", iPort );
+		gclsRtpMap.Delete( iPort );
+		goto FUNC_END;
+	}
+
+	for( cPos = 0; cPos < pclsRtpInfo->m_iSocketCount; ++cPos )
+	{
+		psttPoll[cPos].fd = pclsRtpInfo->m_phSocket[cPos];
+		psttPoll[cPos].events = POLLIN;
+		psttPoll[cPos].revents = 0;
 	}
 
 	while( gbStop == false && pclsRtpInfo->m_bStop == false )
 	{
-		n = poll( sttPoll, pclsRtpInfo->m_iSocketCount, 1000 );
+		n = poll( psttPoll, pclsRtpInfo->m_iSocketCount, 1000 );
 		if( n <= 0 ) continue;
 
-		if( sttPoll[0].revents & POLLIN )
+		for( cPos = 0, cNext = 0; cPos < pclsRtpInfo->m_iSocketCount; ++cPos )
 		{
-			iPacketLen = sizeof(szPacket);
-			if( UdpRecv( pclsRtpInfo->m_phSocket[0], szPacket, &iPacketLen, &iIp, &sPort ) )
+			if( psttPoll[cPos].revents & POLLIN )
 			{
-				if( pclsRtpInfo->m_piIp[0] == 0 )
+				iPacketLen = sizeof(szPacket);
+				if( UdpRecv( pclsRtpInfo->m_phSocket[cPos], szPacket, &iPacketLen, &iIp, &sPort ) )
 				{
-					pclsRtpInfo->SetIpPort( 0, iIp, sPort );
-				}
+					if( pclsRtpInfo->m_piIp[cPos] == 0 )
+					{
+						pclsRtpInfo->SetIpPort( cPos, iIp, sPort );
+					}
 
-				if( pclsRtpInfo->m_piIp[2] )
-				{
-					pclsRtpInfo->Send( 2, szPacket, iPacketLen );
+					if( cNext % 2 == 0 )
+					{
+						if( pclsRtpInfo->m_piIp[cPos+2] )
+						{
+							pclsRtpInfo->Send( cPos+2, szPacket, iPacketLen );
+						}
+					}
+					else
+					{
+						if( pclsRtpInfo->m_piIp[cPos-2] )
+						{
+							pclsRtpInfo->Send( cPos-2, szPacket, iPacketLen );
+						}
+					}
 				}
 			}
-		}
 
-		if( sttPoll[1].revents & POLLIN )
-		{
-			iPacketLen = sizeof(szPacket);
-			if( UdpRecv( pclsRtpInfo->m_phSocket[1], szPacket, &iPacketLen, &iIp, &sPort ) )
+			if( cPos % 2 == 1 )
 			{
-				if( pclsRtpInfo->m_piIp[1] == 0 )
-				{
-					pclsRtpInfo->SetIpPort( 1, iIp, sPort );
-				}
-
-				if( pclsRtpInfo->m_piIp[3] )
-				{
-					pclsRtpInfo->Send( 3, szPacket, iPacketLen );
-				}
+				++cNext;
 			}
 		}
+	}
 
-		if( sttPoll[2].revents & POLLIN )
-		{
-			iPacketLen = sizeof(szPacket);
-			if( UdpRecv( pclsRtpInfo->m_phSocket[2], szPacket, &iPacketLen, &iIp, &sPort ) )
-			{
-				if( pclsRtpInfo->m_piIp[2] == 0 )
-				{
-					pclsRtpInfo->SetIpPort( 2, iIp, sPort );
-				}
-
-				if( pclsRtpInfo->m_piIp[0] )
-				{
-					pclsRtpInfo->Send( 0, szPacket, iPacketLen );
-				}
-			}
-		}
-
-		if( sttPoll[3].revents & POLLIN )
-		{
-			iPacketLen = sizeof(szPacket);
-			if( UdpRecv( pclsRtpInfo->m_phSocket[3], szPacket, &iPacketLen, &iIp, &sPort ) )
-			{
-				if( pclsRtpInfo->m_piIp[3] == 0 )
-				{
-					pclsRtpInfo->SetIpPort( 3, iIp, sPort );
-				}
-
-				if( pclsRtpInfo->m_piIp[1] )
-				{
-					pclsRtpInfo->Send( 1, szPacket, iPacketLen );
-				}
-			}
-		}
-
+	if( psttPoll )
+	{
+		free( psttPoll );
 	}
 
 	gclsRtpMap.Delete( iPort );
