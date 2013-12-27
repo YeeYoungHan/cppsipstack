@@ -45,6 +45,7 @@ void SendLog( const char * fmt, ... )
 }
 
 /**
+ * @ingroup SipTest
  * @brief 모든 통화가 종료될 때까지 대기한다.
  */
 int WaitUntilAllCallStop()
@@ -65,6 +66,14 @@ int WaitUntilAllCallStop()
 	return iMiliSecond;
 }
 
+/**
+ * @ingroup SipTest
+ * @brief 통화 연결 후, 통화 종료할 때까지 대기한다.
+ * @param pszTestName 테스트 이름
+ * @param clsRtp			RTP 정보
+ * @param clsRoute		SIP 서버 정보
+ * @returns 성공하면 통화 연결 후, 종료되기까지의 시간을 mili second 단위로 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int StartCall( const char * pszTestName, CSipCallRtp & clsRtp, CSipCallRoute & clsRoute )
 {
 	std::string	strCallId;
