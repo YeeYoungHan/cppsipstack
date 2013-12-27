@@ -31,12 +31,14 @@ void CSipCallRtp::SetIpPort( const char * pszIp, int iPort )
 
 #ifdef USE_MEDIA_LIST
 	SDP_MEDIA_LIST::iterator itMedia;
+	int iIndex = 0;
 
 	for( itMedia = m_clsMediaList.begin(); itMedia != m_clsMediaList.end(); ++itMedia )
 	{
-		itMedia->m_iPort = m_iPort;
+		itMedia->m_iPort = m_iPort + iIndex * SOCKET_COUNT_PER_MEDIA;
 		itMedia->DeleteAttribute( "rtcp" );
-		break;
+
+		++iIndex;
 	}
 #endif
 }
