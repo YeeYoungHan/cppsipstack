@@ -25,6 +25,7 @@
 enum ETestType
 {
 	E_TEST_NULL = 0,
+	E_TEST_ESTABLISHED,
 	E_TEST_CANCEL,
 	E_TEST_DECLINE
 };
