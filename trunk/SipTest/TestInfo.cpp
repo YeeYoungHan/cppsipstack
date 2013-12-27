@@ -65,7 +65,7 @@ void CTestRtpInfo::Clear( )
 	m_iRecvCount = 0;
 }
 
-CTestInfo::CTestInfo() : m_eTestType(E_TEST_NULL)
+CTestInfo::CTestInfo() : m_eTestType(E_TEST_NULL), m_bResult(false)
 {
 }
 
