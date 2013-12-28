@@ -25,6 +25,8 @@
 #include "SipUserAgentCallBack.h"
 #include <map>
 
+#define SOCKET_COUNT_PER_MEDIA	4
+
 /**
  * @ingroup KSipServer
  * @brief RTP relay 를 위한 RTP 소켓 정보 저장 클래스

@@ -210,7 +210,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 			return StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
 		}
 
-		pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), iStartPort );
+		pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), iStartPort, SOCKET_COUNT_PER_MEDIA );
 	}
 
 	clsUserInfo.GetCallRoute( clsRoute );
@@ -269,7 +269,7 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 	{
 		if( pclsRtp && clsCallInfo.m_iPeerRtpPort > 0 )
 		{
-			pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsCallInfo.m_iPeerRtpPort );
+			pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsCallInfo.m_iPeerRtpPort, SOCKET_COUNT_PER_MEDIA );
 		}
 
 		// QQQ: INVITE 200 OK 응답에서 SDP 가 존재하지 않으면 ReINVITE 메시지를 전송하는 버그가 있다.
@@ -295,7 +295,7 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 		{
 			iStartPort = clsCallInfo.m_iPeerRtpPort - 2;
 
-			pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsCallInfo.m_iPeerRtpPort );
+			pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsCallInfo.m_iPeerRtpPort, SOCKET_COUNT_PER_MEDIA );
 		}
 
 		gclsUserAgent.SendReInvite( strReferToCallId.c_str(), pclsRtp );
@@ -359,7 +359,7 @@ void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 	{
 		if( pclsRtp && clsCallInfo.m_iPeerRtpPort > 0 )
 		{
-			pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsCallInfo.m_iPeerRtpPort );
+			pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsCallInfo.m_iPeerRtpPort, SOCKET_COUNT_PER_MEDIA );
 		}
 
 		gclsUserAgent.SendReInvite( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp );
@@ -394,11 +394,11 @@ bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToC
 	{
 		if( bScreenedTransfer )
 		{
-			clsRtp.SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsReferToCallInfo.m_iPeerRtpPort );
+			clsRtp.SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsReferToCallInfo.m_iPeerRtpPort, SOCKET_COUNT_PER_MEDIA );
 		}
 		else
 		{
-			clsRtp.SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsReferToCallInfo.m_iPeerRtpPort + 2 );
+			clsRtp.SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsReferToCallInfo.m_iPeerRtpPort + 2, SOCKET_COUNT_PER_MEDIA );
 		}
 	}
 
@@ -485,7 +485,7 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 		iStartPort = gclsRtpMap.CreatePort( SOCKET_COUNT_PER_MEDIA * clsRtp.GetMediaCount() );
 		if( iStartPort == -1 ) return false;
 
-		clsRtp.SetIpPort( gclsSetup.m_strLocalIp.c_str(), iStartPort );
+		clsRtp.SetIpPort( gclsSetup.m_strLocalIp.c_str(), iStartPort, SOCKET_COUNT_PER_MEDIA );
 	}
 
 	clsUserInfo.GetCallRoute( clsRoute );
