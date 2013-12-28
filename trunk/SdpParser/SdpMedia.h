@@ -33,6 +33,7 @@ class CSdpMedia
 {
 public:
 	CSdpMedia();
+	CSdpMedia( const char * pszMedia, int iPort, const char * pszProtocol );
 	~CSdpMedia();
 
 	std::string	m_strMedia;
