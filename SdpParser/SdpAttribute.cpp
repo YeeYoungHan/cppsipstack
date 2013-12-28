@@ -109,3 +109,35 @@ bool CSdpAttribute::Empty()
 
 	return false;
 }
+
+/**
+ * @ingroup SdpParser
+ * @brief payload type 을 리턴한다.
+ * @returns payload type 을 리턴한다.
+ */
+int CSdpAttribute::GetPayLoadType()
+{
+	if( strcmp( m_strName.c_str(), "rtpmap" ) && strcmp( m_strName.c_str(), "fmtp" ) ) return -1;
+
+	int iLen = m_strValue.length();
+	const char * pszValue = m_strValue.c_str();
+
+	for( int i = 0; i < iLen; ++i )
+	{
+		if( pszValue[i] == ' ' )
+		{
+			if( i > 0 )
+			{
+				std::string strValue;
+
+				strValue.append( pszValue, 0, i );
+
+				return atoi( strValue.c_str() );
+			}
+
+			break;
+		}
+	}
+
+	return -1;
+}

@@ -68,6 +68,22 @@ static bool Test2( const char * pszText )
 
 	CSdpMedia clsNewMedia = *(clsSdp.m_clsMediaList.begin());
 	SDP_MEDIA_LIST clsMediaList = clsSdp.m_clsMediaList;
+	SDP_ATTRIBUTE_LIST::iterator itAttr;
+	int arrPT[] = { -1, 103, 102, 104, 117, 117, 3, 0, 8, 9, -1, 101, 101 }; 
+	int iIndex = 0;
+
+	for( itAttr = clsNewMedia.m_clsAttributeList.begin(); itAttr != clsNewMedia.m_clsAttributeList.end(); ++itAttr )
+	{
+		int iPT = itAttr->GetPayLoadType();
+
+		if( iPT != arrPT[iIndex] )
+		{
+			printf( "iPT(%d) != arrPT[%d](%d)\n", iPT, iIndex, arrPT[iIndex] );
+			return false;
+		}
+
+		++iIndex;
+	}
 
 	clsSdp.Clear();
 
