@@ -51,7 +51,11 @@ public:
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
 
+	void AddFmt( int iPayLoadType );
+
 	bool DeleteAttribute( const char * pszName );
+
+	void AddAttribute( CSdpAttribute * pclsAttr );
 
 private:
 	void SetData( const char * pszData, int iLen, int iType );

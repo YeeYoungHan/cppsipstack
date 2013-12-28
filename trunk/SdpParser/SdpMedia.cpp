@@ -169,6 +169,20 @@ void CSdpMedia::Clear()
 
 /**
  * @ingroup SdpParser
+ * @brief FMT 를 추가한다.
+ * @param iPayLoadType payload type
+ */
+void CSdpMedia::AddFmt( int iPayLoadType )
+{
+	char	szNum[11];
+
+	snprintf( szNum, sizeof(szNum), "%d", iPayLoadType );
+
+	m_clsFmtList.push_back( szNum );
+}
+
+/**
+ * @ingroup SdpParser
  * @brief 애트리뷰트를 삭제한다.
  * @param pszName 삭제할 애트리뷰트 이름
  * @returns 애트리뷰트를 삭제하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
@@ -197,6 +211,21 @@ LOOP_START:
 	}
 
 	return bRes;
+}
+
+/**
+ * @ingroup SdpParser
+ * @brief 애트리뷰트를 추가한다. rtpmap 이면 fmt 로 추가한다.
+ * @param pclsAttr 애트리뷰트 객체
+ */
+void CSdpMedia::AddAttribute( CSdpAttribute * pclsAttr )
+{
+	if( !strcmp( pclsAttr->m_strName.c_str(), "rtpmap" ) )
+	{
+		AddFmt( pclsAttr->GetPayLoadType() );
+	}
+
+	m_clsAttributeList.push_back( *pclsAttr );
 }
 
 /**
