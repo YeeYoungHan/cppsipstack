@@ -69,8 +69,10 @@ static bool Test2( const char * pszText )
 	CSdpMedia clsNewMedia = *(clsSdp.m_clsMediaList.begin());
 	SDP_MEDIA_LIST clsMediaList = clsSdp.m_clsMediaList;
 	SDP_ATTRIBUTE_LIST::iterator itAttr;
-	int arrPT[] = { -1, 103, 102, 104, 117, 117, 3, 0, 8, 9, -1, 101, 101 }; 
+	int arrPT[] = { -1, 103, 102, 104, 117, 117, 3, 0, 8, 9, -1, 101, 101 };
+	char * arrEN[] = { "", "speex", "speex", "speex", "iLBC", "", "GSM", "PCMU", "PCMA", "G722", "", "telephone-event", "" };
 	int iIndex = 0;
+	std::string strEN;
 
 	for( itAttr = clsNewMedia.m_clsAttributeList.begin(); itAttr != clsNewMedia.m_clsAttributeList.end(); ++itAttr )
 	{
@@ -79,6 +81,13 @@ static bool Test2( const char * pszText )
 		if( iPT != arrPT[iIndex] )
 		{
 			printf( "iPT(%d) != arrPT[%d](%d)\n", iPT, iIndex, arrPT[iIndex] );
+			return false;
+		}
+
+		itAttr->GetEncodingName( strEN );
+		if( strcmp( strEN.c_str(), arrEN[iIndex] ) )
+		{
+			printf( "strEN(%s) != arrEN[%d](%s)\n", strEN.c_str(), iIndex, arrEN[iIndex] );
 			return false;
 		}
 
