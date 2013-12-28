@@ -44,6 +44,7 @@ public:
 	bool Empty();
 
 	int GetPayLoadType();
+	bool GetEncodingName( std::string & strName );
 };
 
 typedef std::list< CSdpAttribute > SDP_ATTRIBUTE_LIST;

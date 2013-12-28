@@ -130,7 +130,7 @@ int CSdpAttribute::GetPayLoadType()
 			{
 				std::string strValue;
 
-				strValue.append( pszValue, 0, i );
+				strValue.append( pszValue, i );
 
 				return atoi( strValue.c_str() );
 			}
@@ -140,4 +140,36 @@ int CSdpAttribute::GetPayLoadType()
 	}
 
 	return -1;
+}
+
+/**
+ * @ingroup SdpParser
+ * @brief encoding name 을 가져온다.
+ * @param strName encoding name 을 저장할 변수
+ * @returns 성공적으로 encoding name 를 가져오면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSdpAttribute::GetEncodingName( std::string & strName )
+{
+	strName.clear();
+
+	if( strcmp( m_strName.c_str(), "rtpmap" ) ) return false;
+
+	int iLen = m_strValue.length();
+	const char * pszValue = m_strValue.c_str();
+	int iStartPos = -1;
+
+	for( int i = 0; i < iLen; ++i )
+	{
+		if( pszValue[i] == ' ' )
+		{
+			iStartPos = i + 1;
+		}
+		else if( pszValue[i] == '/' )
+		{
+			strName.append( pszValue + iStartPos, i - iStartPos );
+			return true;
+		}
+	}
+
+	return false;
 }
