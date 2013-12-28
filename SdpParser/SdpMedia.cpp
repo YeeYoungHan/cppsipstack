@@ -30,6 +30,20 @@ CSdpMedia::CSdpMedia() : m_iPort(-1), m_iNumOfPort(-1)
 
 /**
  * @ingroup SdpParser
+ * @brief 생성자
+ * @param pszMedia		미디어 이름 
+ * @param iPort				포트 번호
+ * @param pszProtocol 전송 프로토콜
+ */
+CSdpMedia::CSdpMedia( const char * pszMedia, int iPort, const char * pszProtocol )
+{
+	m_strMedia = pszMedia;
+	m_iPort = iPort;
+	m_strProtocol = pszProtocol;
+}
+
+/**
+ * @ingroup SdpParser
  * @brief 소멸자
  */
 CSdpMedia::~CSdpMedia()
