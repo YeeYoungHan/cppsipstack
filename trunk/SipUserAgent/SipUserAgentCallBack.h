@@ -22,8 +22,6 @@
 // 응용으로 SDP 미디어 리스트를 전달할 때에 사용된다.
 #define USE_MEDIA_LIST
 
-#define SOCKET_COUNT_PER_MEDIA	4
-
 #include "SipStackDefine.h"
 #include "SipServerInfo.h"
 #include "SdpMedia.h"
@@ -52,7 +50,7 @@ public:
 	CSipCallRtp() : m_iPort(-1), m_iCodec(-1), m_eDirection( E_RTP_SEND_RECV )
 	{}
 
-	void SetIpPort( const char * pszIp, int iPort );
+	void SetIpPort( const char * pszIp, int iPort, int iSocketCountPerMedia );
 	int GetMediaCount( );
 
 	/** IP 주소 */

@@ -23,8 +23,9 @@
  * @brief RTP IP/Port 를 수정한다.
  * @param pszIp IP 주소
  * @param iPort Port 번호
+ * @param iSocketCountPerMedia 미디어마다 생성하는 소켓 개수
  */
-void CSipCallRtp::SetIpPort( const char * pszIp, int iPort )
+void CSipCallRtp::SetIpPort( const char * pszIp, int iPort, int iSocketCountPerMedia )
 {
 	m_strIp = pszIp;
 	m_iPort = iPort;
@@ -35,7 +36,7 @@ void CSipCallRtp::SetIpPort( const char * pszIp, int iPort )
 
 	for( itMedia = m_clsMediaList.begin(); itMedia != m_clsMediaList.end(); ++itMedia )
 	{
-		itMedia->m_iPort = m_iPort + iIndex * SOCKET_COUNT_PER_MEDIA;
+		itMedia->m_iPort = m_iPort + iIndex * iSocketCountPerMedia;
 		itMedia->DeleteAttribute( "rtcp" );
 
 		++iIndex;
