@@ -42,6 +42,8 @@ public:
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
 	bool Empty();
+
+	int GetPayLoadType();
 };
 
 typedef std::list< CSdpAttribute > SDP_ATTRIBUTE_LIST;
