@@ -19,6 +19,9 @@ C++ SIP stack 프로젝트
 
 2. 폴더 설명
 
+ * ServerPlatform
+   - 서비스 서버에 공통적으로 사용되는 라이브러리
+
  * SipClient 
    - C++ SIP stack 을 테스트하기 위한 SIP 클라이언트 프로그램
 
@@ -101,6 +104,9 @@ C++ SIP stack 프로젝트
 
  * SipSpeed
    - SIP 서버 성능 측정 프로그램
+
+ * SipTest
+   - SIP 서버 기능 테스트 프로그램
 
 3. 컴파일 방법
 
