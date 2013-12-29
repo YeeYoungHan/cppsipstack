@@ -12,7 +12,7 @@ C++ SIP stack 프로젝트
  * C++ SIP stack 기반 SIP 서버 성능 측정 프로그램 개발
 
  본 프로젝트의 라이선스는 GPLv3 이다.
- 본 프로젝트를 진행하는 개발자 정보는 다음과 같다.
+ 본 프로젝트를 진행하는 개발자 정보는 다음과 같다. 본 프로젝트에 대한 상용 라이선스 발급을 원하시면 아래의 이메일 주소로 연락해 주세요.
 
  이메일: websearch@naver.com
  블로그: http://blog.naver.com/websearch
@@ -132,3 +132,9 @@ C++ SIP stack 프로젝트
  SipStack/SipStackDefine.h 에서 아래의 소스 코드를 주석 처리한 후, 컴파일한다.
 
  #define USE_TLS
+
+6. 음성 코덱만 사용하고 싶은 경우
+
+ KSipServer 에서 지정된 음성 코덱만 사용하고 싶고 음성 통신만 할 경우에는 아래의 SipUserAgent/SipUserAgentCallBack.h 에서 아래의 소스 코드를 주석 처리한 후, 컴파일한다.
+
+ #define USE_MEDIA_LIST
