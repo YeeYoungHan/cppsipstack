@@ -1,0 +1,13 @@
+KSipServer 에서는 SIP MESSAGE 기반으로 수신된 SMS 메시지를 전달해 주는 기능이 있습니다. 본 기능은 통신사 IP-PBX 와 연동할 때에도 사용할 수 있고 SIP 클라이언트 간에 SMS 메시지를 전송/수신하기 위해서도 사용할 수 있습니다. 
+
+주의할 점은 통신사마다 SMS 메시지를 전달하기 위한 SIP 규격이 다를 수 있습니다. 이는 SMS 전송을 위한 SIP 규격이 제대로 정립되지 않아서 발생한 문제로 저는 알고 있습니다. 
+
+삼성 네트워크에서 제공하는 인터넷 전화 서비스에서는 SIP MESSAGE 기반으로 SMS 메시지를 전달해 주는 것으로 알고 있습니다. - 2009년에 테스트해 보았음 - 
+
+KSipServer 에 SIP MESSAGE 기반으로 SMS 메시지 전송/수신 기능은 SipUserAgent 의 아래의 기능으로 개발되었습니다. 
+
+ // SMS 전송 
+bool SendSms( const char * pszFrom, const char * pszTo, const char * pszText, CSipCallRoute * pclsRoute ); 
+
+ // SMS 수신 이벤트 핸들러 
+virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage ); 
