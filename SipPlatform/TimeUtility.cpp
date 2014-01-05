@@ -16,11 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "SipPlatformDefine.h"
 #include "TimeUtility.h"
 
 #ifdef WIN32
 #include <sys/timeb.h>
+
+#pragma comment( lib, "Winmm" ) 
 
 int gettimeofday( struct timeval *tv, struct timezone *tz )
 {
@@ -77,5 +78,23 @@ void MiliSleep( int iMiliSecond )
 	req.tv_nsec = (int)( iMiliSecond % 1000 ) * 1000000;
 
 	nanosleep( &req, &rem );
+#endif
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 현재 시간을 ms 단위로 리턴한다.
+ * @returns 현재 시간을 ms 단위로 리턴한다.
+ */
+uint64_t GetCurrentMiliSecond()
+{
+#ifdef WIN32
+  return timeGetTime();
+#else 
+  struct timeval mtv;
+
+  gettimeofday(&mtv, NULL);
+
+  return (uint64_t)(mtv.tv_sec) * 1000 + (uint64_t)(mtv.tv_usec) / 1000;
 #endif
 }
