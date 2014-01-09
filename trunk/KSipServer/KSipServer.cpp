@@ -39,7 +39,7 @@
  */
 int ServiceMain( )
 {
-	if( gclsSetup.Read( GetConfigFileName() ) == false )
+	if( gclsSetup.Read( GetConfigFileName() ) == false && gclsSetup.Read( CONFIG_FILENAME ) == false )
 	{
 		printf( "config filename(%s) read error\n", GetConfigFileName() );
 		return -1;
