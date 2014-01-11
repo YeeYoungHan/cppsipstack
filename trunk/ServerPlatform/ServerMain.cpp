@@ -21,16 +21,8 @@
 #include "ServerUtility.h"
 #include <stdio.h>
 
-static std::string gstrConfigFileName;
 CServerService gclsService;
 ServerFunc gpServerFunc;
-
-#ifndef WIN32
-const char * GetConfigFileName()
-{
-	return gstrConfigFileName.c_str();
-}
-#endif
 
 /**
  * @ingroup ServerPlatform
@@ -49,10 +41,10 @@ int ServerMain( int argc, char * argv[], CServerService & clsService, ServerFunc
 #ifdef WIN32
 	if( argc == 1 )
 	{
-		gstrConfigFileName = GetConfigFileName();
-		if( IsExistFile( gstrConfigFileName.c_str() ) == false )
+		const char * pszConfigFileName = GetConfigFileName();
+		if( IsExistFile( pszConfigFileName ) == false )
 		{
-			printf( "setup file(%s) is not exist", gstrConfigFileName.c_str() );
+			printf( "setup file(%s) is not exist", pszConfigFileName );
 			return -1;
 		}
 
@@ -67,8 +59,8 @@ int ServerMain( int argc, char * argv[], CServerService & clsService, ServerFunc
 		return -1;
 	}
 
-	gstrConfigFileName = argv[1];
-	if( !strcmp( gstrConfigFileName.c_str(), "-h" ) || !strcmp( gstrConfigFileName.c_str(), "-v" ) )
+	gclsService.m_strConfigFileName = argv[1];
+	if( !strcmp( argv[1], "-h" ) || !strcmp( argv[1], "-v" ) )
 	{
 		printf( "%s version-%s ( build %s %s )\n", argv[0], gclsService.m_strVersion.c_str(), __DATE__, __TIME__ );
 		printf( "[Usage] %s {config filename}\n", argv[0] );
@@ -79,12 +71,12 @@ int ServerMain( int argc, char * argv[], CServerService & clsService, ServerFunc
 		return 0;
 	}
 #ifdef WIN32
-	if( !strcmp( gstrConfigFileName.c_str(), "-i" ) )
+	if( !strcmp( argv[1], "-i" ) )
 	{
 		InstallService();
 		return 0;
 	}
-	else if( !strcmp( gstrConfigFileName.c_str(), "-u" ) )
+	else if( !strcmp( argv[1], "-u" ) )
 	{
 		InitNetwork();
 		UninstallService();

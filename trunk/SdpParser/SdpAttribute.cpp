@@ -18,6 +18,7 @@
 
 #include "SipPlatformDefine.h"
 #include "SdpAttribute.h"
+#include <stdlib.h>
 
 /**
  * @ingroup SdpParser
