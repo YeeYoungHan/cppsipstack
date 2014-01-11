@@ -99,6 +99,47 @@ static bool Test2( const char * pszText )
 	return true;
 }
 
+static bool Test3( const char * pszText )
+{
+	CSdpMessage	clsSdp;
+	int		iPos, iTextLen = (int)strlen(pszText);
+	char	szResult[512];
+
+	memset( szResult, 0, sizeof(szResult) );
+
+	iPos = clsSdp.Parse( pszText, iTextLen );
+	if( iPos == -1 )
+	{
+		printf( "sdp(%s) parse error\n", pszText );
+		return false;
+	}
+
+	CSdpMedia clsNewMedia = *(clsSdp.m_clsMediaList.begin());
+	SDP_ATTRIBUTE_LIST::iterator itAttr;
+	const char * arrKey[] = { "profile-level-id", "max-br", "max-mbps", "max-fs", "max-smbps", "max-fps", "max-rcmd-nalu-size", NULL };
+	const char * arrValue[] = { "428016", "5000", "490000", "9000", "490000", "6000", "3456000", NULL };
+
+	for( itAttr = clsNewMedia.m_clsAttributeList.begin(); itAttr != clsNewMedia.m_clsAttributeList.end(); ++itAttr )
+	{
+		if( !strcmp( itAttr->m_strName.c_str(), "fmtp" ) )
+		{
+			CSipParameterList clsParamList;
+
+			if( itAttr->GetParameterList( clsParamList ) == false ) return false;
+
+			for( int i = 0; arrKey[i]; ++i )
+			{
+				const char * pszValue = clsParamList.SelectParamValue( arrKey[i] );
+				if( pszValue == NULL || strcmp( pszValue, arrValue[i] ) ) return false;
+			}
+		}
+	}
+
+	clsSdp.Clear();
+
+	return true;
+}
+
 bool TestSdp()
 {
 	if( Test( 
@@ -164,6 +205,16 @@ bool TestSdp()
 					"a=sendrecv\r\n"
 					"a=rtpmap:101 telephone-event/8000\r\n"
 					"a=fmtp:101 0-15\r\n" );
+
+	Test3( "v=0\r\n"
+					"o=- 3593775777 3593775777 IN IP4 192.168.184.129\r\n"
+					"s=media\r\n"
+					"c=IN IP4 192.168.184.129\r\n"
+					"t=0 0\r\n"
+					"a=X-nat:0\r\n"
+					"m=video 11263 RTP/AVP 97\r\n"
+					"a=rtpmap:97 H264/90000\r\n"
+					"a=fmtp:97 profile-level-id=428016;max-br=5000;max-mbps=490000;max-fs=9000;max-smbps=490000;max-fps=6000;max-rcmd-nalu-size=3456000\r\n" );
 
 	return true;
 }

@@ -174,3 +174,36 @@ bool CSdpAttribute::GetEncodingName( std::string & strName )
 
 	return false;
 }
+
+/**
+ * @ingroup SdpParser
+ * @brief SDP attribute 의 value 를 파싱하여서 clsParamList 객체에 저장한다.
+ * @param clsParamList parameter list 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSdpAttribute::GetParameterList( CSipParameterList & clsParamList )
+{
+	clsParamList.ClearParam();
+
+	if( strcmp( m_strName.c_str(), "fmtp" ) ) return false;
+
+	int iLen = m_strValue.length();
+	const char * pszValue = m_strValue.c_str();
+	int iStartPos = -1;
+
+	for( int i = 0; i < iLen; ++i )
+	{
+		if( pszValue[i] == ' ' )
+		{
+			iStartPos = i + 1;
+			break;
+		}
+	}
+
+	if( clsParamList.HeaderListParamParse( pszValue + iStartPos, iLen - iStartPos ) > 0 )
+	{
+		return true;
+	}
+
+	return false;
+}
