@@ -16,10 +16,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifdef WIN32
-
 #include "SipParserDefine.h"
 #include "ServerServicePrivate.h"
+
+#ifdef WIN32
+
 #include "Directory.h"
 #include <windows.h>
 #include <stdio.h>
@@ -130,6 +131,13 @@ const char * GetConfigFileName()
 	snprintf( szConfigFileName, sizeof(szConfigFileName), "%s\\%s", CDirectory::GetProgramDirectory(), gclsService.m_strConfigFileName.c_str() );
 
 	return szConfigFileName;
+}
+
+#else
+
+const char * GetConfigFileName()
+{
+	return gclsService.m_strConfigFileName.c_str();
 }
 
 #endif

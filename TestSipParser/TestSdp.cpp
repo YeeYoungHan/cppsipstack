@@ -70,7 +70,7 @@ static bool Test2( const char * pszText )
 	SDP_MEDIA_LIST clsMediaList = clsSdp.m_clsMediaList;
 	SDP_ATTRIBUTE_LIST::iterator itAttr;
 	int arrPT[] = { -1, 103, 102, 104, 117, 117, 3, 0, 8, 9, -1, 101, 101 };
-	char * arrEN[] = { "", "speex", "speex", "speex", "iLBC", "", "GSM", "PCMU", "PCMA", "G722", "", "telephone-event", "" };
+	const char * arrEN[] = { "", "speex", "speex", "speex", "iLBC", "", "GSM", "PCMU", "PCMA", "G722", "", "telephone-event", "" };
 	int iIndex = 0;
 	std::string strEN;
 

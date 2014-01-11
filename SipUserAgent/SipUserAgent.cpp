@@ -39,7 +39,7 @@
  * @ingroup SipUserAgent
  * @brief »ý¼ºÀÚ
  */
-CSipUserAgent::CSipUserAgent() : m_pclsCallBack(NULL), m_bStopEvent(false), m_iSeq(0), m_bStart(false)
+CSipUserAgent::CSipUserAgent() : m_bStopEvent(false), m_pclsCallBack(NULL), m_iSeq(0), m_bStart(false)
 {
 }
 
