@@ -708,6 +708,10 @@ void CSipStack::GetICTString( std::string & strBuf )
 	m_clsICT.GetString( strBuf );
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 프로세스가 종료될 때에 최종적으로 실행하여서 openssl 메모리 누수를 출력하지 않는다. 
+ */
 void CSipStack::Final()
 {
 #ifdef USE_TLS
