@@ -708,6 +708,13 @@ void CSipStack::GetICTString( std::string & strBuf )
 	m_clsICT.GetString( strBuf );
 }
 
+void CSipStack::Final()
+{
+#ifdef USE_TLS
+	SSLFinal();
+#endif
+}
+
 /**
  * @ingroup SipStack
  * @brief UDP SIP 메시지 수신 쓰레드에 종료 SIP 메시지를 전송하고 SIP stack 쓰레드에 종료 이벤트를 설정한 후, 모든 쓰레드가 종료할 때까지 대기한 후,
@@ -759,7 +766,6 @@ bool CSipStack::_Stop( )
 	}
 
 	m_clsTlsThreadList.Final();
-	SSLServerStop();
 #endif
 
 	m_clsICT.DeleteAll();

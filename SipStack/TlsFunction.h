@@ -31,6 +31,8 @@
 
 bool SSLServerStart( const char * szCertFile, const char * szCaCertFile );
 bool SSLServerStop( );
+void SSLFinal();
+
 bool SSLAccept( Socket iFd, SSL ** ppsttSsl, bool bCheckClientCert, int iVerifyDepth, int iAcceptTimeout );
 int SSLSend( SSL * ssl, const char * szBuf, int iBufLen );
 int SSLRecv( SSL * ssl, char * szBuf, int iBufLen );

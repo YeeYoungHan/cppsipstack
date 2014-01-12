@@ -200,6 +200,11 @@ bool SSLServerStop( )
 		gbStartSslServer = false;
 	}
 
+	return true;
+}
+
+void SSLFinal()
+{
 	ERR_free_strings();
 
 	// http://clseto.mysinablog.com/index.php?op=ViewArticle&articleId=3304652
@@ -209,8 +214,6 @@ bool SSLServerStop( )
 	CRYPTO_cleanup_all_ex_data();
 	EVP_cleanup();
 	sk_SSL_COMP_free( SSL_COMP_get_compression_methods() );
-
-	return true;
 }
 
 /**
