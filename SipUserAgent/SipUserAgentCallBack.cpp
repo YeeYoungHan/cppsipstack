@@ -60,3 +60,53 @@ int CSipCallRtp::GetMediaCount( )
 
 	return iCount;
 }
+
+/**
+ * @ingroup SipUserAgent
+ * @brief 미디어 리스트에서 audio media 를 검색한 후, audio media 에 대한 포트 번호를 리턴한다.
+ * @returns 성공하면 audio media 에 대한 포트 번호를 리턴하고 실패하면 -1 를 리턴한다.
+ */
+int CSipCallRtp::GetAudioPort( )
+{
+	int iPort = -1;
+
+#ifdef USE_MEDIA_LIST
+	SDP_MEDIA_LIST::iterator	itList;
+
+	for( itList = m_clsMediaList.begin(); itList != m_clsMediaList.end(); ++itList )
+	{
+		if( !strcmp( itList->m_strMedia.c_str(), "audio" ) )
+		{
+			iPort = itList->m_iPort;
+			break;
+		}
+	}
+#endif
+
+	return iPort;
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief 미디어 리스트에서 video media 를 검색한 후, video media 에 대한 포트 번호를 리턴한다.
+ * @returns 성공하면 video media 에 대한 포트 번호를 리턴하고 실패하면 -1 를 리턴한다.
+ */
+int CSipCallRtp::GetVideoPort( )
+{
+	int iPort = -1;
+
+#ifdef USE_MEDIA_LIST
+	SDP_MEDIA_LIST::iterator	itList;
+
+	for( itList = m_clsMediaList.begin(); itList != m_clsMediaList.end(); ++itList )
+	{
+		if( !strcmp( itList->m_strMedia.c_str(), "video" ) )
+		{
+			iPort = itList->m_iPort;
+			break;
+		}
+	}
+#endif
+
+	return iPort;
+}

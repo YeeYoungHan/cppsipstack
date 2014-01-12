@@ -52,6 +52,8 @@ public:
 
 	void SetIpPort( const char * pszIp, int iPort, int iSocketCountPerMedia );
 	int GetMediaCount( );
+	int GetAudioPort( );
+	int GetVideoPort( );
 
 	/** IP аж╪р */
 	std::string	m_strIp;
