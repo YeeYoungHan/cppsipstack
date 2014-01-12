@@ -40,6 +40,7 @@ public:
 	bool AddCommand( ECommType cCommType, CListCtrl * pclsListCtrl );
 	bool DeleteCommand( ECommType cCommType, CListCtrl * pclsListCtrl );
 	bool Execute();
+	bool SendStop();
 
 private:
 	MONITOR_COMMAND_LIST	m_clsCommandList;

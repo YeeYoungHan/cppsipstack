@@ -195,6 +195,8 @@ BEGIN
         MENUITEM "저장(&S)\tCtrl+S",              ID_FILE_SAVE
         MENUITEM "다른 이름으로 저장(&A)...",           ID_FILE_SAVE_AS
         MENUITEM SEPARATOR
+        MENUITEM "KSipServer 종료시키기",            IDM_STOP_KSIP_SERVER
+        MENUITEM SEPARATOR
         MENUITEM "끝내기(&X)",                     ID_APP_EXIT
     END
     POPUP "편집(&E)"
