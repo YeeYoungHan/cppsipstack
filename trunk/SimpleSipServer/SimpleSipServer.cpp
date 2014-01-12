@@ -49,5 +49,7 @@ int main( int argc, char * argv[] )
 		sleep(1);
 	}
 
+	gclsSipServer.Stop();
+
 	return 0;
 }

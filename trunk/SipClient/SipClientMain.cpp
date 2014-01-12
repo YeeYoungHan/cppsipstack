@@ -134,5 +134,10 @@ int main( int argc, char * argv[] )
 		clsUserAgent.StopCall( gstrInviteId.c_str() );
 	}
 
+	sleep(2);
+
+	clsUserAgent.Stop();
+	clsUserAgent.Final();
+
 	return 0;
 }

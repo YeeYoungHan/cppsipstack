@@ -37,6 +37,7 @@ public:
 	~CSipServer();
 
 	bool Start( CSipStackSetup & clsSetup );
+	void Stop( );
 
 	// ISipStackCallBack
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );

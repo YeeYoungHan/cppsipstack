@@ -383,6 +383,7 @@ void CSipTestDlg::OnBnClickedClearLog()
 void CSipTestDlg::OnDestroy()
 {
 	gclsSipUserAgent.Stop();
+	gclsSipUserAgent.Final();
 
 	__super::OnDestroy();
 }
