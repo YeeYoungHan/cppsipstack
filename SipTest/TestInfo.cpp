@@ -157,4 +157,6 @@ void CTestInfo::ClearRtp( )
 {
 	m_clsCallerRtp.Clear();
 	m_clsCalleeRtp.Clear();
+	m_clsCallerVideoRtp.Clear();
+	m_clsCalleeVideoRtp.Clear();
 }
