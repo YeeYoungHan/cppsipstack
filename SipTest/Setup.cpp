@@ -44,6 +44,7 @@ bool CSetup::Get()
 	GetString( ST_CALLER_PW, m_strCallerPassWord );
 	GetString( ST_CALLEE_ID, m_strCalleeId );
 	GetString( ST_CALLEE_PW, m_strCalleePassWord );
+	m_bUseTwoMedia = GetBool( ST_USE_TWO_MEDIA, false );
 
 	m_clsMap.clear();
 
@@ -63,6 +64,7 @@ bool CSetup::Put()
 	PutString( ST_CALLER_PW, m_strCallerPassWord.c_str() );
 	PutString( ST_CALLEE_ID, m_strCalleeId.c_str() );
 	PutString( ST_CALLEE_PW, m_strCalleePassWord.c_str() );
+	PutBool( ST_USE_TWO_MEDIA, m_bUseTwoMedia );
 
 	bool bRes = PutFile();
 
@@ -195,6 +197,17 @@ bool CSetup::GetString( const char * pszName, std::string & strValue )
 	return false;
 }
 
+bool CSetup::GetBool( const char * pszName, bool bDefaultValue )
+{
+	std::string	strValue;
+
+	if( GetString( pszName, strValue ) == false ) return bDefaultValue;
+
+	if( !strcmp( strValue.c_str(), "true" ) ) return true;
+
+	return false;
+}
+
 bool CSetup::PutInt( const char * pszName, int iIndex, int iValue )
 {
 	char	szIndex[11];
@@ -235,4 +248,13 @@ bool CSetup::PutString( const char * pszName, const char * pszValue )
 	}
 
 	return true;
+}
+
+bool CSetup::PutBool( const char * pszName, bool bValue )
+{
+	char	szValue[11];
+
+	_snprintf( szValue, sizeof(szValue), "%s", ( bValue ? "true" : "false" ) );
+
+	return PutString( pszName, szValue );
 }

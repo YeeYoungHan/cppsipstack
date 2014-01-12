@@ -63,6 +63,9 @@ public:
 	CTestRtpInfo	m_clsCallerRtp;
 	CTestRtpInfo	m_clsCalleeRtp;
 
+	CTestRtpInfo	m_clsCallerVideoRtp;
+	CTestRtpInfo	m_clsCalleeVideoRtp;
+
 	CSipCallRtp		m_clsCallerPeerRtp;
 	CSipCallRtp		m_clsCalleePeerRtp;
 

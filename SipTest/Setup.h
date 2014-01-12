@@ -30,6 +30,7 @@
 #define ST_CALLER_PW				"caller_pw"
 #define ST_CALLEE_ID				"callee_id"
 #define ST_CALLEE_PW				"callee_pw"
+#define ST_USE_TWO_MEDIA		"use_2_media"
 
 typedef std::map< std::string, std::string > SETUP_MAP;
 
@@ -53,6 +54,7 @@ public:
 	std::string m_strCallerPassWord;
 	std::string m_strCalleeId;
 	std::string m_strCalleePassWord;
+	bool				m_bUseTwoMedia;
 
 private:
 	bool GetFile();
@@ -61,10 +63,12 @@ private:
 	int GetInt( const char * pszName, int iIndex, int iDefaultValue );
 	int GetInt( const char * pszName, int iDefaultValue );
 	bool GetString( const char * pszName, std::string & strValue );
+	bool GetBool( const char * pszName, bool bDefaultValue );
 
 	bool PutInt( const char * pszName, int iIndex, int iValue );
 	bool PutInt( const char * pszName, int iValue );
 	bool PutString( const char * pszName, const char * pszValue );
+	bool PutBool( const char * pszName, bool bValue );
 
 	SETUP_MAP	m_clsMap;
 };

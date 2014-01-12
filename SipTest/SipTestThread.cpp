@@ -120,6 +120,20 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	clsRtp.m_iPort = gclsTestInfo.m_clsCallerRtp.m_iPort;
 	clsRtp.m_iCodec = 0;
 
+	if( gclsSetup.m_bUseTwoMedia )
+	{
+		CSdpMedia sdpAudio( "audio", gclsTestInfo.m_clsCallerRtp.m_iPort, "RTP/AVP" );
+		CSdpMedia sdpVideo( "video", gclsTestInfo.m_clsCallerVideoRtp.m_iPort, "RTP/AVP" );
+
+		sdpAudio.AddAttribute( "rtpmap", "0 PCMU/8000" );
+		
+		sdpVideo.AddAttribute( "rtpmap", "97 H264/90000" );
+		sdpVideo.AddAttribute( "fmtp", "97 profile-level-id=42" );
+
+		clsRtp.m_clsMediaList.push_back( sdpAudio );
+		clsRtp.m_clsMediaList.push_back( sdpVideo );
+	}
+
 	clsRoute.m_strDestIp = gclsSetup.m_strSipServerIp;
 	clsRoute.m_iDestPort = gclsSetup.m_iSipServerPort;
 
@@ -162,9 +176,8 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 		SendLog( "Call Decline Test : ERROR" );
 	}
 
-	gclsTestInfo.CloseRtp();
-
 FUNC_END:
+	gclsTestInfo.CloseRtp();
 	gbTestThreadRun = false;
 
 	SendMessage( ghWnd, SIP_TEST_ID, WM_TEST_END, 0 );
