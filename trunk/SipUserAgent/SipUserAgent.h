@@ -97,6 +97,7 @@ public:
 	bool SendNotify( const char * pszCallId, int iSipCode );
 
 	void GetString( std::string & strBuf );
+	void Final();
 
 	// ISipStackCallBack
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
