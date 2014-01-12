@@ -298,7 +298,11 @@ void CSipTestDlg::OnBnClickedStartSipStack()
  */
 void CSipTestDlg::OnBnClickedStopSipStack()
 {
-	gclsSipUserAgent.Stop();
+	if( gclsSipUserAgent.Stop() == false )
+	{
+		MessageBox( "sip stack stop error", "Error", MB_OK );
+		return;
+	}
 
 	m_btnStartSipStack.EnableWindow( TRUE );
 	m_btnStopSipStack.EnableWindow( FALSE );

@@ -44,7 +44,15 @@ void CSipTestDlg::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 	{
 		if( iStatus == SIP_OK )
 		{
-			m_bCallerLogin = true;
+			if( pclsInfo->m_bLogin )
+			{
+				m_bCallerLogin = true;
+			}
+			else
+			{
+				m_bCallerLogin = false;
+			}
+
 			SetLog( "Caller(%s) %s success", m_strCallerId, strCommand.c_str() );
 		}
 		else
@@ -57,7 +65,15 @@ void CSipTestDlg::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 	{
 		if( iStatus == SIP_OK )
 		{
-			m_bCalleeLogin = true;
+			if( pclsInfo->m_bLogin )
+			{
+				m_bCalleeLogin = true;
+			}
+			else
+			{
+				m_bCalleeLogin = false;
+			}
+
 			SetLog( "Callee(%s) %s success", m_strCalleeId, strCommand.c_str() );
 		}
 		else
