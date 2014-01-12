@@ -22,6 +22,9 @@
 #ifdef WIN32
 #ifdef _DEBUG
 
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #ifdef malloc
 #undef malloc
 #endif
