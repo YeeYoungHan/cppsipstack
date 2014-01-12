@@ -201,7 +201,19 @@ bool SSLServerStop( )
 	}
 
 	ERR_free_strings();
+
+	// http://clseto.mysinablog.com/index.php?op=ViewArticle&articleId=3304652
+	ERR_remove_state(0);
+	COMP_zlib_cleanup();
+	OBJ_NAME_cleanup(-1);
+	CRYPTO_cleanup_all_ex_data();
 	EVP_cleanup();
+
+	STACK * pCOMP = SSL_COMP_get_compression_methods();
+	if( pCOMP )
+	{
+		sk_SSL_COMP_free( pCOMP );
+	}
 
 	return true;
 }
