@@ -188,11 +188,37 @@ void CSdpMedia::Clear()
  */
 void CSdpMedia::AddFmt( int iPayLoadType )
 {
+	if( SelectFmt( iPayLoadType ) ) return;
+
 	char	szNum[11];
 
 	snprintf( szNum, sizeof(szNum), "%d", iPayLoadType );
 
 	m_clsFmtList.push_back( szNum );
+}
+
+/**
+ * @ingroup SdpParser
+ * @brief FMT 리스트에 payload type 이 존재하는지 확인한다. 
+ * @param iPayLoadType payload type
+ * @returns FMT 리스트에 payload type 이 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSdpMedia::SelectFmt( int iPayLoadType )
+{
+	char	szNum[11];
+	SDP_FMT_LIST::iterator	itList;
+
+	snprintf( szNum, sizeof(szNum), "%d", iPayLoadType );
+
+	for( itList = m_clsFmtList.begin(); itList != m_clsFmtList.end(); ++itList )
+	{
+		if( !strcmp( itList->c_str(), szNum ) )
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**
@@ -240,6 +266,24 @@ void CSdpMedia::AddAttribute( CSdpAttribute * pclsAttr )
 	}
 
 	m_clsAttributeList.push_back( *pclsAttr );
+}
+
+/**
+ * @ingroup SdpParser
+ * @brief 애트리뷰트를 추가한다. rtpmap 이면 fmt 로 추가한다.
+ * @param pszName		애트리뷰트 이름
+ * @param pszValue	애트리뷰트 값
+ */
+void CSdpMedia::AddAttribute( const char * pszName, const char * pszValue )
+{
+	CSdpAttribute clsAttr( pszName, pszValue );
+
+	if( !strcmp( clsAttr.m_strName.c_str(), "rtpmap" ) )
+	{
+		AddFmt( clsAttr.GetPayLoadType() );
+	}
+
+	m_clsAttributeList.push_back( clsAttr );
 }
 
 /**

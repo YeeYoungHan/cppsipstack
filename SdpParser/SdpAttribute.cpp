@@ -30,6 +30,25 @@ CSdpAttribute::CSdpAttribute()
 
 /**
  * @ingroup SdpParser
+ * @brief 생성자
+ * @param pszName		애트리뷰트 이름
+ * @param pszValue	애트리뷰트 값
+ */
+CSdpAttribute::CSdpAttribute( const char * pszName, const char * pszValue )
+{
+	if( pszName )
+	{
+		m_strName = pszName;
+	}
+
+	if( pszValue )
+	{
+		m_strValue = pszValue;
+	}
+}
+
+/**
+ * @ingroup SdpParser
  * @brief 소멸자
  */
 CSdpAttribute::~CSdpAttribute()

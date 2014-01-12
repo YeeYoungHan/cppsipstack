@@ -53,10 +53,12 @@ public:
 	void Clear();
 
 	void AddFmt( int iPayLoadType );
+	bool SelectFmt( int iPayLoadType );
 
 	bool DeleteAttribute( const char * pszName );
 
 	void AddAttribute( CSdpAttribute * pclsAttr );
+	void AddAttribute( const char * pszName, const char * pszValue );
 
 private:
 	void SetData( const char * pszData, int iLen, int iType );
