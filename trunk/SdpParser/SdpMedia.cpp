@@ -35,7 +35,7 @@ CSdpMedia::CSdpMedia() : m_iPort(-1), m_iNumOfPort(-1)
  * @param iPort				포트 번호
  * @param pszProtocol 전송 프로토콜
  */
-CSdpMedia::CSdpMedia( const char * pszMedia, int iPort, const char * pszProtocol )
+CSdpMedia::CSdpMedia( const char * pszMedia, int iPort, const char * pszProtocol ) : m_iNumOfPort(-1)
 {
 	m_strMedia = pszMedia;
 	m_iPort = iPort;
