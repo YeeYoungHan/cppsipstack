@@ -24,6 +24,8 @@
 #include "ServerUtility.h"
 #include "TestInfo.h"
 
+#define CALL_ROUTE_MILI_SECOND	500
+
 static bool gbStopTestThread = false;
 static bool gbTestThreadRun = false;
 static HWND ghWnd = NULL;
@@ -154,7 +156,7 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	gclsTestInfo.m_eTestType = E_TEST_CANCEL;
 	iMiliSecond = StartCall( "Call Cancel Test", clsRtp, clsRoute );
 	if( iMiliSecond == -1 ) goto FUNC_END;
-	if( iMiliSecond <= 200 )
+	if( iMiliSecond <= CALL_ROUTE_MILI_SECOND )
 	{
 		SendLog( "Call Cancel Test : OK" );
 	}
@@ -167,7 +169,7 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	gclsTestInfo.m_eTestType = E_TEST_DECLINE;
 	iMiliSecond = StartCall( "Call Decline Test", clsRtp, clsRoute );
 	if( iMiliSecond == -1 ) goto FUNC_END;
-	if( iMiliSecond <= 200 )
+	if( iMiliSecond <= CALL_ROUTE_MILI_SECOND )
 	{
 		SendLog( "Call Decline Test : OK" );
 	}
