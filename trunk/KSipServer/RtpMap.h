@@ -44,6 +44,9 @@ public:
 	bool		m_bStop;
 	uint8_t	m_iSocketCount;
 
+	bool Create();
+	void Close();
+
 	void CloseSocket();
 	void SetIpPort( int iIndex, uint32_t iIp, uint16_t sPort );
 	void ReSetIPPort( );
