@@ -228,6 +228,42 @@ bool CTcpSocket::Execute()
 	return true;
 }
 
+bool CTcpSocket::SendStop()
+{
+	std::string strCommand = MC_STOP;
+	int		iPacketLen, n;
+	bool	bError = false;
+
+	m_clsMutex.Lock();
+	iPacketLen = strCommand.length();
+	iPacketLen = htonl( iPacketLen );
+
+	n = Send( &iPacketLen, sizeof(iPacketLen) );
+	if( n != sizeof(iPacketLen) )
+	{
+		TRACE( "Send packet length error\n" );
+		bError = true;
+	}
+	else
+	{
+		n = Send( strCommand.c_str(), strCommand.length() );
+		if( n != strCommand.length() )
+		{
+			TRACE( "Send packet command error\n" );
+			bError = true;
+		}
+		else
+		{
+			TRACE( "Send command(%s)\n", strCommand.c_str() );
+		}
+	}
+	m_clsMutex.Unlock();
+
+	if( bError ) return false;
+
+	return true;
+}
+
 void CTcpSocket::ParseRecvData( const char * pszBuf, CListCtrl * pclsListCtrl )
 {
 	int	iPos = 0, iRow = 0, iColumn = 0;

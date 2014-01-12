@@ -29,4 +29,6 @@
 
 #define MC_SIP_STACK_COUNT_LIST	"sip_stack_count_list"
 
+#define MC_STOP									"stop"
+
 #endif

@@ -25,6 +25,8 @@
 #include "MonitorDefine.h"
 #include "SipServer.h"
 #include "SipServerSetup.h"
+#include "ServerService.h"
+#include "Log.h"
 
 CMonitor gclsMonitor;
 
@@ -68,6 +70,13 @@ bool CMonitor::RecvRequest( const char * pszRequest, std::string & strResponse )
 	{
 		gclsUserAgent.m_clsSipStack.GetString( strResponse );
 	}
+#ifdef _DEBUG
+	else if( !strcmp( pszRequest, MC_STOP ) )
+	{
+		CLog::Print( LOG_INFO, "stop command recevied" );
+		gbStop = true;
+	}
+#endif
 	else
 	{
 		return false;

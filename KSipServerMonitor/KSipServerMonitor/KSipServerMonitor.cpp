@@ -41,6 +41,7 @@ BEGIN_MESSAGE_MAP(CKSipServerMonitorApp, CWinAppEx)
 	// 표준 파일을 기초로 하는 문서 명령입니다.
 	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
+	ON_COMMAND(IDM_STOP_KSIP_SERVER, &CKSipServerMonitorApp::OnStopKsipServer)
 END_MESSAGE_MAP()
 
 
@@ -231,5 +232,7 @@ void CKSipServerMonitorApp::SaveCustomState()
 
 // CKSipServerMonitorApp 메시지 처리기
 
-
-
+void CKSipServerMonitorApp::OnStopKsipServer()
+{
+	gclsSocket.SendStop();	
+}
