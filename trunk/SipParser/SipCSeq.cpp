@@ -19,6 +19,7 @@
 #include "SipParserDefine.h"
 #include "SipCSeq.h"
 #include <stdlib.h>
+#include "MemoryDebug.h"
 
 CSipCSeq::CSipCSeq() : m_iDigit(-1)
 {

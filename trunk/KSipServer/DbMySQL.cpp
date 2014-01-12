@@ -21,6 +21,7 @@
 #ifdef USE_MYSQL
 
 #include "errmsg.h"
+#include "MemoryDebug.h"
 
 CMySQL gclsReadDB;
 CMySQL gclsWriteDB;

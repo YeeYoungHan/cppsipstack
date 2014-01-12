@@ -20,6 +20,7 @@
 #include "SipDialog.h"
 #include "SipUserAgent.h"
 #include "SipUtility.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipUserAgent

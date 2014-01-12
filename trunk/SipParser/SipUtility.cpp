@@ -24,6 +24,7 @@
 #include <string>
 #include <time.h>
 #include <stdlib.h>
+#include "MemoryDebug.h"
 
 static CSipMutex gclsMutex;
 static int	giTag;

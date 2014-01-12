@@ -21,6 +21,7 @@
 #include "SipStatusCode.h"
 #include "SipUtility.h"
 #include <stdlib.h>
+#include "MemoryDebug.h"
 
 CSipMessage::CSipMessage() : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(-1), m_iMaxForwards(-1), m_eTransport(E_SIP_UDP)
 	, m_bUseCompact(false), m_iUseCount(0)

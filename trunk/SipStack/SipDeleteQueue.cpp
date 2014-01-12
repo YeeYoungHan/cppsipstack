@@ -17,6 +17,7 @@
  */
 
 #include "SipDeleteQueue.h"
+#include "MemoryDebug.h"
 
 CSipDeleteQueue gclsSipDeleteQueue;
 extern time_t giTime;

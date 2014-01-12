@@ -24,6 +24,7 @@
 #include "SipMutex.h"
 #include "Log.h"
 #include "ServerUtility.h"
+#include "MemoryDebug.h"
 
 static SSL_CTX	* ctx;
 

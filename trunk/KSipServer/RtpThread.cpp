@@ -23,6 +23,7 @@
 #include "RtpMap.h"
 #include "ServerService.h"
 #include "ServerUtility.h"
+#include "MemoryDebug.h"
 
 static int giRtpThreadCount = 0;
 extern CSipMutex gclsCountMutex;
@@ -30,6 +31,10 @@ extern CSipMutex gclsCountMutex;
 class CRtpThreadInfo
 {
 public:
+	CRtpThreadInfo() : m_iPort(0)
+	{
+	}
+
 	int	m_iPort;
 };
 

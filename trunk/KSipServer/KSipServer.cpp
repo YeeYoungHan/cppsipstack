@@ -31,6 +31,7 @@
 #include "SipUserAgentVersion.h"
 #include "ServerService.h"
 #include "Monitor.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup KSipServer
@@ -39,6 +40,10 @@
  */
 int ServiceMain( )
 {
+#ifdef WIN32
+	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF );
+#endif
+
 	if( gclsSetup.Read( GetConfigFileName() ) == false && gclsSetup.Read( CONFIG_FILENAME ) == false )
 	{
 		printf( "config filename(%s) read error\n", GetConfigFileName() );
@@ -171,6 +176,8 @@ int ServiceMain( )
 
 	DbSignal();
 
+	gclsUserAgent.Stop();
+
 	for( int i = 0; i < 20; ++i )
 	{
 		if( IsDbInsertThreadRun() == false )
@@ -182,6 +189,7 @@ int ServiceMain( )
 	}
 
 	CLog::Print( LOG_SYSTEM, "KSipServer is terminated" );
+	CLog::Release();
 
 	return 0;
 }

@@ -20,6 +20,7 @@
 #include "ServerServicePrivate.h"
 #include "ServerUtility.h"
 #include <stdio.h>
+#include "MemoryDebug.h"
 
 CServerService gclsService;
 ServerFunc gpServerFunc;

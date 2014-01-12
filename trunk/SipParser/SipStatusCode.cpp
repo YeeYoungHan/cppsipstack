@@ -17,6 +17,7 @@
  */
 
 #include "SipStatusCode.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipParser

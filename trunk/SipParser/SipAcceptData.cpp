@@ -18,6 +18,7 @@
 
 #include "SipParserDefine.h"
 #include "SipAcceptData.h"
+#include "MemoryDebug.h"
 
 CSipAcceptData::CSipAcceptData()
 {

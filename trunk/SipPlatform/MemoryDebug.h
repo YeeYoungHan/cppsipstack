@@ -16,28 +16,51 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "SipInviteTransaction.h"
-#include "SipDeleteQueue.h"
-#include "MemoryDebug.h"
+#ifndef _MEMORY_DEBUG_H_
+#define _MEMORY_DEBUG_H_
 
-/**
- * @ingroup SipStack
- * @brief 持失切
- */
-CSipInviteTransaction::CSipInviteTransaction() : m_pclsRequest(NULL), m_pclsResponse(NULL), m_pclsAck(NULL), m_iReSendCount(0), m_iStatusCode(0)
-{
-	memset( &m_sttStartTime, 0, sizeof(m_sttStartTime) );
-	memset( &m_sttStopTime, 0, sizeof(m_sttStopTime) );
-	memset( &m_sttRingTime, 0, sizeof(m_sttRingTime) );
-}
+#ifdef WIN32
+#ifdef _DEBUG
 
-/**
- * @ingroup SipStack
- * @brief 社瑚切
- */
-CSipInviteTransaction::~CSipInviteTransaction()
-{
-	if( m_pclsRequest ) gclsSipDeleteQueue.Insert( m_pclsRequest );
-	if( m_pclsResponse ) gclsSipDeleteQueue.Insert( m_pclsResponse );
-	if( m_pclsAck ) gclsSipDeleteQueue.Insert( m_pclsAck );
-}
+#ifdef malloc
+#undef malloc
+#endif
+
+#define malloc(s) (_malloc_dbg(s, _NORMAL_BLOCK, __FILE__, __LINE__ ))
+
+#ifdef calloc
+#undef calloc
+#endif
+
+#define calloc(c, s) (_calloc_dbg(c, s, _NORMAL_BLOCK, __FILE__, __LINE__ ))
+
+#ifdef realloc
+#undef realloc
+#endif
+
+#define realloc(p, s) (_realloc_dbg(p, s, _NORMAL_BLOCK, __FILE__, __LINE__ ))
+
+#ifdef _expand
+#undef _expand
+#endif
+
+#define _expand(p, s) (_expand_dbg(p, s, _NORMAL_BLOCK, __FILE__, __LINE__  ))
+
+#ifdef free
+#undef free
+#endif
+
+#define free(p) (_free_dbg(p, _NORMAL_BLOCK))
+
+#ifdef _msize
+#undef _msize
+#endif
+
+#define _msize(p) (_msize_dbg(p, _NORMAL_BLOCK))
+
+#define new new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+
+#endif
+#endif
+
+#endif

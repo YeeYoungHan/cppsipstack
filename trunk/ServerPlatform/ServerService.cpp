@@ -24,6 +24,7 @@
 #include "Directory.h"
 #include <windows.h>
 #include <stdio.h>
+#include "MemoryDebug.h"
 
 static SERVICE_STATUS_HANDLE	ghServiceStatus;
 static DWORD					giNowState;

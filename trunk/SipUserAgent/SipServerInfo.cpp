@@ -20,6 +20,7 @@
 #include "SipServerInfo.h"
 #include "SipUtility.h"
 #include "SipMd5.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipUserAgent

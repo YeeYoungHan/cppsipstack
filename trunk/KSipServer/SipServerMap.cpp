@@ -23,6 +23,7 @@
 #include "Directory.h"
 #include "DbMySQL.h"
 #include "Log.h"
+#include "MemoryDebug.h"
 
 CSipServerMap gclsSipServerMap;
 

@@ -335,6 +335,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MemoryDebug.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ServerUtility.h"
 				>
 			</File>

@@ -27,6 +27,7 @@
 #include "SipServerSetup.h"
 #include "ServerService.h"
 #include "Log.h"
+#include "MemoryDebug.h"
 
 CMonitor gclsMonitor;
 

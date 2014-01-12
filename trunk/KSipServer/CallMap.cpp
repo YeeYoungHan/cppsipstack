@@ -19,6 +19,7 @@
 #include "SipServer.h"
 #include "CallMap.h"
 #include "RtpMap.h"
+#include "MemoryDebug.h"
 
 CCallMap gclsCallMap;
 CCallMap gclsTransCallMap;

@@ -30,6 +30,7 @@
 #include "Directory.h"
 #include "TimeString.h"
 #include "KSipServer.h"
+#include "MemoryDebug.h"
 
 CSipServer gclsSipServer;
 CSipUserAgent gclsUserAgent;

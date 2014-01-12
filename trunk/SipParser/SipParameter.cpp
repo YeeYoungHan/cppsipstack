@@ -18,6 +18,7 @@
 
 #include "SipParserDefine.h"
 #include "SipParameter.h"
+#include "MemoryDebug.h"
 
 CSipParameter::CSipParameter()
 {

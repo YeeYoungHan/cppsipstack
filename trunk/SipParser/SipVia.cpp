@@ -19,6 +19,7 @@
 #include "SipParserDefine.h"
 #include "SipVia.h"
 #include <stdlib.h>
+#include "MemoryDebug.h"
 
 CSipVia::CSipVia() : m_iPort(-1)
 {

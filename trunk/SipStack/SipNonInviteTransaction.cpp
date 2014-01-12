@@ -18,6 +18,7 @@
 
 #include "SipNonInviteTransaction.h"
 #include "SipDeleteQueue.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipStack

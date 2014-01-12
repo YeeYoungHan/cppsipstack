@@ -21,6 +21,7 @@
 #include "SipPlatformDefine.h"
 #include <stdio.h>
 #include <string.h>
+#include "MemoryDebug.h"
 
 /* UINT2 defines a two byte word */
 typedef unsigned short int UINT2;

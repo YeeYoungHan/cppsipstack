@@ -18,6 +18,7 @@
 
 #include "XmlSipServer.h"
 #include "XmlElement.h"
+#include "MemoryDebug.h"
 
 CRoutePrefix::CRoutePrefix() : m_bDeletePrefix(false)
 {

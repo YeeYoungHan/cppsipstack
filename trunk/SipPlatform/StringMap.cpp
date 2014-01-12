@@ -17,6 +17,7 @@
  */
 
 #include "StringMap.h"
+#include "MemoryDebug.h"
 
 CStringMap::CStringMap()
 {

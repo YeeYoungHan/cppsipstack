@@ -18,6 +18,7 @@
 
 #include "SipStackDefine.h"
 #include "TcpThreadList.h"
+#include "MemoryDebug.h"
 
 static CSipMutex gclsMutex;
 

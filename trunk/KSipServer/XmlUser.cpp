@@ -23,6 +23,7 @@
 #include "SipServerSetup.h"
 #include "Directory.h"
 #include "DbMySQL.h"
+#include "MemoryDebug.h"
 
 CXmlUser::CXmlUser() : m_bDnd(false)
 {
