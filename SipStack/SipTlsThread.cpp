@@ -25,6 +25,7 @@
 #include "ServerUtility.h"
 #include "Log.h"
 #include <time.h>
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipStack

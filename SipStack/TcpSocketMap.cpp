@@ -18,6 +18,7 @@
 
 #include "SipStackDefine.h"
 #include "TcpSocketMap.h"
+#include "MemoryDebug.h"
 
 CTcpSocketInfo::CTcpSocketInfo() : m_hSocket(INVALID_SOCKET)
 {

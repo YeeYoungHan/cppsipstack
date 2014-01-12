@@ -18,6 +18,7 @@
 
 #include "SipPlatformDefine.h"
 #include "SdpBandWidth.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SdpParser

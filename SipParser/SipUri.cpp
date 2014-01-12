@@ -19,6 +19,7 @@
 #include "SipParserDefine.h"
 #include "SipUri.h"
 #include <stdlib.h>
+#include "MemoryDebug.h"
 
 CSipUri::CSipUri() : m_iPort(0)
 {

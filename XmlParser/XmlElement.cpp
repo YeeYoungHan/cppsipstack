@@ -19,6 +19,7 @@
 #include "SipPlatformDefine.h"
 #include "XmlElement.h"
 #include <stdlib.h>
+#include "MemoryDebug.h"
 
 /**
  * @ingroup XmlParser

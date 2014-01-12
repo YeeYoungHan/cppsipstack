@@ -17,6 +17,7 @@
  */
 
 #include "SipCdr.h"
+#include "MemoryDebug.h"
 
 CSipCdr::CSipCdr()
 {

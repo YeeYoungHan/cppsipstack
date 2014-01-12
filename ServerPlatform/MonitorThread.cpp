@@ -22,6 +22,7 @@
 #include "MonitorCallBack.h"
 #include "ServerService.h"
 #include "ServerUtility.h"
+#include "MemoryDebug.h"
 
 static int giMonitorThreadCount = 0;
 CSipMutex gclsCountMutex;
@@ -159,6 +160,7 @@ void * MonitorThread( void * lpParameter )
 	closesocket( pclsArg->hSocket );
 
 	CLog::Print( LOG_INFO, "MonitorThread(%s:%d) is terminated", pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
+	delete pclsArg;
 
 	gclsCountMutex.acquire();
 	--giMonitorThreadCount;

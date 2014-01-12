@@ -19,6 +19,7 @@
 #include "SipPlatformDefine.h"
 #include <stdio.h>
 #include "TimeString.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipPlatform

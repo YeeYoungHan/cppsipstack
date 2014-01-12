@@ -22,6 +22,7 @@
 #include "ServerThread.h"
 #include "ServerService.h"
 #include "ServerUtility.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup ServerPlatform

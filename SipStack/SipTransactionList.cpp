@@ -17,6 +17,7 @@
  */
 
 #include "SipTransactionList.h"
+#include "MemoryDebug.h"
 
 int CSipTransactionList::m_arrICTReSendTime[MAX_ICT_RESEND_COUNT] = { 500
 	, 1500

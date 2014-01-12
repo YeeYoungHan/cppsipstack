@@ -17,6 +17,7 @@
  */
 
 #include "SipMutex.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipPlatform

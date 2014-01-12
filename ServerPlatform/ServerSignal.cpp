@@ -20,6 +20,7 @@
 #include "Log.h"
 #include <signal.h>
 #include <string>
+#include "MemoryDebug.h"
 
 bool gbStop = false;
 

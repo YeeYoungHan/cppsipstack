@@ -22,6 +22,7 @@
 #include "ServerServicePrivate.h"
 #include <windows.h>
 #include <stdio.h>
+#include "MemoryDebug.h"
 
 /**
  * @ingroup ServerPlatform

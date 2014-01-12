@@ -17,6 +17,7 @@
  */
 
 #include "SipUserAgent.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipUserAgent

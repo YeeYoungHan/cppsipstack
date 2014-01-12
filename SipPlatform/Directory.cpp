@@ -26,6 +26,8 @@
 #include <errno.h>
 #endif
 
+#include "MemoryDebug.h"
+
 /** 
  * @ingroup SipPlatform
  * @brief 디렉토리를 생성한다. 

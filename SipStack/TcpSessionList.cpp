@@ -19,6 +19,7 @@
 #include "SipStackDefine.h"
 #include "TcpSessionList.h"
 #include <time.h>
+#include "MemoryDebug.h"
 
 CTcpSessionListInfo::CTcpSessionListInfo() : m_iPort(0)
 #ifdef USE_TLS

@@ -21,6 +21,7 @@
 #include "SipServerSetup.h"
 #include "Log.h"
 #include "KSipServer.h"
+#include "MemoryDebug.h"
 
 CRtpMap gclsRtpMap;
 

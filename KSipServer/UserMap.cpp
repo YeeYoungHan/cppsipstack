@@ -22,6 +22,7 @@
 #include "SipServerSetup.h"
 #include "SipServer.h"
 #include "TimeString.h"
+#include "MemoryDebug.h"
 
 CUserMap gclsUserMap;
 

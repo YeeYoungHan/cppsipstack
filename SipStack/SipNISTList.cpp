@@ -20,6 +20,7 @@
 #include "SipStack.h"
 #include "SipDeleteQueue.h"
 #include "TimeUtility.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipStack

@@ -20,6 +20,7 @@
 #include "SipContentType.h"
 #include <stdio.h>
 #include <string.h>
+#include "MemoryDebug.h"
 
 CSipContentType::CSipContentType()
 {

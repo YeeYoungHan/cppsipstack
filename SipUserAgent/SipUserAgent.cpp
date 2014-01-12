@@ -23,6 +23,7 @@
 #include "StringUtility.h"
 #include "TimeString.h"
 #include "TimeUtility.h"
+#include "MemoryDebug.h"
 
 #include "SipUserAgentCall.hpp"
 #include "SipUserAgentSms.hpp"

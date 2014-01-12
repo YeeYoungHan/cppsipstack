@@ -19,6 +19,7 @@
 #include "SipParserDefine.h"
 #include "SipFrom.h"
 #include "SipUtility.h"
+#include "MemoryDebug.h"
 
 CSipFrom::CSipFrom()
 {

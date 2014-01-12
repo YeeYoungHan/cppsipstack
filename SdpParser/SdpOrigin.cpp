@@ -18,6 +18,7 @@
 
 #include "SipPlatformDefine.h"
 #include "SdpOrigin.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SdpParser

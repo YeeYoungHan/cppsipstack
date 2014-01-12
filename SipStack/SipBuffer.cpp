@@ -20,6 +20,7 @@
 #include "SipBuffer.h"
 #include <string.h>
 #include <stdlib.h>
+#include "MemoryDebug.h"
 
 /** 내부 변수를 초기화시킨다. */ 
 CSipBuffer::CSipBuffer() : m_pszBuf(NULL), m_iBufLen(0)

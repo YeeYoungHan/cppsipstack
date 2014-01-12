@@ -20,6 +20,7 @@
 #include "SipDeleteQueue.h"
 #include "TimeUtility.h"
 #include "ServerUtility.h"
+#include "MemoryDebug.h"
 
 time_t giTime = 0;
 

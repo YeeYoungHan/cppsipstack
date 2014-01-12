@@ -30,6 +30,8 @@
 #include <sys/time.h>
 #endif
 
+#include "MemoryDebug.h"
+
 // CLog 클래스의 정적 변수를 초기화 한다.
 char * CLog::m_pszDirName = NULL;
 char CLog::m_szDate[9] = { '\0' };

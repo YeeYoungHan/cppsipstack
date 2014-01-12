@@ -18,6 +18,7 @@
 
 #include "SipParserDefine.h"
 #include "SipChallenge.h"
+#include "MemoryDebug.h"
 
 CSipChallenge::CSipChallenge()
 {

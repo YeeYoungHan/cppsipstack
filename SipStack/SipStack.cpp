@@ -20,6 +20,7 @@
 #include "SipStackThread.h"
 #include "SipDeleteQueue.h"
 #include "Log.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipStack
@@ -758,6 +759,7 @@ bool CSipStack::_Stop( )
 	}
 
 	m_clsTlsThreadList.Final();
+	SSLServerStop();
 #endif
 
 	m_clsICT.DeleteAll();

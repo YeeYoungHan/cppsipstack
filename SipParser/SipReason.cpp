@@ -19,6 +19,7 @@
 #include "SipParserDefine.h"
 #include "SipReason.h"
 #include "StringUtility.h"
+#include "MemoryDebug.h"
 
 CSipReason::CSipReason()
 {

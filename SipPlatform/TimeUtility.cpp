@@ -17,6 +17,7 @@
  */
 
 #include "TimeUtility.h"
+#include "MemoryDebug.h"
 
 #ifdef WIN32
 #include <sys/timeb.h>

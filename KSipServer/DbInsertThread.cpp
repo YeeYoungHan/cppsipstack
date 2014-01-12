@@ -24,6 +24,7 @@
 #include "SipServerSetup.h"
 #include "SipStackDefine.h"
 #include "ServerService.h"
+#include "MemoryDebug.h"
 
 typedef std::list< std::string > SQL_LIST;
 static CSipMutexSignal gclsMutex;

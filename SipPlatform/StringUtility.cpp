@@ -19,6 +19,7 @@
 #include "StringUtility.h"
 #include <string.h>
 #include <stdlib.h>
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipPlatform

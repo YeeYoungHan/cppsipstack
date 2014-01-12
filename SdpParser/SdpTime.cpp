@@ -18,6 +18,7 @@
 
 #include "SipPlatformDefine.h"
 #include "SdpTime.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SdpParser

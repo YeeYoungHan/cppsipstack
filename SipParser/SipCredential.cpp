@@ -19,6 +19,7 @@
 #include "SipParserDefine.h"
 #include "SipCredential.h"
 #include "SipChallenge.h"
+#include "MemoryDebug.h"
 
 CSipCredential::CSipCredential()
 {

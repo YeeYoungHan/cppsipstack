@@ -42,6 +42,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include "MemoryDebug.h"
+
 /**
  * @ingroup SipPlatform
  * @brief 리눅스에서 일반 사용자로 수정한 후, core dump 파일 생성 가능하게 한다.

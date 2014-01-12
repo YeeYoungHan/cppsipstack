@@ -19,6 +19,7 @@
 #include "SipStackThread.h"
 #include "ServerUtility.h"
 #include "Log.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipStack
