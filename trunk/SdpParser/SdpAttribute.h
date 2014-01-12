@@ -31,6 +31,7 @@ class CSdpAttribute
 {
 public:
 	CSdpAttribute();
+	CSdpAttribute( const char * pszName, const char * pszValue );
 	~CSdpAttribute();
 
 	/** attribute ¿Ã∏ß */
