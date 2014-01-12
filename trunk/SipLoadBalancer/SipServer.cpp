@@ -21,6 +21,7 @@
 #include "SipServerMap.h"
 #include "UserMap.h"
 #include "Log.h"
+#include "MemoryDebug.h"
 
 CSipStack	gclsSipStack;
 CSipServer gclsSipServer;

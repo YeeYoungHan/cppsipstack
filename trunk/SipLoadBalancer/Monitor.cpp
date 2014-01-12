@@ -23,6 +23,7 @@
 #include "MonitorDefine.h"
 #include "SipServer.h"
 #include "SipServerSetup.h"
+#include "MemoryDebug.h"
 
 CMonitor gclsMonitor;
 
