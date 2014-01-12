@@ -25,6 +25,7 @@
 #include "Log.h"
 #include "ServerService.h"
 #include "Monitor.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipLoadBalancer

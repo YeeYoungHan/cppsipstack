@@ -22,6 +22,7 @@
 #include "Log.h"
 #include <string.h>
 #include <sys/stat.h>
+#include "MemoryDebug.h"
 
 CSipServerSetup gclsSetup;
 
