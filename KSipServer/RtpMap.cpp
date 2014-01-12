@@ -26,32 +26,41 @@ CRtpMap gclsRtpMap;
 
 CRtpInfo::CRtpInfo( uint8_t iSocketCount ) : m_iStartPort(0), m_bStop(false), m_iSocketCount(iSocketCount)
 {
-	m_phSocket = new Socket[iSocketCount];
-	m_piIp = new uint32_t[iSocketCount];
-	m_piPort = new uint16_t[iSocketCount];
+	
+}
 
-	for( uint8_t i = 0; i < iSocketCount; ++i )
+bool CRtpInfo::Create()
+{
+	m_phSocket = new Socket[m_iSocketCount];
+	if( m_phSocket == NULL ) return false;
+
+	m_piIp = new uint32_t[m_iSocketCount];
+	if( m_piIp == NULL )
+	{
+		Close();
+		return false;
+	}
+
+	m_piPort = new uint16_t[m_iSocketCount];
+	if( m_piPort == NULL )
+	{
+		Close();
+		return false;
+	}
+
+	for( uint8_t i = 0; i < m_iSocketCount; ++i )
 	{
 		m_phSocket[i] = INVALID_SOCKET;
 		m_piIp[i] = 0;
 		m_piPort[i] = 0;
 	}
+
+	return true;
 }
 
-/**
- * @ingroup KSipServer
- * @brief 소켓을 닫는다.
- */
-void CRtpInfo::CloseSocket()
+void CRtpInfo::Close()
 {
-	for( uint8_t i = 0; i < m_iSocketCount; ++i )
-	{
-		if( m_phSocket[i] != INVALID_SOCKET )
-		{
-			closesocket( m_phSocket[i] );
-			m_phSocket[i] = INVALID_SOCKET;
-		}
-	}
+	CloseSocket();
 
 	delete [] m_phSocket;
 	m_phSocket = NULL;
@@ -61,6 +70,25 @@ void CRtpInfo::CloseSocket()
 
 	delete [] m_piPort;
 	m_piPort = NULL;
+}
+
+/**
+ * @ingroup KSipServer
+ * @brief 소켓을 닫는다.
+ */
+void CRtpInfo::CloseSocket()
+{
+	if( m_phSocket )
+	{
+		for( uint8_t i = 0; i < m_iSocketCount; ++i )
+		{
+			if( m_phSocket[i] != INVALID_SOCKET )
+			{
+				closesocket( m_phSocket[i] );
+				m_phSocket[i] = INVALID_SOCKET;
+			}
+		}
+	}
 }
 
 /**
@@ -120,6 +148,8 @@ int CRtpMap::CreatePort( int iSocketCount )
 {
 	bool			bRes = false;
 	CRtpInfo	clsInfo( iSocketCount );
+
+	if( clsInfo.Create() == false ) return -1;
 
 	m_clsMutex.acquire();
 	if( m_iStartPort == 0 ) m_iStartPort = gclsSetup.m_iBeginRtpPort;
@@ -223,7 +253,7 @@ bool CRtpMap::Delete( int iPort )
 	itMap = m_clsMap.find( iPort );
 	if( itMap != m_clsMap.end() )
 	{
-		itMap->second.CloseSocket();
+		itMap->second.Close();
 		m_clsMap.erase( itMap );
 		bRes = true;
 	}
@@ -310,32 +340,24 @@ bool CRtpMap::CreatePort( CRtpInfo & clsInfo, int iStart, int iEnd )
 {
 	for( int iPort = iStart; iPort < iEnd; iPort += clsInfo.m_iSocketCount )
 	{
-		clsInfo.m_phSocket[0] = UdpListen( iPort, NULL );
-		if( clsInfo.m_phSocket[0] == INVALID_SOCKET ) continue;
+		bool bError = false;
 
-		clsInfo.m_phSocket[1] = UdpListen( iPort + 1, NULL );
-		if( clsInfo.m_phSocket[1] == INVALID_SOCKET )
+		for( int i = 0; i < clsInfo.m_iSocketCount; ++i )
 		{
-			clsInfo.CloseSocket();
-			continue;
+			clsInfo.m_phSocket[i] = UdpListen( iPort + i, NULL );
+			if( clsInfo.m_phSocket[i] == INVALID_SOCKET )
+			{
+				bError = true;
+				clsInfo.CloseSocket();
+				break;
+			}
 		}
 
-		clsInfo.m_phSocket[2] = UdpListen( iPort + 2, NULL );
-		if( clsInfo.m_phSocket[2] == INVALID_SOCKET )
+		if( bError == false )
 		{
-			clsInfo.CloseSocket();
-			continue;
+			clsInfo.m_iStartPort = iPort;
+			return true;
 		}
-
-		clsInfo.m_phSocket[3] =  UdpListen( iPort + 3, NULL );
-		if( clsInfo.m_phSocket[3] == INVALID_SOCKET )
-		{
-			clsInfo.CloseSocket();
-			continue;
-		}
-
-		clsInfo.m_iStartPort = iPort;
-		return true;
 	}
 
 	return false;
