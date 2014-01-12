@@ -52,6 +52,16 @@ bool CSipServer::Start( CSipStackSetup & clsSetup )
 	return true;
 }
 
+/**
+ * @ingroup McuEmulator
+ * @brief SIP 서버를 종료한다.
+ */
+void CSipServer::Stop( )
+{
+	gclsSipStack.Stop();
+	gclsSipStack.Final();
+}
+
 #ifdef USE_DIALOG
 /**
  * @ingroup McuControlServer

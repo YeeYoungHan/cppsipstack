@@ -188,6 +188,8 @@ int ServiceMain( )
 		sleep( 1 );
 	}
 
+	gclsUserAgent.Final();
+
 	CLog::Print( LOG_SYSTEM, "KSipServer is terminated" );
 	CLog::Release();
 

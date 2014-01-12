@@ -348,6 +348,7 @@ void CSipSpeedDlg::OnBnClickedStopTest()
 void CSipSpeedDlg::OnDestroy()
 {
 	gclsSipUserAgent.Stop();
+	gclsSipUserAgent.Final();
 
 	__super::OnDestroy();
 }

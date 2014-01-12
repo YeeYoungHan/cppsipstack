@@ -48,6 +48,16 @@ bool CSipServer::Start( CSipStackSetup & clsSetup )
 
 /**
  * @ingroup TestSipServer
+ * @brief SIP 서버를 종료한다.
+ */
+void CSipServer::Stop( )
+{
+	gclsSipStack.Stop();
+	gclsSipStack.Final();
+}
+
+/**
+ * @ingroup TestSipServer
  * @brief SIP 요청 메시지 수신 이벤트 핸들러
  * @param iThreadId		쓰레드 아이디
  * @param pclsMessage SIP 요청 메시지

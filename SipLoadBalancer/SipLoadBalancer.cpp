@@ -104,7 +104,10 @@ int ServiceMain( )
 		}
 	}
 
+	gclsSipStack.Final();
+
 	CLog::Print( LOG_SYSTEM, "SipLoadBalancer is terminated" );
+	CLog::Release();
 
 	return 0;
 }
