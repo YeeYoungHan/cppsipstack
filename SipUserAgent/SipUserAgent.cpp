@@ -198,6 +198,8 @@ void CSipUserAgent::DeRegister( )
  */
 bool CSipUserAgent::Start( CSipStackSetup & clsSetup, ISipUserAgentCallBack * pclsCallBack, ISipStackSecurityCallBack * pclsSecurityCallBack )
 {
+	if( m_bStart ) return false;
+
 	m_clsSipStack.AddCallBack( this );
 
 	m_pclsCallBack = pclsCallBack;
@@ -215,11 +217,11 @@ bool CSipUserAgent::Start( CSipStackSetup & clsSetup, ISipUserAgentCallBack * pc
 /**
  * @ingroup SipUserAgent
  * @brief SIP stack 을 종료하고 SIP 로그인 쓰레드를 종료한다.
- * @returns true 를 리턴한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool CSipUserAgent::Stop( )
 {
-	if( m_bStart == false ) return true;
+	if( m_bStart == false ) return false;
 
 	SIP_SERVER_INFO_LIST::iterator	it;
 	int	iCount;
@@ -247,8 +249,6 @@ bool CSipUserAgent::Stop( )
 	}
 
 	m_bStopEvent = true;
-	m_clsSipStack.Stop();
-	DeleteRegisterInfoAll( );
 
 	// SipRegisterThread 가 종료할 때까지 대기한다.
 	for( int i = 0; i < 10; ++i )
@@ -256,6 +256,9 @@ bool CSipUserAgent::Stop( )
 		if( m_bStopEvent == false ) break;
 		sleep(1);
 	}
+
+	DeleteRegisterInfoAll( );
+	m_clsSipStack.Stop();
 
 	m_bStart = false;
 
