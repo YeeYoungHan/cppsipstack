@@ -42,6 +42,7 @@ CSipTestDlg::CSipTestDlg(CWnd* pParent /*=NULL*/)
 	, m_strCalleePassWord(_T(""))
 	, m_strLog(_T(""))
 	, m_strPercent(_T(""))
+	, m_bUse2Media(FALSE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -64,6 +65,7 @@ void CSipTestDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PROGRESS, m_clsProgress);
 	DDX_Text(pDX, IDC_PERCENT, m_strPercent);
 	DDX_Control(pDX, IDC_LOG, m_txtLog);
+	DDX_Check(pDX, IDC_USE_TWO_MEDIA, m_bUse2Media);
 }
 
 BEGIN_MESSAGE_MAP(CSipTestDlg, CDialog)
@@ -314,7 +316,17 @@ void CSipTestDlg::OnBnClickedStartTest()
 {
 	UpdateData(TRUE);
 
+#ifndef USE_MEDIA_LIST
+	if( m_bUse2Media )
+	{
+		MessageBox( "rebuild SipUserAgent with USE_MEDIA_LIST", "Error", MB_OK | MB_ICONERROR );
+		return;
+	}
+#endif
+
 	m_strPercent = "0 %";
+	gclsSetup.m_bUseTwoMedia = ( m_bUse2Media ? true : false );
+	gclsSetup.Put();
 
 	UpdateData(FALSE);
 

@@ -18,6 +18,7 @@
 
 #include "stdafx.h"
 #include "TestInfo.h"
+#include "Setup.h"
 
 CTestInfo gclsTestInfo;
 
@@ -78,7 +79,7 @@ bool CTestInfo::CreateRtp( )
 {
 	bool bRes = false;
 
-	for( int iPort = 4000; iPort < 5000; ++ iPort )
+	for( int iPort = 4000; iPort < 5000; ++iPort )
 	{
 		if( m_clsCallerRtp.Create( iPort ) ) 
 		{
@@ -87,11 +88,10 @@ bool CTestInfo::CreateRtp( )
 		}
 	}
 
-	if( bRes == false ) return false;
-
+	if( bRes == false ) goto FUNC_ERROR;
 	bRes = false;
 
-	for( int iPort = 5000; iPort < 6000; ++ iPort )
+	for( int iPort = 5000; iPort < 6000; ++iPort )
 	{
 		if( m_clsCalleeRtp.Create( iPort ) ) 
 		{
@@ -100,12 +100,41 @@ bool CTestInfo::CreateRtp( )
 		}
 	}
 
-	if( bRes == false )
+	if( bRes == false ) goto FUNC_ERROR;
+
+	if( gclsSetup.m_bUseTwoMedia )
 	{
-		
+		bRes = false;
+		for( int iPort = 6000; iPort < 7000; ++iPort )
+		{
+			if( m_clsCallerVideoRtp.Create( iPort ) ) 
+			{
+				bRes = true;
+				break;
+			}
+		}
+
+		if( bRes == false ) goto FUNC_ERROR;
+		bRes = false;
+
+		for( int iPort = 7000; iPort < 8000; ++iPort )
+		{
+			if( m_clsCalleeVideoRtp.Create( iPort ) ) 
+			{
+				bRes = true;
+				break;
+			}
+		}
+
+		if( bRes == false ) goto FUNC_ERROR;
 	}
 
 	return bRes;
+
+FUNC_ERROR:
+	CloseRtp( );
+
+	return false;
 }
 
 /**
@@ -116,6 +145,8 @@ void CTestInfo::CloseRtp( )
 {
 	m_clsCallerRtp.Close();
 	m_clsCalleeRtp.Close();
+	m_clsCallerVideoRtp.Close();
+	m_clsCalleeVideoRtp.Close();
 }
 
 /**

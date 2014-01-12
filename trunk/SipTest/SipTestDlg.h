@@ -95,4 +95,5 @@ public:
 	afx_msg void OnBnClickedStopTest();
 	afx_msg void OnBnClickedClearLog();
 	afx_msg void OnDestroy();
+	BOOL m_bUse2Media;
 };

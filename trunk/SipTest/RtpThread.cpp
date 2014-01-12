@@ -51,19 +51,28 @@ void InitRtpHeader( CRtpHeader * pclsRtpHeader )
  */
 DWORD WINAPI RtpThread( LPVOID lpParameter )
 {
-	struct pollfd arrPoll[2];
+	struct pollfd arrPoll[4];
 	char	szSendPacket[1500], szRecvPacket[1500], szIp[41];
 	CRtpHeader * pclsRtpHeader = (CRtpHeader *)szSendPacket;
 	int iRtpCount = 0;
-	int iEvent, iRecvLen;
+	int iEvent, iRecvLen, iPollCount = 2;
 	uint16_t	sPort;
 
+	gclsTestInfo.m_bResult = false;
 	gclsTestInfo.ClearRtp();
 
 	InitRtpHeader( pclsRtpHeader );
 
 	TcpSetPollIn( arrPoll[0], gclsTestInfo.m_clsCallerRtp.m_hSocket );
 	TcpSetPollIn( arrPoll[1], gclsTestInfo.m_clsCalleeRtp.m_hSocket );
+	
+	if( gclsSetup.m_bUseTwoMedia )
+	{
+		iPollCount = 4;
+
+		TcpSetPollIn( arrPoll[2], gclsTestInfo.m_clsCallerVideoRtp.m_hSocket );
+		TcpSetPollIn( arrPoll[3], gclsTestInfo.m_clsCalleeVideoRtp.m_hSocket );
+	}
 
 	while( gbStopRtpThread == false )
 	{
@@ -76,7 +85,18 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 		UdpSend( gclsTestInfo.m_clsCalleeRtp.m_hSocket, szSendPacket, sizeof(CRtpHeader) + 160
 			, gclsTestInfo.m_clsCalleePeerRtp.m_strIp.c_str(), gclsTestInfo.m_clsCalleePeerRtp.m_iPort );
 
-		iEvent = poll( arrPoll, 2, 20 );
+		if( gclsSetup.m_bUseTwoMedia )
+		{
+			snprintf( szSendPacket + sizeof(CRtpHeader), sizeof(szSendPacket) - sizeof(CRtpHeader), "caller video%d", iRtpCount );
+			UdpSend( gclsTestInfo.m_clsCallerVideoRtp.m_hSocket, szSendPacket, sizeof(CRtpHeader) + 160
+				, gclsTestInfo.m_clsCallerPeerRtp.m_strIp.c_str(), gclsTestInfo.m_clsCallerPeerRtp.GetVideoPort() );
+
+			snprintf( szSendPacket + sizeof(CRtpHeader), sizeof(szSendPacket) - sizeof(CRtpHeader), "callee video%d", iRtpCount );
+			UdpSend( gclsTestInfo.m_clsCalleeVideoRtp.m_hSocket, szSendPacket, sizeof(CRtpHeader) + 160
+				, gclsTestInfo.m_clsCalleePeerRtp.m_strIp.c_str(), gclsTestInfo.m_clsCalleePeerRtp.GetVideoPort() );
+		}
+
+		iEvent = poll( arrPoll, iPollCount, 20 );
 		if( iEvent > 0 )
 		{
 			if( arrPoll[0].revents & POLLIN )
@@ -84,7 +104,7 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 				iRecvLen = sizeof(szRecvPacket);
 				if( UdpRecv( gclsTestInfo.m_clsCallerRtp.m_hSocket, szRecvPacket, &iRecvLen, szIp, sizeof(szIp), &sPort ) == false )
 				{
-					SendLog( "[ERROR] caller RTP socket recv error" );
+					SendLog( "[ERROR] caller RTP socket recv error(%d)", GetError() );
 					break;
 				}
 				else
@@ -106,7 +126,7 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 				iRecvLen = sizeof(szRecvPacket);
 				if( UdpRecv( gclsTestInfo.m_clsCalleeRtp.m_hSocket, szRecvPacket, &iRecvLen, szIp, sizeof(szIp), &sPort ) == false )
 				{
-					SendLog( "[ERROR] callee RTP socket recv error" );
+					SendLog( "[ERROR] callee RTP socket recv error(%d)", GetError() );
 					break;
 				}
 				else
@@ -123,6 +143,53 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 				}
 			}
 
+			if( gclsSetup.m_bUseTwoMedia )
+			{
+				if( arrPoll[2].revents & POLLIN )
+				{
+					iRecvLen = sizeof(szRecvPacket);
+					if( UdpRecv( gclsTestInfo.m_clsCallerVideoRtp.m_hSocket, szRecvPacket, &iRecvLen, szIp, sizeof(szIp), &sPort ) == false )
+					{
+						SendLog( "[ERROR] caller video RTP socket recv error(%d)", GetError() );
+						break;
+					}
+					else
+					{
+						if( strncmp( szRecvPacket + sizeof(CRtpHeader), "callee video", 12 ) )
+						{
+							SendLog( "[ERROR] caller vidoe RTP socket recv error [%s]", szRecvPacket + sizeof(CRtpHeader) );
+							break;
+						}
+						else
+						{
+							++gclsTestInfo.m_clsCallerVideoRtp.m_iRecvCount;
+						}
+					}
+				}
+
+				if( arrPoll[3].revents & POLLIN )
+				{
+					iRecvLen = sizeof(szRecvPacket);
+					if( UdpRecv( gclsTestInfo.m_clsCalleeVideoRtp.m_hSocket, szRecvPacket, &iRecvLen, szIp, sizeof(szIp), &sPort ) == false )
+					{
+						SendLog( "[ERROR] callee video RTP socket recv error(%d)", GetError() );
+						break;
+					}
+					else
+					{
+						if( strncmp( szRecvPacket + sizeof(CRtpHeader), "caller video", 12 ) )
+						{
+							SendLog( "[ERROR] callee video RTP socket recv error [%s]", szRecvPacket + sizeof(CRtpHeader) );
+							break;
+						}
+						else
+						{
+							++gclsTestInfo.m_clsCalleeVideoRtp.m_iRecvCount;
+						}
+					}
+				}
+			}
+
 			Sleep(20);
 		}
 
@@ -133,17 +200,43 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 
 	if( iRtpCount >= 100 && gclsTestInfo.m_clsCallerRtp.m_iRecvCount >= 95 && gclsTestInfo.m_clsCalleeRtp.m_iRecvCount >= 95 )
 	{
-		SendLog( "RTP caller recv count(%d) callee recv count(%d)"
-			, gclsTestInfo.m_clsCallerRtp.m_iRecvCount, gclsTestInfo.m_clsCalleeRtp.m_iRecvCount );
+		if( gclsSetup.m_bUseTwoMedia )
+		{
+			if( gclsTestInfo.m_clsCallerVideoRtp.m_iRecvCount >= 95 && gclsTestInfo.m_clsCalleeVideoRtp.m_iRecvCount >= 95 )
+			{
+				SendLog( "RTP audio caller recv count(%d) callee recv count(%d)"
+					, gclsTestInfo.m_clsCallerRtp.m_iRecvCount, gclsTestInfo.m_clsCalleeRtp.m_iRecvCount );
 
-		gclsTestInfo.m_bResult = true;
+				SendLog( "RTP video caller recv count(%d) callee recv count(%d)"
+					, gclsTestInfo.m_clsCallerVideoRtp.m_iRecvCount, gclsTestInfo.m_clsCalleeVideoRtp.m_iRecvCount );
+
+				gclsTestInfo.m_bResult = true;
+			}
+		}
+		else
+		{
+			SendLog( "RTP caller recv count(%d) callee recv count(%d)"
+				, gclsTestInfo.m_clsCallerRtp.m_iRecvCount, gclsTestInfo.m_clsCalleeRtp.m_iRecvCount );
+
+			gclsTestInfo.m_bResult = true;
+		}
 	}
-	else
+	
+	if( gclsTestInfo.m_bResult == false )
 	{
-		SendLog( "[ERROR] RTP caller recv count(%d) callee recv count(%d)"
-			, gclsTestInfo.m_clsCallerRtp.m_iRecvCount, gclsTestInfo.m_clsCalleeRtp.m_iRecvCount );
+		if( gclsSetup.m_bUseTwoMedia )
+		{
+			SendLog( "[ERROR] RTP audio caller recv count(%d) callee recv count(%d)"
+				, gclsTestInfo.m_clsCallerRtp.m_iRecvCount, gclsTestInfo.m_clsCalleeRtp.m_iRecvCount );
 
-		gclsTestInfo.m_bResult = false;
+			SendLog( "[ERROR] RTP video caller recv count(%d) callee recv count(%d)"
+				, gclsTestInfo.m_clsCallerVideoRtp.m_iRecvCount, gclsTestInfo.m_clsCalleeVideoRtp.m_iRecvCount );
+		}
+		else
+		{
+			SendLog( "[ERROR] RTP caller recv count(%d) callee recv count(%d)"
+				, gclsTestInfo.m_clsCallerRtp.m_iRecvCount, gclsTestInfo.m_clsCalleeRtp.m_iRecvCount );
+		}
 	}
 
 	gbRtpThreadRun = false;

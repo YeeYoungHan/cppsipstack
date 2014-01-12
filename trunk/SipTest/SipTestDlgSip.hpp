@@ -121,6 +121,20 @@ void CSipTestDlg::EventIncomingCall( const char * pszCallId, const char * pszFro
 	clsRtp.m_iPort = gclsTestInfo.m_clsCalleeRtp.m_iPort;	
 	clsRtp.m_iCodec = 0;
 
+	if( gclsSetup.m_bUseTwoMedia )
+	{
+		CSdpMedia sdpAudio( "audio", gclsTestInfo.m_clsCalleeRtp.m_iPort, "RTP/AVP" );
+		CSdpMedia sdpVideo( "video", gclsTestInfo.m_clsCalleeVideoRtp.m_iPort, "RTP/AVP" );
+
+		sdpAudio.AddAttribute( "rtpmap", "0 PCMU/8000" );
+		
+		sdpVideo.AddAttribute( "rtpmap", "97 H264/90000" );
+		sdpVideo.AddAttribute( "fmtp", "97 profile-level-id=42" );
+
+		clsRtp.m_clsMediaList.push_back( sdpAudio );
+		clsRtp.m_clsMediaList.push_back( sdpVideo );
+	}
+
 	gclsTestInfo.m_clsCalleePeerRtp = *pclsRtp;
 	gclsTestInfo.m_strCalleeCallId = pszCallId;
 
