@@ -200,6 +200,9 @@ bool SSLServerStop( )
 		gbStartSslServer = false;
 	}
 
+	ERR_free_strings();
+	EVP_cleanup();
+
 	return true;
 }
 
