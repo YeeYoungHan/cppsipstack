@@ -105,7 +105,7 @@ int ServiceMain( )
 
 	if( gclsSipServer.Start( clsSetup ) == false )
 	{
-		CLog::Print( LOG_ERROR, "SipServer start error\n" );
+		CLog::Print( LOG_ERROR, "SipServer start error" );
 		return -1;
 	}
 
