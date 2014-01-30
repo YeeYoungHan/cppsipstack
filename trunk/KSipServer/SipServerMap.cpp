@@ -21,7 +21,6 @@
 #include "SipServerMap.h"
 #include "SipServerSetup.h"
 #include "Directory.h"
-#include "DbMySQL.h"
 #include "Log.h"
 #include "MemoryDebug.h"
 
@@ -35,53 +34,6 @@ CSipServerMap::~CSipServerMap()
 {
 }
 
-#ifdef USE_MYSQL
-/**
- * @ingroup KSipServer
- * @brief SipServer 테이블에서 읽은 하나의 row 를 처리한다.
- * @param pclsData 
- * @param sttRow		하나의 Row 정보
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool SipServerFetchRow( void * pclsData, MYSQL_ROW & sttRow )
-{
-	CXmlSipServer	clsXml;
-
-	if( sttRow[0] ) clsXml.m_strName = sttRow[0];
-	if( sttRow[1] ) clsXml.m_strIp = sttRow[1];
-	if( sttRow[2] ) clsXml.m_iPort = atoi( sttRow[2] );
-	if( sttRow[3] ) clsXml.m_strDomain = sttRow[3];
-	if( sttRow[4] ) clsXml.m_strUserId = sttRow[4];
-	if( sttRow[5] ) clsXml.m_strPassWord = sttRow[5];
-	if( sttRow[6] ) clsXml.m_iLoginTimeout = atoi( sttRow[6] );
-
-	gclsSipServerMap.Insert( clsXml );
-
-	return true;
-}
-
-/**
- * @ingroup KSipServer
- * @brief RoutePrefix 테이블에서 읽은 하나의 row 를 처리한다.
- * @param pclsData	
- * @param sttRow		하나의 Row 정보
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool RoutePrefixFetchRow( void * pclsData, MYSQL_ROW & sttRow )
-{
-	std::string	strName;
-	CRoutePrefix clsRoutePrefix;
-
-	if( sttRow[0] ) strName = sttRow[0];
-	if( sttRow[1] ) clsRoutePrefix.m_strPrefix = sttRow[1];
-	if( sttRow[2] && sttRow[2][0] == 'Y' ) clsRoutePrefix.m_bDeletePrefix = true;
-
-	gclsSipServerMap.InsertRoutePrefix( strName.c_str(), clsRoutePrefix );
-
-	return true;
-}
-#endif
-
 /**
  * @ingroup KSipServer
  * @brief XML 파일 또는 MySQL 에서 IP-PBX 정보를 읽는다.
@@ -93,34 +45,11 @@ bool CSipServerMap::Load( )
 
 	ReSetFlag( );
 
-	if( gclsSetup.m_eType == E_DT_XML )
+	if( gclsSetup.m_strSipServerXmlFolder.length() > 0 )
 	{
-		if( gclsSetup.m_strSipServerXmlFolder.length() > 0 )
-		{
-			CLog::Print( LOG_DEBUG, "SipServerMap Load" );
-			bRes = ReadDir( gclsSetup.m_strSipServerXmlFolder.c_str() );
-		}
-	}
-#ifdef USE_MYSQL
-	else if( gclsSetup.m_eType == E_DT_MYSQL )
-	{
-		char szSQL[255];
-
 		CLog::Print( LOG_DEBUG, "SipServerMap Load" );
-
-		snprintf( szSQL, sizeof(szSQL), "SELECT Id, Ip, Port, Domain, UserId, PassWord, LoginTimeout FROM SipServer" );
-		if( gclsReadDB.Query( szSQL, NULL, SipServerFetchRow ) )
-		{
-			bRes = true;
-
-			snprintf( szSQL, sizeof(szSQL), "SELECT Id, Prefix, DeletePrefix FROM RoutePrefix" );
-			if( gclsReadDB.Query( szSQL, NULL, RoutePrefixFetchRow ) )
-			{
-				
-			}
-		}
+		bRes = ReadDir( gclsSetup.m_strSipServerXmlFolder.c_str() );
 	}
-#endif
 
 	SIP_SERVER_MAP::iterator	itMap;
 

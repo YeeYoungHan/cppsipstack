@@ -7,7 +7,7 @@
 include ../Makefile.mk
 
 INC=-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser -I../SipPlatform \
-	-I../XmlParser -I../ServerPlatform -I/usr/include/mysql
+	-I../XmlParser -I../ServerPlatform
 LIB=-L../SipUserAgent -lsipuseragent \
 	-L../SipStack -lsipstack \
 	-L../SipParser -lsipparser \
@@ -15,7 +15,6 @@ LIB=-L../SipUserAgent -lsipuseragent \
 	-L../XmlParser -lxmlparser \
 	-L../ServerPlatform -lserverplatform \
 	-L../SipPlatform -lsipplatform \
-	-L/usr/lib/mysql -lmysqlclient \
 	-lssl -lpthread
 
 .SUFFIXES: .o .cpp
@@ -27,7 +26,6 @@ all: KSipServer.exe
 SRV_OBJ=KSipServer.o SipServer.o \
 	SipServerSetup.o XmlUser.o XmlSipServer.o \
 	CallMap.o NonceMap.o UserMap.o SipServerMap.o RtpMap.o \
-	DbMySQL.o DbInsertThread.o \
   RtpThread.o Monitor.o
 
 KSipServer.exe: $(SRV_OBJ)

@@ -19,7 +19,6 @@
 #include "SipParserDefine.h"
 #include "LogAnalysisSetup.h"
 #include "LogFile.h"
-#include "DbMySQL.h"
 #include "StatsSipMethod.h"
 #include "StatsSipMethodIp.h"
 #include "StatsSipMethodUserAgent.h"
@@ -60,12 +59,6 @@ int main( int argc, char * argv[] )
 
 	if( gclsSetup.Read( argv[1] ) == false )
 	{
-		return -1;
-	}
-
-	if( gclsWriteDB.Connect( gclsSetup.m_strDbHost.c_str(), gclsSetup.m_strDbUserId.c_str(), gclsSetup.m_strDbPassWord.c_str(), gclsSetup.m_strDbName.c_str(), gclsSetup.m_iDbPort ) == false )
-	{
-		printf( "[ERROR] MySQL DB is not connected\n" );
 		return -1;
 	}
 
@@ -119,8 +112,6 @@ int main( int argc, char * argv[] )
 	gclsStatsSipMethod.SaveDB( strDate.c_str() );
 	gclsStatsSipMethodIp.SaveDB( strDate.c_str() );
 	gclsStatsSipMethodUserAgent.SaveDB( strDate.c_str() );
-
-	gclsWriteDB.Close();
 
 	return 0;
 }

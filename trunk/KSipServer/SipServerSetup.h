@@ -24,12 +24,6 @@
 #include <string>
 #include <list>
 
-enum EDbType
-{
-	E_DT_XML = 0,
-	E_DT_MYSQL
-};
-
 /**
  * @ingroup KSipServer
  * @brief KSipServer 설정 파일의 내용을 저장하는 클래스
@@ -96,27 +90,6 @@ public:
 
 	/** Call Pickup 을 위한 아이디 ( 전화번호 ) */
 	std::string	m_strCallPickupId;
-
-	// ================================================================
-	// DB 연동 기능
-
-	/** DB 서버 IP 주소 */
-	std::string	m_strDbHost;
-
-	/** DB 서버 접속 사용자 아이디 */
-	std::string m_strDbUserId;
-
-	/** DB 서버 접속 비밀번호 */
-	std::string m_strDbPassWord;
-
-	/** DB 서버 데이터베이스 이름 */
-	std::string m_strDbName;
-
-	/** DB 서버 포트 번호 */
-	int					m_iDbPort;
-
-	/** SIP 통신을 위한 정보 저장 방법 */
-	EDbType			m_eType;
 
 	// ================================================================
 	// 로그 기능

@@ -25,7 +25,6 @@
 #include "SipServerMap.h"
 #include "CallMap.h"
 #include "ServerUtility.h"
-#include "DbMySQL.h"
 #include "Directory.h"
 #include "KSipServerVersion.h"
 #include "SipUserAgentVersion.h"
@@ -91,16 +90,6 @@ int ServiceMain( )
 	SetCoreDumpEnable();
 	ServerSignal();
 
-#ifdef USE_MYSQL
-	if( gclsSetup.m_eType == E_DT_MYSQL )
-	{
-		gclsReadDB.Connect( gclsSetup.m_strDbHost.c_str(), gclsSetup.m_strDbUserId.c_str(), gclsSetup.m_strDbPassWord.c_str(), gclsSetup.m_strDbName.c_str(), gclsSetup.m_iDbPort );
-		gclsWriteDB.Connect( gclsSetup.m_strDbHost.c_str(), gclsSetup.m_strDbUserId.c_str(), gclsSetup.m_strDbPassWord.c_str(), gclsSetup.m_strDbName.c_str(), gclsSetup.m_iDbPort );
-
-		StartDbInsertThread();
-	}
-#endif
-
 	gclsSipServerMap.Load();
 
 	if( gclsSipServer.Start( clsSetup ) == false )
@@ -140,21 +129,6 @@ int ServiceMain( )
 			iSecond = 0;
 		}
 
-#ifdef USE_MYSQL
-		if( gclsSetup.m_eType == E_DT_MYSQL )
-		{
-			if( gclsReadDB.IsConnected() == false )
-			{
-				gclsReadDB.Connect( gclsSetup.m_strDbHost.c_str(), gclsSetup.m_strDbUserId.c_str(), gclsSetup.m_strDbPassWord.c_str(), gclsSetup.m_strDbName.c_str(), gclsSetup.m_iDbPort );
-			}
-
-			if( gclsWriteDB.IsConnected() == false )
-			{
-				gclsWriteDB.Connect( gclsSetup.m_strDbHost.c_str(), gclsSetup.m_strDbUserId.c_str(), gclsSetup.m_strDbPassWord.c_str(), gclsSetup.m_strDbName.c_str(), gclsSetup.m_iDbPort );
-			}
-		}
-#endif
-
 		if( gclsSetup.IsChange() )
 		{
 			gclsSetup.Read();
@@ -174,20 +148,7 @@ int ServiceMain( )
 		sleep( 1 );
 	}
 
-	DbSignal();
-
 	gclsUserAgent.Stop();
-
-	for( int i = 0; i < 20; ++i )
-	{
-		if( IsDbInsertThreadRun() == false )
-		{
-			break;
-		}
-
-		sleep( 1 );
-	}
-
 	gclsUserAgent.Final();
 
 	CLog::Print( LOG_SYSTEM, "KSipServer is terminated" );

@@ -164,35 +164,23 @@ void CSipServer::SaveCdr( const char * pszCallId, int iSipStatus )
 			GetDateTimeString( szEndTime, sizeof(szEndTime) );
 		}
 
-		if( gclsSetup.m_eType == E_DT_XML )
+		std::string	strFileName = gclsSetup.m_strCdrFolder;
+		char	szFileName[20];
+		FILE	* fd;
+
+		GetDateString( szFileName, sizeof(szFileName) );
+		strcat( szFileName, ".csv" );
+
+		CDirectory::AppendName( strFileName, szFileName );
+
+		m_clsMutex.acquire();
+		fd = fopen( strFileName.c_str(), "a" );
+		if( fd )
 		{
-			std::string	strFileName = gclsSetup.m_strCdrFolder;
-			char	szFileName[20];
-			FILE	* fd;
-
-			GetDateString( szFileName, sizeof(szFileName) );
-			strcat( szFileName, ".csv" );
-
-			CDirectory::AppendName( strFileName, szFileName );
-
-			m_clsMutex.acquire();
-			fd = fopen( strFileName.c_str(), "a" );
-			if( fd )
-			{
-				fprintf( fd, "%s,%s,%s,%s,%s,%d,%s\n", clsCdr.m_strFromId.c_str(), clsCdr.m_strToId.c_str(), szInviteTime, szStartTime, szEndTime, iSipStatus, clsCdr.m_strCallId.c_str() );
-				fclose( fd );
-			}
-			m_clsMutex.release();
+			fprintf( fd, "%s,%s,%s,%s,%s,%d,%s\n", clsCdr.m_strFromId.c_str(), clsCdr.m_strToId.c_str(), szInviteTime, szStartTime, szEndTime, iSipStatus, clsCdr.m_strCallId.c_str() );
+			fclose( fd );
 		}
-		else if( gclsSetup.m_eType == E_DT_MYSQL )
-		{
-			char	szSQL[1024];
-
-			snprintf( szSQL, sizeof(szSQL), "INSERT INTO SipCdr( FromId, ToId, CallId, InviteTime, StartTime, EndTime, SipStatus ) VALUES( '%s', '%s', '%s', '%s', '%s', '%s', %d )"
-				, clsCdr.m_strFromId.c_str(), clsCdr.m_strToId.c_str(), clsCdr.m_strCallId.c_str(), szInviteTime, szStartTime, szEndTime, iSipStatus );
-
-			DbInsert( szSQL );
-		}
+		m_clsMutex.release();
 	}
 }
 
