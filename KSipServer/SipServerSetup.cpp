@@ -63,7 +63,7 @@ CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10)
 	, m_iTlsPort(5061), m_iTlsAcceptTimeout(10)
 	, m_iMinRegisterTimeout(300)
 	, m_bUseRtpRelay(false), m_iBeginRtpPort(10000), m_iEndRtpPort(60000)
-	, m_iDbPort(3306), m_eType(E_DT_XML), m_iLogLevel(0), m_iLogMaxSize(20000000)
+	, m_iLogLevel(0), m_iLogMaxSize(20000000)
 {
 }
 
@@ -119,65 +119,11 @@ bool CSipServerSetup::Read( const char * pszFileName )
 		pclsElement->SelectElementData( "SipServer", m_strSipServerXmlFolder );
 	}
 
-	// DB
-#ifdef USE_MYSQL
-	pclsElement = clsXml.SelectElement( "Db" );
-	if( pclsElement )
-	{
-		int iTemp;
-
-		pclsElement->SelectElementData( "Host", m_strDbHost );
-		pclsElement->SelectElementData( "UserId", m_strDbUserId );
-		pclsElement->SelectElementData( "PassWord", m_strDbPassWord );
-		pclsElement->SelectElementData( "DataBase", m_strDbName );
-
-		if( pclsElement->SelectElementData( "Port", iTemp ) )
-		{
-			m_iDbPort = iTemp;
-		}
-	}
-#endif
-
-	if( m_strUserXmlFolder.empty() == false )
-	{
-		m_eType = E_DT_XML;
-	}
-	else
-	{
-#ifdef USE_MYSQL
-		m_eType = E_DT_MYSQL;
-
-		if( m_strDbHost.empty() )
-		{
-			CLog::Print( LOG_ERROR, "Db.Host data is not found" );
-			return false;
-		}
-
-		if( m_strDbUserId.empty() )
-		{
-			CLog::Print( LOG_ERROR, "Db.UserId data is not found" );
-			return false;
-		}
-
-		if( m_strDbName.empty() )
-		{
-			CLog::Print( LOG_ERROR, "Db.DataBase data is not found" );
-			return false;
-		}
-#else
-		CLog::Print( LOG_ERROR, "XmlFolder.User data is not found" );
-		return false;
-#endif
-	}
-
 	// CDR
-	if( m_eType == E_DT_XML )
-	{
-		pclsElement = clsXml.SelectElement( "Cdr" );
-		if( pclsElement == NULL ) return false;
+	pclsElement = clsXml.SelectElement( "Cdr" );
+	if( pclsElement == NULL ) return false;
 
-		pclsElement->SelectElementData( "Folder", m_strCdrFolder );
-	}
+	pclsElement->SelectElementData( "Folder", m_strCdrFolder );
 
 	// 모니터링
 	pclsElement = clsXml.SelectElement( "Monitor" );

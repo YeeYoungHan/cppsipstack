@@ -19,20 +19,12 @@
 #ifndef _K_SIP_SERVER_H_
 #define _K_SIP_SERVER_H_
 
-#define USE_MYSQL
-
 // MS 윈도우 서비스 선언
 #define SERVICE_NAME								"KSipServer"		// 서비스 이름
 #define SERVICE_DISPLAY_NAME				"KSipServer"
 #define SERVICE_DESCRIPTION_STRING	"SIP Server - made by Yee Young Han"
 
 #define CONFIG_FILENAME						"SipServer.xml"
-
-// DbInsertThread.cpp
-void DbInsert( const char * pszSQL );
-void DbSignal( );
-bool StartDbInsertThread();
-bool IsDbInsertThreadRun();
 
 // RtpThread.cpp
 bool StartRtpThread( int iPort );

@@ -17,7 +17,6 @@
  */
 
 #include "StatsSipMethodUserAgent.h"
-#include "DbMySQL.h"
 
 CStatsSipMethodUserAgent gclsStatsSipMethodUserAgent;
 
@@ -66,16 +65,16 @@ void CStatsSipMethodUserAgent::AddSipMessage( CSipMessage * pclsMessage )
 void CStatsSipMethodUserAgent::SaveDB( const char * pszDate )
 {
 	STATS_SIP_METHOD_USER_AGENT_MAP::iterator	itMap;
-	char	szSQL[255];
 
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
+		// QQQ : date, method, useragent, count
+		/*
 #ifdef LINUX_64
 		snprintf( szSQL, sizeof(szSQL), "INSERT INTO StatsMethodUserAgent( Date, Method, UserAgent, Count ) VALUES( '%s', '%s', '%s', %lu )"
 #else
 		snprintf( szSQL, sizeof(szSQL), "INSERT INTO StatsMethodUserAgent( Date, Method, UserAgent, Count ) VALUES( '%s', '%s', '%s', %llu )"
 #endif
-			, pszDate, itMap->second.m_strMethod.c_str(), itMap->second.m_strUserAgent.c_str(), itMap->second.m_iCount );
-		gclsWriteDB.Execute( szSQL );
+		*/
 	}
 }

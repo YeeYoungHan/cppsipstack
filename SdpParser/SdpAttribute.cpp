@@ -140,7 +140,7 @@ int CSdpAttribute::GetPayLoadType()
 {
 	if( strcmp( m_strName.c_str(), "rtpmap" ) && strcmp( m_strName.c_str(), "fmtp" ) ) return -1;
 
-	int iLen = m_strValue.length();
+	int iLen = (int)m_strValue.length();
 	const char * pszValue = m_strValue.c_str();
 
 	for( int i = 0; i < iLen; ++i )
@@ -175,7 +175,7 @@ bool CSdpAttribute::GetEncodingName( std::string & strName )
 
 	if( strcmp( m_strName.c_str(), "rtpmap" ) ) return false;
 
-	int iLen = m_strValue.length();
+	int iLen = (int)m_strValue.length();
 	const char * pszValue = m_strValue.c_str();
 	int iStartPos = -1;
 
@@ -207,7 +207,7 @@ bool CSdpAttribute::GetParameterList( CSipParameterList & clsParamList )
 
 	if( strcmp( m_strName.c_str(), "fmtp" ) ) return false;
 
-	int iLen = m_strValue.length();
+	int iLen = (int)m_strValue.length();
 	const char * pszValue = m_strValue.c_str();
 	int iStartPos = -1;
 

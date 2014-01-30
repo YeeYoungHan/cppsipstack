@@ -17,7 +17,6 @@
  */
 
 #include "StatsSipMethod.h"
-#include "DbMySQL.h"
 
 CStatsSipMethod gclsStatsSipMethod;
 
@@ -55,16 +54,17 @@ void CStatsSipMethod::AddSipMessage( CSipMessage * pclsMessage )
 void CStatsSipMethod::SaveDB( const char * pszDate )
 {
 	STATS_SIP_METHOD_MAP::iterator	itMap;
-	char	szSQL[255];
 
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
+		// QQQ : date, method, count
+		/*
 #ifdef LINUX_64
 		snprintf( szSQL, sizeof(szSQL), "INSERT INTO StatsMethod( Date, Method, Count ) VALUES( '%s', '%s', %lu )"
 #else
 		snprintf( szSQL, sizeof(szSQL), "INSERT INTO StatsMethod( Date, Method, Count ) VALUES( '%s', '%s', %llu )"
 #endif
 			, pszDate, itMap->first.c_str(), itMap->second );
-		gclsWriteDB.Execute( szSQL );
+	  */
 	}
 }

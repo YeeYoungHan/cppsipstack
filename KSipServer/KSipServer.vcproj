@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser;../ServerPlatform;../MySQL Server 5.0/include;../openssl-32bit/include"
+				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser;../ServerPlatform;&quot;../openssl-32bit/include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -64,9 +64,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib mysqlclient.lib libeay32.lib ssleay32.lib"
+				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../MySQL Server 5.0/lib/debug;../openssl-32bit/lib"
+				AdditionalLibraryDirectories="../openssl-32bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -119,7 +119,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser;../ServerPlatform;../MySQL Server 5.0/include;../openssl-64bit/include"
+				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser;../ServerPlatform;&quot;../openssl-64bit/include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -139,9 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib mysqlclient.lib libeay32.lib ssleay32.lib"
+				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../MySQL Server 5.5/lib/debug;../openssl-64bit/lib"
+				AdditionalLibraryDirectories="../openssl-64bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="17"
@@ -195,7 +195,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser;../ServerPlatform;../MySQL Server 5.0/include;../openssl-32bit/include"
+				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser;../ServerPlatform;&quot;../openssl-32bit/include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -214,9 +214,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib mysqlclient.lib libeay32.lib ssleay32.lib"
+				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../MySQL Server 5.0/lib/opt;../openssl-32bit/lib"
+				AdditionalLibraryDirectories="../openssl-32bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -273,7 +273,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser;../ServerPlatform;../MySQL Server 5.0/include;../openssl-64bit/include"
+				AdditionalIncludeDirectories="../SipPlatform;../SipParser;../SipStack;../SdpParser;../SipUserAgent;../XmlParser;../ServerPlatform;&quot;../openssl-64bit/include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -292,9 +292,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib mysqlclient.lib libeay32.lib ssleay32.lib"
+				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../MySQL Server 5.5/lib/opt;../openssl-64bit/lib"
+				AdditionalLibraryDirectories="../openssl-64bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -454,24 +454,8 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="DB"
-			>
-			<File
-				RelativePath=".\DbMySQL.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DbMySQL.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="¾²·¹µå"
 			>
-			<File
-				RelativePath=".\DbInsertThread.cpp"
-				>
-			</File>
 			<File
 				RelativePath=".\MonitorDefine.h"
 				>

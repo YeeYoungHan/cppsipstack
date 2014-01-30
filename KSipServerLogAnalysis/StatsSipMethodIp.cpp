@@ -17,7 +17,6 @@
  */
 
 #include "StatsSipMethodIp.h"
-#include "DbMySQL.h"
 
 CStatsSipMethodIp gclsStatsSipMethodIp;
 
@@ -68,16 +67,16 @@ void CStatsSipMethodIp::AddSipMessage( CSipMessage * pclsMessage, const char * p
 void CStatsSipMethodIp::SaveDB( const char * pszDate )
 {
 	STATS_SIP_METHOD_MAP_IP::iterator	itMap;
-	char	szSQL[255];
 
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
+		// QQQ : date, method, ip, count
+		/*
 #ifdef LINUX_64
 		snprintf( szSQL, sizeof(szSQL), "INSERT INTO StatsMethodIp( Date, Method, Ip, Count ) VALUES( '%s', '%s', '%s', %lu )"
 #else
 		snprintf( szSQL, sizeof(szSQL), "INSERT INTO StatsMethodIp( Date, Method, Ip, Count ) VALUES( '%s', '%s', '%s', %llu )"
 #endif
-			, pszDate, itMap->second.m_strMethod.c_str(), itMap->second.m_strIp.c_str(), itMap->second.m_iCount );
-		gclsWriteDB.Execute( szSQL );
+		*/
 	}
 }
