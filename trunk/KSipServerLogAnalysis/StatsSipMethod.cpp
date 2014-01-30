@@ -17,6 +17,8 @@
  */
 
 #include "StatsSipMethod.h"
+#include "LogAnalysisSetup.h"
+#include "Directory.h"
 
 CStatsSipMethod gclsStatsSipMethod;
 
@@ -48,23 +50,25 @@ void CStatsSipMethod::AddSipMessage( CSipMessage * pclsMessage )
 }
 
 /**
- * @brief SIP 메소드별 통계를 DB 에 저장한다.
+ * @brief SIP 메소드별 통계를 파일에 저장한다.
  * @param pszDate 통계 생성 날짜
  */
-void CStatsSipMethod::SaveDB( const char * pszDate )
+void CStatsSipMethod::SaveFile( const char * pszDate )
 {
 	STATS_SIP_METHOD_MAP::iterator	itMap;
+	FILE * fd;
+	std::string strFileName = gclsSetup.m_strResultFolder;
+	CDirectory::AppendName( strFileName, "method_" );
+	strFileName.append( pszDate );
+	strFileName.append( ".csv" );
+
+	fd = fopen( strFileName.c_str(), "w" );
+	if( fd == NULL ) return;
 
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
-		// QQQ : date, method, count
-		/*
-#ifdef LINUX_64
-		snprintf( szSQL, sizeof(szSQL), "INSERT INTO StatsMethod( Date, Method, Count ) VALUES( '%s', '%s', %lu )"
-#else
-		snprintf( szSQL, sizeof(szSQL), "INSERT INTO StatsMethod( Date, Method, Count ) VALUES( '%s', '%s', %llu )"
-#endif
-			, pszDate, itMap->first.c_str(), itMap->second );
-	  */
+		fprintf( fd, "%s,%s," LONG_LONG_FORMAT "\n", pszDate, itMap->first.c_str(), itMap->second );
 	}
+
+	fclose( fd );
 }

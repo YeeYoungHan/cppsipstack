@@ -59,6 +59,7 @@ int main( int argc, char * argv[] )
 
 	if( gclsSetup.Read( argv[1] ) == false )
 	{
+		printf( "setup xml file read error\n" );
 		return -1;
 	}
 
@@ -109,9 +110,9 @@ int main( int argc, char * argv[] )
 		clsLogFile.Close();
 	}
 
-	gclsStatsSipMethod.SaveDB( strDate.c_str() );
-	gclsStatsSipMethodIp.SaveDB( strDate.c_str() );
-	gclsStatsSipMethodUserAgent.SaveDB( strDate.c_str() );
+	gclsStatsSipMethod.SaveFile( strDate.c_str() );
+	gclsStatsSipMethodIp.SaveFile( strDate.c_str() );
+	gclsStatsSipMethodUserAgent.SaveFile( strDate.c_str() );
 
 	return 0;
 }

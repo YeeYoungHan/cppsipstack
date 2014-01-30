@@ -35,7 +35,7 @@ public:
 	~CStatsSipMethod();
 
 	void AddSipMessage( CSipMessage * pclsMessage );
-	void SaveDB( const char * pszDate );
+	void SaveFile( const char * pszDate );
 
 private:
 	STATS_SIP_METHOD_MAP m_clsMap;
