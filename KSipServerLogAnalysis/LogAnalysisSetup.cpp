@@ -23,15 +23,15 @@
 CLogAnalysisSetup gclsSetup;
 
 /**
- * @ingroup KSipServer
+ * @ingroup KSipServerLogAnalysis
  * @brief 생성자
  */
-CLogAnalysisSetup::CLogAnalysisSetup() : m_iDbPort(3306)
+CLogAnalysisSetup::CLogAnalysisSetup()
 {
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup KSipServerLogAnalysis
  * @brief 소멸자
  */
 CLogAnalysisSetup::~CLogAnalysisSetup()
@@ -39,7 +39,7 @@ CLogAnalysisSetup::~CLogAnalysisSetup()
 }
 
 /**
- * @ingroup KSipServer
+ * @ingroup KSipServerLogAnalysis
  * @brief 설정 파일을 읽어서 멤버 변수에 저장한다.
  * @param pszFileName 설정 파일 full path
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -50,44 +50,21 @@ bool CLogAnalysisSetup::Read( const char * pszFileName )
 
 	if( clsXml.ParseFile( pszFileName ) == false ) return false;
 
+	// 출력 폴더
+	pclsElement = clsXml.SelectElement( "Result" );
+	if( pclsElement == NULL ) return false;
+
+	if( pclsElement->SelectElementData( "Folder", m_strResultFolder ) == false )
+	{
+		return false;
+	}
+
 	// 로그
 	pclsElement = clsXml.SelectElement( "Log" );
 	if( pclsElement == NULL ) return false;
 
-	pclsElement->SelectElementData( "Folder", m_strLogFolder );
-
-	// DB
-	pclsElement = clsXml.SelectElement( "Db" );
-	if( pclsElement )
+	if( pclsElement->SelectElementData( "Folder", m_strLogFolder ) == false )
 	{
-		int iTemp;
-
-		pclsElement->SelectElementData( "Host", m_strDbHost );
-		pclsElement->SelectElementData( "UserId", m_strDbUserId );
-		pclsElement->SelectElementData( "PassWord", m_strDbPassWord );
-		pclsElement->SelectElementData( "DataBase", m_strDbName );
-
-		if( pclsElement->SelectElementData( "Port", iTemp ) )
-		{
-			m_iDbPort = iTemp;
-		}
-	}
-
-	if( m_strDbHost.empty() )
-	{
-		printf( "[ERROR] Db.Host data is not found\n" );
-		return false;
-	}
-
-	if( m_strDbUserId.empty() )
-	{
-		printf( "[ERROR] Db.UserId data is not found\n" );
-		return false;
-	}
-
-	if( m_strDbName.empty() )
-	{
-		printf( "[ERROR] Db.DataBase data is not found\n" );
 		return false;
 	}
 

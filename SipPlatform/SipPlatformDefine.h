@@ -63,6 +63,12 @@ typedef char int8_t;
 
 #endif
 
+#ifdef LINUX_64
+#define LONG_LONG_FORMAT	"%lu"
+#else
+#define LONG_LONG_FORMAT	"%llu"
+#endif
+
 /**
  * @defgroup SipPlatform SipPlatform
  * SIP stack 프로젝트에서 사용되는 OS independent 라이브러리

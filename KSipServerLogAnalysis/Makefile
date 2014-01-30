@@ -7,11 +7,10 @@
 include ../Makefile.mk
 
 INC=-I../SipParser -I../SipStack -I../SipPlatform \
-	-I../XmlParser -I/usr/include/mysql
+	-I../XmlParser
 LIB=-L../SipParser -lsipparser \
 	-L../XmlParser -lxmlparser \
 	-L../SipPlatform -lsipplatform \
-	-L/usr/lib/mysql -lmysqlclient \
 	-lpthread
 
 .SUFFIXES: .o .cpp
@@ -21,7 +20,6 @@ LIB=-L../SipParser -lsipparser \
 all: KSipServerLogAnalysis.exe
 
 SRV_OBJ=KSipServerLogAnalysis.o LogAnalysisSetup.o LogFile.o \
-  DbMySQL.o \
   StatsSipMethod.o StatsSipMethodIp.o StatsSipMethodUserAgent.o
 
 KSipServerLogAnalysis.exe: $(SRV_OBJ)

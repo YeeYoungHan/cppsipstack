@@ -31,20 +31,8 @@ public:
 	CLogAnalysisSetup();
 	~CLogAnalysisSetup();
 
-	/** DB 서버 IP 주소 */
-	std::string	m_strDbHost;
-
-	/** DB 서버 접속 사용자 아이디 */
-	std::string m_strDbUserId;
-
-	/** DB 서버 접속 비밀번호 */
-	std::string m_strDbPassWord;
-
-	/** DB 서버 데이터베이스 이름 */
-	std::string m_strDbName;
-
-	/** DB 서버 포트 번호 */
-	int					m_iDbPort;
+	/** 파일 저장 폴더 */
+	std::string m_strResultFolder;
 
 	/** 로그 폴더 */
 	std::string	m_strLogFolder;

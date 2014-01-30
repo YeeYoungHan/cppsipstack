@@ -28,12 +28,6 @@
 		<User>c:\OpenProject\CppSipStack\trunk\KSipServer\UserXml</User>
 		<SipServer>c:\OpenProject\CppSipStack\trunk\KSipServer\SipServerXml</SipServer>
 	</XmlFolder>
-	<Db>
-		<Host>127.0.0.1</Host>
-		<UserId>ksipserver</UserId>
-		<PassWord>1234</PassWord>
-		<DataBase>ksipserver</DataBase>
-	</Db>
 	<Cdr>
 		<Folder>c:\temp\cdr</Folder>
 	</Cdr>

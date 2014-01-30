@@ -1,11 +1,8 @@
 <Setup>
+  <Result>
+    <Folder>c:\temp\stat</Folder>
+  </Result>
 	<Log>
 		<Folder>c:\temp\sipserver</Folder>
 	</Log>
-	<Db>
-		<Host>127.0.0.1</Host>
-		<UserId>ksipserver</UserId>
-		<PassWord>1234</PassWord>
-		<DataBase>ksipserver</DataBase>
-	</Db>
 </Setup>

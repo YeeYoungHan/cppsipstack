@@ -46,7 +46,7 @@ public:
 	~CStatsSipMethodIp();
 
 	void AddSipMessage( CSipMessage * pclsMessage, const char * pszIp );
-	void SaveDB( const char * pszDate );
+	void SaveFile( const char * pszDate );
 
 private:
 	STATS_SIP_METHOD_MAP_IP m_clsMap;
