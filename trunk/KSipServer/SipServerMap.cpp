@@ -262,12 +262,13 @@ bool CSipServerMap::Insert( CXmlSipServer & clsXmlSipServer )
 	}
 	else
 	{
+		itMap->second = clsXmlSipServer;
+
 		if( strcmp( itMap->second.m_strDomain.c_str(), clsXmlSipServer.m_strDomain.c_str() ) ||
 				strcmp( itMap->second.m_strPassWord.c_str(), clsXmlSipServer.m_strPassWord.c_str() ) ||
 				itMap->second.m_iPort != clsXmlSipServer.m_iPort )
 		{
-			clsXmlSipServer.m_iFlag = FLAG_UPDATE;
-			itMap->second = clsXmlSipServer;
+			clsXmlSipServer.m_iFlag = FLAG_UPDATE;	
 		}
 		else
 		{
@@ -277,32 +278,6 @@ bool CSipServerMap::Insert( CXmlSipServer & clsXmlSipServer )
 	m_clsMutex.release();
 
 	return true;
-}
-
-/**
- * @ingroup KSipServer
- * @brief IP-PBX 라우팅 정보를 저장한다.
- * @param pszName					IP-PBX 이름
- * @param clsRoutePrefix	라우팅 정보
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipServerMap::InsertRoutePrefix( const char * pszName, CRoutePrefix & clsRoutePrefix )
-{
-	SIP_SERVER_MAP::iterator	itMap;
-	bool bRes = false;
-
-	m_clsMutex.acquire();
-	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
-	{
-		if( !strcmp( itMap->second.m_strName.c_str(), pszName ) )
-		{
-			itMap->second.m_clsRoutePrefixList.push_back( clsRoutePrefix );
-			break;
-		}
-	}
-	m_clsMutex.release();
-
-	return bRes;
 }
 
 /**
