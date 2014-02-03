@@ -24,6 +24,13 @@ CRoutePrefix::CRoutePrefix() : m_bDeletePrefix(false)
 {
 }
 
+bool CIncomingRoute::IsEmpty()
+{
+	if( m_strToId.empty() || m_strDestId.empty() ) return true;
+
+	return false;
+}
+
 CXmlSipServer::CXmlSipServer() : m_iFlag(FLAG_NULL)
 {
 }
@@ -76,6 +83,28 @@ bool CXmlSipServer::Parse( const char * pszFileName )
 				itList->SelectAttribute( "DeletePrefix", clsRoutePrefix.m_bDeletePrefix );
 
 				m_clsRoutePrefixList.push_back( clsRoutePrefix );
+			}
+		}
+	}
+
+	CXmlElement * pclsIRL = clsXml.SelectElement( "IncomingRouteList" ); 
+	if( pclsIRL )
+	{
+		XML_ELEMENT_LIST clsList;
+		XML_ELEMENT_LIST::iterator	itList;
+
+		if( pclsIRL->SelectElementList( "IncomingRoute", clsList ) )
+		{
+			for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+			{
+				CIncomingRoute clsIncomingRoute;
+
+				itList->SelectAttribute( "ToId", clsIncomingRoute.m_strToId );
+				itList->SelectAttribute( "DestId", clsIncomingRoute.m_strDestId );
+
+				if( clsIncomingRoute.IsEmpty() ) continue;
+
+				m_clsIncomingRouteList.push_back( clsIncomingRoute );
 			}
 		}
 	}

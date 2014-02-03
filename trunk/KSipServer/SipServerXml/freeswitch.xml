@@ -9,4 +9,7 @@
 	<RoutePrefixList>
 	  <RoutePrefix DeletePrefix="true">0</RoutePrefix>
 	</RoutePrefixList>
+	<IncomingRouteList>
+		<IncomingRoute ToId="07012345678" DestId="1000" />
+	</IncomingRouteList>
 </SipServer>
