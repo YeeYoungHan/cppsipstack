@@ -45,6 +45,24 @@ typedef std::list< CRoutePrefix > ROUTE_PREFIX_LIST;
 
 /**
  * @ingroup KSipServer
+ * @brief IP-PBX 에서 수신된 전화번호를 KSipServer 에 로그인된 아이디로 매핑하는 클래스
+ */
+class CIncomingRoute
+{
+public:
+	bool IsEmpty();
+
+	/** IP-PBX 에서 전송된 INVITE 메시지의 To 절의 아이디 */
+	std::string	m_strToId;
+
+	/** KSipServer 에 로그인한 아이디 */
+	std::string	m_strDestId;
+};
+
+typedef std::list< CIncomingRoute > INCOMING_ROUTE_LIST;
+
+/**
+ * @ingroup KSipServer
  * @brief IP-PBX 정보 저장 클래스
  */
 class CXmlSipServer : public CSipServerInfo
@@ -64,6 +82,9 @@ public:
 
 	/** Call 라우팅을 위한 전화번호 prefix 리스트 */
 	ROUTE_PREFIX_LIST	m_clsRoutePrefixList;
+
+	/** IP-PBX 에서 수신된 전화번호를 KSipServer 에 로그인된 아이디로 매핑하는 리스트 */
+	INCOMING_ROUTE_LIST m_clsIncomingRouteList;
 
 	bool Parse( const char * pszFileName );
 	void Clear();
