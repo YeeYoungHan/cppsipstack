@@ -55,6 +55,20 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 
 	if( gclsUserMap.Select( pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), clsUserInfo ) == false )
 	{
+		// IP-PBX 에서 수신한 BYE 메시지를 정상적으로 처리하기 위한 기능
+		if( pclsMessage->IsMethod( "BYE" ) )
+		{
+			std::string	strCallId;
+
+			pclsMessage->GetCallId( strCallId );
+
+			if( gclsCallMap.Select( strCallId.c_str() ) )
+			{
+				CLog::Print( LOG_DEBUG, "EventIncomingRequestAuth BYE CallId(%s) is found", strCallId.c_str() );
+				return true;
+			}
+		}
+
 		SIP_CREDENTIAL_LIST::iterator	itCL = pclsMessage->m_clsAuthorizationList.begin();
 
 		if( itCL == pclsMessage->m_clsAuthorizationList.end() )

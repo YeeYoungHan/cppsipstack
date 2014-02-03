@@ -183,6 +183,28 @@ bool CCallMap::Select( const char * pszCallId, CCallInfo & clsCallInfo )
 }
 
 /**
+ * @ingroup KSipServer
+ * @brief Call-ID 에 대한 정보를 저장한다.
+ * @param pszCallId SIP Call-ID
+ * @returns 검색되면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CCallMap::Select( const char * pszCallId )
+{
+	CALL_MAP::iterator	itMap;
+	bool	bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+/**
  * @brief INVITE 메시지를 전송하고 통화 Ring 중인 Call ID 를 검색한다.
  * @param pszTo			SIP TO 아이디
  * @param strCallId SIP Call-ID 를 저장할 변수

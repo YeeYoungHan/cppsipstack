@@ -63,6 +63,7 @@ public:
 	bool Update( const char * pszCallId, const char * pszPeerCallId );
 	bool Select( const char * pszCallId, std::string & strCallId );
 	bool Select( const char * pszCallId, CCallInfo & clsCallInfo );
+	bool Select( const char * pszCallId );
 	bool SelectToRing( const char * pszTo, std::string & strCallId );
 	bool Delete( const char * pszCallId, bool bStopPort = true );
 	bool DeleteOne( const char * pszCallId );
