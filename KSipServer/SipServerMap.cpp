@@ -172,7 +172,7 @@ bool CSipServerMap::Select( const char * pszIp, const char * pszUserId )
  * @param pszTo						수신자 전화번호
  * @param clsXmlSipServer IP-PBX 정보 저장 객체
  * @param strTo						INVITE 메시지를 전송할 때 사용할 수신자 전화번호
- * @returns true 를 리턴한다.
+ * @returns 검색에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
 bool CSipServerMap::SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXmlSipServer, std::string & strTo )
 {
@@ -200,6 +200,46 @@ bool CSipServerMap::SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXm
 						strTo = pszTo;
 					}
 
+					bRes = true;
+					break;
+				}
+			}
+		}
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+/**
+ * @ingroup KSipServer
+ * @brief IP-PBX 에서 수신한 전화 요청과 매핑되는 KSipServer 아이디를 검색한다.
+ * @parma pszIp	IP-PBX IP 주소
+ * @param pszTo IP-PBX 에서 전송한 SIP 메시지의 TO 아이디
+ * @param strTo KSipSerfver 아이디
+ * @returns 검색에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipServerMap::SelectIncomingRoute( const char * pszIp, const char * pszTo, std::string & strTo )
+{
+	SIP_SERVER_MAP::iterator		itMap;
+	INCOMING_ROUTE_LIST::iterator	itList;
+	bool bRes = false;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		if( pszIp )
+		{
+			if( strcmp( itMap->second.m_strIp.c_str(), pszIp ) ) continue;
+		}
+
+		if( itMap->second.m_clsIncomingRouteList.size() > 0 )
+		{
+			for( itList = itMap->second.m_clsIncomingRouteList.begin(); itList != itMap->second.m_clsIncomingRouteList.end(); ++itList )
+			{
+				if( !strcmp( itList->m_strToId.c_str(), pszTo ) )
+				{
+					strTo = itList->m_strToId;
 					bRes = true;
 					break;
 				}

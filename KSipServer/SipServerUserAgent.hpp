@@ -55,6 +55,8 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 
 	if( gclsUserMap.Select( pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), clsUserInfo ) == false )
 	{
+		std::string strDestToId;
+
 		// IP-PBX 에서 수신한 BYE 메시지를 정상적으로 처리하기 위한 기능
 		if( pclsMessage->IsMethod( "BYE" ) )
 		{
@@ -67,6 +69,12 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 				CLog::Print( LOG_DEBUG, "EventIncomingRequestAuth BYE CallId(%s) is found", strCallId.c_str() );
 				return true;
 			}
+		}
+		else if( gclsSipServerMap.SelectIncomingRoute( strIp.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str(), strDestToId ) )
+		{
+			CLog::Print( LOG_DEBUG, "EventIncomingRequestAuth ip(%s) user(%s) IP-PBX dest_user(%s)"
+				, strIp.c_str(), pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str(), strDestToId.c_str() );
+			return true;
 		}
 
 		SIP_CREDENTIAL_LIST::iterator	itCL = pclsMessage->m_clsAuthorizationList.begin();
@@ -152,6 +160,14 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 			bRoutePrefix = true;
 			CLog::Print( LOG_DEBUG, "EventIncomingCall routePrefix IP-PBX(%s:%d)", clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
+		}
+		else if( gclsSipServerMap.SelectIncomingRoute( NULL, pszTo, strTo ) )
+		{
+			if( SelectUser( strTo.c_str(), clsXmlUser ) == false )
+			{
+				CLog::Print( LOG_DEBUG, "EventIncomingCall to(%s) is not found - dest to(%s)", pszTo, strTo.c_str() );
+				return StopCall( pszCallId, SIP_NOT_FOUND );
+			}
 		}
 		else if( gclsSetup.IsCallPickupId( pszTo ) )
 		{

@@ -42,6 +42,7 @@ public:
 
 	bool Select( const char * pszIp, const char * pszUserId );
 	bool SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXmlSipServer, std::string & strTo );
+	bool SelectIncomingRoute( const char * pszIp, const char * pszTo, std::string & strTo );
 
 	bool Insert( CXmlSipServer & clsXmlSipServer );
 
