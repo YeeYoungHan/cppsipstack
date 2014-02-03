@@ -44,7 +44,6 @@ public:
 	bool SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXmlSipServer, std::string & strTo );
 
 	bool Insert( CXmlSipServer & clsXmlSipServer );
-	bool InsertRoutePrefix( const char * pszName, CRoutePrefix & clsRoutePrefix );
 
 	void GetString( std::string & strBuf );
 

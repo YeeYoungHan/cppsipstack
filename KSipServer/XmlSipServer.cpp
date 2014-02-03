@@ -129,4 +129,5 @@ void CXmlSipServer::Clear()
 	m_strUserId.clear();
 	m_strPassWord.clear();
 	m_clsRoutePrefixList.clear();
+	m_clsIncomingRouteList.clear();
 }
