@@ -18,12 +18,12 @@
 
 #include "stdafx.h"
 #include "afxwinappex.h"
-#include "KSipServerMonitor.h"
+#include "ServerMonitor.h"
 #include "MainFrm.h"
 
 #include "ChildFrm.h"
-#include "KSipServerMonitorDoc.h"
-#include "KSipServerMonitorView.h"
+#include "ServerMonitorDoc.h"
+#include "ServerMonitorView.h"
 
 #include "Setup.h"
 #include "LogInDlg.h"
@@ -34,20 +34,20 @@
 #endif
 
 
-// CKSipServerMonitorApp
+// CServerMonitorApp
 
-BEGIN_MESSAGE_MAP(CKSipServerMonitorApp, CWinAppEx)
-	ON_COMMAND(ID_APP_ABOUT, &CKSipServerMonitorApp::OnAppAbout)
+BEGIN_MESSAGE_MAP(CServerMonitorApp, CWinAppEx)
+	ON_COMMAND(ID_APP_ABOUT, &CServerMonitorApp::OnAppAbout)
 	// 표준 파일을 기초로 하는 문서 명령입니다.
 	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
-	ON_COMMAND(IDM_STOP_KSIP_SERVER, &CKSipServerMonitorApp::OnStopKsipServer)
+	ON_COMMAND(IDM_STOP__SERVER, &CServerMonitorApp::OnStopServer)
 END_MESSAGE_MAP()
 
 
-// CKSipServerMonitorApp 생성
+// CServerMonitorApp 생성
 
-CKSipServerMonitorApp::CKSipServerMonitorApp()
+CServerMonitorApp::CServerMonitorApp()
 {
 
 	m_bHiColorIcons = TRUE;
@@ -56,14 +56,14 @@ CKSipServerMonitorApp::CKSipServerMonitorApp()
 	// InitInstance에 모든 중요한 초기화 작업을 배치합니다.
 }
 
-// 유일한 CKSipServerMonitorApp 개체입니다.
+// 유일한 CServerMonitorApp 개체입니다.
 
-CKSipServerMonitorApp theApp;
+CServerMonitorApp theApp;
 
 
-// CKSipServerMonitorApp 초기화
+// CServerMonitorApp 초기화
 
-BOOL CKSipServerMonitorApp::InitInstance()
+BOOL CServerMonitorApp::InitInstance()
 {
 	// 응용 프로그램 매니페스트가 ComCtl32.dll 버전 6 이상을 사용하여 비주얼 스타일을
 	// 사용하도록 지정하는 경우, Windows XP 상에서 반드시 InitCommonControlsEx()가 필요합니다. 
@@ -97,7 +97,7 @@ BOOL CKSipServerMonitorApp::InitInstance()
 	// 해당 설정이 저장된 레지스트리 키를 변경하십시오.
 	// TODO: 이 문자열을 회사 또는 조직의 이름과 같은
 	// 적절한 내용으로 수정해야 합니다.
-	SetRegistryKey(_T("KSipServerMonitor"));
+	SetRegistryKey(_T("ServerMonitor"));
 	LoadStdProfileSettings(0);  // MRU를 포함하여 표준 INI 파일 옵션을 로드합니다.
 
 	gclsSetup.GetFile();
@@ -115,7 +115,7 @@ BOOL CKSipServerMonitorApp::InitInstance()
 
 	if( gclsSocket.Connect( gclsLogInDlg.m_strIp, gclsLogInDlg.m_iPort ) == FALSE )
 	{
-		MessageBox( NULL, _T("Connect KSipServer Error"), _T("Error"), MB_OK | MB_ICONERROR );
+		MessageBox( NULL, _T("Connect Server Error"), _T("Error"), MB_OK | MB_ICONERROR );
 		return FALSE;
 	}
 
@@ -131,10 +131,10 @@ BOOL CKSipServerMonitorApp::InitInstance()
 	// 응용 프로그램의 문서 템플릿을 등록합니다. 문서 템플릿은
 	//  문서, 프레임 창 및 뷰 사이의 연결 역할을 합니다.
 	CMultiDocTemplate* pDocTemplate;
-	pDocTemplate = new CMultiDocTemplate(IDR_KSipServerMonitTYPE,
-		RUNTIME_CLASS(CKSipServerMonitorDoc),
+	pDocTemplate = new CMultiDocTemplate(IDR_ServerMonitTYPE,
+		RUNTIME_CLASS(CServerMonitorDoc),
 		RUNTIME_CLASS(CChildFrame), // 사용자 지정 MDI 자식 프레임입니다.
-		RUNTIME_CLASS(CKSipServerMonitorView));
+		RUNTIME_CLASS(CServerMonitorView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
@@ -205,15 +205,15 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
 // 대화 상자를 실행하기 위한 응용 프로그램 명령입니다.
-void CKSipServerMonitorApp::OnAppAbout()
+void CServerMonitorApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
 }
 
-// CKSipServerMonitorApp 사용자 지정 로드/저장 메서드
+// CServerMonitorApp 사용자 지정 로드/저장 메서드
 
-void CKSipServerMonitorApp::PreLoadState()
+void CServerMonitorApp::PreLoadState()
 {
 	BOOL bNameValid;
 	CString strName;
@@ -222,17 +222,17 @@ void CKSipServerMonitorApp::PreLoadState()
 	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
 }
 
-void CKSipServerMonitorApp::LoadCustomState()
+void CServerMonitorApp::LoadCustomState()
 {
 }
 
-void CKSipServerMonitorApp::SaveCustomState()
+void CServerMonitorApp::SaveCustomState()
 {
 }
 
-// CKSipServerMonitorApp 메시지 처리기
+// CServerMonitorApp 메시지 처리기
 
-void CKSipServerMonitorApp::OnStopKsipServer()
+void CServerMonitorApp::OnStopServer()
 {
 	gclsSocket.SendStop();	
 }

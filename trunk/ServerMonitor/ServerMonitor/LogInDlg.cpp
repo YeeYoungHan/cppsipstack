@@ -17,7 +17,7 @@
  */
 
 #include "stdafx.h"
-#include "KSipServerMonitor.h"
+#include "ServerMonitor.h"
 #include "LogInDlg.h"
 #include "Setup.h"
 

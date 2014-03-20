@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="KSipServerMonitor"
+	Name="ServerMonitor"
 	ProjectGUID="{3D5F07C5-65CC-4F7A-BF98-466987E9D012}"
 	RootNamespace="KSipServerMonitor"
 	Keyword="MFCProj"
@@ -191,15 +191,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\KSipServerMonitor.cpp"
+				RelativePath=".\ServerMonitor.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\KSipServerMonitorDoc.cpp"
+				RelativePath=".\ServerMonitorDoc.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\KSipServerMonitorView.cpp"
+				RelativePath=".\ServerMonitorView.cpp"
 				>
 			</File>
 			<File
@@ -241,15 +241,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\KSipServerMonitor.h"
+				RelativePath=".\ServerMonitor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\KSipServerMonitorDoc.h"
+				RelativePath=".\ServerMonitorDoc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\KSipServerMonitorView.h"
+				RelativePath=".\ServerMonitorView.h"
 				>
 			</File>
 			<File

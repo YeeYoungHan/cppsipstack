@@ -25,14 +25,14 @@
 #include "resource.h"       // 주 기호입니다.
 
 
-// CKSipServerMonitorApp:
-// 이 클래스의 구현에 대해서는 KSipServerMonitor.cpp을 참조하십시오.
+// CServerMonitorApp:
+// 이 클래스의 구현에 대해서는 ServerMonitor.cpp을 참조하십시오.
 //
 
-class CKSipServerMonitorApp : public CWinAppEx
+class CServerMonitorApp : public CWinAppEx
 {
 public:
-	CKSipServerMonitorApp();
+	CServerMonitorApp();
 
 
 // 재정의입니다.
@@ -49,7 +49,7 @@ public:
 
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
-	afx_msg void OnStopKsipServer();
+	afx_msg void OnStopServer();
 };
 
-extern CKSipServerMonitorApp theApp;
+extern CServerMonitorApp theApp;

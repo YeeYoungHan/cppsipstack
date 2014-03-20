@@ -19,15 +19,15 @@
 #pragma once
 
 
-class CKSipServerMonitorView : public CListView
+class CServerMonitorView : public CListView
 {
 protected: // serialization에서만 만들어집니다.
-	CKSipServerMonitorView();
-	DECLARE_DYNCREATE(CKSipServerMonitorView)
+	CServerMonitorView();
+	DECLARE_DYNCREATE(CServerMonitorView)
 
 // 특성입니다.
 public:
-	CKSipServerMonitorDoc* GetDocument() const;
+	CServerMonitorDoc* GetDocument() const;
 
 // 작업입니다.
 public:
@@ -40,7 +40,7 @@ protected:
 
 // 구현입니다.
 public:
-	virtual ~CKSipServerMonitorView();
+	virtual ~CServerMonitorView();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
@@ -59,8 +59,8 @@ public:
 	afx_msg void OnDestroy();
 };
 
-#ifndef _DEBUG  // KSipServerMonitorView.cpp의 디버그 버전
-inline CKSipServerMonitorDoc* CKSipServerMonitorView::GetDocument() const
-   { return reinterpret_cast<CKSipServerMonitorDoc*>(m_pDocument); }
+#ifndef _DEBUG  // ServerMonitorView.cpp의 디버그 버전
+inline CServerMonitorDoc* CServerMonitorView::GetDocument() const
+   { return reinterpret_cast<CServerMonitorDoc*>(m_pDocument); }
 #endif
 
