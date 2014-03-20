@@ -62,8 +62,6 @@
 #endif
 #endif
 
-#include "MonitorDefine.h"
-
 enum ECommType
 {
 	E_COMM_CALL_LIST = 0,

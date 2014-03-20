@@ -280,11 +280,11 @@ void CTcpSocket::ParseRecvData( const char * pszBuf, CListCtrl * pclsListCtrl )
 
 			if( iColumn == 0 )
 			{
-				pclsListCtrl->InsertItem( iRow, A2T(strText.c_str()) );
+				pclsListCtrl->InsertItem( iRow, strText.c_str() );
 			}
 			else
 			{
-				pclsListCtrl->SetItemText( iRow, iColumn, A2T(strText.c_str()) );
+				pclsListCtrl->SetItemText( iRow, iColumn, strText.c_str() );
 			}
 
 			iColumn = 0;
@@ -298,11 +298,11 @@ void CTcpSocket::ParseRecvData( const char * pszBuf, CListCtrl * pclsListCtrl )
 
 			if( iColumn == 0 )
 			{
-				pclsListCtrl->InsertItem( iRow, A2T(strText.c_str()) );
+				pclsListCtrl->InsertItem( iRow, strText.c_str() );
 			}
 			else
 			{
-				pclsListCtrl->SetItemText( iRow, iColumn, A2T(strText.c_str()) );
+				pclsListCtrl->SetItemText( iRow, iColumn, strText.c_str() );
 			}
 
 			++iColumn;
