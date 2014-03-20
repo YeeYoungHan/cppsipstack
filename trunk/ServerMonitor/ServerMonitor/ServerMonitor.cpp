@@ -168,7 +168,7 @@ BOOL CServerMonitorApp::InitInstance()
 	pMainFrame->ShowWindow(m_nCmdShow);
 	pMainFrame->UpdateWindow();
 
-	for( int i = 0; i < 5; ++i )
+	for( int i = 1; i < gclsMonitorSetup.GetCount(); ++i )
 	{
 		OnFileNew();
 	}

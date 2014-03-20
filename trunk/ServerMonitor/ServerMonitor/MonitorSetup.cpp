@@ -109,6 +109,11 @@ bool CMonitorSetup::Select( const char * pszCommand, CMonitorEntry & clsEntry )
 	return true;
 }
 
+int CMonitorSetup::GetCount( )
+{
+	return m_clsList.size();
+}
+
 const char * CMonitorSetup::GetNextCommand( )
 {
 	if( m_clsList.size() == 0 ) return "";

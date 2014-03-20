@@ -25,6 +25,7 @@ public:
 
 	bool Read( const char * pszFileName );
 	bool Select( const char * pszCommand, CMonitorEntry & clsEntry );
+	int GetCount( );
 
 	const char * GetNextCommand( );
 	const char * GetErrorMessage( );
