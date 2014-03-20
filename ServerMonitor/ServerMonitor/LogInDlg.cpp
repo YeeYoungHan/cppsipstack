@@ -70,7 +70,7 @@ BOOL CLogInDlg::OnInitDialog()
 
 		if( gclsSetup.GetString( szKey, strValue ) == false ) break;
 
-		m_clsIpList.AddString( A2T( strValue.c_str() ) );
+		m_clsIpList.AddString( strValue.c_str() );
 	}
 
 	m_clsIpList.SetCurSel( 0 );
@@ -120,7 +120,7 @@ void CLogInDlg::SaveFile()
 	{
 		_snprintf( szKey, sizeof(szKey), "%s_%d", SSR_IP, i );
 		m_clsIpList.GetLBText( i, strText );
-		gclsSetup.PutString( szKey, T2A( strText ) );
+		gclsSetup.PutString( szKey, strText );
 	}
 
 	gclsSetup.PutInt( SSR_PORT, m_iPort );

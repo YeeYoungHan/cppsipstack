@@ -22,7 +22,7 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../SipPlatform;../../SipParser;../../SipStack;../../KSipServer"
+				AdditionalIncludeDirectories="../../SipPlatform;../../SipParser;../../SipStack;../../XmlParser"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -100,7 +100,7 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -125,7 +125,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../../SipPlatform;../../SipParser;../../SipStack;../../KSipServer"
+				AdditionalIncludeDirectories="../../SipPlatform;../../SipParser;../../SipStack;../../XmlParser"
 				PreprocessorDefinitions="../../SipParser"
 				MinimalRebuild="false"
 				RuntimeLibrary="0"
@@ -191,6 +191,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MainFrm.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ServerMonitor.cpp"
 				>
 			</File>
@@ -200,10 +204,6 @@
 			</File>
 			<File
 				RelativePath=".\ServerMonitorView.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MainFrm.cpp"
 				>
 			</File>
 			<File
@@ -241,6 +241,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MainFrm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Resource.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ServerMonitor.h"
 				>
 			</File>
@@ -250,14 +258,6 @@
 			</File>
 			<File
 				RelativePath=".\ServerMonitorView.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MainFrm.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Resource.h"
 				>
 			</File>
 			<File
@@ -330,6 +330,14 @@
 		<Filter
 			Name="라이브러리"
 			>
+			<File
+				RelativePath=".\MonitorSetup.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MonitorSetup.h"
+				>
+			</File>
 			<File
 				RelativePath=".\TcpSocket.cpp"
 				>
