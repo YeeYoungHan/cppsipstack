@@ -53,7 +53,7 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)\r\n"
     "LANGUAGE 18, 1\r\n"
     "#pragma code_page(949)\r\n"
-    "#include ""res\\KSipServerMonitor.rc2""  // Microsoft Visual C++ 이외의 다른 도구에서 편집한 리소스입니다.\r\n"
+    "#include ""res\\ServerMonitor.rc2""		// Microsoft Visual C++ 이외의 다른 도구에서 편집한 리소스입니다.\r\n"
     "#include ""l.KOR\\afxres.rc""          // 표준 구성 요소입니다.\r\n"
     "#if !defined(_AFXDLL)\r\n"
     "#include ""l.KOR\\afxprint.rc""                // 인쇄 미리 보기 리소스\r\n"
@@ -73,8 +73,8 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "res\\KSipServerMonitor.ico"
-IDR_KSipServerMonitTYPE ICON                    "res\\KSipServerMonitorDoc.ico"
+IDR_MAINFRAME           ICON                    "res\\ServerMonitor.ico"
+IDR_ServerMonitTYPE			ICON                    "res\\ServerMonitorDoc.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -181,11 +181,11 @@ BEGIN
     END
     POPUP "도움말(&H)"
     BEGIN
-        MENUITEM "KSipServerMonitor 정보(&A)...", ID_APP_ABOUT
+        MENUITEM "ServerMonitor 정보(&A)...", ID_APP_ABOUT
     END
 END
 
-IDR_KSipServerMonitTYPE MENU 
+IDR_ServerMonitTYPE MENU 
 BEGIN
     POPUP "파일(&F)"
     BEGIN
@@ -194,8 +194,6 @@ BEGIN
         MENUITEM "닫기(&C)",                      ID_FILE_CLOSE
         MENUITEM "저장(&S)\tCtrl+S",              ID_FILE_SAVE
         MENUITEM "다른 이름으로 저장(&A)...",           ID_FILE_SAVE_AS
-        MENUITEM SEPARATOR
-        MENUITEM "KSipServer 종료시키기",            IDM_STOP_KSIP_SERVER
         MENUITEM SEPARATOR
         MENUITEM "끝내기(&X)",                     ID_APP_EXIT
     END
@@ -241,7 +239,7 @@ BEGIN
     END
     POPUP "도움말(&H)"
     BEGIN
-        MENUITEM "KSipServerMonitor 정보(&A)...", ID_APP_ABOUT
+        MENUITEM "ServerMonitor 정보(&A)...", ID_APP_ABOUT
     END
 END
 
@@ -294,11 +292,11 @@ END
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "KSipServerMonitor 정보"
+CAPTION "ServerMonitor 정보"
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,14,14,20,20
-    LTEXT           "KSipServerMonitor, 버전 0.1",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "ServerMonitor, 버전 0.1",IDC_STATIC,42,14,114,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2012",IDC_STATIC,42,26,114,8
     DEFPUSHBUTTON   "확인",IDOK,113,41,50,14,WS_GROUP
 END
@@ -357,9 +355,9 @@ BEGIN
             VALUE "CompanyName", "TODO: <회사 이름>"
             VALUE "FileDescription", "TODO: <파일 설명>"
             VALUE "FileVersion", "1.0.0.1"
-            VALUE "InternalName", "KSipServerMonitor.exe"
+            VALUE "InternalName", "ServerMonitor.exe"
             VALUE "LegalCopyright", "TODO: (c) <회사 이름>.  All rights reserved."
-            VALUE "OriginalFilename", "KSipServerMonitor.exe"
+            VALUE "OriginalFilename", "ServerMonitor.exe"
             VALUE "ProductName", "TODO: <제품 이름>"
             VALUE "ProductVersion", "1.0.0.1"
         END
@@ -419,14 +417,14 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDR_MAINFRAME           "KSipServerMonitor"
-    IDR_KSipServerMonitTYPE "\nKSipServerMonit\nKSipServerMonit\n\n\nKSipServerMonitor.Document\nKSipServerMonitor.Document"
+    IDR_MAINFRAME           "ServerMonitor"
+    IDR_ServerMonitTYPE			"\nServerMonit\nServerMonit\n\n\nServerMonitor.Document\nServerMonitor.Document"
     IDS_WINDOWS_MANAGER     "창(&W)..."
 END
 
 STRINGTABLE 
 BEGIN
-    AFX_IDS_APP_TITLE       "KSipServerMonitor"
+    AFX_IDS_APP_TITLE       "ServerMonitor"
     AFX_IDS_IDLEMESSAGE     "준비"
 END
 
@@ -570,7 +568,7 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
 LANGUAGE 18, 1
 #pragma code_page(949)
-#include "res\KSipServerMonitor.rc2"  // Microsoft Visual C++ 이외의 다른 도구에서 편집한 리소스입니다.
+#include "res\ServerMonitor.rc2"  // Microsoft Visual C++ 이외의 다른 도구에서 편집한 리소스입니다.
 #include "l.KOR\afxres.rc"          // 표준 구성 요소입니다.
 #if !defined(_AFXDLL)
 #include "l.KOR\afxprint.rc"                // 인쇄 미리 보기 리소스

@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by KSipServerMonitor.rc
+// Used by ServerMonitor.rc
 //
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
@@ -15,7 +15,7 @@
 #define ID_VIEW_CUSTOMIZE               126
 #define IDR_MAINFRAME                   128
 #define IDR_MAINFRAME_256               129
-#define IDR_KSipServerMonitTYPE         130
+#define IDR_ServerMonitTYPE         130
 #define ID_WINDOW_MANAGER               131
 #define IDS_WINDOWS_MANAGER             132
 #define IDR_THEME_MENU                  200
@@ -39,7 +39,7 @@
 #define ID_32771                        32771
 #define IDM_SETUP                       32772
 #define ID_32773                        32773
-#define IDM_STOP_KSIP_SERVER            32774
+#define IDM_STOP__SERVER            32774
 
 // Next default values for new objects
 // 

@@ -17,36 +17,36 @@
  */
 
 #include "stdafx.h"
-#include "KSipServerMonitor.h"
+#include "ServerMonitor.h"
 
-#include "KSipServerMonitorDoc.h"
+#include "ServerMonitorDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
-// CKSipServerMonitorDoc
+// CServerMonitorDoc
 
-IMPLEMENT_DYNCREATE(CKSipServerMonitorDoc, CDocument)
+IMPLEMENT_DYNCREATE(CServerMonitorDoc, CDocument)
 
-BEGIN_MESSAGE_MAP(CKSipServerMonitorDoc, CDocument)
+BEGIN_MESSAGE_MAP(CServerMonitorDoc, CDocument)
 END_MESSAGE_MAP()
 
 
-// CKSipServerMonitorDoc 생성/소멸
+// CServerMonitorDoc 생성/소멸
 
-CKSipServerMonitorDoc::CKSipServerMonitorDoc()
+CServerMonitorDoc::CServerMonitorDoc()
 {
 	// TODO: 여기에 일회성 생성 코드를 추가합니다.
 
 }
 
-CKSipServerMonitorDoc::~CKSipServerMonitorDoc()
+CServerMonitorDoc::~CServerMonitorDoc()
 {
 }
 
-BOOL CKSipServerMonitorDoc::OnNewDocument()
+BOOL CServerMonitorDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
@@ -83,9 +83,9 @@ BOOL CKSipServerMonitorDoc::OnNewDocument()
 
 
 
-// CKSipServerMonitorDoc serialization
+// CServerMonitorDoc serialization
 
-void CKSipServerMonitorDoc::Serialize(CArchive& ar)
+void CServerMonitorDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
@@ -98,19 +98,19 @@ void CKSipServerMonitorDoc::Serialize(CArchive& ar)
 }
 
 
-// CKSipServerMonitorDoc 진단
+// CServerMonitorDoc 진단
 
 #ifdef _DEBUG
-void CKSipServerMonitorDoc::AssertValid() const
+void CServerMonitorDoc::AssertValid() const
 {
 	CDocument::AssertValid();
 }
 
-void CKSipServerMonitorDoc::Dump(CDumpContext& dc) const
+void CServerMonitorDoc::Dump(CDumpContext& dc) const
 {
 	CDocument::Dump(dc);
 }
 #endif //_DEBUG
 
 
-// CKSipServerMonitorDoc 명령
+// CServerMonitorDoc 명령

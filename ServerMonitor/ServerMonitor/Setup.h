@@ -21,7 +21,7 @@
 #include <string>
 #include <map>
 
-#define SETUP_FILENAME	"KSipServerMonitor.ini"
+#define SETUP_FILENAME	"ServerMonitor.ini"
 
 #define SSR_IP					"ip"
 #define SSR_PORT				"port"

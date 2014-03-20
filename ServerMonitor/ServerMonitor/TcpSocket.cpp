@@ -17,7 +17,7 @@
  */
 
 #include "stdafx.h"
-#include "KSipServerMonitor.h"
+#include "ServerMonitor.h"
 #include "TcpSocket.h"
 #include "SipStackDefine.h"
 

@@ -17,10 +17,10 @@
  */
 
 #include "stdafx.h"
-#include "KSipServerMonitor.h"
+#include "ServerMonitor.h"
 
-#include "KSipServerMonitorDoc.h"
-#include "KSipServerMonitorView.h"
+#include "ServerMonitorDoc.h"
+#include "ServerMonitorView.h"
 
 #include "Setup.h"
 #include "TcpSocket.h"
@@ -30,27 +30,27 @@
 #endif
 
 
-// CKSipServerMonitorView
+// CServerMonitorView
 
-IMPLEMENT_DYNCREATE(CKSipServerMonitorView, CListView)
+IMPLEMENT_DYNCREATE(CServerMonitorView, CListView)
 
-BEGIN_MESSAGE_MAP(CKSipServerMonitorView, CListView)
+BEGIN_MESSAGE_MAP(CServerMonitorView, CListView)
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
-// CKSipServerMonitorView 생성/소멸
+// CServerMonitorView 생성/소멸
 
-CKSipServerMonitorView::CKSipServerMonitorView() : m_bInit(false)
+CServerMonitorView::CServerMonitorView() : m_bInit(false)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
 }
 
-CKSipServerMonitorView::~CKSipServerMonitorView()
+CServerMonitorView::~CServerMonitorView()
 {
 }
 
-BOOL CKSipServerMonitorView::PreCreateWindow(CREATESTRUCT& cs)
+BOOL CServerMonitorView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
 	//  Window 클래스 또는 스타일을 수정합니다.
@@ -58,7 +58,7 @@ BOOL CKSipServerMonitorView::PreCreateWindow(CREATESTRUCT& cs)
 	return CListView::PreCreateWindow(cs);
 }
 
-void CKSipServerMonitorView::OnInitialUpdate()
+void CServerMonitorView::OnInitialUpdate()
 {
 	CListView::OnInitialUpdate();
 
@@ -132,42 +132,42 @@ void CKSipServerMonitorView::OnInitialUpdate()
 	}
 }
 
-void CKSipServerMonitorView::OnRButtonUp(UINT nFlags, CPoint point)
+void CServerMonitorView::OnRButtonUp(UINT nFlags, CPoint point)
 {
 	ClientToScreen(&point);
 	OnContextMenu(this, point);
 }
 
-void CKSipServerMonitorView::OnContextMenu(CWnd* pWnd, CPoint point)
+void CServerMonitorView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 }
 
 
-// CKSipServerMonitorView 진단
+// CServerMonitorView 진단
 
 #ifdef _DEBUG
-void CKSipServerMonitorView::AssertValid() const
+void CServerMonitorView::AssertValid() const
 {
 	CListView::AssertValid();
 }
 
-void CKSipServerMonitorView::Dump(CDumpContext& dc) const
+void CServerMonitorView::Dump(CDumpContext& dc) const
 {
 	CListView::Dump(dc);
 }
 
-CKSipServerMonitorDoc* CKSipServerMonitorView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지정됩니다.
+CServerMonitorDoc* CServerMonitorView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지정됩니다.
 {
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CKSipServerMonitorDoc)));
-	return (CKSipServerMonitorDoc*)m_pDocument;
+	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CServerMonitorDoc)));
+	return (CServerMonitorDoc*)m_pDocument;
 }
 #endif //_DEBUG
 
 
-// CKSipServerMonitorView 메시지 처리기
+// CServerMonitorView 메시지 처리기
 
-void CKSipServerMonitorView::OnDestroy()
+void CServerMonitorView::OnDestroy()
 {
 	CListCtrl & clsListCtrl = GetListCtrl();
 

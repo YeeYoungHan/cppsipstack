@@ -19,11 +19,11 @@
 #pragma once
 
 
-class CKSipServerMonitorDoc : public CDocument
+class CServerMonitorDoc : public CDocument
 {
 protected: // serialization에서만 만들어집니다.
-	CKSipServerMonitorDoc();
-	DECLARE_DYNCREATE(CKSipServerMonitorDoc)
+	CServerMonitorDoc();
+	DECLARE_DYNCREATE(CServerMonitorDoc)
 
 // 특성입니다.
 public:
@@ -39,7 +39,7 @@ public:
 
 // 구현입니다.
 public:
-	virtual ~CKSipServerMonitorDoc();
+	virtual ~CServerMonitorDoc();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
