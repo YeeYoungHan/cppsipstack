@@ -51,31 +51,7 @@ BOOL CServerMonitorDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	static ECommType eType = E_COMM_CALL_LIST;
-
-	m_eType = eType;
-
-	switch( eType )
-	{
-	case E_COMM_CALL_LIST:
-		eType = E_COMM_SIP_SERVER_LIST;
-		break;
-	case E_COMM_SIP_SERVER_LIST:
-		eType = E_COMM_USER_LIST;
-		break;
-	case E_COMM_USER_LIST:
-		eType = E_COMM_RTP_LIST;
-		break;
-	case E_COMM_RTP_LIST:
-		eType = E_COMM_DIALOG_LIST;
-		break;
-	case E_COMM_DIALOG_LIST:
-		eType = E_COMM_SIP_STACK_COUNT_LIST;
-		break;
-	case E_COMM_SIP_STACK_COUNT_LIST:
-		eType = E_COMM_CALL_LIST;
-		break;
-	}
+	m_strCommand = gclsMonitorSetup.GetNextCommand( );
 
 	return TRUE;
 }

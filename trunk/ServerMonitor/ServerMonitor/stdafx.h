@@ -62,12 +62,6 @@
 #endif
 #endif
 
-enum ECommType
-{
-	E_COMM_CALL_LIST = 0,
-	E_COMM_SIP_SERVER_LIST,
-	E_COMM_USER_LIST,
-	E_COMM_RTP_LIST,
-	E_COMM_DIALOG_LIST,
-	E_COMM_SIP_STACK_COUNT_LIST
-};
+#include "MonitorSetup.h"
+
+#define XML_FILENAME	"ServerMonitor.xml"

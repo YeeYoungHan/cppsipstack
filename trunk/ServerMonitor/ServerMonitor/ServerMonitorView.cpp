@@ -68,66 +68,22 @@ void CServerMonitorView::OnInitialUpdate()
 
 		ModifyStyle( LVS_ICON, LVS_REPORT );
 
-		switch( GetDocument()->m_eType )
+		std::string strCommand = GetDocument()->m_strCommand;
+		CMonitorEntry clsEntry;
+		
+		gclsMonitorSetup.Select( strCommand.c_str(), clsEntry );
+
+		GetDocument()->SetTitle( clsEntry.m_strTitle.c_str() );
+
+		MONITOR_ATTRIBUTE_LIST::iterator	itAttribute;
+		int iIndex = 0;
+
+		for( itAttribute = clsEntry.m_lstAttribute.begin(); itAttribute != clsEntry.m_lstAttribute.end(); ++itAttribute )
 		{
-		case E_COMM_CALL_LIST:
-			GetDocument()->SetTitle( _T("Call List") );
-			clsListCtrl.InsertColumn(  0, _T("Call-Id")  , LVCFMT_LEFT, gclsSetup.GetInt( ST_CALL_LIST,  0, 100 ) );
-			clsListCtrl.InsertColumn(  1, _T("Call-Id")  , LVCFMT_LEFT, gclsSetup.GetInt( ST_CALL_LIST,  1, 100 ) );
-			clsListCtrl.InsertColumn(  2, _T("Invite")   , LVCFMT_LEFT, gclsSetup.GetInt( ST_CALL_LIST,  2, 100 ) );
-			clsListCtrl.InsertColumn(  3, _T("Peer-Port"), LVCFMT_LEFT, gclsSetup.GetInt( ST_CALL_LIST,  3, 100 ) );
-			break;
-		case E_COMM_SIP_SERVER_LIST:
-			GetDocument()->SetTitle( _T("SipServer List") );
-			clsListCtrl.InsertColumn(  0, _T("key")    , LVCFMT_LEFT, gclsSetup.GetInt( ST_SIP_SERVER_LIST,  0, 100 ) );
-			clsListCtrl.InsertColumn(  1, _T("name")   , LVCFMT_LEFT, gclsSetup.GetInt( ST_SIP_SERVER_LIST,  1, 100 ) );
-			clsListCtrl.InsertColumn(  2, _T("flag")   , LVCFMT_LEFT, gclsSetup.GetInt( ST_SIP_SERVER_LIST,  2, 100 ) );
-			clsListCtrl.InsertColumn(  3, _T("ip")     , LVCFMT_LEFT, gclsSetup.GetInt( ST_SIP_SERVER_LIST,  3, 100 ) );
-			clsListCtrl.InsertColumn(  4, _T("domain") , LVCFMT_LEFT, gclsSetup.GetInt( ST_SIP_SERVER_LIST,  4, 100 ) );
-			clsListCtrl.InsertColumn(  5, _T("userid") , LVCFMT_LEFT, gclsSetup.GetInt( ST_SIP_SERVER_LIST,  5, 100 ) );
-			clsListCtrl.InsertColumn(  6, _T("timeout"), LVCFMT_LEFT, gclsSetup.GetInt( ST_SIP_SERVER_LIST,  6, 100 ) );
-			clsListCtrl.InsertColumn(  7, _T("login")  , LVCFMT_LEFT, gclsSetup.GetInt( ST_SIP_SERVER_LIST,  7, 100 ) );
-			break;
-		case E_COMM_USER_LIST:
-			GetDocument()->SetTitle( _T("User List") );
-			clsListCtrl.InsertColumn(  0, _T("id")        , LVCFMT_LEFT, gclsSetup.GetInt( ST_USER_LIST,  0, 100 ) );
-			clsListCtrl.InsertColumn(  1, _T("ip")        , LVCFMT_LEFT, gclsSetup.GetInt( ST_USER_LIST,  1, 100 ) );
-			clsListCtrl.InsertColumn(  2, _T("login time"), LVCFMT_LEFT, gclsSetup.GetInt( ST_USER_LIST,  2, 100 ) );
-			clsListCtrl.InsertColumn(  3, _T("timeout")   , LVCFMT_LEFT, gclsSetup.GetInt( ST_USER_LIST,  3, 100 ) );
-			break;
-		case E_COMM_RTP_LIST:
-			GetDocument()->SetTitle( _T("Rtp List") );
-			clsListCtrl.InsertColumn(  0, _T("Port")        , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  0, 100 ) );
-			clsListCtrl.InsertColumn(  1, _T("StartPort")   , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  1, 100 ) );
-			clsListCtrl.InsertColumn(  2, _T("Rtp")         , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  2, 100 ) );
-			clsListCtrl.InsertColumn(  3, _T("Rtcp")        , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  3, 100 ) );
-			clsListCtrl.InsertColumn(  4, _T("Rtp")         , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  4, 100 ) );
-			clsListCtrl.InsertColumn(  5, _T("Rtcp")        , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  5, 100 ) );
-			clsListCtrl.InsertColumn(  6, _T("Stop")        , LVCFMT_LEFT, gclsSetup.GetInt( ST_RTP_LIST,  6, 100 ) );
-			break;
-		case E_COMM_DIALOG_LIST:
-			GetDocument()->SetTitle( _T("Dialog List") );
-			clsListCtrl.InsertColumn(  0, _T("Call-Id")     , LVCFMT_LEFT, gclsSetup.GetInt( ST_DIALOG_LIST,  0, 100 ) );
-			clsListCtrl.InsertColumn(  1, _T("From")        , LVCFMT_LEFT, gclsSetup.GetInt( ST_DIALOG_LIST,  1, 100 ) );
-			clsListCtrl.InsertColumn(  2, _T("To")          , LVCFMT_LEFT, gclsSetup.GetInt( ST_DIALOG_LIST,  2, 100 ) );
-			clsListCtrl.InsertColumn(  3, _T("ContactIp")   , LVCFMT_LEFT, gclsSetup.GetInt( ST_DIALOG_LIST,  3, 100 ) );
-			clsListCtrl.InsertColumn(  4, _T("RtpLocalIp")  , LVCFMT_LEFT, gclsSetup.GetInt( ST_DIALOG_LIST,  4, 100 ) );
-			clsListCtrl.InsertColumn(  5, _T("RtpRemoteIp") , LVCFMT_LEFT, gclsSetup.GetInt( ST_DIALOG_LIST,  5, 100 ) );
-			clsListCtrl.InsertColumn(  6, _T("InviteTime")  , LVCFMT_LEFT, gclsSetup.GetInt( ST_DIALOG_LIST,  6, 100 ) );
-			clsListCtrl.InsertColumn(  7, _T("StartTime")   , LVCFMT_LEFT, gclsSetup.GetInt( ST_DIALOG_LIST,  7, 100 ) );
-			clsListCtrl.InsertColumn(  8, _T("EndTime")     , LVCFMT_LEFT, gclsSetup.GetInt( ST_DIALOG_LIST,  8, 100 ) );
-			break;
-		case E_COMM_SIP_STACK_COUNT_LIST:
-			GetDocument()->SetTitle( _T("Transaction List") );
-			clsListCtrl.InsertColumn(  0, _T("ICT")    , LVCFMT_LEFT, gclsSetup.GetInt( ST_SIP_STACK_COUNT,  0, 100 ) );
-			clsListCtrl.InsertColumn(  1, _T("NICT")   , LVCFMT_LEFT, gclsSetup.GetInt( ST_SIP_STACK_COUNT,  1, 100 ) );
-			clsListCtrl.InsertColumn(  2, _T("IST")    , LVCFMT_LEFT, gclsSetup.GetInt( ST_SIP_STACK_COUNT,  2, 100 ) );
-			clsListCtrl.InsertColumn(  3, _T("NIST")   , LVCFMT_LEFT, gclsSetup.GetInt( ST_SIP_STACK_COUNT,  3, 100 ) );
-			clsListCtrl.InsertColumn(  4, _T("Delete") , LVCFMT_LEFT, gclsSetup.GetInt( ST_SIP_STACK_COUNT,  4, 100 ) );
-			break;
+			clsListCtrl.InsertColumn( iIndex++, itAttribute->c_str(), LVCFMT_LEFT, gclsSetup.GetInt( strCommand.c_str(),  0, 100 ) );
 		}
 
-		gclsSocket.AddCommand( GetDocument()->m_eType, &clsListCtrl );
+		gclsSocket.AddCommand( strCommand.c_str(), &clsListCtrl );
 		m_bInit = true;
 	}
 }
@@ -170,41 +126,16 @@ CServerMonitorDoc* CServerMonitorView::GetDocument() const // 디버그되지 않은 버
 void CServerMonitorView::OnDestroy()
 {
 	CListCtrl & clsListCtrl = GetListCtrl();
-
-	gclsSocket.DeleteCommand( GetDocument()->m_eType, &clsListCtrl );
-
+	std::string strCommand = GetDocument()->m_strCommand;
 	CHeaderCtrl * pclsHeaderCtrl = clsListCtrl.GetHeaderCtrl();
 	int i, iCount = pclsHeaderCtrl->GetItemCount();
-	std::string	strName;
 
-	switch( GetDocument()->m_eType )
-	{
-	case E_COMM_CALL_LIST:
-		strName = ST_CALL_LIST;
-		break;
-	case E_COMM_SIP_SERVER_LIST:
-		strName = ST_SIP_SERVER_LIST;
-		break;
-	case E_COMM_USER_LIST:
-		strName = ST_USER_LIST;
-		break;
-	case E_COMM_RTP_LIST:
-		strName = ST_RTP_LIST;
-		break;
-	case E_COMM_DIALOG_LIST:
-		strName = ST_DIALOG_LIST;
-		break;
-	case E_COMM_SIP_STACK_COUNT_LIST:
-		strName = ST_SIP_STACK_COUNT;
-		break;
-	}
+	gclsSocket.DeleteCommand( strCommand.c_str(), &clsListCtrl );
 
 	for( i = 0; i < iCount; ++i )
 	{
-		gclsSetup.PutInt( strName.c_str(), i, clsListCtrl.GetColumnWidth( i ) );
+		gclsSetup.PutInt( strCommand.c_str(), i, clsListCtrl.GetColumnWidth( i ) );
 	}
 
 	CListView::OnDestroy();
-
-	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }

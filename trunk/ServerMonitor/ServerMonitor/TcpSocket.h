@@ -37,10 +37,10 @@ public:
 
 	virtual void OnReceive( int nErrorCode );
 
-	bool AddCommand( ECommType cCommType, CListCtrl * pclsListCtrl );
-	bool DeleteCommand( ECommType cCommType, CListCtrl * pclsListCtrl );
+	bool AddCommand( const char * pszCommand, CListCtrl * pclsListCtrl );
+	bool DeleteCommand( const char * pszCommand, CListCtrl * pclsListCtrl );
 	bool Execute();
-	bool SendStop();
+	bool SendCommand( const char * pszCommand );
 
 private:
 	MONITOR_COMMAND_LIST	m_clsCommandList;

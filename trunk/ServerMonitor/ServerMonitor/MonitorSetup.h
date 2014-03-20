@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <list>
 
 typedef std::list<std::string> MONITOR_ATTRIBUTE_LIST;
@@ -14,7 +15,7 @@ public:
 	MONITOR_ATTRIBUTE_LIST m_lstAttribute;
 };
 
-typedef std::list<CMonitorEntry> MONITOR_LIST;
+typedef std::vector<CMonitorEntry> MONITOR_LIST;
 
 class CMonitorSetup
 {
@@ -23,8 +24,14 @@ public:
 	~CMonitorSetup();
 
 	bool Read( const char * pszFileName );
+	bool Select( const char * pszCommand, CMonitorEntry & clsEntry );
+
+	const char * GetNextCommand( );
 	const char * GetErrorMessage( );
 
 	MONITOR_LIST m_clsList;
 	std::string m_strErrorMessage;
+	int m_iCurrentCommandIndex;
 };
+
+extern CMonitorSetup gclsMonitorSetup;
