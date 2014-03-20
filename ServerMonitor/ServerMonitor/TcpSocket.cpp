@@ -112,32 +112,11 @@ void CTcpSocket::OnReceive( int nErrorCode )
 	CAsyncSocket::OnReceive(nErrorCode);
 }
 
-bool CTcpSocket::AddCommand( ECommType cCommType, CListCtrl * pclsListCtrl )
+bool CTcpSocket::AddCommand( const char * pszCommand, CListCtrl * pclsListCtrl )
 {
 	CMonitorCommand clsCommand;
 
-	switch( cCommType )
-	{
-	case E_COMM_CALL_LIST:
-		clsCommand.m_strCommand = MC_CALL_MAP_LIST;
-		break;
-	case E_COMM_SIP_SERVER_LIST:
-		clsCommand.m_strCommand = MC_SIP_SERVER_MAP_LIST;
-		break;
-	case E_COMM_USER_LIST:
-		clsCommand.m_strCommand = MC_USER_MAP_LIST;
-		break;
-	case E_COMM_RTP_LIST:
-		clsCommand.m_strCommand = MC_RTP_MAP_LIST;
-		break;
-	case E_COMM_DIALOG_LIST:
-		clsCommand.m_strCommand = MC_DIALOG_MAP_LIST;
-		break;
-	case E_COMM_SIP_STACK_COUNT_LIST:
-		clsCommand.m_strCommand = MC_SIP_STACK_COUNT_LIST;
-		break;
-	}
-
+	clsCommand.m_strCommand = pszCommand;
 	clsCommand.m_pclsListCtrl = pclsListCtrl;
 
 	m_clsMutex.Lock();
@@ -147,7 +126,7 @@ bool CTcpSocket::AddCommand( ECommType cCommType, CListCtrl * pclsListCtrl )
 	return true;
 }
 
-bool CTcpSocket::DeleteCommand( ECommType cCommType, CListCtrl * pclsListCtrl )
+bool CTcpSocket::DeleteCommand( const char * pszCommand, CListCtrl * pclsListCtrl )
 {
 	MONITOR_COMMAND_LIST::iterator	itList;
 	bool bRes = false;
@@ -228,9 +207,9 @@ bool CTcpSocket::Execute()
 	return true;
 }
 
-bool CTcpSocket::SendStop()
+bool CTcpSocket::SendCommand( const char * pszCommand )
 {
-	std::string strCommand = MC_STOP;
+	std::string strCommand = pszCommand;
 	int		iPacketLen, n;
 	bool	bError = false;
 

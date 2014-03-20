@@ -2,7 +2,9 @@
 #include "MonitorSetup.h"
 #include "XmlElement.h"
 
-CMonitorSetup::CMonitorSetup()
+CMonitorSetup gclsMonitorSetup;
+
+CMonitorSetup::CMonitorSetup() : m_iCurrentCommandIndex(-1)
 {
 }
 
@@ -89,6 +91,43 @@ bool CMonitorSetup::Read( const char * pszFileName )
 	}
 
 	return true;
+}
+
+bool CMonitorSetup::Select( const char * pszCommand, CMonitorEntry & clsEntry )
+{
+	MONITOR_LIST::iterator	itCommand;
+
+	for( itCommand = m_clsList.begin(); itCommand != m_clsList.end(); ++itCommand )
+	{
+		if( !strcmp( itCommand->m_strCommand.c_str(), pszCommand ) )
+		{
+			clsEntry = *itCommand;
+			break;
+		}
+	}
+
+	return true;
+}
+
+const char * CMonitorSetup::GetNextCommand( )
+{
+	if( m_clsList.size() == 0 ) return "";
+	
+	MONITOR_LIST::iterator	itCommand;
+
+	if( m_iCurrentCommandIndex == -1 )
+	{
+		m_iCurrentCommandIndex = 0;
+		return m_clsList[0].m_strCommand.c_str();
+	}
+
+	++m_iCurrentCommandIndex;
+	if( m_iCurrentCommandIndex >= (int)m_clsList.size() )
+	{
+		m_iCurrentCommandIndex = 0;
+	}
+
+	return m_clsList[m_iCurrentCommandIndex].m_strCommand.c_str();
 }
 
 const char * CMonitorSetup::GetErrorMessage( )

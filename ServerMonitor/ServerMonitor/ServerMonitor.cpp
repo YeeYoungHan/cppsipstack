@@ -28,6 +28,7 @@
 #include "Setup.h"
 #include "LogInDlg.h"
 #include "TcpSocket.h"
+#include "Directory.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -41,7 +42,6 @@ BEGIN_MESSAGE_MAP(CServerMonitorApp, CWinAppEx)
 	// 표준 파일을 기초로 하는 문서 명령입니다.
 	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
-	ON_COMMAND(IDM_STOP__SERVER, &CServerMonitorApp::OnStopServer)
 END_MESSAGE_MAP()
 
 
@@ -90,13 +90,17 @@ BOOL CServerMonitorApp::InitInstance()
 		return FALSE;
 	}
 	AfxEnableControlContainer();
-	// 표준 초기화
-	// 이들 기능을 사용하지 않고 최종 실행 파일의 크기를 줄이려면
-	// 아래에서 필요 없는 특정 초기화
-	// 루틴을 제거해야 합니다.
-	// 해당 설정이 저장된 레지스트리 키를 변경하십시오.
-	// TODO: 이 문자열을 회사 또는 조직의 이름과 같은
-	// 적절한 내용으로 수정해야 합니다.
+
+	// XML 파일을 읽는다.
+	char szXmlFileName[1024];
+
+	_snprintf( szXmlFileName, sizeof(szXmlFileName), "%s\\%s", CDirectory::GetProgramDirectory(), XML_FILENAME );
+	if( gclsMonitorSetup.Read( szXmlFileName ) == false )
+	{
+		AfxMessageBox( gclsMonitorSetup.GetErrorMessage() );
+		return FALSE;
+	}
+	
 	SetRegistryKey(_T("ServerMonitor"));
 	LoadStdProfileSettings(0);  // MRU를 포함하여 표준 INI 파일 옵션을 로드합니다.
 
@@ -231,8 +235,3 @@ void CServerMonitorApp::SaveCustomState()
 }
 
 // CServerMonitorApp 메시지 처리기
-
-void CServerMonitorApp::OnStopServer()
-{
-	gclsSocket.SendStop();	
-}
