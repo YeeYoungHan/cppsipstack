@@ -65,3 +65,7 @@
 #include "MonitorSetup.h"
 
 #define XML_FILENAME	"ServerMonitor.xml"
+
+bool StartMonitorThread( );
+void StopMonitorThread( );
+void WaitStopMonitorThread( );

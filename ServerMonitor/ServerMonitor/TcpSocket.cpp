@@ -27,7 +27,7 @@ CTcpSocket gclsSocket;
 
 // CTcpSocket
 
-CTcpSocket::CTcpSocket()
+CTcpSocket::CTcpSocket() : m_hSocket(INVALID_SOCKET)
 {
 	memset( m_szSendPacket, 0, sizeof(m_szSendPacket) );
 }
@@ -36,25 +36,60 @@ CTcpSocket::~CTcpSocket()
 {
 }
 
-// CTcpSocket ¸â¹ö ÇÔ¼ö
-
-void CTcpSocket::OnReceive( int nErrorCode )
+bool CTcpSocket::Connect( const char * pszIp, int iPort )
 {
-	if( nErrorCode != 0 )
-	{
-		TRACE( "nErrorCode = %d\n", nErrorCode );
-		return;
-	}
+	m_clsMutex.Lock();
+	m_hSocket = TcpConnect( pszIp, iPort, TCP_TIMEOUT );
+	m_clsMutex.Unlock();
 
+	if( m_hSocket == INVALID_SOCKET ) return false;
+
+	m_strIp = pszIp;
+	m_iPort = iPort;
+
+	return true;
+}
+
+bool CTcpSocket::Connect( )
+{
+	m_clsMutex.Lock();
+	m_hSocket = TcpConnect( m_strIp.c_str(), m_iPort, TCP_TIMEOUT );
+	m_clsMutex.Unlock();
+
+	if( m_hSocket == INVALID_SOCKET ) return false;
+
+	return true;
+}
+
+void CTcpSocket::Close( )
+{
+	if( m_hSocket != INVALID_SOCKET )
+	{
+		closesocket( m_hSocket );
+		m_hSocket = INVALID_SOCKET;
+	}
+}
+
+int CTcpSocket::Poll( )
+{
+	struct pollfd arrPoll[1];
+
+	TcpSetPollIn( arrPoll[0], m_hSocket );
+
+	return poll( arrPoll, 1, 100 );
+}
+
+bool CTcpSocket::Receive( )
+{
 	int		iPacketLen, n, iRecvLen = 0;
 	char	szPacket[8192];
 	std::string	strPacket;
 
-	n = Receive( &iPacketLen, sizeof(iPacketLen) );
+	n = TcpRecv( m_hSocket, (char *)&iPacketLen, sizeof(iPacketLen), TCP_TIMEOUT );
 	if( n != sizeof(iPacketLen) )
 	{
 		TRACE( "Recv packet length error\n" );
-		return;
+		return false;
 	}
 
 	iPacketLen = ntohl( iPacketLen );
@@ -62,11 +97,11 @@ void CTcpSocket::OnReceive( int nErrorCode )
 	{
 		while( iRecvLen < iPacketLen )
 		{
-			n = Receive( szPacket, iPacketLen - iRecvLen );
+			n = TcpRecv( m_hSocket, szPacket + iRecvLen, iPacketLen - iRecvLen, TCP_TIMEOUT );
 			if( n <= 0 )
 			{
 				TRACE( "Recv packet body error\n" );
-				return;
+				return false;
 			}
 
 			strPacket.append( szPacket, n );
@@ -110,7 +145,7 @@ void CTcpSocket::OnReceive( int nErrorCode )
 		pclsListCtrl->SetItemText( iRow, 1, strBuf );
 	}
 
-	CAsyncSocket::OnReceive(nErrorCode);
+	return true;
 }
 
 bool CTcpSocket::AddCommand( const char * pszCommand, CListCtrl * pclsListCtrl )
@@ -181,7 +216,7 @@ bool CTcpSocket::Execute()
 
 		iPacketLen += sizeof(iTemp);
 
-		n = Send( m_szSendPacket, iPacketLen );
+		n = TcpSend( m_hSocket, m_szSendPacket, iPacketLen );
 		if( n != iPacketLen )
 		{
 			TRACE( "Send command(%s) error\n", itList->m_strCommand.c_str() );
@@ -198,7 +233,6 @@ bool CTcpSocket::Execute()
 	if( bError )
 	{
 		Close();
-		Create();
 		return false;
 	}
 
@@ -226,7 +260,7 @@ bool CTcpSocket::SendCommand( const char * pszCommand )
 
 	iPacketLen += sizeof(iTemp);
 
-	n = Send( m_szSendPacket, iPacketLen );
+	n = TcpSend( m_hSocket, m_szSendPacket, iPacketLen );
 	if( n != iPacketLen )
 	{
 		TRACE( "Send command(%s) error\n", strCommand.c_str() );

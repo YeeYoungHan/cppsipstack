@@ -111,17 +111,13 @@ BOOL CServerMonitorApp::InitInstance()
 		return FALSE;
 	}
 
-	if( gclsSocket.Create( ) == FALSE )
-	{
-		MessageBox( NULL, _T("Socket Create Error"), _T("Error"), MB_OK | MB_ICONERROR );
-		return FALSE;
-	}
-
 	if( gclsSocket.Connect( gclsLogInDlg.m_strIp, gclsLogInDlg.m_iPort ) == FALSE )
 	{
 		MessageBox( NULL, _T("Connect Server Error"), _T("Error"), MB_OK | MB_ICONERROR );
 		return FALSE;
 	}
+
+	StartMonitorThread();
 
 	InitContextMenuManager();
 	InitKeyboardManager();
