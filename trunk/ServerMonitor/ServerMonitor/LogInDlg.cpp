@@ -110,15 +110,25 @@ void CLogInDlg::OnBnClickedOk()
 
 void CLogInDlg::SaveFile()
 {
-	int i, iCount = m_clsIpList.GetCount();
+	int iPos = 0, iCount = m_clsIpList.GetCount();
 	char	szKey[255];
 	CString			strText;
 
 	USES_CONVERSION;
 
-	for( i = 0; i < iCount; ++i )
+	int iSel = m_clsIpList.GetCurSel();
+	if( iSel != -1 )
 	{
-		_snprintf( szKey, sizeof(szKey), "%s_%d", SSR_IP, i );
+		_snprintf( szKey, sizeof(szKey), "%s_%d", SSR_IP, iPos++ );
+		m_clsIpList.GetLBText( iSel, strText );
+		gclsSetup.PutString( szKey, strText );
+	}
+
+	for( int i = 0; i < iCount; ++i )
+	{
+		if( iSel == i ) continue;
+
+		_snprintf( szKey, sizeof(szKey), "%s_%d", SSR_IP, iPos++ );
 		m_clsIpList.GetLBText( i, strText );
 		gclsSetup.PutString( szKey, strText );
 	}
