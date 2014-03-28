@@ -18,7 +18,10 @@
 
 #pragma once
 
+#include "SipTcp.h"
 #include <list>
+
+#define TCP_TIMEOUT	10
 
 class CMonitorCommand
 {
@@ -29,13 +32,18 @@ public:
 
 typedef std::list< CMonitorCommand > MONITOR_COMMAND_LIST;
 
-class CTcpSocket : public CSocket
+class CTcpSocket
 {
 public:
 	CTcpSocket();
 	virtual ~CTcpSocket();
 
-	virtual void OnReceive( int nErrorCode );
+	bool Connect( const char * pszIp, int iPort );
+	bool Connect( );
+	void Close( );
+	int Poll( );
+
+	bool Receive( );
 
 	bool AddCommand( const char * pszCommand, CListCtrl * pclsListCtrl );
 	bool DeleteCommand( const char * pszCommand, CListCtrl * pclsListCtrl );
@@ -47,6 +55,9 @@ private:
 	MONITOR_COMMAND_LIST	m_clsSendCommandList;
 	CMutex								m_clsMutex;
 	char                  m_szSendPacket[2048];
+	Socket                m_hSocket;
+	std::string           m_strIp;
+	int                   m_iPort;
 
 	void ParseRecvData( const char * pszBuf, CListCtrl * pclsListCtrl );
 };

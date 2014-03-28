@@ -346,17 +346,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	}
 	else if( nIDEvent == MONITOR_TIMER )
 	{
-		if( gclsSocket.Execute() == false )
-		{
-			if( gclsSocket.Connect( gclsLogInDlg.m_strIp, gclsLogInDlg.m_iPort ) )
-			{
-				gclsSocket.Execute();
-			}
-			else
-			{
-				TRACE( "gclsSocket.Connect error(%d)\n", GetLastError() );
-			}
-		}
+		gclsSocket.Execute();
 	}
 
 	CMDIFrameWndEx::OnTimer(nIDEvent);
@@ -366,7 +356,13 @@ void CMainFrame::OnDestroy()
 {
 	CMDIFrameWndEx::OnDestroy();
 
+	KillTimer( MONITOR_TIMER );
+
+	StopMonitorThread( );
+
 	gclsSetup.PutFile();
+
+	WaitStopMonitorThread( );
 }
 
 void CMainFrame::OnSetup()

@@ -343,6 +343,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MonitorThread.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TcpSocket.cpp"
 				>
 			</File>
