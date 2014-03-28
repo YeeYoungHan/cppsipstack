@@ -19,7 +19,12 @@
 #ifndef _SIP_STACK_DEFINE_H_
 
 // TLS 기능 없이 SIP stack 을 빌드하고 싶으면 아래의 선언을 주석 처리하세요.
-#define USE_TLS
+//#define USE_TLS
+
+#ifdef USE_TLS
+// TLS 를 최종 종료할 때에 메모리 할당을 해제하는 기능을 사용하고 싶지 않을 경우 주석 처리하세요.
+#define USE_TLS_FREE
+#endif
 
 #include "SipParserDefine.h"
 #include "SipStackVersion.h"
