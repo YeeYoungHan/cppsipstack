@@ -141,6 +141,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// 빠른(<Alt> 키를 누른 채 끌기) 도구 모음 사용자 지정을 활성화합니다.
 	CMFCToolBar::EnableQuickCustomization();
 
+	/*
 	if (CMFCToolBar::GetUserImages() == NULL)
 	{
 		// 사용자 정의 도구 모음 이미지를 로드합니다.
@@ -150,6 +151,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 			CMFCToolBar::SetUserImages(&m_UserImages);
 		}
 	}
+	*/
 
 	// 메뉴 개인 설정을 활성화합니다(가장 최근에 사용한 명령).
 	// TODO: 사용자의 기본 명령을 정의하여 각 풀다운 메뉴에 하나 이상의 기본 명령을 포함시킵니다.
