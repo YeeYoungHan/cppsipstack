@@ -143,7 +143,7 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 				itMap->second->m_pclsResponse = pclsMessage;
 				itMap->second->m_iStatusCode = pclsMessage->m_iStatusCode;
 			}
-			else if( itMap->second->m_iStatusCode != pclsMessage->m_iStatusCode )
+			else if( pclsMessage->m_iStatusCode > itMap->second->m_iStatusCode )
 			{
 				bRes = true;
 
