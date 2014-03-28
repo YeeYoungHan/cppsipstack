@@ -29,6 +29,7 @@ CTcpSocket gclsSocket;
 
 CTcpSocket::CTcpSocket()
 {
+	memset( m_szSendPacket, 0, sizeof(m_szSendPacket) );
 }
 
 CTcpSocket::~CTcpSocket()
@@ -173,20 +174,17 @@ bool CTcpSocket::Execute()
 	for( itList = m_clsCommandList.begin(); itList != m_clsCommandList.end(); ++itList )
 	{
 		iPacketLen = itList->m_strCommand.length();
-		iPacketLen = htonl( iPacketLen );
+		int iTemp = htonl( iPacketLen );
 
-		n = Send( &iPacketLen, sizeof(iPacketLen) );
-		if( n != sizeof(iPacketLen) )
-		{
-			TRACE( "Send packet length error\n" );
-			bError = true;
-			break;
-		}
+		memcpy( m_szSendPacket, &iTemp, sizeof(iTemp) );
+		memcpy( m_szSendPacket + sizeof(iTemp), itList->m_strCommand.c_str(), itList->m_strCommand.length() );
 
-		n = Send( itList->m_strCommand.c_str(), itList->m_strCommand.length() );
-		if( n != itList->m_strCommand.length() )
+		iPacketLen += sizeof(iTemp);
+
+		n = Send( m_szSendPacket, iPacketLen );
+		if( n != iPacketLen )
 		{
-			TRACE( "Send packet command error\n" );
+			TRACE( "Send command(%s) error\n", itList->m_strCommand.c_str() );
 			bError = true;
 			break;
 		}
@@ -213,28 +211,30 @@ bool CTcpSocket::SendCommand( const char * pszCommand )
 	int		iPacketLen, n;
 	bool	bError = false;
 
+	if( strCommand.length() > ( sizeof(m_szSendPacket) - 4 ) ) 
+	{
+		TRACE( "Send command(%s) length error\n", strCommand.c_str() );
+		return false;
+	}
+
 	m_clsMutex.Lock();
 	iPacketLen = strCommand.length();
-	iPacketLen = htonl( iPacketLen );
+	int iTemp = htonl( iPacketLen );
 
-	n = Send( &iPacketLen, sizeof(iPacketLen) );
-	if( n != sizeof(iPacketLen) )
+	memcpy( m_szSendPacket, &iTemp, sizeof(iTemp) );
+	memcpy( m_szSendPacket + sizeof(iTemp), pszCommand, strCommand.length() );
+
+	iPacketLen += sizeof(iTemp);
+
+	n = Send( m_szSendPacket, iPacketLen );
+	if( n != iPacketLen )
 	{
-		TRACE( "Send packet length error\n" );
+		TRACE( "Send command(%s) error\n", strCommand.c_str() );
 		bError = true;
 	}
 	else
 	{
-		n = Send( strCommand.c_str(), strCommand.length() );
-		if( n != strCommand.length() )
-		{
-			TRACE( "Send packet command error\n" );
-			bError = true;
-		}
-		else
-		{
-			TRACE( "Send command(%s)\n", strCommand.c_str() );
-		}
+		TRACE( "Send command(%s)\n", strCommand.c_str() );
 	}
 	m_clsMutex.Unlock();
 
