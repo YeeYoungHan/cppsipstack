@@ -78,6 +78,7 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 		if( gbStopTestThread )
 		{
 			gclsSipUserAgent.StopCallAll();
+			break;
 		}
 	}
 
