@@ -296,7 +296,7 @@ CAPTION "ServerMonitor 정보"
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,14,14,20,20
-    LTEXT           "ServerMonitor, 버전 0.1",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "ServerMonitor, 버전 0.2",IDC_STATIC,42,14,114,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2014",IDC_STATIC,42,26,114,8
     DEFPUSHBUTTON   "확인",IDOK,113,41,50,14,WS_GROUP
 END
