@@ -63,6 +63,7 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnDestroy();
 	afx_msg void OnSetup();
+	afx_msg void OnSendCommand();
 };
 
 
