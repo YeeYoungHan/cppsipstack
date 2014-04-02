@@ -65,9 +65,19 @@ bool CMonitorSetup::Read( const char * pszFileName )
 		XML_ELEMENT_LIST lstAttribute;
 		XML_ELEMENT_LIST::iterator	itAttribute;
 		CMonitorEntry clsEntry;
+		std::string strShow;
 
 		itElement->SelectAttribute( "command", clsEntry.m_strCommand );
 		itElement->SelectAttribute( "title", clsEntry.m_strTitle );
+		itElement->SelectAttribute( "show", strShow );
+
+		if( strShow.length() > 0 )
+		{
+			if( _stricmp( strShow.c_str(), "true" ) && _stricmp( strShow.c_str(), "on" ) && _stricmp( strShow.c_str(), "use" ) )
+			{
+				continue;
+			}
+		}
 
 		if( clsEntry.m_strCommand.length() == 0 )
 		{
