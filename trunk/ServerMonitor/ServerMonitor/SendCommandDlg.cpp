@@ -20,6 +20,7 @@
 #include "ServerMonitor.h"
 #include "SendCommandDlg.h"
 #include "TcpSocket.h"
+#include "MonitorSetup.h"
 
 // CSendCommandDlg 대화 상자입니다.
 
@@ -27,7 +28,6 @@ IMPLEMENT_DYNAMIC(CSendCommandDlg, CDialog)
 
 CSendCommandDlg::CSendCommandDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSendCommandDlg::IDD, pParent)
-	, m_strCommand(_T(""))
 {
 
 }
@@ -39,13 +39,12 @@ CSendCommandDlg::~CSendCommandDlg()
 void CSendCommandDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_COMMAND, m_strCommand);
+	DDX_Control(pDX, IDC_COMBO1, m_clsCommand);
 }
 
 
 BEGIN_MESSAGE_MAP(CSendCommandDlg, CDialog)
 	ON_BN_CLICKED(IDOK, &CSendCommandDlg::OnBnClickedOk)
-	ON_BN_CLICKED(IDC_SELECT_COMMAND, &CSendCommandDlg::OnBnClickedSelectCommand)
 END_MESSAGE_MAP()
 
 
@@ -55,18 +54,43 @@ void CSendCommandDlg::OnBnClickedOk()
 {
 	UpdateData(TRUE);
 
-	if( m_strCommand.GetLength() == 0 )
+	CString strCommand;
+
+	int iCurSel = m_clsCommand.GetCurSel();
+	if( iCurSel == LB_ERR )
 	{
-		MessageBox( "command is not inserted", "Error", MB_OK | MB_ICONERROR );
-		return;
+		m_clsCommand.GetWindowText( strCommand );
+
+		if( strCommand.GetLength() == 0 )
+		{
+			MessageBox( "command is not inserted", "Error", MB_OK | MB_ICONERROR );
+			return;
+		}
+	}
+	else
+	{
+		m_clsCommand.GetLBText( iCurSel, strCommand );
 	}
 
-	gclsSocket.SendCommand( m_strCommand );
+	gclsSocket.SendCommand( strCommand );
 
 	OnOK();
 }
 
-void CSendCommandDlg::OnBnClickedSelectCommand()
+BOOL CSendCommandDlg::OnInitDialog()
 {
-	
+	CDialog::OnInitDialog();
+
+	if( gclsMonitorSetup.m_clsSendCommandList.size() > 0 )
+	{
+		SEND_COMMAND_LIST::iterator	it;
+
+		for( it = gclsMonitorSetup.m_clsSendCommandList.begin(); it != gclsMonitorSetup.m_clsSendCommandList.end(); ++it )
+		{
+			m_clsCommand.AddString( it->c_str() );
+		}
+	}
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }

@@ -34,6 +34,7 @@ public:
 };
 
 typedef std::vector<CMonitorEntry> MONITOR_LIST;
+typedef std::vector<std::string> SEND_COMMAND_LIST;
 
 class CMonitorSetup
 {
@@ -49,6 +50,8 @@ public:
 	const char * GetErrorMessage( );
 
 	MONITOR_LIST m_clsList;
+	SEND_COMMAND_LIST m_clsSendCommandList;
+
 	std::string m_strErrorMessage;
 	int m_iCurrentCommandIndex;
 };
