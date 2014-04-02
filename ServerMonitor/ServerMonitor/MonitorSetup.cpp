@@ -118,6 +118,24 @@ bool CMonitorSetup::Read( const char * pszFileName )
 		m_clsList.push_back( clsEntry );
 	}
 
+	pclsRoot = clsXml.SelectElement( "SendCommandList" );
+	if( pclsRoot != NULL ) 
+	{
+		pclsRoot->SelectElementList( "SendCommandEntry", lstElement );
+
+		if( lstElement.size() > 0 )
+		{
+			for( itElement = lstElement.begin(); itElement != lstElement.end(); ++itElement )
+			{
+				std::string strCommand;
+
+				itElement->SelectAttribute( "command", strCommand );
+
+				m_clsSendCommandList.push_back( strCommand );
+			}
+		}
+	}
+
 	return true;
 }
 

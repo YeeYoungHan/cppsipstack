@@ -17,6 +17,7 @@
  */
 
 #pragma once
+#include "afxwin.h"
 
 
 // CSendCommandDlg 대화 상자입니다.
@@ -37,7 +38,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CString m_strCommand;
 	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedSelectCommand();
+	CComboBox m_clsCommand;
+	virtual BOOL OnInitDialog();
 };
