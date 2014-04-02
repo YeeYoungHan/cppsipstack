@@ -15,7 +15,7 @@
 #define ID_VIEW_CUSTOMIZE               126
 #define IDR_MAINFRAME                   128
 #define IDR_MAINFRAME_256               129
-#define IDR_ServerMonitTYPE         130
+#define IDR_ServerMonitTYPE             130
 #define ID_WINDOW_MANAGER               131
 #define IDS_WINDOWS_MANAGER             132
 #define IDR_THEME_MENU                  200
@@ -32,22 +32,28 @@
 #define IDS_EDIT_MENU                   306
 #define IDD_LOGIN                       310
 #define IDD_SETUP                       312
+#define IDD_SEND_COMMAND                313
 #define IDC_IP_LIST                     1000
 #define IDC_PORT                        1001
 #define IDC_EDIT2                       1002
 #define IDC_PERIOD                      1002
+#define IDC_EDIT1                       1002
+#define IDC_COMMAND                     1002
+#define IDC_SELECT_COMMAND              1003
 #define ID_32771                        32771
 #define IDM_SETUP                       32772
 #define ID_32773                        32773
-#define IDM_STOP__SERVER            32774
+#define IDM_STOP__SERVER                32774
+#define ID_32775                        32775
+#define IDM_SEND_COMMAND                32776
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        313
-#define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1002
+#define _APS_NEXT_RESOURCE_VALUE        314
+#define _APS_NEXT_COMMAND_VALUE         32777
+#define _APS_NEXT_CONTROL_VALUE         1004
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

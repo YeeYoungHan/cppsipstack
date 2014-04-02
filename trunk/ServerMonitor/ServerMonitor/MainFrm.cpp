@@ -24,6 +24,7 @@
 #include "TcpSocket.h"
 #include "Setup.h"
 #include "SetupDlg.h"
+#include "SendCommandDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -50,6 +51,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
 	ON_COMMAND(IDM_SETUP, &CMainFrame::OnSetup)
+	ON_COMMAND(IDM_SEND_COMMAND, &CMainFrame::OnSendCommand)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -374,4 +376,11 @@ void CMainFrame::OnSetup()
 		KillTimer( MONITOR_TIMER );
 		SetTimer( MONITOR_TIMER, gclsLogInDlg.m_iPeriod * 1000, NULL );
 	}
+}
+
+void CMainFrame::OnSendCommand()
+{
+	CSendCommandDlg clsDlg;
+
+	clsDlg.DoModal();
 }
