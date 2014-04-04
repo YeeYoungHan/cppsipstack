@@ -66,6 +66,9 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 				{
 					if( itMap->second->m_pclsRequest->IsEqualCallIdSeq( pclsMessage ) )
 					{
+						// 2014년4월3일 이전 버전에서는 SIP Call-ID 만 비교하였지만 아래의 ACK 가 NULL 인지 구분하는 기능 때문에 정상적으로 동작하였음.
+						// 만약 아래의 기능이 없었다면 2개의 ReINVITE 에 대한 ACK 를 수신하였을 때에 첫번째 ReINVITE 에만 ACK 를 2번 저장하여서
+						// 두번째 ReINVITE 에 대한 ACK 가 수신되지 않을 것으로 오동작할 수 있습니다.
 						if( itMap->second->m_pclsAck == NULL )
 						{
 							if( itMap->second->m_pclsResponse && itMap->second->m_pclsResponse->m_iStatusCode == SIP_UNAUTHORIZED )
