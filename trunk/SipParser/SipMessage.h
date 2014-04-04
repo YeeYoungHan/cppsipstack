@@ -147,6 +147,7 @@ public:
 	bool IsRequest();
 	bool IsMethod( const char * pszMethod );
 	bool IsEqualCallId( CSipMessage * pclsMessage );
+	bool IsEqualCallIdSeq( CSipMessage * pclsMessage );
 	bool GetCallId( std::string & strCallId );
 
 	bool AddIpPortToTopVia( const char * pszIp, int iPort, ESipTransport eTransport = E_SIP_UDP );

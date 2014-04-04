@@ -523,6 +523,21 @@ bool CSipMessage::IsEqualCallId( CSipMessage * pclsMessage )
 
 /**
  * @ingroup SipParser
+ * @brief Call-ID 와 CSeq 의 번호가 동일한지 검사한다.
+ * @param pclsMessage SIP 메시지 저장 객체
+ * @returns Call-ID 와 CSeq 의 번호가 동일하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipMessage::IsEqualCallIdSeq( CSipMessage * pclsMessage )
+{
+	if( pclsMessage == NULL ) return false;
+
+	if( m_clsCallId.IsEqual( &pclsMessage->m_clsCallId ) && m_clsCSeq.m_iDigit == pclsMessage->m_clsCSeq.m_iDigit ) return true;
+
+	return false;
+}
+
+/**
+ * @ingroup SipParser
  * @brief Call-ID 문자열을 가져온다.
  * @param strCallId Call-ID 문자열을 저장할 변수
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.

@@ -64,7 +64,7 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 			{
 				for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 				{
-					if( itMap->second->m_pclsRequest->IsEqualCallId( pclsMessage ) )
+					if( itMap->second->m_pclsRequest->IsEqualCallIdSeq( pclsMessage ) )
 					{
 						if( itMap->second->m_pclsAck == NULL )
 						{
