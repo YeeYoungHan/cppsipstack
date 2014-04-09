@@ -23,6 +23,11 @@
 static bool gbRun = false;
 static bool gbStop = false;
 
+/**
+ * @brief 모니터링 결과 패킷을 수신하는 쓰레드
+ * @param lpParameter 
+ * @returns 0 을 리턴한다.
+ */
 DWORD WINAPI MonitorThread( LPVOID lpParameter )
 {
 	gbRun = true;
@@ -47,6 +52,10 @@ DWORD WINAPI MonitorThread( LPVOID lpParameter )
 	return 0;
 }
 
+/**
+ * @brief 모니터링 결과 패킷을 수신하는 쓰레드를 시작한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool StartMonitorThread( )
 {
 	if( gbRun ) return false;
@@ -58,11 +67,17 @@ bool StartMonitorThread( )
 	return true;
 }
 
+/**
+ * @brief 모니터링 결과 패킷을 수신하는 쓰레드를 종료시킨다.
+ */
 void StopMonitorThread( )
 {
 	gbStop = true;
 }
 
+/**
+ * @brief 모니터링 결과 패킷을 수신하는 쓰레드가 종료할 때까지 대기한다.
+ */
 void WaitStopMonitorThread( )
 {
 	while( gbRun )

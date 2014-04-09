@@ -25,8 +25,6 @@
 
 CTcpSocket gclsSocket;
 
-// CTcpSocket
-
 CTcpSocket::CTcpSocket() : m_hSocket(INVALID_SOCKET)
 {
 	memset( m_szSendPacket, 0, sizeof(m_szSendPacket) );
@@ -36,6 +34,12 @@ CTcpSocket::~CTcpSocket()
 {
 }
 
+/**
+ * @brief 모니터링 서버 포트에 연결한다.
+ * @param pszIp 서버 IP 주소
+ * @param iPort 서버 포트 번호
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CTcpSocket::Connect( const char * pszIp, int iPort )
 {
 	m_clsMutex.Lock();
@@ -50,8 +54,14 @@ bool CTcpSocket::Connect( const char * pszIp, int iPort )
 	return true;
 }
 
+/**
+ * @brief 모니터링 서버 포트에 연결한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CTcpSocket::Connect( )
 {
+	if( m_hSocket != INVALID_SOCKET ) return false;
+
 	m_clsMutex.Lock();
 	m_hSocket = TcpConnect( m_strIp.c_str(), m_iPort, TCP_TIMEOUT );
 	m_clsMutex.Unlock();
@@ -61,6 +71,9 @@ bool CTcpSocket::Connect( )
 	return true;
 }
 
+/**
+ * @brief 서버 연결을 종료한다.
+ */
 void CTcpSocket::Close( )
 {
 	if( m_hSocket != INVALID_SOCKET )
@@ -77,6 +90,10 @@ void CTcpSocket::Close( )
 	}
 }
 
+/**
+ * @brief 수신 이벤트를 대기한다.
+ * @returns 수신 이벤트가 발생하면 양수를 리턴하고 그렇지 않으면 0 또는 -1 을 리턴한다.
+ */
 int CTcpSocket::Poll( )
 {
 	struct pollfd arrPoll[1];
@@ -86,6 +103,10 @@ int CTcpSocket::Poll( )
 	return poll( arrPoll, 1, 100 );
 }
 
+/**
+ * @brief 모니터링 결과를 수신하고 화면에 보여준다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CTcpSocket::Receive( )
 {
 	int		iPacketLen, n, iRecvLen = 0, iLen;
@@ -165,8 +186,16 @@ bool CTcpSocket::Receive( )
 	return true;
 }
 
+/**
+ * @brief 명령을 추가한다.
+ * @param pszCommand 명령
+ * @param pclsListCtrl 명령 결과를 수신할 CListCtrl
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CTcpSocket::AddCommand( const char * pszCommand, CListCtrl * pclsListCtrl )
 {
+	if( m_hSocket == INVALID_SOCKET ) return false;
+
 	CMonitorCommand clsCommand;
 
 	clsCommand.m_strCommand = pszCommand;
@@ -179,6 +208,12 @@ bool CTcpSocket::AddCommand( const char * pszCommand, CListCtrl * pclsListCtrl )
 	return true;
 }
 
+/**
+ * @brief 명령을 삭제한다.
+ * @param pszCommand 명령
+ * @param pclsListCtrl 명령 결과를 수신할 CListCtrl
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CTcpSocket::DeleteCommand( const char * pszCommand, CListCtrl * pclsListCtrl )
 {
 	MONITOR_COMMAND_LIST::iterator	itList;
@@ -208,6 +243,10 @@ bool CTcpSocket::DeleteCommand( const char * pszCommand, CListCtrl * pclsListCtr
 	return bRes;
 }
 
+/**
+ * @brief 모니터링 명령을 요청한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CTcpSocket::Execute()
 {
 	int iSendCount;
@@ -256,6 +295,11 @@ bool CTcpSocket::Execute()
 	return true;
 }
 
+/**
+ * @brief 명령을 전송한다.
+ * @param pszCommand 명령 문자열
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CTcpSocket::SendCommand( const char * pszCommand )
 {
 	std::string strCommand = pszCommand;
@@ -294,6 +338,11 @@ bool CTcpSocket::SendCommand( const char * pszCommand )
 	return true;
 }
 
+/**
+ * @brief 수신된 모니터링 결과를 파싱하여서 CListCtrl 에 보여준다.
+ * @param pszBuf 수신된 모니터링 결과
+ * @param pclsListCtrl 모니터링 결과를 보여줄 CListCtrl
+ */
 void CTcpSocket::ParseRecvData( const char * pszBuf, CListCtrl * pclsListCtrl )
 {
 	int	iPos = 0, iRow = 0, iColumn = 0;
