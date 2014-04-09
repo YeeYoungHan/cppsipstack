@@ -1,0 +1,21 @@
+<ServerMonitor>
+	<MonitorList>
+		<MonitorEntry command="sip_server_map_list" title="SipServer List">
+			<MonitorAttribute name="ip" />
+			<MonitorAttribute name="use" />
+			<MonitorAttribute name="del" />
+		</MonitorEntry>
+		<MonitorEntry command="user_map_list" title="User List">
+			<MonitorAttribute name="id" />
+			<MonitorAttribute name="ip" />
+			<MonitorAttribute name="sip server" />
+		</MonitorEntry>
+		<MonitorEntry command="sip_stack_count_list" title="Transaction List">
+			<MonitorAttribute name="ICT" />
+			<MonitorAttribute name="NICT" />
+			<MonitorAttribute name="IST" />
+			<MonitorAttribute name="NIST" />
+			<MonitorAttribute name="Delete" />
+		</MonitorEntry>
+	</MonitorList>
+</ServerMonitor>
