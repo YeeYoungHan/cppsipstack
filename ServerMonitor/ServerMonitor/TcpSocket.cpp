@@ -67,6 +67,13 @@ void CTcpSocket::Close( )
 	{
 		closesocket( m_hSocket );
 		m_hSocket = INVALID_SOCKET;
+
+		m_clsMutex.Lock();
+		if( m_clsSendCommandList.size() > 0 )
+		{
+			m_clsSendCommandList.clear();
+		}
+		m_clsMutex.Unlock();
 	}
 }
 
@@ -81,7 +88,7 @@ int CTcpSocket::Poll( )
 
 bool CTcpSocket::Receive( )
 {
-	int		iPacketLen, n, iRecvLen = 0;
+	int		iPacketLen, n, iRecvLen = 0, iLen;
 	char	szPacket[8192];
 	std::string	strPacket;
 
@@ -97,7 +104,17 @@ bool CTcpSocket::Receive( )
 	{
 		while( iRecvLen < iPacketLen )
 		{
-			n = TcpRecv( m_hSocket, szPacket + iRecvLen, iPacketLen - iRecvLen, TCP_TIMEOUT );
+			if( ( iPacketLen - iRecvLen ) >= sizeof(szPacket) )
+			{
+				iLen = sizeof(szPacket);
+			}
+			else
+			{
+				iLen = iPacketLen - iRecvLen;
+			}
+
+			// -1 이 리턴된다. Network 부하가 발생하여서 timeout 되는 것 같다.
+			n = TcpRecv( m_hSocket, szPacket, iLen, TCP_TIMEOUT );
 			if( n <= 0 )
 			{
 				TRACE( "Recv packet body error\n" );
