@@ -1,0 +1,56 @@
+<ServerMonitor>
+	<MonitorList>
+		<MonitorEntry command="call_map_list" title="Call List">
+			<MonitorAttribute name="Call-Id" />
+			<MonitorAttribute name="Call-Id" />
+			<MonitorAttribute name="Invite" />
+			<MonitorAttribute name="Peer-Port" />
+		</MonitorEntry>
+		<MonitorEntry command="sip_server_map_list" title="SipServer List">
+			<MonitorAttribute name="key" />
+			<MonitorAttribute name="name" />
+			<MonitorAttribute name="flag" />
+			<MonitorAttribute name="ip" />
+			<MonitorAttribute name="domain" />
+			<MonitorAttribute name="userid" />
+			<MonitorAttribute name="timeout" />
+			<MonitorAttribute name="login" />
+		</MonitorEntry>
+		<MonitorEntry command="user_map_list" title="User List">
+			<MonitorAttribute name="id" />
+			<MonitorAttribute name="ip" />
+			<MonitorAttribute name="login time" />
+			<MonitorAttribute name="timeout" />
+		</MonitorEntry>
+		<MonitorEntry command="rtp_map_list" title="Rtp List">
+			<MonitorAttribute name="Port" />
+			<MonitorAttribute name="StartPort" />
+			<MonitorAttribute name="Rtp" />
+			<MonitorAttribute name="Rtcp" />
+			<MonitorAttribute name="Rtp" />
+			<MonitorAttribute name="Rtcp" />
+			<MonitorAttribute name="Stop" />
+		</MonitorEntry>
+		<MonitorEntry command="dialog_map_list" title="Dialog List">
+			<MonitorAttribute name="Call-Id" />
+			<MonitorAttribute name="From" />
+			<MonitorAttribute name="To" />
+			<MonitorAttribute name="ContactIp" />
+			<MonitorAttribute name="RtpLocalIp" />
+			<MonitorAttribute name="RtpRemoteIp" />
+			<MonitorAttribute name="InviteTime" />
+			<MonitorAttribute name="StartTime" />
+			<MonitorAttribute name="EndTime" />
+		</MonitorEntry>
+		<MonitorEntry command="sip_stack_count_list" title="Transaction List">
+			<MonitorAttribute name="ICT" />
+			<MonitorAttribute name="NICT" />
+			<MonitorAttribute name="IST" />
+			<MonitorAttribute name="NIST" />
+			<MonitorAttribute name="Delete" />
+		</MonitorEntry>
+	</MonitorList>
+	<SendCommandList>
+		<SendCommandEntry command="stop" />
+	</SendCommandList>
+</ServerMonitor>
