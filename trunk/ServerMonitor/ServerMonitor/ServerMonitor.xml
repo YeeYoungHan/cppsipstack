@@ -50,4 +50,7 @@
 			<MonitorAttribute name="Delete" />
 		</MonitorEntry>
 	</MonitorList>
+	<SendCommandList>
+		<SendCommandEntry command="stop" />
+	</SendCommandList>
 </ServerMonitor>
