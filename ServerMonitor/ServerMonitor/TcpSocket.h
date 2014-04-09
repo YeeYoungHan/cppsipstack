@@ -23,6 +23,9 @@
 
 #define TCP_TIMEOUT	10
 
+/**
+ * @brief 모니터링 명령 저장 클래스
+ */
 class CMonitorCommand
 {
 public:
@@ -32,6 +35,9 @@ public:
 
 typedef std::list< CMonitorCommand > MONITOR_COMMAND_LIST;
 
+/**
+ * @brief 모니터링 클라이언트
+ */
 class CTcpSocket
 {
 public:
