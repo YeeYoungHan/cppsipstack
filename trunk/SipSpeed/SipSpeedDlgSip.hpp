@@ -214,3 +214,44 @@ bool CSipSpeedDlg::EventMessage( const char * pszFrom, const char * pszTo, CSipM
 {
 	return false;
 }
+
+/**
+ * @ingroup SipSpeed
+ * @brief SIP 요청 메시지 수신 이벤트 핸들러
+ * @param iThreadId		UDP 쓰레드 번호
+ * @param pclsMessage SIP 요청 메시지
+ * @returns SIP 요청 메시지를 처리하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipSpeedDlg::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
+{
+	return false;
+}
+
+/**
+ * @ingroup SipSpeed
+ * @brief SIP 응답 메시지 수신 이벤트 핸들러
+ * @param iThreadId		UDP 쓰레드 번호
+ * @param pclsMessage SIP 응답 메시지
+ * @returns SIP 응답 메시지를 처리하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipSpeedDlg::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
+{
+	if( pclsMessage->IsMethod( "OPTIONS" ) )
+	{
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup SipSpeed
+ * @brief SIP 메시지 전송 timeout 이벤트 핸들러
+ * @param iThreadId		UDP 쓰레드 번호
+ * @param pclsMessage SIP 응답 메시지
+ * @returns SIP 응답 메시지를 처리하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipSpeedDlg::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
+{
+	return false;
+}

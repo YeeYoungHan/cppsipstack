@@ -146,4 +146,19 @@ public:
 	const char * m_pszReferToId;
 };
 
+/**
+ * @ingroup SipUserAgentMFC
+ * @brief SIP 메시지 수신 정보 전달 클래스
+ */
+class CEventSipMessage
+{
+public:
+	CEventSipMessage( CSipMessage * pclsSipMessage )
+	{
+		m_pclsSipMessage = pclsSipMessage;
+	}
+
+	CSipMessage * m_pclsSipMessage;
+};
+
 #endif
