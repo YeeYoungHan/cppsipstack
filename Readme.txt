@@ -116,24 +116,13 @@ C++ SIP stack 프로젝트
  * 리눅스 / OSX
    - make 를 실행한다.
 
-4. MySQL 사용 방법
-
- MySQL 에 사용자 정보 및 IP-PBX 정보 등을 저장한 후, KSipServer 에서 이를 사용하는 방법은 다음과 같다.
-
- * MySQL 에 ksipserver 데이터베이스를 생성한다.
- * KSipServer / Sql 폴더의 SQL 문을 MySQL 의 ksipserver 데이터베이스에서 실행한다.
- * KSipServer.h 파일에 아래의 소스 코드의 주석을 해제한다.
-   - 이미 해제되어 있으면 컴파일만 하면 된다.
-
-   #define USE_MYSQL
-
-5. TLS 없이 빌드하고 싶은 경우
+4. TLS 없이 빌드하고 싶은 경우
 
  SipStack/SipStackDefine.h 에서 아래의 소스 코드를 주석 처리한 후, 컴파일한다.
 
  #define USE_TLS
 
-6. 음성 코덱만 사용하고 싶은 경우
+5. 음성 코덱만 사용하고 싶은 경우
 
  KSipServer 에서 지정된 음성 코덱만 사용하고 싶고 음성 통신만 할 경우에는 아래의 SipUserAgent/SipUserAgentCallBack.h 에서 아래의 소스 코드를 주석 처리한 후, 컴파일한다.
 

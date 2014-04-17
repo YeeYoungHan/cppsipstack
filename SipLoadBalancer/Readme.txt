@@ -6,9 +6,6 @@ SipLoadBalancer
 
  * C++ SIP stack 을 이용한 SIP 로드밸런서 개발
  
- * 목적
-   - C++ SIP stack 을 이용한 SIP 로드밸런서 개발
-
 2. 개발자 정보
   
  * 이름   : 이영한
