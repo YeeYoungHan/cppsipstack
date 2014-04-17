@@ -66,8 +66,3 @@
 
 // stdafx.cpp
 void ShowWebBrowser( const char * pszUrl );
-
-// SipTestThread.cpp
-bool StartTestThread( HWND hWnd );
-void StopTestThread();
-bool IsTestThreadRun();
