@@ -20,6 +20,7 @@
 #include "SipSpeed.h"
 #include "SipSpeedDlg.h"
 #include "Setup.h"
+#include "SipTest.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
