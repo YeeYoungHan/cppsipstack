@@ -23,7 +23,7 @@
 #include "afxcmn.h"
 
 // CSipSpeedDlg dialog
-class CSipSpeedDlg : public CDialog, ISipUserAgentCallBack
+class CSipSpeedDlg : public CDialog, ISipUserAgentCallBack, ISipStackCallBack
 {
 // Construction
 public:
@@ -65,6 +65,10 @@ public:
 	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer );
 	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId );
 	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage );
+
+	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
+	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
+	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage );
 
 	// SipSpeedDlgUtil.hpp
 	CSipMutex	m_clsMutex;

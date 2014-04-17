@@ -32,7 +32,7 @@
  * @brief SipUserAgent callback 이벤트를 윈도우 이벤트로 전달하여서 MFC 클래스에서 SipUserAgent callback 을 편리하게 사용할 수 있는 클래스
  *				SipUserAgent callback 은 윈도우 쓰레드가 아니므로 윈도우 쓰레드로 변환하기 위해서 윈도우 이벤트로 전달한다.
  */
-class CSipUserAgentMFC : public ISipUserAgentCallBack
+class CSipUserAgentMFC : public ISipUserAgentCallBack, public ISipStackCallBack
 {
 public:
 	CSipUserAgentMFC();
@@ -40,6 +40,7 @@ public:
 
 	void SetWindowHandle( HWND hWnd );
 	void SetCallBack( ISipUserAgentCallBack * pclsCallBack );
+	void SetSipStackCallBack( ISipStackCallBack * pclsCallBack );
 
 	LRESULT OnSipMessage( WPARAM wParam, LPARAM lParam );
 
@@ -54,9 +55,14 @@ public:
 	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId );
 	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage );
 
+	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
+	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
+	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage );
+
 private:
 	HWND	m_hWnd;
 	ISipUserAgentCallBack * m_pclsCallBack;
+	ISipStackCallBack * m_pclsStackCallBack;
 
 	LRESULT _SendMessage( WPARAM wParam, LPARAM lParam );
 };

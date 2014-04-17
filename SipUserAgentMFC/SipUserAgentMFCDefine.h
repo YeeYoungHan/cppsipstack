@@ -29,6 +29,9 @@
 #define SMC_BLIND_TRANSFER	8
 #define SMC_MESSAGE					9
 
+#define SMC_RECV_REQUEST		100
+#define SMC_RECV_RESPONSE		101
+
 #define WMR_TRUE						0
 #define WMR_FALSE						1
 

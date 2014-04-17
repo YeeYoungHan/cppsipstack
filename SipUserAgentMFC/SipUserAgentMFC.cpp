@@ -21,7 +21,7 @@
 #include "SipUserAgentMFCDefine.h"
 #include "SipUserAgentMFCEventClass.h"
 
-CSipUserAgentMFC::CSipUserAgentMFC() : m_hWnd(0), m_pclsCallBack(NULL)
+CSipUserAgentMFC::CSipUserAgentMFC() : m_hWnd(0), m_pclsCallBack(NULL), m_pclsStackCallBack(NULL)
 {
 }
 
@@ -51,6 +51,16 @@ void CSipUserAgentMFC::SetCallBack( ISipUserAgentCallBack * pclsCallBack )
 
 /**
  * @ingroup SipUserAgentMFC
+ * @brief 윈도우 쓰레드 실행될 SipStack callback 인터페이스를 등록한다.
+ * @param pclsCallBack SipStack callback 인터페이스
+ */
+void CSipUserAgentMFC::SetSipStackCallBack( ISipStackCallBack * pclsCallBack )
+{
+	m_pclsStackCallBack = pclsCallBack;
+}
+
+/**
+ * @ingroup SipUserAgentMFC
  * @brief 윈도우 메시지 수신 callback 메소드
  * @param wParam 
  * @param lParam 
@@ -58,6 +68,8 @@ void CSipUserAgentMFC::SetCallBack( ISipUserAgentCallBack * pclsCallBack )
  */
 LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
 {
+	bool bNotFound = false;
+
 	if( m_pclsCallBack )
 	{
 		switch( wParam )
@@ -109,6 +121,32 @@ LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
 			{
 				CEventBlindTransfer * pclsParam = (CEventBlindTransfer *)lParam;
 				m_pclsCallBack->EventBlindTransfer( pclsParam->m_pszCallId, pclsParam->m_pszReferToId );
+			}
+			break;
+		default:
+			bNotFound = true;
+			break;
+		}
+	}
+	else
+	{
+		bNotFound = true;
+	}
+
+	if( m_pclsStackCallBack && bNotFound )
+	{
+		switch( wParam )
+		{
+		case SMC_RECV_REQUEST:
+			{
+				CEventSipMessage * pclsParam = (CEventSipMessage *)lParam;
+				m_pclsStackCallBack->RecvRequest( 0, pclsParam->m_pclsSipMessage );
+			}
+			break;
+		case SMC_RECV_RESPONSE:
+			{
+				CEventSipMessage * pclsParam = (CEventSipMessage *)lParam;
+				m_pclsStackCallBack->RecvResponse( 0, pclsParam->m_pclsSipMessage );
 			}
 			break;
 		}
@@ -252,6 +290,50 @@ bool CSipUserAgentMFC::EventBlindTransfer( const char * pszCallId, const char * 
  * @returns 요청을 수락하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
 bool CSipUserAgentMFC::EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage )
+{
+	return false;
+}
+
+/**
+ * @ingroup SipUserAgentMFC
+ * @brief SIP 요청 메시지 수신 이벤트 핸들러
+ * @param iThreadId		UDP 쓰레드 번호
+ * @param pclsMessage SIP 요청 메시지
+ * @returns SIP 요청 메시지를 처리하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipUserAgentMFC::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
+{
+	CEventSipMessage clsParam( pclsMessage );
+
+	_SendMessage( SMC_RECV_REQUEST, (LPARAM)&clsParam );
+
+	return true;
+}
+
+/**
+ * @ingroup SipUserAgentMFC
+ * @brief SIP 응답 메시지 수신 이벤트 핸들러
+ * @param iThreadId		UDP 쓰레드 번호
+ * @param pclsMessage SIP 응답 메시지
+ * @returns SIP 응답 메시지를 처리하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipUserAgentMFC::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
+{
+	CEventSipMessage clsParam( pclsMessage );
+
+	_SendMessage( SMC_RECV_RESPONSE, (LPARAM)&clsParam );
+
+	return true;
+}
+
+/**
+ * @ingroup SipUserAgentMFC
+ * @brief SIP 메시지 전송 timeout 이벤트 핸들러
+ * @param iThreadId		UDP 쓰레드 번호
+ * @param pclsMessage SIP 응답 메시지
+ * @returns SIP 응답 메시지를 처리하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipUserAgentMFC::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 {
 	return false;
 }

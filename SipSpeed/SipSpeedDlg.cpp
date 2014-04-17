@@ -269,6 +269,7 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 
 		if( gclsSipUserAgent.Start( clsSetup, &m_clsSipUserAgentMFC ) )
 		{
+			gclsSipUserAgent.m_clsSipStack.AddCallBack( &m_clsSipUserAgentMFC );
 			bSuccess = true;
 			break;
 		}
@@ -353,6 +354,8 @@ void CSipSpeedDlg::OnBnClickedStopTest()
 
 void CSipSpeedDlg::OnDestroy()
 {
+	m_clsSipUserAgentMFC.SetWindowHandle( 0 );
+
 	gclsSipUserAgent.Stop();
 	gclsSipUserAgent.Final();
 
