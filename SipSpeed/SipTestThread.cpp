@@ -29,6 +29,7 @@ static HWND ghWnd = NULL;
 extern CSipUserAgent		 gclsSipUserAgent;
 
 #include "SipTestOneToOneCall.hpp"
+#include "SipTestSipOptions.hpp"
 
 /**
  * @ingroup SipSpeed
@@ -44,7 +45,15 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 
 	gettimeofday( &sttStart, NULL );
 
-	SipTestOneToOneCall( );
+	switch( gclsSetup.m_iTestType )
+	{
+	case 0:
+		SipTestOneToOneCall( );
+		break;
+	case 1:
+		SipTestSipOptions( );
+		break;
+	}
 
 	gettimeofday( &sttEnd, NULL );
 
