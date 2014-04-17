@@ -382,6 +382,8 @@ void CSipTestDlg::OnBnClickedClearLog()
  */
 void CSipTestDlg::OnDestroy()
 {
+	m_clsSipUserAgentMFC.SetWindowHandle( 0 );
+
 	gclsSipUserAgent.Stop();
 	gclsSipUserAgent.Final();
 

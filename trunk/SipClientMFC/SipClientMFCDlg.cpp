@@ -402,6 +402,7 @@ bool CSipClientMFCDlg::EventMessage( const char * pszFrom, const char * pszTo, C
 
 void CSipClientMFCDlg::OnDestroy()
 {
+	m_clsSipUserAgentMFC.SetWindowHandle( 0 );
 	m_clsSipUserAgent.Stop();
 
 	__super::OnDestroy();
