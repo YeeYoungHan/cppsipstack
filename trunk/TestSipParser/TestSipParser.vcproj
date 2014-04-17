@@ -373,6 +373,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestSpeed.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestString.cpp"
 				>
 			</File>

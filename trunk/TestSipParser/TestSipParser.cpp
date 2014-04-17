@@ -17,6 +17,8 @@
  */
 
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 /**
  * @defgroup TestSipParser TestSipParser
@@ -36,6 +38,7 @@ bool TestString();
 bool TestSipHeader();
 bool TestSipReason();
 bool TestSipCallId();
+void TestSpeed( int iLoopCount );
 
 /**
  * @ingroup TestSipParser
@@ -46,6 +49,18 @@ bool TestSipCallId();
  */
 int main( int argc, char * argv[] )
 {
+	if( argc == 3 )
+	{
+		if( !strcmp( argv[1], "speed" ) )
+		{
+			int iLoopCount = atoi( argv[2] );
+
+			TestSpeed( iLoopCount );
+
+			return 0;
+		}
+	}
+
 	if( TestSipCallId() == false ) goto FUNC_END;
 	if( TestSipReason() == false ) goto FUNC_END;
 	if( TestString() == false ) goto FUNC_END;
