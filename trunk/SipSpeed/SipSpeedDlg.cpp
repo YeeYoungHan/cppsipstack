@@ -370,7 +370,12 @@ LRESULT CSipSpeedDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
 {
 	if( wParam == WM_TEST_END )
 	{
-		double fCps = (double)( m_iCallSuccess + m_iCallError ) / ( (double)lParam / 1000 );
+		double fCps = 0.0;
+
+		if( lParam > 0 )
+		{
+			fCps = (double)( m_iCallSuccess + m_iCallError ) / ( (double)lParam / 1000 );
+		}
 
 		SetLog( "call success(%d) / error(%d) / cps(%.3f) / time(%d ms)", m_iCallSuccess, m_iCallError, fCps, lParam );
 

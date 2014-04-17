@@ -461,6 +461,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipTestSipOptions.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipTestThread.cpp"
 				>
 			</File>
