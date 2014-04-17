@@ -361,10 +361,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Setup.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\SipSpeed.cpp"
 				>
 			</File>
@@ -412,10 +408,6 @@
 			>
 			<File
 				RelativePath=".\Resource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Setup.h"
 				>
 			</File>
 			<File
@@ -470,6 +462,18 @@
 			</File>
 			<File
 				RelativePath=".\SipTestThread.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="¼³Á¤"
+			>
+			<File
+				RelativePath=".\Setup.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Setup.h"
 				>
 			</File>
 		</Filter>

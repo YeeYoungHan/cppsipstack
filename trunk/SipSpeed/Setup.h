@@ -32,6 +32,7 @@
 #define ST_CALLEE_PW				"callee_pw"
 #define ST_CALL_TOTAL_COUNT	"call_total_count"
 #define ST_CALL_CONCURRENT_COUNT	"call_concurrent_count"
+#define ST_TEST_TYPE        "test_type"
 
 typedef std::map< std::string, std::string > SETUP_MAP;
 
@@ -57,6 +58,7 @@ public:
 	std::string m_strCalleePassWord;
 	int					m_iCallTotalCount;
 	int					m_iCallConcurrentCount;
+	int         m_iTestType;
 
 private:
 	bool GetFile();

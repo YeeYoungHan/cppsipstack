@@ -46,6 +46,7 @@ CSipSpeedDlg::CSipSpeedDlg(CWnd* pParent /*=NULL*/)
 	, m_iCallConcurrentCount(10)
 	, m_strLog(_T(""))
 	, m_strPercent(_T(""))
+	, m_iTestType(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -70,6 +71,7 @@ void CSipSpeedDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PROGRESS, m_clsProgress);
 	DDX_Text(pDX, IDC_PERCENT, m_strPercent);
 	DDX_Control(pDX, IDC_LOG, m_txtLog);
+	DDX_Radio(pDX, IDC_ONE_TO_ONE_CALL, m_iTestType);
 }
 
 BEGIN_MESSAGE_MAP(CSipSpeedDlg, CDialog)
@@ -132,6 +134,7 @@ BOOL CSipSpeedDlg::OnInitDialog()
 	m_strCalleePassWord = gclsSetup.m_strCalleePassWord.c_str();
 	m_iCallTotalCount = gclsSetup.m_iCallTotalCount;
 	m_iCallConcurrentCount = gclsSetup.m_iCallConcurrentCount;
+	m_iTestType = gclsSetup.m_iTestType;
 
 	UpdateData(FALSE);
 
@@ -232,6 +235,7 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 	gclsSetup.m_strCalleePassWord = m_strCalleePassWord;
 	gclsSetup.m_iCallTotalCount = m_iCallTotalCount;
 	gclsSetup.m_iCallConcurrentCount = m_iCallConcurrentCount;
+	gclsSetup.m_iTestType = m_iTestType;
 
 	gclsSetup.Put();
 
@@ -314,6 +318,7 @@ void CSipSpeedDlg::OnBnClickedStartTest()
 
 	gclsSetup.m_iCallTotalCount = m_iCallTotalCount;
 	gclsSetup.m_iCallConcurrentCount = m_iCallConcurrentCount;
+	gclsSetup.m_iTestType = m_iTestType;
 
 	gclsSetup.Put();
 

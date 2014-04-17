@@ -47,6 +47,7 @@ bool CSetup::Get()
 	GetString( ST_CALLEE_PW, m_strCalleePassWord );
 	m_iCallTotalCount = GetInt( ST_CALL_TOTAL_COUNT, 100 );
 	m_iCallConcurrentCount = GetInt( ST_CALL_CONCURRENT_COUNT, 10 );
+	m_iTestType = GetInt( ST_TEST_TYPE, 0 );
 
 	m_clsMap.clear();
 
@@ -69,6 +70,7 @@ bool CSetup::Put()
 	PutString( ST_CALLEE_PW, m_strCalleePassWord.c_str() );
 	PutInt( ST_CALL_TOTAL_COUNT, m_iCallTotalCount );
 	PutInt( ST_CALL_CONCURRENT_COUNT, m_iCallConcurrentCount );
+	PutInt( ST_TEST_TYPE, m_iTestType );
 
 	bool bRes = PutFile();
 

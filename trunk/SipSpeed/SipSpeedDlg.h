@@ -101,4 +101,5 @@ public:
 	afx_msg void OnDestroy();
 	LRESULT OnTestMessage( WPARAM wParam, LPARAM lParam );
 	afx_msg void OnBnClickedClearLog();
+	int m_iTestType;
 };
