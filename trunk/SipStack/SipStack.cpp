@@ -194,6 +194,12 @@ bool CSipStack::AddCallBack( ISipStackCallBack * pclsCallBack )
 	return true;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SIP stack 에 callback 인터페이스를 삭제한다.
+ * @param pclsCallBack SIP stack 의 callback 인터페이스
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipStack::DeleteCallBack( ISipStackCallBack * pclsCallBack )
 {
 	SIP_STACK_CALLBACK_LIST::iterator	it;

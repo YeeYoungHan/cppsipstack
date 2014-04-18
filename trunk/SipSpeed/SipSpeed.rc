@@ -94,11 +94,11 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "About SipSpeed"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,20,20
     LTEXT           "SipSpeed, Version",IDC_STATIC,42,14,58,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2013",IDC_STATIC,42,26,114,8
     DEFPUSHBUTTON   "OK",IDOK,157,76,50,14,WS_GROUP
-    LTEXT           "0.01",IDC_VERSION,105,14,34,8,SS_NOPREFIX
+    LTEXT           "0.02",IDC_VERSION,105,14,34,8,SS_NOPREFIX
     LTEXT           "http://blog.naver.com/websearch",IDC_BLOG,61,45,110,8,SS_NOTIFY
     LTEXT           "Blog:",IDC_STATIC,15,45,17,8
     LTEXT           "http://dev.naver.com/projects/sipstack",IDC_HOMEPAGE,61,57,128,8,SS_NOTIFY
@@ -171,13 +171,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "TODO: <Company name>"
-            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "CompanyName", "C++ SIP stack ( http://dev.naver.com/projects/sipstack )"
+            VALUE "FileDescription", "SIP speed test tool ( http://blog.naver.com/websearch.do )"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "SipSpeed.exe"
-            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "LegalCopyright", "(c) Yee Young Han.  All rights reserved."
             VALUE "OriginalFilename", "SipSpeed.exe"
-            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductName", "SipSpeed"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END
