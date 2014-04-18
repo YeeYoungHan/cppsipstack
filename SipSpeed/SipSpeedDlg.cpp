@@ -21,6 +21,7 @@
 #include "SipSpeedDlg.h"
 #include "Setup.h"
 #include "SipTest.h"
+#include "CallIdMap.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -242,6 +243,7 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 	// SipStack 을 시작한다.
 	m_clsSipUserAgentMFC.SetWindowHandle( GetSafeHwnd() );
 	m_clsSipUserAgentMFC.SetCallBack( this );
+	m_clsSipUserAgentMFC.SetSipStackCallBack( this );
 
 	CSipStackSetup clsSetup;
 	CSipServerInfo clsInfo;

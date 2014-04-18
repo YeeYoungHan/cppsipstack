@@ -238,6 +238,22 @@ bool CSipSpeedDlg::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 {
 	if( pclsMessage->IsMethod( "OPTIONS" ) )
 	{
+		std::string strCallId;
+
+		pclsMessage->GetCallId( strCallId );
+
+		if( gclsCallIdMap.Delete( strCallId.c_str() ) )
+		{
+			if( pclsMessage->m_iStatusCode == SIP_REQUEST_TIME_OUT )
+			{
+				++m_iCallError;
+			}
+			else
+			{
+				++m_iCallSuccess;
+			}
+		}
+
 		return true;
 	}
 

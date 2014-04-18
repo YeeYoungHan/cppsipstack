@@ -19,9 +19,11 @@
 #include "stdafx.h"
 #include "SipStackDefine.h"
 #include "SipUserAgent.h"
+#include "SipUtility.h"
 #include "Setup.h"
 #include "TimeUtility.h"
 #include "ServerUtility.h"
+#include "CallIdMap.h"
 
 static bool gbStopTestThread = false;
 static bool gbTestThreadRun = false;
