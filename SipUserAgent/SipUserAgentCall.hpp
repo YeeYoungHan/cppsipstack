@@ -210,3 +210,99 @@ void CSipUserAgent::StopCallAll( )
 		StopCall( itList->c_str() );
 	}
 }
+
+/**
+ * @ingroup SipUserAgent
+ * @brief SIP INVITE 메시지를 생성하고 Dialog 에 저장한다.
+ * @param pszFrom		발신자 아이디
+ * @param pszTo			수신자 아이디
+ * @param pclsRtp		local RTP 정보 저장 객체
+ * @param pclsRoute SIP 메시지 목적지 주소 저장 객체
+ * @param strCallId 생성된 INVITE 메시지의 Call-ID 가 저장될 변수
+ * @param pclsInvite	생성된 SIP INVITE 메시지가 저장될 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::CreateCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId, CSipMessage ** ppclsInvite )
+{
+	if( pszFrom == NULL || pszTo == NULL ) return false;
+	if( pclsRtp == NULL || pclsRoute == NULL ) return false;
+
+	if( strlen( pszFrom ) == 0 || strlen( pszTo ) == 0 ) return false;
+
+	if( pclsRoute->m_strDestIp.empty() ) return false;
+	if( pclsRoute->m_iDestPort <= 0 || pclsRoute->m_iDestPort > 65535 ) return false;
+	if( ppclsInvite == NULL ) return false;
+
+	CSipDialog	clsDialog( &m_clsSipStack );
+
+	clsDialog.m_strFromId = pszFrom;
+	clsDialog.m_strToId = pszTo;
+
+	clsDialog.SetLocalRtp( pclsRtp );
+
+	clsDialog.m_strContactIp = pclsRoute->m_strDestIp;
+	clsDialog.m_iContactPort = pclsRoute->m_iDestPort;
+	clsDialog.m_eTransport = pclsRoute->m_eTransport;
+
+	SIP_DIALOG_MAP::iterator			itMap;
+	char	szTag[SIP_TAG_MAX_SIZE], szBranch[SIP_BRANCH_MAX_SIZE], szCallIdName[SIP_CALL_ID_NAME_MAX_SIZE];
+	bool	bInsert = false;
+	CSipMessage * pclsMessage = NULL;
+
+	SipMakeTag( szTag, sizeof(szTag) );
+	SipMakeBranch( szBranch, sizeof(szBranch) );
+
+	clsDialog.m_strFromTag = szTag;
+	clsDialog.m_strViaBranch = szBranch;
+
+	gettimeofday( &clsDialog.m_sttInviteTime, NULL );
+
+	while( 1 )
+	{
+		SipMakeCallIdName( szCallIdName, sizeof(szCallIdName) );
+
+		clsDialog.m_strCallId = szCallIdName;
+		clsDialog.m_strCallId.append( "@" );
+		clsDialog.m_strCallId.append( m_clsSipStack.m_clsSetup.m_strLocalIp );
+
+		m_clsMutex.acquire();
+		itMap = m_clsMap.find( clsDialog.m_strCallId );
+		if( itMap == m_clsMap.end() )
+		{
+			pclsMessage = clsDialog.CreateInvite();
+			if( pclsMessage )
+			{
+				m_clsMap.insert( SIP_DIALOG_MAP::value_type( clsDialog.m_strCallId, clsDialog ) );
+				bInsert = true;
+			}
+		}
+		m_clsMutex.release();
+
+		if( bInsert ) break;
+	}
+
+	strCallId = clsDialog.m_strCallId;
+
+	*ppclsInvite = pclsMessage;
+
+	return true;
+}
+
+/**
+ * @brief 생성된 INVITE 메시지를 전송한다.
+ * @param pszCallId		SIP Call-ID
+ * @param pclsInvite	SIP INVITE 메시지
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::StartCall( const char * pszCallId, CSipMessage * pclsInvite )
+{
+	if( pszCallId == NULL || pclsInvite == NULL ) return false;
+
+	if( m_clsSipStack.SendSipMessage( pclsInvite ) == false )
+	{
+		Delete( pszCallId );
+		return false;
+	}
+
+	return true;
+}
