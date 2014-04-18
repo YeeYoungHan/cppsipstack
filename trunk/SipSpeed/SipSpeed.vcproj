@@ -453,6 +453,14 @@
 			Name="Å×½ºÆ®"
 			>
 			<File
+				RelativePath=".\CallIdMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CallIdMap.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SipTest.h"
 				>
 			</File>
