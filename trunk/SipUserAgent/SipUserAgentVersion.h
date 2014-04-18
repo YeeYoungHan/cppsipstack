@@ -19,9 +19,19 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.18"
+#define SIP_USER_AGENT_VERSION "0.19"
 
 /* 버전 정보
+
+= 버전 0.19 ( 2014년 4월 18일 ) =
+ * CreateCall, StartCall 로 통화 호출할 수 있는 기능을 추가함
+ * Stop 호출 시간을 줄임
+ * RecvRegisterResponse 에서 사용자 정보가 삭제되었을 때에 true 를 리턴하지 않는 버그를 패치함
+ * SIP register thread 를 종료할 때에 비정상 종료되는 버그를 패치함
+ * CSipCallRtp 에서 audio, video port 를 가져오는 메소드를 추가함
+ * call id 로 dialog 의 from id 를 가져오는 메소드를 추가함
+ * 미디어 당 생성 소켓 개수를 응용에서 설정할 수 있도록 수정함
+ * N 개의 미디어 처리를 위한 기능을 추가함
 
 = 버전 0.18 ( 2013년 10월 31일 ) =
  * 2개 이상의 CSipUserAgent 를 실행할 수 있는 기능을 추가함

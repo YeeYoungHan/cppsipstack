@@ -19,9 +19,15 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.18"
+#define SIP_STACK_VERSION "0.19"
 
 /* 버전 정보
+
+= 버전 0.19 ( 2014년 4월 18일 ) =
+ * SipStack 실행 주기를 설정할 수 있는 기능을 추가함
+ * callback 인터페이스 삭제 기능을 추가함
+ * IST 에 200 응답이 저장된 후, 180 응답이 저장될 수 있는 버그를 패치함
+ * IST 리스트에 ACK 메시지를 저장할 때에 SIP Call-ID 와 CSCeq 가 일치하는지 검사하는 기능을 추가함
 
 = 버전 0.18 ( 2013년 10월 31일 ) =
  * CallBackThreadEnd 를 순수 가상 함수에서 가상 함수로 수정함
