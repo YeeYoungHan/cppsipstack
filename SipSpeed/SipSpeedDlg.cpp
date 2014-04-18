@@ -349,10 +349,12 @@ void CSipSpeedDlg::OnBnClickedStopTest()
 {
 	StopTestThread();
 	
+	/*
 	m_bTest = false;
 
 	m_btnStartTest.EnableWindow( TRUE );
 	m_btnStopTest.EnableWindow( FALSE );
+	*/
 }
 
 void CSipSpeedDlg::OnDestroy()
@@ -384,6 +386,8 @@ LRESULT CSipSpeedDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
 		}
 
 		SetLog( "call success(%d) / error(%d) / cps(%.3f) / time(%d ms)", m_iCallSuccess, m_iCallError, fCps, lParam );
+
+		m_bTest = false;
 
 		m_btnStartTest.EnableWindow( TRUE );
 		m_btnStopTest.EnableWindow( FALSE );
