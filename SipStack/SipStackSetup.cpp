@@ -31,7 +31,7 @@
 CSipStackSetup::CSipStackSetup() : m_iLocalUdpPort(5060), m_iUdpThreadCount(1)
 	, m_iLocalTcpPort(0), m_iLocalTlsPort(0)
 	, m_iTcpThreadCount(1), m_iTcpMaxSocketPerThread(SIP_TCP_MAX_SOCKET_PER_THREAD), m_iTcpRecvTimeout(SIP_TCP_RECV_TIMEOUT)
-	, m_iTlsAcceptTimeout(SIP_TLS_ACCEPT_TIMEOUT), m_bUseSipCompactForm(false)
+	, m_iTlsAcceptTimeout(SIP_TLS_ACCEPT_TIMEOUT), m_bUseSipCompactForm(false), m_iStackExecutePeriod(20)
 {
 }
 
@@ -105,6 +105,12 @@ bool CSipStackSetup::Check( )
 	{
 		m_strUserAgent.append( "_" );
 		m_strUserAgent.append( SIP_USER_AGENT );
+	}
+
+	// SIP stack 설정 점검
+	if( m_iStackExecutePeriod <= 0 )
+	{
+		m_iStackExecutePeriod = 20;
 	}
 
 	char	szTemp[101], szMd5[22];

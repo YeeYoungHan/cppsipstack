@@ -47,7 +47,7 @@ void * SipStackThread( void * lpParameter )
 		gettimeofday( &sttTime, NULL );
 		giTime = sttTime.tv_sec;
 		pclsSipStack->Execute( &sttTime );
-		MiliSleep( 20 );
+		MiliSleep( pclsSipStack->m_clsSetup.m_iStackExecutePeriod );
 
 		if( giTime != iOldTime )
 		{
