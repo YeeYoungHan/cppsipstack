@@ -19,9 +19,12 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.18"
+#define KSIP_SERVER_VERSION	"0.19"
 
 /* 버전 정보 
+
+= 버전 0.19 ( 2014년 4월 18일 ) =
+ * SIP INVITE 요청 메시지에 대한 응답을 수신하기 전에 통화 자료구조를 저장하지 못 하여서 통화 연결 처리가 정상적으로 되지 않는 버그를 패치함
 
 = 버전 0.18 ( 2013년 11월 18일 ) =
  * Call Pickup 기능을 추가함
