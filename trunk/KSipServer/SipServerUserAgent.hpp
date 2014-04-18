@@ -245,13 +245,23 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 
 	clsUserInfo.GetCallRoute( clsRoute );
 
-	if( gclsUserAgent.StartCall( pszFrom, pszTo, pclsRtp, &clsRoute, strCallId ) == false )
+	CSipMessage * pclsInvite;
+
+	if( gclsUserAgent.CreateCall( pszFrom, pszTo, pclsRtp, &clsRoute, strCallId, &pclsInvite ) == false )
 	{
-		CLog::Print( LOG_ERROR, "EventIncomingCall(%s) StartCall errr", pszCallId );
+		CLog::Print( LOG_ERROR, "EventIncomingCall(%s) CreateCall errr", pszCallId );
 		return StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
 	}
 
 	gclsCallMap.Insert( pszCallId, strCallId.c_str(), iStartPort );
+
+	if( gclsUserAgent.StartCall( strCallId.c_str(), pclsInvite ) == false )
+	{
+		gclsCallMap.Delete( pszCallId );
+
+		CLog::Print( LOG_ERROR, "EventIncomingCall(%s) StartCall errr", pszCallId );
+		return StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
+	}
 }
 
 /**
