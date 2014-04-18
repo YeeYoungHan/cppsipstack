@@ -67,6 +67,9 @@ public:
 
 	/** SIP 메시지를 생성할 때에 compact form 으로 생성할지 설정 */
 	bool				m_bUseSipCompactForm;
+
+	/** SIP stack 실행 주기 (ms 단위) */
+	int					m_iStackExecutePeriod;
 };
 
 #endif

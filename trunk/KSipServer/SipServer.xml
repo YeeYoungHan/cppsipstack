@@ -15,6 +15,7 @@
 		-->
 		<MinRegisterTimeout>300</MinRegisterTimeout>
 		<CallPickupId>**</CallPickupId>
+		<StackExecutePeriod>20</StackExecutePeriod>
 	</Sip>
 	<RtpRelay>
 		<UseRtpRelay>true</UseRtpRelay>

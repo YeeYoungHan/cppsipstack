@@ -60,7 +60,7 @@ void InsertStringMap( CXmlElement * pclsElement, const char * pszTagName, const 
  */
 CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10)
 	, m_iTcpPort(5060), m_iTcpThreadCount(10), m_iTcpRecvTimeout(300)
-	, m_iTlsPort(5061), m_iTlsAcceptTimeout(10)
+	, m_iTlsPort(5061), m_iTlsAcceptTimeout(10), m_iStackExecutePeriod(20)
 	, m_iMinRegisterTimeout(300)
 	, m_bUseRtpRelay(false), m_iBeginRtpPort(10000), m_iEndRtpPort(60000)
 	, m_iLogLevel(0), m_iLogMaxSize(20000000)
@@ -104,6 +104,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "CertFile", m_strCertFile );
 	pclsElement->SelectElementData( "MinRegisterTimeout", m_iMinRegisterTimeout );
 	pclsElement->SelectElementData( "CallPickupId", m_strCallPickupId );
+	pclsElement->SelectElementData( "StackExecutePeriod", m_iStackExecutePeriod );
 
 	// ·Î±×
 	pclsElement = clsXml.SelectElement( "Log" );

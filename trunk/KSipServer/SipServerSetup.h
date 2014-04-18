@@ -61,6 +61,12 @@ public:
 	/** TLS 프로토콜을 위한 서버 인증서 + 키를 포함한 PEM 파일 full path */ 
 	std::string	m_strCertFile;
 
+	/** Call Pickup 을 위한 아이디 ( 전화번호 ) */
+	std::string	m_strCallPickupId;
+
+	/** SIP stack 실행 주기 (ms 단위) */
+	int					m_iStackExecutePeriod;
+
 	/** SIP 통신을 위한 realm */
 	std::string	m_strRealm;
 
@@ -87,9 +93,6 @@ public:
 
 	/** CDR 파일 저장 폴더 - m_strUserXmlFolder 가 설정되어 있지 않으면 본 항목은 사용되지 않는다. */
 	std::string	m_strCdrFolder;
-
-	/** Call Pickup 을 위한 아이디 ( 전화번호 ) */
-	std::string	m_strCallPickupId;
 
 	// ================================================================
 	// 로그 기능
