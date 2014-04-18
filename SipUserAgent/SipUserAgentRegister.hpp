@@ -32,7 +32,6 @@ bool CSipUserAgent::RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessa
 	m_clsRegisterMutex.acquire();
 	for( itSL = m_clsRegisterList.begin(); itSL != m_clsRegisterList.end(); ++itSL )
 	{
-LOOP_START:
 		if( !strcmp( itSL->m_strUserId.c_str(), pszUserId ) )
 		{
 			int iStatusCode = pclsMessage->m_iStatusCode;
@@ -59,15 +58,7 @@ LOOP_START:
 
 				if( itSL->m_iLoginTimeout == 0 && itSL->m_bDelete )
 				{
-					itNext = itSL;
-					++itNext;
-
 					m_clsRegisterList.erase( itSL );
-
-					if( itNext == m_clsRegisterList.end() ) break;
-
-					itSL = itNext;
-					goto LOOP_START;
 				}
 			}
 			else if( iStatusCode == SIP_UNAUTHORIZED || iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
