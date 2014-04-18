@@ -228,7 +228,7 @@ bool CSipUserAgent::Stop( )
 
 	DeRegister();
 
-	for( int i = 0; i < 10; ++i )
+	for( int i = 0; i < 100; ++i )
 	{
 		m_clsRegisterMutex.acquire();
 		iCount = (int)m_clsRegisterList.size();
@@ -245,16 +245,16 @@ bool CSipUserAgent::Stop( )
 		m_clsRegisterMutex.release();
 
 		if( iCount <= 0 ) break;
-		sleep(1);
+		MiliSleep(100);
 	}
 
 	m_bStopEvent = true;
 
 	// SipRegisterThread 가 종료할 때까지 대기한다.
-	for( int i = 0; i < 10; ++i )
+	for( int i = 0; i < 100; ++i )
 	{
 		if( m_bStopEvent == false ) break;
-		sleep(1);
+		MiliSleep(100);
 	}
 
 	DeleteRegisterInfoAll( );

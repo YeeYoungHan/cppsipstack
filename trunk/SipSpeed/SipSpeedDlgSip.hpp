@@ -244,6 +244,7 @@ bool CSipSpeedDlg::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 
 		if( gclsCallIdMap.Delete( strCallId.c_str() ) )
 		{
+			m_clsMutex.acquire();
 			if( pclsMessage->m_iStatusCode == SIP_REQUEST_TIME_OUT )
 			{
 				++m_iCallError;
@@ -252,6 +253,8 @@ bool CSipSpeedDlg::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 			{
 				++m_iCallSuccess;
 			}
+			SetPercent( );
+			m_clsMutex.release();
 		}
 
 		return true;

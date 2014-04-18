@@ -51,6 +51,7 @@ public:
 	bool Start( CSipStackSetup & clsSetup );
 	bool Stop( );
 	bool AddCallBack( ISipStackCallBack * pclsCallBack );
+	bool DeleteCallBack( ISipStackCallBack * pclsCallBack );
 	void SetSecurityCallBack( ISipStackSecurityCallBack * pclsSecurityCallBack );
 
 	bool SendSipMessage( CSipMessage * pclsMessage );

@@ -194,6 +194,24 @@ bool CSipStack::AddCallBack( ISipStackCallBack * pclsCallBack )
 	return true;
 }
 
+bool CSipStack::DeleteCallBack( ISipStackCallBack * pclsCallBack )
+{
+	SIP_STACK_CALLBACK_LIST::iterator	it;
+	bool	bFound = false;
+
+	for( it = m_clsCallBackList.begin(); it != m_clsCallBackList.end(); ++it )
+	{
+		if( *it == pclsCallBack )
+		{
+			m_clsCallBackList.erase( it );
+			bFound = true;
+			break;
+		}
+	}
+
+	return bFound;
+}
+
 /**
  * @ingroup SipStack
  * @brief SIP stack 의 보안 기능을 수행할 callback 인터페이스를 등록한다.
