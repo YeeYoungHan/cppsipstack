@@ -243,7 +243,6 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 	// SipStack 을 시작한다.
 	m_clsSipUserAgentMFC.SetWindowHandle( GetSafeHwnd() );
 	m_clsSipUserAgentMFC.SetCallBack( this );
-	m_clsSipUserAgentMFC.SetSipStackCallBack( this );
 
 	CSipStackSetup clsSetup;
 	CSipServerInfo clsInfo;
@@ -271,7 +270,6 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 
 		if( gclsSipUserAgent.Start( clsSetup, &m_clsSipUserAgentMFC ) )
 		{
-			gclsSipUserAgent.m_clsSipStack.AddCallBack( &m_clsSipUserAgentMFC );
 			bSuccess = true;
 			break;
 		}
@@ -327,6 +325,9 @@ void CSipSpeedDlg::OnBnClickedStartTest()
 
 	m_iCallSuccess = 0;
 	m_iCallError = 0;
+
+	m_clsSipUserAgentMFC.SetSipStackCallBack( this );
+	gclsSipUserAgent.m_clsSipStack.AddCallBack( &m_clsSipUserAgentMFC );
 
 	if( StartTestThread( GetSafeHwnd() ) == false )
 	{
@@ -386,6 +387,9 @@ LRESULT CSipSpeedDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
 
 		m_btnStartTest.EnableWindow( TRUE );
 		m_btnStopTest.EnableWindow( FALSE );
+
+		m_clsSipUserAgentMFC.SetSipStackCallBack( NULL );
+		gclsSipUserAgent.m_clsSipStack.DeleteCallBack( &m_clsSipUserAgentMFC );
 	}
 
 	return 0;
