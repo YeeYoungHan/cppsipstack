@@ -60,6 +60,8 @@ public:
 	void AddAttribute( CSdpAttribute * pclsAttr );
 	void AddAttribute( const char * pszName, const char * pszValue );
 
+	void SetDirection( const char * pszDirection );
+
 private:
 	void SetData( const char * pszData, int iLen, int iType );
 };

@@ -289,6 +289,39 @@ void CSdpMedia::AddAttribute( const char * pszName, const char * pszValue )
 
 /**
  * @ingroup SdpParser
+ * @brief direction 애트리뷰를 수정한다.
+ * @param pszDirection direction
+ */
+void CSdpMedia::SetDirection( const char * pszDirection )
+{
+	SDP_ATTRIBUTE_LIST::iterator	itAttr;
+	bool bFound = false;
+
+	for( itAttr = m_clsAttributeList.begin(); itAttr != m_clsAttributeList.end(); ++itAttr )
+	{
+		if( !strcmp( itAttr->m_strName.c_str(), "sendrecv" ) ||
+				!strcmp( itAttr->m_strName.c_str(), "sendonly" ) ||
+				!strcmp( itAttr->m_strName.c_str(), "recvonly" ) ||
+				!strcmp( itAttr->m_strName.c_str(), "inactive" ) )
+		{
+			if( strcmp( itAttr->m_strName.c_str(), pszDirection ) )
+			{
+				itAttr->m_strName = pszDirection;
+			}
+
+			bFound = true;
+			break;
+		}
+	}
+
+	if( bFound == false )
+	{
+		AddAttribute( pszDirection, NULL );
+	}
+}
+
+/**
+ * @ingroup SdpParser
  * @brief SDP media 문자열을 파싱한 각 항목을 저장한다.
  * @param pszData 문자열
  * @param iLen		문자열 길이
