@@ -30,6 +30,7 @@ const char * GetRtpDirectionString( ERtpDirection eDirection )
 	switch( eDirection )
 	{
 	case E_RTP_SEND_RECV:
+	case E_RTP_NULL:
 		return "sendrecv";
 	case E_RTP_SEND:
 		return "sendonly";

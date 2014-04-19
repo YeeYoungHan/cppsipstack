@@ -235,7 +235,7 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 
 		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:101 telephone-event/8000\r\n"
 			"a=fmtp:101 0-15\r\n" );
-		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=sendrecv\r\n", GetRtpDirectionString( m_eLocalDirection ) );
+		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=%s\r\n", GetRtpDirectionString( m_eLocalDirection ) );
 	}
 
 	pclsMessage->m_strBody = szSdp;
@@ -265,6 +265,7 @@ bool CSipDialog::SetLocalRtp( CSipCallRtp * pclsRtp )
 	{
 	case E_RTP_SEND_RECV:
 	case E_RTP_INACTIVE:
+	case E_RTP_NULL:
 		m_eRemoteDirection = m_eLocalDirection;
 		break;
 	case E_RTP_SEND:
@@ -306,6 +307,7 @@ bool CSipDialog::SetRemoteRtp( CSipCallRtp * pclsRtp )
 	{
 	case E_RTP_SEND_RECV:
 	case E_RTP_INACTIVE:
+	case E_RTP_NULL:
 		m_eLocalDirection = m_eRemoteDirection;
 		break;
 	case E_RTP_SEND:

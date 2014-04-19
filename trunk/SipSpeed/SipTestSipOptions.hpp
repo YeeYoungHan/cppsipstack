@@ -40,7 +40,7 @@ static CSipMessage * CreateSipMessage( )
 		}
 	}
 
-	pclsMessage->m_clsCallId.Parse( strCallId.c_str(), strCallId.length() );
+	pclsMessage->m_clsCallId.Parse( strCallId.c_str(), (int)strCallId.length() );
 
 	pclsMessage->m_eTransport = E_SIP_UDP;
 	pclsMessage->m_strSipMethod = "OPTIONS";
