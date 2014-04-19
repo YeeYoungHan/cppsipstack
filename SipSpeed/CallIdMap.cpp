@@ -29,6 +29,12 @@ CCallIdMap::~CCallIdMap()
 {
 }
 
+/**
+ * @ingroup SipSpeed
+ * @brief SIP Call-ID 를 저장한다.
+ * @param pszCallId SIP Call-ID
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CCallIdMap::Insert( const char * pszCallId )
 {
 	CALL_ID_MAP::iterator	it;
@@ -48,6 +54,12 @@ bool CCallIdMap::Insert( const char * pszCallId )
 	return bRes;
 }
 
+/**
+ * @ingroup SipSpeed
+ * @brief SIP Call-ID 를 삭제한다.
+ * @param pszCallId SIP Call-ID
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CCallIdMap::Delete( const char * pszCallId )
 {
 	CALL_ID_MAP::iterator	it;
@@ -65,6 +77,10 @@ bool CCallIdMap::Delete( const char * pszCallId )
 	return bRes;
 }
 
+/**
+ * @ingroup SipSpeed
+ * @brief 모든 SIP Call-ID 를 삭제한다.
+ */
 void CCallIdMap::DeleteAll( )
 {
 	m_clsMutex.acquire();
@@ -72,12 +88,17 @@ void CCallIdMap::DeleteAll( )
 	m_clsMutex.release();
 }
 
+/**
+ * @ingroup SipSpeed
+ * @brief SIP Call-ID 개수를 리턴한다.
+ * @returns SIP Call-ID 개수를 리턴한다.
+ */
 int CCallIdMap::GetCount()
 {
 	int iCount;
 
 	m_clsMutex.acquire();
-	iCount = m_clsMap.size();
+	iCount = (int)m_clsMap.size();
 	m_clsMutex.release();
 
 	return iCount;
