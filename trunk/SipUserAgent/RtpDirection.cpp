@@ -19,6 +19,12 @@
 #include "SipStackDefine.h"
 #include "RtpDirection.h"
 
+/**
+ * @ingroup SipUserAgent
+ * @brief enum direction 을 문자열로 리턴한다.
+ * @param eDirection enum direction
+ * @returns enum direction 을 문자열로 리턴한다.
+ */
 const char * GetRtpDirectionString( ERtpDirection eDirection )
 {
 	switch( eDirection )
@@ -36,6 +42,12 @@ const char * GetRtpDirectionString( ERtpDirection eDirection )
 	return "sendrecv";
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief 문자열 direction 을 enum direction 으로 리턴한다.
+ * @param pszDirection 문자열 direction
+ * @returns 문자열 direction 을 enum direction 으로 리턴한다.
+ */
 ERtpDirection GetRtpDirectionEnum( const char * pszDirection )
 {
 	if( !strcmp( pszDirection, "sendrecv" ) )
