@@ -30,6 +30,11 @@ CRtpInfo::CRtpInfo( uint8_t iSocketCount ) : m_iStartPort(0), m_bStop(false), m_
 	
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 자원을 생성한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CRtpInfo::Create()
 {
 	m_phSocket = new Socket[m_iSocketCount];
@@ -59,6 +64,10 @@ bool CRtpInfo::Create()
 	return true;
 }
 
+/**
+ * @ingroup KSipServer
+ * @brief 자원을 해제한다.
+ */
 void CRtpInfo::Close()
 {
 	CloseSocket();
