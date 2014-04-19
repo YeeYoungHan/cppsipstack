@@ -22,6 +22,7 @@
 #include "Log.h"
 #include "MemoryDebug.h"
 
+#include "SipStackCallBack.hpp"
 #include "SipStackComm.hpp"
 
 /**
@@ -168,70 +169,6 @@ bool CSipStack::Stop( )
 
 /**
  * @ingroup SipStack
- * @brief SIP stack 에 callback 인터페이스를 추가한다.
- * @param pclsCallBack SIP stack 의 callback 인터페이스
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipStack::AddCallBack( ISipStackCallBack * pclsCallBack )
-{
-	if( pclsCallBack == NULL ) return false;
-
-	SIP_STACK_CALLBACK_LIST::iterator	it;
-	bool	bFound = false;
-
-	for( it = m_clsCallBackList.begin(); it != m_clsCallBackList.end(); ++it )
-	{
-		if( *it == pclsCallBack )
-		{
-			bFound = true;
-			break;
-		}
-	}
-
-	if( bFound == false )
-	{
-		m_clsCallBackList.push_back( pclsCallBack );
-	}
-
-	return true;
-}
-
-/**
- * @ingroup SipStack
- * @brief SIP stack 에 callback 인터페이스를 삭제한다.
- * @param pclsCallBack SIP stack 의 callback 인터페이스
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipStack::DeleteCallBack( ISipStackCallBack * pclsCallBack )
-{
-	SIP_STACK_CALLBACK_LIST::iterator	it;
-	bool	bFound = false;
-
-	for( it = m_clsCallBackList.begin(); it != m_clsCallBackList.end(); ++it )
-	{
-		if( *it == pclsCallBack )
-		{
-			m_clsCallBackList.erase( it );
-			bFound = true;
-			break;
-		}
-	}
-
-	return bFound;
-}
-
-/**
- * @ingroup SipStack
- * @brief SIP stack 의 보안 기능을 수행할 callback 인터페이스를 등록한다.
- * @param pclsSecurityCallBack 
- */
-void CSipStack::SetSecurityCallBack( ISipStackSecurityCallBack * pclsSecurityCallBack )
-{
-	m_pclsSecurityCallBack = pclsSecurityCallBack;
-}
-
-/**
- * @ingroup SipStack
  * @brief SIP stack 을 실행한다.
  *				SIP stack 이 관리하는 Transaction List 를 주기적으로 점검하여서 Re-Transmit 또는 Timeout 등을 처리하기 위해서 본 함수를 20ms 간격으로 호출해 주어야 한다.
  * @param psttTime 현재 시간
@@ -245,84 +182,6 @@ bool CSipStack::Execute( struct timeval * psttTime )
 	m_clsNIST.Execute( psttTime );
 
 	return true;
-}
-
-/**
- * @ingroup SipStack
- * @brief 수신된 요청 SIP 메시지에 대한 callback 메소드를 호출한다.
- *				만약 요청 SIP 메시지를 처리할 callback 이 존재하지 않으면 501 응답 메시지를 전송한다.
- * @param iThreadId		쓰레드 아이디 ( 0 부터 쓰레드 개수 )
- * @param pclsMessage SIP 메시지 저장 구조체
- */
-void CSipStack::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
-{
-	SIP_STACK_CALLBACK_LIST::iterator itList;
-	bool	bSendResponse = false;
-
-	for( itList = m_clsCallBackList.begin(); itList != m_clsCallBackList.end(); ++itList )
-	{
-		if( (*itList)->RecvRequest( iThreadId, pclsMessage ) )
-		{
-			bSendResponse = true;
-			break;
-		}
-	}
-
-	if( bSendResponse == false )
-	{
-		CSipMessage * psttResponse = pclsMessage->CreateResponseWithToTag( SIP_NOT_IMPLEMENTED );
-		if( psttResponse )
-		{
-			SendSipMessage( psttResponse );
-		}
-	}
-}
-
-/**
- * @ingroup SipStack
- * @brief 수신된 응답 SIP 메시지에 대한 callback 메소드를 호출한다.
- * @param iThreadId		쓰레드 아이디 ( 0 부터 쓰레드 개수 )
- * @param pclsMessage SIP 메시지 저장 구조체
- */
-void CSipStack::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
-{
-	SIP_STACK_CALLBACK_LIST::iterator itList;
-
-	for( itList = m_clsCallBackList.begin(); itList != m_clsCallBackList.end(); ++itList )
-	{
-		if( (*itList)->RecvResponse( iThreadId, pclsMessage ) ) break;
-	}
-}
-
-/**
- * @ingroup SipStack
- * @brief 전송 SIP 메시지에 대한 timeout callback 메소드를 호출한다.
- * @param iThreadId		쓰레드 아이디 ( 0 부터 쓰레드 개수 )
- * @param pclsMessage SIP 메시지 저장 구조체
- */
-void CSipStack::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
-{
-	SIP_STACK_CALLBACK_LIST::iterator itList;
-
-	for( itList = m_clsCallBackList.begin(); itList != m_clsCallBackList.end(); ++itList )
-	{
-		if( (*itList)->SendTimeout( iThreadId, pclsMessage ) ) break;
-	}
-}
-
-/**
- * @ingroup SipStack
- * @brief 쓰레드 종료 이벤트를 전달한다.
- * @param iThreadId 쓰레드 아이디 ( 0 부터 쓰레드 개수 )
- */
-void CSipStack::CallBackThreadEnd( int iThreadId )
-{
-	SIP_STACK_CALLBACK_LIST::iterator itList;
-
-	for( itList = m_clsCallBackList.begin(); itList != m_clsCallBackList.end(); ++itList )
-	{
-		(*itList)->CallBackThreadEnd( iThreadId );
-	}
 }
 
 /**

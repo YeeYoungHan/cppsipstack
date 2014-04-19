@@ -50,16 +50,8 @@ public:
 
 	bool Start( CSipStackSetup & clsSetup );
 	bool Stop( );
-	bool AddCallBack( ISipStackCallBack * pclsCallBack );
-	bool DeleteCallBack( ISipStackCallBack * pclsCallBack );
-	void SetSecurityCallBack( ISipStackSecurityCallBack * pclsSecurityCallBack );
 
 	bool Execute( struct timeval * psttTime );
-
-	void RecvRequest( int iThreadId, CSipMessage * pclsMessage );
-	void RecvResponse( int iThreadId, CSipMessage * pclsMessage );
-	void SendTimeout( int iThreadId, CSipMessage * pclsMessage );
-	void CallBackThreadEnd( int iThreadId );
 
 	void IncreateUdpThreadCount( int & iThreadId );
 	void DecreateUdpThreadCount();
@@ -71,6 +63,16 @@ public:
 	void GetICTString( std::string & strBuf );
 
 	void Final();
+
+	// SipStackCallBack.hpp
+	bool AddCallBack( ISipStackCallBack * pclsCallBack );
+	bool DeleteCallBack( ISipStackCallBack * pclsCallBack );
+	void SetSecurityCallBack( ISipStackSecurityCallBack * pclsSecurityCallBack );
+
+	void RecvRequest( int iThreadId, CSipMessage * pclsMessage );
+	void RecvResponse( int iThreadId, CSipMessage * pclsMessage );
+	void SendTimeout( int iThreadId, CSipMessage * pclsMessage );
+	void CallBackThreadEnd( int iThreadId );
 
 	// SipStackComm.hpp
 	bool SendSipMessage( CSipMessage * pclsMessage );
