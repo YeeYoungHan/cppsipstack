@@ -269,6 +269,20 @@ void CSipStack::Final()
 
 /**
  * @ingroup SipStack
+ * @brief 모든 SIP transaction 을 삭제한다.
+ */
+void CSipStack::DeleteAllTransaction()
+{
+	m_clsICT.DeleteAll();
+	m_clsNICT.DeleteAll();
+	m_clsIST.DeleteAll();
+	m_clsNIST.DeleteAll();
+
+	gclsSipDeleteQueue.DeleteAll();
+}
+
+/**
+ * @ingroup SipStack
  * @brief UDP SIP 메시지 수신 쓰레드에 종료 SIP 메시지를 전송하고 SIP stack 쓰레드에 종료 이벤트를 설정한 후, 모든 쓰레드가 종료할 때까지 대기한 후,
  *				소켓 핸들을 종료시킨다.
  * @returns true 를 리턴한다.
@@ -320,12 +334,7 @@ bool CSipStack::_Stop( )
 	m_clsTlsThreadList.Final();
 #endif
 
-	m_clsICT.DeleteAll();
-	m_clsNICT.DeleteAll();
-	m_clsIST.DeleteAll();
-	m_clsNIST.DeleteAll();
-
-	gclsSipDeleteQueue.DeleteAll();
+	DeleteAllTransaction();
 
 	m_bStopEvent = false;
 
