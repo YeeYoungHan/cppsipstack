@@ -264,6 +264,8 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 
 	bool bSuccess = false;
 
+	clsSetup.m_iUdpThreadCount = 10;
+
 	for( int i = 0; i < 100; ++i )
 	{
 		clsSetup.m_iLocalUdpPort = i + 10000;

@@ -55,6 +55,8 @@ bool CSipNICTList::Insert( CSipMessage * pclsMessage )
 
 	if( pclsMessage->IsRequest() )
 	{
+		pclsMessage->MakePacket();
+
 		m_clsMutex.acquire();
 		itMap = m_clsMap.find( strKey );
 		if( itMap == m_clsMap.end() )
@@ -67,11 +69,6 @@ bool CSipNICTList::Insert( CSipMessage * pclsMessage )
 
 				m_clsMap.insert( NON_INVITE_TRANSACTION_MAP::value_type( strKey, psttTransaction ) );
 				bRes = true;
-			}
-
-			if( bRes )
-			{
-				pclsMessage->MakePacket();
 			}
 		}
 		m_clsMutex.release();

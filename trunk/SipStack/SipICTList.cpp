@@ -56,6 +56,8 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 
 	if( pclsMessage->IsRequest() )
 	{
+		pclsMessage->MakePacket();
+
 		m_clsMutex.acquire();
 		itMap = m_clsMap.find( strKey );
 		if( itMap == m_clsMap.end() )
@@ -105,12 +107,6 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 			gettimeofday( &itMap->second->m_sttStopTime, NULL );
 			bRes = true;
 		}
-
-		if( bRes )
-		{
-			pclsMessage->MakePacket();
-		}
-
 		m_clsMutex.release();
 	}
 	else
