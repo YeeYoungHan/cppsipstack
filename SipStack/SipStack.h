@@ -64,6 +64,8 @@ public:
 
 	void Final();
 
+	void DeleteAllTransaction();
+
 	// SipStackCallBack.hpp
 	bool AddCallBack( ISipStackCallBack * pclsCallBack );
 	bool DeleteCallBack( ISipStackCallBack * pclsCallBack );

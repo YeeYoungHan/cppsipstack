@@ -104,5 +104,11 @@ void CSipDeleteQueue::DeleteAll( )
  */
 int CSipDeleteQueue::GetSize()
 {
-	return (int)m_clsList.size();
+	int iSize;
+
+	m_clsMutex.acquire();
+	iSize = (int)m_clsList.size();
+	m_clsMutex.release();
+
+	return iSize;
 }
