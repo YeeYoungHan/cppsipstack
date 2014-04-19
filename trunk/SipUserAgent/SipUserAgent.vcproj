@@ -319,6 +319,14 @@
 			Name="UserAgent"
 			>
 			<File
+				RelativePath=".\RtpDirection.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RtpDirection.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SipUserAgent.cpp"
 				>
 			</File>

@@ -20,23 +20,12 @@
 #define _SIP_USER_AGENT_CALLBACK_H_
 
 // 응용으로 SDP 미디어 리스트를 전달할 때에 사용된다.
-//#define USE_MEDIA_LIST
+#define USE_MEDIA_LIST
 
 #include "SipStackDefine.h"
 #include "SipServerInfo.h"
 #include "SdpMedia.h"
-
-/**
- * @ingroup SipUserAgent
- * @brief RTP 전송/수신
- */
-enum ERtpDirection
-{
-	E_RTP_SEND_RECV = 0,
-	E_RTP_SEND,
-	E_RTP_RECV,
-	E_RTP_INACTIVE
-};
+#include "RtpDirection.h"
 
 typedef std::list< int > CODEC_LIST;
 
@@ -51,6 +40,7 @@ public:
 	{}
 
 	void SetIpPort( const char * pszIp, int iPort, int iSocketCountPerMedia );
+	void SetDirection( ERtpDirection eDirection );
 	int GetMediaCount( );
 	int GetAudioPort( );
 	int GetVideoPort( );

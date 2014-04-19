@@ -45,6 +45,21 @@ void CSipCallRtp::SetIpPort( const char * pszIp, int iPort, int iSocketCountPerM
 #endif
 }
 
+void CSipCallRtp::SetDirection( ERtpDirection eDirection )
+{
+	m_eDirection = eDirection;
+
+#ifdef USE_MEDIA_LIST
+	SDP_MEDIA_LIST::iterator itMedia;
+	const char * pszDirection = GetRtpDirectionString( eDirection );
+
+	for( itMedia = m_clsMediaList.begin(); itMedia != m_clsMediaList.end(); ++itMedia )
+	{
+		itMedia->SetDirection( pszDirection );
+	}
+#endif
+}
+
 /**
  * @ingroup SipUserAgent
  * @brief 미디어 개수를 리턴한다.

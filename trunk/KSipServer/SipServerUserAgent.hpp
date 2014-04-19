@@ -428,7 +428,7 @@ bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToC
 	gclsCallMap.Delete( pszReferToCallId, false );
 	
 	if( gclsUserAgent.GetRemoteCallRtp( clsCallInfo.m_strPeerCallId.c_str(), &clsRtp ) == false ) return false;
-	clsRtp.m_eDirection = E_RTP_SEND_RECV;
+	clsRtp.SetDirection( E_RTP_SEND_RECV );
 
 	if( gclsSetup.m_bUseRtpRelay )
 	{
@@ -447,12 +447,11 @@ bool CSipServer::EventTransfer( const char * pszCallId, const char * pszReferToC
 		CSipCallRtp clsReferToRtp;
 
 		if( gclsUserAgent.GetRemoteCallRtp( clsReferToCallInfo.m_strPeerCallId.c_str(), &clsReferToRtp ) == false ) return false;
-		clsReferToRtp.m_eDirection = E_RTP_SEND_RECV;
+		clsReferToRtp.SetDirection( E_RTP_SEND_RECV );
 
 		if( gclsSetup.m_bUseRtpRelay )
 		{
-			clsReferToRtp.m_strIp = gclsSetup.m_strLocalIp;
-			clsReferToRtp.m_iPort = clsReferToCallInfo.m_iPeerRtpPort + 2;
+			clsReferToRtp.SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsReferToCallInfo.m_iPeerRtpPort + 2, SOCKET_COUNT_PER_MEDIA );
 		}
 
 		gclsCallMap.Insert( clsCallInfo.m_strPeerCallId.c_str(), clsReferToCallInfo.m_strPeerCallId.c_str(), clsReferToCallInfo.m_iPeerRtpPort );
@@ -518,7 +517,7 @@ bool CSipServer::EventBlindTransfer( const char * pszCallId, const char * pszRef
 	if( gclsUserMap.Select( pszReferToId, clsUserInfo ) == false ) return false;
 
 	if( gclsUserAgent.GetRemoteCallRtp( strCallId.c_str(), &clsRtp ) == false ) return false;
-	clsRtp.m_eDirection = E_RTP_SEND_RECV;
+	clsRtp.SetDirection( E_RTP_SEND_RECV );
 
 	if( gclsSetup.m_bUseRtpRelay )
 	{
