@@ -54,12 +54,7 @@ public:
 	bool DeleteCallBack( ISipStackCallBack * pclsCallBack );
 	void SetSecurityCallBack( ISipStackSecurityCallBack * pclsSecurityCallBack );
 
-	bool SendSipMessage( CSipMessage * pclsMessage );
-	bool RecvSipMessage( int iThreadId, CSipMessage * pclsMessage );
-	bool RecvSipMessage( int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort, ESipTransport eTransport );
-
 	bool Execute( struct timeval * psttTime );
-	bool Send( CSipMessage * pclsMessage, bool bCheckMessage = true );
 
 	void RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	void RecvResponse( int iThreadId, CSipMessage * pclsMessage );
@@ -76,6 +71,12 @@ public:
 	void GetICTString( std::string & strBuf );
 
 	void Final();
+
+	// SipStackComm.hpp
+	bool SendSipMessage( CSipMessage * pclsMessage );
+	bool RecvSipMessage( int iThreadId, CSipMessage * pclsMessage );
+	bool RecvSipMessage( int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort, ESipTransport eTransport );
+	bool Send( CSipMessage * pclsMessage, bool bCheckMessage = true );
 
 	bool	m_bStopEvent;						// SIP stack thread 종료 이벤트
 	bool	m_bStackThreadRun;			// SIP stack thread 가 실행 중에 있는가?

@@ -61,6 +61,8 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 
 	int iDiff = DiffTimeval( &sttStart, &sttEnd );
 
+	// QQQ: SIP stack 의 transaction list 를 모두 삭제한다.
+
 	gbTestThreadRun = false;
 
 	SendMessage( ghWnd, SIP_TEST_ID, WM_TEST_END, iDiff );
