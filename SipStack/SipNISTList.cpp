@@ -81,6 +81,8 @@ bool CSipNISTList::Insert( CSipMessage * pclsMessage )
 	}
 	else
 	{
+		pclsMessage->MakePacket();
+
 		m_clsMutex.acquire();
 		itMap = m_clsMap.find( strKey );
 		if( itMap != m_clsMap.end() )
@@ -103,8 +105,6 @@ bool CSipNISTList::Insert( CSipMessage * pclsMessage )
 				{
 					gettimeofday( &itMap->second->m_sttStopTime, NULL );
 				}
-
-				pclsMessage->MakePacket();
 			}
 		}
 		m_clsMutex.release();

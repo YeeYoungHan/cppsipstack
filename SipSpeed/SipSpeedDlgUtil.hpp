@@ -69,10 +69,16 @@ void CSipSpeedDlg::SetLog( const char * fmt, ... )
  */
 void CSipSpeedDlg::SetPercent( )
 {
-	int iPercent = 100 * ( m_iCallSuccess + m_iCallError ) / m_iCallTotalCount;
+	int iData = 100 * ( m_iCallSuccess + m_iCallError );
 
-	m_clsProgress.SetPos( iPercent );
+	// 퍼센트가 정수인 경우에만 윈도우에 새로 출력한다.
+	if( iData % m_iCallTotalCount == 0 )
+	{
+		int iPercent = iData / m_iCallTotalCount;
 
-	m_strPercent.Format( "%d %%", iPercent );
-	UpdateData(FALSE);
+		m_clsProgress.SetPos( iPercent );
+
+		m_strPercent.Format( "%d %%", iPercent );
+		UpdateData(FALSE);
+	}
 }
