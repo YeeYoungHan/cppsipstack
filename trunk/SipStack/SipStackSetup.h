@@ -70,6 +70,12 @@ public:
 
 	/** SIP stack 실행 주기 (ms 단위) */
 	int					m_iStackExecutePeriod;
+
+	/** timer D 만료시간 (ms 단위) */
+	int					m_iTimerD;
+
+	/** timer J 만료시간 (ms 단위) */
+	int					m_iTimerJ;
 };
 
 #endif

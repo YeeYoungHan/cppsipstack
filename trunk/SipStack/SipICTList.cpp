@@ -26,7 +26,7 @@
  * @ingroup SipStack
  * @brief 생성자
  */
-CSipICTList::CSipICTList()
+CSipICTList::CSipICTList() : m_iTimerD(32000)
 {
 }
 
@@ -165,7 +165,7 @@ void CSipICTList::Execute( struct timeval * psttTime )
 LOOP_START:
 		if( itMap->second->m_sttStopTime.tv_sec > 0 )
 		{
-			if( DiffTimeval( &itMap->second->m_sttStopTime, psttTime ) >= 32000 )
+			if( DiffTimeval( &itMap->second->m_sttStopTime, psttTime ) >= m_iTimerD )
 			{
 DELETE_TRANSACTION:
 				itNext = itMap;
@@ -268,4 +268,14 @@ void CSipICTList::GetString( std::string & strBuf )
 		strBuf.append( "\n" );
 	}
 	m_clsMutex.release();
+}
+
+/**
+ * @ingroup SipStack
+ * @brief Timer D 값을 수정한다.
+ * @param iMiliSecond Timer D 값 ( milisecond 단위 )
+ */
+void CSipICTList::SetTimerD( int iMiliSecond )
+{
+	m_iTimerD = iMiliSecond;
 }

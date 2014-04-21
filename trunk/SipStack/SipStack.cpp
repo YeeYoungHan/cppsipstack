@@ -72,6 +72,8 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	if( clsSetup.Check() == false ) return false;
 
 	m_clsSetup = clsSetup;
+	m_clsICT.SetTimerD( m_clsSetup.m_iTimerD );
+	m_clsNIST.SetTimerJ( m_clsSetup.m_iTimerJ );
 
 	InitNetwork();
 

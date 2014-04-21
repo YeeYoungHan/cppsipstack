@@ -38,8 +38,11 @@ public:
 	virtual int GetSize( );
 	virtual void GetString( std::string & strBuf );
 
+	void SetTimerD( int iMiliSecond );
+
 private:
 	INVITE_TRANSACTION_MAP	m_clsMap;
+	int m_iTimerD;
 };
 
 #endif
