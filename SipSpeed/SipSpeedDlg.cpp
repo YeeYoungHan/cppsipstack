@@ -264,7 +264,7 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 
 	bool bSuccess = false;
 
-	clsSetup.m_iUdpThreadCount = 10;
+	clsSetup.m_iUdpThreadCount = 50;
 	clsSetup.m_iStackExecutePeriod = 100;
 	clsSetup.m_iTimerD = 4000;
 	clsSetup.m_iTimerJ = 4000;
