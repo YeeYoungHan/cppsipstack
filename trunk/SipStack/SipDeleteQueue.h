@@ -23,7 +23,7 @@
 #include "SipMutex.h"
 #include <list>
 
-#define SIP_DELETE_TIME	30
+#define SIP_DELETE_TIME	5
 
 /**
  * @ingroup SipStack
