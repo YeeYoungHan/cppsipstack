@@ -32,6 +32,8 @@
 #include "Monitor.h"
 #include "MemoryDebug.h"
 
+bool gbFork = true;
+
 /**
  * @ingroup KSipServer
  * @brief C++ SIP stack 을 이용한 한국형 IP-PBX
@@ -86,7 +88,7 @@ int ServiceMain( )
 	clsSetup.m_strUserAgent.append( "_" );
 	clsSetup.m_strUserAgent.append( SIP_USER_AGENT_VERSION );
 
-	Fork( true );
+	Fork( gbFork );
 	SetCoreDumpEnable();
 	ServerSignal();
 
@@ -173,6 +175,11 @@ int main( int argc, char * argv[] )
 	clsService.m_strDescription = SERVICE_DESCRIPTION_STRING;
 	clsService.m_strConfigFileName = CONFIG_FILENAME;
 	clsService.m_strVersion = KSIP_SERVER_VERSION;
+
+	if( argc == 3 && !strcmp( argv[2], "-n" ) )
+	{
+		gbFork = false;
+	}
 
 	ServerMain( argc, argv, clsService, ServiceMain );
 

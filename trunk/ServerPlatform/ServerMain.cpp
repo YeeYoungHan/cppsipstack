@@ -54,7 +54,7 @@ int ServerMain( int argc, char * argv[], CServerService & clsService, ServerFunc
 	}
 #endif
 	 
-	if( argc != 2 )
+	if( argc == 1 )
 	{
 		printf( "[Usage] %s {config filename}\n", argv[0] );
 		return -1;
