@@ -328,8 +328,7 @@ void CSipSpeedDlg::OnBnClickedStartTest()
 	m_iCallSuccess = 0;
 	m_iCallError = 0;
 
-	//m_clsSipUserAgentMFC.SetSipStackCallBack( this );
-	//gclsSipUserAgent.m_clsSipStack.AddCallBack( &m_clsSipUserAgentMFC );
+	gclsSipUserAgent.m_clsSipStack.AddCallBack( this );
 
 	if( StartTestThread( GetSafeHwnd() ) == false )
 	{
@@ -350,13 +349,6 @@ void CSipSpeedDlg::OnBnClickedStartTest()
 void CSipSpeedDlg::OnBnClickedStopTest()
 {
 	StopTestThread();
-	
-	/*
-	m_bTest = false;
-
-	m_btnStartTest.EnableWindow( TRUE );
-	m_btnStopTest.EnableWindow( FALSE );
-	*/
 }
 
 void CSipSpeedDlg::OnDestroy()
