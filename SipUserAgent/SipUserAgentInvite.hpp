@@ -77,35 +77,35 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	if( pclsResponse == NULL ) return false;
 	m_clsSipStack.SendSipMessage( pclsResponse );
 
+	CSipDialog	clsDialog( &m_clsSipStack );
+
+	clsDialog.m_strFromId = pclsMessage->m_clsTo.m_clsUri.m_strUser;
+	clsDialog.m_strFromTag = szTag;
+	clsDialog.m_eTransport = pclsMessage->m_eTransport;
+
+	clsDialog.m_strToId = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
+	pclsMessage->m_clsFrom.SelectParam( "tag", clsDialog.m_strToTag );
+
+	clsDialog.m_strCallId = strCallId;
+	clsDialog.SetRemoteRtp( &clsRtp );
+
+	pclsMessage->GetTopViaIpPort( clsDialog.m_strContactIp, clsDialog.m_iContactPort );
+
+	SIP_FROM_LIST::iterator	itContact = pclsMessage->m_clsContactList.begin();
+	if( itContact != pclsMessage->m_clsContactList.end() )
+	{
+		char	szUri[255];
+
+		itContact->m_clsUri.ToString( szUri, sizeof(szUri) );
+		clsDialog.m_strContactUri = szUri;
+	}
+
+	gettimeofday( &clsDialog.m_sttInviteTime, NULL );
+
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( strCallId );
 	if( itMap == m_clsMap.end() )
 	{
-		CSipDialog	clsDialog( &m_clsSipStack );
-
-		clsDialog.m_strFromId = pclsMessage->m_clsTo.m_clsUri.m_strUser;
-		clsDialog.m_strFromTag = szTag;
-		clsDialog.m_eTransport = pclsMessage->m_eTransport;
-
-		clsDialog.m_strToId = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
-		pclsMessage->m_clsFrom.SelectParam( "tag", clsDialog.m_strToTag );
-
-		clsDialog.m_strCallId = strCallId;
-		clsDialog.SetRemoteRtp( &clsRtp );
-
-		pclsMessage->GetTopViaIpPort( clsDialog.m_strContactIp, clsDialog.m_iContactPort );
-
-		SIP_FROM_LIST::iterator	itContact = pclsMessage->m_clsContactList.begin();
-		if( itContact != pclsMessage->m_clsContactList.end() )
-		{
-			char	szUri[255];
-
-			itContact->m_clsUri.ToString( szUri, sizeof(szUri) );
-			clsDialog.m_strContactUri = szUri;
-		}
-
-		gettimeofday( &clsDialog.m_sttInviteTime, NULL );
-
 		m_clsMap.insert( SIP_DIALOG_MAP::value_type( strCallId, clsDialog ) );
 		itMap = m_clsMap.find( strCallId );
 		if( itMap != m_clsMap.end() )
