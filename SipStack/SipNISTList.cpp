@@ -26,7 +26,7 @@
  * @ingroup SipStack
  * @brief 생성자
  */
-CSipNISTList::CSipNISTList()
+CSipNISTList::CSipNISTList() : m_iTimerJ(32000)
 {
 }
 
@@ -131,7 +131,7 @@ void CSipNISTList::Execute( struct timeval * psttTime )
 LOOP_START:
 		if( itMap->second->m_sttStopTime.tv_sec > 0 )
 		{
-			if( DiffTimeval( &itMap->second->m_sttStopTime, psttTime ) >= 32000 )
+			if( DiffTimeval( &itMap->second->m_sttStopTime, psttTime ) >= m_iTimerJ )
 			{
 				itNext = itMap;
 				++itNext;
@@ -194,4 +194,14 @@ void CSipNISTList::GetString( std::string & strBuf )
 		strBuf.append( "\n" );
 	}
 	m_clsMutex.release();
+}
+
+/**
+ * @ingroup SipStack
+ * @brief Timer J 값을 수정한다.
+ * @param iMiliSecond Timer J 값 ( milisecond 단위 )
+ */
+void CSipNISTList::SetTimerJ( int iMiliSecond )
+{
+	m_iTimerJ = iMiliSecond;
 }
