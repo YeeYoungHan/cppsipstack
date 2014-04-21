@@ -377,6 +377,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipSpeedDlgSipEvent.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipSpeedDlgUtil.hpp"
 				>
 			</File>

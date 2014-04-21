@@ -82,3 +82,16 @@ void CSipSpeedDlg::SetPercent( )
 		UpdateData(FALSE);
 	}
 }
+
+bool CSipSpeedDlg::IsPercentModify( )
+{
+	int iData = 100 * ( m_iCallSuccess + m_iCallError );
+
+	// 퍼센트가 정수인 경우에만 윈도우에 새로 출력한다.
+	if( iData % m_iCallTotalCount == 0 )
+	{
+		return true;
+	}
+
+	return false;
+}

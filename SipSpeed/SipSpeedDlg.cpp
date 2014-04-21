@@ -22,6 +22,8 @@
 #include "Setup.h"
 #include "SipTest.h"
 #include "CallIdMap.h"
+#include "SipUserAgentMFCDefine.h"
+#include "SipUserAgentMFCEventClass.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -31,6 +33,7 @@ CSipUserAgent		 gclsSipUserAgent;
 
 #include "SipSpeedDlgAbout.hpp"
 #include "SipSpeedDlgSip.hpp"
+#include "SipSpeedDlgSipEvent.hpp"
 #include "SipSpeedDlgUtil.hpp"
 
 CSipSpeedDlg::CSipSpeedDlg(CWnd* pParent /*=NULL*/)
@@ -241,9 +244,6 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 	gclsSetup.Put();
 
 	// SipStack 을 시작한다.
-	m_clsSipUserAgentMFC.SetWindowHandle( GetSafeHwnd() );
-	m_clsSipUserAgentMFC.SetCallBack( this );
-
 	CSipStackSetup clsSetup;
 	CSipServerInfo clsInfo;
 
@@ -270,7 +270,7 @@ void CSipSpeedDlg::OnBnClickedStartSipStack()
 	{
 		clsSetup.m_iLocalUdpPort = i + 10000;
 
-		if( gclsSipUserAgent.Start( clsSetup, &m_clsSipUserAgentMFC ) )
+		if( gclsSipUserAgent.Start( clsSetup, this ) )
 		{
 			bSuccess = true;
 			break;
@@ -328,8 +328,8 @@ void CSipSpeedDlg::OnBnClickedStartTest()
 	m_iCallSuccess = 0;
 	m_iCallError = 0;
 
-	m_clsSipUserAgentMFC.SetSipStackCallBack( this );
-	gclsSipUserAgent.m_clsSipStack.AddCallBack( &m_clsSipUserAgentMFC );
+	//m_clsSipUserAgentMFC.SetSipStackCallBack( this );
+	//gclsSipUserAgent.m_clsSipStack.AddCallBack( &m_clsSipUserAgentMFC );
 
 	if( StartTestThread( GetSafeHwnd() ) == false )
 	{
@@ -361,8 +361,6 @@ void CSipSpeedDlg::OnBnClickedStopTest()
 
 void CSipSpeedDlg::OnDestroy()
 {
-	m_clsSipUserAgentMFC.SetWindowHandle( 0 );
-
 	gclsSipUserAgent.Stop();
 	gclsSipUserAgent.Final();
 
@@ -394,8 +392,7 @@ LRESULT CSipSpeedDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
 		m_btnStartTest.EnableWindow( TRUE );
 		m_btnStopTest.EnableWindow( FALSE );
 
-		m_clsSipUserAgentMFC.SetSipStackCallBack( NULL );
-		gclsSipUserAgent.m_clsSipStack.DeleteCallBack( &m_clsSipUserAgentMFC );
+		gclsSipUserAgent.m_clsSipStack.DeleteCallBack( this );
 	}
 
 	return 0;

@@ -39,7 +39,6 @@ public:
 // Implementation
 protected:
 	HICON m_hIcon;
-	CSipUserAgentMFC m_clsSipUserAgentMFC;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
@@ -70,12 +69,16 @@ public:
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage );
 
+	// SipSpeedDlgSipEvent.hpp
+	void _EventRegister( CSipServerInfo * pclsInfo, int iStatus );
+
 	// SipSpeedDlgUtil.hpp
 	CSipMutex	m_clsMutex;
 
 	bool CheckInput( CString & strInput, const char * pszName );
 	void SetLog( const char * fmt, ... );
 	void SetPercent( );
+	bool IsPercentModify( );
 
 	// SipSpeedDlgThread.hpp
 
