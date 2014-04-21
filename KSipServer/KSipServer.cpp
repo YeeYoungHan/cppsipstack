@@ -85,8 +85,10 @@ int ServiceMain( )
 	
 	clsSetup.m_strUserAgent = "KSipServer_";
 	clsSetup.m_strUserAgent.append( KSIP_SERVER_VERSION );
-	clsSetup.m_strUserAgent.append( "_" );
-	clsSetup.m_strUserAgent.append( SIP_USER_AGENT_VERSION );
+
+	clsSetup.m_iStackExecutePeriod = gclsSetup.m_iStackExecutePeriod;
+	clsSetup.m_iTimerD = gclsSetup.m_iTimerD;
+	clsSetup.m_iTimerJ = gclsSetup.m_iTimerJ;
 
 	Fork( gbFork );
 	SetCoreDumpEnable();
