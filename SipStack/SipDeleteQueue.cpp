@@ -45,6 +45,12 @@ CSipDeleteQueue::~CSipDeleteQueue()
  */
 void CSipDeleteQueue::Insert( CSipMessage * pclsMessage )
 {
+	if( pclsMessage->m_iUseCount == 0 )
+	{
+		delete pclsMessage;
+		return;
+	}
+
 	CSipDeleteInfo clsInfo;
 
 	clsInfo.m_pclsMessage = pclsMessage;
