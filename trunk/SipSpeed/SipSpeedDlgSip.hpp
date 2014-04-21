@@ -109,7 +109,7 @@ void CSipSpeedDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp
 
 	if( bModify )
 	{
-		SendMessage( SIP_MESSAGE_ID, SMC_CALL_START, 0 );
+		PostMessage( SIP_MESSAGE_ID, SMC_CALL_START, 0 );
 	}
 }
 
@@ -132,7 +132,7 @@ void CSipSpeedDlg::EventCallEnd( const char * pszCallId, int iSipStatus )
 
 		if( bModify )
 		{
-			SendMessage( SIP_MESSAGE_ID, SMC_CALL_START, 0 );
+			PostMessage( SIP_MESSAGE_ID, SMC_CALL_START, 0 );
 		}
 	}
 }
@@ -230,7 +230,7 @@ bool CSipSpeedDlg::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 
 			if( bModify )
 			{
-				SendMessage( SIP_MESSAGE_ID, SMC_CALL_START, 0 );
+				PostMessage( SIP_MESSAGE_ID, SMC_CALL_START, 0 );
 			}
 		}
 
