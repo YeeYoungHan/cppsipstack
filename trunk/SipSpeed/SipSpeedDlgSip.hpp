@@ -18,7 +18,21 @@
 
 LRESULT CSipSpeedDlg::OnSipMessage( WPARAM wParam, LPARAM lParam )
 {
-	return m_clsSipUserAgentMFC.OnSipMessage( wParam, lParam );
+	switch( wParam )
+	{
+	case SMC_REGISER:
+		{
+			CEventRegister * pclsParam = (CEventRegister *)lParam;
+			_EventRegister( &pclsParam->m_clsInfo, pclsParam->m_iStatus );
+			delete pclsParam;
+		}
+		break;
+	case SMC_CALL_START:
+		SetPercent( );
+		break;
+	}
+
+	return 0;
 }
 
 /**
@@ -29,68 +43,10 @@ LRESULT CSipSpeedDlg::OnSipMessage( WPARAM wParam, LPARAM lParam )
  */
 void CSipSpeedDlg::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
-	std::string	strCommand;
+	CEventRegister * pclsParam = new CEventRegister( pclsInfo, iStatus );
+	if( pclsParam == NULL ) return;
 
-	if( pclsInfo->m_bLogin )
-	{
-		strCommand = "login";
-	}
-	else
-	{
-		strCommand = "logout";
-	}
-
-	if( !strcmp( pclsInfo->m_strUserId.c_str(), m_strCallerId ) )
-	{
-		if( iStatus == SIP_OK )
-		{
-			if( pclsInfo->m_bLogin )
-			{
-				m_bCallerLogin = true;
-			}
-			else
-			{
-				m_bCallerLogin = false;
-			}
-
-			SetLog( "Caller(%s) %s success", m_strCallerId, strCommand.c_str() );
-		}
-		else
-		{
-			m_bCallerLogin = false;
-			SetLog( "Caller(%s) %s error(%d)", m_strCallerId, strCommand.c_str(), iStatus );
-		}
-	}
-	else if( !strcmp( pclsInfo->m_strUserId.c_str(), m_strCalleeId ) )
-	{
-		if( iStatus == SIP_OK )
-		{
-			if( pclsInfo->m_bLogin )
-			{
-				m_bCalleeLogin = true;
-			}
-			else
-			{
-				m_bCalleeLogin = false;
-			}
-
-			SetLog( "Callee(%s) %s success", m_strCalleeId, strCommand.c_str() );
-		}
-		else
-		{
-			m_bCalleeLogin = false;
-			SetLog( "Callee(%s) %s error(%d)", m_strCalleeId, strCommand.c_str(), iStatus );
-		}
-	}
-
-	// Caller, Callee 가 모두 로그인되면 테스트를 시작할 수 있다.
-	if( pclsInfo->m_bLogin && m_bCallerLogin && m_bCalleeLogin )
-	{
-		if( m_bTest == false )
-		{
-			m_btnStartTest.EnableWindow( TRUE );
-		}
-	}
+	PostMessage( SIP_MESSAGE_ID, SMC_REGISER, (LPARAM)pclsParam );
 }
 
 /**
@@ -142,12 +98,19 @@ void CSipSpeedDlg::EventCallRing( const char * pszCallId, int iSipStatus, CSipCa
  */
 void CSipSpeedDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
+	bool bModify = false;
+
 	m_clsMutex.acquire();
 	++m_iCallSuccess;
-	SetPercent( );
+	if( IsPercentModify() ) bModify = true;
 	m_clsMutex.release();
 
 	gclsSipUserAgent.StopCall( pszCallId );
+
+	if( bModify )
+	{
+		SendMessage( SIP_MESSAGE_ID, SMC_CALL_START, 0 );
+	}
 }
 
 /**
@@ -160,10 +123,17 @@ void CSipSpeedDlg::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
 	if( iSipStatus != SIP_OK )
 	{
+		bool bModify = false;
+
 		m_clsMutex.acquire();
 		++m_iCallError;
-		SetPercent( );
+		if( IsPercentModify() ) bModify = true;
 		m_clsMutex.release();
+
+		if( bModify )
+		{
+			SendMessage( SIP_MESSAGE_ID, SMC_CALL_START, 0 );
+		}
 	}
 }
 
@@ -244,6 +214,8 @@ bool CSipSpeedDlg::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 
 		if( gclsCallIdMap.Delete( strCallId.c_str() ) )
 		{
+			bool bModify = false;
+
 			m_clsMutex.acquire();
 			if( pclsMessage->m_iStatusCode == SIP_REQUEST_TIME_OUT )
 			{
@@ -253,8 +225,13 @@ bool CSipSpeedDlg::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 			{
 				++m_iCallSuccess;
 			}
-			SetPercent( );
+			if( IsPercentModify() ) bModify = true;
 			m_clsMutex.release();
+
+			if( bModify )
+			{
+				SendMessage( SIP_MESSAGE_ID, SMC_CALL_START, 0 );
+			}
 		}
 
 		return true;
