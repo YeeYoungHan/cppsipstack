@@ -76,10 +76,12 @@ void CSipDeleteQueue::DeleteTimeout( )
 	{
 		for( int i = 0; i < iCount; ++i )
 		{
-			if( m_clsList.front().m_iDeleteTime > iTime ) break;
-			if( m_clsList.front().m_pclsMessage->m_iUseCount > 0 ) break;
+			CSipDeleteInfo & clsInfo = m_clsList.front();
 
-			delete m_clsList.front().m_pclsMessage;
+			if( clsInfo.m_iDeleteTime > iTime ) break;
+			if( clsInfo.m_pclsMessage->m_iUseCount > 0 ) break;
+
+			delete clsInfo.m_pclsMessage;
 			m_clsList.pop_front();
 		}
 	}
