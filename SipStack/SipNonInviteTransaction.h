@@ -48,6 +48,6 @@ public:
 	int	m_iReSendCount;
 };
 
-typedef std::map< std::string, CSipNonInviteTransaction * > NON_INVITE_TRANSACTION_MAP;
+typedef MAP< std::string, CSipNonInviteTransaction * > NON_INVITE_TRANSACTION_MAP;
 
 #endif

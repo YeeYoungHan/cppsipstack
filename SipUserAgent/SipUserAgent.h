@@ -51,7 +51,7 @@ public:
 };
 
 // key ´Â SIP Call-ID ÀÌ´Ù.
-typedef std::map< std::string, CSipDialog > SIP_DIALOG_MAP;
+typedef MAP< std::string, CSipDialog > SIP_DIALOG_MAP;
 
 typedef std::list< std::string > SIP_CALL_ID_LIST;
 
@@ -137,6 +137,7 @@ private:
 	bool SendInvite( CSipDialog & clsDialog );
 	bool SetCallEnd( const char * pszCallId );
 	bool Delete( const char * pszCallId );
+	void Delete( SIP_DIALOG_MAP::iterator & itMap );
 
 	bool SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * pclsRtp );
 	bool GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsRtp );

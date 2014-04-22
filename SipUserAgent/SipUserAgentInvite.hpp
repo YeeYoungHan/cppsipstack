@@ -73,11 +73,14 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 		}
 	}
 
+	// 180 Ring 을 전송한다.
 	pclsResponse = pclsMessage->CreateResponse( SIP_RINGING, szTag );
 	if( pclsResponse == NULL ) return false;
 	m_clsSipStack.SendSipMessage( pclsResponse );
 
+	// Dialog 를 생성한다.
 	CSipDialog	clsDialog( &m_clsSipStack );
+	bool bError = false;
 
 	clsDialog.m_strFromId = pclsMessage->m_clsTo.m_clsUri.m_strUser;
 	clsDialog.m_strFromTag = szTag;
@@ -102,28 +105,40 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	gettimeofday( &clsDialog.m_sttInviteTime, NULL );
 
+	clsDialog.m_pclsInvite = new CSipMessage();
+	if( clsDialog.m_pclsInvite )
+	{
+		*clsDialog.m_pclsInvite = *pclsMessage;
+		clsDialog.m_pclsInvite->m_clsTo.InsertParam( "tag", szTag );
+	}
+
+	// Dialog 를 저장한다.
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( strCallId );
 	if( itMap == m_clsMap.end() )
 	{
 		m_clsMap.insert( SIP_DIALOG_MAP::value_type( strCallId, clsDialog ) );
-		itMap = m_clsMap.find( strCallId );
-		if( itMap != m_clsMap.end() )
-		{
-			itMap->second.m_pclsInvite = new CSipMessage();
-			if( itMap->second.m_pclsInvite )
-			{
-				*itMap->second.m_pclsInvite = *pclsMessage;
-				itMap->second.m_pclsInvite->m_clsTo.InsertParam( "tag", szTag );
-			}
-		}
+	}
+	else
+	{
+		bError = true;
 	}
 	m_clsMutex.release();
 
-	if( m_pclsCallBack )
+	if( bError )
 	{
-		m_pclsCallBack->EventIncomingCall( strCallId.c_str(), pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str()
-			, pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str(), &clsRtp );
+		if( clsDialog.m_pclsInvite )
+		{
+			delete clsDialog.m_pclsInvite;
+		}
+	}
+	else
+	{
+		if( m_pclsCallBack )
+		{
+			m_pclsCallBack->EventIncomingCall( strCallId.c_str(), pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str()
+				, pclsMessage->m_clsTo.m_clsUri.m_strUser.c_str(), &clsRtp );
+		}
 	}
 
 	return true;

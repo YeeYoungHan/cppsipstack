@@ -17,9 +17,13 @@
  */
 
 #ifndef _SIP_STACK_DEFINE_H_
+#define _SIP_STACK_DEFINE_H_
 
 // TLS 기능 없이 SIP stack 을 빌드하고 싶으면 아래의 선언을 주석 처리하세요.
 //#define USE_TLS
+
+// MAP 대신 HASH MAP 을 사용할 경우 아래의 선언을 사용하세요.
+//#define USE_HASH_MAP
 
 #ifdef USE_TLS
 // TLS 를 최종 종료할 때에 메모리 할당을 해제하는 기능을 사용하고 싶지 않을 경우 주석 처리하세요.
@@ -43,6 +47,38 @@
 #include "SipMessage.h"
 
 #include <map>
+
+#ifdef USE_HASH_MAP
+
+#ifdef WIN32
+
+#include <hash_map>
+#define MAP stdext::hash_map
+
+#else
+
+#include <ext/hash_map>
+#define MAP __gnu_cxx::hash_map
+
+namespace __gnu_cxx
+{
+	template<>
+  struct hash< std::string > 
+	{
+    size_t operator( )( std::string const & s ) const
+		{
+      return __stl_hash_string( s.c_str( ) );
+    }
+  };
+}
+
+#endif
+
+#else
+
+#define MAP std::map
+
+#endif
 
 void MiliSleep( int iMiliSecond );
 
