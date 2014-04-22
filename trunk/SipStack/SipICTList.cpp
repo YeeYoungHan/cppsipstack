@@ -157,7 +157,7 @@ void CSipICTList::Execute( struct timeval * psttTime )
 	if( m_clsMap.size() == 0 ) return;
 
 	INVITE_TRANSACTION_MAP::iterator	itMap, itNext;
-	OSIP_MESSAGE_LIST	clsResponseList;
+	SIP_MESSAGE_LIST	clsResponseList;
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
@@ -213,7 +213,7 @@ DELETE_TRANSACTION:
 	}
 	m_clsMutex.release();
 
-	for( OSIP_MESSAGE_LIST::iterator itList = clsResponseList.begin(); itList != clsResponseList.end(); ++itList )
+	for( SIP_MESSAGE_LIST::iterator itList = clsResponseList.begin(); itList != clsResponseList.end(); ++itList )
 	{
 		m_pclsSipStack->RecvResponse( m_pclsSipStack->m_clsSetup.m_iUdpThreadCount, *itList );
 		delete *itList;

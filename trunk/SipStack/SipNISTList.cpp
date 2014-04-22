@@ -123,7 +123,7 @@ void CSipNISTList::Execute( struct timeval * psttTime )
 	if( m_clsMap.size() == 0 ) return;
 
 	NON_INVITE_TRANSACTION_MAP::iterator	itMap, itNext;
-	OSIP_MESSAGE_LIST	clsResponseList;
+	SIP_MESSAGE_LIST	clsResponseList;
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )

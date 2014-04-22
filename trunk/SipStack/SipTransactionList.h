@@ -51,6 +51,6 @@ public:
 	CSipMutex		m_clsMutex;
 };
 
-typedef std::list< CSipMessage * > OSIP_MESSAGE_LIST;
+typedef std::list< CSipMessage * > SIP_MESSAGE_LIST;
 
 #endif
