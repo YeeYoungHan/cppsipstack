@@ -17,6 +17,7 @@
  */
 
 #include "SipStackDefine.h"
+#include "SipUdp.h"
 #include "SipStackSetup.h"
 #include "SipMd5.h"
 #include "SipUtility.h"
@@ -124,15 +125,26 @@ bool CSipStackSetup::Check( )
 		m_iTimerJ = 32000;
 	}
 
-	char	szTemp[101], szMd5[22];
+	char	szId[21], szValue[10];
 	struct timeval sttTime;
 	
+	memset( szId, 0, sizeof(szId) );
+	memset( szValue, 0, sizeof(szValue) );
 	gettimeofday( &sttTime, NULL );
 
-	snprintf( szTemp, sizeof(szTemp), "%s:%d:%d:%d", m_strLocalIp.c_str(), m_iLocalUdpPort, (int)sttTime.tv_sec, (int)sttTime.tv_usec );
-	SipMd5String21( szTemp, szMd5 );
+	srand( sttTime.tv_usec );
 
-	SipSetSystemId( szMd5 );
+	uint32_t iIp = inet_addr(m_strLocalIp.c_str()); 
+	uint16_t iPort = m_iLocalUdpPort;
+
+	memcpy( szValue, &iIp, 4 );
+	memcpy( szValue+4, &iPort, 2 );
+	memcpy( szValue+6, &sttTime.tv_sec, 2 );
+	memcpy( szValue+8, &sttTime.tv_usec, 2 );
+
+	SipMakePrintString( (unsigned char *)szValue, sizeof(szValue), szId, sizeof(szId) );
+
+	SipSetSystemId( szId );
 
 	return true;
 }
