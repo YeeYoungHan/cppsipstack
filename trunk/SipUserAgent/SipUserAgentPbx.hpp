@@ -37,7 +37,7 @@ CSipMessage * CSipUserAgent::DeleteIncomingCall( const char * pszCallId )
 			{
 				pclsMessage = itMap->second.m_pclsInvite;
 				itMap->second.m_pclsInvite = NULL;
-				m_clsMap.erase( itMap );
+				Delete( itMap );
 			}
 		}
 	}

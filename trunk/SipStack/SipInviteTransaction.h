@@ -57,6 +57,6 @@ public:
 	int m_iStatusCode;
 };
 
-typedef std::map< std::string, CSipInviteTransaction * > INVITE_TRANSACTION_MAP;
+typedef MAP< std::string, CSipInviteTransaction * > INVITE_TRANSACTION_MAP;
 
 #endif

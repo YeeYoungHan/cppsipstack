@@ -78,8 +78,8 @@ bool CSipUserAgent::StopCall( const char * pszCallId, int iSipCode )
 			if( itMap->second.m_sttEndTime.tv_sec == 0 )
 			{
 				pclsMessage = itMap->second.CreateBye();
-				gettimeofday( &itMap->second.m_sttEndTime, NULL );
-				m_clsMap.erase( itMap );
+				//gettimeofday( &itMap->second.m_sttEndTime, NULL );
+				Delete( itMap );
 			}
 		}
 		else
@@ -94,8 +94,8 @@ bool CSipUserAgent::StopCall( const char * pszCallId, int iSipCode )
 				{
 					pclsMessage = itMap->second.m_pclsInvite->CreateResponse( SIP_DECLINE );
 				}
-				gettimeofday( &itMap->second.m_sttEndTime, NULL );
-				m_clsMap.erase( itMap );
+				//gettimeofday( &itMap->second.m_sttEndTime, NULL );
+				Delete( itMap );
 			}
 			else if( itMap->second.m_sttCancelTime.tv_sec == 0 )
 			{

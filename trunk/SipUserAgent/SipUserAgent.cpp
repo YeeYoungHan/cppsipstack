@@ -463,12 +463,23 @@ bool CSipUserAgent::Delete( const char * pszCallId )
 	itMap = m_clsMap.find( pszCallId );
 	if( itMap != m_clsMap.end() )
 	{
-		m_clsMap.erase( itMap );
+		Delete( itMap );
 		bRes = true;
 	}
 	m_clsMutex.release();
 
 	return bRes;
+}
+
+void CSipUserAgent::Delete( SIP_DIALOG_MAP::iterator & itMap )
+{
+	if( itMap->second.m_pclsInvite )
+	{
+		delete itMap->second.m_pclsInvite;
+		itMap->second.m_pclsInvite = NULL;
+	}
+
+	m_clsMap.erase( itMap );
 }
 
 /**
@@ -501,7 +512,6 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 
 		if( pclsMessage->m_iStatusCode >= 200 )
 		{
-			pclsMessage->m_clsTo.SelectParam( "tag", itMap->second.m_strToTag );
 			pclsAck = itMap->second.CreateAck();
 
 			if( pclsMessage->m_iStatusCode >= 200 && pclsMessage->m_iStatusCode < 300 )

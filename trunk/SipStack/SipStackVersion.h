@@ -19,9 +19,13 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.19"
+#define SIP_STACK_VERSION "0.20"
 
 /* 버전 정보
+
+= 버전 0.20 ( 2014년 4월 22일 ) =
+ * timer D, J 대기 시간 수정 기능을 추가함
+ * 사용 완료된 SIP 메시지를 CSipDeleteQueue 에 저장하지 않는 기능을 추가함
 
 = 버전 0.19 ( 2014년 4월 19일 ) =
  * SipStack 실행 주기를 설정할 수 있는 기능을 추가함

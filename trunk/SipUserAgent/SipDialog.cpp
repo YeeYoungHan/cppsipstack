@@ -41,7 +41,6 @@ CSipDialog::CSipDialog( CSipStack * pclsSipStack ) : m_iSeq(0), m_iContactPort(-
  */
 CSipDialog::~CSipDialog()
 {
-	if( m_pclsInvite ) delete m_pclsInvite;
 }
 
 /**
