@@ -23,6 +23,7 @@
 //#define USE_TLS
 
 // MAP 대신 HASH MAP 을 사용할 경우 아래의 선언을 사용하세요.
+// HASH MAP 을 사용하면 iterator 에서 MAP 보다 많은 연산을 하는 것으로 추정됩니다.
 //#define USE_HASH_MAP
 
 #ifdef USE_TLS
