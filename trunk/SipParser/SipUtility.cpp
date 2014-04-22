@@ -106,8 +106,9 @@ void SipMakeTag( char * pszTag, int iTagSize )
 void SipMakeBranch( char * pszBranch, int iBranchSize )
 {
 	int		iBranch;
-	struct timeval sttTime;
 
+	memset( pszBranch, 0, iBranchSize );
+	
 	gclsMutex.acquire();
 	if( giBranch <= 0 || giBranch > 2000000000 )
 	{
@@ -123,8 +124,6 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 
 	int iLen = 0;
 
-	gettimeofday( &sttTime, NULL );
-
 	if( gstrSystemId.empty() )
 	{
 		iLen = snprintf( pszBranch, iBranchSize, "%sWCSS%x", VIA_PREFIX, iBranch );
@@ -134,9 +133,16 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 		iLen = snprintf( pszBranch, iBranchSize, "%sWCSS%s%x", VIA_PREFIX, gstrSystemId.c_str(), iBranch );
 	}
 
-	if( iBranchSize > ( iLen + (int)sizeof(sttTime) * 8 / 6 ) )
+	if( iBranchSize > ( iLen + 6 ) )
 	{
-		SipMakePrintString( ( unsigned char *)&sttTime, sizeof(sttTime), pszBranch + iLen, iBranchSize - iLen );
+		struct timeval sttTime;
+		char szValue[4];
+
+		gettimeofday( &sttTime, NULL );
+		memcpy( szValue, &sttTime.tv_sec, 2 );
+		memcpy( szValue, &sttTime.tv_usec, 2 );
+
+		SipMakePrintString( ( unsigned char *)szValue, 4, pszBranch + iLen, iBranchSize - iLen );
 	}
 }
 
@@ -149,9 +155,8 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 {
 	int		iCallId;
-	struct timeval sttTime;
 
-	gettimeofday( &sttTime, NULL );
+	memset( pszCallId, 0, iCallIdSize );
 
 	gclsMutex.acquire();
 	if( giCallId <= 0 || giCallId > 2000000000 )
@@ -177,9 +182,16 @@ void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 		iLen = snprintf( pszCallId, iCallIdSize, "WCSS%s%x", gstrSystemId.c_str(), iCallId );
 	}
 
-	if( iCallIdSize > ( iLen + (int)sizeof(sttTime) * 8 / 6 ) )
+	if( iCallIdSize > ( iLen + 6 ) )
 	{
-		SipMakePrintString( (( unsigned char *)&sttTime) + 2, sizeof(sttTime) - 2, pszCallId + iLen, iCallIdSize - iLen );
+		struct timeval sttTime;
+		char szValue[4];
+
+		gettimeofday( &sttTime, NULL );
+		memcpy( szValue, &sttTime.tv_sec, 2 );
+		memcpy( szValue, &sttTime.tv_usec, 2 );
+
+		SipMakePrintString( ( unsigned char *)szValue, 4, pszCallId + iLen, iCallIdSize - iLen );
 	}
 }
 
