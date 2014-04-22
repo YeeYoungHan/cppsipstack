@@ -247,7 +247,13 @@ void CSipICTList::DeleteAll( )
  */
 int CSipICTList::GetSize( )
 {
-	return (int)m_clsMap.size();
+	int iSize;
+
+	m_clsMutex.acquire();
+	iSize = (int)m_clsMap.size();
+	m_clsMutex.release();
+
+	return iSize;
 }
 
 /**
