@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "SipUdp.h"
 #include "SipUtility.h"
 #include "TimeUtility.h"
@@ -23,7 +25,18 @@
 #include <list>
 #include <string>
 
-typedef std::map< std::string, int > TR_MAP;
+class CTrInfo
+{
+public:
+	CTrInfo() : m_iCount(0)
+	{
+	}
+
+	std::string m_strName;
+	int m_iCount;
+};
+
+typedef std::map< std::string, CTrInfo > TR_MAP;
 typedef std::list< std::string > TR_LIST;
 
 void TestTransactionSpeed( int iLoopCount )
@@ -57,7 +70,12 @@ void TestTransactionSpeed( int iLoopCount )
 	{
 		SipMakeBranch( szText, sizeof(szText) );
 
-		clsMap.insert( TR_MAP::value_type( szText, 1 ) );
+		int iLen = strlen(szText);
+		sprintf( szText + iLen, "1INVITE" );
+
+		CTrInfo clsInfo;
+
+		clsMap.insert( TR_MAP::value_type( szText, clsInfo ) );
 		clsList.push_back( szText );
 	}
 
@@ -83,7 +101,7 @@ void TestTransactionSpeed( int iLoopCount )
 				return;
 			}
 
-			++itMap->second;
+			++itMap->second.m_iCount;
 			++iCount;
 		}
 	}
