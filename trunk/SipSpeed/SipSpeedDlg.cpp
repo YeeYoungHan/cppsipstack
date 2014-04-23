@@ -320,6 +320,10 @@ void CSipSpeedDlg::OnBnClickedStartTest()
 
 	UpdateData(FALSE);
 
+	// SIP stack 의 transaction list 를 모두 삭제한다.
+	// 계속 테스트를 진행하면 transaction list 의 크기가 커져서 이에 대한 처리 때문에 테스트 속도가 저하된다.
+	gclsSipUserAgent.m_clsSipStack.DeleteAllTransaction();
+
 	m_clsProgress.SetPos( 0 );
 
 	gclsSetup.m_iCallTotalCount = m_iCallTotalCount;

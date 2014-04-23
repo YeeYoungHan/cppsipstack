@@ -61,10 +61,6 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 
 	int iDiff = DiffTimeval( &sttStart, &sttEnd );
 
-	// SIP stack 의 transaction list 를 모두 삭제한다.
-	// 계속 테스트를 진행하면 transaction list 의 크기가 커져서 이에 대한 처리 때문에 테스트 속도가 저하된다.
-	gclsSipUserAgent.m_clsSipStack.DeleteAllTransaction();
-
 	gbTestThreadRun = false;
 
 	SendMessage( ghWnd, SIP_TEST_ID, WM_TEST_END, iDiff );
