@@ -39,6 +39,7 @@ bool TestSipHeader();
 bool TestSipReason();
 bool TestSipCallId();
 void TestSpeed( int iLoopCount );
+void TestTransactionSpeed( int iLoopCount );
 
 /**
  * @ingroup TestSipParser
@@ -56,6 +57,14 @@ int main( int argc, char * argv[] )
 			int iLoopCount = atoi( argv[2] );
 
 			TestSpeed( iLoopCount );
+
+			return 0;
+		}
+		else if( !strcmp( argv[1], "tspeed" ) )
+		{
+			int iLoopCount = atoi( argv[2] );
+
+			TestTransactionSpeed( iLoopCount );
 
 			return 0;
 		}

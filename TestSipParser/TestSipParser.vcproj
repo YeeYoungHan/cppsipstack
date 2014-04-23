@@ -381,6 +381,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestTransactionSpeed.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestXml.cpp"
 				>
 			</File>
