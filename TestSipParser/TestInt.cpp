@@ -25,7 +25,7 @@ bool TestInt()
 	uint64_t i64 = 12345678901234567890ULL;
 	char	szBuf[255];
 
-#ifdef LINUX_64
+#if defined LINUX_64 || defined __APPLE__
 	snprintf( szBuf, sizeof(szBuf), "%lu", i64 );
 #else
 	snprintf( szBuf, sizeof(szBuf), "%llu", i64 );
