@@ -79,7 +79,7 @@ void TestTransactionSpeed( int iLoopCount )
 		clsList.push_back( szText );
 	}
 
-	printf( "map size(%d) list size(%d)\n", clsMap.size(), clsList.size() );
+	printf( "map size(%d) list size(%d)\n", (int)clsMap.size(), (int)clsList.size() );
 
 	uint64_t iStartTime, iEndTime;
 	iLoopCount = iLoopCount / clsList.size() + 1;

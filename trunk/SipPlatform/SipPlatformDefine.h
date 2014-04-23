@@ -63,7 +63,7 @@ typedef char int8_t;
 
 #endif
 
-#ifdef LINUX_64
+#if defined LINUX_64 || defined __APPLE__
 #define LONG_LONG_FORMAT	"%lu"
 #else
 #define LONG_LONG_FORMAT	"%llu"
