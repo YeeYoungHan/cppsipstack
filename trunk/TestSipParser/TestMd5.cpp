@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <string>
 #include "TimeUtility.h"
+#include "SipMd5.h"
 
 bool TestMd5()
 {
@@ -33,6 +34,17 @@ bool TestMd5()
 
 	if( strcmp( szOutput, "AbBcCdDeEfFgG" ) )
 	{
+		printf( "SipMakePrintString error\n" );
+		return false;
+	}
+
+	char szMd5[33];
+
+	SipMd5String( "1234", szMd5 );
+
+	if( strcmp( szMd5, "81dc9bdb52d04dc20036dbd8313ed055" ) )
+	{
+		printf( "SipMd5String error\n" );
 		return false;
 	}
 
