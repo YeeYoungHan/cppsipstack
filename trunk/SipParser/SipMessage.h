@@ -73,6 +73,7 @@ public:
 	/** SIP Route 헤더 리스트 */
 	SIP_FROM_LIST	m_clsRouteList;
 
+#ifdef USE_ACCEPT_HEADER
 	/** SIP Accept 헤더 리스트 */
 	SIP_CONTENT_TYPE_LIST	m_clsAcceptList;
 
@@ -81,15 +82,16 @@ public:
 
 	/** SIP Accept-Language 헤더 리스트 */
 	SIP_ACCEPT_DATA_LIST	m_clsAcceptLanguageList;
+#endif
 
 	/** SIP Authorization 헤더 리스트 */
 	SIP_CREDENTIAL_LIST		m_clsAuthorizationList;
 
-	/** SIP Proxy-Authorization 헤더 리스트 */
-	SIP_CREDENTIAL_LIST		m_clsProxyAuthorizationList;
-
 	/** SIP Www-Authenticate 헤더 리스트 */
 	SIP_CHALLENGE_LIST		m_clsWwwAuthenticateList;
+
+	/** SIP Proxy-Authorization 헤더 리스트 */
+	SIP_CREDENTIAL_LIST		m_clsProxyAuthorizationList;
 
 	/** SIP Proxy-Authenticate 헤더 리스트 */
 	SIP_CHALLENGE_LIST		m_clsProxyAuthenticateList;

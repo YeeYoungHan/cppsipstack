@@ -125,13 +125,13 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 		{
 			if( ParseSipCredential( m_clsAuthorizationList, pszValue, iValueLen ) == -1 ) return -1;
 		}
-		else if( !strcasecmp( pszName, "Proxy-Authorization" ) )
-		{
-			if( ParseSipCredential( m_clsProxyAuthorizationList, pszValue, iValueLen ) == -1 ) return -1;
-		}
 		else if( !strcasecmp( pszName, "WWW-Authenticate" ) )
 		{
 			if( ParseSipChallenge( m_clsWwwAuthenticateList, pszValue, iValueLen ) == -1 ) return -1;
+		}
+		else if( !strcasecmp( pszName, "Proxy-Authorization" ) )
+		{
+			if( ParseSipCredential( m_clsProxyAuthorizationList, pszValue, iValueLen ) == -1 ) return -1;
 		}
 		else if( !strcasecmp( pszName, "Proxy-Authenticate" ) )
 		{
@@ -145,6 +145,7 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 		{
 			m_iContentLength = atoi( pszValue );
 		}
+#ifdef USE_ACCEPT_HEADER
 		else if( !strcasecmp( pszName, "Accept-Encoding" ) )
 		{
 			if( ParseSipAcceptData( m_clsAcceptEncodingList, pszValue, iValueLen ) == -1 ) return -1;
@@ -157,6 +158,7 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 		{
 			if( ParseSipContentType( m_clsAcceptList, pszValue, iValueLen ) == -1 ) return -1;
 		}
+#endif
 		else if( !strcasecmp( pszName, "Expires" ) )
 		{
 			m_iExpires = atoi( pszValue );
@@ -301,18 +303,18 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
 	}
 
-	for( SIP_CREDENTIAL_LIST::iterator itList = m_clsProxyAuthorizationList.begin(); itList != m_clsProxyAuthorizationList.end(); ++itList )
+	for( SIP_CHALLENGE_LIST::iterator itList = m_clsWwwAuthenticateList.begin(); itList != m_clsWwwAuthenticateList.end(); ++itList )
 	{
-		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Proxy-Authorization: " );
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, "WWW-Authenticate: " );
 		n = itList->ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
 	}
 
-	for( SIP_CHALLENGE_LIST::iterator itList = m_clsWwwAuthenticateList.begin(); itList != m_clsWwwAuthenticateList.end(); ++itList )
+	for( SIP_CREDENTIAL_LIST::iterator itList = m_clsProxyAuthorizationList.begin(); itList != m_clsProxyAuthorizationList.end(); ++itList )
 	{
-		iLen += snprintf( pszText + iLen, iTextSize - iLen, "WWW-Authenticate: " );
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Proxy-Authorization: " );
 		n = itList->ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
@@ -339,6 +341,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 
 	iLen += snprintf( pszText + iLen, iTextSize - iLen, "%s: %d\r\n", ( m_bUseCompact ? "l" : "Content-Length" ), m_iContentLength );
 
+#ifdef USE_ACCEPT_HEADER
 	if( m_clsAcceptList.size() > 0 )
 	{
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Accept: " );
@@ -386,6 +389,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 		}
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
 	}
+#endif
 
 	if( m_iExpires >= 0 )
 	{
@@ -449,17 +453,19 @@ void CSipMessage::Clear()
 	m_clsRecordRouteList.clear();
 	m_clsRouteList.clear();      
 
+#ifdef USE_ACCEPT_HEADER
 	m_clsAcceptList.clear();            
                             
 	m_clsAcceptEncodingList.clear();    
 	m_clsAcceptLanguageList.clear();    
-	                            
+#endif
+
 	m_clsAuthorizationList.clear();     
-	m_clsProxyAuthorizationList.clear();
-	                            
 	m_clsWwwAuthenticateList.clear();   
+
+	m_clsProxyAuthorizationList.clear();
 	m_clsProxyAuthenticateList.clear(); 
-	                            
+
 	m_clsHeaderList.clear();            
 
 	m_clsCSeq.Clear();       
