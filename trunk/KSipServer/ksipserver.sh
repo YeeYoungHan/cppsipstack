@@ -25,7 +25,7 @@ getpids(){
 # start function
 start() {
 	# Start daemons.
-	if [ -n "`/sbin/pidof $program`" ]; then
+	if [ -n "`getpids $program`" ]; then
 		echo "$program_name: already running"
   else
     echo "$program_name: Starting..."
@@ -44,7 +44,7 @@ stop() {
 
 # status function
 status() {
-	pids=`/sbin/pidof $program`
+	pids=`getpids $program`
 	if [ "$pids" != "" ]; then
 		echo "$program_name: running"
   else
@@ -78,7 +78,7 @@ watchdog(){
 		for program in $program_list
 		do
 			if [ -f "$root_dir/$program" ]; then
-				if [ "`/sbin/pidof $program`" = "" ]; then
+				if [ "`getpids $program`" = "" ]; then
 			    start_program $program
 			  fi
 			else
