@@ -18,19 +18,32 @@
 
 #include "SipUtility.h"
 #include <stdio.h>
+#include <map>
+#include <string>
+
+typedef std::map< std::string, int > STRING_MAP;
 
 bool TestSipCallId()
 {
-	/*
 	char	szText[255];
+	STRING_MAP clsMap;
+	STRING_MAP::iterator	it;
 
-	for( int i = 0; i < 10; ++i ) 
+	for( int i = 0; i < 1000; ++i ) 
 	{
 		SipMakeCallIdName( szText, sizeof(szText) );
 
-		printf( "[%s]\n", szText );
+		it = clsMap.find( szText );
+		if( it != clsMap.end() )
+		{
+			printf( "same callId is found\n" );
+			return false;
+		}
+
+		//printf( "callId(%s)\n", szText );
+
+		clsMap.insert( STRING_MAP::value_type( szText, 1 ) );
 	}
-	*/
 
 	return true;
 }
