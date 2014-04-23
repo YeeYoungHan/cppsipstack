@@ -58,7 +58,9 @@ typedef char int8_t;
 #endif
 
 #if __WORDSIZE == 64
+#ifndef __APPLE__
 #define LINUX_64
+#endif
 #endif
 
 #endif
