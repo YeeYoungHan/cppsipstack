@@ -332,11 +332,11 @@ void SipMd5String( char * pszPlainText, char szMd5[33] )
 	MD5Update( &context, (unsigned char *)pszPlainText, iLen );
 	MD5Final( digest, &context );
 
-	memset( szMd5, 0, sizeof(szMd5) );
 	for (i = 0; i < 16; i++)
 	{
 		sprintf( szMd5 + 2 * i, "%02x", (unsigned char)digest[i]);
 	}
+	szMd5[32] = '\0';
 }
 
 
