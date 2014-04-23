@@ -23,7 +23,7 @@ SRV_OBJ=TestSipFrom.o TestSipMessage.o TestSipUri.o TestSipVia.o \
 	TestInt.o \
 	TestMd5.o \
 	TestString.o TestSipHeader.o TestSipReason.o TestSipCallId.o \
-	TestSpeed.o TestTransactionSpeed.cpp.o
+	TestSpeed.o TestTransactionSpeed.o
 
 TestSipParser.exe: $(SRV_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)
