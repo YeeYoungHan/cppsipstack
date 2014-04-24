@@ -21,6 +21,8 @@
 
 #include "SipPlatformDefine.h"
 
+#define PARSE_FAST
+
 #define SIP_MESSAGE_MAX_LEN				8192
 #define SIP_TAG_MAX_SIZE					21
 #define SIP_BRANCH_MAX_SIZE				61
