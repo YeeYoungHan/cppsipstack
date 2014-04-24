@@ -185,3 +185,34 @@ int CSipVia::ParseSentBy( const char * pszText, int iTextLen )
 
 	return iPos;
 }
+
+/**
+ * @ingroup SipParser
+ * @brief SIP 헤더 문자열을 파싱하여 CSipVia 객체 리스트에 저장한다.
+ * @param clsList CSipVia 객체 리스트
+ * @param pszText 파싱할 문자열
+ * @param iTextLen 파싱할 문자열의 길이
+ * @returns 성공하면 파싱한 문자열의 길이를 리턴하고 그렇지 않으면 -1 을 리턴한다.
+ */
+int ParseSipVia( SIP_VIA_LIST & clsList, const char * pszText, int iTextLen )
+{
+	int iPos, iCurPos = 0;
+	CSipVia	clsVia;
+
+	while( iCurPos < iTextLen )
+	{
+		if( pszText[iCurPos] == ' ' || pszText[iCurPos] == '\t' || pszText[iCurPos] == ',' )
+		{
+			++iCurPos;
+			continue;
+		}
+
+		iPos = clsVia.Parse( pszText + iCurPos, iTextLen - iCurPos );
+		if( iPos == -1 ) return -1;
+		iCurPos += iPos;
+
+		clsList.push_back( clsVia );
+	}
+
+	return iCurPos;
+}
