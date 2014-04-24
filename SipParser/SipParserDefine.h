@@ -22,7 +22,7 @@
 #include "SipPlatformDefine.h"
 
 // 빠른 SIP 메시지 파싱 기능을 사용하려면 주석을 해제하라.
-//#define PARSE_FAST
+#define PARSE_FAST
 
 #define SIP_MESSAGE_MAX_LEN				8192
 #define SIP_TAG_MAX_SIZE					21
