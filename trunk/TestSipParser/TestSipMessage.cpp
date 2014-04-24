@@ -20,6 +20,8 @@
 #include <string.h>
 #include <stdio.h>
 
+int giTestSipMessageIndex = 0;
+
 static bool Test( const char * pszText, const char * pszResult )
 {
 	CSipMessage clsMessage;
@@ -40,6 +42,7 @@ static bool Test( const char * pszText, const char * pszResult )
 	if( strcmp( pszResult, szResult ) )
 	{
 		printf( "sip message(%s) != result(%s)\n", pszResult, szResult );
+		printf( "test index(%d)\n", giTestSipMessageIndex );
 		return false;
 	}
 
@@ -48,6 +51,8 @@ static bool Test( const char * pszText, const char * pszResult )
 
 bool TestSipMessage()
 {
+	giTestSipMessageIndex = 1;
+
 	// Body
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -62,6 +67,8 @@ bool TestSipMessage()
 			"Content-Length: 3\r\n"
 			"\r\n"
 			"123" ) == false ) return false;
+
+	++giTestSipMessageIndex;
 	
 	// Contact 에서 LSS_From 저장시 expires 필드 길이를 처리하지 못 하는 버그 점검
 	if( Test(
@@ -91,7 +98,9 @@ bool TestSipMessage()
 			"Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, UPDATE, INFO, REGISTER, REFER, NOTIFY, PUBLISH, SUBSCRIBE\r\n"
 			"Supported: timer, precondition, path, replaces\r\n"
 			"\r\n" ) == false ) return false;
-	
+
+	++giTestSipMessageIndex;
+
 	// Min-Expires
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -121,13 +130,22 @@ bool TestSipMessage()
 			"Contact: <sip:alice@pc33.atlanta.com>\r\n"
 			"Content-Type: application/sdp\r\n"
 			"Content-Length: 0\r\n"
+#ifdef USE_ACCEPT_HEADER
 			"Accept: application/sdp;level=1, application/x-private;level=2;g=1, text/html\r\n"
 			"Accept-Encoding: gzip;q=1.0, identity;q=0.5, *;q=0\r\n"
 			"Accept-Language: da, en-gb;q=0.8, en;q=0.7\r\n"
+#endif
 			"Expires: 7200\r\n"
+#ifndef USE_ACCEPT_HEADER
+			"Accept: application/sdp; level=1, application/x-private; level=2; g=1, text/html\r\n"
+			"Accept-Encoding: gzip;q=1.0, identity; q=0.5, *;q=0\r\n"
+			"Accept-Language: da, en-gb;q=0.8, en;q=0.7\r\n"
+#endif
 			"Min-Expires: 60\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// Expires
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -156,12 +174,21 @@ bool TestSipMessage()
 			"Contact: <sip:alice@pc33.atlanta.com>\r\n"
 			"Content-Type: application/sdp\r\n"
 			"Content-Length: 0\r\n"
+#ifdef USE_ACCEPT_HEADER
 			"Accept: application/sdp;level=1, application/x-private;level=2;g=1, text/html\r\n"
 			"Accept-Encoding: gzip;q=1.0, identity;q=0.5, *;q=0\r\n"
 			"Accept-Language: da, en-gb;q=0.8, en;q=0.7\r\n"
+#endif
 			"Expires: 7200\r\n"
+#ifndef USE_ACCEPT_HEADER
+			"Accept: application/sdp; level=1, application/x-private; level=2; g=1, text/html\r\n"
+			"Accept-Encoding: gzip;q=1.0, identity; q=0.5, *;q=0\r\n"
+			"Accept-Language: da, en-gb;q=0.8, en;q=0.7\r\n"
+#endif
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// Max-Forwards
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -189,11 +216,19 @@ bool TestSipMessage()
 			"Contact: <sip:alice@pc33.atlanta.com>\r\n"
 			"Content-Type: application/sdp\r\n"
 			"Content-Length: 0\r\n"
+#ifdef USE_ACCEPT_HEADER
 			"Accept: application/sdp;level=1, application/x-private;level=2;g=1, text/html\r\n"
 			"Accept-Encoding: gzip;q=1.0, identity;q=0.5, *;q=0\r\n"
 			"Accept-Language: da, en-gb;q=0.8, en;q=0.7\r\n"
+#else
+			"Accept: application/sdp; level=1, application/x-private; level=2; g=1, text/html\r\n"
+			"Accept-Encoding: gzip;q=1.0, identity; q=0.5, *;q=0\r\n"
+			"Accept-Language: da, en-gb;q=0.8, en;q=0.7\r\n"
+#endif
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// Accept-Language
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -219,11 +254,19 @@ bool TestSipMessage()
 			"Contact: <sip:alice@pc33.atlanta.com>\r\n"
 			"Content-Type: application/sdp\r\n"
 			"Content-Length: 0\r\n"
+#ifdef USE_ACCEPT_HEADER
 			"Accept: application/sdp;level=1, application/x-private;level=2;g=1, text/html\r\n"
 			"Accept-Encoding: gzip;q=1.0, identity;q=0.5, *;q=0\r\n"
 			"Accept-Language: da, en-gb;q=0.8, en;q=0.7\r\n"
+#else
+			"Accept: application/sdp; level=1, application/x-private; level=2; g=1, text/html\r\n"
+			"Accept-Encoding: gzip;q=1.0, identity; q=0.5, *;q=0\r\n"
+			"Accept-Language: da, en-gb;q=0.8, en;q=0.7\r\n"
+#endif
 			"\r\n" ) == false ) return false;
 			
+	++giTestSipMessageIndex;
+
 	// Accept-Encoding
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -248,10 +291,17 @@ bool TestSipMessage()
 			"Contact: <sip:alice@pc33.atlanta.com>\r\n"
 			"Content-Type: application/sdp\r\n"
 			"Content-Length: 0\r\n"
+#ifdef USE_ACCEPT_HEADER
 			"Accept: application/sdp;level=1, application/x-private;level=2;g=1, text/html\r\n"
 			"Accept-Encoding: gzip;q=1.0, identity;q=0.5, *;q=0\r\n"
+#else
+			"Accept: application/sdp; level=1, application/x-private; level=2; g=1, text/html\r\n"
+			"Accept-Encoding: gzip;q=1.0, identity; q=0.5, *;q=0\r\n"
+#endif
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Route: <sip:server10.biloxi.com;lr>\r\n"
@@ -275,10 +325,17 @@ bool TestSipMessage()
 			"Contact: <sip:alice@pc33.atlanta.com>\r\n"
 			"Content-Type: application/sdp\r\n"
 			"Content-Length: 0\r\n"
+#ifdef USE_ACCEPT_HEADER
 			"Accept: application/sdp;level=1, application/x-private;level=2;g=1, text/html\r\n"
 			"Accept-Encoding: gzip\r\n"
+#else
+			"Accept: application/sdp; level=1, application/x-private; level=2; g=1, text/html\r\n"
+			"Accept-Encoding: gzip\r\n"
+#endif
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// Accept
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -302,9 +359,15 @@ bool TestSipMessage()
 			"Contact: <sip:alice@pc33.atlanta.com>\r\n"
 			"Content-Type: application/sdp\r\n"
 			"Content-Length: 0\r\n"
+#ifdef USE_ACCEPT_HEADER
 			"Accept: application/sdp;level=1, application/x-private;level=2;g=1, text/html\r\n"
+#else
+			"Accept: application/sdp; level=1, application/x-private; level=2; g=1, text/html\r\n"
+#endif
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Route: <sip:server10.biloxi.com;lr>\r\n"
@@ -327,9 +390,15 @@ bool TestSipMessage()
 			"Contact: <sip:alice@pc33.atlanta.com>\r\n"
 			"Content-Type: application/sdp\r\n"
 			"Content-Length: 0\r\n"
+#ifdef USE_ACCEPT_HEADER
 			"Accept: application/sdp;level=1, application/x-private, text/html\r\n"
+#else
+			"Accept: application/sdp;level=1, application/x-private, text/html\r\n"
+#endif
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Route: <sip:server10.biloxi.com;lr>\r\n"
@@ -355,6 +424,8 @@ bool TestSipMessage()
 			"Accept: application/sdp\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// Header
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -381,6 +452,8 @@ bool TestSipMessage()
 			"Ip: 192.168.0.200\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// Content-Type
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -405,6 +478,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// Proxy-Authenticate
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -439,6 +514,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Route: <sip:server10.biloxi.com;lr>\r\n"
@@ -468,6 +545,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;	
 	
+	++giTestSipMessageIndex;
+
 	// WWW-Authenticate
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -493,6 +572,8 @@ bool TestSipMessage()
 				"opaque=\"5ccc069c403ebaf9f0171e9517f40e41\", qop=auth\r\n"
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;	
+
+	++giTestSipMessageIndex;
 
 	// Proxy-Authorization
 	if( Test(
@@ -532,6 +613,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Route: <sip:server10.biloxi.com;lr>,\r\n"
@@ -562,6 +645,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// Authorization
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -600,6 +685,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Route: <sip:server10.biloxi.com;lr>,\r\n"
@@ -630,6 +717,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// Route
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -654,6 +743,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// Record-Route
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -678,6 +769,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// Contact
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -700,6 +793,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Via: SIP/2.0/UDP 192.168.1.100:5060;branch=123456\r\n"
@@ -723,6 +818,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Via: SIP/2.0/UDP 192.168.1.100:5060;branch=123456\r\n"
@@ -744,6 +841,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Via: SIP/2.0/UDP 192.168.1.100:5060;branch=123456\r\n"
@@ -764,6 +863,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Via: SIP/2.0/UDP 192.168.1.100:5060;branch=123456\r\n"
@@ -783,6 +884,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// Call-ID
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -801,6 +904,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Via: SIP/2.0/UDP 192.168.1.100:5060;branch=123456\r\n"
@@ -818,6 +923,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Via: SIP/2.0/UDP 192.168.1.100:5060;branch=123456\r\n"
@@ -835,6 +942,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// CSeq
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -851,6 +960,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Via: SIP/2.0/UDP 192.168.1.100:5060;branch=123456\r\n"
@@ -865,6 +976,8 @@ bool TestSipMessage()
 			"CSeq: 1 OPTIONS\r\n"
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
+
+	++giTestSipMessageIndex;
 
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -881,6 +994,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	// Via
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -899,6 +1014,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Via: SIP/2.0/UDP 192.168.1.100:5060;ttl=20;maddr=1.1.1.1;received=3.3.3.3:5090;branch=123456\r\n"
@@ -914,6 +1031,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Via: SIP/2.0/UDP 192.168.1.100:5060;ttl=20;maddr=1.1.1.1;received=3.3.3.3:5090;branch=123456,"
@@ -929,6 +1048,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n") == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 			"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 			"Via: SIP/2.0/UDP 192.168.1.100:5060;ttl=20;maddr=1.1.1.1;received=3.3.3.3:5090;branch=123456,"
@@ -946,6 +1067,8 @@ bool TestSipMessage()
 			"Content-Length: 0\r\n"
 			"\r\n" ) == false ) return false;
 	
+	++giTestSipMessageIndex;
+
 	if( Test(
 		"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 		"Via: SIP/2.0/UDP 192.168.1.100:5060;ttl=20;maddr=1.1.1.1;received=3.3.3.3:5090;branch=123456\r\n"
@@ -958,6 +1081,8 @@ bool TestSipMessage()
     "To: <sip:carol@chicago.com>\r\n"
 		"Content-Length: 0\r\n"
 		"\r\n" ) == false ) return false;
+
+	++giTestSipMessageIndex;
 
 	if( Test(
 		"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
@@ -972,6 +1097,8 @@ bool TestSipMessage()
 		"Content-Length: 0\r\n"
 		"\r\n") == false ) return false;
 
+	++giTestSipMessageIndex;
+
 	if( Test(
 		"OPTIONS sip:carol@chicago.com SIP/2.0\r\n"
 		"Via: SIP/2.0/UDP 192.168.1.100\r\n"
@@ -984,6 +1111,8 @@ bool TestSipMessage()
     "To: <sip:carol@chicago.com>\r\n"
 		"Content-Length: 0\r\n"
 		"\r\n" ) == false ) return false;
+
+	++giTestSipMessageIndex;
 
 	// From/To
 	if( Test( 
