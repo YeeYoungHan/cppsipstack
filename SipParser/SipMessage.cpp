@@ -42,7 +42,7 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 {
 	if( pszText == NULL || iTextLen <= 4 ) return -1;
 
-	int iPos, iCurPos, iNameLen, iValuePos, iValueLen, n;
+	int iPos, iCurPos, iNameLen, iValueLen;
 	const char * pszName, * pszValue;
 	CSipHeader	clsHeader;
 
@@ -72,7 +72,6 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 
 		pszName = clsHeader.m_strName.c_str();
 		pszValue = clsHeader.m_strValue.c_str();
-		iValuePos = 0;
 		iValueLen = (int)clsHeader.m_strValue.length();
 
 #ifdef PARSE_FAST
@@ -82,22 +81,7 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 		{
 			if( pszName[0] == 'v' )
 			{
-				while( iValuePos < iValueLen )
-				{
-					if( pszValue[iValuePos] == ' ' || pszValue[iValuePos] == '\t' || pszValue[iValuePos] == ',' )
-					{
-						++iValuePos;
-						continue;
-					}
-
-					CSipVia	clsVia;
-
-					n = clsVia.Parse( pszValue + iValuePos, iValueLen - iValuePos );
-					if( n == -1 ) return -1;
-					iValuePos += n;
-
-					m_clsViaList.push_back( clsVia );
-				}
+				if( ParseSipVia( m_clsViaList, pszValue, iValueLen ) == -1 ) return -1;
 			}
 			else if( pszName[0] == 'f' )
 			{
@@ -143,22 +127,7 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 		{
 			if( !strcasecmp( pszName, "Via" ) )
 			{
-				while( iValuePos < iValueLen )
-				{
-					if( pszValue[iValuePos] == ' ' || pszValue[iValuePos] == '\t' || pszValue[iValuePos] == ',' )
-					{
-						++iValuePos;
-						continue;
-					}
-
-					CSipVia	clsVia;
-
-					n = clsVia.Parse( pszValue + iValuePos, iValueLen - iValuePos );
-					if( n == -1 ) return -1;
-					iValuePos += n;
-
-					m_clsViaList.push_back( clsVia );
-				}
+				if( ParseSipVia( m_clsViaList, pszValue, iValueLen ) == -1 ) return -1;
 			}
 			else
 			{
@@ -337,22 +306,7 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 #else
 		if( !strcasecmp( pszName, "Via" ) || !strcasecmp( pszName, "v" ) )
 		{
-			while( iValuePos < iValueLen )
-			{
-				if( pszValue[iValuePos] == ' ' || pszValue[iValuePos] == '\t' || pszValue[iValuePos] == ',' )
-				{
-					++iValuePos;
-					continue;
-				}
-
-				CSipVia	clsVia;
-
-				n = clsVia.Parse( pszValue + iValuePos, iValueLen - iValuePos );
-				if( n == -1 ) return -1;
-				iValuePos += n;
-
-				m_clsViaList.push_back( clsVia );
-			}
+			if( ParseSipVia( m_clsViaList, pszValue, iValueLen ) == -1 ) return -1;
 		}
 		else if( !strcasecmp( pszName, "Max-Forwards" ) )
 		{

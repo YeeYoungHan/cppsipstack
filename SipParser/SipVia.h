@@ -57,4 +57,6 @@ private:
 
 typedef std::list< CSipVia > SIP_VIA_LIST;
 
+int ParseSipVia( SIP_VIA_LIST & clsList, const char * pszText, int iTextLen );
+
 #endif
