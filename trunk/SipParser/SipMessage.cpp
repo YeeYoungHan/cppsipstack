@@ -42,9 +42,13 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 {
 	if( pszText == NULL || iTextLen <= 4 ) return -1;
 
-	int iPos, iCurPos, iValuePos, iValueLen, n;
+	int iPos, iCurPos, iNameLen, iValuePos, iValueLen, n;
 	const char * pszName, * pszValue;
 	CSipHeader	clsHeader;
+
+#ifdef PARSE_FAST
+	bool bNotFound;
+#endif
 
 	if( !strncmp( pszText, "SIP/", 4 ) )
 	{
@@ -63,13 +67,274 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 		if( iPos == -1 ) return -1;
 		iCurPos += iPos;
 
-		if( clsHeader.m_strName.length() == 0 ) break;
+		iNameLen = clsHeader.m_strName.length();
+		if( iNameLen == 0 ) break;
 
 		pszName = clsHeader.m_strName.c_str();
 		pszValue = clsHeader.m_strValue.c_str();
 		iValuePos = 0;
 		iValueLen = (int)clsHeader.m_strValue.length();
 
+#ifdef PARSE_FAST
+		bNotFound = false;
+
+		if( iNameLen == 1 )
+		{
+			if( pszName[0] == 'v' )
+			{
+				while( iValuePos < iValueLen )
+				{
+					if( pszValue[iValuePos] == ' ' || pszValue[iValuePos] == '\t' || pszValue[iValuePos] == ',' )
+					{
+						++iValuePos;
+						continue;
+					}
+
+					CSipVia	clsVia;
+
+					n = clsVia.Parse( pszValue + iValuePos, iValueLen - iValuePos );
+					if( n == -1 ) return -1;
+					iValuePos += n;
+
+					m_clsViaList.push_back( clsVia );
+				}
+			}
+			else if( pszName[0] == 'f' )
+			{
+				if( m_clsFrom.Parse( pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else if( pszName[0] == 't' )
+			{
+				if( m_clsTo.Parse( pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else if( pszName[0] == 'i' )
+			{
+				if( m_clsCallId.Parse( pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else if( pszName[0] == 'm' )
+			{
+				if( ParseSipFrom( m_clsContactList, pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else if( pszName[0] == 'c' )
+			{
+				if( m_clsContentType.Parse( pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else if( pszName[0] == 'l' )
+			{
+				m_iContentLength = atoi( pszValue );
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+		else if( iNameLen == 2 )
+		{
+			if( !strcasecmp( pszName, "To" ) )
+			{
+				if( m_clsTo.Parse( pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+		else if( iNameLen == 3 )
+		{
+			if( !strcasecmp( pszName, "Via" ) )
+			{
+				while( iValuePos < iValueLen )
+				{
+					if( pszValue[iValuePos] == ' ' || pszValue[iValuePos] == '\t' || pszValue[iValuePos] == ',' )
+					{
+						++iValuePos;
+						continue;
+					}
+
+					CSipVia	clsVia;
+
+					n = clsVia.Parse( pszValue + iValuePos, iValueLen - iValuePos );
+					if( n == -1 ) return -1;
+					iValuePos += n;
+
+					m_clsViaList.push_back( clsVia );
+				}
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+		else if( iNameLen == 4 )
+		{
+			if( !strcasecmp( pszName, "From" ) )
+			{
+				if( m_clsFrom.Parse( pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else if( !strcasecmp( pszName, "CSeq" ) )
+			{
+				if( m_clsCSeq.Parse( pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+		else if( iNameLen == 5 )
+		{
+			if( !strcasecmp( pszName, "Route" ) )
+			{
+				if( ParseSipFrom( m_clsRouteList, pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+#ifdef USE_ACCEPT_HEADER
+		else if( iNameLen == 6 )
+		{
+			if( !strcasecmp( pszName, "Accept" ) )
+			{
+				if( ParseSipContentType( m_clsAcceptList, pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+#endif
+		else if( iNameLen == 7 )
+		{
+			if( !strcasecmp( pszName, "Call-ID" ) )
+			{
+				if( m_clsCallId.Parse( pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else if( !strcasecmp( pszName, "Contact" ) )
+			{
+				if( ParseSipFrom( m_clsContactList, pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else if( !strcasecmp( pszName, "Expires" ) )
+			{
+				m_iExpires = atoi( pszValue );
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+		else if( iNameLen == 10 )
+		{
+			if( !strcasecmp( pszName, "User-Agent" ) )
+			{
+				m_strUserAgent = clsHeader.m_strValue;
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+		else if( iNameLen == 12 )
+		{
+			if( !strcasecmp( pszName, "Max-Forwards" ) )
+			{
+				m_iMaxForwards = atoi( pszValue );
+			}
+			else if( !strcasecmp( pszName, "Record-Route" ) )
+			{
+				if( ParseSipFrom( m_clsRecordRouteList, pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else if( !strcasecmp( pszName, "Content-Type" ) )
+			{
+				if( m_clsContentType.Parse( pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+		else if( iNameLen == 13 )
+		{
+			if( !strcasecmp( pszName, "Authorization" ) )
+			{
+				if( ParseSipCredential( m_clsAuthorizationList, pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+		else if( iNameLen == 14 )
+		{
+			if( !strcasecmp( pszName, "Content-Length" ) )
+			{
+				m_iContentLength = atoi( pszValue );
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+#ifdef USE_ACCEPT_HEADER
+		else if( iNameLen == 15 )
+		{
+			else if( !strcasecmp( pszName, "Accept-Encoding" ) )
+			{
+				if( ParseSipAcceptData( m_clsAcceptEncodingList, pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else if( !strcasecmp( pszName, "Accept-Language" ) )
+			{
+				if( ParseSipAcceptData( m_clsAcceptLanguageList, pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+#endif
+		else if( iNameLen == 16 )
+		{
+			if( !strcasecmp( pszName, "WWW-Authenticate" ) )
+			{
+				if( ParseSipChallenge( m_clsWwwAuthenticateList, pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+		else if( iNameLen == 18 )
+		{
+			if( !strcasecmp( pszName, "Proxy-Authenticate" ) )
+			{
+				if( ParseSipChallenge( m_clsProxyAuthenticateList, pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+		else if( iNameLen == 19 )
+		{
+			if( !strcasecmp( pszName, "Proxy-Authorization" ) )
+			{
+				if( ParseSipCredential( m_clsProxyAuthorizationList, pszValue, iValueLen ) == -1 ) return -1;
+			}
+			else
+			{
+				bNotFound = true;
+			}
+		}
+		else
+		{
+			bNotFound = true;
+		}
+
+		if( bNotFound )
+		{
+			m_clsHeaderList.push_back( clsHeader );
+		}
+#else
 		if( !strcasecmp( pszName, "Via" ) || !strcasecmp( pszName, "v" ) )
 		{
 			while( iValuePos < iValueLen )
@@ -171,6 +436,7 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 		{
 			m_clsHeaderList.push_back( clsHeader );
 		}
+#endif
 	}
 
 	if( m_iContentLength > 0 )
