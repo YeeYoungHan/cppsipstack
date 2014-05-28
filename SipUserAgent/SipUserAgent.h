@@ -84,6 +84,8 @@ public:
 	bool CreateCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId, CSipMessage ** ppclsInvite );
 	bool StartCall( const char * pszCallId, CSipMessage * pclsInvite );
 
+	bool TransferCall( const char * pszCallId, const char * pszTo );
+
 	bool SendSms( const char * pszFrom, const char * pszTo, const char * pszText, CSipCallRoute * pclsRoute );
 	
 	// IP-PBX 에서 사용되는 통화 관련 메소드

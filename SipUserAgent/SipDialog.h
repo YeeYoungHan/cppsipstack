@@ -121,6 +121,8 @@ public:
 	CSipMessage * CreateCancel( );
 	CSipMessage * CreateBye( );
 	CSipMessage * CreateNotify( );
+	CSipMessage * CreateRefer( );
+
 	bool AddSdp( CSipMessage * pclsMessage );
 	bool SetLocalRtp( CSipCallRtp * pclsRtp );
 	bool SetRemoteRtp( CSipCallRtp * pclsRtp );

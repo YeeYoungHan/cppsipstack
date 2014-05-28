@@ -289,6 +289,7 @@ bool CSipUserAgent::CreateCall( const char * pszFrom, const char * pszTo, CSipCa
 }
 
 /**
+ * @ingroup SipUserAgent
  * @brief 생성된 INVITE 메시지를 전송한다.
  * @param pszCallId		SIP Call-ID
  * @param pclsInvite	SIP INVITE 메시지
@@ -305,4 +306,37 @@ bool CSipUserAgent::StartCall( const char * pszCallId, CSipMessage * pclsInvite 
 	}
 
 	return true;
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief Blind transfer 를 실행한다.
+ * @param pszCallId SIP Call-ID
+ * @param pszTo			통화 전달을 받을 아이디
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszTo )
+{
+	if( pszCallId == NULL || pszTo == NULL ) return false;
+
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+	CSipMessage * pclsMessage = NULL;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		pclsMessage = itMap->second.CreateRefer();
+	}
+	m_clsMutex.release();
+
+	if( pclsMessage == NULL ) return false;
+
+	char szUri[1024];
+
+	snprintf( szUri, sizeof(szUri), "<sip:%s@%s:%d>", pszTo, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
+	pclsMessage->AddHeader( "Refer-To", szUri );
+
+	return m_clsSipStack.SendSipMessage( pclsMessage );
 }
