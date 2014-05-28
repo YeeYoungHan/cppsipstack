@@ -148,6 +148,8 @@ void CSipTestDlg::EventIncomingCall( const char * pszCallId, const char * pszFro
 		clsRtp.m_iPort = gclsTestInfo.m_clsCallerRtp.m_iPort;	
 		clsRtp.m_iCodec = 0;
 
+		// blind transfer 결과로 수신되는 INVITE 는 caller #2 에게 수신된다.
+		// RTP 수신 테스트를 간단하게 하기 위해서 caller #2 정보를 caller #1 으로 교체한다.
 		gclsTestInfo.m_clsCallerPeerRtp = *pclsRtp;
 		gclsTestInfo.m_strCallerCallId = pszCallId;
 
@@ -239,6 +241,7 @@ void CSipTestDlg::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
 	if( gclsTestInfo.m_eTestType == E_TEST_BLIND_TRANSFER_CALL ) 
 	{
+		// blind transfer 결과로 수신되는 ReINVITE 는 callee 에게 수신된다.
 		gclsTestInfo.m_clsCalleePeerRtp = *pclsRtp;
 		StartRtpThread();
 	}
