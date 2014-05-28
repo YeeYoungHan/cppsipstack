@@ -170,3 +170,37 @@ bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 
 	return false;
 }
+
+/**
+ * @ingroup SipUserAgent
+ * @brief SIP REFER 응답 메시지 수신 이벤트 핸들러
+ * @param iThreadId		SIP stack 의 UDP 쓰레드 아이디
+ * @param pclsMessage 수신된 SIP 응답 메시지
+ * @returns 정상적으로 처리하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::RecvReferResponse( int iThreadId, CSipMessage * pclsMessage )
+{
+	std::string	strCallId;
+	SIP_DIALOG_MAP::iterator	itMap;
+	bool	bFound = false;
+
+	if( pclsMessage->GetCallId( strCallId ) == false )
+	{
+		return true;
+	}
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( strCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		bFound = true;
+	}
+	m_clsMutex.release();
+
+	if( bFound )
+	{
+		return true;
+	}
+
+	return false;
+}
