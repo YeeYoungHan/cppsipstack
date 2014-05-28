@@ -419,7 +419,16 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 		CSipFrom clsContact;
 
 		clsContact.m_clsUri.m_strProtocol = "sip";
-		clsContact.m_clsUri.m_strUser = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
+
+		if( pclsMessage->IsRequest() )
+		{
+			clsContact.m_clsUri.m_strUser = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
+		}
+		else
+		{
+			clsContact.m_clsUri.m_strUser = pclsMessage->m_clsTo.m_clsUri.m_strUser;
+		}
+
 		clsContact.m_clsUri.m_strHost = m_clsSetup.m_strLocalIp;
 		clsContact.m_clsUri.m_iPort = m_clsSetup.m_iLocalUdpPort;
 		clsContact.m_clsUri.InsertTransport( eTransport );
