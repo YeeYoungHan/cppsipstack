@@ -274,17 +274,6 @@ void CSipClientMFCDlg::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 
 /**
  * @ingroup SipClientMFC
- * @brief SIP 통화 요청 수신에 대한 인증 확인 이벤트 핸들러
- * @param pclsMessage	SIP INVITE 요청 메시지
- * @return 인증에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
- */
-bool CSipClientMFCDlg::EventIncomingRequestAuth( CSipMessage * pclsMessage )
-{
-	return true;
-}
-
-/**
- * @ingroup SipClientMFC
  * @brief SIP 통화 요청 수신 이벤트 핸들러
  * @param	pszCallId	SIP Call-ID
  * @param pszFrom		SIP From 사용자 아이디
