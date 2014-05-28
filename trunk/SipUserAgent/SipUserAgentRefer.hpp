@@ -199,6 +199,10 @@ bool CSipUserAgent::RecvReferResponse( int iThreadId, CSipMessage * pclsMessage 
 
 	if( bFound )
 	{
+		if( m_pclsCallBack )
+		{
+			m_pclsCallBack->EventTransferResponse( strCallId.c_str(), pclsMessage->m_iStatusCode );
+		}
 		return true;
 	}
 

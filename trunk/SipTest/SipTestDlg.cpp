@@ -32,7 +32,7 @@
 
 CSipTestDlg::CSipTestDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSipTestDlg::IDD, pParent)
-	, m_bCallerLogin(false), m_bCalleeLogin(false), m_bTest(false)
+	, m_bCallerLogin(false), m_bCalleeLogin(false), m_bCallee2Login(false), m_bTest(false)
 	, m_strSipServerIp(_T(""))
 	, m_iSipServerPort(5060)
 	, m_strSipDomain(_T(""))
@@ -43,6 +43,8 @@ CSipTestDlg::CSipTestDlg(CWnd* pParent /*=NULL*/)
 	, m_strLog(_T(""))
 	, m_strPercent(_T(""))
 	, m_bUse2Media(FALSE)
+	, m_strCalleeId2(_T(""))
+	, m_strCalleePassWord2(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -67,6 +69,8 @@ void CSipTestDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOG, m_txtLog);
 	DDX_Check(pDX, IDC_USE_TWO_MEDIA, m_bUse2Media);
 	DDX_Control(pDX, IDC_USE_TWO_MEDIA, m_chkUse2Media);
+	DDX_Text(pDX, IDC_CALLEE_ID2, m_strCalleeId2);
+	DDX_Text(pDX, IDC_CALLEE_PW2, m_strCalleePassWord2);
 }
 
 BEGIN_MESSAGE_MAP(CSipTestDlg, CDialog)
@@ -127,6 +131,8 @@ BOOL CSipTestDlg::OnInitDialog()
 	m_strCallerPassWord = gclsSetup.m_strCallerPassWord.c_str();
 	m_strCalleeId = gclsSetup.m_strCalleeId.c_str();
 	m_strCalleePassWord = gclsSetup.m_strCalleePassWord.c_str();
+	m_strCalleeId2 = gclsSetup.m_strCalleeId2.c_str();
+	m_strCalleePassWord2 = gclsSetup.m_strCalleePassWord2.c_str();
 
 	UpdateData(FALSE);
 
@@ -249,6 +255,8 @@ void CSipTestDlg::OnBnClickedStartSipStack()
 	gclsSetup.m_strCallerPassWord = m_strCallerPassWord;
 	gclsSetup.m_strCalleeId = m_strCalleeId;
 	gclsSetup.m_strCalleePassWord = m_strCalleePassWord;
+	gclsSetup.m_strCalleeId2 = m_strCalleeId2;
+	gclsSetup.m_strCalleePassWord2 = m_strCalleePassWord2;
 
 	gclsSetup.Put();
 
@@ -273,6 +281,14 @@ void CSipTestDlg::OnBnClickedStartSipStack()
 	clsInfo.m_strPassWord = m_strCalleePassWord;
 
 	gclsSipUserAgent.InsertRegisterInfo( clsInfo );
+
+	if( gclsSetup.m_strCalleeId2.empty() == false )
+	{
+		clsInfo.m_strUserId = m_strCalleeId2;
+		clsInfo.m_strPassWord = m_strCalleePassWord2;
+
+		gclsSipUserAgent.InsertRegisterInfo( clsInfo );
+	}
 
 	bool bSuccess = false;
 

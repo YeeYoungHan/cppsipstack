@@ -196,7 +196,10 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 		if( iRtpCount >= 100 ) break;
 	}
 
-	gclsSipUserAgent.StopCall( gclsTestInfo.m_strCallerCallId.c_str() );
+	if( gclsTestInfo.m_eTestType != E_TEST_BLIND_TRANSFER ) 
+	{
+		gclsSipUserAgent.StopCall( gclsTestInfo.m_strCallerCallId.c_str() );
+	}
 
 	if( iRtpCount >= 100 && gclsTestInfo.m_clsCallerRtp.m_iRecvCount >= 95 && gclsTestInfo.m_clsCalleeRtp.m_iRecvCount >= 95 )
 	{
@@ -240,6 +243,7 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 	}
 
 	gbRtpThreadRun = false;
+	gclsTestInfo.m_bRtpThreadEnd = true;
 
 	return 0;
 }

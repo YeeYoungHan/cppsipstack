@@ -28,7 +28,15 @@ enum ETestType
 	E_TEST_ESTABLISHED,
 	E_TEST_CANCEL,
 	E_TEST_DECLINE,
-	E_TEST_BLIND_TRANSFER
+	E_TEST_BLIND_TRANSFER,
+	E_TEST_BLIND_TRANSFER_CALL
+};
+
+enum ETransferResult
+{
+	E_TR_NULL = 0,
+	E_TR_SUCCESS,
+	E_TR_ERROR
 };
 
 /**
@@ -72,6 +80,8 @@ public:
 
 	ETestType			m_eTestType;
 	bool					m_bResult;
+	ETransferResult	m_eTransferResult;
+	bool          m_bRtpThreadEnd;
 
 	bool CreateRtp( );
 	void CloseRtp( );

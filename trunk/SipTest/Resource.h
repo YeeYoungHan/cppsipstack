@@ -20,8 +20,8 @@
 #define IDC_CALLEE_ID                   1004
 #define IDC_CALLEE_PW                   1005
 #define IDC_SIP_DOMAIN                  1006
-#define IDC_CHECK1                      1007
 #define IDC_USE_TWO_MEDIA               1007
+#define IDC_CALLEE_ID2                  1008
 #define IDC_LOG                         1009
 #define IDC_START_SIP_STACK             1010
 #define IDC_STOP_SIP_STACK              1011
@@ -30,6 +30,7 @@
 #define IDC_PROGRESS                    1014
 #define IDC_PERCENT                     1015
 #define IDC_CLEAR_LOG                   1016
+#define IDC_CALLEE_PW2                  1017
 
 // Next default values for new objects
 // 

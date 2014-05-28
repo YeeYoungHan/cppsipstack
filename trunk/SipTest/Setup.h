@@ -30,6 +30,8 @@
 #define ST_CALLER_PW				"caller_pw"
 #define ST_CALLEE_ID				"callee_id"
 #define ST_CALLEE_PW				"callee_pw"
+#define ST_CALLEE2_ID				"callee_id2"
+#define ST_CALLEE2_PW				"callee_pw2"
 #define ST_USE_TWO_MEDIA		"use_2_media"
 
 typedef std::map< std::string, std::string > SETUP_MAP;
@@ -54,6 +56,8 @@ public:
 	std::string m_strCallerPassWord;
 	std::string m_strCalleeId;
 	std::string m_strCalleePassWord;
+	std::string m_strCalleeId2;
+	std::string m_strCalleePassWord2;
 	bool				m_bUseTwoMedia;
 
 private:

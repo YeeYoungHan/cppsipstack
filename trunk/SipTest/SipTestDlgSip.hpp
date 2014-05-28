@@ -82,6 +82,27 @@ void CSipTestDlg::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 			SetLog( "Callee(%s) %s error(%d)", m_strCalleeId, strCommand.c_str(), iStatus );
 		}
 	}
+	else if( !strcmp( pclsInfo->m_strUserId.c_str(), m_strCalleeId2 ) )
+	{
+		if( iStatus == SIP_OK )
+		{
+			if( pclsInfo->m_bLogin )
+			{
+				m_bCallee2Login = true;
+			}
+			else
+			{
+				m_bCallee2Login = false;
+			}
+
+			SetLog( "Callee(%s) %s success", m_strCalleeId2, strCommand.c_str() );
+		}
+		else
+		{
+			m_bCallee2Login = false;
+			SetLog( "Callee(%s) %s error(%d)", m_strCalleeId2, strCommand.c_str(), iStatus );
+		}
+	}
 
 	// Caller, Callee 가 모두 로그인되면 테스트를 시작할 수 있다.
 	if( pclsInfo->m_bLogin && m_bCallerLogin && m_bCalleeLogin )
@@ -117,6 +138,21 @@ void CSipTestDlg::EventIncomingCall( const char * pszCallId, const char * pszFro
 	else if( gclsTestInfo.m_eTestType == E_TEST_DECLINE ) 
 	{
 		gclsSipUserAgent.StopCall( pszCallId, SIP_DECLINE );
+		return;
+	}
+	else if( gclsTestInfo.m_eTestType == E_TEST_BLIND_TRANSFER_CALL )
+	{
+		CSipCallRtp clsRtp;
+
+		clsRtp.m_strIp = gclsSipUserAgent.m_clsSipStack.m_clsSetup.m_strLocalIp;
+		clsRtp.m_iPort = gclsTestInfo.m_clsCallerRtp.m_iPort;	
+		clsRtp.m_iCodec = 0;
+
+		gclsTestInfo.m_clsCallerPeerRtp = *pclsRtp;
+		gclsTestInfo.m_strCallerCallId = pszCallId;
+
+		gclsSipUserAgent.AcceptCall( pszCallId, &clsRtp );
+
 		return;
 	}
 
@@ -201,6 +237,11 @@ void CSipTestDlg::EventCallEnd( const char * pszCallId, int iSipStatus )
  */
 void CSipTestDlg::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
+	if( gclsTestInfo.m_eTestType == E_TEST_BLIND_TRANSFER_CALL ) 
+	{
+		gclsTestInfo.m_clsCalleePeerRtp = *pclsRtp;
+		StartRtpThread();
+	}
 }
 
 /**
@@ -226,6 +267,24 @@ bool CSipTestDlg::EventTransfer( const char * pszCallId, const char * pszReferTo
 bool CSipTestDlg::EventBlindTransfer( const char * pszCallId, const char * pszReferToId )
 {
 	return false;
+}
+
+/**
+ * @ingroup SipTest
+ * @brief SIP 통화 전달 응답 수신 이벤트 핸들러
+ * @param	pszCallId		SIP Call-ID
+ * @param iSipStatus	SIP 응답 코드.
+ */
+void CSipTestDlg::EventTransferResponse( const char * pszCallId, int iSipStatus )
+{
+	if( iSipStatus >= 300 )
+	{
+		gclsTestInfo.m_eTransferResult = E_TR_ERROR;
+	}
+	else if( iSipStatus == SIP_OK )
+	{
+		gclsTestInfo.m_eTransferResult = E_TR_SUCCESS;
+	}
 }
 
 /**

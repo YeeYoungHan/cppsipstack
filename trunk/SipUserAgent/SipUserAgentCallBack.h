@@ -155,6 +155,14 @@ public:
 
 	/**
    * @ingroup SipUserAgent
+	 * @brief SIP 통화 전달 응답 수신 이벤트 핸들러
+	 * @param	pszCallId		SIP Call-ID
+	 * @param iSipStatus	SIP 응답 코드.
+	 */
+	virtual void EventTransferResponse( const char * pszCallId, int iSipStatus ){};
+
+	/**
+   * @ingroup SipUserAgent
 	 * @brief SIP MESSAGE 수신 이벤트 핸들러
 	 * @param pszFrom		SIP From 사용자 아이디
 	 * @param pszTo			SIP To 사용자 아이디

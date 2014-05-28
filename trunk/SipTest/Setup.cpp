@@ -21,7 +21,7 @@
 
 CSetup gclsSetup;
 
-CSetup::CSetup() : m_iSipServerPort(5060)
+CSetup::CSetup() : m_iSipServerPort(5060), m_bUseTwoMedia(false)
 {
 }
 
@@ -44,7 +44,12 @@ bool CSetup::Get()
 	GetString( ST_CALLER_PW, m_strCallerPassWord );
 	GetString( ST_CALLEE_ID, m_strCalleeId );
 	GetString( ST_CALLEE_PW, m_strCalleePassWord );
+	GetString( ST_CALLEE2_ID, m_strCalleeId2 );
+	GetString( ST_CALLEE2_PW, m_strCalleePassWord2 );
+
+#ifdef USE_MEDIA_LIST
 	m_bUseTwoMedia = GetBool( ST_USE_TWO_MEDIA, false );
+#endif
 
 	m_clsMap.clear();
 
@@ -64,6 +69,8 @@ bool CSetup::Put()
 	PutString( ST_CALLER_PW, m_strCallerPassWord.c_str() );
 	PutString( ST_CALLEE_ID, m_strCalleeId.c_str() );
 	PutString( ST_CALLEE_PW, m_strCalleePassWord.c_str() );
+	PutString( ST_CALLEE2_ID, m_strCalleeId2.c_str() );
+	PutString( ST_CALLEE2_PW, m_strCalleePassWord2.c_str() );
 	PutBool( ST_USE_TWO_MEDIA, m_bUseTwoMedia );
 
 	bool bRes = PutFile();

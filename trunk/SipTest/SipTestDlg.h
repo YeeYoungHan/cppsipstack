@@ -49,7 +49,7 @@ protected:
 
 public:
 	// SipTestDlgSip.hpp
-	bool	m_bCallerLogin, m_bCalleeLogin;
+	bool	m_bCallerLogin, m_bCalleeLogin, m_bCallee2Login;
 	bool	m_bTest;
 
 	LRESULT OnSipMessage( WPARAM wParam, LPARAM lParam );
@@ -62,6 +62,7 @@ public:
 	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
 	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer );
 	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId );
+	virtual void EventTransferResponse( const char * pszCallId, int iSipStatus );
 	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage );
 
 	// SipTestDlgUtil.hpp
@@ -97,4 +98,6 @@ public:
 	afx_msg void OnBnClickedClearLog();
 	afx_msg void OnDestroy();
 	CButton m_chkUse2Media;
+	CString m_strCalleeId2;
+	CString m_strCalleePassWord2;
 };
