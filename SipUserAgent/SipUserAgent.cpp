@@ -34,6 +34,7 @@
 #include "SipUserAgentBye.hpp"
 #include "SipUserAgentCancel.hpp"
 #include "SipUserAgentRefer.hpp"
+#include "SipUserAgentNotify.hpp"
 #include "SipUserAgentMessage.hpp"
 
 /**
@@ -291,6 +292,10 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return RecvReferRequest( iThreadId, pclsMessage );
 	}
+	else if( pclsMessage->IsMethod( "NOTIFY" ) )
+	{
+		return RecvNotifyRequest( iThreadId, pclsMessage );
+	}
 	else if( pclsMessage->IsMethod( "MESSAGE" ) )
 	{
 		return RecvMessageRequest( iThreadId, pclsMessage );
@@ -326,7 +331,7 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	}
 	else if( pclsMessage->IsMethod( "REFER" ) )
 	{
-		return true;
+		return RecvReferResponse( iThreadId, pclsMessage );
 	}
 	else if( pclsMessage->IsMethod( "MESSAGE" ) )
 	{

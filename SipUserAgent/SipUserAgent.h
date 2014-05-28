@@ -133,6 +133,9 @@ private:
 	bool RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage );
 
 	bool RecvReferRequest( int iThreadId, CSipMessage * pclsMessage );
+	bool RecvReferResponse( int iThreadId, CSipMessage * pclsMessage );
+
+	bool RecvNotifyRequest( int iThreadId, CSipMessage * pclsMessage );
 
 	bool RecvMessageRequest( int iThreadId, CSipMessage * pclsMessage );
 
