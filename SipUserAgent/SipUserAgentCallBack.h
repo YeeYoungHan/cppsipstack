@@ -89,7 +89,7 @@ public:
 	 * @param pclsMessage	SIP INVITE 요청 메시지
 	 * @return 인증에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
 	 */
-	virtual bool EventIncomingRequestAuth( CSipMessage * pclsMessage ) = 0;
+	virtual bool EventIncomingRequestAuth( CSipMessage * pclsMessage ){ return true; };
 
 	/**
    * @ingroup SipUserAgent
