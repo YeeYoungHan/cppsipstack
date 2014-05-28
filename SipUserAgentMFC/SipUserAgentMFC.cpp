@@ -123,6 +123,12 @@ LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
 				m_pclsCallBack->EventBlindTransfer( pclsParam->m_pszCallId, pclsParam->m_pszReferToId );
 			}
 			break;
+		case SMC_TRANSFER_RESPONSE:
+			{
+				CEventCallEnd * pclsParam = (CEventCallEnd *)lParam;
+				m_pclsCallBack->EventTransferResponse( pclsParam->m_pszCallId, pclsParam->m_iSipStatus );
+			}
+			break;
 		default:
 			bNotFound = true;
 			break;
@@ -268,6 +274,19 @@ bool CSipUserAgentMFC::EventBlindTransfer( const char * pszCallId, const char * 
 	_SendMessage( SMC_BLIND_TRANSFER, (LPARAM)&clsParam );
 
 	return true;
+}
+
+/**
+ * @ingroup SipUserAgentMFC
+ * @brief SIP 통화 전달 응답 수신 이벤트 핸들러
+ * @param	pszCallId		SIP Call-ID
+ * @param iSipStatus	SIP 응답 코드.
+ */
+void CSipUserAgentMFC::EventTransferResponse( const char * pszCallId, int iSipStatus )
+{
+	CEventCallEnd clsParam( pszCallId, iSipStatus );
+
+	_SendMessage( SMC_TRANSFER_RESPONSE, (LPARAM)&clsParam );
 }
 
 /**

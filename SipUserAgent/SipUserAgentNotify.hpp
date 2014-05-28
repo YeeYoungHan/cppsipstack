@@ -44,6 +44,33 @@ bool CSipUserAgent::RecvNotifyRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	if( bFound )
 	{
+		if( pclsMessage->m_clsContentType.IsEqual( "message", "sipfrag" ) )
+		{
+			CSipHeader * pclsHeader = pclsMessage->GetHeader( "Event" );
+			if( pclsHeader )
+			{
+				if( !strcmp( pclsHeader->m_strValue.c_str(), "refer" ) )
+				{
+					CSipMessage clsSipBody;
+
+					clsSipBody.Parse( pclsMessage->m_strBody.c_str(), pclsMessage->m_strBody.length() );
+					if( clsSipBody.m_iStatusCode > 0 )
+					{
+						if( m_pclsCallBack )
+						{
+							m_pclsCallBack->EventTransferResponse( strCallId.c_str(), clsSipBody.m_iStatusCode );
+						}
+					}
+				}
+			}
+		}
+
+		CSipMessage * pclsResponse = pclsMessage->CreateResponse( SIP_OK );
+		if( pclsResponse )
+		{
+			m_clsSipStack.SendSipMessage( pclsResponse );
+		}
+
 		return true;
 	}
 

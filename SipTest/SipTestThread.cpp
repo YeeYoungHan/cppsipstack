@@ -180,23 +180,55 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 		SendLog( "Call Decline Test : ERROR" );
 	}
 
-	/*
-	// 통화 전달 테스트
-	gclsTestInfo.m_eTestType = E_TEST_BLIND_TRANSFER;
-	iMiliSecond = StartCall( "Call Blind Transfer Test", clsRtp, clsRoute );
-	if( iMiliSecond == -1 ) goto FUNC_END;
-
-	if( gclsTestInfo.m_bResult == false )
+	if( gclsSetup.m_strCalleeId2.empty() == false )
 	{
-		SendLog( "Call Blind Transfer Test : ERROR" );
-		goto FUNC_END;
-	}
+		// 통화 전달 테스트
+		SendLog( "Call Blind Transfer Test : Start" );
 
-	// QQQ: 통화 전달 기능을 수행한다.
-	gclsSipUserAgent.
-	
-	SendLog( "Call Blind Transfer Test : OK" );
-	*/
+		gclsTestInfo.m_eTestType = E_TEST_BLIND_TRANSFER;
+		gclsTestInfo.m_bRtpThreadEnd = false;
+		if( gclsSipUserAgent.StartCall( gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strCalleeId.c_str(), &clsRtp, &clsRoute, strCallId ) == false )
+		{
+			SendLog( "gclsSipUserAgent.StartCall error" );
+			return -1;
+		}
+
+		gclsTestInfo.m_strCallerCallId = strCallId;
+		
+		while( gclsTestInfo.m_bRtpThreadEnd == false )
+		{
+			if( gbStopTestThread ) break;
+			Sleep(20);
+		}
+
+		if( gclsTestInfo.m_bResult == false )
+		{
+			SendLog( "Call Blind Transfer Test : ERROR" );
+			goto FUNC_END;
+		}
+
+		SendLog( "Call Blind Transfer Test : Call success => Refer test" );
+
+		gclsTestInfo.m_eTestType = E_TEST_BLIND_TRANSFER_CALL;
+		gclsTestInfo.m_eTransferResult = E_TR_NULL;
+		gclsSipUserAgent.TransferCall( gclsTestInfo.m_strCallerCallId.c_str(), gclsSetup.m_strCalleeId2.c_str() );
+
+		while( gclsTestInfo.m_eTransferResult == E_TR_NULL )
+		{
+			if( gbStopTestThread ) break;
+			Sleep(20);
+		}
+
+		if( gclsTestInfo.m_eTransferResult == E_TR_ERROR )
+		{
+			SendLog( "Call Blind Transfer Test : ERROR" );
+			goto FUNC_END;
+		}
+
+		WaitUntilAllCallStop();
+
+		SendLog( "Call Blind Transfer Test : OK" );
+	}
 
 FUNC_END:
 	gclsTestInfo.CloseRtp();
