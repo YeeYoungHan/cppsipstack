@@ -20,6 +20,7 @@
 
 #include "SipUserAgent.h"
 #include "SipUserAgentMFC.h"
+#include "afxwin.h"
 
 // CSipTestDlg dialog
 class CSipTestDlg : public CDialog, ISipUserAgentCallBack
@@ -87,6 +88,7 @@ public:
 	CProgressCtrl m_clsProgress;
 	CString m_strPercent;
 	CEdit m_txtLog;
+	BOOL m_bUse2Media;
 
 	LRESULT OnTestMessage( WPARAM wParam, LPARAM lParam );
 	afx_msg void OnBnClickedStartSipStack();
@@ -95,5 +97,5 @@ public:
 	afx_msg void OnBnClickedStopTest();
 	afx_msg void OnBnClickedClearLog();
 	afx_msg void OnDestroy();
-	BOOL m_bUse2Media;
+	CButton m_chkUse2Media;
 };

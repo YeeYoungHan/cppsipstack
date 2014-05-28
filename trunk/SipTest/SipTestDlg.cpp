@@ -66,6 +66,7 @@ void CSipTestDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_PERCENT, m_strPercent);
 	DDX_Control(pDX, IDC_LOG, m_txtLog);
 	DDX_Check(pDX, IDC_USE_TWO_MEDIA, m_bUse2Media);
+	DDX_Control(pDX, IDC_USE_TWO_MEDIA, m_chkUse2Media);
 }
 
 BEGIN_MESSAGE_MAP(CSipTestDlg, CDialog)
@@ -115,7 +116,7 @@ BOOL CSipTestDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-		m_clsProgress.SetRange( 0, 100 );
+	m_clsProgress.SetRange( 0, 100 );
 
 	gclsSetup.Get();
 
@@ -132,6 +133,10 @@ BOOL CSipTestDlg::OnInitDialog()
 	m_btnStopSipStack.EnableWindow( FALSE );
 	m_btnStartTest.EnableWindow( FALSE );
 	m_btnStopTest.EnableWindow( FALSE );
+
+#ifndef USE_MEDIA_LIST
+	m_chkUse2Media.EnableWindow( FALSE );
+#endif
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -329,8 +334,11 @@ void CSipTestDlg::OnBnClickedStartTest()
 #endif
 
 	m_strPercent = "0 %";
+
+#ifdef USE_MEDIA_LIST
 	gclsSetup.m_bUseTwoMedia = ( m_bUse2Media ? true : false );
 	gclsSetup.Put();
+#endif
 
 	UpdateData(FALSE);
 

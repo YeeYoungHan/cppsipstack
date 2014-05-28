@@ -137,6 +137,7 @@ void CSipTestDlg::EventIncomingCall( const char * pszCallId, const char * pszFro
 	clsRtp.m_iPort = gclsTestInfo.m_clsCalleeRtp.m_iPort;	
 	clsRtp.m_iCodec = 0;
 
+#ifdef USE_MEDIA_LIST
 	if( gclsSetup.m_bUseTwoMedia )
 	{
 		CSdpMedia sdpAudio( "audio", gclsTestInfo.m_clsCalleeRtp.m_iPort, "RTP/AVP" );
@@ -150,6 +151,7 @@ void CSipTestDlg::EventIncomingCall( const char * pszCallId, const char * pszFro
 		clsRtp.m_clsMediaList.push_back( sdpAudio );
 		clsRtp.m_clsMediaList.push_back( sdpVideo );
 	}
+#endif
 
 	gclsTestInfo.m_clsCalleePeerRtp = *pclsRtp;
 	gclsTestInfo.m_strCalleeCallId = pszCallId;
