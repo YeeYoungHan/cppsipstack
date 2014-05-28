@@ -122,6 +122,7 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	clsRtp.m_iPort = gclsTestInfo.m_clsCallerRtp.m_iPort;
 	clsRtp.m_iCodec = 0;
 
+#ifdef USE_MEDIA_LIST
 	if( gclsSetup.m_bUseTwoMedia )
 	{
 		CSdpMedia sdpAudio( "audio", gclsTestInfo.m_clsCallerRtp.m_iPort, "RTP/AVP" );
@@ -135,6 +136,7 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 		clsRtp.m_clsMediaList.push_back( sdpAudio );
 		clsRtp.m_clsMediaList.push_back( sdpVideo );
 	}
+#endif
 
 	clsRoute.m_strDestIp = gclsSetup.m_strSipServerIp;
 	clsRoute.m_iDestPort = gclsSetup.m_iSipServerPort;
@@ -177,6 +179,24 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 	{
 		SendLog( "Call Decline Test : ERROR" );
 	}
+
+	/*
+	// 통화 전달 테스트
+	gclsTestInfo.m_eTestType = E_TEST_BLIND_TRANSFER;
+	iMiliSecond = StartCall( "Call Blind Transfer Test", clsRtp, clsRoute );
+	if( iMiliSecond == -1 ) goto FUNC_END;
+
+	if( gclsTestInfo.m_bResult == false )
+	{
+		SendLog( "Call Blind Transfer Test : ERROR" );
+		goto FUNC_END;
+	}
+
+	// QQQ: 통화 전달 기능을 수행한다.
+	gclsSipUserAgent.
+	
+	SendLog( "Call Blind Transfer Test : OK" );
+	*/
 
 FUNC_END:
 	gclsTestInfo.CloseRtp();
