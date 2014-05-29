@@ -140,7 +140,7 @@ void CSipTestDlg::EventIncomingCall( const char * pszCallId, const char * pszFro
 		gclsSipUserAgent.StopCall( pszCallId, SIP_DECLINE );
 		return;
 	}
-	else if( gclsTestInfo.m_eTestType == E_TEST_BLIND_TRANSFER_CALL )
+	else if( gclsTestInfo.m_eTestType == E_TEST_TRANSFER_CALL )
 	{
 		CSipCallRtp clsRtp;
 
@@ -216,6 +216,12 @@ void CSipTestDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp 
 		return;
 	}
 
+	if( gclsTestInfo.m_eTestType == E_TEST_TRANSFER_CALL )
+	{
+		gclsTestInfo.m_bRtpThreadEnd = true;
+		return;
+	}
+
 	gclsTestInfo.m_clsCallerPeerRtp = *pclsRtp;
 
 	StartRtpThread();
@@ -239,11 +245,23 @@ void CSipTestDlg::EventCallEnd( const char * pszCallId, int iSipStatus )
  */
 void CSipTestDlg::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
-	if( gclsTestInfo.m_eTestType == E_TEST_BLIND_TRANSFER_CALL ) 
+	if( gclsTestInfo.m_eTestType == E_TEST_TRANSFER_CALL ) 
 	{
 		// blind transfer 결과로 수신되는 ReINVITE 는 callee 에게 수신된다.
 		gclsTestInfo.m_clsCalleePeerRtp = *pclsRtp;
 		StartRtpThread();
+	}
+	else if( gclsTestInfo.m_eTestType == E_TEST_SCREENED_TRANSFER_CALL )
+	{
+		if( !strcmp( gclsTestInfo.m_strCallerCallId.c_str(), pszCallId ) )
+		{
+			gclsTestInfo.m_clsCallerPeerRtp = *pclsRtp;
+		}
+		else if( !strcmp( gclsTestInfo.m_strCalleeCallId.c_str(), pszCallId ) )
+		{
+			gclsTestInfo.m_clsCalleePeerRtp = *pclsRtp;
+			StartRtpThread();
+		}
 	}
 }
 

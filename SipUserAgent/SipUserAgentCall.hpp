@@ -315,7 +315,7 @@ bool CSipUserAgent::StartCall( const char * pszCallId, CSipMessage * pclsInvite 
  * @param pszTo			통화 전달을 받을 아이디
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszTo )
+bool CSipUserAgent::TransferCallBlind( const char * pszCallId, const char * pszTo )
 {
 	if( pszCallId == NULL || pszTo == NULL ) return false;
 
@@ -336,6 +336,56 @@ bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszTo )
 	char szUri[1024];
 
 	snprintf( szUri, sizeof(szUri), "<sip:%s@%s:%d>", pszTo, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
+	pclsMessage->AddHeader( "Refer-To", szUri );
+
+	return m_clsSipStack.SendSipMessage( pclsMessage );
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief Screened / Unscreened transfer 를 실행한다.
+ * @param pszCallId		SIP Call-ID
+ * @param pszToCallId	통화 전달을 받을 SIP Call-ID
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszToCallId )
+{
+	if( pszCallId == NULL || pszToCallId == NULL ) return false;
+
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+	CSipMessage * pclsMessage = NULL;
+	std::string strReplaces, strToId;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszToCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		strToId = itMap->second.m_strToId;
+
+		strReplaces = pszToCallId;
+		ReplaceString( strReplaces, "@", "%40" );
+		strReplaces.append( "%3B" );
+		strReplaces.append( "to-tag%3D" );
+		strReplaces.append( itMap->second.m_strToTag );
+		strReplaces.append( "%3B" );
+		strReplaces.append( "from-tag%3D" );
+		strReplaces.append( itMap->second.m_strFromTag );
+
+		itMap = m_clsMap.find( pszCallId );
+		if( itMap != m_clsMap.end() )
+		{
+			pclsMessage = itMap->second.CreateRefer();
+		}
+	}
+	m_clsMutex.release();
+
+	if( pclsMessage == NULL ) return false;
+
+	char szUri[1024];
+
+	snprintf( szUri, sizeof(szUri), "<sip:%s@%s:%d?Replaces=%s>"
+		, strToId.c_str(), m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort, strReplaces.c_str() );
 	pclsMessage->AddHeader( "Refer-To", szUri );
 
 	return m_clsSipStack.SendSipMessage( pclsMessage );

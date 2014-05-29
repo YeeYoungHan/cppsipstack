@@ -196,7 +196,7 @@ DWORD WINAPI RtpThread( LPVOID lpParameter )
 		if( iRtpCount >= 100 ) break;
 	}
 
-	if( gclsTestInfo.m_eTestType != E_TEST_BLIND_TRANSFER ) 
+	if( gclsTestInfo.m_eTestType != E_TEST_TRANSFER ) 
 	{
 		// blind transfer 테스트에서는 최초 통화를 종료하지 않는다.
 		// blind transfer 가 진행될 때에 서버에서 통화를 종료한다.

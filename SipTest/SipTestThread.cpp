@@ -185,7 +185,7 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 		// 통화 전달 테스트
 		SendLog( "Call Blind Transfer Test : Start" );
 
-		gclsTestInfo.m_eTestType = E_TEST_BLIND_TRANSFER;
+		gclsTestInfo.m_eTestType = E_TEST_TRANSFER;
 		gclsTestInfo.m_bRtpThreadEnd = false;
 		if( gclsSipUserAgent.StartCall( gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strCalleeId.c_str(), &clsRtp, &clsRoute, strCallId ) == false )
 		{
@@ -209,9 +209,9 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 
 		SendLog( "Call Blind Transfer Test : Call success => Refer test" );
 
-		gclsTestInfo.m_eTestType = E_TEST_BLIND_TRANSFER_CALL;
+		gclsTestInfo.m_eTestType = E_TEST_TRANSFER_CALL;
 		gclsTestInfo.m_eTransferResult = E_TR_NULL;
-		gclsSipUserAgent.TransferCall( gclsTestInfo.m_strCallerCallId.c_str(), gclsSetup.m_strCalleeId2.c_str() );
+		gclsSipUserAgent.TransferCallBlind( gclsTestInfo.m_strCallerCallId.c_str(), gclsSetup.m_strCalleeId2.c_str() );
 
 		while( gclsTestInfo.m_eTransferResult == E_TR_NULL )
 		{
@@ -228,9 +228,70 @@ DWORD WINAPI SipTestThread( LPVOID lpParameter )
 		WaitUntilAllCallStop();
 
 		SendLog( "Call Blind Transfer Test : OK" );
+
+		// Screened Transfer Test
+		SendLog( "Call Screened Transfer Test : Start" );
+
+		std::string strFirstCallId, strSecondCall;
+
+		gclsTestInfo.m_eTestType = E_TEST_TRANSFER;
+		gclsTestInfo.m_bRtpThreadEnd = false;
+		if( gclsSipUserAgent.StartCall( gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strCalleeId.c_str(), &clsRtp, &clsRoute, strCallId ) == false )
+		{
+			SendLog( "gclsSipUserAgent.StartCall error" );
+			return -1;
+		}
+
+		strFirstCallId = strCallId;
+		gclsTestInfo.m_strCallerCallId = strCallId;
+		
+		while( gclsTestInfo.m_bRtpThreadEnd == false )
+		{
+			if( gbStopTestThread ) break;
+			Sleep(20);
+		}
+
+		if( gclsTestInfo.m_bResult == false )
+		{
+			SendLog( "Call Screened Transfer Test : ERROR" );
+			goto FUNC_END;
+		}
+
+		SendLog( "Call Screened Transfer Test : second call start" );
+
+		gclsTestInfo.m_eTestType = E_TEST_TRANSFER_CALL;
+		gclsTestInfo.m_bRtpThreadEnd = false;
+		if( gclsSipUserAgent.StartCall( gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strCalleeId2.c_str(), &clsRtp, &clsRoute, strSecondCall ) == false )
+		{
+			gclsSipUserAgent.StopCall( gclsTestInfo.m_strCallerCallId.c_str() );
+			SendLog( "gclsSipUserAgent.StartCall error" );
+			return -1;
+		}
+
+		while( gclsTestInfo.m_bRtpThreadEnd == false )
+		{
+			if( gbStopTestThread ) break;
+			Sleep(20);
+		}
+
+		gclsTestInfo.m_eTransferResult = E_TR_NULL;
+		gclsTestInfo.m_eTestType = E_TEST_SCREENED_TRANSFER_CALL;
+
+		SendLog( "Call Screened Transfer Test : send refer" );
+
+		if( gclsSipUserAgent.TransferCall( strFirstCallId.c_str(), strSecondCall.c_str() ) == false )
+		{
+			SendLog( "gclsSipUserAgent.TransferCall error" );
+			return -1;
+		}
+
+		WaitUntilAllCallStop();
+
+		SendLog( "Call Screened Transfer Test : OK" );
 	}
 
 FUNC_END:
+	gclsSipUserAgent.StopCallAll();
 	gclsTestInfo.CloseRtp();
 	gbTestThreadRun = false;
 
