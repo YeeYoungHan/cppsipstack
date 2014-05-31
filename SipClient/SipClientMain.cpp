@@ -73,14 +73,18 @@ int main( int argc, char * argv[] )
 
 	if( eTransport == E_SIP_TCP )
 	{
-		clsSetup.m_iLocalTcpPort = SIP_TCP_PORT;
+		clsSetup.m_iLocalTcpPort = iLocalPort;
 	}
 
 	// UDP 수신 쓰레드의 기본 개수는 1개이다. 이를 수정하려면 CSipStackSetup.m_iUdpThreadCount 를 수정하면 된다.
 
 	clsUserAgent.InsertRegisterInfo( clsServerInfo );
 
-	clsUserAgent.Start( clsSetup, &clsSipClient );
+	if( clsUserAgent.Start( clsSetup, &clsSipClient ) == false )
+	{
+		printf( "sip stack start error\n" );
+		return 0;
+	}
 
 	char	szCommand[1024];
 	int		iLen;
