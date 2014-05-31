@@ -325,6 +325,10 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 				CLog::Print( LOG_NETWORK, "TcpSend(%s:%d) [%s] error(%d)", pszIp, iPort, pclsMessage->m_strPacket.c_str(), GetError() );
 			}
 		}
+		else
+		{
+			bRes = StartSipTcpClientThread( this, pszIp, iPort, pclsMessage->m_strPacket.c_str() );
+		}
 	}
 	else if( eTransport == E_SIP_TLS )
 	{

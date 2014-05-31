@@ -401,6 +401,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipTcpClientThread.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipTcpThread.cpp"
 				>
 			</File>

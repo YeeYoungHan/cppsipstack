@@ -78,7 +78,7 @@ void * SipTcpThread( void * lpParameter )
 			{
 				if( clsSessionList.Insert( clsTcpComm ) )
 				{
-					pclsSipStack->m_clsTcpSocketMap.Insert( clsTcpComm.m_szIp, clsTcpComm.m_iPort, clsTcpComm.m_hSocket );
+					pclsSipStack->m_clsTcpSocketMap.Insert( clsTcpComm.m_strIp.c_str(), clsTcpComm.m_iPort, clsTcpComm.m_hSocket );
 				}
 				else
 				{
@@ -146,6 +146,7 @@ void * SipTcpListenThread( void * lpParameter )
 	CSipStack * pclsSipStack = (CSipStack *)lpParameter;
 	struct pollfd arrPollFd[2];
 	int		iSocketCount = 0, n, i;
+	char	szIp[51];
 	bool	bRes;
 	Socket	hConnFd;
 	struct sockaddr_in sttAddr;
@@ -180,10 +181,12 @@ void * SipTcpListenThread( void * lpParameter )
 				clsTcpComm.m_iPort = ntohs( sttAddr.sin_port );
 
 #ifdef WIN32
-				snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", inet_ntoa( sttAddr.sin_addr ) );
+				snprintf( szIp, sizeof(szIp), "%s", inet_ntoa( sttAddr.sin_addr ) );
 #else
-				inet_ntop( AF_INET, &sttAddr.sin_addr, clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp) );
+				inet_ntop( AF_INET, &sttAddr.sin_addr, szIp, sizeof(szIp) );
 #endif
+
+				clsTcpComm.m_strIp = szIp;
 
 				bRes = false;
 				if( arrPollFd[i].fd == pclsSipStack->m_hTcpSocket )
