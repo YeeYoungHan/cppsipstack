@@ -21,13 +21,7 @@
 
 #include <string>
 #include <list>
-
-enum ESipTransport
-{
-	E_SIP_UDP = 0,
-	E_SIP_TCP,
-	E_SIP_TLS
-};
+#include "SipTransport.h"
 
 /**
  * @ingroup SipParser
