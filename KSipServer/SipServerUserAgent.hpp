@@ -259,7 +259,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	{
 		gclsCallMap.Delete( pszCallId );
 
-		CLog::Print( LOG_ERROR, "EventIncomingCall(%s) StartCall errr", pszCallId );
+		CLog::Print( LOG_ERROR, "EventIncomingCall(%s) StartCall error", pszCallId );
 		return StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
 	}
 }
