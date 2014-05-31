@@ -34,22 +34,25 @@ bool SipTcpSend( Socket hSocket, const char * pszIp, int iPort, CSipMessage * pc
 	int iTcpPort;
 	bool bRes = false;
 
-	if( pclsMessage->IsRequest() )
+	if( GetLocalIpPort( hSocket, strTcpIp, iTcpPort ) == false )
 	{
-		if( GetLocalIpPort( hSocket, strTcpIp, iTcpPort ) == false )
+		CLog::Print( LOG_ERROR, "GetLocalIpPort(%d) error(%d)", hSocket, GetError() );
+		return false;	
+	}
+	else
+	{
+		bool bVia = false, bContact = false;
+		
+		if( pclsMessage->IsRequest() )
 		{
-			CLog::Print( LOG_ERROR, "GetLocalIpPort(%d) error(%d)", hSocket, GetError() );
-			return false;	
+			bVia = pclsMessage->SetTopViaIpPort( strTcpIp.c_str(), iTcpPort, E_SIP_TCP );
 		}
-		else
-		{
-			bool bVia = pclsMessage->SetTopViaIpPort( strTcpIp.c_str(), iTcpPort, E_SIP_TCP );
-			bool bContact = pclsMessage->SetTopContactIpPort( strTcpIp.c_str(), iTcpPort, E_SIP_TCP );
 
-			if( bVia || bContact )
-			{
-				pclsMessage->MakePacket();
-			}
+		bContact = pclsMessage->SetTopContactIpPort( strTcpIp.c_str(), iTcpPort, E_SIP_TCP );
+
+		if( bVia || bContact )
+		{
+			pclsMessage->MakePacket();
 		}
 	}
 
