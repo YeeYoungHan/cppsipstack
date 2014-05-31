@@ -429,6 +429,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipTcpMessage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipTcpMessage.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TcpSessionList.cpp"
 				>
 			</File>

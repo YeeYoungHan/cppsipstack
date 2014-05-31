@@ -333,6 +333,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipTransport.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipUri.cpp"
 				>
 			</File>

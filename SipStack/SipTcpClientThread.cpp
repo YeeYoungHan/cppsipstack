@@ -19,6 +19,7 @@
 #include "SipStackThread.h"
 #include "TcpSessionList.h"
 #include "ServerUtility.h"
+#include "SipTcpMessage.h"
 #include "Log.h"
 #include "MemoryDebug.h"
 
@@ -28,7 +29,7 @@ public:
 	CSipStack * m_pclsSipStack;
 	std::string m_strIp;
 	int					m_iPort;
-	std::string m_strSipMessage;
+	CSipMessage * m_pclsSipMessage;
 };
 
 /**
@@ -59,10 +60,11 @@ void * SipTcpClientThread( void * lpParameter )
 		}
 		else
 		{
-			TcpSend( hSocket, pclsArg->m_strSipMessage.c_str(), pclsArg->m_strSipMessage.length() );
+			SipTcpSend( hSocket, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage );
 		}
 	}
 
+	--pclsArg->m_pclsSipMessage->m_iUseCount;
 	delete pclsArg;
 
 	return 0;
@@ -77,7 +79,7 @@ void * SipTcpClientThread( void * lpParameter )
  * @param pszSipMessage	전송할 SIP 메시지
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool StartSipTcpClientThread( CSipStack * pclsSipStack, const char * pszIp, int iPort, const char * pszSipMessage )
+bool StartSipTcpClientThread( CSipStack * pclsSipStack, const char * pszIp, int iPort, CSipMessage * pclsSipMessage )
 {
 	CSipTcpClientArg * pclsArg = new CSipTcpClientArg();
 	if( pclsArg == NULL ) return false;
@@ -85,7 +87,9 @@ bool StartSipTcpClientThread( CSipStack * pclsSipStack, const char * pszIp, int 
 	pclsArg->m_pclsSipStack = pclsSipStack;
 	pclsArg->m_strIp = pszIp;
 	pclsArg->m_iPort = iPort;
-	pclsArg->m_strSipMessage = pszSipMessage;
+	pclsArg->m_pclsSipMessage = pclsSipMessage;
+
+	++pclsArg->m_pclsSipMessage->m_iUseCount;
 
 	return StartThread( "SipTcpClientThread", SipTcpClientThread, pclsArg );
 }
