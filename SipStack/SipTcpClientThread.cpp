@@ -87,6 +87,6 @@ bool StartSipTcpClientThread( CSipStack * pclsSipStack, const char * pszIp, int 
 	pclsArg->m_iPort = iPort;
 	pclsArg->m_strSipMessage = pszSipMessage;
 
-	return StartThread( "SipTcpClientThread", SipTcpClientThread, pclsSipStack );
+	return StartThread( "SipTcpClientThread", SipTcpClientThread, pclsArg );
 }
 

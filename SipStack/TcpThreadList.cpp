@@ -64,7 +64,7 @@ void CThreadListEntry::DecreaseSocketCount( bool bLock )
 	if( bLock ) gclsMutex.release();
 }
 
-CThreadList::CThreadList(void) : m_iMaxSocketPerThread( 10 ), m_iThreadMaxCount(1)
+CThreadList::CThreadList(void) : m_iMaxSocketPerThread( 10 ), m_iThreadMaxCount(1), m_pThreadProc(NULL), m_pUser(NULL)
 {
 }
 
@@ -145,6 +145,11 @@ bool CThreadList::SetMaxSocketPerThread( int iMaxSocketPerThread )
 bool CThreadList::SendCommand( const char * pszData, int iDataLen, int iThreadIndex, int * piThreadIndex )
 {
 	bool	bRes = false, bFound = false;
+
+	if( m_pThreadProc == NULL )
+	{
+		return false;
+	}
 
 	if( iThreadIndex < -1 )
 	{
