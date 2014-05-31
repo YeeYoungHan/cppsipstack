@@ -403,6 +403,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipTransport.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SipUri.h"
 				>
 			</File>
