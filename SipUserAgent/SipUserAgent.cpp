@@ -23,6 +23,7 @@
 #include "StringUtility.h"
 #include "TimeString.h"
 #include "TimeUtility.h"
+#include "Log.h"
 #include "MemoryDebug.h"
 
 #include "SipUserAgentCall.hpp"
@@ -599,12 +600,20 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 	{
 		CSdpMessage clsSdp;
 
-		if( clsSdp.Parse( pclsMessage->m_strBody.c_str(), (int)pclsMessage->m_strBody.length() ) == -1 ) return false;
+		if( clsSdp.Parse( pclsMessage->m_strBody.c_str(), (int)pclsMessage->m_strBody.length() ) == -1 ) 
+		{
+			CLog::Print( LOG_ERROR, "GetSipCallRtp sdp parse error [%s]", pclsMessage->m_strBody.c_str() );
+			return false;
+		}
 
 		clsRtp.m_strIp = clsSdp.m_clsConnection.m_strAddr;
 
 		SDP_MEDIA_LIST::iterator itMedia = clsSdp.m_clsMediaList.begin();
-		if( itMedia == clsSdp.m_clsMediaList.end() ) return false;
+		if( itMedia == clsSdp.m_clsMediaList.end() ) 
+		{
+			CLog::Print( LOG_ERROR, "GetSipCallRtp media is not found" );
+			return false;
+		}
 
 		clsRtp.m_iPort = itMedia->m_iPort;
 
@@ -661,6 +670,8 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 
 		return true;
 	}
+
+	CLog::Print( LOG_ERROR, "GetSipCallRtp body is empty" );
 
 	return false;
 }
