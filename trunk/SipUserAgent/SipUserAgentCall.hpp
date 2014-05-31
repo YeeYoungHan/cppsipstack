@@ -213,7 +213,12 @@ void CSipUserAgent::StopCallAll( )
 
 /**
  * @ingroup SipUserAgent
- * @brief SIP INVITE 메시지를 생성하고 Dialog 에 저장한다.
+ * @brief SIP INVITE 메시지를 생성하고 Dialog 에 저장한다. 본 메소드는 SIP INVITE 메시지를 전송하지는 않는다. 
+ *				본 메소드로 생성된 SIP INVITE 메시지를 전송하려면 StartCall( const char * pszCallId, CSipMessage * pclsInvite ) 메소드를 실행해야 한다.
+ *				본 메소드가 개발된 이유는 StartCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId ) 을 호출한 후,
+ *				응용 프로그램에서 생성된 SIP Call-ID 를 자료구조에 저장하기 전에 SIP INVITE 응답 메시지를 수신하면 응용 프로그램에서 해당 통화 정보가
+ *				자료구조에 없어서 정상적으로 처리하지 못 하기 때문에 이를 방지하기 위해서 SIP INVITE 메시지와 SIP Dialog 를 생성하여서 SIP Call-ID 를
+ *				응용 프로그램에 전달하여 응용 프로그램 자료구조에 저장한 후, SIP INVITE 메시지를 전송하기 위함이다.
  * @param pszFrom		발신자 아이디
  * @param pszTo			수신자 아이디
  * @param pclsRtp		local RTP 정보 저장 객체
@@ -290,7 +295,7 @@ bool CSipUserAgent::CreateCall( const char * pszFrom, const char * pszTo, CSipCa
 
 /**
  * @ingroup SipUserAgent
- * @brief 생성된 INVITE 메시지를 전송한다.
+ * @brief CreateCall 메소드로 생성된 INVITE 메시지를 전송한다.
  * @param pszCallId		SIP Call-ID
  * @param pclsInvite	SIP INVITE 메시지
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
