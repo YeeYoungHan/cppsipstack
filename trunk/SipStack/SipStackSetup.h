@@ -56,6 +56,9 @@ public:
 	/** SIP 메시지 수신용 TCP 소켓의 수신 대기 시간 (초단위) */
 	int					m_iTcpRecvTimeout;
 
+	/** TCP 세션 연결 timeout 시간 (초단위) */
+	int					m_iTcpConnectTimeout;
+
 	/** TLS 세션 handshake 대기 시간 (초단위) */
 	int					m_iTlsAcceptTimeout;
 

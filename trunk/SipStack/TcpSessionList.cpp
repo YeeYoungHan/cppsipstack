@@ -117,7 +117,7 @@ bool CTcpSessionList::Insert( CTcpComm & clsTcpComm, SSL * psttSsl )
 			if( m_psttPollFd[i].fd == INVALID_SOCKET )
 			{
 				TcpSetPollIn( m_psttPollFd[i], clsTcpComm.m_hSocket );
-				m_clsList[i].m_strIp = clsTcpComm.m_szIp;
+				m_clsList[i].m_strIp = clsTcpComm.m_strIp;
 				m_clsList[i].m_iPort = clsTcpComm.m_iPort;
 				m_clsList[i].m_iConnectTime = iTime;
 				m_clsList[i].m_iRecvTime = iTime;
@@ -134,7 +134,7 @@ bool CTcpSessionList::Insert( CTcpComm & clsTcpComm, SSL * psttSsl )
 	}
 
 	TcpSetPollIn( m_psttPollFd[m_iPoolFdCount], clsTcpComm.m_hSocket );
-	m_clsList[m_iPoolFdCount].m_strIp = clsTcpComm.m_szIp;
+	m_clsList[m_iPoolFdCount].m_strIp = clsTcpComm.m_strIp;
 	m_clsList[m_iPoolFdCount].m_iPort = clsTcpComm.m_iPort;
 	m_clsList[m_iPoolFdCount].m_iConnectTime = iTime;
 	m_clsList[m_iPoolFdCount].m_iRecvTime = iTime;
