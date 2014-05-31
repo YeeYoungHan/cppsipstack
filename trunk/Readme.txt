@@ -24,9 +24,11 @@ C++ SIP stack 프로젝트
 
  * SipClient 
    - C++ SIP stack 을 테스트하기 위한 SIP 클라이언트 프로그램
+   - C++ SIP stack 으로 SIP 클라이언트를 개발하시려면 본 소스 코드를 참고하세요.
 
  * SipClientMFC
    - C++ SIP stack 을 테스트하기 위한 MFC 기반 SIP 클라이언트 프로그램
+   - MFC 기반으로 SIP 클라이언트를 개발하시려면 본 소스 코드를 참고하세요.
 
  * SipParser
    - SIP 메시지 파서/생성 라이브러리
@@ -60,10 +62,6 @@ C++ SIP stack 프로젝트
  * KSipServer
    - 한국형 SIP 서버 프로그램
 
- * KSipServerAdmin
-   - KSipServer 가 사용하는 MySQL 데이터베이스와 연동하는 웹 프로그램
-   - KSipServer 관리자 웹 프로그램
-
  * KSipServerMonitor
    - KSipServer 자료구조 모니터링 프로그램
 
@@ -75,14 +73,6 @@ C++ SIP stack 프로젝트
 
  * SipLoadBalancerMonitor
    - SIP 로드밸런서 자료구조 모니터링 프로그램
-
- * MySQL Server 5.0
-   - MS 윈도우용 MySQL Server 5.0 에서 가져온 개발용 헤더 파일과 라이브러리
-   - 32bit 버전
-
- * MySQL Server 5.5
-   - MS 윈도우용 MySQL Server 5.5 에서 가져온 개발용 헤더 파일과 라이브러리
-   - 64bit 버전
 
  * FindNoLiceseFile
    - 폴더에서 라이선스 문구가 포함되지 않은 소스 코드를 검색하는 프로그램
