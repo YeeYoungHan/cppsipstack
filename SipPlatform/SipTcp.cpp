@@ -360,7 +360,7 @@ bool GetLocalIpPort( Socket hSocket, std::string & strIp, int & iPort )
 	struct sockaddr_in sttAddr;
 	int iAddrSize = sizeof(sttAddr);
 
-	if( getsockname( hSocket, (struct sockaddr *)&sttAddr, &iAddrSize ) == SOCKET_ERROR ) return false;
+	if( getsockname( hSocket, (struct sockaddr *)&sttAddr, (socklen_t*)&iAddrSize ) == SOCKET_ERROR ) return false;
 
 	strIp = inet_ntoa( sttAddr.sin_addr );
 	iPort = ntohs( sttAddr.sin_port );
