@@ -219,7 +219,7 @@ void CSipUserAgent::StopCallAll( )
  * @param pclsRtp		local RTP 정보 저장 객체
  * @param pclsRoute SIP 메시지 목적지 주소 저장 객체
  * @param strCallId 생성된 INVITE 메시지의 Call-ID 가 저장될 변수
- * @param pclsInvite	생성된 SIP INVITE 메시지가 저장될 변수
+ * @param ppclsInvite	생성된 SIP INVITE 메시지가 저장될 변수
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool CSipUserAgent::CreateCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId, CSipMessage ** ppclsInvite )

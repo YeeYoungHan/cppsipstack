@@ -143,7 +143,7 @@ bool CSipUserAgent::GetToId( const char * pszCallId, std::string & strToId )
  * @ingroup SipUserAgent
  * @brief SIP Call-ID 로 통화를 검색한 후, 검색된 결과로 my 아이디를 저장한다.
  * @param pszCallId SIP Call-ID
- * @param strToId		my 아이디를 저장할 객체
+ * @param strFromId		my 아이디를 저장할 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool CSipUserAgent::GetFromId( const char * pszCallId, std::string & strFromId )
