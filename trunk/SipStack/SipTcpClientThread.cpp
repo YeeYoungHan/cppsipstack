@@ -51,7 +51,7 @@ void * SipTcpClientThread( void * lpParameter )
 		CTcpComm		clsTcpComm;
 
 		clsTcpComm.m_hSocket = hSocket;
-		clsTcpComm.m_strIp = pclsArg->m_strIp;
+		snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", pclsArg->m_strIp.c_str() );
 		clsTcpComm.m_iPort = pclsArg->m_iPort;
 
 		if( pclsArg->m_pclsSipStack->m_clsTcpThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
