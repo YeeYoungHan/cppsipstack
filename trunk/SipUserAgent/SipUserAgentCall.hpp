@@ -36,6 +36,10 @@ bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCal
 	if( pclsRoute->m_strDestIp.empty() ) return false;
 	if( pclsRoute->m_iDestPort <= 0 || pclsRoute->m_iDestPort > 65535 ) return false;
 
+#ifndef USE_TLS
+	if( pclsRoute->m_eTransport == E_SIP_TLS ) return false;
+#endif
+
 	CSipDialog	clsDialog( &m_clsSipStack );
 
 	clsDialog.m_strFromId = pszFrom;
@@ -237,6 +241,10 @@ bool CSipUserAgent::CreateCall( const char * pszFrom, const char * pszTo, CSipCa
 	if( pclsRoute->m_strDestIp.empty() ) return false;
 	if( pclsRoute->m_iDestPort <= 0 || pclsRoute->m_iDestPort > 65535 ) return false;
 	if( ppclsInvite == NULL ) return false;
+
+#ifndef USE_TLS
+	if( pclsRoute->m_eTransport == E_SIP_TLS ) return false;
+#endif
 
 	CSipDialog	clsDialog( &m_clsSipStack );
 

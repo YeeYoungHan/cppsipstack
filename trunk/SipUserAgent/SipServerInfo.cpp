@@ -26,7 +26,7 @@
  * @ingroup SipUserAgent
  * @brief »ý¼ºÀÚ
  */
-CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_iLoginTimeout(3600), m_iNextSendTime(0), m_iSeqNo(0), m_bDelete(false)
+CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_iLoginTimeout(3600), m_eTransport(E_SIP_UDP), m_iNextSendTime(0), m_iSeqNo(0), m_bDelete(false)
 {
 	ClearLogin();
 }
@@ -113,7 +113,7 @@ CSipMessage * CSipServerInfo::CreateRegister( CSipStack * pclsSipStack, CSipMess
 	pclsRequest->m_clsCSeq.m_strMethod = "REGISTER";
 
 	// Route
-	pclsRequest->AddRoute( m_strIp.c_str(), m_iPort );
+	pclsRequest->AddRoute( m_strIp.c_str(), m_iPort, m_eTransport );
 
 	// Call-Id
 	if( m_clsCallId.Empty() )
