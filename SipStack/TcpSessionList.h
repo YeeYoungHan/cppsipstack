@@ -33,9 +33,9 @@
 class CTcpComm
 {
 public:
-	Socket			m_hSocket;
-	std::string	m_strIp;
-	int					m_iPort;
+	Socket	m_hSocket;
+	char		m_szIp[16];	// 패킷으로 전송되므로 std::string 을 사용할 수 없다.
+	int			m_iPort;
 };
 
 /**
