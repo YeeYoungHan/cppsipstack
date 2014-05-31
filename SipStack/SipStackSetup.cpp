@@ -164,11 +164,13 @@ int CSipStackSetup::GetLocalPort( ESipTransport eTransport )
 {
 	switch( eTransport )
 	{
-	case E_SIP_TCP:
-		return m_iLocalTlsPort;
-	case E_SIP_TLS:	
-		return m_iLocalTcpPort;
-	default:
+	case E_SIP_UDP:
 		return m_iLocalUdpPort;
+	case E_SIP_TCP:
+		return m_iLocalTcpPort;
+	case E_SIP_TLS:	
+		return m_iLocalTlsPort;
 	}
+	
+	return m_iLocalUdpPort;
 }
