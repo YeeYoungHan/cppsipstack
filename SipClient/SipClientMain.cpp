@@ -112,6 +112,7 @@ int main( int argc, char * argv[] )
 
 			clsRoute.m_strDestIp = pszServerIp;
 			clsRoute.m_iDestPort = 5060;
+			clsRoute.m_eTransport = eTransport;
 
 			clsUserAgent.StartCall( pszUserId, szCommand + 2, &clsRtp, &clsRoute, gstrInviteId );
 		}
@@ -137,6 +138,7 @@ int main( int argc, char * argv[] )
 
 			clsRoute.m_strDestIp = pszServerIp;
 			clsRoute.m_iDestPort = 5060;
+			clsRoute.m_eTransport = eTransport;
 
 			clsUserAgent.SendSms( pszUserId, szCommand + 2, "hello", &clsRoute );
 		}
