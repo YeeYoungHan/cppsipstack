@@ -333,7 +333,6 @@ bool CSipUserAgent::TransferCallBlind( const char * pszCallId, const char * pszT
 	if( pszCallId == NULL || pszTo == NULL ) return false;
 
 	SIP_DIALOG_MAP::iterator		itMap;
-	bool	bRes = false;
 	CSipMessage * pclsMessage = NULL;
 
 	m_clsMutex.acquire();
@@ -366,7 +365,6 @@ bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszToCall
 	if( pszCallId == NULL || pszToCallId == NULL ) return false;
 
 	SIP_DIALOG_MAP::iterator		itMap;
-	bool	bRes = false;
 	CSipMessage * pclsMessage = NULL;
 	std::string strReplaces, strToId;
 
