@@ -54,6 +54,9 @@ public:
 	/** 로그인 만료 시간 (초단위) */
 	int						m_iLoginTimeout;
 
+	/** transport */
+	ESipTransport	m_eTransport;
+
 	bool					m_bLogin;
 	time_t				m_iLoginTime;
 	time_t				m_iSendTime;
