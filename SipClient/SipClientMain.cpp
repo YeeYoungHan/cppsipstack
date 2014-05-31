@@ -31,7 +31,7 @@ int main( int argc, char * argv[] )
 {
 	if( argc < 4 )
 	{
-		printf( "[Usage] %s {sip server ip} {user id} {password}\n", argv[0] );
+		printf( "[Usage] %s {sip server ip} {user id} {password} {local port} {tcp}\n", argv[0] );
 		return 0;
 	}
 
@@ -39,10 +39,19 @@ int main( int argc, char * argv[] )
 	char * pszUserId = argv[2];
 	char * pszPassWord = argv[3];
 	int iLocalPort = 10000;
+	ESipTransport eTransport = E_SIP_UDP;
 
 	if( argc >= 5 )
 	{
 		iLocalPort = atoi( argv[4] );
+	}
+
+	if( argc >= 6 )
+	{
+		if( !strcasecmp( argv[5], "tcp" ) )
+		{
+			eTransport = E_SIP_TCP;
+		}
 	}
 	
 	CSipUserAgent clsUserAgent;
@@ -53,6 +62,7 @@ int main( int argc, char * argv[] )
 	clsServerInfo.m_strIp = pszServerIp;
 	clsServerInfo.m_strUserId = pszUserId;
 	clsServerInfo.m_strPassWord = pszPassWord;
+	clsServerInfo.m_eTransport = eTransport;
 
 	// N개의 IP주소를 사용하는 호스트에서는 SIP 프로토콜로 사용할 IP주소를 직접 입력해 주세요.
 	// Vmware 등을 사용하는 경우 N개의 IP주소가 호스트에 존재합니다.
@@ -60,6 +70,11 @@ int main( int argc, char * argv[] )
 
 	// 클라이언트가 SIP 통신에 사용할 포트 번호를 넣어 주세요.
 	clsSetup.m_iLocalUdpPort = iLocalPort;
+
+	if( eTransport == E_SIP_TCP )
+	{
+		clsSetup.m_iLocalTcpPort = SIP_TCP_PORT;
+	}
 
 	// UDP 수신 쓰레드의 기본 개수는 1개이다. 이를 수정하려면 CSipStackSetup.m_iUdpThreadCount 를 수정하면 된다.
 
