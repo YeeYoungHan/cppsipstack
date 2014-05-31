@@ -291,10 +291,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 
 	if( pclsMessage->m_strPacket.empty() )
 	{
-		char	szPacket[SIP_MESSAGE_MAX_LEN];
-
-		if( pclsMessage->ToString( szPacket, sizeof(szPacket) ) == -1 ) return false;
-		pclsMessage->m_strPacket = szPacket;
+		if( pclsMessage->MakePacket() == false ) return false;
 	}
 
 	bool bRes = false;
@@ -313,21 +310,11 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 
 		if( m_clsTcpSocketMap.Select( pszIp, iPort, hSocket ) )
 		{
-			int iPacketLen = (int)pclsMessage->m_strPacket.length();
-
-			if( TcpSend( hSocket, pclsMessage->m_strPacket.c_str(), iPacketLen ) == iPacketLen )
-			{
-				CLog::Print( LOG_NETWORK, "TcpSend(%s:%d) [%s]", pszIp, iPort, pclsMessage->m_strPacket.c_str() );
-				bRes = true;
-			}
-			else
-			{
-				CLog::Print( LOG_NETWORK, "TcpSend(%s:%d) [%s] error(%d)", pszIp, iPort, pclsMessage->m_strPacket.c_str(), GetError() );
-			}
+			SipTcpSend( hSocket, pszIp, iPort, pclsMessage );
 		}
 		else
 		{
-			bRes = StartSipTcpClientThread( this, pszIp, iPort, pclsMessage->m_strPacket.c_str() );
+			bRes = StartSipTcpClientThread( this, pszIp, iPort, pclsMessage );
 		}
 	}
 	else if( eTransport == E_SIP_TLS )

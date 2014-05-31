@@ -16,16 +16,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_TRANSPORT_H_
-#define _SIP_TRANSPORT_H_
+#include "SipTransport.h"
 
-enum ESipTransport
+/**
+ * @ingroup SipParser
+ * @brief SIP transport 프로토콜에 대한 문자열을 리턴한다.
+ * @param eTransport SIP transport
+ * @returns SIP transport 프로토콜에 대한 문자열을 리턴한다.
+ */
+const char * SipGetTransport( ESipTransport eTransport )
 {
-	E_SIP_UDP = 0,
-	E_SIP_TCP,
-	E_SIP_TLS
-};
+	if( eTransport = E_SIP_UDP )
+	{
+		return "UDP";
+	}
+	else if( eTransport = E_SIP_TCP )
+	{
+		return "TCP";
+	}
+	else if( eTransport = E_SIP_TLS )
+	{
+		return "TLS";
+	}
 
-const char * SipGetTransport( ESipTransport eTransport );
-
-#endif
+	return "UDP";
+}

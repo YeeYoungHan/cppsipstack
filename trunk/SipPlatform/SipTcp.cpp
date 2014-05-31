@@ -345,6 +345,29 @@ Socket TcpAccept( Socket hListenFd, char * pszIp, int iIpSize, int * piPort )
 	return hConnFd;
 }
 
+/**
+ * @ingroup SipPlatform
+ * @brief 소켓의 로컬 IP 주소와 포트 번호를 리턴한다.
+ * @param hSocket 소켓
+ * @param strIp		로컬 IP 주소 저장 변수
+ * @param iPort		로컬 포트 번호 저장 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool GetLocalIpPort( Socket hSocket, std::string & strIp, int & iPort )
+{
+	if( hSocket == INVALID_SOCKET ) return false;
+
+	struct sockaddr_in sttAddr;
+	int iAddrSize = sizeof(sttAddr);
+
+	if( getsockname( hSocket, (struct sockaddr *)&sttAddr, &iAddrSize ) == SOCKET_ERROR ) return false;
+
+	strIp = inet_ntoa( sttAddr.sin_addr );
+	iPort = ntohs( sttAddr.sin_port );
+
+	return true;
+}
+
 #ifdef WIN32
 
 /** make listening socket for TCP server.

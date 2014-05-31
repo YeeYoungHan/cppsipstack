@@ -160,6 +160,9 @@ public:
 	bool AddHeader( const char * pszName, int iValue );
 
 	bool GetTopViaIpPort( std::string & strIp, int & iPort );
+	bool SetTopViaIpPort( const char * pszIp, int iPort, ESipTransport eTransport );
+
+	bool SetTopContactIpPort( const char * pszIp, int iPort, ESipTransport eTransport );
 
 	int GetExpires();
 

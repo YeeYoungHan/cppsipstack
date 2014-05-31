@@ -16,16 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_TRANSPORT_H_
-#define _SIP_TRANSPORT_H_
+#ifndef _SIP_TCP_MESSAGE_H_
+#define _SIP_TCP_MESSAGE_H_
 
-enum ESipTransport
-{
-	E_SIP_UDP = 0,
-	E_SIP_TCP,
-	E_SIP_TLS
-};
+#include "SipTcp.h"
+#include "SipMessage.h"
 
-const char * SipGetTransport( ESipTransport eTransport );
+bool SipTcpSend( Socket hSocket, const char * pszIp, int iPort, CSipMessage * pclsMessage );
 
 #endif

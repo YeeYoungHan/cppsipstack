@@ -850,15 +850,7 @@ bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch,
 
 	clsVia.m_strProtocolName = "SIP";
 	clsVia.m_strProtocolVersion = "2.0";
-
-	if( eTransport == E_SIP_UDP )
-	{
-		clsVia.m_strTransport = "UDP";
-	}
-	else if( eTransport == E_SIP_TCP )
-	{
-		clsVia.m_strTransport = "TCP";
-	}
+	clsVia.m_strTransport = SipGetTransport( eTransport );
 
 	clsVia.m_strHost = pszIp;
 	clsVia.m_iPort = iPort;
@@ -1062,6 +1054,53 @@ bool CSipMessage::GetTopViaIpPort( std::string & strIp, int & iPort )
 
 	if( iPort == 0 ) iPort = itViaList->m_iPort;
 	if( strIp.empty() ) strIp = itViaList->m_strHost;
+
+	return true;
+}
+
+/**
+ * @ingroup SipParser
+ * @brief Top Via 헤더의 IP 주소와 포트 번호를 수정한다.
+ * @param pszIp		IP 주소
+ * @param iPort		포트 번호
+ * @param eTransport	transport
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ *					이미 저장된 값과 동일한 값이면 false 를 리턴한다.
+ */
+bool CSipMessage::SetTopViaIpPort( const char * pszIp, int iPort, ESipTransport eTransport )
+{
+	SIP_VIA_LIST::iterator itViaList = m_clsViaList.begin();
+	if( itViaList == m_clsViaList.end() ) return false;
+
+	const char * pszTransport = SipGetTransport( eTransport );
+		
+	if( !strcmp( itViaList->m_strHost.c_str(), pszIp ) && itViaList->m_iPort == iPort && !strcmp( itViaList->m_strTransport.c_str(), pszTransport ) ) return false;
+
+	itViaList->m_strHost = pszIp;
+	itViaList->m_iPort = iPort;
+	itViaList->m_strTransport = pszTransport;
+
+	return true;
+}
+
+/**
+ * @ingroup SipParser
+ * @brief Top Contact 헤더의 IP 주소와 포트 번호를 수정한다.
+ * @param pszIp		IP 주소
+ * @param iPort		포트 번호
+ * @param eTransport	transport
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ *					이미 저장된 값과 동일한 값이면 false 를 리턴한다.
+ */
+bool CSipMessage::SetTopContactIpPort( const char * pszIp, int iPort, ESipTransport eTransport )
+{
+	SIP_FROM_LIST::iterator	itList = m_clsContactList.begin();
+	if( itList == m_clsContactList.end() ) return false;
+
+	if( !strcmp( itList->m_clsUri.m_strHost.c_str(), pszIp) && itList->m_clsUri.m_iPort == iPort ) return false;
+
+	itList->m_clsUri.m_strHost = pszIp;
+	itList->m_clsUri.m_iPort = iPort;
 
 	return true;
 }

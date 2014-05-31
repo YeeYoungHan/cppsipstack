@@ -28,6 +28,7 @@ int TcpRecv( Socket fd, char * szBuf, int iBufLen, int iSecond );
 int TcpRecvSize( Socket fd, char * szBuf, int iBufLen, int iSecond );
 Socket TcpListen( int iPort, int iListenQ, const char * pszIp = NULL );
 Socket TcpAccept( Socket hListenFd, char * pszIp, int iIpSize, int * piPort );
+bool GetLocalIpPort( Socket hSocket, std::string & strIp, int & iPort );
 
 #ifdef WIN32
 int pipe( Socket filedes[2] );
