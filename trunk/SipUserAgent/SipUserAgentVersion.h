@@ -19,9 +19,12 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.19"
+#define SIP_USER_AGENT_VERSION "0.21"
 
 /* 버전 정보
+
+= 버전 0.21 ( 2014년 6월 1일 ) =
+ * TCP / TLS 클라이언트로 로그인하는 기능을 추가함
 
 = 버전 0.19 ( 2014년 4월 19일 ) =
  * CreateCall, StartCall 로 통화 호출할 수 있는 기능을 추가함
