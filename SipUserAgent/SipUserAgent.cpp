@@ -671,7 +671,7 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 		return true;
 	}
 
-	CLog::Print( LOG_ERROR, "GetSipCallRtp body is empty" );
+	//CLog::Print( LOG_ERROR, "GetSipCallRtp body is empty" );
 
 	return false;
 }
