@@ -17,6 +17,7 @@
  */
 
 #include "SipClient.h"
+#include "Log.h"
 
 extern std::string	gstrInviteId;
 
@@ -40,6 +41,7 @@ int main( int argc, char * argv[] )
 	char * pszPassWord = argv[3];
 	int iLocalPort = 10000;
 	ESipTransport eTransport = E_SIP_UDP;
+	int iServerPort = SIP_UDP_PORT;
 
 	if( argc >= 5 )
 	{
@@ -52,6 +54,15 @@ int main( int argc, char * argv[] )
 		{
 			eTransport = E_SIP_TCP;
 		}
+		else if( !strcasecmp( argv[5], "tls" ) )
+		{
+#ifndef USE_TLS
+			printf( "TLS function is not supported. please compile with USE_TLS define\n" );
+			return 0;
+#endif
+			eTransport = E_SIP_TLS;
+			iServerPort = SIP_TLS_PORT;
+		}
 	}
 	
 	CSipUserAgent clsUserAgent;
@@ -63,6 +74,7 @@ int main( int argc, char * argv[] )
 	clsServerInfo.m_strUserId = pszUserId;
 	clsServerInfo.m_strPassWord = pszPassWord;
 	clsServerInfo.m_eTransport = eTransport;
+	clsServerInfo.m_iPort = iServerPort;
 
 	// N개의 IP주소를 사용하는 호스트에서는 SIP 프로토콜로 사용할 IP주소를 직접 입력해 주세요.
 	// Vmware 등을 사용하는 경우 N개의 IP주소가 호스트에 존재합니다.
@@ -74,6 +86,11 @@ int main( int argc, char * argv[] )
 	if( eTransport == E_SIP_TCP )
 	{
 		clsSetup.m_iLocalTcpPort = iLocalPort;
+	}
+	else if( eTransport == E_SIP_TLS )
+	{
+		clsSetup.m_iLocalTlsPort = iLocalPort;
+		clsSetup.m_strCertFile = "C:\\OpenProject\\CppSipStack\\trunk\\SipClient\\SipServer.pem";
 	}
 
 	// UDP 수신 쓰레드의 기본 개수는 1개이다. 이를 수정하려면 CSipStackSetup.m_iUdpThreadCount 를 수정하면 된다.
@@ -115,7 +132,7 @@ int main( int argc, char * argv[] )
 			clsRtp.m_iCodec = 0;
 
 			clsRoute.m_strDestIp = pszServerIp;
-			clsRoute.m_iDestPort = 5060;
+			clsRoute.m_iDestPort = iServerPort;
 			clsRoute.m_eTransport = eTransport;
 
 			clsUserAgent.StartCall( pszUserId, szCommand + 2, &clsRtp, &clsRoute, gstrInviteId );
