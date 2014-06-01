@@ -80,26 +80,42 @@ void * SipTlsThread( void * lpParameter )
 		{
 			if( CThreadList::RecvCommand( clsSessionList.m_psttPollFd[0].fd, (char *)&clsTcpComm, sizeof(clsTcpComm) ) == sizeof(clsTcpComm) )
 			{
-				SSL	* psttSsl;
-				bool	bRes = false;
-
-				if( SSLAccept( clsTcpComm.m_hSocket, &psttSsl, false, 0, pclsSipStack->m_clsSetup.m_iTlsAcceptTimeout ) )
+				if( clsTcpComm.m_psttSsl )
 				{
-					if( clsSessionList.Insert( clsTcpComm, psttSsl ) )
+					if( clsSessionList.Insert( clsTcpComm, clsTcpComm.m_psttSsl ) )
 					{
-						pclsSipStack->m_clsTlsSocketMap.Insert( clsTcpComm.m_szIp, clsTcpComm.m_iPort, clsTcpComm.m_hSocket, psttSsl );
-						bRes = true;
+						pclsSipStack->m_clsTlsSocketMap.Insert( clsTcpComm.m_szIp, clsTcpComm.m_iPort, clsTcpComm.m_hSocket, clsTcpComm.m_psttSsl );
 					}
 					else
 					{
-						SSLClose( psttSsl );
+						SSLClose( clsTcpComm.m_psttSsl );
+						closesocket( clsTcpComm.m_hSocket );
+						pclsEntry->DecreaseSocketCount();
 					}
 				}
-
-				if( bRes == false )
+				else
 				{
-					closesocket( clsTcpComm.m_hSocket );
-					pclsEntry->DecreaseSocketCount();
+					SSL	* psttSsl;
+					bool	bRes = false;
+
+					if( SSLAccept( clsTcpComm.m_hSocket, &psttSsl, false, 0, pclsSipStack->m_clsSetup.m_iTlsAcceptTimeout ) )
+					{
+						if( clsSessionList.Insert( clsTcpComm, psttSsl ) )
+						{
+							pclsSipStack->m_clsTlsSocketMap.Insert( clsTcpComm.m_szIp, clsTcpComm.m_iPort, clsTcpComm.m_hSocket, psttSsl );
+							bRes = true;
+						}
+						else
+						{
+							SSLClose( psttSsl );
+						}
+					}
+
+					if( bRes == false )
+					{
+						closesocket( clsTcpComm.m_hSocket );
+						pclsEntry->DecreaseSocketCount();
+					}
 				}
 			}
 			--n;

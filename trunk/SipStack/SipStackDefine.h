@@ -20,7 +20,7 @@
 #define _SIP_STACK_DEFINE_H_
 
 // TLS 기능 없이 SIP stack 을 빌드하고 싶으면 아래의 선언을 주석 처리하세요.
-//#define USE_TLS
+#define USE_TLS
 
 // MAP 대신 HASH MAP 을 사용할 경우 아래의 선언을 사용하세요.
 // HASH MAP 을 사용하면 iterator 에서 MAP 보다 많은 연산을 하는 것으로 추정됩니다.
@@ -28,7 +28,7 @@
 
 #ifdef USE_TLS
 // TLS 를 최종 종료할 때에 메모리 할당을 해제하는 기능을 사용하고 싶지 않을 경우 주석 처리하세요.
-#define USE_TLS_FREE
+//#define USE_TLS_FREE
 #endif
 
 #include "SipParserDefine.h"
@@ -41,7 +41,7 @@
 #define SIP_TCP_MAX_SOCKET_PER_THREAD	100
 #define SIP_TCP_RECV_TIMEOUT					600
 #define SIP_TCP_CONNECT_TIMEOUT				10
-#define SIP_TLS_ACCEPT_TIMEOUT				10
+#define SIP_TLS_ACCEPT_TIMEOUT				10000
 
 #define SIP_UDP_PORT			5060
 #define SIP_TCP_PORT			5060

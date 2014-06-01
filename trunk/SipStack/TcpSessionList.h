@@ -33,9 +33,14 @@
 class CTcpComm
 {
 public:
+	CTcpComm() : m_psttSsl(NULL)
+	{
+	}
+
 	Socket	m_hSocket;
 	char		m_szIp[16];	// 패킷으로 전송되므로 std::string 을 사용할 수 없다.
 	int			m_iPort;
+	SSL			* m_psttSsl;
 };
 
 /**

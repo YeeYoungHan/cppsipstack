@@ -57,7 +57,7 @@ public:
 	bool Select( const char * pszIp, int iPort, Socket & hSocket );
 
 #ifdef USE_TLS
-	bool Select( const char * pszIp, int iPort, SSL ** psttSsl );
+	bool Select( const char * pszIp, int iPort, CTcpSocketInfo ** ppclsInfo );
 #endif
 
 	bool Delete( const char * pszIp, int iPort );
