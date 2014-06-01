@@ -43,3 +43,19 @@ const char * SipGetTransport( ESipTransport eTransport )
 
 	return "UDP";
 }
+
+/**
+ * @ingroup SipParser
+ * @brief SIP 프로토콜에 대한 문자열을 리턴한다.
+ * @param eTransport SIP transport
+ * @returns SIP 프로토콜에 대한 문자열을 리턴한다.
+ */
+const char * SipGetProtocol( ESipTransport eTransport )
+{
+	if( eTransport == E_SIP_TLS )
+	{
+		return "sips";
+	}
+
+	return "sip";
+}

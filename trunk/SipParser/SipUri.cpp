@@ -197,6 +197,11 @@ ESipTransport CSipUri::SelectTransport( )
 {
 	std::string	strValue;
 
+	if( !strcmp( m_strProtocol.c_str(), "sips" ) )
+	{
+		return E_SIP_TLS;
+	}
+
 	if( SearchSipParameter( m_clsUriParamList, SIP_TRANSPORT, strValue ) )
 	{
 		const char * pszValue = strValue.c_str();
