@@ -36,6 +36,9 @@ bool StartSipTcpListenThread( CSipStack * pclsSipStack );
 // SipTcpClientThread.cpp
 bool StartSipTcpClientThread( CSipStack * pclsSipStack, const char * pszIp, int iPort, CSipMessage * pclsSipMessage );
 
+// SipTlsClientThread.cpp
+bool StartSipTlsClientThread( CSipStack * pclsSipStack, const char * pszIp, int iPort, CSipMessage * pclsSipMessage );
+
 // SipTlsThread.cpp
 #ifdef USE_TLS
 

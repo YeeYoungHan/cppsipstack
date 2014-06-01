@@ -94,7 +94,7 @@ bool CTcpSocketMap::Select( const char * pszIp, int iPort, Socket & hSocket )
 }
 
 #ifdef USE_TLS
-bool CTcpSocketMap::Select( const char * pszIp, int iPort, SSL ** psttSsl )
+bool CTcpSocketMap::Select( const char * pszIp, int iPort, CTcpSocketInfo ** ppclsInfo )
 {
 	bool	bRes = false;
 	std::string	strKey;
@@ -106,7 +106,7 @@ bool CTcpSocketMap::Select( const char * pszIp, int iPort, SSL ** psttSsl )
 	it = m_clsMap.find( strKey );
 	if( it != m_clsMap.end() )
 	{
-		*psttSsl = it->second.m_psttSsl;
+		*ppclsInfo = &it->second;
 		bRes = true;
 	}
 	m_clsMutex.release();

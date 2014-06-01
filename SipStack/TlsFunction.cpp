@@ -26,12 +26,14 @@
 #include "ServerUtility.h"
 #include "MemoryDebug.h"
 
-static SSL_CTX	* ctx;
+static SSL_CTX	* gpsttServerCtx;
+static SSL_CTX	* gpsttClientCtx;
 
 #if OPENSSL_VERSION_NUMBER >= 0x10000003L
 static const SSL_METHOD	* meth;
 #else
-static SSL_METHOD	* meth;
+static SSL_METHOD	* gpsttServerMeth;
+static SSL_METHOD * gpsttClientMeth;
 #endif
 
 static bool gbStartSslServer = false;
@@ -145,27 +147,33 @@ bool SSLServerStart( const char * szCertFile, const char * szCaCertFile )
 	SSL_load_error_strings();
 	SSLeay_add_ssl_algorithms();
 
-	//meth = SSLv3_server_method();
-	meth = TLSv1_server_method();
-	if( (ctx = SSL_CTX_new( meth )) == NULL )
+	gpsttServerMeth = TLSv1_server_method();
+	if( (gpsttServerCtx = SSL_CTX_new( gpsttServerMeth )) == NULL )
 	{
-		CLog::Print( LOG_ERROR, "SSL_CTX_new error" );
+		CLog::Print( LOG_ERROR, "SSL_CTX_new error - server" );
 		return false;
 	}
 
-	if( SSL_CTX_use_certificate_file(ctx, szCertFile, SSL_FILETYPE_PEM) <= 0 )
+	gpsttClientMeth = TLSv1_client_method();
+	if( (gpsttClientCtx = SSL_CTX_new( gpsttClientMeth )) == NULL )
+	{
+		CLog::Print( LOG_ERROR, "SSL_CTX_new error - client" );
+		return false;
+	}
+
+	if( SSL_CTX_use_certificate_file(gpsttServerCtx, szCertFile, SSL_FILETYPE_PEM) <= 0 )
 	{
 		CLog::Print( LOG_ERROR, "SSL_CTX_use_certificate_file error" );
 		return false;
 	}
 
-	if( ( n = SSL_CTX_use_PrivateKey_file(ctx, szCertFile, SSL_FILETYPE_PEM)) <= 0 )
+	if( ( n = SSL_CTX_use_PrivateKey_file(gpsttServerCtx, szCertFile, SSL_FILETYPE_PEM)) <= 0 )
 	{
 		CLog::Print( LOG_ERROR, "SSL_CTX_use_PrivateKey_file error(%d)", n );
 		return false;
 	}
 	
-	if( !SSL_CTX_check_private_key( ctx ) )
+	if( !SSL_CTX_check_private_key( gpsttServerCtx ) )
 	{
 		CLog::Print( LOG_ERROR, "[SSL] Private key does not match the certificate public key");
 		return false;
@@ -173,12 +181,14 @@ bool SSLServerStart( const char * szCertFile, const char * szCaCertFile )
 
 	if( strlen( szCaCertFile ) > 0 )
 	{
-		if( SSL_CTX_load_verify_locations( ctx, szCaCertFile, NULL ) == 0 )
+		if( SSL_CTX_load_verify_locations( gpsttServerCtx, szCaCertFile, NULL ) == 0 )
 		{
 			CLog::Print( LOG_ERROR, "[SSL] CaCertFile(%s) load error", szCaCertFile );
 			return false;
 		}
 	}
+
+
 
 	gbStartSslServer = true;
 
@@ -195,7 +205,7 @@ bool SSLServerStop( )
 	if( gbStartSslServer )
 	{
 		SSLStop();
-		SSL_CTX_free( ctx );
+		SSL_CTX_free( gpsttServerCtx );
 
 		gbStartSslServer = false;
 	}
@@ -223,6 +233,41 @@ void SSLFinal()
 }
 
 /**
+ * @brief SSL 세션을 연결한다.
+ * @param iFd				클라이언트 TCP 소켓 핸들
+ * @param ppsttSsl	SSL 구조체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool SSLConnect( Socket iFd, SSL ** ppsttSsl )
+{
+	SSL * psttSsl;
+
+	if( (psttSsl = SSL_new(gpsttClientCtx)) == NULL )
+	{
+		return false;
+	}
+	
+	try
+	{
+		SSL_set_fd( psttSsl, iFd );
+		if( SSL_connect(psttSsl) == -1 )
+		{
+			return false;
+		}
+	}
+	catch( ... )
+	{
+		CLog::Print( LOG_ERROR, "[SSL] SSLConnect() undefined error" );
+		SSL_free( psttSsl );
+		return false;
+	}
+
+	*ppsttSsl = psttSsl;
+
+	return true;
+}
+
+/**
  * @ingroup SipStack
  * @brief 클라이언트 SSL 접속 요청을 허용한다.
  * @param iFd								클라이언트 TCP 소켓 핸들
@@ -236,7 +281,7 @@ bool SSLAccept( Socket iFd, SSL ** ppsttSsl, bool bCheckClientCert, int iVerifyD
 {
 	SSL * psttSsl;
 
-	if( (psttSsl = SSL_new( ctx )) == NULL )
+	if( (psttSsl = SSL_new( gpsttServerCtx )) == NULL )
 	{
 		CLog::Print( LOG_ERROR, "SSL_new() error" );
 	  return false;

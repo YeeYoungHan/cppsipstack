@@ -16,32 +16,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _TLS_FUNCTION_H_
-#define _TLS_FUNCTION_H_
+#ifndef _SIP_TLS_MESSAGE_H_
+#define _SIP_TLS_MESSAGE_H_
+
+#include "SipTcp.h"
+#include "SipMessage.h"
+#include "TlsFunction.h"
 
 #ifdef USE_TLS
 
-#include "SipTcp.h"
-#include <openssl/rsa.h>
-#include <openssl/crypto.h>
-#include <openssl/x509.h>
-#include <openssl/pem.h>
-#include <openssl/ssl.h>
-#include <openssl/err.h>
-
-bool SSLServerStart( const char * szCertFile, const char * szCaCertFile );
-bool SSLServerStop( );
-void SSLFinal();
-
-bool SSLConnect( Socket iFd, SSL ** ppsttSsl );
-bool SSLAccept( Socket iFd, SSL ** ppsttSsl, bool bCheckClientCert, int iVerifyDepth, int iAcceptTimeout );
-int SSLSend( SSL * ssl, const char * szBuf, int iBufLen );
-int SSLRecv( SSL * ssl, char * szBuf, int iBufLen );
-bool SSLClose( SSL * ssl );
-
-#else
-
-#define SSL void
+bool SipTlsSend( Socket hSocket, SSL * psttSsl, const char * pszIp, int iPort, CSipMessage * pclsMessage );
 
 #endif
 

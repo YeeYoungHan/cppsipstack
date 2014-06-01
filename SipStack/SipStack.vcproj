@@ -409,6 +409,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipTlsClientThread.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipTlsThread.cpp"
 				>
 			</File>
@@ -464,6 +468,14 @@
 		<Filter
 			Name="TLS"
 			>
+			<File
+				RelativePath=".\SipTlsMessage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipTlsMessage.h"
+				>
+			</File>
 			<File
 				RelativePath=".\TlsFunction.cpp"
 				>

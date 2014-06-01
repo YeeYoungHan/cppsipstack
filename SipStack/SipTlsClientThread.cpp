@@ -19,11 +19,11 @@
 #include "SipStackThread.h"
 #include "TcpSessionList.h"
 #include "ServerUtility.h"
-#include "SipTcpMessage.h"
+#include "SipTlsMessage.h"
 #include "Log.h"
 #include "MemoryDebug.h"
 
-class CSipTcpClientArg
+class CSipTlsClientArg
 {
 public:
 	CSipStack * m_pclsSipStack;
@@ -32,40 +32,54 @@ public:
 	CSipMessage * m_pclsSipMessage;
 };
 
+#ifdef USE_TLS
+
 /**
- * @brief TCP 클라이언트 세션 연결을 위한 쓰레드 함수
+ * @brief TLS 클라이언트 세션 연결을 위한 쓰레드 함수
  * @param lpParameter CThreadListEntry 객체의 포인터
  * @returns 0 을 리턴한다.
  */
 #ifdef WIN32
-DWORD WINAPI SipTcpClientThread( LPVOID lpParameter )
+DWORD WINAPI SipTlsClientThread( LPVOID lpParameter )
 #else
-void * SipTcpClientThread( void * lpParameter )
+void * SipTlsClientThread( void * lpParameter )
 #endif
 {
-	CSipTcpClientArg * pclsArg = (CSipTcpClientArg *)lpParameter;
+	CSipTlsClientArg * pclsArg = (CSipTlsClientArg *)lpParameter;
 
 	Socket hSocket = TcpConnect( pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipStack->m_clsSetup.m_iTcpConnectTimeout );
 	if( hSocket != INVALID_SOCKET )
 	{
-		CTcpComm		clsTcpComm;
+		SSL * psttSsl;
 
-		clsTcpComm.m_hSocket = hSocket;
-		snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", pclsArg->m_strIp.c_str() );
-		clsTcpComm.m_iPort = pclsArg->m_iPort;
-
-		if( pclsArg->m_pclsSipStack->m_clsTcpThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
+		if( SSLConnect( hSocket, &psttSsl ) )
 		{
-			closesocket( hSocket );
+			CTcpComm		clsTcpComm;
+
+			clsTcpComm.m_hSocket = hSocket;
+			snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", pclsArg->m_strIp.c_str() );
+			clsTcpComm.m_iPort = pclsArg->m_iPort;
+			clsTcpComm.m_psttSsl = psttSsl;
+
+			if( pclsArg->m_pclsSipStack->m_clsTlsThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
+			{
+				SSLClose( psttSsl );
+				closesocket( hSocket );
+			}
+			else
+			{
+				SipTlsSend( hSocket, psttSsl, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage );
+			}
 		}
 		else
 		{
-			SipTcpSend( hSocket, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage );
+			CLog::Print( LOG_ERROR, "SSLConnect(%s:%d) error", pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
+			closesocket( hSocket );
 		}
 	}
 	else
 	{
-		CLog::Print( LOG_ERROR, "TcpConnect(%s:%d) error", pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
+		CLog::Print( LOG_ERROR, "TcpConnect(%s:%d) error for SSL", pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
 	}
 
 	--pclsArg->m_pclsSipMessage->m_iUseCount;
@@ -73,6 +87,8 @@ void * SipTcpClientThread( void * lpParameter )
 
 	return 0;
 }
+
+#endif
 
 /**
  * @ingroup SipStack
@@ -83,9 +99,10 @@ void * SipTcpClientThread( void * lpParameter )
  * @param pszSipMessage	전송할 SIP 메시지
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool StartSipTcpClientThread( CSipStack * pclsSipStack, const char * pszIp, int iPort, CSipMessage * pclsSipMessage )
+bool StartSipTlsClientThread( CSipStack * pclsSipStack, const char * pszIp, int iPort, CSipMessage * pclsSipMessage )
 {
-	CSipTcpClientArg * pclsArg = new CSipTcpClientArg();
+#ifdef USE_TLS
+	CSipTlsClientArg * pclsArg = new CSipTlsClientArg();
 	if( pclsArg == NULL ) return false;
 
 	pclsArg->m_pclsSipStack = pclsSipStack;
@@ -95,6 +112,9 @@ bool StartSipTcpClientThread( CSipStack * pclsSipStack, const char * pszIp, int 
 
 	++pclsArg->m_pclsSipMessage->m_iUseCount;
 
-	return StartThread( "SipTcpClientThread", SipTcpClientThread, pclsArg );
+	return StartThread( "SipTlsClientThread", SipTlsClientThread, pclsArg );
+#else
+	return false;
+#endif
 }
 

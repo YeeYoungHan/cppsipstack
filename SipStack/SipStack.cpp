@@ -20,6 +20,7 @@
 #include "SipStackThread.h"
 #include "SipDeleteQueue.h"
 #include "SipTcpMessage.h"
+#include "SipTlsMessage.h"
 #include "Log.h"
 #include "MemoryDebug.h"
 
