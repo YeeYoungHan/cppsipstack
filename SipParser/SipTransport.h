@@ -27,5 +27,6 @@ enum ESipTransport
 };
 
 const char * SipGetTransport( ESipTransport eTransport );
+const char * SipGetProtocol( ESipTransport eTransport );
 
 #endif

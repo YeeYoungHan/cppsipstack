@@ -889,7 +889,7 @@ bool CSipMessage::AddRoute( const char * pszIp, int iPort, ESipTransport eTransp
 
 	CSipFrom clsFrom;
 
-	clsFrom.m_clsUri.m_strProtocol = "sip";
+	clsFrom.m_clsUri.m_strProtocol = SipGetProtocol( eTransport );
 	clsFrom.m_clsUri.m_strHost = pszIp;
 	clsFrom.m_clsUri.m_iPort = iPort;
 
@@ -916,7 +916,7 @@ bool CSipMessage::AddRecordRoute( const char * pszIp, int iPort, ESipTransport e
 
 	CSipFrom clsFrom;
 
-	clsFrom.m_clsUri.m_strProtocol = "sip";
+	clsFrom.m_clsUri.m_strProtocol = SipGetProtocol( eTransport );
 	clsFrom.m_clsUri.m_strHost = pszIp;
 	clsFrom.m_clsUri.m_iPort = iPort;
 
