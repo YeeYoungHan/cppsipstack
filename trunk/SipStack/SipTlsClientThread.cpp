@@ -60,6 +60,7 @@ void * SipTlsClientThread( void * lpParameter )
 			snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", pclsArg->m_strIp.c_str() );
 			clsTcpComm.m_iPort = pclsArg->m_iPort;
 			clsTcpComm.m_psttSsl = psttSsl;
+			clsTcpComm.SetUseTimeout( false );
 
 			if( pclsArg->m_pclsSipStack->m_clsTlsThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
 			{

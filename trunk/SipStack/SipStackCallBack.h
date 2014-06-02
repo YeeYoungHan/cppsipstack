@@ -58,6 +58,15 @@ public:
 	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage ) = 0;
 
 	/**
+   * @ingroup SipStack
+	 * @brief TCP/TLS 세션 종료 이벤트 핸들러
+	 * @param pszIp IP 주소
+	 * @param iPort 포트 번호
+	 * @param eProtocol 프로토콜
+	 */
+	virtual void TcpSessionEnd( const char * pszIp, int iPort, ESipTransport eProtocol ){};
+
+	/**
 	 * @ingroup SipStack
 	 * @brief SIP 메시지 수신 쓰레드가 종료됨을 알려주는 이벤트 핸들러
 	 * @param iThreadId UDP 쓰레드 번호

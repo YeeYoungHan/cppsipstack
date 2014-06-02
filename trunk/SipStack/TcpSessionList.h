@@ -33,14 +33,36 @@
 class CTcpComm
 {
 public:
-	CTcpComm() : m_psttSsl(NULL)
+	CTcpComm() : m_psttSsl(NULL), m_cUseTimeout(1)
 	{
+	}
+
+	void SetUseTimeout( bool bUseTimeout )
+	{
+		if( bUseTimeout )
+		{
+			m_cUseTimeout = 1;
+		}
+		else
+		{
+			m_cUseTimeout = 0;
+		}
+	}
+
+	bool GetUseTimeout( )
+	{
+		if( m_cUseTimeout ) return true;
+
+		return false;
 	}
 
 	Socket	m_hSocket;
 	char		m_szIp[16];	// 패킷으로 전송되므로 std::string 을 사용할 수 없다.
 	int			m_iPort;
 	SSL			* m_psttSsl;
+
+private:
+	char		m_cUseTimeout;
 };
 
 /**
@@ -64,9 +86,12 @@ public:
 
 	time_t				m_iConnectTime;
 	time_t				m_iRecvTime;
+
+	bool					m_bUseTimeout;
 };
 
 typedef std::vector< CTcpSessionListInfo > SESSION_LIST;
+class CSipStack;
 
 /**
  * @ingroup SipStack
@@ -75,8 +100,8 @@ typedef std::vector< CTcpSessionListInfo > SESSION_LIST;
 class CTcpSessionList
 {
 public:
-	CTcpSessionList(void);
-	~CTcpSessionList(void);
+	CTcpSessionList( CSipStack * pclsSipStack, ESipTransport eProtocol );
+	~CTcpSessionList();
 
 	bool Init( int iPollFdMax );
 	bool Insert( Socket hSocket );
@@ -90,6 +115,10 @@ public:
 
 	int	m_iPollFdMax;
 	int m_iPoolFdCount;
+
+private:
+	CSipStack			* m_pclsSipStack;
+	ESipTransport m_eProtocol;
 };
 
 #endif
