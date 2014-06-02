@@ -145,6 +145,23 @@ void CSipStack::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 
 /**
  * @ingroup SipStack
+ * @brief TCP/TLS 세션 종료에 대한 callback 메소드를 호출한다.
+ * @param pszIp IP 주소
+ * @param iPort 포트 번호
+ * @param eProtocol 프로토콜
+ */
+void CSipStack::TcpSessionEnd( const char * pszIp, int iPort, ESipTransport eProtocol )
+{
+	SIP_STACK_CALLBACK_LIST::iterator itList;
+
+	for( itList = m_clsCallBackList.begin(); itList != m_clsCallBackList.end(); ++itList )
+	{
+		(*itList)->TcpSessionEnd( pszIp, iPort, eProtocol );
+	}
+}
+
+/**
+ * @ingroup SipStack
  * @brief 쓰레드 종료 이벤트를 전달한다.
  * @param iThreadId 쓰레드 아이디 ( 0 부터 쓰레드 개수 )
  */

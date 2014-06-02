@@ -18,6 +18,7 @@
 
 #include "SipStackDefine.h"
 #include "TcpSessionList.h"
+#include "SipStack.h"
 #include <time.h>
 #include "MemoryDebug.h"
 
@@ -25,7 +26,7 @@ CTcpSessionListInfo::CTcpSessionListInfo() : m_iPort(0)
 #ifdef USE_TLS
 , m_psttSsl(NULL)
 #endif
-, m_iConnectTime(0), m_iRecvTime(0)
+, m_iConnectTime(0), m_iRecvTime(0), m_bUseTimeout(true)
 {
 
 }
@@ -41,7 +42,8 @@ void CTcpSessionListInfo::Clear()
 	m_iRecvTime = 0;
 }
 
-CTcpSessionList::CTcpSessionList(void) : m_psttPollFd(NULL), m_iPollFdMax(0), m_iPoolFdCount(0)
+CTcpSessionList::CTcpSessionList( CSipStack * pclsSipStack, ESipTransport eProtocol ) : m_psttPollFd(NULL), m_iPollFdMax(0), m_iPoolFdCount(0)
+	, m_pclsSipStack( pclsSipStack), m_eProtocol( eProtocol )
 {
 }
 
@@ -159,6 +161,8 @@ bool CTcpSessionList::Delete( int iIndex, CThreadListEntry * pclsEntry )
 {
 	if( iIndex >= m_iPoolFdCount || iIndex < 0 ) return false;
 
+	m_pclsSipStack->TcpSessionEnd( m_clsList[iIndex].m_strIp.c_str(), m_clsList[iIndex].m_iPort, m_eProtocol );
+
 #ifdef USE_TLS
 	if( m_clsList[iIndex].m_psttSsl )
 	{
@@ -234,6 +238,7 @@ void CTcpSessionList::DeleteTimeout( int iTimeout, CThreadListEntry * pclsEntry 
 
 	for( int i = 1; i < m_iPoolFdCount; ++i )
 	{
+		if( m_clsList[i].m_bUseTimeout == false ) continue;
 		if( m_clsList[i].m_iRecvTime == 0 ) continue;
 
 		if( m_clsList[i].m_iRecvTime < iTime )

@@ -58,7 +58,7 @@ void * SipTlsThread( void * lpParameter )
 {
 	CThreadListEntry * pclsEntry = (CThreadListEntry *)lpParameter;
 	CSipStack * pclsSipStack = (CSipStack *)pclsEntry->m_pUser;
-	CTcpSessionList	clsSessionList;
+	CTcpSessionList	clsSessionList( pclsSipStack, E_SIP_TLS );
 	CTcpComm			clsTcpComm;
 	int		n, i, iBufLen, iThreadId;
 	char	szBuf[2048], *pszBuf;
@@ -88,6 +88,7 @@ void * SipTlsThread( void * lpParameter )
 					}
 					else
 					{
+						pclsSipStack->TcpSessionEnd( clsTcpComm.m_szIp, clsTcpComm.m_iPort, E_SIP_TLS );
 						SSLClose( clsTcpComm.m_psttSsl );
 						closesocket( clsTcpComm.m_hSocket );
 						pclsEntry->DecreaseSocketCount();
@@ -139,6 +140,7 @@ CLOSE_SESSION:
 			clsSessionList.m_clsList[i].m_iRecvTime = iTime;
 
 			if( clsSessionList.m_clsList[i].m_clsSipBuf.AddBuf( szBuf, n ) == false ) goto CLOSE_SESSION;
+
 			while( clsSessionList.m_clsList[i].m_clsSipBuf.GetSipMessage( &pszBuf, &iBufLen ) )
 			{
 				SipMessageProcess( pclsSipStack, iThreadId, pszBuf, iBufLen, clsSessionList.m_clsList[i].m_strIp.c_str(), clsSessionList.m_clsList[i].m_iPort );
