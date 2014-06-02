@@ -100,7 +100,7 @@ class CSipStack;
 class CTcpSessionList
 {
 public:
-	CTcpSessionList( CSipStack * pclsSipStack, ESipTransport eProtocol );
+	CTcpSessionList( CSipStack * pclsSipStack, ESipTransport eTransport );
 	~CTcpSessionList();
 
 	bool Init( int iPollFdMax );
@@ -118,7 +118,7 @@ public:
 
 private:
 	CSipStack			* m_pclsSipStack;
-	ESipTransport m_eProtocol;
+	ESipTransport m_eTransport;
 };
 
 #endif
