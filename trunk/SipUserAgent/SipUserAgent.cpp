@@ -367,6 +367,28 @@ bool CSipUserAgent::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 
 /**
  * @ingroup SipUserAgent
+ * @brief TCP/TLS 세션 종료 이벤트 핸들러
+ * @param pszIp IP 주소
+ * @param iPort 포트 번호
+ * @param eTransport 프로토콜
+ */
+void CSipUserAgent::TcpSessionEnd( const char * pszIp, int iPort, ESipTransport eTransport )
+{
+	SIP_SERVER_INFO_LIST::iterator	it;
+
+	m_clsRegisterMutex.acquire();
+	for( it = m_clsRegisterList.begin(); it != m_clsRegisterList.end(); ++it )
+	{
+		if( it->Equal( pszIp, iPort, eTransport ) )
+		{
+			it->ClearLogin();
+		}
+	}
+	m_clsRegisterMutex.release();
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief SIP 쓰레드 종료 이벤트 핸들러
  * @param iThreadId 쓰레드 번호
  */

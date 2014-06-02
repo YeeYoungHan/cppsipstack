@@ -109,6 +109,7 @@ public:
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage );
+	virtual void TcpSessionEnd( const char * pszIp, int iPort, ESipTransport eTransport );
 	virtual void CallBackThreadEnd( int iThreadId );
 
 	/** IP-PBX 로그인 정보 저장 자료구조 */
