@@ -42,8 +42,8 @@ void CTcpSessionListInfo::Clear()
 	m_iRecvTime = 0;
 }
 
-CTcpSessionList::CTcpSessionList( CSipStack * pclsSipStack, ESipTransport eProtocol ) : m_psttPollFd(NULL), m_iPollFdMax(0), m_iPoolFdCount(0)
-	, m_pclsSipStack( pclsSipStack), m_eProtocol( eProtocol )
+CTcpSessionList::CTcpSessionList( CSipStack * pclsSipStack, ESipTransport eTransport ) : m_psttPollFd(NULL), m_iPollFdMax(0), m_iPoolFdCount(0)
+	, m_pclsSipStack( pclsSipStack), m_eTransport( eTransport )
 {
 }
 
@@ -161,7 +161,7 @@ bool CTcpSessionList::Delete( int iIndex, CThreadListEntry * pclsEntry )
 {
 	if( iIndex >= m_iPoolFdCount || iIndex < 0 ) return false;
 
-	m_pclsSipStack->TcpSessionEnd( m_clsList[iIndex].m_strIp.c_str(), m_clsList[iIndex].m_iPort, m_eProtocol );
+	m_pclsSipStack->TcpSessionEnd( m_clsList[iIndex].m_strIp.c_str(), m_clsList[iIndex].m_iPort, m_eTransport );
 
 #ifdef USE_TLS
 	if( m_clsList[iIndex].m_psttSsl )

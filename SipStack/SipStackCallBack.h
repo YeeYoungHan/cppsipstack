@@ -62,9 +62,9 @@ public:
 	 * @brief TCP/TLS 세션 종료 이벤트 핸들러
 	 * @param pszIp IP 주소
 	 * @param iPort 포트 번호
-	 * @param eProtocol 프로토콜
+	 * @param eTransport 프로토콜
 	 */
-	virtual void TcpSessionEnd( const char * pszIp, int iPort, ESipTransport eProtocol ){};
+	virtual void TcpSessionEnd( const char * pszIp, int iPort, ESipTransport eTransport ){};
 
 	/**
 	 * @ingroup SipStack
