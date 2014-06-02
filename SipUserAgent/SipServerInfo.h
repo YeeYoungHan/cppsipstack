@@ -33,6 +33,7 @@ public:
 	~CSipServerInfo();
 
 	bool Equal( CSipServerInfo & clsInfo );
+	bool Equal( const char * pszIp, int iPort, ESipTransport eTransport );
 	void Update( CSipServerInfo & clsInfo );
 	void ClearLogin();
 

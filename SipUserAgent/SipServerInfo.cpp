@@ -49,7 +49,20 @@ bool CSipServerInfo::Equal( CSipServerInfo & clsInfo )
 {
 	if( !strcmp( clsInfo.m_strIp.c_str(), m_strIp.c_str() ) &&
 			!strcmp( clsInfo.m_strUserId.c_str(), m_strUserId.c_str() ) &&
-			clsInfo.m_iPort == m_iPort )
+			clsInfo.m_iPort == m_iPort &&
+			clsInfo.m_eTransport == m_eTransport )
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool CSipServerInfo::Equal( const char * pszIp, int iPort, ESipTransport eTransport )
+{
+	if( !strcmp( pszIp, m_strIp.c_str() ) &&
+			iPort == m_iPort &&
+			eTransport == m_eTransport )
 	{
 		return true;
 	}
