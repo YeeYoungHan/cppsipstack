@@ -111,6 +111,12 @@ LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
 				m_pclsCallBack->EventReInvite( pclsParam->m_pszCallId, pclsParam->m_pclsRtp );
 			}
 			break;
+		case SMC_PRACK:
+			{		
+				CEventCallStart * pclsParam = (CEventCallStart *)lParam;
+				m_pclsCallBack->EventPrack( pclsParam->m_pszCallId, pclsParam->m_pclsRtp );
+			}
+			break;
 		case SMC_TRANSFER:
 			{
 				CEventTransfer * pclsParam = (CEventTransfer *)lParam;
@@ -241,6 +247,19 @@ void CSipUserAgentMFC::EventReInvite( const char * pszCallId, CSipCallRtp * pcls
 	CEventCallStart clsParam( pszCallId, pclsRtp );
 
 	_SendMessage( SMC_REINVITE, (LPARAM)&clsParam );
+}
+
+/**
+ * @ingroup SipUserAgentMFC
+ * @brief SIP PRACK 수신 이벤트 핸들러
+ * @param	pszCallId	SIP Call-ID
+ * @param pclsRtp		RTP 정보 저장 객체
+ */
+void CSipUserAgentMFC::EventPrack( const char * pszCallId, CSipCallRtp * pclsRtp )
+{
+	CEventCallStart clsParam( pszCallId, pclsRtp );
+
+	_SendMessage( SMC_PRACK, (LPARAM)&clsParam );
 }
 
 /**
