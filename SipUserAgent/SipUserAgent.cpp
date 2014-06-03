@@ -518,16 +518,13 @@ void CSipUserAgent::Delete( SIP_DIALOG_MAP::iterator & itMap )
 /**
  * @ingroup SipUserAgent
  * @brief SIP INVITE 응답 메시지에 포함된 정보를 CSipDialog 에 저장한다.
+ * @param strCallId		SIP Call-ID
  * @param pclsMessage SIP INVITE 응답 메시지
  * @param pclsRtp			remote RTP 정보 저장 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * pclsRtp )
+bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pclsMessage, CSipCallRtp * pclsRtp )
 {
-	std::string	strCallId;
-
-	if( pclsMessage->GetCallId( strCallId ) == false ) return false;
-
 	SIP_DIALOG_MAP::iterator		itMap;
 	bool	bFound = false, bReInvite = false;
 	CSipMessage *pclsAck = NULL, *pclsInvite = NULL;
@@ -543,11 +540,20 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 			itMap->second.SetRemoteRtp( pclsRtp );
 		}
 
-		if( pclsMessage->m_iStatusCode >= 200 )
+		if( pclsMessage->m_iStatusCode == SIP_SESSION_PROGRESS )
+		{
+			CSipHeader * pclsHeader = pclsMessage->GetHeader( "RSeq" );
+			if( pclsHeader && pclsHeader->m_strValue.empty() == false )
+			{
+				itMap->second.m_iRSeq = atoi( pclsHeader->m_strValue.c_str() );
+			}
+		}
+
+		if( pclsMessage->m_iStatusCode >= SIP_OK )
 		{
 			pclsAck = itMap->second.CreateAck();
 
-			if( pclsMessage->m_iStatusCode >= 200 && pclsMessage->m_iStatusCode < 300 )
+			if( pclsMessage->m_iStatusCode >= SIP_OK && pclsMessage->m_iStatusCode < SIP_MULTIPLE_CHOICES )
 			{
 				SIP_FROM_LIST::iterator	itContact = pclsMessage->m_clsContactList.begin();
 				if( itContact != pclsMessage->m_clsContactList.end() )
@@ -607,6 +613,9 @@ bool CSipUserAgent::SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * 
 	if( pclsInvite )
 	{
 		m_clsSipStack.SendSipMessage( pclsInvite );
+
+		// 인증 정보를 포함한 INVITE 메시지를 전송한 경우, 응용으로 callback 호출하지 않는다.
+		return false;
 	}
 
 	if( bReInvite ) return false;

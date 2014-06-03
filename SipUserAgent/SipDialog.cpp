@@ -27,7 +27,8 @@
  * @brief 생성자
  */
 CSipDialog::CSipDialog( CSipStack * pclsSipStack ) : m_iSeq(0), m_iContactPort(-1), m_eTransport(E_SIP_UDP)
-	, m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1), m_pclsInvite(NULL), m_pclsSipStack( pclsSipStack )
+	, m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1), m_iRSeq(-1)
+	, m_pclsInvite(NULL), m_pclsSipStack( pclsSipStack )
 {
 	memset( &m_sttInviteTime, 0, sizeof(m_sttInviteTime) );
 	memset( &m_sttCancelTime, 0, sizeof(m_sttCancelTime) );
@@ -130,6 +131,27 @@ CSipMessage * CSipDialog::CreateRefer( )
 {
 	CSipMessage * pclsMessage = CreateMessage( "REFER" );
 	if( pclsMessage == NULL ) return NULL;
+
+	return pclsMessage;
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief PRACK 메시지를 생성한다.
+ * @returns 성공하면 PRACK 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
+CSipMessage * CSipDialog::CreatePrack( )
+{
+	if( m_iRSeq == -1 ) return NULL;
+
+	CSipMessage * pclsMessage = CreateMessage( "PRACK" );
+	if( pclsMessage == NULL ) return NULL;
+
+	char	szRAck[101];
+
+	snprintf( szRAck, sizeof(szRAck), "%d %d INVITE", m_iRSeq, m_iSeq );
+
+	pclsMessage->AddHeader( "RAck", szRAck );
 
 	return pclsMessage;
 }
@@ -389,7 +411,7 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 		pclsMessage->m_clsReqUri.InsertTransport( m_eTransport );
 	}
 
-	if( strcmp( pszSipMethod, "ACK" ) && strcmp( pszSipMethod, "CANCEL" ) )
+	if( strcmp( pszSipMethod, "ACK" ) && strcmp( pszSipMethod, "CANCEL" ) && strcmp( pszSipMethod, "PRACK" ) )
 	{
 		++m_iSeq;
 	}
