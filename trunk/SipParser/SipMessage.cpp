@@ -764,6 +764,28 @@ bool CSipMessage::IsEqualCallIdSeq( CSipMessage * pclsMessage )
 
 /**
  * @ingroup SipParser
+ * @brief SIP 메시지에 100rel 헤더를 포함하고 있는가?
+ * @returns 100rel 헤더를 포함하고 있으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipMessage::Is100rel( )
+{
+	CSipHeader * pclsHeader = GetHeader( "Supported" );
+	if( pclsHeader )
+	{
+		if( strstr( pclsHeader->m_strValue.c_str(), "100rel" ) ) return true;
+	}
+
+	pclsHeader = GetHeader( "Requires" );
+	if( pclsHeader )
+	{
+		if( strstr( pclsHeader->m_strValue.c_str(), "100rel" ) ) return true;
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup SipParser
  * @brief Call-ID 문자열을 가져온다.
  * @param strCallId Call-ID 문자열을 저장할 변수
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
