@@ -121,6 +121,58 @@ bool CSipUserAgent::StopCall( const char * pszCallId, int iSipCode )
 
 /**
  * @ingroup SipUserAgent
+ * @brief 183 응답 메시지를 전송한다.
+ * @param pszCallId SIP Call-ID
+ * @param pclsRtp		local RTP 정보 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::RingCall( const char * pszCallId, CSipCallRtp * pclsRtp )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+	CSipMessage * pclsMessage = NULL;
+
+	if( pclsRtp == NULL ) return false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		if( itMap->second.m_sttStartTime.tv_sec == 0 && itMap->second.m_pclsInvite )
+		{
+			itMap->second.SetLocalRtp( pclsRtp );
+
+			pclsMessage = itMap->second.m_pclsInvite->CreateResponse( SIP_SESSION_PROGRESS );
+			if( pclsMessage )
+			{
+				if( itMap->second.m_pclsInvite->Is100rel() )
+				{
+					int		iRSeq = itMap->second.m_pclsInvite->m_clsCSeq.m_iDigit + rand() % 10000;
+					char	szRSeq[21];
+
+					snprintf( szRSeq, sizeof(szRSeq), "%d", iRSeq );
+					pclsMessage->AddHeader( "RSeq", szRSeq );
+				}
+
+				itMap->second.AddSdp( pclsMessage );
+
+				bRes = true;
+			}
+		}
+	}
+	m_clsMutex.release();
+
+	if( pclsMessage )
+	{
+		m_clsSipStack.SendSipMessage( pclsMessage );
+	}
+
+	return bRes;
+
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief 수신된 통화를 수락한다.
  * @param pszCallId SIP Call-ID
  * @param pclsRtp		local RTP 정보 저장 객체
@@ -143,14 +195,17 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 			itMap->second.SetLocalRtp( pclsRtp );
 
 			pclsMessage = itMap->second.m_pclsInvite->CreateResponse( SIP_OK );
-			gettimeofday( &itMap->second.m_sttStartTime, NULL );
+			if( pclsMessage )
+			{
+				gettimeofday( &itMap->second.m_sttStartTime, NULL );
 
-			itMap->second.AddSdp( pclsMessage );
+				itMap->second.AddSdp( pclsMessage );
 
-			delete itMap->second.m_pclsInvite;
-			itMap->second.m_pclsInvite = NULL;
+				delete itMap->second.m_pclsInvite;
+				itMap->second.m_pclsInvite = NULL;
 
-			bRes = true;
+				bRes = true;
+			}
 		}
 	}
 	m_clsMutex.release();

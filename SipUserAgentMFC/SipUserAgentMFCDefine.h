@@ -29,6 +29,7 @@
 #define SMC_BLIND_TRANSFER	8
 #define SMC_MESSAGE					9
 #define SMC_TRANSFER_RESPONSE	10
+#define SMC_PRACK						11
 
 #define SMC_RECV_REQUEST		100
 #define SMC_RECV_RESPONSE		101

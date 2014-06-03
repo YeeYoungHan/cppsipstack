@@ -37,6 +37,7 @@
 #include "SipUserAgentRefer.hpp"
 #include "SipUserAgentNotify.hpp"
 #include "SipUserAgentMessage.hpp"
+#include "SipUserAgentPrack.hpp"
 
 /**
  * @ingroup SipUserAgent
@@ -288,6 +289,10 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	else if( pclsMessage->IsMethod( "CANCEL" ) )
 	{
 		return RecvCancelRequest( iThreadId, pclsMessage );
+	}
+	else if( pclsMessage->IsMethod( "PRACK" ) )
+	{
+		return RecvPrackRequest( iThreadId, pclsMessage );
 	}
 	else if( pclsMessage->IsMethod( "REFER" ) )
 	{

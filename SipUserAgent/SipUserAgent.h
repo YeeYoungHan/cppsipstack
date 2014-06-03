@@ -76,7 +76,9 @@ public:
 	// 통화 관련
 	bool StartCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId );
 	bool StopCall( const char * pszCallId, int iSipCode = 0 );
+	bool RingCall( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp );
+
 	int GetCallCount( );
 	void GetCallIdList( SIP_CALL_ID_LIST & clsList );
 	void StopCallAll( );
@@ -140,6 +142,8 @@ private:
 	bool RecvNotifyRequest( int iThreadId, CSipMessage * pclsMessage );
 
 	bool RecvMessageRequest( int iThreadId, CSipMessage * pclsMessage );
+
+	bool RecvPrackRequest( int iThreadId, CSipMessage * pclsMessage );
 
 	bool SendInvite( CSipDialog & clsDialog );
 	bool SetCallEnd( const char * pszCallId );
