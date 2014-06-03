@@ -78,6 +78,7 @@ public:
 	bool StopCall( const char * pszCallId, int iSipCode = 0 );
 	bool RingCall( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp );
+	bool SendPrack( const char * pszCallId, CSipCallRtp * pclsRtp );
 
 	int GetCallCount( );
 	void GetCallIdList( SIP_CALL_ID_LIST & clsList );
@@ -150,7 +151,7 @@ private:
 	bool Delete( const char * pszCallId );
 	void Delete( SIP_DIALOG_MAP::iterator & itMap );
 
-	bool SetInviteResponse( CSipMessage * pclsMessage, CSipCallRtp * pclsRtp );
+	bool SetInviteResponse( std::string & strCallId, CSipMessage * pclsMessage, CSipCallRtp * pclsRtp );
 	bool GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsRtp );
 
 	int GetSeqNum( );

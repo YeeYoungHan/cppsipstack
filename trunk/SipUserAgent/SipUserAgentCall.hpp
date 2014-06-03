@@ -220,6 +220,50 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 /**
  * @ingroup SipUserAgent
+ * @brief SIP PRACK 메시지를 전송한다.
+ * @param pszCallId SIP Call-ID
+ * @param pclsRtp		local RTP 정보 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::SendPrack( const char * pszCallId, CSipCallRtp * pclsRtp )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+	CSipMessage * pclsMessage = NULL;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		// 통화 연결되지 않고 발신한 경우에만 PRACK 메시지를 생성한다.
+		if( itMap->second.m_sttStartTime.tv_sec == 0 && itMap->second.m_pclsInvite == NULL )
+		{
+			pclsMessage = itMap->second.CreatePrack();
+			if( pclsMessage )
+			{
+				itMap->second.SetLocalRtp( pclsRtp );
+				
+				if( pclsRtp )
+				{
+					itMap->second.AddSdp( pclsMessage );
+				}
+
+				bRes = true;
+			}
+		}
+	}
+	m_clsMutex.release();
+
+	if( pclsMessage )
+	{
+		m_clsSipStack.SendSipMessage( pclsMessage );
+	}
+
+	return bRes;
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief	통화 개수를 리턴한다.
  * @returns 통화 개수를 리턴한다.
  */

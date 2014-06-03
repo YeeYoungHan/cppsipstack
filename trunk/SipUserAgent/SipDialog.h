@@ -99,6 +99,9 @@ public:
 	/** SIP 요청 메시지에 저장될 Request Uri */
 	std::string	m_strContactUri;
 
+	/** RSeq */
+	int					m_iRSeq;
+
 	/** INVITE 전송/수신 시간 */
 	struct timeval m_sttInviteTime;
 
@@ -122,6 +125,7 @@ public:
 	CSipMessage * CreateBye( );
 	CSipMessage * CreateNotify( );
 	CSipMessage * CreateRefer( );
+	CSipMessage * CreatePrack( );
 
 	bool AddSdp( CSipMessage * pclsMessage );
 	bool SetLocalRtp( CSipCallRtp * pclsRtp );
