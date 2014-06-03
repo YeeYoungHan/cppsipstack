@@ -150,6 +150,8 @@ public:
 	bool IsMethod( const char * pszMethod );
 	bool IsEqualCallId( CSipMessage * pclsMessage );
 	bool IsEqualCallIdSeq( CSipMessage * pclsMessage );
+	bool Is100rel( );
+
 	bool GetCallId( std::string & strCallId );
 
 	bool AddIpPortToTopVia( const char * pszIp, int iPort, ESipTransport eTransport = E_SIP_UDP );
