@@ -101,6 +101,7 @@ public:
 	bool GetFromId( const char * pszCallId, std::string & strFromId );
 	bool GetCdr( const char * pszCallId, CSipCdr * pclsCdr );
 	bool IsRingCall( const char * pszCallId, const char * pszTo );
+	bool HasRSeq( const char * pszCallId );
 
 	bool SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool SendNotify( const char * pszCallId, int iSipCode );

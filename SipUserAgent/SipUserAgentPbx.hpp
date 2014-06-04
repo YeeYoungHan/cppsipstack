@@ -225,6 +225,30 @@ bool CSipUserAgent::IsRingCall( const char * pszCallId, const char * pszTo )
 }
 
 /**
+ * @brief Dialog 에 RSeq 가 존재하는지 검사한다.
+ * @param pszCallId SIP Call-ID
+ * @returns Dialog 에 RSeq 가 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipUserAgent::HasRSeq( const char * pszCallId )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		if( itMap->second.m_iRSeq != -1 )
+		{
+			bRes = true;
+		}
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+/**
  * @ingroup SipUserAgent
  * @brief ReINVITE 메시지를 전송한다.
  * @param pszCallId SIP Call-ID
