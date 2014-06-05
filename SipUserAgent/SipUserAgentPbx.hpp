@@ -76,6 +76,17 @@ bool CSipUserAgent::RingCall( const char * pszCallId, int iSipStatus, CSipCallRt
 					itMap->second.AddSdp( pclsMessage );
 				}
 
+				if( itMap->second.m_iRSeq != -1 )
+				{
+					pclsMessage->AddHeader( "Allow", "PRACK, INVITE, ACK, BYE, CANCEL, REFER, NOTIFY, MESSAGE" );
+					pclsMessage->AddHeader( "Require", "100rel" );
+
+					char szRSeq[21];
+
+					snprintf( szRSeq, sizeof(szRSeq), "%d", itMap->second.m_iRSeq );
+					pclsMessage->AddHeader( "RSeq", szRSeq );
+				}
+
 				bRes = true;
 			}
 		}
@@ -226,27 +237,43 @@ bool CSipUserAgent::IsRingCall( const char * pszCallId, const char * pszTo )
 
 /**
  * @ingroup SipUserAgent
- * @brief Dialog 에 RSeq 가 존재하는지 검사한다.
+ * @brief Dialog 의 RSeq 값을 리턴한다.
  * @param pszCallId SIP Call-ID
- * @returns Dialog 에 RSeq 가 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ * @returns Dialog 에 RSeq 가 존재하면 RSeq 값을 리턴하고 그렇지 않으면 -1 을 리턴한다.
  */
-bool CSipUserAgent::HasRSeq( const char * pszCallId )
+int CSipUserAgent::GetRSeq( const char * pszCallId )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
-	bool	bRes = false;
+	int iRSeq = -1;
 
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( pszCallId );
 	if( itMap != m_clsMap.end() )
 	{
-		if( itMap->second.m_iRSeq != -1 )
-		{
-			bRes = true;
-		}
+		iRSeq = itMap->second.m_iRSeq;
 	}
 	m_clsMutex.release();
 
-	return bRes;
+	return iRSeq;
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief Dialog 의 RSeq 값을 설정한다.
+ * @param pszCallId SIP Call-ID
+ * @param iRSeq RSeq 값
+ */
+void CSipUserAgent::SetRSeq( const char * pszCallId, int iRSeq )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		itMap->second.m_iRSeq = iRSeq;
+	}
+	m_clsMutex.release();
 }
 
 /**
