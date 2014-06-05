@@ -286,6 +286,12 @@ void CSipServer::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
 			pclsRtp->m_strIp = gclsSetup.m_strLocalIp;
 		}
 
+		int iRSeq = gclsUserAgent.GetRSeq( pszCallId );
+		if( iRSeq != -1 )
+		{
+			gclsUserAgent.SetRSeq( clsCallInfo.m_strPeerCallId.c_str(), iRSeq );
+		}
+
 		gclsUserAgent.RingCall( clsCallInfo.m_strPeerCallId.c_str(), iSipStatus, pclsRtp );
 	}
 	else if( gclsTransCallMap.Select( pszCallId, clsCallInfo ) )
