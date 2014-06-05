@@ -37,7 +37,7 @@
 class CSipCallRoute
 {
 public:
-	CSipCallRoute() : m_eTransport( E_SIP_UDP )
+	CSipCallRoute() : m_eTransport( E_SIP_UDP ), m_b100rel(false)
 	{}
 
 	/** 목적지 IP 주소 */
@@ -48,6 +48,9 @@ public:
 
 	/** SIP transport */
 	ESipTransport	m_eTransport;
+
+	/** 100rel 기능 */
+	bool				m_b100rel;
 };
 
 // key 는 SIP Call-ID 이다.

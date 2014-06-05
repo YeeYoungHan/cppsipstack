@@ -61,6 +61,11 @@ CSipMessage * CSipDialog::CreateInvite( )
 	pclsMessage->AddVia( m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.GetLocalPort( m_eTransport ), szBranch, m_eTransport );
 	m_strViaBranch = szBranch;
 
+	if( m_b100rel )
+	{
+		pclsMessage->AddHeader( "Require", "100rel" );
+	}
+
 	AddSdp( pclsMessage );
 
 	return pclsMessage;

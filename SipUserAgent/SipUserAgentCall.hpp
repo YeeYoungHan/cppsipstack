@@ -50,6 +50,7 @@ bool CSipUserAgent::StartCall( const char * pszFrom, const char * pszTo, CSipCal
 	clsDialog.m_strContactIp = pclsRoute->m_strDestIp;
 	clsDialog.m_iContactPort = pclsRoute->m_iDestPort;
 	clsDialog.m_eTransport = pclsRoute->m_eTransport;
+	clsDialog.m_b100rel = pclsRoute->m_b100rel;
 
 	if( SendInvite( clsDialog ) == false ) return false;
 	strCallId = clsDialog.m_strCallId;
@@ -355,6 +356,7 @@ bool CSipUserAgent::CreateCall( const char * pszFrom, const char * pszTo, CSipCa
 	clsDialog.m_strContactIp = pclsRoute->m_strDestIp;
 	clsDialog.m_iContactPort = pclsRoute->m_iDestPort;
 	clsDialog.m_eTransport = pclsRoute->m_eTransport;
+	clsDialog.m_b100rel = pclsRoute->m_b100rel;
 
 	SIP_DIALOG_MAP::iterator			itMap;
 	char	szTag[SIP_TAG_MAX_SIZE], szBranch[SIP_BRANCH_MAX_SIZE], szCallIdName[SIP_CALL_ID_NAME_MAX_SIZE];
