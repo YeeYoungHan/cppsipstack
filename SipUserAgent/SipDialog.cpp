@@ -63,6 +63,8 @@ CSipMessage * CSipDialog::CreateInvite( )
 
 	if( m_b100rel )
 	{
+		pclsMessage->AddHeader( "Allow", "PRACK, INVITE, ACK, BYE, CANCEL, REFER, NOTIFY, MESSAGE" );
+		pclsMessage->AddHeader( "Supported", "100rel" );
 		pclsMessage->AddHeader( "Require", "100rel" );
 	}
 
