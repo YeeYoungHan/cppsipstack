@@ -244,6 +244,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	}
 
 	clsUserInfo.GetCallRoute( clsRoute );
+	clsRoute.m_b100rel = gclsUserAgent.Is100rel( pszCallId );
 
 	CSipMessage * pclsInvite;
 
@@ -403,6 +404,29 @@ void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 		}
 
 		gclsUserAgent.SendReInvite( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp );
+	}
+}
+
+/**
+ * @ingroup KSipServer
+ * @brief SIP PRACK 수신 이벤트 핸들러
+ * @param	pszCallId	SIP Call-ID
+ * @param pclsRtp		RTP 정보 저장 객체
+ */
+void CSipServer::EventPrack( const char * pszCallId, CSipCallRtp * pclsRtp )
+{
+	CCallInfo	clsCallInfo;
+
+	CLog::Print( LOG_DEBUG, "EventPrack(%s)", pszCallId );
+
+	if( gclsCallMap.Select( pszCallId, clsCallInfo ) )
+	{
+		if( pclsRtp && clsCallInfo.m_iPeerRtpPort > 0 )
+		{
+			pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsCallInfo.m_iPeerRtpPort, SOCKET_COUNT_PER_MEDIA );
+		}
+
+		gclsUserAgent.SendPrack( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp );
 	}
 }
 

@@ -51,6 +51,7 @@ public:
 	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
 	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
+	virtual void EventPrack( const char * pszCallId, CSipCallRtp * pclsRtp );
 	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer );
 	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId );
 	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage );
