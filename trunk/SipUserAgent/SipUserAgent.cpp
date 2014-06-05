@@ -540,7 +540,7 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 			itMap->second.SetRemoteRtp( pclsRtp );
 		}
 
-		if( pclsMessage->m_iStatusCode == SIP_SESSION_PROGRESS )
+		if( pclsMessage->m_iStatusCode == SIP_SESSION_PROGRESS || pclsMessage->m_iStatusCode == SIP_RINGING )
 		{
 			CSipHeader * pclsHeader = pclsMessage->GetHeader( "RSeq" );
 			if( pclsHeader && pclsHeader->m_strValue.empty() == false )

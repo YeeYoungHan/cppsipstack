@@ -154,6 +154,8 @@ CSipMessage * CSipDialog::CreatePrack( )
 	CSipMessage * pclsMessage = CreateMessage( "PRACK" );
 	if( pclsMessage == NULL ) return NULL;
 
+	pclsMessage->m_clsCSeq.m_iDigit = rand();
+
 	char	szRAck[101];
 
 	snprintf( szRAck, sizeof(szRAck), "%d %d INVITE", m_iRSeq, m_iSeq );
