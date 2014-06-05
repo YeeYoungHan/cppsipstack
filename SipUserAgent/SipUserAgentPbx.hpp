@@ -225,6 +225,7 @@ bool CSipUserAgent::IsRingCall( const char * pszCallId, const char * pszTo )
 }
 
 /**
+ * @ingroup SipUserAgent
  * @brief Dialog 에 RSeq 가 존재하는지 검사한다.
  * @param pszCallId SIP Call-ID
  * @returns Dialog 에 RSeq 가 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
@@ -246,6 +247,32 @@ bool CSipUserAgent::HasRSeq( const char * pszCallId )
 	m_clsMutex.release();
 
 	return bRes;
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief 100rel 기능이 활성화 유무를 검색한다.
+ * @param pszCallId SIP Call-ID
+ * @returns 100rel 기능이 활성화되어 있으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipUserAgent::Is100rel( const char * pszCallId )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	b100rel = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		b100rel = itMap->second.m_b100rel;
+		if( b100rel == false && itMap->second.m_pclsInvite )
+		{
+			b100rel = itMap->second.m_pclsInvite->Is100rel();
+		}
+	}
+	m_clsMutex.release();
+
+	return b100rel;
 }
 
 /**

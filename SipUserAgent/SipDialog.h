@@ -102,6 +102,9 @@ public:
 	/** RSeq */
 	int					m_iRSeq;
 
+	/** 100rel */
+	bool				m_b100rel;
+
 	/** INVITE 전송/수신 시간 */
 	struct timeval m_sttInviteTime;
 
