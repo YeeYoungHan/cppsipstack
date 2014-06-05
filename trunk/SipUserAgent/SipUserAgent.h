@@ -102,6 +102,7 @@ public:
 	bool GetCdr( const char * pszCallId, CSipCdr * pclsCdr );
 	bool IsRingCall( const char * pszCallId, const char * pszTo );
 	bool HasRSeq( const char * pszCallId );
+	bool Is100rel( const char * pszCallId );
 
 	bool SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool SendNotify( const char * pszCallId, int iSipCode );
