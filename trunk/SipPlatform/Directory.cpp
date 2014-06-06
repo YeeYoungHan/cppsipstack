@@ -348,3 +348,84 @@ char * CDirectory::GetProgramDirectory( )
 
 	return szDir;
 }
+
+#define MAX_INT	4294967296L
+
+uint64_t CDirectory::GetSize( const char * pszDirName )
+{
+	uint64_t iTotalSize = 0;
+
+#ifdef WIN32
+	WIN32_FIND_DATA	sttFindData;
+	HANDLE			hFind;
+	BOOL				bNext = TRUE;
+	std::string	strPath = pszDirName;
+
+	strPath.append( "\\*.*" );
+
+	hFind = FindFirstFile( strPath.c_str(), &sttFindData );
+	if( hFind == INVALID_HANDLE_VALUE )
+	{
+		CLog::Print( LOG_ERROR, "FindFirstFile(%s) error(%d)", pszDirName, GetLastError() );
+		return false;
+	}
+
+	for( ; bNext == TRUE; bNext = FindNextFile( hFind, &sttFindData ) )
+	{
+		if( !strcmp( sttFindData.cFileName, "." ) || !strcmp( sttFindData.cFileName, ".." ) ) continue;
+		if( sttFindData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY )
+		{
+			std::string	strFolder = pszDirName;
+			
+			AppendName( strFolder, sttFindData.cFileName );
+			iTotalSize += GetSize( strFolder.c_str() );
+			continue;
+		}
+		
+		if( sttFindData.nFileSizeHigh > 0 )
+		{
+			iTotalSize += (uint64_t)sttFindData.nFileSizeHigh * MAX_INT;
+		}
+
+		iTotalSize += sttFindData.nFileSizeLow;
+	}
+
+	FindClose( hFind );
+#else
+	DIR						* psttDir;
+	struct dirent	* psttDirent, sttDirent;
+	struct stat		sttStat;
+	int		n;
+	std::string		strFileName;
+
+	psttDir = opendir( pszDirName );
+	if( psttDir == NULL )
+	{
+		CLog::Print( LOG_ERROR, "opendir(%s) error(%d)", pszDirName, errno );
+		return false;
+	}
+
+	for( n = readdir_r( psttDir, &sttDirent, &psttDirent ); psttDirent && n == 0; n = readdir_r( psttDir, &sttDirent, &psttDirent ) )
+	{
+		if( !strcmp( psttDirent->d_name, "." ) || !strcmp( psttDirent->d_name, ".." ) ) continue;
+		strFileName = pszDirName;
+		AppendName( strFileName, psttDirent->d_name );
+
+		if( lstat( strFileName.c_str(), &sttStat ) < 0 ) continue;
+		if( S_ISDIR( sttStat.st_mode ) )
+		{
+			std::string	strFolder = pszDirName;
+			
+			AppendName( strFolder, psttDirent->d_name );
+			iTotalSize += GetSize( strFolder.c_str() );
+			continue;
+		}
+
+		iTotalSize += sttStat.st_size;
+	}
+
+	closedir( psttDir );
+#endif
+
+	return iTotalSize;
+}
