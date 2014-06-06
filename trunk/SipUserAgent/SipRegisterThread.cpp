@@ -56,10 +56,11 @@ void * SipRegisterThread( void * lpParameter )
 					CSipMessage * pclsRequest = itList->CreateRegister( &pclsSipUserAgent->m_clsSipStack, NULL );
 					if( pclsRequest )
 					{
-						pclsSipUserAgent->m_clsSipStack.SendSipMessage( pclsRequest );
+						if( pclsSipUserAgent->m_clsSipStack.SendSipMessage( pclsRequest ) )
+						{
+							itList->m_iSendTime = iTime;
+						}
 					}
-
-					itList->m_iSendTime = iTime;
 				}
 			}
 			else
@@ -69,7 +70,18 @@ void * SipRegisterThread( void * lpParameter )
 					CSipMessage * pclsRequest = itList->CreateRegister( &pclsSipUserAgent->m_clsSipStack, NULL );
 					if( pclsRequest )
 					{
-						pclsSipUserAgent->m_clsSipStack.SendSipMessage( pclsRequest );
+						if( pclsSipUserAgent->m_clsSipStack.SendSipMessage( pclsRequest ) )
+						{
+							itList->m_iSendTime = iTime;
+						}
+					}
+				}
+				else if( itList->m_iNatTimeout > 0 )
+				{
+					if( ( iTime - itList->m_iSendTime ) >= itList->m_iNatTimeout )
+					{
+						pclsSipUserAgent->m_clsSipStack.Send( "\r\n", itList->m_strIp.c_str(), itList->m_iPort, itList->m_eTransport );
+						itList->m_iSendTime = iTime;
 					}
 				}
 			}
