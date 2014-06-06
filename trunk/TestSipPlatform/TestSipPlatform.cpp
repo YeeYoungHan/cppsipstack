@@ -24,6 +24,7 @@
  */
 
 bool TestSipMutex();
+bool TestDirectory();
 
 /**
  * @ingroup TestSipParser
@@ -34,6 +35,7 @@ bool TestSipMutex();
  */
 int main( int argc, char * argv[] )
 {
+	if( TestDirectory() == false ) goto FUNC_END;
 	if( TestSipMutex() == false ) goto FUNC_END;
 
 	printf( "All test is O.K.\n" );
