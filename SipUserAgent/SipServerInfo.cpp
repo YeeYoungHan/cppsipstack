@@ -26,7 +26,9 @@
  * @ingroup SipUserAgent
  * @brief »ý¼ºÀÚ
  */
-CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_iLoginTimeout(3600), m_eTransport(E_SIP_UDP), m_iNextSendTime(0), m_iSeqNo(0), m_bDelete(false)
+CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_iLoginTimeout(3600)
+	, m_eTransport(E_SIP_UDP), m_iNatTimeout(0)
+	, m_iNextSendTime(0), m_iSeqNo(0), m_bDelete(false)
 {
 	ClearLogin();
 }

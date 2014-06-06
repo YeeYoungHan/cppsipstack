@@ -82,6 +82,7 @@ public:
 	bool RecvSipMessage( int iThreadId, CSipMessage * pclsMessage );
 	bool RecvSipMessage( int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort, ESipTransport eTransport );
 	bool Send( CSipMessage * pclsMessage, bool bCheckMessage = true );
+	bool Send( const char * pszMessage, const char * pszIp, unsigned short iPort, ESipTransport eTransport );
 
 	bool	m_bStopEvent;						// SIP stack thread 종료 이벤트
 	bool	m_bStackThreadRun;			// SIP stack thread 가 실행 중에 있는가?

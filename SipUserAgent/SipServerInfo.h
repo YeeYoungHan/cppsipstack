@@ -58,6 +58,9 @@ public:
 	/** transport */
 	ESipTransport	m_eTransport;
 
+	/** NAT 만료 시간 (초단위) */
+	int						m_iNatTimeout;
+
 	bool					m_bLogin;
 	time_t				m_iLoginTime;
 	time_t				m_iSendTime;

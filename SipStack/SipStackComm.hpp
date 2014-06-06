@@ -340,6 +340,54 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 
 /**
  * @ingroup SipStack
+ * @brief SIP 세션으로 문자열을 전송한다.
+ * @param pszMessage 전송할 문자열
+ * @param pszIp 목적지 IP 주소
+ * @param iPort 목적지 포트 번호
+ * @param eTransport 프로토콜
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipStack::Send( const char * pszMessage, const char * pszIp, unsigned short iPort, ESipTransport eTransport )
+{
+	if( pszMessage == NULL || pszIp == NULL ) return false;
+
+	bool bRes = false;
+	int iMessageSize = strlen( pszMessage );
+
+	if( eTransport == E_SIP_UDP )
+	{
+		m_clsUdpSendMutex.acquire();
+		bRes = UdpSend( m_hUdpSocket, pszMessage, iMessageSize, pszIp, iPort );
+		m_clsUdpSendMutex.release();
+	}
+	else if( eTransport == E_SIP_TCP )
+	{
+		Socket	hSocket;
+
+		if( m_clsTcpSocketMap.Select( pszIp, iPort, hSocket ) )
+		{
+			TcpSend( hSocket, pszMessage, iMessageSize );
+		}
+	}
+	else if( eTransport == E_SIP_TLS )
+	{
+#ifdef USE_TLS
+		CTcpSocketInfo * pclsInfo = NULL;
+
+		if( m_clsTlsSocketMap.Select( pszIp, iPort, &pclsInfo ) )
+		{
+			SSLSend( pclsInfo->m_psttSsl, pszMessage, iMessageSize );
+		}
+#else
+		CLog::Print( LOG_ERROR, "TLS is not supported. rebuild with USE_TLS option" );
+#endif
+	}
+	
+	return bRes;
+}
+
+/**
+ * @ingroup SipStack
  * @brief 전송할 SIP 메시지에서 필요한 헤더가 존재하지 않을 경우 default 헤더를 저장한다.
  * @param pclsMessage 전송할 SIP 메시지
  */
