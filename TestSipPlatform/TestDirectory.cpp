@@ -16,43 +16,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "SipMutex.h"
-#include "ServerUtility.h"
+#include "Directory.h"
 
-#define TEST_COUNT 10
-
-static CSipMutexSignal gclsMutexSignal;
+bool TestDirectory()
+{
+	uint64_t iTotalSize;	
 
 #ifdef WIN32
-void PrintTickCount( const char * pszName )
-{
-	printf( "%s tick[%u]\n", pszName, GetTickCount() );
-}
-
-DWORD WINAPI TestSipMutexThread( LPVOID lpParameter )
-{
-	for( int i = 0; i < TEST_COUNT; ++i )
-	{
-		Sleep(20);
-		gclsMutexSignal.signal();
-	}
-
-	return 0;
-}
+	iTotalSize = CDirectory::GetSize( "c:\\temp" );
+#else
+	iTotalSize = CDirectory::GetSize( "/tmp" );
 #endif
 
-bool TestSipMutex()
-{
-#ifdef WIN32
-	if( StartThread( "TestSipMutexThread", TestSipMutexThread, NULL ) == false ) return false;
-
-	for( int i = 0; i < TEST_COUNT; ++i )
-	{
-		PrintTickCount( "Start" );
-		gclsMutexSignal.wait();
-		PrintTickCount( "End  " );
-	}
-#endif
+	printf( "directory size = " LONG_LONG_FORMAT "\n", iTotalSize );
 
 	return true;
 }
