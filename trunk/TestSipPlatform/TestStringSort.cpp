@@ -16,32 +16,33 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include <stdio.h>
+#include "Directory.h"
 
-/**
- * @defgroup TestSipPlatform TestSipPlatform
- * SipPlatform 라이브러리 기능을 테스트한다.
- */
-
-bool TestSipMutex();
-bool TestDirectory();
-bool TestStringSort();
-
-/**
- * @ingroup TestSipParser
- * @brief SipParser / SdpParser / XmlParser 라이브러리 기능을 테스트한다.
- * @param argc 
- * @param argv 
- * @returns 0 을 리턴한다.
- */
-int main( int argc, char * argv[] )
+void PrintFileList( const char * pszName, FILE_LIST & clsList )
 {
-	if( TestStringSort() == false ) goto FUNC_END;
-	if( TestDirectory() == false ) goto FUNC_END;
-	if( TestSipMutex() == false ) goto FUNC_END;
+	FILE_LIST::iterator	it;
 
-	printf( "All test is O.K.\n" );
+	printf( "%s\n", pszName );
 
-FUNC_END:
-	return 0;
+	for( it = clsList.begin(); it != clsList.end(); ++it )
+	{
+		printf( "%s\n", it->c_str() );
+	}
+}
+
+bool TestStringSort()
+{
+	FILE_LIST	clsFileList;
+
+	clsFileList.push_back( "20140608_2.txt" );
+	clsFileList.push_back( "20140608_3.txt" );
+	clsFileList.push_back( "20140608_1.txt" );
+
+	PrintFileList( "before sort", clsFileList );
+
+	clsFileList.sort();
+
+	PrintFileList( "after sort", clsFileList );
+
+	return true;
 }
