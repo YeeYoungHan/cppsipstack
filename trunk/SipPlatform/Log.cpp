@@ -40,6 +40,7 @@ CSipMutex * CLog::m_pThreadMutex = NULL;
 int CLog::m_iLevel = LOG_ERROR;
 int CLog::m_iMaxLogSize = 0;
 int CLog::m_iLogSize = 0;
+uint64_t CLog::m_iMaxFolderSize = 0;
 int CLog::m_iIndex = 1;
 ILogCallBack * CLog::m_pclsCallBack = NULL;
 
@@ -81,6 +82,8 @@ bool CLog::SetDirectory( const char * pszDirName )
 	m_pThreadMutex->release();
 
 	if( CDirectory::Create( m_pszDirName ) != 0 ) return false;
+
+	
 
 	return true;
 }
@@ -353,6 +356,31 @@ void CLog::SetMaxLogSize( int iSize )
 	m_iMaxLogSize = iSize;
 }
 
+/**
+ * @ingroup SipPlatform
+ * @brief 로그 폴더 최대 크기를 설정한다.
+ * @param iSize 로그 폴더 최대 크기
+ */
+void CLog::SetMaxFolderSize( uint64_t iSize )
+{
+	if( m_iMaxLogSize == 0 )
+	{
+		if( iSize < ( MIN_LOG_FILE_SIZE * 30 ) )
+		{
+			iSize = MIN_LOG_FILE_SIZE * 30;
+		}
+	}
+	else
+	{
+		if( iSize < m_iMaxLogSize * 30 )
+		{
+			iSize = m_iMaxLogSize * 30;
+		}
+	}
+
+	m_iMaxFolderSize = iSize;
+}
+
 /** 
  * @ingroup SipPlatform
  * @brief 로그파일의 인덱스 번호를 리턴한다.
@@ -361,4 +389,31 @@ void CLog::SetMaxLogSize( int iSize )
 int CLog::GetLogIndex()
 {
 	return m_iIndex;
+}
+
+
+/**
+ * @ingroup SipPlatform
+ * @brief 로그 폴더의 크기가 설정된 크기보다 큰 경우, 오래된 로그 파일을 삭제한다.
+ */
+void CLog::DeleteOldFile( )
+{
+	if( m_iMaxFolderSize == 0 ) return;
+	if( m_pszDirName == NULL ) return;
+
+	uint64_t iSize = CDirectory::GetSize( m_pszDirName );
+	if( iSize < m_iMaxFolderSize ) return;
+
+	FILE_LIST clsFileList;
+	FILE_LIST::iterator	itList;
+
+	CDirectory::FileList( m_pszDirName, clsFileList );
+
+	clsFileList.sort();
+
+	for( itList = clsFileList.begin(); itList != clsFileList.end(); ++itList )
+	{
+		// QQQ : file size 를 가져온다.
+		// QQQ : 삭제 대상이면 파일을 삭제한다.
+	}
 }
