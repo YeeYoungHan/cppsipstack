@@ -188,11 +188,8 @@ int CLog::Print( EnumLogLevel iLevel, const char * fmt, ... )
 
 OPEN_FILE:
 		m_iLogSize = 0;
-#ifdef WIN32
-		snprintf( szFileName, sizeof(szFileName), "%s\\%04d%02d%02d_%d.txt", m_pszDirName, sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday, m_iIndex );
-#else
-		snprintf( szFileName, sizeof(szFileName), "%s/%04d%02d%02d_%d.txt", m_pszDirName, sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday, m_iIndex );
-#endif
+
+		snprintf( szFileName, sizeof(szFileName), "%s%s%04d%02d%02d_%d.txt", m_pszDirName, DIR_SEP, sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday, m_iIndex );
 		
 		// 이미 Open 된 파일이 있는 경우에는 이를 닫는다.
 		if( m_sttFd ) fclose( m_sttFd );
@@ -201,39 +198,14 @@ OPEN_FILE:
 
 		if( m_iMaxLogSize > 0 )
 		{
-#ifdef WIN32
-			HANDLE	hFile;
-
-			hFile = CreateFile( szFileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
-			if( hFile != INVALID_HANDLE_VALUE )
+			int64_t iFileSize = GetFileSize( szFileName );
+			if( iFileSize >= m_iMaxLogSize )
 			{
-				DWORD dwFileSize, dFileSizeHigh;
-				
-				dwFileSize = ::GetFileSize( hFile, &dFileSizeHigh );
-				CloseHandle( hFile );
-
-				if( dwFileSize != 0xFFFFFFFF && dwFileSize >= (DWORD)m_iMaxLogSize )
-				{
-					++m_iIndex;
-					goto OPEN_FILE;
-				}
-
-				m_iLogSize = dwFileSize;
+				++m_iIndex;
+				goto OPEN_FILE;
 			}
-#else
-			struct  stat    sttStat;
 
-			if( lstat( szFileName, &sttStat ) == 0 )
-			{
-				if( sttStat.st_size >= m_iMaxLogSize )
-				{
-					++m_iIndex;
-					goto OPEN_FILE;
-				}
-
-				m_iLogSize = sttStat.st_size;
-			}
-#endif
+			m_iLogSize = (int)iFileSize;
 		}
 		
 		m_sttFd = fopen( szFileName, "a" );
