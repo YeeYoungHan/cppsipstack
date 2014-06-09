@@ -17,42 +17,10 @@
  */
 
 #include "ServerUtility.h"
-#include "SipMutex.h"
 
-#define TEST_COUNT 10
-
-static CSipMutexSignal gclsMutexSignal;
-
-#ifdef WIN32
-void PrintTickCount( const char * pszName )
+bool TestServerUtility()
 {
-	printf( "%s tick[%u]\n", pszName, GetTickCount() );
-}
-
-DWORD WINAPI TestSipMutexThread( LPVOID lpParameter )
-{
-	for( int i = 0; i < TEST_COUNT; ++i )
-	{
-		Sleep(20);
-		gclsMutexSignal.signal();
-	}
-
-	return 0;
-}
-#endif
-
-bool TestSipMutex()
-{
-#ifdef WIN32
-	if( StartThread( "TestSipMutexThread", TestSipMutexThread, NULL ) == false ) return false;
-
-	for( int i = 0; i < TEST_COUNT; ++i )
-	{
-		PrintTickCount( "Start" );
-		gclsMutexSignal.wait();
-		PrintTickCount( "End  " );
-	}
-#endif
+	int64_t iSize = GetFileSize( "c:\\temp\\sipserver\\20140606_1.txt" );
 
 	return true;
 }
