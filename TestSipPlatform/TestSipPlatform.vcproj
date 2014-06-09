@@ -177,6 +177,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestServerUtility.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestSipMutex.cpp"
 				>
 			</File>

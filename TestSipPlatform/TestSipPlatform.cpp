@@ -26,6 +26,7 @@
 bool TestSipMutex();
 bool TestDirectory();
 bool TestStringSort();
+bool TestServerUtility();
 
 /**
  * @ingroup TestSipParser
@@ -36,6 +37,7 @@ bool TestStringSort();
  */
 int main( int argc, char * argv[] )
 {
+	if( TestServerUtility() == false ) goto FUNC_END;
 	if( TestStringSort() == false ) goto FUNC_END;
 	if( TestDirectory() == false ) goto FUNC_END;
 	if( TestSipMutex() == false ) goto FUNC_END;

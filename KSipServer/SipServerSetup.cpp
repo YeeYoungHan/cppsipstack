@@ -16,9 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "Log.h"
 #include "KSipServer.h"
 #include "SipServerSetup.h"
-#include "Log.h"
 #include <string.h>
 #include <sys/stat.h>
 #include "MemoryDebug.h"
