@@ -40,7 +40,7 @@ CSipMutex * CLog::m_pThreadMutex = NULL;
 int CLog::m_iLevel = LOG_ERROR;
 int CLog::m_iMaxLogSize = 0;
 int CLog::m_iLogSize = 0;
-uint64_t CLog::m_iMaxFolderSize = 0;
+int64_t CLog::m_iMaxFolderSize = 0;
 int CLog::m_iIndex = 1;
 ILogCallBack * CLog::m_pclsCallBack = NULL;
 
@@ -83,7 +83,7 @@ bool CLog::SetDirectory( const char * pszDirName )
 
 	if( CDirectory::Create( m_pszDirName ) != 0 ) return false;
 
-	
+	DeleteOldFile();
 
 	return true;
 }
@@ -196,6 +196,8 @@ OPEN_FILE:
 		
 		// 이미 Open 된 파일이 있는 경우에는 이를 닫는다.
 		if( m_sttFd ) fclose( m_sttFd );
+
+		DeleteOldFile();
 
 		if( m_iMaxLogSize > 0 )
 		{
@@ -361,7 +363,7 @@ void CLog::SetMaxLogSize( int iSize )
  * @brief 로그 폴더 최대 크기를 설정한다.
  * @param iSize 로그 폴더 최대 크기
  */
-void CLog::SetMaxFolderSize( uint64_t iSize )
+void CLog::SetMaxFolderSize( int64_t iSize )
 {
 	if( m_iMaxLogSize == 0 )
 	{
@@ -401,11 +403,13 @@ void CLog::DeleteOldFile( )
 	if( m_iMaxFolderSize == 0 ) return;
 	if( m_pszDirName == NULL ) return;
 
-	uint64_t iSize = CDirectory::GetSize( m_pszDirName );
+	int64_t iSize = CDirectory::GetSize( m_pszDirName );
 	if( iSize < m_iMaxFolderSize ) return;
 
 	FILE_LIST clsFileList;
 	FILE_LIST::iterator	itList;
+	int64_t iDeleteSize = 0;
+	int64_t iFileSize;
 
 	CDirectory::FileList( m_pszDirName, clsFileList );
 
@@ -413,7 +417,20 @@ void CLog::DeleteOldFile( )
 
 	for( itList = clsFileList.begin(); itList != clsFileList.end(); ++itList )
 	{
-		// QQQ : file size 를 가져온다.
-		// QQQ : 삭제 대상이면 파일을 삭제한다.
+		std::string strFileName = m_pszDirName;
+
+		CDirectory::AppendName( strFileName, itList->c_str() );
+
+		iFileSize = GetFileSize( strFileName.c_str() );
+
+#ifdef WIN32
+		DeleteFile( strFileName.c_str() );
+#else
+		unlink( strFileName.c_str() );
+#endif
+
+		iSize -= iFileSize;
+	
+		if( iSize < m_iMaxFolderSize ) break;
 	}
 }
