@@ -351,7 +351,7 @@ char * CDirectory::GetProgramDirectory( )
 
 #define MAX_INT	4294967296L
 
-uint64_t CDirectory::GetSize( const char * pszDirName )
+int64_t CDirectory::GetSize( const char * pszDirName )
 {
 	uint64_t iTotalSize = 0;
 

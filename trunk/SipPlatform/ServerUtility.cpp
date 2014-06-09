@@ -19,7 +19,6 @@
 #include "ServerUtility.h"
 #include <stdio.h>
 #include <string.h>
-#include "Log.h"
 
 #ifndef WIN32
 #include <errno.h>
@@ -133,6 +132,24 @@ bool IsExistFile( const char * pszFileName )
 	}
 
 	return true;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 파일 크기를 리턴한다.
+ * @param pszFileName 파일 이름
+ * @returns 파일이 존재하면 파일 크기를 리턴하고 그렇지 않으면 0 을 리턴한다.
+ */
+int64_t GetFileSize( const char * pszFileName )
+{
+	struct stat sttStat;
+
+	if( stat( pszFileName, &sttStat ) == -1 )
+	{
+		return 0;
+	}
+
+	return sttStat.st_size;
 }
 
 /**

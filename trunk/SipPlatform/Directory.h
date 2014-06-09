@@ -47,7 +47,7 @@ public:
 	static bool List( const char * pszDirName, FILE_LIST & clsFileList );
 	static bool FileList( const char * pszDirName, FILE_LIST & clsFileList );
 	static char * GetProgramDirectory( );
-	static uint64_t GetSize( const char * pszDirName );
+	static int64_t GetSize( const char * pszDirName );
 };
 
 #endif

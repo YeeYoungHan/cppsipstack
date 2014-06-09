@@ -19,6 +19,7 @@
 #ifndef _LOG_H_
 #define _LOG_H_
 
+#include "SipPlatformDefine.h"
 #include <stdio.h>
 #include "SipMutex.h"
 
@@ -77,7 +78,7 @@ private:
 	static int				m_iMaxLogSize;	// 하나의 로그 파일에 저장할 수 있는 최대 크기
 	static int				m_iLogSize;			// 현재까지 저장된 로그 크기
 	static int				m_iIndex;				// 로그 파일 인덱스
-	static uint64_t		m_iMaxFolderSize;	// 로그 폴더의 최대 크기
+	static int64_t		m_iMaxFolderSize;	// 로그 폴더의 최대 크기
 
 	static ILogCallBack * m_pclsCallBack;	// 로그 callback
 
@@ -94,7 +95,7 @@ public:
 	static void SetDebugLevel( );
 	static bool IsPrintLogLevel( EnumLogLevel iLevel );
 	static void SetMaxLogSize( int iSize );
-	static void SetMaxFolderSize( uint64_t iSize );
+	static void SetMaxFolderSize( int64_t iSize );
 	static int GetLogIndex();
 	static void DeleteOldFile( );
 };
