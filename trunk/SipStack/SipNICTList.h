@@ -36,7 +36,7 @@ public:
 	virtual void Execute( struct timeval * psttTime );
 	virtual void DeleteAll( );
 	virtual int GetSize( );
-	virtual void GetString( std::string & strBuf );
+	virtual void GetString( CMonitorString & strBuf );
 
 	bool DeleteCancel( CSipMessage * pclsMessage );
 

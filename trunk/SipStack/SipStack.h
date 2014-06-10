@@ -59,8 +59,8 @@ public:
 	void IncreateTcpThreadCount( int & iThreadId );
 	void DecreateTcpThreadCount();
 
-	void GetString( std::string & strBuf );
-	void GetICTString( std::string & strBuf );
+	void GetString( CMonitorString & strBuf );
+	void GetICTString( CMonitorString & strBuf );
 
 	void Final();
 

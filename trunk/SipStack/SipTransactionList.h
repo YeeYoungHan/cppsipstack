@@ -21,6 +21,7 @@
 
 #include "SipStackDefine.h"
 #include "SipMutex.h"
+#include "MonitorString.h"
 
 #define MAX_ICT_RESEND_COUNT	11
 
@@ -45,7 +46,7 @@ public:
 	virtual void Execute( struct timeval * psttTime ) = 0;
 	virtual void DeleteAll( ) = 0;
 	virtual int GetSize( ) = 0;
-	virtual void GetString( std::string & strBuf ) = 0;
+	virtual void GetString( CMonitorString & strBuf ) = 0;
 
 	CSipStack * m_pclsSipStack;
 	CSipMutex		m_clsMutex;

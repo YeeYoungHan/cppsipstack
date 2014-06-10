@@ -212,17 +212,16 @@ int CSipNICTList::GetSize( )
  * @brief NICT 자료구조에 저장된 SIP Call-ID 들을 문자열에 저장한다.
  * @param strBuf SIP Call-ID 들을 저장할 문자열
  */
-void CSipNICTList::GetString( std::string & strBuf )
+void CSipNICTList::GetString( CMonitorString & strBuf )
 {
 	NON_INVITE_TRANSACTION_MAP::iterator	itMap;
 
-	strBuf.clear();
+	strBuf.Clear();
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
-		strBuf.append( itMap->first );
-		strBuf.append( "\n" );
+		strBuf.AddRow( itMap->first );
 	}
 	m_clsMutex.release();
 }

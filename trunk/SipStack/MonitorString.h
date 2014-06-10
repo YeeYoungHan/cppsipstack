@@ -16,33 +16,36 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_NIST_LIST_H_
-#define _SIP_NIST_LIST_H_
+#ifndef _MONITOR_STRING_H_
+#define _MONITOR_STRING_H_
 
-#include "SipNonInviteTransaction.h"
-#include "SipTransactionList.h"
+#include <string>
 
-/**
- * @ingroup SipStack
- * @brief NON INVITE SERVER TRANSACTION List Å¬·¡½º
- */
-class CSipNISTList : public CSipTransactionList
+class CMonitorString
 {
 public:
-	CSipNISTList();
-	virtual ~CSipNISTList();
+	CMonitorString();
+	~CMonitorString();
 
-	virtual bool Insert( CSipMessage * pclsMessage );
-	virtual void Execute( struct timeval * psttTime );
-	virtual void DeleteAll( );
-	virtual int GetSize( );
-	virtual void GetString( CMonitorString & strBuf );
+	void AddCol( const char * pszValue );
+	void AddCol( const std::string & strValue );
+	void AddCol( const std::string & strIp, int iPort );
+	void AddCol( int iValue );
+	void AddCol( time_t iTime );
 
-	void SetTimerJ( int iMiliSecond );
+	void AddRow( const char * pszValue );
+	void AddRow( const std::string & strValue );
+	void AddRow( const std::string & strIp, int iPort );
+	void AddRow( int iValue );
+	void AddRow( time_t iTime );
+
+	void Clear( );
+
+	const char * GetString();
+	int GetLength();
 
 private:
-	NON_INVITE_TRANSACTION_MAP	m_clsMap;
-	int m_iTimerJ;
+	std::string m_strBuf;
 };
 
 #endif

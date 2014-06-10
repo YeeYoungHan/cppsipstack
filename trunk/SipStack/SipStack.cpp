@@ -241,13 +241,13 @@ void CSipStack::DecreateTcpThreadCount()
  * @brief Transaction List 의 정보를 문자열에 저장한다.
  * @param strBuf		문자열 변수
  */
-void CSipStack::GetString( std::string & strBuf )
+void CSipStack::GetString( CMonitorString & strBuf )
 {
-	char	szBuf[255];
-
-	snprintf( szBuf, sizeof(szBuf), "%d%s%d%s%d%s%d%s%d%s", m_clsICT.GetSize(), MR_COL_SEP, m_clsNICT.GetSize(), MR_COL_SEP
-		, m_clsIST.GetSize(), MR_COL_SEP, m_clsNIST.GetSize(), MR_COL_SEP, gclsSipDeleteQueue.GetSize(), MR_ROW_SEP );
-	strBuf = szBuf;
+	strBuf.AddCol( m_clsICT.GetSize() );
+	strBuf.AddCol( m_clsNICT.GetSize() );
+	strBuf.AddCol( m_clsIST.GetSize() );
+	strBuf.AddCol( m_clsNIST.GetSize() );
+	strBuf.AddRow( gclsSipDeleteQueue.GetSize() );
 }
 
 /**
@@ -255,7 +255,7 @@ void CSipStack::GetString( std::string & strBuf )
  * @brief Invite Client Transaction 정보를 문자열에 저장한다.
  * @param strBuf 문자열 변수
  */
-void CSipStack::GetICTString( std::string & strBuf )
+void CSipStack::GetICTString( CMonitorString & strBuf )
 {
 	m_clsICT.GetString( strBuf );
 }
