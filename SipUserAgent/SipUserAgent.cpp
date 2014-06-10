@@ -29,6 +29,7 @@
 #include "SipUserAgentCall.hpp"
 #include "SipUserAgentSms.hpp"
 #include "SipUserAgentPbx.hpp"
+#include "SipUserAgentMonitor.hpp"
 
 #include "SipUserAgentRegister.hpp"
 #include "SipUserAgentInvite.hpp"

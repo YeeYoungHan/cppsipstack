@@ -112,8 +112,11 @@ public:
 	bool SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool SendNotify( const char * pszCallId, int iSipCode );
 
-	void GetDialogString( CMonitorString & strBuf );
 	void Final();
+
+	// SipUserAgentMonitor.hpp
+	void GetDialogString( CMonitorString & strBuf );
+	void GetServerString( CMonitorString & strBuf );
 
 	// ISipStackCallBack
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
