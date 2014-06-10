@@ -333,30 +333,19 @@ int CCallMap::GetCount()
  * @brief 통화 맵 모니터링용 문자열을 생성한다.
  * @param strBuf 통화 맵 모니터링용 문자열 저장 변수
  */
-void CCallMap::GetString( std::string & strBuf )
+void CCallMap::GetString( CMonitorString & strBuf )
 {
 	CALL_MAP::iterator	itMap;
-	char	szTemp[51];
 
-	strBuf.clear();
+	strBuf.Clear();
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
-		strBuf.append( itMap->first );
-		strBuf.append( MR_COL_SEP );
-		strBuf.append( itMap->second.m_strPeerCallId );
-		strBuf.append( MR_COL_SEP );
-
-		if( itMap->second.m_bRecv )
-		{
-			strBuf.append( "recv" );
-		}
-		strBuf.append( MR_COL_SEP );
-
-		snprintf( szTemp, sizeof(szTemp), "%d", itMap->second.m_iPeerRtpPort );
-		strBuf.append( szTemp );
-		strBuf.append( MR_ROW_SEP );
+		strBuf.AddCol( itMap->first );
+		strBuf.AddCol( itMap->second.m_strPeerCallId );
+		strBuf.AddCol( itMap->second.m_bRecv ? "recv" : "" );
+		strBuf.AddRow( itMap->second.m_iPeerRtpPort );
 	}
 	m_clsMutex.release();
 }

@@ -71,7 +71,7 @@ public:
 	void StopCallAll();
 	int GetCount();
 
-	void GetString( std::string & strBuf );
+	void GetString( CMonitorString & strBuf );
 
 private:
 	CALL_MAP	m_clsMap;

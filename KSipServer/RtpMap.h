@@ -72,7 +72,7 @@ public:
 	bool Delete( int iPort );
 	bool ReSetIpPort( int iPort );
 
-	void GetString( std::string & strBuf );
+	void GetString( CMonitorString & strBuf );
 
 private:
 	RTP_MAP		m_clsMap;

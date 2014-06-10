@@ -300,40 +300,30 @@ bool CRtpMap::ReSetIpPort( int iPort )
  * @brief 자료구조 모니터링용 문자열을 생성한다.
  * @param strBuf 자료구조 모니터링용 문자열 저장 변수
  */
-void CRtpMap::GetString( std::string & strBuf )
+void CRtpMap::GetString( CMonitorString & strBuf )
 {
 	RTP_MAP::iterator	itMap;
 	char	szTemp[51];
 	int		i;
 	uint32_t	iIp;
 
-	strBuf.clear();
+	strBuf.Clear();
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
-		snprintf( szTemp, sizeof(szTemp), "%d", itMap->first );
-		strBuf.append( szTemp );
-		strBuf.append( MR_COL_SEP );
-
-		snprintf( szTemp, sizeof(szTemp), "%d", itMap->second.m_iStartPort );
-		strBuf.append( szTemp );
-		strBuf.append( MR_COL_SEP );
+		strBuf.AddCol( itMap->first );
+		strBuf.AddCol( itMap->second.m_iStartPort );
 
 		for( i = 0; i < itMap->second.m_iSocketCount; ++i )
 		{
 			iIp = itMap->second.m_piIp[i];
 
 			snprintf( szTemp, sizeof(szTemp), "%d.%d.%d.%d:%d", (iIp)&0xFF, (iIp>>8)&0xFF, (iIp>>16)&0xFF, (iIp>>24)&0xFF, ntohs(itMap->second.m_piPort[i]) );
-			strBuf.append( szTemp );
-			strBuf.append( MR_COL_SEP );
+			strBuf.AddCol( szTemp );
 		}
 
-		if( itMap->second.m_bStop )
-		{
-			strBuf.append( "stop" );
-		}
-		strBuf.append( MR_ROW_SEP );
+		strBuf.AddRow( itMap->second.m_bStop ? "stop" : "" );
 	}
 	m_clsMutex.release();
 }

@@ -85,7 +85,7 @@ public:
 	void DeleteTimeout( int iTimeout );
 	void SendOptions( );
 
-	void GetString( std::string & strBuf );
+	void GetString( CMonitorString & strBuf );
 
 private:
 	USER_MAP	m_clsMap;
