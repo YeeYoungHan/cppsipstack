@@ -218,26 +218,18 @@ LOOP_START:
  * @brief 자료구조 모니터링용 문자열을 생성한다. 
  * @param strBuf 자료구조 모니터링용 문자열 변수
  */
-void CSipServerMap::GetString( std::string & strBuf )
+void CSipServerMap::GetString( CMonitorString & strBuf )
 {
 	SIP_SERVER_LIST::iterator itList;
-	char	szTemp[51];
 
-	strBuf.clear();
+	strBuf.Clear();
 
 	m_clsMutex.acquire();
 	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
 	{
-		strBuf.append( itList->m_strIp );
-		snprintf( szTemp, sizeof(szTemp), ":%d", itList->m_iPort );
-		strBuf.append( szTemp );
-		strBuf.append( MR_COL_SEP );
-
-		strBuf.append( itList->m_bUse ? "use" : "no use" );
-		strBuf.append( MR_COL_SEP );
-
-		strBuf.append( itList->m_bDelete ? "del" : "" );
-		strBuf.append( MR_ROW_SEP );
+		strBuf.AddCol( itList->m_strIp, itList->m_iPort );
+		strBuf.AddCol( itList->m_bUse ? "use" : "no use" );
+		strBuf.AddRow( itList->m_bDelete ? "del" : "" );
 	}
 	m_clsMutex.release();
 }

@@ -168,28 +168,18 @@ LOOP_START:
  * @brief 자료구조 모니터링용 문자열을 생성한다. 
  * @param strBuf 자료구조 모니터링용 문자열 변수
  */
-void CUserMap::GetString( std::string & strBuf )
+void CUserMap::GetString( CMonitorString & strBuf )
 {
 	USER_MAP::iterator	itMap;
-	char	szTemp[51];
 
-	strBuf.clear();
+	strBuf.Clear();
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
-		strBuf.append( itMap->first );
-		strBuf.append( MR_COL_SEP );
-
-		strBuf.append( itMap->second.m_strIp );
-		snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iPort );
-		strBuf.append( szTemp );
-		strBuf.append( MR_COL_SEP );
-
-		strBuf.append( itMap->second.m_strSipServerIp );
-		snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iSipServerPort );
-		strBuf.append( szTemp );
-		strBuf.append( MR_ROW_SEP );
+		strBuf.AddCol( itMap->first );
+		strBuf.AddCol( itMap->second.m_strIp, itMap->second.m_iPort );
+		strBuf.AddRow( itMap->second.m_strSipServerIp, itMap->second.m_iSipServerPort );
 	}
 	m_clsMutex.release();
 }

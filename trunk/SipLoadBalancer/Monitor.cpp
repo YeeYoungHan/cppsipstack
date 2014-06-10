@@ -41,7 +41,7 @@ CMonitor::~CMonitor()
  * @param strResponse 응답 문자열 저장 변수
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CMonitor::RecvRequest( const char * pszRequest, std::string & strResponse )
+bool CMonitor::RecvRequest( const char * pszRequest, CMonitorString & strResponse )
 {
 	if( !strcmp( pszRequest, MC_SIP_SERVER_MAP_LIST ) )
 	{
