@@ -26,7 +26,7 @@
  * @ingroup SipUserAgent
  * @brief »ý¼ºÀÚ
  */
-CSipDialog::CSipDialog( CSipStack * pclsSipStack ) : m_iSeq(0), m_iContactPort(-1), m_eTransport(E_SIP_UDP)
+CSipDialog::CSipDialog( CSipStack * pclsSipStack ) : m_iSeq(0), m_iNextSeq(0), m_iContactPort(-1), m_eTransport(E_SIP_UDP)
 	, m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1), m_iRSeq(-1), m_b100rel(false)
 	, m_pclsInvite(NULL), m_pclsSipStack( pclsSipStack )
 {
@@ -153,8 +153,6 @@ CSipMessage * CSipDialog::CreatePrack( )
 
 	CSipMessage * pclsMessage = CreateMessage( "PRACK" );
 	if( pclsMessage == NULL ) return NULL;
-
-	pclsMessage->m_clsCSeq.m_iDigit = rand();
 
 	char	szRAck[101];
 
@@ -420,11 +418,32 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 		pclsMessage->m_clsReqUri.InsertTransport( m_eTransport );
 	}
 
-	if( strcmp( pszSipMethod, "ACK" ) && strcmp( pszSipMethod, "CANCEL" ) && strcmp( pszSipMethod, "PRACK" ) )
+	int iSeq;
+
+	if( !strcmp( pszSipMethod, "PRACK" ) )
 	{
-		++m_iSeq;
+		m_iNextSeq = m_iSeq + 2;
+		iSeq = m_iSeq + 1;
 	}
-	pclsMessage->m_clsCSeq.Set( m_iSeq, pszSipMethod );
+	else if( strcmp( pszSipMethod, "ACK" ) && strcmp( pszSipMethod, "CANCEL" ) )
+	{
+		if( m_iNextSeq != 0 )
+		{
+			m_iSeq = m_iNextSeq;
+			m_iNextSeq = 0;
+		}
+		else
+		{
+			++m_iSeq;
+		}
+		iSeq = m_iSeq;
+	}
+	else
+	{
+		iSeq = m_iSeq;
+	}
+
+	pclsMessage->m_clsCSeq.Set( iSeq, pszSipMethod );
 
 	pclsMessage->m_clsFrom.m_clsUri.Set( "sip", m_strFromId.c_str(), m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.m_iLocalUdpPort );
 	pclsMessage->m_clsFrom.InsertParam( "tag", m_strFromTag.c_str() );
