@@ -261,17 +261,16 @@ int CSipICTList::GetSize( )
  * @brief ICT 에 저장된 SIP Call-ID 들을 문자열에 저장한다.
  * @param strBuf SIP Call-ID 들을 저장할 변수
  */
-void CSipICTList::GetString( std::string & strBuf )
+void CSipICTList::GetString( CMonitorString & strBuf )
 {
 	INVITE_TRANSACTION_MAP::iterator	itMap;
 
-	strBuf.clear();
+	strBuf.Clear();
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
-		strBuf.append( itMap->first );
-		strBuf.append( "\n" );
+		strBuf.AddRow( itMap->first );
 	}
 	m_clsMutex.release();
 }

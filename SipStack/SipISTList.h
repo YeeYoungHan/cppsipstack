@@ -36,7 +36,7 @@ public:
 	virtual void Execute( struct timeval * psttTime );
 	virtual void DeleteAll( );
 	virtual int GetSize( );
-	virtual void GetString( std::string & strBuf );
+	virtual void GetString( CMonitorString & strBuf );
 
 private:
 	INVITE_TRANSACTION_MAP	m_clsMap;
