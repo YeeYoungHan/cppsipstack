@@ -379,7 +379,6 @@ void CLog::DeleteOldFile( )
 
 	FILE_LIST clsFileList;
 	FILE_LIST::iterator	itList;
-	int64_t iDeleteSize = 0;
 	int64_t iFileSize;
 
 	CDirectory::FileList( m_pszDirName, clsFileList );
