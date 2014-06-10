@@ -234,6 +234,8 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 			iPort = itList->m_clsUri.m_iPort;
 			eTransport = itList->m_clsUri.SelectTransport();
 		}
+
+		pclsMessage->m_eTransport = eTransport;
 	}
 	else
 	{
