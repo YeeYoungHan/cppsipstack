@@ -23,7 +23,7 @@
 #include "TlsFunction.h"
 #include "SipMutex.h"
 #include "Log.h"
-#include "ServerUtility.h"
+#include "FileUtility.h"
 #include "MemoryDebug.h"
 
 static SSL_CTX	* gpsttServerCtx;

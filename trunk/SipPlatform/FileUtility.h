@@ -16,12 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "FileUtility.h"
-#include "ServerUtility.h"
+#ifndef _FILE_UTILITY_H_
+#define _FILE_UTILITY_H_
 
-bool TestServerUtility()
-{
-	int64_t iSize = GetFileSize( "c:\\temp\\sipserver\\20140606_1.txt" );
+#include "SipPlatformDefine.h"
 
-	return true;
-}
+bool IsExistFile( const char * pszFileName );
+int64_t GetFileSize( const char * pszFileName );
+
+#endif
