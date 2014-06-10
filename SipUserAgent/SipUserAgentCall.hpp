@@ -75,8 +75,8 @@ bool CSipUserAgent::StopCall( const char * pszCallId, int iSipCode )
 	CSipMessage * pclsMessage = NULL;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		if( itMap->second.m_sttStartTime.tv_sec != 0 )
 		{
@@ -136,8 +136,8 @@ bool CSipUserAgent::RingCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 	if( pclsRtp == NULL ) return false;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		if( itMap->second.m_sttStartTime.tv_sec == 0 && itMap->second.m_pclsInvite )
 		{
@@ -188,8 +188,8 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 	if( pclsRtp == NULL ) return false;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		if( itMap->second.m_sttStartTime.tv_sec == 0 && itMap->second.m_pclsInvite )
 		{
@@ -233,8 +233,8 @@ bool CSipUserAgent::SendPrack( const char * pszCallId, CSipCallRtp * pclsRtp )
 	CSipMessage * pclsMessage = NULL;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		// 통화 연결되지 않고 발신한 경우에만 PRACK 메시지를 생성한다.
 		if( itMap->second.m_sttStartTime.tv_sec == 0 && itMap->second.m_pclsInvite == NULL )
@@ -273,7 +273,7 @@ int CSipUserAgent::GetCallCount( )
 	int iCallCount;
 
 	m_clsMutex.acquire();
-	iCallCount = (int)m_clsMap.size();
+	iCallCount = (int)m_clsDialogMap.size();
 	m_clsMutex.release();
 
 	return iCallCount;
@@ -291,7 +291,7 @@ void CSipUserAgent::GetCallIdList( SIP_CALL_ID_LIST & clsList )
 	clsList.clear();
 
 	m_clsMutex.acquire();
-	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	for( itMap = m_clsDialogMap.begin(); itMap != m_clsDialogMap.end(); ++itMap )
 	{
 		clsList.push_back( itMap->first );
 	}
@@ -380,13 +380,13 @@ bool CSipUserAgent::CreateCall( const char * pszFrom, const char * pszTo, CSipCa
 		clsDialog.m_strCallId.append( m_clsSipStack.m_clsSetup.m_strLocalIp );
 
 		m_clsMutex.acquire();
-		itMap = m_clsMap.find( clsDialog.m_strCallId );
-		if( itMap == m_clsMap.end() )
+		itMap = m_clsDialogMap.find( clsDialog.m_strCallId );
+		if( itMap == m_clsDialogMap.end() )
 		{
 			pclsMessage = clsDialog.CreateInvite();
 			if( pclsMessage )
 			{
-				m_clsMap.insert( SIP_DIALOG_MAP::value_type( clsDialog.m_strCallId, clsDialog ) );
+				m_clsDialogMap.insert( SIP_DIALOG_MAP::value_type( clsDialog.m_strCallId, clsDialog ) );
 				bInsert = true;
 			}
 		}
@@ -437,8 +437,8 @@ bool CSipUserAgent::TransferCallBlind( const char * pszCallId, const char * pszT
 	CSipMessage * pclsMessage = NULL;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		pclsMessage = itMap->second.CreateRefer();
 	}
@@ -470,8 +470,8 @@ bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszToCall
 	std::string strReplaces, strToId;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszToCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszToCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		strToId = itMap->second.m_strToId;
 
@@ -484,8 +484,8 @@ bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszToCall
 		strReplaces.append( "from-tag%3D" );
 		strReplaces.append( itMap->second.m_strFromTag );
 
-		itMap = m_clsMap.find( pszCallId );
-		if( itMap != m_clsMap.end() )
+		itMap = m_clsDialogMap.find( pszCallId );
+		if( itMap != m_clsDialogMap.end() )
 		{
 			pclsMessage = itMap->second.CreateRefer();
 		}

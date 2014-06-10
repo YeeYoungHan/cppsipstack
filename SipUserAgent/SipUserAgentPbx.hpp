@@ -28,8 +28,8 @@ CSipMessage * CSipUserAgent::DeleteIncomingCall( const char * pszCallId )
 	CSipMessage * pclsMessage = NULL;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		if( itMap->second.m_sttStartTime.tv_sec == 0 )
 		{
@@ -61,8 +61,8 @@ bool CSipUserAgent::RingCall( const char * pszCallId, int iSipStatus, CSipCallRt
 	bool	bRes = false;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		if( itMap->second.m_sttStartTime.tv_sec == 0 )
 		{
@@ -114,8 +114,8 @@ bool CSipUserAgent::GetRemoteCallRtp( const char * pszCallId, CSipCallRtp * pcls
 	bool	bRes = false;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		bRes = itMap->second.SelectRemoteRtp( pclsRtp );
 	}
@@ -139,8 +139,8 @@ bool CSipUserAgent::GetToId( const char * pszCallId, std::string & strToId )
 	strToId.clear();
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		strToId = itMap->second.m_strToId;
 		bRes = true;
@@ -165,8 +165,8 @@ bool CSipUserAgent::GetFromId( const char * pszCallId, std::string & strFromId )
 	strFromId.clear();
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		strFromId = itMap->second.m_strFromId;
 		bRes = true;
@@ -189,8 +189,8 @@ bool CSipUserAgent::GetCdr( const char * pszCallId, CSipCdr * pclsCdr )
 	bool	bRes = false;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		itMap->second.GetCdr( pclsCdr );
 		bRes = true;
@@ -212,8 +212,8 @@ bool CSipUserAgent::IsRingCall( const char * pszCallId, const char * pszTo )
 	bool	bRes = false;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		if( itMap->second.IsConnected() == false )
 		{
@@ -247,8 +247,8 @@ int CSipUserAgent::GetRSeq( const char * pszCallId )
 	int iRSeq = -1;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		iRSeq = itMap->second.m_iRSeq;
 	}
@@ -268,8 +268,8 @@ void CSipUserAgent::SetRSeq( const char * pszCallId, int iRSeq )
 	SIP_DIALOG_MAP::iterator		itMap;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		itMap->second.m_iRSeq = iRSeq;
 	}
@@ -288,8 +288,8 @@ bool CSipUserAgent::Is100rel( const char * pszCallId )
 	bool	b100rel = false;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		b100rel = itMap->second.m_b100rel;
 		if( b100rel == false && itMap->second.m_pclsInvite )
@@ -316,8 +316,8 @@ bool CSipUserAgent::SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp 
 	bool	bRes = false;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		itMap->second.SetLocalRtp( pclsRtp );
 		pclsRequest = itMap->second.CreateInvite();
@@ -347,8 +347,8 @@ bool CSipUserAgent::SendNotify( const char * pszCallId, int iSipCode )
 	bool	bRes = false;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		pclsRequest = itMap->second.CreateNotify();
 		bRes = true;
@@ -393,7 +393,7 @@ void CSipUserAgent::GetString( CMonitorString & strBuf )
 	strBuf.Clear();
 
 	m_clsMutex.acquire();
-	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	for( itMap = m_clsDialogMap.begin(); itMap != m_clsDialogMap.end(); ++itMap )
 	{
 		strBuf.AddCol( itMap->first );
 		strBuf.AddCol( itMap->second.m_strFromId );

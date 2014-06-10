@@ -35,8 +35,8 @@ bool CSipUserAgent::RecvNotifyRequest( int iThreadId, CSipMessage * pclsMessage 
 	}
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( strCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( strCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		bFound = true;
 	}

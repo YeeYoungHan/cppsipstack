@@ -43,8 +43,8 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	// ReINVITE 인지 검사한다.
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( strCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( strCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		bReINVITE = true;
 		
@@ -116,10 +116,10 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	// Dialog 를 저장한다.
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( strCallId );
-	if( itMap == m_clsMap.end() )
+	itMap = m_clsDialogMap.find( strCallId );
+	if( itMap == m_clsDialogMap.end() )
 	{
-		m_clsMap.insert( SIP_DIALOG_MAP::value_type( strCallId, clsDialog ) );
+		m_clsDialogMap.insert( SIP_DIALOG_MAP::value_type( strCallId, clsDialog ) );
 	}
 	else
 	{
