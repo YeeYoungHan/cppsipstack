@@ -50,7 +50,7 @@ bool CSipUserAgent::RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	SIP_DIALOG_MAP::iterator		itMap;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( strCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
@@ -60,7 +60,7 @@ bool CSipUserAgent::RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage 
 			gettimeofday( &itMap->second.m_sttEndTime, NULL );
 		}
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( pclsResponse )
 	{

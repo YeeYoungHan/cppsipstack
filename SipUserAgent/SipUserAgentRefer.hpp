@@ -74,13 +74,13 @@ bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 		}
 	}
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( strCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		bFound = true;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( bFound == false )
 	{
@@ -128,7 +128,7 @@ bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 				bool bScreenedTransfer = true;
 				bFound = false;
 
-				m_clsMutex.acquire();
+				m_clsDialogMutex.acquire();
 				itMap = m_clsDialogMap.find( strReferToCallId );
 				if( itMap != m_clsDialogMap.end() )
 				{
@@ -138,7 +138,7 @@ bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 					}
 					bFound = true;
 				}
-				m_clsMutex.release();
+				m_clsDialogMutex.release();
 
 				if( bFound == false )
 				{
@@ -189,13 +189,13 @@ bool CSipUserAgent::RecvReferResponse( int iThreadId, CSipMessage * pclsMessage 
 		return true;
 	}
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( strCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		bFound = true;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( bFound )
 	{
