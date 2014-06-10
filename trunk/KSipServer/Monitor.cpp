@@ -65,7 +65,7 @@ bool CMonitor::RecvRequest( const char * pszRequest, CMonitorString & strRespons
 	}
 	else if( !strcmp( pszRequest, MC_DIALOG_MAP_LIST ) )
 	{
-		gclsUserAgent.GetString( strResponse );
+		gclsUserAgent.GetDialogString( strResponse );
 	}
 	else if( !strcmp( pszRequest, MC_SIP_STACK_COUNT_LIST ) )
 	{
