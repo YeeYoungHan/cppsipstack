@@ -129,6 +129,13 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 			{
 				itMap->second->m_pclsResponse = pclsMessage;
 				itMap->second->m_iStatusCode = pclsMessage->m_iStatusCode;
+
+				// TCP,TLS connect error 이면 transaction 삭제를 위해서 stop time 을 설정한다.
+				if( pclsMessage->m_iStatusCode == SIP_CONNECT_ERROR )
+				{
+					gettimeofday( &itMap->second->m_sttStopTime, NULL );
+				}
+
 				bRes = true;
 			}
 

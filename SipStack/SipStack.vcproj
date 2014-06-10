@@ -441,6 +441,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TcpConnectMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TcpConnectMap.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TcpSessionList.cpp"
 				>
 			</File>

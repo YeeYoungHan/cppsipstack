@@ -164,6 +164,14 @@ int main( int argc, char * argv[] )
 
 			clsUserAgent.SendSms( pszUserId, szCommand + 2, "hello", &clsRoute );
 		}
+		else if( szCommand[0] == 'i' )
+		{
+			CMonitorString strBuf;
+
+			clsUserAgent.m_clsSipStack.GetString( strBuf );
+
+			printf( "%s", strBuf.GetString() );
+		}
 	
 		memset( szCommand, 0, sizeof(szCommand) );
 	}

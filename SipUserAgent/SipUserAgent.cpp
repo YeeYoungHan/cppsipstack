@@ -557,7 +557,10 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 
 		if( pclsMessage->m_iStatusCode >= SIP_OK )
 		{
-			pclsAck = itMap->second.CreateAck();
+			if( pclsMessage->m_iStatusCode != SIP_CONNECT_ERROR )
+			{
+				pclsAck = itMap->second.CreateAck();
+			}
 
 			if( pclsMessage->m_iStatusCode >= SIP_OK && pclsMessage->m_iStatusCode < SIP_MULTIPLE_CHOICES )
 			{
