@@ -151,9 +151,7 @@ bool CSipServerMap::Select( const char * pszIp, const char * pszUserId )
 	bool	bRes = false;
 	SIP_SERVER_MAP::iterator	itMap;
 
-	strKey = pszIp;
-	strKey.append( "_" );
-	strKey.append( pszUserId );
+	GetKey( pszIp, pszUserId, strKey );
 
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( strKey );
@@ -265,6 +263,20 @@ void CSipServerMap::GetKey( CXmlSipServer & clsXmlSipServer, std::string & strKe
 }
 
 /**
+ * @ingroup KSipServer
+ * @brief IP-PBX 정보 저장 자료구조의 key 문자열을 생성한다.
+ * @param pszIp			IP-PBX IP 주소
+ * @param pszUserId 로그인 아이디
+ * @param strKey		key 문자열을 저장할 변수
+ */
+void CSipServerMap::GetKey( const char * pszIp, const char * pszUserId, std::string & strKey )
+{
+	strKey = pszIp;
+	strKey.append( "_" );
+	strKey.append( pszUserId );
+}
+
+/**
  * @brief 모든 SIP 서버 정보 상태값을 초기화시킨다.
  */
 void CSipServerMap::ReSetFlag( )
@@ -318,6 +330,33 @@ bool CSipServerMap::Insert( CXmlSipServer & clsXmlSipServer )
 	m_clsMutex.release();
 
 	return true;
+}
+
+/**
+ * @ingroup KSipServer
+ * @brief CSipUserAgent 의 EventRegister 이벤트 정보를 저장한다.
+ * @param pclsInfo	CSipUserAgent 의 EventRegister 이벤트 정보
+ * @param iStatus		SIP 상태값
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipServerMap::Set( CSipServerInfo * pclsInfo, int iStatus )
+{
+	std::string	strKey;
+	bool	bRes = false;
+	SIP_SERVER_MAP::iterator	itMap;
+
+	GetKey( pclsInfo->m_strIp.c_str(), pclsInfo->m_strUserId.c_str(), strKey );
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( strKey );
+	if( itMap != m_clsMap.end() )
+	{
+		itMap->second.m_bLogin = pclsInfo->m_bLogin;
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
 }
 
 /**

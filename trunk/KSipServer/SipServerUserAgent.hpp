@@ -24,7 +24,7 @@
  */
 void CSipServer::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
-
+	gclsSipServerMap.Set( pclsInfo, iStatus );
 }
 
 /**

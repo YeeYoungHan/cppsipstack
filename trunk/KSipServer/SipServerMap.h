@@ -45,6 +45,7 @@ public:
 	bool SelectIncomingRoute( const char * pszIp, const char * pszTo, std::string & strTo );
 
 	bool Insert( CXmlSipServer & clsXmlSipServer );
+	bool Set( CSipServerInfo * pclsInfo, int iStatus );
 
 	void GetString( CMonitorString & strBuf );
 
@@ -54,6 +55,7 @@ private:
 
 	bool ReadDir( const char * pszDirName );
 	void GetKey( CXmlSipServer & clsXmlSipServer, std::string & strKey );
+	void GetKey( const char * pszIp, const char * pszUserId, std::string & strKey );
 	void ReSetFlag( );
 };
 

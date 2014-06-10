@@ -26,6 +26,7 @@
 #define MC_RTP_MAP_LIST					"rtp_map_list"
 
 #define MC_DIALOG_MAP_LIST			"dialog_map_list"
+#define MC_SIP_SERVER_LIST			"sip_server_list"
 
 #define MC_SIP_STACK_COUNT_LIST	"sip_stack_count_list"
 
