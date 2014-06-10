@@ -383,6 +383,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipUserAgentOptions.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipUserAgentPrack.hpp"
 				>
 			</File>

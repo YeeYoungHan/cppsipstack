@@ -38,6 +38,7 @@
 #include "SipUserAgentNotify.hpp"
 #include "SipUserAgentMessage.hpp"
 #include "SipUserAgentPrack.hpp"
+#include "SipUserAgentOptions.hpp"
 
 /**
  * @ingroup SipUserAgent
@@ -305,6 +306,10 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	else if( pclsMessage->IsMethod( "MESSAGE" ) )
 	{
 		return RecvMessageRequest( iThreadId, pclsMessage );
+	}
+	else if( pclsMessage->IsMethod( "OPTIONS" ) )
+	{
+		return RecvOptionsRequest( iThreadId, pclsMessage );
 	}
 
 	return false;
