@@ -70,7 +70,7 @@ void TestTransactionSpeed( int iLoopCount )
 	{
 		SipMakeBranch( szText, sizeof(szText) );
 
-		int iLen = strlen(szText);
+		int iLen = (int)strlen(szText);
 		sprintf( szText + iLen, "1INVITE" );
 
 		CTrInfo clsInfo;
@@ -82,7 +82,7 @@ void TestTransactionSpeed( int iLoopCount )
 	printf( "map size(%d) list size(%d)\n", (int)clsMap.size(), (int)clsList.size() );
 
 	uint64_t iStartTime, iEndTime;
-	iLoopCount = iLoopCount / clsList.size() + 1;
+	iLoopCount = iLoopCount / (int)clsList.size() + 1;
 
 	iStartTime = GetCurrentMiliSecond();
 

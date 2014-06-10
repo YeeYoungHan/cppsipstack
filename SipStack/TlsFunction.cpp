@@ -250,7 +250,7 @@ bool SSLConnect( Socket iFd, SSL ** ppsttSsl )
 	
 	try
 	{
-		SSL_set_fd( psttSsl, iFd );
+		SSL_set_fd( psttSsl, (int)iFd );
 		if( SSL_connect(psttSsl) == -1 )
 		{
 			return false;

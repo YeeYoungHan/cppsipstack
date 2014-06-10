@@ -67,7 +67,7 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 		if( iPos == -1 ) return -1;
 		iCurPos += iPos;
 
-		iNameLen = clsHeader.m_strName.length();
+		iNameLen = (int)clsHeader.m_strName.length();
 		if( iNameLen == 0 ) break;
 
 		pszName = clsHeader.m_strName.c_str();

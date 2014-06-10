@@ -53,7 +53,7 @@ bool CSipUserAgent::RecvNotifyRequest( int iThreadId, CSipMessage * pclsMessage 
 				{
 					CSipMessage clsSipBody;
 
-					clsSipBody.Parse( pclsMessage->m_strBody.c_str(), pclsMessage->m_strBody.length() );
+					clsSipBody.Parse( pclsMessage->m_strBody.c_str(), (int)pclsMessage->m_strBody.length() );
 					if( clsSipBody.m_iStatusCode > 0 )
 					{
 						if( m_pclsCallBack )

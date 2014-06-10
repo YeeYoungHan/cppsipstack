@@ -352,7 +352,7 @@ bool CSipStack::Send( const char * pszMessage, const char * pszIp, unsigned shor
 	if( pszMessage == NULL || pszIp == NULL ) return false;
 
 	bool bRes = false;
-	int iMessageSize = strlen( pszMessage );
+	int iMessageSize = (int)strlen( pszMessage );
 
 	if( eTransport == E_SIP_UDP )
 	{
