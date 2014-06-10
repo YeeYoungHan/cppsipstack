@@ -42,6 +42,21 @@
 			<MonitorAttribute name="StartTime" />
 			<MonitorAttribute name="EndTime" />
 		</MonitorEntry>
+		<MonitorEntry command="sip_server_list" title="SipServer List - SipUserAgent">
+			<MonitorAttribute name="IpPort" />
+			<MonitorAttribute name="Domain" />
+			<MonitorAttribute name="UserId" />
+			<MonitorAttribute name="Timeout" />
+			<MonitorAttribute name="transport" />
+			<MonitorAttribute name="NatTimeout" />
+			<MonitorAttribute name="Login" />
+			<MonitorAttribute name="LoginTime" />
+			<MonitorAttribute name="SendTime" />
+			<MonitorAttribute name="NextSendTime" />
+			<MonitorAttribute name="Call-ID" />
+			<MonitorAttribute name="SeqNo" />
+			<MonitorAttribute name="delete" />
+		</MonitorEntry>
 		<MonitorEntry command="sip_stack_count_list" title="Transaction List">
 			<MonitorAttribute name="ICT" />
 			<MonitorAttribute name="NICT" />
