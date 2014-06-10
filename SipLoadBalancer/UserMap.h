@@ -21,6 +21,7 @@
 
 #include "SipMutex.h"
 #include "SipMessage.h"
+#include "MonitorString.h"
 #include <map>
 
 /**
@@ -58,7 +59,7 @@ public:
 	bool Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo );
 	void DeleteSipServer( const char * pszIp, int iPort );
 
-	void GetString( std::string & strBuf );
+	void GetString( CMonitorString & strBuf );
 
 private:
 	USER_MAP	m_clsMap;

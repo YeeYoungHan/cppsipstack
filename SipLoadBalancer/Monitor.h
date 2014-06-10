@@ -30,7 +30,7 @@ public:
 	CMonitor();
 	~CMonitor();
 
-	virtual bool RecvRequest( const char * pszRequest, std::string & strResponse );
+	virtual bool RecvRequest( const char * pszRequest, CMonitorString & strResponse );
 
 	virtual bool IsMonitorIp( const char * pszIp );
 };

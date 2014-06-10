@@ -20,6 +20,7 @@
 #define _SIP_SERVER_MAP_H_
 
 #include "SipMutex.h"
+#include "MonitorString.h"
 #include <vector>
 
 /**
@@ -56,7 +57,7 @@ public:
 	void SetDeleteAll( );
 	void DeleteIfSet( );
 
-	void GetString( std::string & strBuf );
+	void GetString( CMonitorString & strBuf );
 
 private:
 	SIP_SERVER_LIST m_clsList;
