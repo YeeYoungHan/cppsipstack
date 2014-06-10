@@ -169,7 +169,7 @@ private:
 	ISipUserAgentCallBack * m_pclsCallBack;
 
 	/** SIP Dialog ¸Ê */
-	SIP_DIALOG_MAP			m_clsMap;
+	SIP_DIALOG_MAP			m_clsDialogMap;
 	CSipMutex						m_clsMutex;
 
 	/** */

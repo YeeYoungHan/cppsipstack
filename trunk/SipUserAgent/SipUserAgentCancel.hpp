@@ -51,8 +51,8 @@ bool CSipUserAgent::RecvCancelRequest( int iThreadId, CSipMessage * pclsMessage 
 	SIP_DIALOG_MAP::iterator		itMap;
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( strCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( strCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		if( itMap->second.m_sttStartTime.tv_sec == 0 )
 		{

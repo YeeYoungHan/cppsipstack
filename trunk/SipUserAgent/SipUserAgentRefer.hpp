@@ -75,8 +75,8 @@ bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 	}
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( strCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( strCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		bFound = true;
 	}
@@ -129,8 +129,8 @@ bool CSipUserAgent::RecvReferRequest( int iThreadId, CSipMessage * pclsMessage )
 				bFound = false;
 
 				m_clsMutex.acquire();
-				itMap = m_clsMap.find( strReferToCallId );
-				if( itMap != m_clsMap.end() )
+				itMap = m_clsDialogMap.find( strReferToCallId );
+				if( itMap != m_clsDialogMap.end() )
 				{
 					if( itMap->second.m_sttStartTime.tv_sec == 0 )
 					{
@@ -190,8 +190,8 @@ bool CSipUserAgent::RecvReferResponse( int iThreadId, CSipMessage * pclsMessage 
 	}
 
 	m_clsMutex.acquire();
-	itMap = m_clsMap.find( strCallId );
-	if( itMap != m_clsMap.end() )
+	itMap = m_clsDialogMap.find( strCallId );
+	if( itMap != m_clsDialogMap.end() )
 	{
 		bFound = true;
 	}
