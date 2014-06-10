@@ -71,6 +71,20 @@ void * SipTlsClientThread( void * lpParameter )
 			else
 			{
 				SipTlsSend( hSocket, psttSsl, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage );
+
+				SIP_MESSAGE_LIST clsSipMessageList;
+
+				if( pclsArg->m_pclsSipStack->m_clsTlsConnectMap.Delete( pclsArg->m_strIp.c_str(), pclsArg->m_iPort, clsSipMessageList ) )
+				{
+					SIP_MESSAGE_LIST::iterator	itList;
+
+					for( itList = clsSipMessageList.begin(); itList != clsSipMessageList.end(); ++itList )
+					{
+						SipTlsSend( hSocket, psttSsl, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, *itList );
+						--(*itList)->m_iUseCount;
+					}
+				}
+
 				bRes = true;
 			}
 		}
@@ -87,10 +101,27 @@ void * SipTlsClientThread( void * lpParameter )
 
 	if( bRes == false )
 	{
-		CSipMessage * pclsResponse = pclsArg->m_pclsSipMessage->CreateResponse( SIP_SERVICE_UNAVAILABLE );
+		CSipMessage * pclsResponse = pclsArg->m_pclsSipMessage->CreateResponse( SIP_CONNECT_ERROR );
 		if( pclsResponse )
 		{
 			pclsArg->m_pclsSipStack->RecvSipMessage( 0, pclsResponse );
+		}
+
+		SIP_MESSAGE_LIST clsSipMessageList;
+
+		if( pclsArg->m_pclsSipStack->m_clsTlsConnectMap.Delete( pclsArg->m_strIp.c_str(), pclsArg->m_iPort, clsSipMessageList ) )
+		{
+			SIP_MESSAGE_LIST::iterator	itList;
+
+			for( itList = clsSipMessageList.begin(); itList != clsSipMessageList.end(); ++itList )
+			{
+				pclsResponse = (*itList)->CreateResponse( SIP_CONNECT_ERROR );
+				if( pclsResponse )
+				{
+					pclsArg->m_pclsSipStack->RecvSipMessage( 0, pclsResponse );
+				}
+				--(*itList)->m_iUseCount;
+			}
 		}
 	}
 
@@ -114,6 +145,13 @@ void * SipTlsClientThread( void * lpParameter )
 bool StartSipTlsClientThread( CSipStack * pclsSipStack, const char * pszIp, int iPort, CSipMessage * pclsSipMessage )
 {
 #ifdef USE_TLS
+	if( pclsSipStack->m_clsTlsConnectMap.Insert( pszIp, iPort ) == false )
+	{
+		// 이미 TCP 세션 연결 중에 있으므로 새로운 TCP 세션 연결시도하지 않는다.
+		pclsSipStack->m_clsTlsConnectMap.Insert( pszIp, iPort, pclsSipMessage );
+		return true;
+	}
+
 	CSipTlsClientArg * pclsArg = new CSipTlsClientArg();
 	if( pclsArg == NULL ) return false;
 

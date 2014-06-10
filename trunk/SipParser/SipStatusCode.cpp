@@ -84,6 +84,7 @@ const char * GetReasonPhrase( int iSipCode )
 	case SIP_BUSY_EVRYWHERE:              return "Busy Everywhere";
 	case SIP_DECLINE:                     return "Decline";
 	case SIP_DOES_NOT_EXIST_ANYWHERE:     return "Does not exist anywhere";
+	case SIP_CONNECT_ERROR:								return "Connect error";
 	}
 
 	return "Not Acceptable";

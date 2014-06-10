@@ -30,6 +30,7 @@
 #include "SipStackCallBack.h"
 #include "TcpThreadList.h"
 #include "TcpSocketMap.h"
+#include "TcpConnectMap.h"
 
 typedef std::list< ISipStackCallBack * > SIP_STACK_CALLBACK_LIST;
 
@@ -93,14 +94,16 @@ public:
 	CSipMutex m_clsUdpRecvMutex;	// SIP 메시지 수신 뮤텍스
 	CSipStackSetup	m_clsSetup;		// SIP stack 설정
 
-	CThreadList		m_clsTcpThreadList;
-	CTcpSocketMap	m_clsTcpSocketMap;
+	CThreadList			m_clsTcpThreadList;
+	CTcpSocketMap		m_clsTcpSocketMap;
+	CTcpConnectMap	m_clsTcpConnectMap;
 
 #ifdef USE_TLS
 	Socket m_hTlsSocket;					// TLS SIP 메시지를 위한 서버 소켓 핸들
 
-	CThreadList		m_clsTlsThreadList;
-	CTcpSocketMap	m_clsTlsSocketMap;
+	CThreadList			m_clsTlsThreadList;
+	CTcpSocketMap		m_clsTlsSocketMap;
+	CTcpConnectMap	m_clsTlsConnectMap;
 #endif
 
 private:

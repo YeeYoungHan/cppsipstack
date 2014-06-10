@@ -74,6 +74,7 @@
 #define SIP_BUSY_EVRYWHERE                600
 #define SIP_DECLINE                       603
 #define SIP_DOES_NOT_EXIST_ANYWHERE       604
+#define SIP_CONNECT_ERROR									660
 
 const char * GetReasonPhrase( int iSipCode );
 
