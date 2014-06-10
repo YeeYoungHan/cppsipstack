@@ -30,7 +30,8 @@ static SSL_CTX	* gpsttServerCtx;
 static SSL_CTX	* gpsttClientCtx;
 
 #if OPENSSL_VERSION_NUMBER >= 0x10000003L
-static const SSL_METHOD	* meth;
+static const SSL_METHOD	* gpsttServerMeth;
+static const SSL_METHOD * gpsttClientMeth;
 #else
 static SSL_METHOD	* gpsttServerMeth;
 static SSL_METHOD * gpsttClientMeth;

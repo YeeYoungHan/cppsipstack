@@ -321,7 +321,7 @@ static void MD5Final( unsigned char digest[16], MD5_CTX * context )
  * @param pszPlainText 평문 문자열
  * @param szMd5 MD5 문자열 저장 변수
  */
-void SipMd5String( char * pszPlainText, char szMd5[33] )
+void SipMd5String( const char * pszPlainText, char szMd5[33] )
 {
 	MD5_CTX context;
 	unsigned char digest[16];
@@ -346,7 +346,7 @@ void SipMd5String( char * pszPlainText, char szMd5[33] )
  * @param pszPlainText	평문 문자열
  * @param szMd5					MD5 해쉬 결과값을 저장할 변수 ( 문자열이 아닌 바이너리 )
  */
-void SipMd5Byte( char * pszPlainText, unsigned char szMd5[16] )
+void SipMd5Byte( const char * pszPlainText, unsigned char szMd5[16] )
 {
 	MD5_CTX context;
 	unsigned int iLen = (unsigned int)strlen (pszPlainText);
