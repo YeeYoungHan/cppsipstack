@@ -19,15 +19,16 @@
 #ifndef _SERVER_UTILITY_H_
 #define _SERVER_UTILITY_H_
 
-#include "SipPlatformDefine.h"
+#ifdef WIN32
+#include <windows.h>
+#endif
+
 #include <vector>
 #include <string>
 
 void SetCoreDumpEnable();
 bool Fork( bool bIsFork );
 bool ChangeExecuteUser( const char * pszUserId );
-bool IsExistFile( const char * pszFileName );
-int64_t GetFileSize( const char * pszFileName );
 
 #ifdef WIN32
 bool StartThread( const char * pszName, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter );

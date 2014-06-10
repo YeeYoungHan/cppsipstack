@@ -17,11 +17,42 @@
  */
 
 #include "FileUtility.h"
-#include "ServerUtility.h"
+#include <sys/stat.h>
 
-bool TestServerUtility()
+#include "MemoryDebug.h"
+
+/**
+ * @ingroup SipPlatform
+ * @brief 파일이 존재하는지 검사한다.
+ * @param pszFileName 파일 이름
+ * @returns 파일이 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool IsExistFile( const char * pszFileName )
 {
-	int64_t iSize = GetFileSize( "c:\\temp\\sipserver\\20140606_1.txt" );
+	struct stat sttStat;
+
+	if( stat( pszFileName, &sttStat ) == -1 )
+	{
+		return false;
+	}
 
 	return true;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 파일 크기를 리턴한다.
+ * @param pszFileName 파일 이름
+ * @returns 파일이 존재하면 파일 크기를 리턴하고 그렇지 않으면 0 을 리턴한다.
+ */
+int64_t GetFileSize( const char * pszFileName )
+{
+	struct stat sttStat;
+
+	if( stat( pszFileName, &sttStat ) == -1 )
+	{
+		return 0;
+	}
+
+	return sttStat.st_size;
 }

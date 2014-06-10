@@ -19,6 +19,7 @@
 #include "SipUdp.h"
 #include "ServerServicePrivate.h"
 #include "ServerUtility.h"
+#include "FileUtility.h"
 #include <stdio.h>
 #include "MemoryDebug.h"
 
