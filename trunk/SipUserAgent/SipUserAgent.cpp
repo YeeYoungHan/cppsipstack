@@ -438,7 +438,7 @@ bool CSipUserAgent::SendInvite( CSipDialog & clsDialog )
 		clsDialog.m_strCallId.append( "@" );
 		clsDialog.m_strCallId.append( m_clsSipStack.m_clsSetup.m_strLocalIp );
 
-		m_clsMutex.acquire();
+		m_clsDialogMutex.acquire();
 		itMap = m_clsDialogMap.find( clsDialog.m_strCallId );
 		if( itMap == m_clsDialogMap.end() )
 		{
@@ -449,7 +449,7 @@ bool CSipUserAgent::SendInvite( CSipDialog & clsDialog )
 				bInsert = true;
 			}
 		}
-		m_clsMutex.release();
+		m_clsDialogMutex.release();
 
 		if( bInsert ) break;
 	}
@@ -474,14 +474,14 @@ bool CSipUserAgent::SetCallEnd( const char * pszCallId )
 	SIP_DIALOG_MAP::iterator			itMap;
 	bool	bRes = false;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		gettimeofday( &itMap->second.m_sttEndTime, NULL );
 		bRes = true;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	return bRes;
 }
@@ -497,14 +497,14 @@ bool CSipUserAgent::Delete( const char * pszCallId )
 	SIP_DIALOG_MAP::iterator			itMap;
 	bool	bRes = false;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		Delete( itMap );
 		bRes = true;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	return bRes;
 }
@@ -534,7 +534,7 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 	bool	bFound = false, bReInvite = false;
 	CSipMessage *pclsAck = NULL, *pclsInvite = NULL;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( strCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
@@ -608,7 +608,7 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 
 		bFound = true;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( pclsAck )
 	{

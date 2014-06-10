@@ -44,13 +44,13 @@ bool CSipUserAgent::RecvPrackRequest( int iThreadId, CSipMessage * pclsMessage )
 		}
 	}
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( strCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		bFound = true;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( bFound == false )
 	{

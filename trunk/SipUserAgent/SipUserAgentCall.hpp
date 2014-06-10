@@ -74,7 +74,7 @@ bool CSipUserAgent::StopCall( const char * pszCallId, int iSipCode )
 	bool	bRes = false;
 	CSipMessage * pclsMessage = NULL;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
@@ -110,7 +110,7 @@ bool CSipUserAgent::StopCall( const char * pszCallId, int iSipCode )
 		}
 		bRes = true;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( pclsMessage )
 	{
@@ -135,7 +135,7 @@ bool CSipUserAgent::RingCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 	if( pclsRtp == NULL ) return false;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
@@ -161,7 +161,7 @@ bool CSipUserAgent::RingCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 			}
 		}
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( pclsMessage )
 	{
@@ -187,7 +187,7 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 	if( pclsRtp == NULL ) return false;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
@@ -209,7 +209,7 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 			}
 		}
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( pclsMessage )
 	{
@@ -232,7 +232,7 @@ bool CSipUserAgent::SendPrack( const char * pszCallId, CSipCallRtp * pclsRtp )
 	bool	bRes = false;
 	CSipMessage * pclsMessage = NULL;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
@@ -253,7 +253,7 @@ bool CSipUserAgent::SendPrack( const char * pszCallId, CSipCallRtp * pclsRtp )
 			}
 		}
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( pclsMessage )
 	{
@@ -272,9 +272,9 @@ int CSipUserAgent::GetCallCount( )
 {
 	int iCallCount;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	iCallCount = (int)m_clsDialogMap.size();
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	return iCallCount;
 }
@@ -290,12 +290,12 @@ void CSipUserAgent::GetCallIdList( SIP_CALL_ID_LIST & clsList )
 
 	clsList.clear();
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	for( itMap = m_clsDialogMap.begin(); itMap != m_clsDialogMap.end(); ++itMap )
 	{
 		clsList.push_back( itMap->first );
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 }
 
 /**
@@ -379,7 +379,7 @@ bool CSipUserAgent::CreateCall( const char * pszFrom, const char * pszTo, CSipCa
 		clsDialog.m_strCallId.append( "@" );
 		clsDialog.m_strCallId.append( m_clsSipStack.m_clsSetup.m_strLocalIp );
 
-		m_clsMutex.acquire();
+		m_clsDialogMutex.acquire();
 		itMap = m_clsDialogMap.find( clsDialog.m_strCallId );
 		if( itMap == m_clsDialogMap.end() )
 		{
@@ -390,7 +390,7 @@ bool CSipUserAgent::CreateCall( const char * pszFrom, const char * pszTo, CSipCa
 				bInsert = true;
 			}
 		}
-		m_clsMutex.release();
+		m_clsDialogMutex.release();
 
 		if( bInsert ) break;
 	}
@@ -436,13 +436,13 @@ bool CSipUserAgent::TransferCallBlind( const char * pszCallId, const char * pszT
 	SIP_DIALOG_MAP::iterator		itMap;
 	CSipMessage * pclsMessage = NULL;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		pclsMessage = itMap->second.CreateRefer();
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( pclsMessage == NULL ) return false;
 
@@ -469,7 +469,7 @@ bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszToCall
 	CSipMessage * pclsMessage = NULL;
 	std::string strReplaces, strToId;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszToCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
@@ -490,7 +490,7 @@ bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszToCall
 			pclsMessage = itMap->second.CreateRefer();
 		}
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( pclsMessage == NULL ) return false;
 

@@ -170,7 +170,7 @@ private:
 
 	/** SIP Dialog ¸Ê */
 	SIP_DIALOG_MAP			m_clsDialogMap;
-	CSipMutex						m_clsMutex;
+	CSipMutex						m_clsDialogMutex;
 
 	/** */
 	int									m_iSeq;

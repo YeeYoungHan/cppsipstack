@@ -27,7 +27,7 @@ CSipMessage * CSipUserAgent::DeleteIncomingCall( const char * pszCallId )
 	SIP_DIALOG_MAP::iterator		itMap;
 	CSipMessage * pclsMessage = NULL;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
@@ -41,7 +41,7 @@ CSipMessage * CSipUserAgent::DeleteIncomingCall( const char * pszCallId )
 			}
 		}
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	return pclsMessage;
 }
@@ -60,7 +60,7 @@ bool CSipUserAgent::RingCall( const char * pszCallId, int iSipStatus, CSipCallRt
 	CSipMessage * pclsMessage = NULL;
 	bool	bRes = false;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
@@ -91,7 +91,7 @@ bool CSipUserAgent::RingCall( const char * pszCallId, int iSipStatus, CSipCallRt
 			}
 		}
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( pclsMessage )
 	{
@@ -113,13 +113,13 @@ bool CSipUserAgent::GetRemoteCallRtp( const char * pszCallId, CSipCallRtp * pcls
 	SIP_DIALOG_MAP::iterator		itMap;
 	bool	bRes = false;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		bRes = itMap->second.SelectRemoteRtp( pclsRtp );
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	return bRes;
 }
@@ -138,14 +138,14 @@ bool CSipUserAgent::GetToId( const char * pszCallId, std::string & strToId )
 
 	strToId.clear();
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		strToId = itMap->second.m_strToId;
 		bRes = true;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	return bRes;
 }
@@ -164,14 +164,14 @@ bool CSipUserAgent::GetFromId( const char * pszCallId, std::string & strFromId )
 
 	strFromId.clear();
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		strFromId = itMap->second.m_strFromId;
 		bRes = true;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	return bRes;
 }
@@ -188,14 +188,14 @@ bool CSipUserAgent::GetCdr( const char * pszCallId, CSipCdr * pclsCdr )
 	SIP_DIALOG_MAP::iterator		itMap;
 	bool	bRes = false;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		itMap->second.GetCdr( pclsCdr );
 		bRes = true;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	return bRes;
 }
@@ -211,7 +211,7 @@ bool CSipUserAgent::IsRingCall( const char * pszCallId, const char * pszTo )
 	SIP_DIALOG_MAP::iterator		itMap;
 	bool	bRes = false;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
@@ -230,7 +230,7 @@ bool CSipUserAgent::IsRingCall( const char * pszCallId, const char * pszTo )
 			}
 		}
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	return bRes;
 }
@@ -246,13 +246,13 @@ int CSipUserAgent::GetRSeq( const char * pszCallId )
 	SIP_DIALOG_MAP::iterator		itMap;
 	int iRSeq = -1;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		iRSeq = itMap->second.m_iRSeq;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	return iRSeq;
 }
@@ -267,13 +267,13 @@ void CSipUserAgent::SetRSeq( const char * pszCallId, int iRSeq )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		itMap->second.m_iRSeq = iRSeq;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 }
 
 /**
@@ -287,7 +287,7 @@ bool CSipUserAgent::Is100rel( const char * pszCallId )
 	SIP_DIALOG_MAP::iterator		itMap;
 	bool	b100rel = false;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
@@ -297,7 +297,7 @@ bool CSipUserAgent::Is100rel( const char * pszCallId )
 			b100rel = itMap->second.m_pclsInvite->Is100rel();
 		}
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	return b100rel;
 }
@@ -315,7 +315,7 @@ bool CSipUserAgent::SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp 
 	CSipMessage * pclsRequest = NULL;
 	bool	bRes = false;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
@@ -323,7 +323,7 @@ bool CSipUserAgent::SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp 
 		pclsRequest = itMap->second.CreateInvite();
 		bRes = true;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( pclsRequest )
 	{
@@ -346,14 +346,14 @@ bool CSipUserAgent::SendNotify( const char * pszCallId, int iSipCode )
 	CSipMessage * pclsRequest = NULL;
 	bool	bRes = false;
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		pclsRequest = itMap->second.CreateNotify();
 		bRes = true;
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 
 	if( pclsRequest )
 	{
@@ -392,7 +392,7 @@ void CSipUserAgent::GetString( CMonitorString & strBuf )
 
 	strBuf.Clear();
 
-	m_clsMutex.acquire();
+	m_clsDialogMutex.acquire();
 	for( itMap = m_clsDialogMap.begin(); itMap != m_clsDialogMap.end(); ++itMap )
 	{
 		strBuf.AddCol( itMap->first );
@@ -438,5 +438,5 @@ void CSipUserAgent::GetString( CMonitorString & strBuf )
 			strBuf.AddRow( "" );
 		}
 	}
-	m_clsMutex.release();
+	m_clsDialogMutex.release();
 }
