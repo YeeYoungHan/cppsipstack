@@ -54,6 +54,9 @@ public:
 	/** SIP CSeq 헤더의 번호 */
 	int					m_iSeq;
 
+	/** SIP CSeq 헤더의 다음 번호 */
+	int					m_iNextSeq;
+
 	/** SIP 요청 메시지를 전송할 IP 주소 */
 	std::string	m_strContactIp;
 
