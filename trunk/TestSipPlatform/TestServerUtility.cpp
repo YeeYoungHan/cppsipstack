@@ -18,10 +18,36 @@
 
 #include "FileUtility.h"
 #include "ServerUtility.h"
+#include "Directory.h"
+
+#ifdef WIN32
+#define TEST_FOLDER "c:\\temp\\sipserver"
+#else
+#define TEST_FOLDER "/tmp/sipserver"
+#endif
 
 bool TestServerUtility()
 {
-	int64_t iSize = GetFileSize( "c:\\temp\\sipserver\\20140606_1.txt" );
+	int64_t iSize;
+	FILE_LIST clsFileList;
+
+	CDirectory::FileList( TEST_FOLDER, clsFileList );
+
+	if( clsFileList.size() > 0 )
+	{
+		std::string strFileName = TEST_FOLDER;
+
+		CDirectory::AppendName( strFileName, clsFileList.begin()->c_str() );
+
+		iSize = GetFileSize( strFileName.c_str() );
+		if( iSize == 0 )
+		{
+			printf( "[ERROR] GetFileSize(%s)\n", strFileName.c_str() );
+			return false;
+		}
+
+		printf( "GetFileSize(%s) = " LONG_LONG_FORMAT "\n", strFileName.c_str(), iSize );
+	}
 
 	return true;
 }
