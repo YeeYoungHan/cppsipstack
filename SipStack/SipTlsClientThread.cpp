@@ -46,7 +46,7 @@ void * SipTlsClientThread( void * lpParameter )
 #endif
 {
 	CSipTlsClientArg * pclsArg = (CSipTlsClientArg *)lpParameter;
-	bool bError = false;
+	bool bRes = false;
 
 	Socket hSocket = TcpConnect( pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipStack->m_clsSetup.m_iTcpConnectTimeout );
 	if( hSocket != INVALID_SOCKET )
@@ -67,27 +67,25 @@ void * SipTlsClientThread( void * lpParameter )
 			{
 				SSLClose( psttSsl );
 				closesocket( hSocket );
-				bError = true;
 			}
 			else
 			{
 				SipTlsSend( hSocket, psttSsl, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage );
+				bRes = true;
 			}
 		}
 		else
 		{
 			CLog::Print( LOG_ERROR, "SSLConnect(%s:%d) error", pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
 			closesocket( hSocket );
-			bError = true;
 		}
 	}
 	else
 	{
 		CLog::Print( LOG_ERROR, "TcpConnect(%s:%d) error for SSL", pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
-		bError = true;
 	}
 
-	if( bError )
+	if( bRes == false )
 	{
 		CSipMessage * pclsResponse = pclsArg->m_pclsSipMessage->CreateResponse( SIP_SERVICE_UNAVAILABLE );
 		if( pclsResponse )
