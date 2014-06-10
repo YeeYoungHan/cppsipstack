@@ -46,7 +46,7 @@ public:
 
 	bool Insert( CXmlSipServer & clsXmlSipServer );
 
-	void GetString( std::string & strBuf );
+	void GetString( CMonitorString & strBuf );
 
 private:
 	SIP_SERVER_MAP	m_clsMap;

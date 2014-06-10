@@ -325,48 +325,21 @@ bool CSipServerMap::Insert( CXmlSipServer & clsXmlSipServer )
  * @brief 자료구조 모니터링을 위한 문자열을 가져온다.
  * @param strBuf 자료구조 모니터링을 위한 문자열 저장 변수
  */
-void CSipServerMap::GetString( std::string & strBuf )
+void CSipServerMap::GetString( CMonitorString & strBuf )
 {
 	SIP_SERVER_MAP::iterator	itMap;
-	char	szTemp[51];
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
-		strBuf.append( itMap->first );
-		strBuf.append( MR_COL_SEP );
-
-		strBuf.append( itMap->second.m_strName );
-		strBuf.append( MR_COL_SEP );
-
-		snprintf( szTemp, sizeof(szTemp), "%d", itMap->second.m_iFlag );
-		strBuf.append( szTemp );
-		strBuf.append( MR_COL_SEP );
-
-		strBuf.append( itMap->second.m_strIp );
-		snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iPort );
-		strBuf.append( szTemp );
-		strBuf.append( MR_COL_SEP );
-
-		strBuf.append( itMap->second.m_strDomain );
-		strBuf.append( MR_COL_SEP );
-
-		strBuf.append( itMap->second.m_strUserId );
-		strBuf.append( MR_COL_SEP );
-
-		snprintf( szTemp, sizeof(szTemp), "%d", itMap->second.m_iLoginTimeout );
-		strBuf.append( szTemp );
-		strBuf.append( MR_COL_SEP );
-
-		if( itMap->second.m_bLogin )
-		{
-			strBuf.append( "login" );
-		}
-		else
-		{
-			strBuf.append( "logout" );
-		}
-		strBuf.append( MR_ROW_SEP );
+		strBuf.AddCol( itMap->first );
+		strBuf.AddCol( itMap->second.m_strName );
+		strBuf.AddCol( itMap->second.m_iFlag );
+		strBuf.AddCol( itMap->second.m_strIp, itMap->second.m_iPort );
+		strBuf.AddCol( itMap->second.m_strDomain );
+		strBuf.AddCol( itMap->second.m_strUserId );
+		strBuf.AddCol( itMap->second.m_iLoginTimeout );
+		strBuf.AddRow( itMap->second.m_bLogin ? "login" : "logout" );
 	}
 	m_clsMutex.release();
 }
