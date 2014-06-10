@@ -112,7 +112,7 @@ public:
 	bool SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool SendNotify( const char * pszCallId, int iSipCode );
 
-	void GetString( std::string & strBuf );
+	void GetString( CMonitorString & strBuf );
 	void Final();
 
 	// ISipStackCallBack

@@ -386,64 +386,57 @@ bool CSipUserAgent::SendNotify( const char * pszCallId, int iSipCode )
  * @brief 자료구조 모니터링을 위한 문자열을 저장한다.
  * @param strBuf 자료구조 모니터링을 위한 문자열 변수
  */
-void CSipUserAgent::GetString( std::string & strBuf )
+void CSipUserAgent::GetString( CMonitorString & strBuf )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
-	char	szTemp[51];
 
-	strBuf.clear();
+	strBuf.Clear();
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
-		strBuf.append( itMap->first );
-		strBuf.append( MR_COL_SEP );
-
-		strBuf.append( itMap->second.m_strFromId );
-		strBuf.append( MR_COL_SEP );
-
-		strBuf.append( itMap->second.m_strToId );
-		strBuf.append( MR_COL_SEP );
-
-		strBuf.append( itMap->second.m_strContactIp );
-		snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iContactPort );
-		strBuf.append( szTemp );
-		strBuf.append( MR_COL_SEP );
+		strBuf.AddCol( itMap->first );
+		strBuf.AddCol( itMap->second.m_strFromId );
+		strBuf.AddCol( itMap->second.m_strToId );
+		strBuf.AddCol( itMap->second.m_strContactIp, itMap->second.m_iContactPort );
 
 		if( itMap->second.m_iLocalRtpPort > 0 )
 		{
-			strBuf.append( itMap->second.m_strLocalRtpIp );
-			snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iLocalRtpPort );
-			strBuf.append( szTemp );
+			strBuf.AddCol( itMap->second.m_strLocalRtpIp, itMap->second.m_iLocalRtpPort );
 		}
-		strBuf.append( MR_COL_SEP );
+		else
+		{
+			strBuf.AddCol( "" );
+		}
 
 		if( itMap->second.m_iRemoteRtpPort > 0 )
 		{
-			strBuf.append( itMap->second.m_strRemoteRtpIp );
-			snprintf( szTemp, sizeof(szTemp), ":%d", itMap->second.m_iRemoteRtpPort );
-			strBuf.append( szTemp );
+			strBuf.AddCol( itMap->second.m_strRemoteRtpIp, itMap->second.m_iRemoteRtpPort );
 		}
-		strBuf.append( MR_COL_SEP );
+		else
+		{
+			strBuf.AddCol( "" );
+		}
 
-		GetDateTimeString( itMap->second.m_sttInviteTime.tv_sec, szTemp, sizeof(szTemp) );
-		strBuf.append( szTemp );
-		strBuf.append( MR_COL_SEP );
+		strBuf.AddCol( (time_t)itMap->second.m_sttInviteTime.tv_sec );
 
 		if( itMap->second.m_sttStartTime.tv_sec )
 		{
-			GetDateTimeString( itMap->second.m_sttStartTime.tv_sec, szTemp, sizeof(szTemp) );
-			strBuf.append( szTemp );
+			strBuf.AddCol( (time_t)itMap->second.m_sttStartTime.tv_sec );
 		}
-		strBuf.append( MR_COL_SEP );
+		else
+		{
+			strBuf.AddCol( "" );
+		}
 
 		if( itMap->second.m_sttEndTime.tv_sec )
 		{
-			GetDateTimeString( itMap->second.m_sttEndTime.tv_sec, szTemp, sizeof(szTemp) );
-			strBuf.append( szTemp );
+			strBuf.AddRow( (time_t)itMap->second.m_sttEndTime.tv_sec );
 		}
-
-		strBuf.append( MR_ROW_SEP );
+		else
+		{
+			strBuf.AddRow( "" );
+		}
 	}
 	m_clsMutex.release();
 }
