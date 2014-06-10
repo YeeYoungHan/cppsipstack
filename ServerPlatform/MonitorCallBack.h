@@ -19,7 +19,7 @@
 #ifndef _MONITOR_CALLBACK_H_
 #define _MONITOR_CALLBACK_H_
 
-#include <string>
+#include "MonitorString.h"
 
 /**
  * @brief 서버 모니터링 요청 이벤트 callback 인터페이스
@@ -35,7 +35,7 @@ public:
 	 * @param strResponse 응답 문자열 저장 변수
 	 * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
 	 */
-	virtual bool RecvRequest( const char * pszRequest, std::string & strResponse ) = 0;
+	virtual bool RecvRequest( const char * pszRequest, CMonitorString & strResponse ) = 0;
 
 	/**
 	 * @brief 허용된 클라이언트인가?
