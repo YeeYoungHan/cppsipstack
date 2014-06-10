@@ -153,6 +153,8 @@ private:
 
 	bool RecvPrackRequest( int iThreadId, CSipMessage * pclsMessage );
 
+	bool RecvOptionsRequest( int iThreadId, CSipMessage * pclsMessage );
+
 	bool SendInvite( CSipDialog & clsDialog );
 	bool SetCallEnd( const char * pszCallId );
 	bool Delete( const char * pszCallId );
