@@ -138,6 +138,8 @@ bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 		}
 	}
 
+	delete pclsMessage;
+
 	return false;
 }
 
@@ -191,10 +193,7 @@ bool CSipStack::RecvSipMessage( int iThreadId, const char * pszBuf, int iBufLen,
 	pclsMessage->m_iClientPort = iPort;
 	pclsMessage->m_eTransport = eTransport;
 
-	if( RecvSipMessage( iThreadId, pclsMessage ) == false )
-	{
-		delete pclsMessage;
-	}
+	RecvSipMessage( iThreadId, pclsMessage );
 
 	return true;
 }

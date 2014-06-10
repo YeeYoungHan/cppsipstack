@@ -77,10 +77,7 @@ void * SipTcpClientThread( void * lpParameter )
 		CSipMessage * pclsResponse = pclsArg->m_pclsSipMessage->CreateResponse( SIP_SERVICE_UNAVAILABLE );
 		if( pclsResponse )
 		{
-			if( pclsArg->m_pclsSipStack->RecvSipMessage( 0, pclsResponse ) == false )
-			{
-				delete pclsResponse;
-			}
+			pclsArg->m_pclsSipStack->RecvSipMessage( 0, pclsResponse );
 		}
 	}
 
