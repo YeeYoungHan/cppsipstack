@@ -49,7 +49,7 @@ public:
  */
 static bool MonitorCommand( CMonitorSocket * pclsArg, const char * pszPacket )
 {
-	std::string	strBuf;
+	CMonitorString	strBuf;
 	int	iPacketLen, n;
 
 	if( pclsArg->m_pclsCallBack->RecvRequest( pszPacket, strBuf ) == false )
@@ -58,7 +58,7 @@ static bool MonitorCommand( CMonitorSocket * pclsArg, const char * pszPacket )
 		return false;
 	}
 
-	iPacketLen = htonl( (int)strBuf.length() );
+	iPacketLen = htonl( strBuf.GetLength() );
 
 	n = TcpSend( pclsArg->hSocket, (char *)&iPacketLen, sizeof(iPacketLen) );
 	if( n != sizeof(iPacketLen) )
@@ -67,8 +67,8 @@ static bool MonitorCommand( CMonitorSocket * pclsArg, const char * pszPacket )
 		return false;
 	}
 
-	n = TcpSend( pclsArg->hSocket, strBuf.c_str(), (int)strBuf.length() );
-	if( n != (int)strBuf.length() )
+	n = TcpSend( pclsArg->hSocket, strBuf.GetString(), strBuf.GetLength() );
+	if( n != strBuf.GetLength() )
 	{
 		CLog::Print( LOG_DEBUG, "MonitorThread(%s:%d) send body error(%d)", pclsArg->m_strIp.c_str(), pclsArg->m_iPort, GetError() );
 		return false;
