@@ -38,7 +38,7 @@
  * IST 리스트에 ACK 메시지를 저장할 때에 SIP Call-ID 와 CSCeq 가 일치하는지 검사하는 기능을 추가함
 
 = 버전 0.18 ( 2013년 10월 31일 ) =
- * CallBackThreadEnd 를 순수 가상 함수에서 가상 함수로 수정함
+ * ThreadEnd 를 순수 가상 함수에서 가상 함수로 수정함
  * SipStack.Stop 메소드를 호출하면 SipStack callback 리스트를 초기화시킨다.
 
 = 버전 0.16 ( 2013년 9월 4일 ) =

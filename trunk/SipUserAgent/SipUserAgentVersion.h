@@ -42,7 +42,7 @@
 
 = 버전 0.18 ( 2013년 10월 31일 ) =
  * 2개 이상의 CSipUserAgent 를 실행할 수 있는 기능을 추가함
- * EventCallBackThreadEnd 를 순수 가상 함수에서 가상 함수로 수정함
+ * EventThreadEnd 를 순수 가상 함수에서 가상 함수로 수정함
 
 = 버전 0.17 ( 2013년 10월 26일 ) =
  * FreeSwitch 에 REGISTER 되지 않는 버그를 패치함
