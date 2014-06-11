@@ -94,6 +94,13 @@ bool CTcpSocketMap::Select( const char * pszIp, int iPort, Socket & hSocket )
 }
 
 #ifdef USE_TLS
+/**
+ * @brief 클라이언트 IP 주소와 포트 번호와 연관된 TCP 소켓 정보를 검색한다.
+ * @param pszIp		클라이언트 IP 주소
+ * @param iPort		클라이언트 포트 번호
+ * @param ppclsInfo TCP 소켓 정보를 저장할 변수의 포인터
+ * @returns 검색에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CTcpSocketMap::Select( const char * pszIp, int iPort, CTcpSocketInfo ** ppclsInfo )
 {
 	bool	bRes = false;
