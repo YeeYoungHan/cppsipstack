@@ -18,6 +18,7 @@
 
 #include "SipClient.h"
 #include <time.h>
+#include "MemoryDebug.h"
 
 std::string	gstrInviteId;
 

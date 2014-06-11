@@ -18,6 +18,7 @@
 
 #include "SipClient.h"
 #include "Log.h"
+#include "MemoryDebug.h"
 
 extern std::string	gstrInviteId;
 
@@ -64,6 +65,10 @@ int main( int argc, char * argv[] )
 			iServerPort = SIP_TLS_PORT;
 		}
 	}
+
+#ifdef WIN32
+	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF );
+#endif
 	
 	CSipUserAgent clsUserAgent;
 	CSipServerInfo clsServerInfo;
