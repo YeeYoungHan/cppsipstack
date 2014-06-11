@@ -309,7 +309,7 @@ bool CSipStack::_Stop( )
 	}
 
 	// 모든 쓰레드가 종료할 때까지 대기한다.
-	while( m_iUdpThreadRunCount > 0 || m_iTcpThreadRunCount > 0 || m_bStackThreadRun )
+	while( m_iUdpThreadRunCount > 0 || m_iTcpThreadRunCount > 0 || m_bStackThreadRun || GetTcpConnectingCount() > 0 )
 	{
 		MiliSleep( 20 );
 	}
@@ -345,3 +345,18 @@ bool CSipStack::_Stop( )
 	return true;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief TCP/TLS 연결 진행중인 쓰레드 개수를 리턴한다.
+ * @returns TCP/TLS 연결 진행중인 쓰레드 개수를 리턴한다.
+ */
+int CSipStack::GetTcpConnectingCount( )
+{
+	int iCount = m_clsTcpConnectMap.GetSize();
+
+#ifdef USE_TLS
+	iCount += m_clsTlsConnectMap.GetSize();
+#endif
+
+	return iCount;
+}

@@ -21,7 +21,7 @@ LIB_OBJ=SipDeleteQueue.o \
 	SipStackThread.o SipUdpThread.o SipTcpThread.o SipTlsThread.o \
 	SipTcpClientThread.o SipTcpMessage.o \
 	SipTlsClientThread.o SipTlsMessage.o \
-	TcpSessionList.o TcpSocketMap.o TcpThreadList.o \
+	TcpSessionList.o TcpSocketMap.o TcpThreadList.o TcpConnectMap.o \
 	SipBuffer.o \
 	TlsFunction.o \
 	MonitorString.o

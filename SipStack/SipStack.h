@@ -123,6 +123,7 @@ private:
 	ISipStackSecurityCallBack * m_pclsSecurityCallBack;
 
 	bool _Stop( );
+	int GetTcpConnectingCount( );
 	void CheckSipMessage( CSipMessage * pclsMessage );
 };
 

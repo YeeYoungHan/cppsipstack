@@ -25,6 +25,10 @@
 
 typedef std::list< CSipMessage * > SIP_MESSAGE_LIST;
 
+/**
+ * @ingroup SipStack
+ * @brief TCP/TLS 연결 진행 중인 경우에 전송 요청한 SIP 메시지를 저장하는 클래스
+ */
 class CTcpConnectInfo
 {
 public:
@@ -34,6 +38,10 @@ public:
 // key = ip:port
 typedef std::map< std::string, CTcpConnectInfo > TCP_CONNECT_MAP;
 
+/**
+ * @ingroup SipStack
+ * @brief TCP/TLS 연결 진행 중인 정보를 저장하는 클래스
+ */
 class CTcpConnectMap
 {
 public:
@@ -44,6 +52,7 @@ public:
 	bool Insert( const char * pszIp, int iPort, CSipMessage * pclsMessage );
 	bool Delete( const char * pszIp, int iPort, SIP_MESSAGE_LIST & clsList );
 	bool Delete( const char * pszIp, int iPort );
+	int GetSize();
 
 private:
 	TCP_CONNECT_MAP m_clsMap;
