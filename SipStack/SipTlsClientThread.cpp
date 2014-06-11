@@ -123,10 +123,11 @@ void * SipTlsClientThread( void * lpParameter )
 				--(*itList)->m_iUseCount;
 			}
 		}
+
+		pclsArg->m_pclsSipStack->ThreadEnd( -1 );
 	}
 
 	--pclsArg->m_pclsSipMessage->m_iUseCount;
-	pclsArg->m_pclsSipStack->ThreadEnd( -1 );
 	delete pclsArg;
 
 	return 0;
