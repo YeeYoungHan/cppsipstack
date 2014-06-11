@@ -158,7 +158,7 @@ int CTcpConnectMap::GetSize()
 	int iSize;
 
 	m_clsMutex.acquire();
-	iSize = m_clsMap.size();
+	iSize = (int)m_clsMap.size();
 	m_clsMutex.release();
 
 	return iSize;

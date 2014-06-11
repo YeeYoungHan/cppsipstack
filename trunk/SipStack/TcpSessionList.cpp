@@ -31,6 +31,10 @@ CTcpSessionListInfo::CTcpSessionListInfo() : m_iPort(0)
 
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 세션 정보를 초기화시킨다.
+ */
 void CTcpSessionListInfo::Clear()
 {
 	m_strIp.clear();

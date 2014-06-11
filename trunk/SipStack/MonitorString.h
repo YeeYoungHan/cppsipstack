@@ -21,6 +21,10 @@
 
 #include <string>
 
+/**
+ * @ingroup SipStack
+ * @brief 자료구조 모니터링을 위한 문자열 저장 및 생성 클래스
+ */
 class CMonitorString
 {
 public:
