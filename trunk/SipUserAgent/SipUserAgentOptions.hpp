@@ -28,7 +28,6 @@ bool CSipUserAgent::RecvOptionsRequest( int iThreadId, CSipMessage * pclsMessage
 	CSipMessage * pclsResponse = NULL;
 	std::string	strCallId;
 	SIP_DIALOG_MAP::iterator	itMap;
-	bool	bFound = false;
 
 	if( pclsMessage->GetCallId( strCallId ) == false )
 	{
