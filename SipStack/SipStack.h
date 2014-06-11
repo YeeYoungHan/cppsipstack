@@ -76,7 +76,7 @@ public:
 	void RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 	void SendTimeout( int iThreadId, CSipMessage * pclsMessage );
 	void TcpSessionEnd( const char * pszIp, int iPort, ESipTransport eTransport );
-	void CallBackThreadEnd( int iThreadId );
+	void ThreadEnd( int iThreadId );
 
 	// SipStackComm.hpp
 	bool SendSipMessage( CSipMessage * pclsMessage );

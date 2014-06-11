@@ -403,9 +403,9 @@ void CSipUserAgent::TcpSessionEnd( const char * pszIp, int iPort, ESipTransport 
  * @brief SIP 쓰레드 종료 이벤트 핸들러
  * @param iThreadId 쓰레드 번호
  */
-void CSipUserAgent::CallBackThreadEnd( int iThreadId )
+void CSipUserAgent::ThreadEnd( int iThreadId )
 {
-	if( m_pclsCallBack ) m_pclsCallBack->EventCallBackThreadEnd( iThreadId );
+	if( m_pclsCallBack ) m_pclsCallBack->EventThreadEnd( iThreadId );
 }
 
 /**

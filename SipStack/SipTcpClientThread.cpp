@@ -112,6 +112,7 @@ void * SipTcpClientThread( void * lpParameter )
 	}
 
 	--pclsArg->m_pclsSipMessage->m_iUseCount;
+	pclsArg->m_pclsSipStack->ThreadEnd( -1 );
 	delete pclsArg;
 
 	return 0;

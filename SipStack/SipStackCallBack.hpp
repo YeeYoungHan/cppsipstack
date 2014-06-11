@@ -165,12 +165,12 @@ void CSipStack::TcpSessionEnd( const char * pszIp, int iPort, ESipTransport eTra
  * @brief 쓰레드 종료 이벤트를 전달한다.
  * @param iThreadId 쓰레드 아이디 ( 0 부터 쓰레드 개수 )
  */
-void CSipStack::CallBackThreadEnd( int iThreadId )
+void CSipStack::ThreadEnd( int iThreadId )
 {
 	SIP_STACK_CALLBACK_LIST::iterator itList;
 
 	for( itList = m_clsCallBackList.begin(); itList != m_clsCallBackList.end(); ++itList )
 	{
-		(*itList)->CallBackThreadEnd( iThreadId );
+		(*itList)->ThreadEnd( iThreadId );
 	}
 }

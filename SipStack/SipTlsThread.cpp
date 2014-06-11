@@ -159,7 +159,7 @@ LOOP_END:
 	clsSessionList.DeleteAll( pclsEntry );
 
 FUNC_END:
-	pclsSipStack->CallBackThreadEnd( iThreadId );
+	pclsSipStack->ThreadEnd( iThreadId );
 	pclsSipStack->DecreateTcpThreadCount();
 
 	return 0;

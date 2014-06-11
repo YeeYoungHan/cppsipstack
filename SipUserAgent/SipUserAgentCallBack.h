@@ -183,7 +183,7 @@ public:
 	 * @brief SIP 메시지 수신 쓰레드가 종료됨을 알려주는 이벤트 핸들러
 	 * @param iThreadId UDP 쓰레드 번호
 	 */
-	virtual void EventCallBackThreadEnd( int iThreadId ){};
+	virtual void EventThreadEnd( int iThreadId ){};
 };
 
 #endif
