@@ -18,6 +18,7 @@
 
 #include "SipStackDefine.h"
 #include "RtpDirection.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipUserAgent
