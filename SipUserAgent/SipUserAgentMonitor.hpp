@@ -86,6 +86,8 @@ void CSipUserAgent::GetServerString( CMonitorString & strBuf )
 	SIP_SERVER_INFO_LIST::iterator	itList;
 	std::string strCallId;
 
+	strBuf.Clear();
+
 	m_clsRegisterMutex.acquire();
 	for( itList = m_clsRegisterList.begin(); itList != m_clsRegisterList.end(); ++itList )
 	{
