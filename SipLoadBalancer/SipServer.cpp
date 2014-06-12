@@ -144,7 +144,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
  */
 bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 {
-	if( pclsMessage->m_iStatusCode == SIP_TRYING && pclsMessage->IsMethod( "INVITE" ) )
+	if( pclsMessage->m_iStatusCode == SIP_TRYING && pclsMessage->IsMethod( SIP_METHOD_INVITE ) )
 	{
 		// SIP stack 에서 100 Trying 을 전송하였으므로 추가로 100 Trying 을 전송하지 않는다.
 		return true;

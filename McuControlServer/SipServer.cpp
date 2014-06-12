@@ -77,7 +77,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 		return RecvRegisterRequest( iThreadId, pclsMessage );
 	}
 
-	if( pclsMessage->IsMethod( "INVITE" ) )
+	if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) )
 	{
 
 	}
@@ -144,7 +144,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 
 		if( strcmp( pclsMessage->m_strClientIp.c_str(), MCU_IP ) )
 		{
-			if( pclsMessage->IsMethod( "INVITE" ) )
+			if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) )
 			{
 				// 영상 디바이스에서 수신되었고 1:1 통화 INVITE 요청 메시지이면 통화 자료구조에 저장한다.
 				if( gclsCallMap.Insert( pclsMessage ) == false )
@@ -231,7 +231,7 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 
 		if( !strcmp( pclsMessage->m_strClientIp.c_str(), MCU_IP ) )
 		{
-			if( pclsMessage->IsMethod( "INVITE" ) && pclsMessage->m_iStatusCode == SIP_OK )
+			if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) && pclsMessage->m_iStatusCode == SIP_OK )
 			{
 				CCallInfo clsCallInfo;
 
@@ -256,7 +256,7 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 
 						pclsRequest->m_clsReqUri.m_strUser = strToId;
 						pclsRequest->m_clsReqUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
-						pclsRequest->m_strSipMethod = "INVITE";
+						pclsRequest->m_strSipMethod = SIP_METHOD_INVITE;
 						pclsRequest->m_iStatusCode = -1;
 
 						/* 아래의 코드를 추가하면 영상 디바이스에서 MCU 간의 SIP INFO 메시지 등을 정상적으로 relay 시켜주어야 한다.
@@ -293,7 +293,7 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 
 						pclsRequest->m_clsReqUri.m_strUser = strFromId;
 						pclsRequest->m_clsReqUri.m_strHost = gclsSipStack.m_clsSetup.m_strLocalIp;
-						pclsRequest->m_strSipMethod = "INVITE";
+						pclsRequest->m_strSipMethod = SIP_METHOD_INVITE;
 						pclsRequest->m_iStatusCode = -1;
 						pclsRequest->m_clsCSeq.m_iDigit = pclsMessage->m_clsCSeq.m_iDigit;
 						pclsRequest->m_strBody = pclsMessage->m_strBody;
