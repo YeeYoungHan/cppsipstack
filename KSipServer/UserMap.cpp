@@ -306,7 +306,7 @@ void CUserMap::SendOptions(  )
 		CSipMessage * pclsMessage = new CSipMessage();
 		if( pclsMessage == NULL ) break;
 
-		pclsMessage->m_strSipMethod = "OPTIONS";
+		pclsMessage->m_strSipMethod = SIP_METHOD_OPTIONS;
 		pclsMessage->m_clsReqUri.Set( "sip", itList->c_str(), clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
 		
 		pclsMessage->m_clsFrom.m_clsUri.Set( "sip", "ksipserver", gclsSetup.m_strLocalIp.c_str() );
@@ -316,7 +316,7 @@ void CUserMap::SendOptions(  )
 
 		pclsMessage->m_clsCallId.Make( gclsSetup.m_strLocalIp.c_str() );
 
-		pclsMessage->m_clsCSeq.Set( clsUserInfo.m_iOptionsSeq, "OPTIONS" );
+		pclsMessage->m_clsCSeq.Set( clsUserInfo.m_iOptionsSeq, SIP_METHOD_OPTIONS );
 		pclsMessage->AddRoute( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
 
 		gclsUserAgent.m_clsSipStack.SendSipMessage( pclsMessage );

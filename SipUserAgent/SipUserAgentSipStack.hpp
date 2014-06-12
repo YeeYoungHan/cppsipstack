@@ -53,7 +53,7 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return RecvMessageRequest( iThreadId, pclsMessage );
 	}
-	else if( pclsMessage->IsMethod( "OPTIONS" ) )
+	else if( pclsMessage->IsMethod( SIP_METHOD_OPTIONS ) )
 	{
 		return RecvOptionsRequest( iThreadId, pclsMessage );
 	}
@@ -102,7 +102,7 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return true;
 	}
-	else if( pclsMessage->IsMethod( "OPTIONS" ) )
+	else if( pclsMessage->IsMethod( SIP_METHOD_OPTIONS ) )
 	{
 		return true;
 	}
