@@ -95,7 +95,7 @@ CSipMessage * CSipDialog::CreateAck( )
  */
 CSipMessage * CSipDialog::CreateCancel( )
 {
-	CSipMessage * pclsMessage = CreateMessage( "CANCEL" );
+	CSipMessage * pclsMessage = CreateMessage( SIP_METHOD_CANCEL );
 	if( pclsMessage == NULL ) return NULL;
 
 	pclsMessage->AddVia( m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.GetLocalPort( m_eTransport ), m_strViaBranch.c_str(), m_eTransport );
@@ -425,7 +425,7 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 		m_iNextSeq = m_iSeq + 2;
 		iSeq = m_iSeq + 1;
 	}
-	else if( strcmp( pszSipMethod, SIP_METHOD_ACK ) && strcmp( pszSipMethod, "CANCEL" ) )
+	else if( strcmp( pszSipMethod, SIP_METHOD_ACK ) && strcmp( pszSipMethod, SIP_METHOD_CANCEL ) )
 	{
 		if( m_iNextSeq != 0 )
 		{
