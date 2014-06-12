@@ -341,11 +341,23 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return true;
 	}
+	else if( pclsMessage->IsMethod( "PRACK" ) )
+	{
+		return true;
+	}
 	else if( pclsMessage->IsMethod( "REFER" ) )
 	{
 		return RecvReferResponse( iThreadId, pclsMessage );
 	}
+	else if( pclsMessage->IsMethod( "NOTIFY" ) )
+	{
+		return true;
+	}
 	else if( pclsMessage->IsMethod( "MESSAGE" ) )
+	{
+		return true;
+	}
+	else if( pclsMessage->IsMethod( "OPTIONS" ) )
 	{
 		return true;
 	}
