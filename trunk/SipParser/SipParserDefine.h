@@ -50,6 +50,7 @@
 #define SIP_METHOD_PRACK			"PRACK"
 #define SIP_METHOD_REFER			"REFER"
 #define SIP_METHOD_NOTIFY			"NOTIFY"
+#define SIP_METHOD_MESSAGE		"MESSAGE"
 
 #endif
 
