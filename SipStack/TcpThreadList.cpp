@@ -64,11 +64,11 @@ void CThreadListEntry::DecreaseSocketCount( bool bLock )
 	if( bLock ) gclsMutex.release();
 }
 
-CThreadList::CThreadList(void) : m_iMaxSocketPerThread( 10 ), m_iThreadMaxCount(1), m_pThreadProc(NULL), m_pUser(NULL)
+CThreadList::CThreadList() : m_iMaxSocketPerThread( 10 ), m_iThreadMaxCount(1), m_pThreadProc(NULL), m_pUser(NULL)
 {
 }
 
-CThreadList::~CThreadList(void)
+CThreadList::~CThreadList()
 {
 }
 
@@ -223,23 +223,18 @@ int CThreadList::RecvCommand( Socket hSocket, char * pszData, int iDataSize )
 /**
  * @ingroup SipStack
  * @brief 쓰레드 정보를 하나의 문자열에 저장한다.
- * @param strText 쓰레드 정보를 저장할 문자열 변수
+ * @param strBuf 쓰레드 정보를 저장할 문자열 변수
  */
-void CThreadList::GetString( std::string & strText )
+void CThreadList::GetString( CMonitorString & strBuf )
 {
 	THREAD_LIST::iterator	it;
-	char	szText[11];
 
-	strText.clear();
+	strBuf.Clear();
 
 	for( it = m_clsList.begin(); it != m_clsList.end(); ++it )
 	{
-		snprintf( szText, sizeof(szText), "%d", (*it)->m_iSocketCount );
-		strText.append( szText );
-		strText.append( MR_ROW_SEP );
+		strBuf.AddRow( (*it)->m_iSocketCount );
 	}
-
-	if( strText.empty() ) strText.append( MR_ROW_SEP );
 }
 
 /**

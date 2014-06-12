@@ -23,6 +23,7 @@
 #include "SipMutex.h"
 #include <vector>
 #include <string>
+#include "MonitorString.h"
 
 /**
  * @ingroup SipStack
@@ -53,8 +54,8 @@ typedef std::vector< CThreadListEntry * > THREAD_LIST;
 class CThreadList
 {
 public:
-	CThreadList(void);
-	~CThreadList(void);
+	CThreadList();
+	~CThreadList();
 
 #ifdef WIN32
 	bool Init( int iThreadCount, int iThreadMaxCount, LPTHREAD_START_ROUTINE pThreadProc, void * pUser );
@@ -67,7 +68,7 @@ public:
 
 	bool SendCommand( const char * pszData, int iDataLen, int iThreadIndex = -1, int * piThreadIndex = NULL );
 	static int RecvCommand( Socket hSocket, char * pszData, int iDataSize );
-	void GetString( std::string & strText );
+	void GetString( CMonitorString & strBuf );
 
 private:
 	THREAD_LIST	m_clsList;

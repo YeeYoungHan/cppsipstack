@@ -22,6 +22,7 @@
 #include "SipMessage.h"
 #include "SipMutex.h"
 #include <map>
+#include "MonitorString.h"
 
 typedef std::list< CSipMessage * > SIP_MESSAGE_LIST;
 
@@ -53,6 +54,8 @@ public:
 	bool Delete( const char * pszIp, int iPort, SIP_MESSAGE_LIST & clsList );
 	bool Delete( const char * pszIp, int iPort );
 	int GetSize();
+
+	void GetString( CMonitorString & strBuf );
 
 private:
 	TCP_CONNECT_MAP m_clsMap;
