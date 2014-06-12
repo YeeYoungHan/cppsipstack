@@ -149,7 +149,7 @@ void CSipFrom::InsertTag()
 
 	SipMakeTag( szTag, sizeof(szTag) );
 
-	InsertParam( "tag", szTag );
+	InsertParam( SIP_TAG, szTag );
 }
 
 /**

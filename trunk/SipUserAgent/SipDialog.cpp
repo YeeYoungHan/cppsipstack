@@ -446,12 +446,12 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	pclsMessage->m_clsCSeq.Set( iSeq, pszSipMethod );
 
 	pclsMessage->m_clsFrom.m_clsUri.Set( "sip", m_strFromId.c_str(), m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.m_iLocalUdpPort );
-	pclsMessage->m_clsFrom.InsertParam( "tag", m_strFromTag.c_str() );
+	pclsMessage->m_clsFrom.InsertParam( SIP_TAG, m_strFromTag.c_str() );
 
 	pclsMessage->m_clsTo.m_clsUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
 	if( m_strToTag.empty() == false )
 	{
-		pclsMessage->m_clsTo.InsertParam( "tag", m_strToTag.c_str() );
+		pclsMessage->m_clsTo.InsertParam( SIP_TAG, m_strToTag.c_str() );
 	}
 
 	// SK 브로드밴드 IP-PBX 와 연동하기 위해서 필요한 기능 ( RFC3325 )

@@ -299,9 +299,9 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 						pclsRequest->m_strBody = pclsMessage->m_strBody;
 						pclsRequest->m_iContentLength = pclsMessage->m_iContentLength;
 						pclsRequest->m_clsContentType = pclsMessage->m_clsContentType;
-						if( pclsRequest->m_clsTo.SelectParam( "tag" ) == false )
+						if( pclsRequest->m_clsTo.SelectParam( SIP_TAG ) == false )
 						{
-							pclsRequest->m_clsTo.InsertParam( "tag", clsCallInfo.m_strToTag.c_str() );
+							pclsRequest->m_clsTo.InsertParam( SIP_TAG, clsCallInfo.m_strToTag.c_str() );
 						}
 
 						if( gclsUserMap.Select( strFromId.c_str(), clsUserInfo ) )

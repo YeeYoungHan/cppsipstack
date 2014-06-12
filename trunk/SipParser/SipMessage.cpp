@@ -1012,7 +1012,7 @@ CSipMessage * CSipMessage::CreateResponse( int iStatus, const char * pszToTag )
 
 	if( pszToTag )
 	{
-		pclsResponse->m_clsTo.InsertParam( "tag", pszToTag );
+		pclsResponse->m_clsTo.InsertParam( SIP_TAG, pszToTag );
 	}
 
 	return pclsResponse;
@@ -1039,7 +1039,7 @@ CSipMessage * CSipMessage::CreateResponseWithToTag( int iStatus )
 	pclsResponse->m_clsCSeq = m_clsCSeq;
 	pclsResponse->m_eTransport = m_eTransport;
 
-	if( pclsResponse->m_clsTo.SelectParam( "tag" ) == false )
+	if( pclsResponse->m_clsTo.SelectParam( SIP_TAG ) == false )
 	{
 		pclsResponse->m_clsTo.InsertTag();
 	}

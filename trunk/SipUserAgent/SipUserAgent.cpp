@@ -272,7 +272,7 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 	itMap = m_clsDialogMap.find( strCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
-		pclsMessage->m_clsTo.SelectParam( "tag", itMap->second.m_strToTag );
+		pclsMessage->m_clsTo.SelectParam( SIP_TAG, itMap->second.m_strToTag );
 
 		if( pclsRtp )
 		{

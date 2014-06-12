@@ -173,7 +173,7 @@ bool CCallMap::UpdateToTag( CSipMessage * pclsMessage )
 	CALL_MAP::iterator	itMap;
 
 	pclsMessage->m_clsCallId.ToString( strCallId );
-	pclsMessage->m_clsTo.SelectParam( "tag", strTag );
+	pclsMessage->m_clsTo.SelectParam( SIP_TAG, strTag );
 
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( strCallId );

@@ -87,7 +87,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	clsDialog.m_eTransport = pclsMessage->m_eTransport;
 
 	clsDialog.m_strToId = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
-	pclsMessage->m_clsFrom.SelectParam( "tag", clsDialog.m_strToTag );
+	pclsMessage->m_clsFrom.SelectParam( SIP_TAG, clsDialog.m_strToTag );
 
 	clsDialog.m_strCallId = strCallId;
 	clsDialog.SetRemoteRtp( &clsRtp );
@@ -109,7 +109,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	if( clsDialog.m_pclsInvite )
 	{
 		*clsDialog.m_pclsInvite = *pclsMessage;
-		clsDialog.m_pclsInvite->m_clsTo.InsertParam( "tag", szTag );
+		clsDialog.m_pclsInvite->m_clsTo.InsertParam( SIP_TAG, szTag );
 	}
 
 	// Dialog 를 저장한다.

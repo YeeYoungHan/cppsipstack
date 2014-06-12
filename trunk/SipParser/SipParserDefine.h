@@ -53,6 +53,8 @@
 #define SIP_METHOD_MESSAGE		"MESSAGE"
 #define SIP_METHOD_OPTIONS		"OPTIONS"
 
+#define SIP_TAG								"tag"
+
 #endif
 
 /**

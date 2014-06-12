@@ -148,9 +148,9 @@ CSipMessage * CSipServerInfo::CreateRegister( CSipStack * pclsSipStack, CSipMess
 		/* 아래의 소스 코드 때문에 FreeSwitch 에 REGISTER 되지 않아서 주석 처리함
 		std::string	strToTag;
 
-		if( pclsResponse->m_clsTo.SelectParam( "tag", strToTag ) )
+		if( pclsResponse->m_clsTo.SelectParam( SIP_TAG, strToTag ) )
 		{
-			pclsRequest->m_clsTo.InsertParam( "tag", strToTag.c_str() );
+			pclsRequest->m_clsTo.InsertParam( SIP_TAG, strToTag.c_str() );
 		}
 		*/
 	}

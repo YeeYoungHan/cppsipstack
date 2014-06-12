@@ -50,7 +50,7 @@ static CSipMessage * CreateSipMessage( )
 	pclsMessage->m_clsCSeq.Set( 1, SIP_METHOD_OPTIONS );
 
 	pclsMessage->m_clsFrom.m_clsUri.Set( "sip", gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strSipDomain.c_str(), gclsSetup.m_iSipServerPort );
-	pclsMessage->m_clsFrom.InsertParam( "tag", szTag );
+	pclsMessage->m_clsFrom.InsertParam( SIP_TAG, szTag );
 
 	pclsMessage->m_clsTo.m_clsUri.Set( "sip", gclsSetup.m_strCalleeId.c_str(), gclsSetup.m_strSipDomain.c_str(), gclsSetup.m_iSipServerPort );
 
