@@ -37,7 +37,7 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return RecvCancelRequest( iThreadId, pclsMessage );
 	}
-	else if( pclsMessage->IsMethod( "PRACK" ) )
+	else if( pclsMessage->IsMethod( SIP_METHOD_PRACK ) )
 	{
 		return RecvPrackRequest( iThreadId, pclsMessage );
 	}
@@ -86,7 +86,7 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return true;
 	}
-	else if( pclsMessage->IsMethod( "PRACK" ) )
+	else if( pclsMessage->IsMethod( SIP_METHOD_PRACK ) )
 	{
 		return true;
 	}

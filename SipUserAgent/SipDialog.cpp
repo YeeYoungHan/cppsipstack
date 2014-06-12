@@ -151,7 +151,7 @@ CSipMessage * CSipDialog::CreatePrack( )
 {
 	if( m_iRSeq == -1 ) return NULL;
 
-	CSipMessage * pclsMessage = CreateMessage( "PRACK" );
+	CSipMessage * pclsMessage = CreateMessage( SIP_METHOD_PRACK );
 	if( pclsMessage == NULL ) return NULL;
 
 	char	szRAck[101];
@@ -420,7 +420,7 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 
 	int iSeq;
 
-	if( !strcmp( pszSipMethod, "PRACK" ) )
+	if( !strcmp( pszSipMethod, SIP_METHOD_PRACK ) )
 	{
 		m_iNextSeq = m_iSeq + 2;
 		iSeq = m_iSeq + 1;
