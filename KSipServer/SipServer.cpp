@@ -74,7 +74,7 @@ bool CSipServer::Start( CSipStackSetup & clsSetup )
  */
 bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
-	if( pclsMessage->IsMethod( "REGISTER" ) )
+	if( pclsMessage->IsMethod( SIP_METHOD_REGISTER ) )
 	{
 		return RecvRequestRegister( iThreadId, pclsMessage );
 	}

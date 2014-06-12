@@ -114,7 +114,7 @@ bool CUserMap::Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
 	USER_MAP::iterator	itMap;
 	std::string & strUserId = pclsRequest->m_clsTo.m_clsUri.m_strUser;
 
-	if( pclsRequest->IsMethod( "REGISTER" ) )
+	if( pclsRequest->IsMethod( SIP_METHOD_REGISTER ) )
 	{
 		strUserId = pclsRequest->m_clsFrom.m_clsUri.m_strUser;
 	}
