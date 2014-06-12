@@ -52,6 +52,44 @@ static bool Test( const char * pszText, const char * pszResult )
 	return true;
 }
 
+static bool TestDiversion( const char * pszText, const char * pszReason )
+{
+	CSipFrom clsFrom;
+	int		iTextLen = (int)strlen( pszText );
+	int		iPos;
+	char	szResult[255];
+
+	memset( szResult, 0, sizeof(szResult) );
+
+	iPos = clsFrom.Parse( pszText, iTextLen );
+	if( iPos == -1 )
+	{
+		printf( "sip from(%s) parse error\n", pszText );
+		return false;
+	}
+
+	if( iPos != iTextLen ) 
+	{
+		printf( "sip from(%s) parse len(%d) != real len(%d)\n", pszText, iPos, iTextLen );
+		return false;
+	}
+
+	const char * pszTemp = clsFrom.SelectParamValue( "reason" );
+	if( pszTemp == NULL )
+	{
+		printf( "sip from(%s) - reason is not found\n", pszText );
+		return false;
+	}
+
+	if( strcmp( pszReason, pszTemp ) )
+	{
+		printf( "sip from(%s) - reason [%s] != [%s]\n", pszText, pszReason, pszTemp );
+		return false;
+	}
+
+	return true;
+}
+
 bool TestSipFrom()
 {
 	if( Test( "<sip:1000@203.255.208.41:5062>;expires=300", "<sip:1000@203.255.208.41:5062>;expires=300" ) == false ) return false; 
@@ -80,6 +118,15 @@ bool TestSipFrom()
 	if( Test( "<sip:atlanta.com;method=REGISTER?to=alice%40atlanta.com>", "<sip:atlanta.com;method=REGISTER?to=alice%40atlanta.com>" ) == false ) return false;
 	if( Test( "<sip:alice;day=tuesday@atlanta.com>", "<sip:alice;day=tuesday@atlanta.com>" ) == false ) return false;
 	if( Test( "<sip:alice@atlanta.com;maddr=239.255.255.1;ttl=15>", "<sip:alice@atlanta.com;maddr=239.255.255.1;ttl=15>" ) == false ) return false;
+
+	// Diversion Å×½ºÆ®
+	if( Test( "<sip:+19195551002>;reason=user-busy;privacy=\"full\";counter=4", "<sip:+19195551002>;reason=user-busy;privacy=\"full\";counter=4" ) == false ) return false;
+	if( TestDiversion( "<sip:+19195551002>;reason=user-busy;privacy=\"full\";counter=4", "user-busy" ) == false ) return false;
+	if( TestDiversion( "<sip:+19195551002>;reason=call-record;privacy=\"full\";counter=4", "call-record" ) == false ) return false;
+	if( TestDiversion( "<sip:+19195551002>;reason=unconditional;privacy=\"full\";counter=4", "unconditional" ) == false ) return false;
+	if( TestDiversion( "<sip:+19195551002>;reason=coloring;privacy=\"full\";counter=4", "coloring" ) == false ) return false;
+	if( TestDiversion( "<sip:+19195551002>;reason=no-answer;privacy=\"full\";counter=4", "no-answer" ) == false ) return false;
+	if( TestDiversion( "<sip:+19195551002>;reason=intercom-direct-call;privacy=\"full\";counter=4", "intercom-direct-call" ) == false ) return false;
 
 	return true;
 }
