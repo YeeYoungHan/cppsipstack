@@ -109,7 +109,7 @@ CSipMessage * CSipServerInfo::CreateRegister( CSipStack * pclsSipStack, CSipMess
 	if( pclsRequest == NULL ) return NULL;
 
 	// REGISTER sip:127.0.0.1 SIP/2.0
-	pclsRequest->m_strSipMethod = "REGISTER";
+	pclsRequest->m_strSipMethod = SIP_METHOD_REGISTER;
 	pclsRequest->m_clsReqUri.Set( "sip", NULL, m_strDomain.c_str(), m_iPort );
 
 	// To
@@ -125,7 +125,7 @@ CSipMessage * CSipServerInfo::CreateRegister( CSipStack * pclsSipStack, CSipMess
 	// CSeq: 1 REGISTER
 	++m_iSeqNo;
 	pclsRequest->m_clsCSeq.m_iDigit = m_iSeqNo;
-	pclsRequest->m_clsCSeq.m_strMethod = "REGISTER";
+	pclsRequest->m_clsCSeq.m_strMethod = SIP_METHOD_REGISTER;
 
 	// Route
 	pclsRequest->AddRoute( m_strIp.c_str(), m_iPort, m_eTransport );

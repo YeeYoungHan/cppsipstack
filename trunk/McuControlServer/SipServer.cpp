@@ -72,7 +72,7 @@ void CSipServer::Stop( )
  */
 bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
-	if( pclsMessage->IsMethod( "REGISTER" ) )
+	if( pclsMessage->IsMethod( SIP_METHOD_REGISTER ) )
 	{
 		return RecvRegisterRequest( iThreadId, pclsMessage );
 	}
@@ -113,7 +113,7 @@ bool CSipServer::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
  */
 bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
-	if( pclsMessage->IsMethod( "REGISTER" ) )
+	if( pclsMessage->IsMethod( SIP_METHOD_REGISTER ) )
 	{
 		return RecvRegisterRequest( iThreadId, pclsMessage );
 	}

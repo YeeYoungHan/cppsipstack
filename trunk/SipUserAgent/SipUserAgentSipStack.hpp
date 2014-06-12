@@ -70,7 +70,7 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
  */
 bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 {
-	if( pclsMessage->IsMethod( "REGISTER" ) )
+	if( pclsMessage->IsMethod( SIP_METHOD_REGISTER ) )
 	{
 		return RecvRegisterResponse( iThreadId, pclsMessage );
 	}

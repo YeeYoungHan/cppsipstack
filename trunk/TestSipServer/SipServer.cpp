@@ -65,7 +65,7 @@ void CSipServer::Stop( )
  */
 bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
-	if( pclsMessage->IsMethod( "REGISTER" ) )
+	if( pclsMessage->IsMethod( SIP_METHOD_REGISTER ) )
 	{
 		// 모든 클라이언트의 로그인을 허용한다.
 		CSipFrom clsContact;

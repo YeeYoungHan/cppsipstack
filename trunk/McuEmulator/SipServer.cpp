@@ -65,7 +65,7 @@ void CSipServer::Stop( )
  */
 bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
-	if( pclsMessage->IsMethod( "REGISTER" ) )
+	if( pclsMessage->IsMethod( SIP_METHOD_REGISTER ) )
 	{
 		//CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_NOT_IMPLEMENTED );
 		CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_OK );

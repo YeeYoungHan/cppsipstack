@@ -46,6 +46,7 @@
 #define SIP_METHOD_ACK				"ACK"
 #define SIP_METHOD_CANCEL			"CANCEL"
 #define SIP_METHOD_BYE				"BYE"
+#define SIP_METHOD_REGISTER		"REGISTER"
 
 #endif
 
