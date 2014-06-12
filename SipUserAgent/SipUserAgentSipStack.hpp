@@ -45,7 +45,7 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return RecvReferRequest( iThreadId, pclsMessage );
 	}
-	else if( pclsMessage->IsMethod( "NOTIFY" ) )
+	else if( pclsMessage->IsMethod( SIP_METHOD_NOTIFY ) )
 	{
 		return RecvNotifyRequest( iThreadId, pclsMessage );
 	}
@@ -94,7 +94,7 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return RecvReferResponse( iThreadId, pclsMessage );
 	}
-	else if( pclsMessage->IsMethod( "NOTIFY" ) )
+	else if( pclsMessage->IsMethod( SIP_METHOD_NOTIFY ) )
 	{
 		return true;
 	}

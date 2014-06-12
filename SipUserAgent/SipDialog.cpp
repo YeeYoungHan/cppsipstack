@@ -123,7 +123,7 @@ CSipMessage * CSipDialog::CreateBye( )
  */
 CSipMessage * CSipDialog::CreateNotify( )
 {
-	CSipMessage * pclsMessage = CreateMessage( "NOTIFY" );
+	CSipMessage * pclsMessage = CreateMessage( SIP_METHOD_NOTIFY );
 	if( pclsMessage == NULL ) return NULL;
 
 	return pclsMessage;

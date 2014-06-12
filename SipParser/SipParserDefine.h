@@ -49,6 +49,7 @@
 #define SIP_METHOD_REGISTER		"REGISTER"
 #define SIP_METHOD_PRACK			"PRACK"
 #define SIP_METHOD_REFER			"REFER"
+#define SIP_METHOD_NOTIFY			"NOTIFY"
 
 #endif
 
