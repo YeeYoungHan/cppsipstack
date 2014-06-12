@@ -463,7 +463,7 @@ int CSipUserAgent::GetSeqNum( )
 {
 	int iSeq;
 
-	m_clsOtherMutex.acquire();
+	m_clsMutex.acquire();
 	++m_iSeq;
 	if( m_iSeq > 1000000000 )
 	{
@@ -471,7 +471,7 @@ int CSipUserAgent::GetSeqNum( )
 	}
 
 	iSeq = m_iSeq;
-	m_clsOtherMutex.release();
+	m_clsMutex.release();
 
 	return iSeq;
 }
