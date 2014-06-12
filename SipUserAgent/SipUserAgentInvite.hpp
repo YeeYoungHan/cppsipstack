@@ -73,12 +73,10 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 		}
 	}
 
-	/*
 	// 180 Ring 을 전송한다.
 	pclsResponse = pclsMessage->CreateResponse( SIP_RINGING, szTag );
 	if( pclsResponse == NULL ) return false;
 	m_clsSipStack.SendSipMessage( pclsResponse );
-	*/
 
 	// Dialog 를 생성한다.
 	CSipDialog	clsDialog( &m_clsSipStack );
