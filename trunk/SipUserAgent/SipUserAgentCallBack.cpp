@@ -45,6 +45,11 @@ void CSipCallRtp::SetIpPort( const char * pszIp, int iPort, int iSocketCountPerM
 #endif
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief RTP 전송/수신 방향을 설정한다.
+ * @param eDirection RTP 전송/수신 방향
+ */
 void CSipCallRtp::SetDirection( ERtpDirection eDirection )
 {
 	m_eDirection = eDirection;

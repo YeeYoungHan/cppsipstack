@@ -69,5 +69,5 @@ ERtpDirection GetRtpDirectionEnum( const char * pszDirection )
 		return E_RTP_INACTIVE;
 	}
 
-	return E_RTP_NULL;
+	return E_RTP_SEND_RECV;
 }
