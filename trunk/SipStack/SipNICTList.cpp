@@ -242,7 +242,7 @@ bool CSipNICTList::DeleteCancel( CSipMessage * pclsMessage )
 
 	if( pclsMessage == NULL ) return false;
 	if( pclsMessage->IsRequest() )	return false;
-	if( GetKey( pclsMessage, "CANCEL", strKey ) == false ) return false;
+	if( GetKey( pclsMessage, SIP_METHOD_CANCEL, strKey ) == false ) return false;
 
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( strKey );
