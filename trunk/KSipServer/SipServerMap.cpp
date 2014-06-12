@@ -368,6 +368,8 @@ void CSipServerMap::GetString( CMonitorString & strBuf )
 {
 	SIP_SERVER_MAP::iterator	itMap;
 
+	strBuf.Clear();
+
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{

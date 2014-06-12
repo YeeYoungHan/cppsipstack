@@ -243,6 +243,8 @@ void CSipStack::DecreateTcpThreadCount()
  */
 void CSipStack::GetString( CMonitorString & strBuf )
 {
+	strBuf.Clear();
+
 	strBuf.AddCol( m_clsICT.GetSize() );
 	strBuf.AddCol( m_clsNICT.GetSize() );
 	strBuf.AddCol( m_clsIST.GetSize() );
