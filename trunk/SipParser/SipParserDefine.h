@@ -45,6 +45,7 @@
 #define SIP_METHOD_INVITE			"INVITE"
 #define SIP_METHOD_ACK				"ACK"
 #define SIP_METHOD_CANCEL			"CANCEL"
+#define SIP_METHOD_BYE				"BYE"
 
 #endif
 

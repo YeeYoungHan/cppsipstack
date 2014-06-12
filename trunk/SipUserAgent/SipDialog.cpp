@@ -110,7 +110,7 @@ CSipMessage * CSipDialog::CreateCancel( )
  */
 CSipMessage * CSipDialog::CreateBye( )
 {
-	CSipMessage * pclsMessage = CreateMessage( "BYE" );
+	CSipMessage * pclsMessage = CreateMessage( SIP_METHOD_BYE );
 	if( pclsMessage == NULL ) return NULL;
 
 	return pclsMessage;
