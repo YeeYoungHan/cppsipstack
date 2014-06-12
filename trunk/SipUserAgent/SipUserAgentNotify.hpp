@@ -49,7 +49,7 @@ bool CSipUserAgent::RecvNotifyRequest( int iThreadId, CSipMessage * pclsMessage 
 			CSipHeader * pclsHeader = pclsMessage->GetHeader( "Event" );
 			if( pclsHeader )
 			{
-				if( !strcmp( pclsHeader->m_strValue.c_str(), "refer" ) )
+				if( strstr( pclsHeader->m_strValue.c_str(), "refer" ) )
 				{
 					CSipMessage clsSipBody;
 
