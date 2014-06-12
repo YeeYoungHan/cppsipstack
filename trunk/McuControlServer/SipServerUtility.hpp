@@ -35,6 +35,6 @@ void CSipServer::UpdateBranch( CSipMessage * pclsMessage, std::string & strBranc
 
 		SIP_VIA_LIST::iterator itViaList = pclsMessage->m_clsViaList.begin();
 		
-		UpdateSipParameter( itViaList->m_clsParamList, "branch", strBranch.c_str() );
+		UpdateSipParameter( itViaList->m_clsParamList, SIP_BRANCH, strBranch.c_str() );
 	}
 }
