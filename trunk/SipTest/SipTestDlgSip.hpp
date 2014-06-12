@@ -155,6 +155,9 @@ void CSipTestDlg::EventIncomingCall( const char * pszCallId, const char * pszFro
 
 		gclsSipUserAgent.AcceptCall( pszCallId, &clsRtp );
 
+		// freeSwitch 에서는 blind transfer 로 callee 에 ReINVITE 메시지가 전송되지 않는다.
+		StartRtpThread();
+
 		return;
 	}
 
@@ -219,6 +222,12 @@ void CSipTestDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp 
 	if( gclsTestInfo.m_eTestType == E_TEST_TRANSFER_CALL )
 	{
 		gclsTestInfo.m_bRtpThreadEnd = true;
+		return;
+	}
+	else if( gclsTestInfo.m_eTestType == E_TEST_DECLINE )
+	{
+		// freeSwitch 와 연동할 때에 INVITE 에 대한 200 OK 응답이 수신된다.
+		gclsSipUserAgent.StopCall( pszCallId );
 		return;
 	}
 
