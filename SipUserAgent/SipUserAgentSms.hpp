@@ -30,7 +30,7 @@ bool CSipUserAgent::SendSms( const char * pszFrom, const char * pszTo, const cha
 	CSipMessage * pclsRequest = new CSipMessage();
 	if( pclsRequest == NULL ) return false;
 
-	pclsRequest->m_strSipMethod = "MESSAGE";
+	pclsRequest->m_strSipMethod = SIP_METHOD_MESSAGE;
 	pclsRequest->m_clsReqUri.Set( "sip", pszTo, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
 
 	pclsRequest->m_clsFrom.m_clsUri.Set( "sip", pszFrom, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
