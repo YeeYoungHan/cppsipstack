@@ -58,7 +58,7 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 		std::string strDestToId;
 
 		// IP-PBX 에서 수신한 BYE 메시지를 정상적으로 처리하기 위한 기능
-		if( pclsMessage->IsMethod( "BYE" ) )
+		if( pclsMessage->IsMethod( SIP_METHOD_BYE ) )
 		{
 			std::string	strCallId;
 

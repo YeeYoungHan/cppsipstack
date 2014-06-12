@@ -29,7 +29,7 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return RecvInviteRequest( iThreadId, pclsMessage );
 	}
-	else if( pclsMessage->IsMethod( "BYE" ) )
+	else if( pclsMessage->IsMethod( SIP_METHOD_BYE ) )
 	{
 		return RecvByeRequest( iThreadId, pclsMessage );
 	}
@@ -78,7 +78,7 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return RecvInviteResponse( iThreadId, pclsMessage );
 	}
-	else if( pclsMessage->IsMethod( "BYE" ) )
+	else if( pclsMessage->IsMethod( SIP_METHOD_BYE ) )
 	{
 		return true;
 	}
