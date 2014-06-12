@@ -75,6 +75,7 @@ public:
 	// 로그인 관련
 	bool Start( CSipStackSetup & clsSetup, ISipUserAgentCallBack * pclsCallBack, ISipStackSecurityCallBack * pclsSecurityCallBack = NULL );
 	bool Stop( );
+	void Final();
 
 	// 통화 관련
 	bool StartCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId );
@@ -93,9 +94,10 @@ public:
 	bool TransferCallBlind( const char * pszCallId, const char * pszTo );
 	bool TransferCall( const char * pszCallId, const char * pszToCallId );
 
+	// SipStackAgentSms.hpp
 	bool SendSms( const char * pszFrom, const char * pszTo, const char * pszText, CSipCallRoute * pclsRoute );
 	
-	// IP-PBX 에서 사용되는 통화 관련 메소드
+	// SipUserAgentPbx.hpp : IP-PBX 에서 사용되는 통화 관련 메소드
 	CSipMessage * DeleteIncomingCall( const char * pszCallId );
 	bool RingCall( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
 
@@ -114,13 +116,11 @@ public:
 	bool SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool SendNotify( const char * pszCallId, int iSipCode );
 
-	void Final();
-
 	// SipUserAgentMonitor.hpp
 	void GetDialogString( CMonitorString & strBuf );
 	void GetServerString( CMonitorString & strBuf );
 
-	// ISipStackCallBack
+	// SipUserAgentSipStack.hpp : ISipStackCallBack 
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage );

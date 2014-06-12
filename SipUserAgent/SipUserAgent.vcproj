@@ -355,6 +355,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipUserAgentSipStack.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SipUserAgentSms.hpp"
 				>
 			</File>
