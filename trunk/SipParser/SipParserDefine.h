@@ -42,6 +42,8 @@
 #define SIP_TRANSPORT_TCP			"tcp"
 #define SIP_TRANSPORT_TLS			"tls"
 
+#define SIP_METHOD_INVITE			"INVITE"
+
 #endif
 
 /**

@@ -74,7 +74,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 			return gclsSipStack.SendSipMessage( pclsResponse );
 		}
 	}
-	else if( pclsMessage->IsMethod( "INVITE" ) )
+	else if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) )
 	{
 		gclsCallMap.Insert( pclsMessage );
 

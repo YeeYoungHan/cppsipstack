@@ -31,7 +31,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 
 	if( pclsMessage->IsRequest() )
 	{
-		if( pclsMessage->IsMethod( "INVITE" ) || pclsMessage->IsMethod( "ACK" ) )
+		if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) || pclsMessage->IsMethod( "ACK" ) )
 		{
 			if( m_clsICT.Insert( pclsMessage ) )
 			{
@@ -52,7 +52,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 	}
 	else
 	{
-		if( pclsMessage->IsMethod( "INVITE" ) )
+		if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) )
 		{
 			if( m_clsIST.Insert( pclsMessage ) )
 			{
@@ -91,7 +91,7 @@ bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 
 	if( pclsMessage->IsRequest() )
 	{
-		if( pclsMessage->IsMethod( "INVITE" ) || pclsMessage->IsMethod( "ACK" ) )
+		if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) || pclsMessage->IsMethod( "ACK" ) )
 		{
 			if( m_clsIST.Insert( pclsMessage ) )
 			{
@@ -112,7 +112,7 @@ bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 	}
 	else
 	{
-		if( pclsMessage->IsMethod( "INVITE" ) )
+		if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) )
 		{
 			// INVITE 메시지에 대한 CANCEL 메시지가 존재하면 이를 SIP stack 에서 삭제한다.
 			if( pclsMessage->m_iStatusCode >= 200 )

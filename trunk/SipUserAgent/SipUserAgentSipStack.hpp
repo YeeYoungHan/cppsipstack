@@ -25,7 +25,7 @@
  */
 bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 {
-	if( pclsMessage->IsMethod( "INVITE" ) )
+	if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) )
 	{
 		return RecvInviteRequest( iThreadId, pclsMessage );
 	}
@@ -74,7 +74,7 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return RecvRegisterResponse( iThreadId, pclsMessage );
 	}
-	else if( pclsMessage->IsMethod( "INVITE" ) )
+	else if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) )
 	{
 		return RecvInviteResponse( iThreadId, pclsMessage );
 	}

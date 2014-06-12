@@ -45,7 +45,7 @@ CSipDialog::~CSipDialog()
  */
 CSipMessage * CSipDialog::CreateInvite( )
 {
-	CSipMessage * pclsMessage = CreateMessage( "INVITE" );
+	CSipMessage * pclsMessage = CreateMessage( SIP_METHOD_INVITE );
 	if( pclsMessage == NULL ) return NULL;
 
 	char	szBranch[SIP_BRANCH_MAX_SIZE];
