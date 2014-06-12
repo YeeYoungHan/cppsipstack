@@ -41,7 +41,7 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return RecvPrackRequest( iThreadId, pclsMessage );
 	}
-	else if( pclsMessage->IsMethod( "REFER" ) )
+	else if( pclsMessage->IsMethod( SIP_METHOD_REFER ) )
 	{
 		return RecvReferRequest( iThreadId, pclsMessage );
 	}
@@ -90,7 +90,7 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return true;
 	}
-	else if( pclsMessage->IsMethod( "REFER" ) )
+	else if( pclsMessage->IsMethod( SIP_METHOD_REFER ) )
 	{
 		return RecvReferResponse( iThreadId, pclsMessage );
 	}
