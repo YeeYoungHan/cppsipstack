@@ -103,7 +103,9 @@ public:
 	bool GetToId( const char * pszCallId, std::string & strToId );
 	bool GetFromId( const char * pszCallId, std::string & strFromId );
 	bool GetCdr( const char * pszCallId, CSipCdr * pclsCdr );
+
 	bool IsRingCall( const char * pszCallId, const char * pszTo );
+	bool GetInviteHeaderValue( const char * pszCallId, const char * pszHeaderName, std::string & strValue );
 
 	int GetRSeq( const char * pszCallId );
 	void SetRSeq( const char * pszCallId, int iRSeq );
