@@ -24,6 +24,7 @@
 #include <map>
 #include "SipMutex.h"
 #include "TlsFunction.h"
+#include "MonitorString.h"
 
 /**
  * @ingroup SipStack
@@ -61,7 +62,7 @@ public:
 #endif
 
 	bool Delete( const char * pszIp, int iPort );
-	void GetString( std::string & strText );
+	void GetString( CMonitorString & strBuf );
 
 private:
 	TCP_SOCKET_MAP	m_clsMap;

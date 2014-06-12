@@ -165,6 +165,26 @@ int CTcpConnectMap::GetSize()
 }
 
 /**
+ * @ingroup SipStack
+ * @brief 자료구조 모니터링 문자열을 저장한다.
+ * @param strBuf 문자열 변수
+ */
+void CTcpConnectMap::GetString( CMonitorString & strBuf )
+{
+	TCP_CONNECT_MAP::iterator	itMap;
+
+	strBuf.Clear();
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		strBuf.AddCol( itMap->first );
+		strBuf.AddRow( (int)itMap->second.m_clsSipMessageList.size() );
+	}
+	m_clsMutex.release();
+}
+
+/**
  * @brief 클라이언트 IP 주소와 포트 번호로 자료구조의 키를 생성하여 저장한다.
  * @param pszIp		클라이언트 IP 주소
  * @param iPort		클라이언트 포트 번호

@@ -150,23 +150,20 @@ bool CTcpSocketMap::Delete( const char * pszIp, int iPort )
 
 /**
  * @brief TCP 세션들의 정보를 하나의 문자열에 저장한다.
- * @param strText TCP 세션들의 정보를 저장할 문자열 변수
+ * @param strBuf TCP 세션들의 정보를 저장할 문자열 변수
  */
-void CTcpSocketMap::GetString( std::string & strText )
+void CTcpSocketMap::GetString( CMonitorString & strBuf )
 {
 	TCP_SOCKET_MAP::iterator	it;
 
-	strText.clear();
+	strBuf.Clear();
 
 	m_clsMutex.acquire();
 	for( it = m_clsMap.begin(); it != m_clsMap.end(); ++it )
 	{
-		strText.append( it->first );
-		strText.append( MR_ROW_SEP );
+		strBuf.AddRow( it->first );
 	}
 	m_clsMutex.release();
-
-	if( strText.empty() ) strText.append( MR_ROW_SEP );
 }
 
 /**
