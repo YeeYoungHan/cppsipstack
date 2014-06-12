@@ -180,7 +180,7 @@ private:
 
 	/** */
 	int									m_iSeq;
-	CSipMutex						m_clsOtherMutex;
+	CSipMutex						m_clsMutex;
 
 	bool								m_bStart;
 };
