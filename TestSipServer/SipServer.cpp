@@ -107,7 +107,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 			SIP_VIA_LIST::iterator itVia = pclsMessage->m_clsViaList.begin();
 			if( itVia != pclsMessage->m_clsViaList.end() )
 			{
-				const char * pszBranch = itVia->SelectParamValue( "branch" );
+				const char * pszBranch = itVia->SelectParamValue( SIP_BRANCH );
 				std::string strBranch;
 
 				if( pszBranch )
@@ -148,7 +148,7 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 
 						SIP_VIA_LIST::iterator itViaList = pclsRequest->m_clsViaList.begin();
 						
-						UpdateSipParameter( itViaList->m_clsParamList, "branch", strBranch.c_str() );
+						UpdateSipParameter( itViaList->m_clsParamList, SIP_BRANCH, strBranch.c_str() );
 					}
 
 					gclsSipStack.SendSipMessage( pclsRequest );

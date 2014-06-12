@@ -54,6 +54,7 @@
 #define SIP_METHOD_OPTIONS		"OPTIONS"
 
 #define SIP_TAG								"tag"
+#define SIP_BRANCH						"branch"
 
 #endif
 

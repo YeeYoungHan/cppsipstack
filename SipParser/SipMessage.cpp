@@ -416,7 +416,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 
 	int iLen, n;
 
-	if( m_strSipVersion.empty() ) m_strSipVersion = "SIP/2.0";
+	if( m_strSipVersion.empty() ) m_strSipVersion = SIP_VERSION;
 
 	if( m_iStatusCode > 0 )
 	{
@@ -884,11 +884,11 @@ bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch,
 		char	szBranch[SIP_BRANCH_MAX_SIZE];
 
 		SipMakeBranch( szBranch, sizeof(szBranch) );
-		clsVia.InsertParam( "branch", szBranch );
+		clsVia.InsertParam( SIP_BRANCH, szBranch );
 	}
 	else
 	{
-		clsVia.InsertParam( "branch", pszBranch );
+		clsVia.InsertParam( SIP_BRANCH, pszBranch );
 	}
 
 	m_clsViaList.push_front( clsVia );
