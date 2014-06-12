@@ -136,7 +136,7 @@ CSipMessage * CSipDialog::CreateNotify( )
  */
 CSipMessage * CSipDialog::CreateRefer( )
 {
-	CSipMessage * pclsMessage = CreateMessage( "REFER" );
+	CSipMessage * pclsMessage = CreateMessage( SIP_METHOD_REFER );
 	if( pclsMessage == NULL ) return NULL;
 
 	return pclsMessage;
