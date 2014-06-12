@@ -93,7 +93,7 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact, CXmlUs
 
 	if( pclsContact )
 	{
-		pclsContact->m_clsUri.m_strProtocol = "sip";
+		pclsContact->m_clsUri.m_strProtocol = SIP_PROTOCOL;
 		pclsContact->m_clsUri.m_strUser = strUserId;
 		pclsContact->m_clsUri.m_strHost = clsInfo.m_strIp;
 		pclsContact->m_clsUri.m_iPort = clsInfo.m_iPort;
@@ -307,12 +307,12 @@ void CUserMap::SendOptions(  )
 		if( pclsMessage == NULL ) break;
 
 		pclsMessage->m_strSipMethod = SIP_METHOD_OPTIONS;
-		pclsMessage->m_clsReqUri.Set( "sip", itList->c_str(), clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
+		pclsMessage->m_clsReqUri.Set( SIP_PROTOCOL, itList->c_str(), clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
 		
-		pclsMessage->m_clsFrom.m_clsUri.Set( "sip", "ksipserver", gclsSetup.m_strLocalIp.c_str() );
+		pclsMessage->m_clsFrom.m_clsUri.Set( SIP_PROTOCOL, "ksipserver", gclsSetup.m_strLocalIp.c_str() );
 		pclsMessage->m_clsFrom.InsertTag();
 
-		pclsMessage->m_clsTo.m_clsUri.Set( "sip", itList->c_str(), clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
+		pclsMessage->m_clsTo.m_clsUri.Set( SIP_PROTOCOL, itList->c_str(), clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort );
 
 		pclsMessage->m_clsCallId.Make( gclsSetup.m_strLocalIp.c_str() );
 

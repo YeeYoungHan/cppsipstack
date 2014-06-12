@@ -200,7 +200,7 @@ void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom
 			{
 				CSipFrom clsContact;
 
-				clsContact.m_clsUri.m_strProtocol = "sip";
+				clsContact.m_clsUri.m_strProtocol = SIP_PROTOCOL;
 				clsContact.m_clsUri.m_strUser = clsXmlUser.m_strCallForward;
 				clsContact.m_clsUri.m_strHost = gclsSetup.m_strLocalIp;
 				clsContact.m_clsUri.m_iPort = gclsSetup.m_iUdpPort;

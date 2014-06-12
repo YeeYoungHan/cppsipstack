@@ -110,10 +110,10 @@ CSipMessage * CSipServerInfo::CreateRegister( CSipStack * pclsSipStack, CSipMess
 
 	// REGISTER sip:127.0.0.1 SIP/2.0
 	pclsRequest->m_strSipMethod = SIP_METHOD_REGISTER;
-	pclsRequest->m_clsReqUri.Set( "sip", NULL, m_strDomain.c_str(), m_iPort );
+	pclsRequest->m_clsReqUri.Set( SIP_PROTOCOL, NULL, m_strDomain.c_str(), m_iPort );
 
 	// To
-	pclsRequest->m_clsTo.m_clsUri.Set( "sip", m_strUserId.c_str(), m_strDomain.c_str(), m_iPort );
+	pclsRequest->m_clsTo.m_clsUri.Set( SIP_PROTOCOL, m_strUserId.c_str(), m_strDomain.c_str(), m_iPort );
 
 	// From
 	pclsRequest->m_clsFrom = pclsRequest->m_clsTo;
