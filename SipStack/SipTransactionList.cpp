@@ -80,7 +80,7 @@ bool CSipTransactionList::GetKey( CSipMessage * pclsMessage, std::string & strKe
 
 			strKey.append( szNum );
 
-			if( !strcmp( pclsMessage->m_clsCSeq.m_strMethod.c_str(), "ACK" ) )
+			if( !strcmp( pclsMessage->m_clsCSeq.m_strMethod.c_str(), SIP_METHOD_ACK ) )
 			{
 				strKey.append( SIP_METHOD_INVITE );
 			}

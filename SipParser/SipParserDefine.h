@@ -43,6 +43,7 @@
 #define SIP_TRANSPORT_TLS			"tls"
 
 #define SIP_METHOD_INVITE			"INVITE"
+#define SIP_METHOD_ACK				"ACK"
 
 #endif
 

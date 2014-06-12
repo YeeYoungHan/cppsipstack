@@ -119,7 +119,7 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
  */
 bool CSipUserAgent::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 {
-	if( pclsMessage->IsMethod( "ACK" ) )
+	if( pclsMessage->IsMethod( SIP_METHOD_ACK ) )
 	{
 		std::string	strCallId;
 

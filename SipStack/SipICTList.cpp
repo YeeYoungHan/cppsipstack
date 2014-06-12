@@ -62,7 +62,7 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 		itMap = m_clsMap.find( strKey );
 		if( itMap == m_clsMap.end() )
 		{
-			if( pclsMessage->IsMethod( "ACK" ) )
+			if( pclsMessage->IsMethod( SIP_METHOD_ACK ) )
 			{
 				for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 				{
@@ -101,7 +101,7 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 				}
 			}
 		}
-		else if( pclsMessage->IsMethod( "ACK" ) )
+		else if( pclsMessage->IsMethod( SIP_METHOD_ACK ) )
 		{
 			itMap->second->m_pclsAck = pclsMessage;
 			gettimeofday( &itMap->second->m_sttStopTime, NULL );
