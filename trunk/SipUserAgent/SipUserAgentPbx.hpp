@@ -237,6 +237,39 @@ bool CSipUserAgent::IsRingCall( const char * pszCallId, const char * pszTo )
 
 /**
  * @ingroup SipUserAgent
+ * @brief SIP INVITE 메시지를 수신한 경우, 해당 SIP INVITE 메시지에서 헤더 이름을 검색하여서 이에 대한 값을 리턴한다.
+ *				모든 헤더를 검색하는 것은 아니고 CSipMessage 의 m_clsHeaderList 에 저장된 헤더만 검색한다.
+ * @param pszCallId			SIP Call-ID
+ * @param pszHeaderName 헤더 이름
+ * @param strValue			헤더의 값을 저장할 변수
+ * @returns 검색에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipUserAgent::GetInviteHeaderValue( const char * pszCallId, const char * pszHeaderName, std::string & strValue )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool bRes = false;
+
+	m_clsDialogMutex.acquire();
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
+	{
+		if( itMap->second.m_pclsInvite )
+		{
+			CSipHeader * pclsHeader = itMap->second.m_pclsInvite->GetHeader( pszHeaderName );
+			if( pclsHeader )
+			{
+				strValue = pclsHeader->m_strValue;
+				bRes = true;
+			}
+		}
+	}
+	m_clsDialogMutex.release();
+
+	return bRes;
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief Dialog 의 RSeq 값을 리턴한다.
  * @param pszCallId SIP Call-ID
  * @returns Dialog 에 RSeq 가 존재하면 RSeq 값을 리턴하고 그렇지 않으면 -1 을 리턴한다.
