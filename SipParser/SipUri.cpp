@@ -231,7 +231,7 @@ void CSipUri::Set( const char * pszProtocol, const char * pszUser, const char * 
 	}
 	else
 	{
-		m_strProtocol = "sip";
+		m_strProtocol = SIP_PROTOCOL;
 	}
 
 	if( pszUser )

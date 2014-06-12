@@ -31,12 +31,12 @@ bool CSipUserAgent::SendSms( const char * pszFrom, const char * pszTo, const cha
 	if( pclsRequest == NULL ) return false;
 
 	pclsRequest->m_strSipMethod = SIP_METHOD_MESSAGE;
-	pclsRequest->m_clsReqUri.Set( "sip", pszTo, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
+	pclsRequest->m_clsReqUri.Set( SIP_PROTOCOL, pszTo, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
 
-	pclsRequest->m_clsFrom.m_clsUri.Set( "sip", pszFrom, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
+	pclsRequest->m_clsFrom.m_clsUri.Set( SIP_PROTOCOL, pszFrom, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
 	pclsRequest->m_clsFrom.InsertTag();
 
-	pclsRequest->m_clsTo.m_clsUri.Set( "sip", pszTo, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
+	pclsRequest->m_clsTo.m_clsUri.Set( SIP_PROTOCOL, pszTo, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
 
 	pclsRequest->m_clsCSeq.m_iDigit = GetSeqNum();
 	pclsRequest->m_clsCSeq.m_strMethod = pclsRequest->m_strSipMethod;

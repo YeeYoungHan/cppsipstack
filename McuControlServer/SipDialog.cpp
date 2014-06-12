@@ -182,7 +182,7 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	}
 	else
 	{
-		pclsMessage->m_clsReqUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
+		pclsMessage->m_clsReqUri.Set( SIP_PROTOCOL, m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
 	}
 
 	if( strcmp( pszSipMethod, SIP_METHOD_ACK ) && strcmp( pszSipMethod, SIP_METHOD_CANCEL ) )
@@ -191,10 +191,10 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	}
 	pclsMessage->m_clsCSeq.Set( m_iSeq, pszSipMethod );
 
-	pclsMessage->m_clsFrom.m_clsUri.Set( "sip", m_strFromId.c_str(), gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort );
+	pclsMessage->m_clsFrom.m_clsUri.Set( SIP_PROTOCOL, m_strFromId.c_str(), gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort );
 	pclsMessage->m_clsFrom.InsertParam( SIP_TAG, m_strFromTag.c_str() );
 
-	pclsMessage->m_clsTo.m_clsUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
+	pclsMessage->m_clsTo.m_clsUri.Set( SIP_PROTOCOL, m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
 	if( m_strToTag.empty() == false )
 	{
 		pclsMessage->m_clsTo.InsertParam( SIP_TAG, m_strToTag.c_str() );

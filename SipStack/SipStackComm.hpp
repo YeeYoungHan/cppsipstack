@@ -452,7 +452,7 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 
 		CSipFrom clsContact;
 
-		clsContact.m_clsUri.m_strProtocol = "sip";
+		clsContact.m_clsUri.m_strProtocol = SIP_PROTOCOL;
 
 		if( pclsMessage->IsRequest() )
 		{

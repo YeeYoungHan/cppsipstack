@@ -60,7 +60,7 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact  )
 
 	if( pclsContact )
 	{
-		pclsContact->m_clsUri.m_strProtocol = "sip";
+		pclsContact->m_clsUri.m_strProtocol = SIP_PROTOCOL;
 		pclsContact->m_clsUri.m_strUser = strUserId;
 		pclsContact->m_clsUri.m_strHost = clsInfo.m_strIp;
 		pclsContact->m_clsUri.m_iPort = clsInfo.m_iPort;
