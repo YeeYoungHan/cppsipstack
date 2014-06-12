@@ -31,7 +31,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 
 	if( pclsMessage->IsRequest() )
 	{
-		if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) || pclsMessage->IsMethod( "ACK" ) )
+		if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) || pclsMessage->IsMethod( SIP_METHOD_ACK ) )
 		{
 			if( m_clsICT.Insert( pclsMessage ) )
 			{
@@ -91,7 +91,7 @@ bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 
 	if( pclsMessage->IsRequest() )
 	{
-		if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) || pclsMessage->IsMethod( "ACK" ) )
+		if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) || pclsMessage->IsMethod( SIP_METHOD_ACK ) )
 		{
 			if( m_clsIST.Insert( pclsMessage ) )
 			{

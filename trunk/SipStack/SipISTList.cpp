@@ -60,7 +60,7 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 
 		if( itMap == m_clsMap.end() )
 		{
-			if( pclsMessage->IsMethod( "ACK" ) )
+			if( pclsMessage->IsMethod( SIP_METHOD_ACK ) )
 			{
 				for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 				{
@@ -112,7 +112,7 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 		}
 		else
 		{
-			if( pclsMessage->IsMethod( "ACK" ) )
+			if( pclsMessage->IsMethod( SIP_METHOD_ACK ) )
 			{
 				if( itMap->second->m_pclsResponse && itMap->second->m_pclsResponse->m_iStatusCode == SIP_UNAUTHORIZED )
 				{

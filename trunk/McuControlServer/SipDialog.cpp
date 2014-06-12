@@ -67,7 +67,7 @@ CSipMessage * CSipDialog::CreateInvite( )
  */
 CSipMessage * CSipDialog::CreateAck( )
 {
-	CSipMessage * pclsMessage = CreateMessage( "ACK" );
+	CSipMessage * pclsMessage = CreateMessage( SIP_METHOD_ACK );
 	if( pclsMessage == NULL ) return NULL;
 
 	pclsMessage->AddVia( gclsSipStack.m_clsSetup.m_strLocalIp.c_str(), gclsSipStack.m_clsSetup.m_iLocalUdpPort, m_strViaBranch.c_str() );
@@ -185,7 +185,7 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 		pclsMessage->m_clsReqUri.Set( "sip", m_strToId.c_str(), m_strContactIp.c_str(), m_iContactPort );
 	}
 
-	if( strcmp( pszSipMethod, "ACK" ) && strcmp( pszSipMethod, "CANCEL" ) )
+	if( strcmp( pszSipMethod, SIP_METHOD_ACK ) && strcmp( pszSipMethod, "CANCEL" ) )
 	{
 		++m_iSeq;
 	}

@@ -317,8 +317,8 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 						pclsRequest->m_strBody.clear();
 						pclsRequest->m_iContentLength = 0;
 						pclsRequest->m_clsContentType.Clear();
-						pclsRequest->m_strSipMethod = "ACK";
-						pclsRequest->m_clsCSeq.m_strMethod = "ACK";
+						pclsRequest->m_strSipMethod = SIP_METHOD_ACK;
+						pclsRequest->m_clsCSeq.m_strMethod = SIP_METHOD_ACK;
 						pclsRequest->m_clsCSeq.m_iDigit = pclsMessage->m_clsCSeq.m_iDigit;
 						pclsRequest->m_clsTo.m_clsParamList = pclsMessage->m_clsTo.m_clsParamList;
 						pclsRequest->m_clsFrom.m_clsParamList = pclsMessage->m_clsFrom.m_clsParamList;
@@ -364,8 +364,8 @@ bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 					pclsRequest->m_strBody.clear();
 					pclsRequest->m_iContentLength = 0;
 					pclsRequest->m_clsContentType.Clear();
-					pclsRequest->m_strSipMethod = "ACK";
-					pclsRequest->m_clsCSeq.m_strMethod = "ACK";
+					pclsRequest->m_strSipMethod = SIP_METHOD_ACK;
+					pclsRequest->m_clsCSeq.m_strMethod = SIP_METHOD_ACK;
 					pclsRequest->m_clsCSeq.m_iDigit = pclsMessage->m_clsCSeq.m_iDigit;
 					pclsRequest->m_clsTo.m_clsParamList = pclsMessage->m_clsTo.m_clsParamList;
 					pclsRequest->m_clsFrom.m_clsParamList = pclsMessage->m_clsFrom.m_clsParamList;
