@@ -43,11 +43,11 @@ static CSipMessage * CreateSipMessage( )
 	pclsMessage->m_clsCallId.Parse( strCallId.c_str(), (int)strCallId.length() );
 
 	pclsMessage->m_eTransport = E_SIP_UDP;
-	pclsMessage->m_strSipMethod = "OPTIONS";
+	pclsMessage->m_strSipMethod = SIP_METHOD_OPTIONS;
 
 	pclsMessage->m_clsReqUri.Set( "sip", gclsSetup.m_strCalleeId.c_str(), gclsSetup.m_strSipDomain.c_str(), gclsSetup.m_iSipServerPort );
 
-	pclsMessage->m_clsCSeq.Set( 1, "OPTIONS" );
+	pclsMessage->m_clsCSeq.Set( 1, SIP_METHOD_OPTIONS );
 
 	pclsMessage->m_clsFrom.m_clsUri.Set( "sip", gclsSetup.m_strCallerId.c_str(), gclsSetup.m_strSipDomain.c_str(), gclsSetup.m_iSipServerPort );
 	pclsMessage->m_clsFrom.InsertParam( "tag", szTag );

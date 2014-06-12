@@ -147,7 +147,7 @@ bool CSipSpeedDlg::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
  */
 bool CSipSpeedDlg::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
 {
-	if( pclsMessage->IsMethod( "OPTIONS" ) )
+	if( pclsMessage->IsMethod( SIP_METHOD_OPTIONS ) )
 	{
 		std::string strCallId;
 
