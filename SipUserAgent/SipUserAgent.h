@@ -68,11 +68,12 @@ public:
 	CSipUserAgent();
 	~CSipUserAgent();
 
+	// SipUserAgentLogin.hpp : 로그인 관련
 	bool InsertRegisterInfo( CSipServerInfo & clsInfo );
 	bool UpdateRegisterInfo( CSipServerInfo & clsInfo );
 	bool DeleteRegisterInfo( CSipServerInfo & clsInfo );
 
-	// 로그인 관련
+	// 시작/종료 관련
 	bool Start( CSipStackSetup & clsSetup, ISipUserAgentCallBack * pclsCallBack, ISipStackSecurityCallBack * pclsSecurityCallBack = NULL );
 	bool Stop( );
 	void Final();

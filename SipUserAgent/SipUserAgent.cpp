@@ -26,6 +26,7 @@
 #include "Log.h"
 #include "MemoryDebug.h"
 
+#include "SipUserAgentLogin.hpp"
 #include "SipUserAgentSipStack.hpp"
 #include "SipUserAgentCall.hpp"
 #include "SipUserAgentSms.hpp"
@@ -56,142 +57,6 @@ CSipUserAgent::CSipUserAgent() : m_bStopEvent(false), m_pclsCallBack(NULL), m_iS
  */
 CSipUserAgent::~CSipUserAgent()
 {
-}
-
-/**
- * @ingroup SipUserAgent
- * @brief SIP 로그인 정보를 추가한다.
- * @param clsInfo SIP 로그인 정보 저장 객체
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipUserAgent::InsertRegisterInfo( CSipServerInfo & clsInfo )
-{
-	if( clsInfo.m_strIp.empty() ) return false;
-	if( clsInfo.m_strUserId.empty() ) return false;
-
-	if( clsInfo.m_strDomain.empty() )
-	{
-		clsInfo.m_strDomain = clsInfo.m_strIp;
-	}
-
-	SIP_SERVER_INFO_LIST::iterator	it;
-	bool	bFound = false;
-
-	m_clsRegisterMutex.acquire();
-	for( it = m_clsRegisterList.begin(); it != m_clsRegisterList.end(); ++it )
-	{
-		if( it->Equal( clsInfo ) )
-		{
-			bFound = true;
-			break;
-		}
-	}
-
-	if( bFound == false )
-	{
-		m_clsRegisterList.push_back( clsInfo );
-	}
-	m_clsRegisterMutex.release();
-
-	return true;
-}
-
-/**
- * @ingroup SipUserAgent
- * @brief SIP 로그인 정보를 수정한다.
- * @param clsInfo SIP 로그인 정보 저장 객체
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipUserAgent::UpdateRegisterInfo( CSipServerInfo & clsInfo )
-{
-	if( clsInfo.m_strIp.empty() ) return false;
-	if( clsInfo.m_strUserId.empty() ) return false;
-
-	SIP_SERVER_INFO_LIST::iterator	it;
-	bool	bRes = false;
-
-	m_clsRegisterMutex.acquire();
-	for( it = m_clsRegisterList.begin(); it != m_clsRegisterList.end(); ++it )
-	{
-		if( it->Equal( clsInfo ) )
-		{
-			bRes = true;
-			it->Update( clsInfo );
-			break;
-		}
-	}
-	m_clsRegisterMutex.release();
-
-	return bRes;
-}
-
-/**
- * @ingroup SipUserAgent
- * @brief SIP 로그인 정보를 삭제한다.
- * @param clsInfo clsInfo SIP 로그인 정보 저장 객체
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipUserAgent::DeleteRegisterInfo( CSipServerInfo & clsInfo )
-{
-	if( clsInfo.m_strIp.empty() ) return false;
-	if( clsInfo.m_strUserId.empty() ) return false;
-
-	SIP_SERVER_INFO_LIST::iterator	it;
-	bool	bRes = false;
-
-	m_clsRegisterMutex.acquire();
-	for( it = m_clsRegisterList.begin(); it != m_clsRegisterList.end(); ++it )
-	{
-		if( it->Equal( clsInfo ) )
-		{
-			bRes = true;
-
-			if( it->m_iLoginTimeout == 0 )
-			{
-				m_clsRegisterList.erase( it );
-			}
-			else
-			{
-				it->m_bDelete = true;
-				it->m_iLoginTimeout = 0;
-			}
-
-			break;
-		}
-	}
-	m_clsRegisterMutex.release();
-
-	return bRes;
-}
-
-/**
- * @ingroup SipUserAgent
- * @brief 모든 SIP 로그인 정보를 삭제한다.
- */
-void CSipUserAgent::DeleteRegisterInfoAll( )
-{
-	SIP_SERVER_INFO_LIST::iterator	it;
-
-	m_clsRegisterMutex.acquire();
-	m_clsRegisterList.clear();
-	m_clsRegisterMutex.release();
-}
-
-/**
- * @ingroup SipUserAgent
- * @brief 로그아웃한다.
- */
-void CSipUserAgent::DeRegister( )
-{
-	SIP_SERVER_INFO_LIST::iterator	it;
-
-	m_clsRegisterMutex.acquire();
-	for( it = m_clsRegisterList.begin(); it != m_clsRegisterList.end(); ++it )
-	{
-		it->m_bDelete = true;
-		it->m_iLoginTimeout = 0;
-	}
-	m_clsRegisterMutex.release();
 }
 
 /**
@@ -373,6 +238,11 @@ bool CSipUserAgent::Delete( const char * pszCallId )
 	return bRes;
 }
 
+/**
+ * @ingroup SipUserAgent
+ * @brief SIP Dialog 를 삭제한다.
+ * @param itMap dialog map iterator
+ */
 void CSipUserAgent::Delete( SIP_DIALOG_MAP::iterator & itMap )
 {
 	if( itMap->second.m_pclsInvite )
