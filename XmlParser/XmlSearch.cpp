@@ -75,7 +75,7 @@ bool CXmlSearch::SelectAttribute( const char * pszName, const char * pszAttrName
 		return pclsElement->SelectAttribute( pszAttrName, strValue );
 	}
 
-	return NULL;
+	return false;
 }
 
 /**
@@ -95,7 +95,7 @@ bool CXmlSearch::SelectAttribute( const char * pszName, const char * pszAttrName
 		return pclsElement->SelectAttribute( pszAttrName, iValue );
 	}
 
-	return NULL;
+	return false;
 }
 
 /**
@@ -115,7 +115,7 @@ bool CXmlSearch::SelectAttribute( const char * pszName, const char * pszAttrName
 		return pclsElement->SelectAttribute( pszAttrName, bValue );
 	}
 
-	return NULL;
+	return false;
 }
 
 /**
@@ -252,8 +252,8 @@ bool CXmlSearch::SelectElementData( const char * pszName, const char * pszChildN
  */
 bool CXmlSearch::SelectElementData( const int iIndex, std::string & strData, int iNameCount, ... )
 {
-	if( iIndex < 0 ) return NULL;
-	if( iNameCount <= 0 ) return NULL;
+	if( iIndex < 0 ) return false;
+	if( iNameCount <= 0 ) return false;
 
 	int iCount = 0;
 	MAKE_NAME_LIST
@@ -278,8 +278,8 @@ bool CXmlSearch::SelectElementData( const int iIndex, std::string & strData, int
  */
 bool CXmlSearch::SelectElementData( const int iIndex, int & iData, int iNameCount, ... )
 {
-	if( iIndex < 0 ) return NULL;
-	if( iNameCount <= 0 ) return NULL;
+	if( iIndex < 0 ) return false;
+	if( iNameCount <= 0 ) return false;
 
 	int iCount = 0;
 	MAKE_NAME_LIST
@@ -304,8 +304,8 @@ bool CXmlSearch::SelectElementData( const int iIndex, int & iData, int iNameCoun
  */
 bool CXmlSearch::SelectElementData( const int iIndex, bool & bData, int iNameCount, ... )
 {
-	if( iIndex < 0 ) return NULL;
-	if( iNameCount <= 0 ) return NULL;
+	if( iIndex < 0 ) return false;
+	if( iNameCount <= 0 ) return false;
 
 	int iCount = 0;
 	MAKE_NAME_LIST
