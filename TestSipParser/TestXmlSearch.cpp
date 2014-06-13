@@ -199,6 +199,45 @@ static bool TestXmlSelectElementN( const char * pszXml )
 		return false;
 	}
 
+	//
+	std::string strData;
+
+	if( clsXml.SelectElementData( 0, strData, 1, "LocalIp" ) == false )
+	{
+		printf( "xml(%s) LocalIp is not found - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	if( strcmp( strData.c_str(), "192.168.0.1" ) )
+	{
+		printf( "xml(%s) LocalIp is not correct - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	if( clsXml.SelectElementData( 0, strData, 2, "LocalIpList", "LocalIp" ) == false )
+	{
+		printf( "xml(%s) LocalIp is not found - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	if( strcmp( strData.c_str(), "192.168.0.1" ) )
+	{
+		printf( "xml(%s) LocalIp is not correct - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	if( clsXml.SelectElementData( 0, strData, 3, "Sip", "LocalIpList", "LocalIp" ) == false )
+	{
+		printf( "xml(%s) LocalIp is not found - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	if( strcmp( strData.c_str(), "192.168.0.1" ) )
+	{
+		printf( "xml(%s) LocalIp is not correct - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
 	return true;
 }
 
