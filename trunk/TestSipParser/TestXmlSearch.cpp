@@ -72,6 +72,32 @@ static bool TestXmlSelectData( const char * pszXml, const char * pszName, int iV
 	return true;
 }
 
+static bool TestXmlSelectData( const char * pszXml, const char * pszName, bool bValue )
+{
+	CXmlSearch	clsXml;
+	bool bTemp;
+
+	if( clsXml.Parse( pszXml, (int)strlen(pszXml) ) == -1 )
+	{
+		printf( "xml(%s) parser error - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	if( clsXml.SelectElementData( pszName, bTemp ) == false )
+	{
+		printf( "xml(%s) %s is not found - %s:%d\n", pszXml, pszName, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	if( bValue != bTemp )
+	{
+		printf( "xml(%s) %s is not correct - %s:%d\n", pszXml, pszName, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	return true;
+}
+
 static bool TestXmlSelectData( const char * pszXml, const char * pszName, const char * pszChildName, const char * pszValue, const int iIndex = 0 )
 {
 	CXmlSearch	clsXml;
@@ -145,6 +171,28 @@ bool TestXmlSearch( )
 		"  <LocalIp>192.168.0.1</LocalIp>\n"
 		" </Sip>\n"
 		"</Setup>\n", "LocalPort", 5060 ) == false ) return false;
+
+	if( TestXmlSelectData("<Setup>\n"
+		" <Sip>\n"
+		"  <LocalPort>5060</LocalPort>\n"
+		"  <LocalIp>192.168.0.1</LocalIp>\n"
+		"  <TcpPort>5061</TcpPort>\n"
+		" </Sip>\n"
+		"</Setup>\n", "TcpPort", 5061 ) == false ) return false;
+
+	if( TestXmlSelectData("<Setup>\n"
+		" <Sip>\n"
+		"  <LocalIp>192.168.0.1</LocalIp>\n"
+		"  <UseRtp>false</UseRtp>\n"
+		" </Sip>\n"
+		"</Setup>\n", "UseRtp", false ) == false ) return false;
+
+	if( TestXmlSelectData("<Setup>\n"
+		" <Sip>\n"
+		"  <LocalIp>192.168.0.1</LocalIp>\n"
+		"  <UseRtp>true</UseRtp>\n"
+		" </Sip>\n"
+		"</Setup>\n", "UseRtp", true ) == false ) return false;
 
 	if( TestXmlSelectData("<Setup>\n"
 		" <Sip>\n"

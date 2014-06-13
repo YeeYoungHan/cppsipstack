@@ -25,6 +25,9 @@ static bool TestXmlGetElementData()
 	const char * pszXml = "<Setup>\n"
 	" <Sip>\n"
   "  <LocalIp>192.168.0.1</LocalIp>\n"
+  "  <LocalPort>5060</LocalPort>\n"
+  "  <UseRtp>true</UseRtp>\n"
+  "  <UseRtp>false</UseRtp>\n"
   " </Sip>\n"
 	"</Setup>\n";
 	CXmlElement	clsXml, * pclsElement;
@@ -43,6 +46,7 @@ static bool TestXmlGetElementData()
 		return false;
 	}
 
+	// string
 	if( pclsElement->SelectElementData( "LocalIp", strLocalIp ) == false )
 	{
 		printf( "LocalIp is not found\n" );
@@ -52,6 +56,49 @@ static bool TestXmlGetElementData()
 	if( strcmp( strLocalIp.c_str(), "192.168.0.1" ) )
 	{
 		printf( "LocalIp is not correct\n" );
+		return false;
+	}
+
+	// int
+	int iLocalPort;
+
+	if( pclsElement->SelectElementData( "LocalPort", iLocalPort ) == false )
+	{
+		printf( "LocalPort is not found\n" );
+		return false;
+	}
+
+	if( iLocalPort != 5060 )
+	{
+		printf( "LocalPort is not correct\n" );
+		return false;
+	}
+
+	// bool
+	bool bUseRtp;
+
+	if( pclsElement->SelectElementData( "UseRtp", bUseRtp ) == false )
+	{
+		printf( "UseRtp is not found\n" );
+		return false;
+	}
+
+	if( bUseRtp == false )
+	{
+		printf( "UseRtp is not correct\n" );
+		return false;
+	}
+
+	// second bool
+	if( pclsElement->SelectElementData( "UseRtp", bUseRtp, 1 ) == false )
+	{
+		printf( "UseRtp2 is not found\n" );
+		return false;
+	}
+
+	if( bUseRtp )
+	{
+		printf( "UseRtp2 is not correct\n" );
 		return false;
 	}
 
