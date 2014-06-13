@@ -150,6 +150,58 @@ static bool TestXmlSelectElement( const char * pszXml )
 	return true;
 }
 
+static bool TestXmlSelectElementN( const char * pszXml )
+{
+	CXmlSearch	clsXml;
+
+	if( clsXml.Parse( pszXml, (int)strlen(pszXml) ) == -1 )
+	{
+		printf( "xml(%s) parser error - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	CXmlElement * pclsElement = clsXml.SelectElement( 0, 1, "LocalIp" );
+	if( pclsElement == NULL )
+	{
+		printf( "xml(%s) LocalIp is not found - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	if( strcmp( pclsElement->GetData(), "192.168.0.1" ) )
+	{
+		printf( "xml(%s) LocalIp is not correct - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	pclsElement = clsXml.SelectElement( 0, 2, "LocalIpList", "LocalIp" );
+	if( pclsElement == NULL )
+	{
+		printf( "xml(%s) LocalIp is not found - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	if( strcmp( pclsElement->GetData(), "192.168.0.1" ) )
+	{
+		printf( "xml(%s) LocalIp is not correct - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	pclsElement = clsXml.SelectElement( 0, 3, "Sip", "LocalIpList", "LocalIp" );
+	if( pclsElement == NULL )
+	{
+		printf( "xml(%s) LocalIp is not found - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	if( strcmp( pclsElement->GetData(), "192.168.0.1" ) )
+	{
+		printf( "xml(%s) LocalIp is not correct - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	return true;
+}
+
 bool TestXmlSearch( )
 {
 	if( TestXmlSelectData("<Setup>\n"
@@ -270,6 +322,15 @@ bool TestXmlSearch( )
 		"</Setup>\n") == false ) return false;
 
 	if( TestXmlSelectElement("<Setup>\n"
+		" <Sip>\n"
+		"  <LocalPort>5060</LocalPort>\n"
+		"  <LocalIpList>\n"
+		"    <LocalIp>192.168.0.1</LocalIp>\n"
+		"  </LocalIpList>\n"
+		" </Sip>\n"
+		"</Setup>\n") == false ) return false;
+
+	if( TestXmlSelectElementN("<Setup>\n"
 		" <Sip>\n"
 		"  <LocalPort>5060</LocalPort>\n"
 		"  <LocalIpList>\n"

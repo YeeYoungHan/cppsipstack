@@ -17,6 +17,7 @@
  */
 
 #include "XmlSearch.h"
+#include <stdarg.h>
 
 CXmlSearch::CXmlSearch()
 {
@@ -185,6 +186,37 @@ CXmlElement * CXmlSearch::SelectElement( const char * pszName, const char * pszC
 }
 
 /**
+ * @brief N 개의 tag 와 일치하는 element 를 검색한다.
+ * @param iIndex 순번. 0 을 입력하면 첫번째 검색된 element 를 검색한다. 2 를 입력하면 세번째 검색된 element 를 검색한다.
+ * @param iNameCount 이름 개수
+ * @param ... 이름
+ * @returns 검색되면 해당 element 의 포인터를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
+CXmlElement * CXmlSearch::SelectElement( int iIndex, int iNameCount, ... )
+{
+	int iCount = 0;
+
+	if( iIndex < 0 ) return NULL;
+	if( iNameCount <= 0 ) return NULL;
+
+	va_list		ap;
+	char * pszTemp;
+	XML_NAME_LIST clsNameList;
+
+	va_start( ap, iNameCount );
+	for( int i = 0; i < iNameCount ; ++i )
+	{
+		pszTemp = va_arg( ap, char * );
+		if( pszTemp == NULL ) break;
+
+		clsNameList.push_back( pszTemp );
+	}
+	va_end( ap );
+
+	return SelectElement( &m_clsElementList, clsNameList, 0, iIndex, iCount );
+}
+
+/**
  * @ingroup XmlParser
  * @brief XML 의 모든 하위 element 중에서 입력된 이름과 일치하는 element 를 검색한다.
  * @param pclsList	element 리스트
@@ -250,6 +282,58 @@ CXmlElement * CXmlSearch::SelectElement( XML_ELEMENT_LIST * pclsList, const char
 		else
 		{
 			pclsElement = SelectElement( itEL->GetElementList(), pszName, pszChildName, iIndex, iCount );
+			if( pclsElement )
+			{
+				return pclsElement;
+			}
+		}
+	}
+
+	return NULL;
+}
+
+/**
+ * @brief N 개의 tag 와 일치하는 element 를 검색한다.
+ * @param pclsList		element 리스트
+ * @param clsNameList 검색 이름 리스트. 상위 tag 이름부터 하위 tag 이름으로 순서대로 저장되어야 한다.
+ * @param iNameIndex	검색 이름 리스트에서 현재 검색할 이름 인덱스
+ * @param iIndex			순번
+ * @param iCount			현재 검색된 이름 개수
+ * @returns 검색되면 해당 element 의 포인터를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
+CXmlElement * CXmlSearch::SelectElement( XML_ELEMENT_LIST * pclsList, XML_NAME_LIST & clsNameList, int iNameIndex, const int iIndex, int & iCount )
+{
+	XML_ELEMENT_LIST::iterator	itEL;
+	CXmlElement * pclsElement = NULL;
+
+	int iNameSize = clsNameList.size();
+	const char * pszName = clsNameList[iNameIndex].c_str();
+
+	for( itEL = pclsList->begin(); itEL != pclsList->end(); ++itEL )
+	{
+		if( !strcmp( pszName, itEL->GetName() ) )
+		{
+			if( iNameSize == ( iNameIndex + 1 ) )
+			{
+				if( iCount == iIndex )
+				{
+					return &(*itEL);
+				}
+
+				++iCount;
+			}
+			else
+			{
+				pclsElement = SelectElement( itEL->GetElementList(), clsNameList, iNameIndex + 1, iIndex, iCount );
+				if( pclsElement )
+				{
+					return pclsElement;
+				}
+			}
+		}
+		else
+		{
+			pclsElement = SelectElement( itEL->GetElementList(), clsNameList, iNameIndex, iIndex, iCount );
 			if( pclsElement )
 			{
 				return pclsElement;

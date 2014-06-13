@@ -20,6 +20,9 @@
 #define _XML_SEARCH_H_
 
 #include "XmlElement.h"
+#include <vector>
+
+typedef std::vector< std::string > XML_NAME_LIST;
 
 /**
  * @ingroup XmlParser
@@ -41,10 +44,12 @@ public:
 
 	CXmlElement * SelectElement( const char * pszName, const int iIndex = 0 );
 	CXmlElement * SelectElement( const char * pszName, const char * pszChildName, const int iIndex = 0 );
+	CXmlElement * SelectElement( int iIndex, int iNameCount, ... );
 
 private:
 	CXmlElement * SelectElement( XML_ELEMENT_LIST * pclsList, const char * pszName, const int iIndex, int & iCount );
 	CXmlElement * SelectElement( XML_ELEMENT_LIST * pclsList, const char * pszName, const char * pszChildName, const int iIndex, int & iCount );
+	CXmlElement * SelectElement( XML_ELEMENT_LIST * pclsList, XML_NAME_LIST & clsNameList, int iNameIndex, const int iIndex, int & iCount );
 };
 
 #endif
