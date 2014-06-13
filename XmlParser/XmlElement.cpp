@@ -425,11 +425,12 @@ bool CXmlElement::SelectElementList( const char * pszName, XML_ELEMENT_LIST & cl
  * @ingroup XmlParser
  * @brief 하위 Element 를 검색하여서 내용을 리턴한다.
  * @param pszName		하위 Element 이름
+ * @param iIndex		하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
  * @returns 성공하면 하위 Element 값을 리턴하고 실패하면 NULL 을 리턴한다.
  */
-const char * CXmlElement::SelectElementData( const char * pszName )
+const char * CXmlElement::SelectElementData( const char * pszName, int iIndex )
 {
-	CXmlElement * pclsElement = SelectElement( pszName );
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
 	if( pclsElement )
 	{
 		return pclsElement->m_strData.c_str();
@@ -443,13 +444,14 @@ const char * CXmlElement::SelectElementData( const char * pszName )
  * @brief 하위 Element 를 검색하여서 내용을 저장한다.
  * @param pszName		하위 Element 이름
  * @param strData		하위 Elemnet 의 내용을 저장할 변수
+ * @param iIndex		하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CXmlElement::SelectElementData( const char * pszName, std::string & strData )
+bool CXmlElement::SelectElementData( const char * pszName, std::string & strData, int iIndex )
 {
 	strData.clear();
 
-	CXmlElement * pclsElement = SelectElement( pszName );
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
 	if( pclsElement )
 	{
 		strData = pclsElement->m_strData;
@@ -464,13 +466,14 @@ bool CXmlElement::SelectElementData( const char * pszName, std::string & strData
  * @brief 하위 Element 를 검색하여서 정수 내용을 가져온다.
  * @param pszName 하위 Element 이름
  * @param iData		하위 Element 의 값을 저장하는 변수
+ * @param iIndex		하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CXmlElement::SelectElementData( const char * pszName, int & iData )
+bool CXmlElement::SelectElementData( const char * pszName, int & iData, int iIndex )
 {
 	iData = -1;
 
-	CXmlElement * pclsElement = SelectElement( pszName );
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
 	if( pclsElement )
 	{
 		iData = atoi( pclsElement->m_strData.c_str() );
@@ -485,13 +488,14 @@ bool CXmlElement::SelectElementData( const char * pszName, int & iData )
  * @brief 하위 Element 를 검색하여서 bool 내용을 가져온다.
  * @param pszName 하위 Element 이름
  * @param bData		하위 Element 의 값을 저장하는 변수
+ * @param iIndex		하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CXmlElement::SelectElementData( const char * pszName, bool & bData )
+bool CXmlElement::SelectElementData( const char * pszName, bool & bData, int iIndex )
 {
 	bData = false;
 
-	CXmlElement * pclsElement = SelectElement( pszName );
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
 	if( pclsElement )
 	{
 		bData = GetBoolean( pclsElement->m_strData.c_str() );

@@ -67,10 +67,10 @@ public:
 	CXmlElement * SelectElement( const char * pszName, int iIndex = 0 );
 	bool SelectElementList( const char * pszName, XML_ELEMENT_LIST & clsList );
 
-	const char * SelectElementData( const char * pszName );
-	bool SelectElementData( const char * pszName, std::string & strData );
-	bool SelectElementData( const char * pszName, int & iData );
-	bool SelectElementData( const char * pszName, bool & bData );
+	const char * SelectElementData( const char * pszName, int iIndex = 0 );
+	bool SelectElementData( const char * pszName, std::string & strData, int iIndex = 0 );
+	bool SelectElementData( const char * pszName, int & iData, int iIndex = 0 );
+	bool SelectElementData( const char * pszName, bool & bData, int iIndex = 0 );
 
 	const char * GetName();
 	const char * GetData();
