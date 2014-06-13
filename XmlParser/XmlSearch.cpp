@@ -462,7 +462,7 @@ CXmlElement * CXmlSearch::SelectElement( XML_ELEMENT_LIST * pclsList, XML_NAME_L
 	XML_ELEMENT_LIST::iterator	itEL;
 	CXmlElement * pclsElement = NULL;
 
-	int iNameSize = clsNameList.size();
+	int iNameSize = (int)clsNameList.size();
 	const char * pszName = clsNameList[iNameIndex].c_str();
 
 	for( itEL = pclsList->begin(); itEL != pclsList->end(); ++itEL )
