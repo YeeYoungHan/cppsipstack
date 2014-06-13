@@ -64,13 +64,12 @@ public:
 	bool SelectAttribute( const char * pszName, int & iValue );
 	bool SelectAttribute( const char * pszName, bool & bValue );
 
-	CXmlElement * SelectElement( const char * pszName, int iIndex = 0 );
+	CXmlElement * SelectElement( const char * pszName, const int iIndex = 0 );
 	bool SelectElementList( const char * pszName, XML_ELEMENT_LIST & clsList );
 
-	const char * SelectElementData( const char * pszName, int iIndex = 0 );
-	bool SelectElementData( const char * pszName, std::string & strData, int iIndex = 0 );
-	bool SelectElementData( const char * pszName, int & iData, int iIndex = 0 );
-	bool SelectElementData( const char * pszName, bool & bData, int iIndex = 0 );
+	bool SelectElementData( const char * pszName, std::string & strData, const int iIndex = 0 );
+	bool SelectElementData( const char * pszName, int & iData, const int iIndex = 0 );
+	bool SelectElementData( const char * pszName, bool & bData, const int iIndex = 0 );
 
 	const char * GetName();
 	const char * GetData();
