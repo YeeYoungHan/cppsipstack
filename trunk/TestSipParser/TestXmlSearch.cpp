@@ -20,7 +20,7 @@
 #include <string.h>
 #include <stdio.h>
 
-static bool TestXmlSelectData( const char * pszXml )
+static bool TestXmlSelectData( const char * pszXml, const char * pszName, const char * pszValue )
 {
 	CXmlSearch	clsXml;
 
@@ -30,14 +30,40 @@ static bool TestXmlSelectData( const char * pszXml )
 		return false;
 	}
 
-	const char * pszData = clsXml.SelectElementData( "LocalIp" );
+	const char * pszData = clsXml.SelectElementData( pszName );
 	if( pszData == NULL ) 
 	{
 		printf( "xml(%s) LocalIp is not found - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
 		return false;
 	}
 
-	if( strcmp( pszData, "192.168.0.1" ) )
+	if( strcmp( pszData, pszValue ) )
+	{
+		printf( "xml(%s) LocalIp is not correct - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	return true;
+}
+
+static bool TestXmlSelectData( const char * pszXml, const char * pszName, const char * pszChildName, const char * pszValue )
+{
+	CXmlSearch	clsXml;
+
+	if( clsXml.Parse( pszXml, (int)strlen(pszXml) ) == -1 )
+	{
+		printf( "xml(%s) parser error - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	const char * pszData = clsXml.SelectElementData( pszName, pszChildName );
+	if( pszData == NULL ) 
+	{
+		printf( "xml(%s) LocalIp is not found - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
+		return false;
+	}
+
+	if( strcmp( pszData, pszValue ) )
 	{
 		printf( "xml(%s) LocalIp is not correct - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
 		return false;
@@ -78,14 +104,14 @@ bool TestXmlSearch( )
 		" <Sip>\n"
 		"  <LocalIp>192.168.0.1</LocalIp>\n"
 		" </Sip>\n"
-		"</Setup>\n") == false ) return false;
+		"</Setup>\n", "LocalIp", "192.168.0.1" ) == false ) return false;
 
 	if( TestXmlSelectData("<Setup>\n"
 		" <Sip>\n"
 		"  <LocalPort>5060</LocalPort>\n"
 		"  <LocalIp>192.168.0.1</LocalIp>\n"
 		" </Sip>\n"
-		"</Setup>\n") == false ) return false;
+		"</Setup>\n", "LocalIp", "192.168.0.1" ) == false ) return false;
 
 	if( TestXmlSelectData("<Setup>\n"
 		" <Sip>\n"
@@ -94,7 +120,29 @@ bool TestXmlSearch( )
 		"    <LocalIp>192.168.0.1</LocalIp>\n"
 		"  </LocalIpList>\n"
 		" </Sip>\n"
-		"</Setup>\n") == false ) return false;
+		"</Setup>\n", "LocalIp", "192.168.0.1" ) == false ) return false;
+
+	if( TestXmlSelectData("<Setup>\n"
+		" <Sip>\n"
+		"  <LocalIp>192.168.0.1</LocalIp>\n"
+		" </Sip>\n"
+		"</Setup>\n", "Sip", "LocalIp", "192.168.0.1" ) == false ) return false;
+
+	if( TestXmlSelectData("<Setup>\n"
+		" <Sip>\n"
+		"  <LocalPort>5060</LocalPort>\n"
+		"  <LocalIp>192.168.0.1</LocalIp>\n"
+		" </Sip>\n"
+		"</Setup>\n", "Sip", "LocalIp", "192.168.0.1" ) == false ) return false;
+
+	if( TestXmlSelectData("<Setup>\n"
+		" <Sip>\n"
+		"  <LocalPort>5060</LocalPort>\n"
+		"  <LocalIpList>\n"
+		"    <LocalIp>192.168.0.1</LocalIp>\n"
+		"  </LocalIpList>\n"
+		" </Sip>\n"
+		"</Setup>\n", "LocalIpList", "LocalIp", "192.168.0.1" ) == false ) return false;
 
 	if( TestXmlSelectElement("<Setup>\n"
 		" <Sip>\n"

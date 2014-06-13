@@ -36,10 +36,17 @@ public:
 	bool SelectElementData( const char * pszName, int & iData, int iIndex = 0 );
 	bool SelectElementData( const char * pszName, bool & bData, int iIndex = 0 );
 
+	const char * SelectElementData( const char * pszName, const char * pszChildName, int iIndex = 0 );
+	bool SelectElementData( const char * pszName, const char * pszChildName, std::string & strData, int iIndex = 0 );
+	bool SelectElementData( const char * pszName, const char * pszChildName, int & iData, int iIndex = 0 );
+	bool SelectElementData( const char * pszName, const char * pszChildName, bool & bData, int iIndex = 0 );
+
 	CXmlElement * SelectElement( const char * pszName, int iIndex = 0 );
+	CXmlElement * SelectElement( const char * pszName, const char * pszChildName, int iIndex = 0 );
 
 private:
 	CXmlElement * SelectElement( XML_ELEMENT_LIST * pclsList, const char * pszName, int iIndex, int & iCount );
+	CXmlElement * SelectElement( XML_ELEMENT_LIST * pclsList, const char * pszName, const char * pszChildName, int iIndex, int & iCount );
 };
 
 #endif
