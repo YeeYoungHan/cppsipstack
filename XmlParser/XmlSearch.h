@@ -35,7 +35,6 @@ public:
 	CXmlElement * SelectElement( const char * pszName, int iIndex = 0 );
 
 private:
-	const char * SelectElementData( XML_ELEMENT_LIST * pclsList, const char * pszName, int iIndex, int & iCount );
 	CXmlElement * SelectElement( XML_ELEMENT_LIST * pclsList, const char * pszName, int iIndex, int & iCount );
 };
 

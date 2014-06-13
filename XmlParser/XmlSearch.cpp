@@ -35,31 +35,10 @@ CXmlSearch::~CXmlSearch()
  */
 const char * CXmlSearch::SelectElementData( const char * pszName, int iIndex )
 {
-	XML_ELEMENT_LIST::iterator	itEL;
-	int iCount = 0;
-	const char * pszData = NULL;
-
-	if( iIndex < 0 ) iIndex = 0;
-
-	for( itEL = m_clsElementList.begin(); itEL != m_clsElementList.end(); ++itEL )
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
+	if( pclsElement )
 	{
-		if( !strcmp( pszName, itEL->GetName() ) )
-		{
-			if( iCount == iIndex )
-			{
-				return itEL->GetData();
-			}
-
-			++iCount;
-		}
-		else
-		{
-			pszData = SelectElementData( itEL->GetElementList(), pszName, iIndex, iCount );
-			if( pszData )
-			{
-				return pszData;
-			}
-		}
+		return pclsElement->GetData();
 	}
 
 	return NULL;
@@ -97,44 +76,6 @@ CXmlElement * CXmlSearch::SelectElement( const char * pszName, int iIndex )
 			if( pclsElement )
 			{
 				return pclsElement;
-			}
-		}
-	}
-
-	return NULL;
-}
-
-/**
- * @ingroup XmlParser
- * @brief XML 의 모든 하위 element 중에서 입력된 이름과 일치하는 값을 검색한다.
- * @param pclsList	element 리스트
- * @param pszName		이름
- * @param iIndex		순번
- * @param iCount		현재 검색된 이름 개수
- * @returns 검색되면 해당 값을 리턴하고 그렇지 않으면 NULL 을 리턴한다.
- */
-const char * CXmlSearch::SelectElementData( XML_ELEMENT_LIST * pclsList, const char * pszName, int iIndex, int & iCount )
-{
-	XML_ELEMENT_LIST::iterator	itEL;
-	const char * pszData = NULL;
-
-	for( itEL = pclsList->begin(); itEL != pclsList->end(); ++itEL )
-	{
-		if( !strcmp( pszName, itEL->GetName() ) )
-		{
-			if( iCount == iIndex )
-			{
-				return itEL->GetData();
-			}
-
-			++iCount;
-		}
-		else
-		{
-			pszData = SelectElementData( itEL->GetElementList(), pszName, iIndex, iCount );
-			if( pszData )
-			{
-				return pszData;
 			}
 		}
 	}
