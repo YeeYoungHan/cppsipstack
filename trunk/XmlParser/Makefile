@@ -14,7 +14,7 @@ INC=-I../SipParser -I../SipPlatform
 
 all: libxmlparser.a
 
-LIB_OBJ=XmlElement.o
+LIB_OBJ=XmlElement.o XmlSearch.o
 
 libxmlparser.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)
