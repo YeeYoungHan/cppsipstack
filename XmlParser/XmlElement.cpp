@@ -423,6 +423,23 @@ bool CXmlElement::SelectElementList( const char * pszName, XML_ELEMENT_LIST & cl
 
 /**
  * @ingroup XmlParser
+ * @brief 하위 Element 를 검색하여서 내용을 리턴한다.
+ * @param pszName		하위 Element 이름
+ * @returns 성공하면 하위 Element 값을 리턴하고 실패하면 NULL 을 리턴한다.
+ */
+const char * CXmlElement::SelectElementData( const char * pszName )
+{
+	CXmlElement * pclsElement = SelectElement( pszName );
+	if( pclsElement )
+	{
+		return pclsElement->m_strData.c_str();
+	}
+
+	return NULL;
+}
+
+/**
+ * @ingroup XmlParser
  * @brief 하위 Element 를 검색하여서 내용을 저장한다.
  * @param pszName		하위 Element 이름
  * @param strData		하위 Elemnet 의 내용을 저장할 변수

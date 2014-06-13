@@ -28,12 +28,12 @@ CXmlSearch::~CXmlSearch()
 
 /**
  * @ingroup XmlParser
- * @brief XML 하위 element 를 이름에 대한 값을 검색한다.
+ * @brief XML 의 모든 하위 element 중에서 입력된 이름과 일치하는 값을 검색한다.
  * @param pszName element 이름
  * @param iIndex	순번. 0 을 입력하면 첫번째 검색된 element 값을 검색한다. 2 를 입력하면 세번째 검색된 element 값을 검색한다.
  * @returns 검색되면 해당 값을 리턴하고 그렇지 않으면 NULL 을 리턴한다.
  */
-const char * CXmlSearch::SelectData( const char * pszName, int iIndex )
+const char * CXmlSearch::SelectElementData( const char * pszName, int iIndex )
 {
 	XML_ELEMENT_LIST::iterator	itEL;
 	int iCount = 0;
@@ -54,7 +54,7 @@ const char * CXmlSearch::SelectData( const char * pszName, int iIndex )
 		}
 		else
 		{
-			pszData = SelectData( itEL->GetElementList(), pszName, iIndex, iCount );
+			pszData = SelectElementData( itEL->GetElementList(), pszName, iIndex, iCount );
 			if( pszData )
 			{
 				return pszData;
@@ -67,7 +67,7 @@ const char * CXmlSearch::SelectData( const char * pszName, int iIndex )
 
 /**
  * @ingroup XmlParser
- * @brief XML 하위 element 를 검색한다.
+ * @brief XML 의 모든 하위 element 중에서 입력된 이름과 일치하는 element 를 검색한다.
  * @param pszName 이름
  * @param iIndex 순번. 0 을 입력하면 첫번째 검색된 element 를 검색한다. 2 를 입력하면 세번째 검색된 element 를 검색한다.
  * @returns 검색되면 해당 element 의 포인터를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
@@ -106,14 +106,14 @@ CXmlElement * CXmlSearch::SelectElement( const char * pszName, int iIndex )
 
 /**
  * @ingroup XmlParser
- * @brief XML 하위 element 를 이름에 대한 값을 검색한다.
+ * @brief XML 의 모든 하위 element 중에서 입력된 이름과 일치하는 값을 검색한다.
  * @param pclsList	element 리스트
  * @param pszName		이름
  * @param iIndex		순번
  * @param iCount		현재 검색된 이름 개수
  * @returns 검색되면 해당 값을 리턴하고 그렇지 않으면 NULL 을 리턴한다.
  */
-const char * CXmlSearch::SelectData( XML_ELEMENT_LIST * pclsList, const char * pszName, int iIndex, int & iCount )
+const char * CXmlSearch::SelectElementData( XML_ELEMENT_LIST * pclsList, const char * pszName, int iIndex, int & iCount )
 {
 	XML_ELEMENT_LIST::iterator	itEL;
 	const char * pszData = NULL;
@@ -131,7 +131,7 @@ const char * CXmlSearch::SelectData( XML_ELEMENT_LIST * pclsList, const char * p
 		}
 		else
 		{
-			pszData = SelectData( itEL->GetElementList(), pszName, iIndex, iCount );
+			pszData = SelectElementData( itEL->GetElementList(), pszName, iIndex, iCount );
 			if( pszData )
 			{
 				return pszData;
@@ -144,7 +144,7 @@ const char * CXmlSearch::SelectData( XML_ELEMENT_LIST * pclsList, const char * p
 
 /**
  * @ingroup XmlParser
- * @brief XML 하위 element 의 이름과 일치하는 element 를 검색한다.
+ * @brief XML 의 모든 하위 element 중에서 입력된 이름과 일치하는 element 를 검색한다.
  * @param pclsList	element 리스트
  * @param pszName		이름
  * @param iIndex		순번
