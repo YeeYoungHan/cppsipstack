@@ -23,7 +23,7 @@
 
 /**
  * @ingroup XmlParser
- * @brief XML 하위 element 까지 검색하는 기능을 수행하는 클래스
+ * @brief XML 의 모든 하위 element 까지 재귀적으로 검색하는 기능을 수행하는 클래스
  */
 class CXmlSearch : public CXmlElement
 {
@@ -31,11 +31,11 @@ public:
 	CXmlSearch();
 	~CXmlSearch();
 
-	const char * SelectData( const char * pszName, int iIndex = 0 );
+	const char * SelectElementData( const char * pszName, int iIndex = 0 );
 	CXmlElement * SelectElement( const char * pszName, int iIndex = 0 );
 
 private:
-	const char * SelectData( XML_ELEMENT_LIST * pclsList, const char * pszName, int iIndex, int & iCount );
+	const char * SelectElementData( XML_ELEMENT_LIST * pclsList, const char * pszName, int iIndex, int & iCount );
 	CXmlElement * SelectElement( XML_ELEMENT_LIST * pclsList, const char * pszName, int iIndex, int & iCount );
 };
 

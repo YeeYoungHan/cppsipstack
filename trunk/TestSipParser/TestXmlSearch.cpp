@@ -30,7 +30,7 @@ static bool TestXmlSelectData( const char * pszXml )
 		return false;
 	}
 
-	const char * pszData = clsXml.SelectData( "LocalIp" );
+	const char * pszData = clsXml.SelectElementData( "LocalIp" );
 	if( pszData == NULL ) 
 	{
 		printf( "xml(%s) LocalIp is not found - %s:%d\n", pszXml, __FUNCTION__, __LINE__ );
