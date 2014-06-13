@@ -76,7 +76,9 @@ public:
 
 	bool IsDataEmpty();
 
-private:
+	XML_ELEMENT_LIST * GetElementList();
+
+protected:
 	std::string	m_strName;
 	std::string m_strData;
 

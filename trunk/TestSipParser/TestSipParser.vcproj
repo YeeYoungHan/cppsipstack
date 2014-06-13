@@ -392,6 +392,10 @@
 				RelativePath=".\TestXml2.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\TestXmlSearch.cpp"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
