@@ -284,6 +284,10 @@
 				RelativePath=".\XmlElement.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\XmlSearch.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="헤더 파일"
@@ -292,6 +296,10 @@
 			>
 			<File
 				RelativePath=".\XmlElement.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XmlSearch.h"
 				>
 			</File>
 		</Filter>
