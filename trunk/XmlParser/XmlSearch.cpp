@@ -19,6 +19,18 @@
 #include "XmlSearch.h"
 #include <stdarg.h>
 
+#define MAKE_NAME_LIST va_list ap; \
+	char * pszTemp; \
+	XML_NAME_LIST clsNameList; \
+	va_start( ap, iNameCount ); \
+	for( int i = 0; i < iNameCount ; ++i ) \
+	{ \
+		pszTemp = va_arg( ap, char * ); \
+		if( pszTemp == NULL ) break; \
+		clsNameList.push_back( pszTemp ); \
+	} \
+	va_end( ap );
+
 CXmlSearch::CXmlSearch()
 {
 }
@@ -152,6 +164,84 @@ bool CXmlSearch::SelectElementData( const char * pszName, const char * pszChildN
 }
 
 /**
+ * @brief N 개의 tag 와 일치하는 element 의 값을 검색한다.
+ * @param iIndex 순번. 0 을 입력하면 첫번째 검색된 element 를 검색한다. 2 를 입력하면 세번째 검색된 element 를 검색한다.
+ * @param strData 검색된 데이터 저장 변수
+ * @param iNameCount 이름 개수
+ * @param ... 이름
+ * @returns 검색되면 해당 element 의 포인터를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
+bool CXmlSearch::SelectElementData( const int iIndex, std::string & strData, int iNameCount, ... )
+{
+	if( iIndex < 0 ) return NULL;
+	if( iNameCount <= 0 ) return NULL;
+
+	int iCount = 0;
+	MAKE_NAME_LIST
+
+	CXmlElement * pclsElement = SelectElement( &m_clsElementList, clsNameList, 0, iIndex, iCount );
+	if( pclsElement )
+	{
+		strData = pclsElement->GetData();
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * @brief N 개의 tag 와 일치하는 element 의 값을 검색한다.
+ * @param iIndex 순번. 0 을 입력하면 첫번째 검색된 element 를 검색한다. 2 를 입력하면 세번째 검색된 element 를 검색한다.
+ * @param iData 검색된 데이터 저장 변수
+ * @param iNameCount 이름 개수
+ * @param ... 이름
+ * @returns 검색되면 해당 element 의 포인터를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
+bool CXmlSearch::SelectElementData( const int iIndex, int & iData, int iNameCount, ... )
+{
+	if( iIndex < 0 ) return NULL;
+	if( iNameCount <= 0 ) return NULL;
+
+	int iCount = 0;
+	MAKE_NAME_LIST
+
+	CXmlElement * pclsElement = SelectElement( &m_clsElementList, clsNameList, 0, iIndex, iCount );
+	if( pclsElement )
+	{
+		iData = atoi( pclsElement->GetData() );
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * @brief N 개의 tag 와 일치하는 element 의 값을 검색한다.
+ * @param iIndex 순번. 0 을 입력하면 첫번째 검색된 element 를 검색한다. 2 를 입력하면 세번째 검색된 element 를 검색한다.
+ * @param bData 검색된 데이터 저장 변수
+ * @param iNameCount 이름 개수
+ * @param ... 이름
+ * @returns 검색되면 해당 element 의 포인터를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
+bool CXmlSearch::SelectElementData( const int iIndex, bool & bData, int iNameCount, ... )
+{
+	if( iIndex < 0 ) return NULL;
+	if( iNameCount <= 0 ) return NULL;
+
+	int iCount = 0;
+	MAKE_NAME_LIST
+
+	CXmlElement * pclsElement = SelectElement( &m_clsElementList, clsNameList, 0, iIndex, iCount );
+	if( pclsElement )
+	{
+		bData = GetBoolean( pclsElement->GetData() );
+		return true;
+	}
+
+	return false;
+}
+
+/**
  * @ingroup XmlParser
  * @brief XML 의 모든 하위 element 중에서 입력된 이름과 일치하는 element 를 검색한다.
  * @param pszName 이름
@@ -192,26 +282,13 @@ CXmlElement * CXmlSearch::SelectElement( const char * pszName, const char * pszC
  * @param ... 이름
  * @returns 검색되면 해당 element 의 포인터를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
  */
-CXmlElement * CXmlSearch::SelectElement( int iIndex, int iNameCount, ... )
+CXmlElement * CXmlSearch::SelectElement( const int iIndex, int iNameCount, ... )
 {
-	int iCount = 0;
-
 	if( iIndex < 0 ) return NULL;
 	if( iNameCount <= 0 ) return NULL;
 
-	va_list		ap;
-	char * pszTemp;
-	XML_NAME_LIST clsNameList;
-
-	va_start( ap, iNameCount );
-	for( int i = 0; i < iNameCount ; ++i )
-	{
-		pszTemp = va_arg( ap, char * );
-		if( pszTemp == NULL ) break;
-
-		clsNameList.push_back( pszTemp );
-	}
-	va_end( ap );
+	int iCount = 0;
+	MAKE_NAME_LIST
 
 	return SelectElement( &m_clsElementList, clsNameList, 0, iIndex, iCount );
 }

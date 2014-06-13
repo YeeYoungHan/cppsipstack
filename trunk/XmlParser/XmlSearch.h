@@ -42,9 +42,13 @@ public:
 	bool SelectElementData( const char * pszName, const char * pszChildName, int & iData, const int iIndex = 0 );
 	bool SelectElementData( const char * pszName, const char * pszChildName, bool & bData, const int iIndex = 0 );
 
+	bool SelectElementData( const int iIndex, std::string & strData, int iNameCount, ... );
+	bool SelectElementData( const int iIndex, int & iData, int iNameCount, ... );
+	bool SelectElementData( const int iIndex, bool & bData, int iNameCount, ... );
+
 	CXmlElement * SelectElement( const char * pszName, const int iIndex = 0 );
 	CXmlElement * SelectElement( const char * pszName, const char * pszChildName, const int iIndex = 0 );
-	CXmlElement * SelectElement( int iIndex, int iNameCount, ... );
+	CXmlElement * SelectElement( const int iIndex, int iNameCount, ... );
 
 private:
 	CXmlElement * SelectElement( XML_ELEMENT_LIST * pclsList, const char * pszName, const int iIndex, int & iCount );
