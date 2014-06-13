@@ -32,6 +32,10 @@ public:
 	~CXmlSearch();
 
 	const char * SelectElementData( const char * pszName, int iIndex = 0 );
+	bool SelectElementData( const char * pszName, std::string & strData, int iIndex = 0 );
+	bool SelectElementData( const char * pszName, int & iData, int iIndex = 0 );
+	bool SelectElementData( const char * pszName, bool & bData, int iIndex = 0 );
+
 	CXmlElement * SelectElement( const char * pszName, int iIndex = 0 );
 
 private:
