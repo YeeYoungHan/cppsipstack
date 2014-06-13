@@ -241,6 +241,31 @@ static bool TestXmlSelectElementN( const char * pszXml )
 	return true;
 }
 
+static bool TestXmlGetElementAttribute()
+{
+	const char * pszXml = "<Setup>\n"
+	" <Log>\n"
+  "  <Level Debug=\"true\" />\n"
+	" </Log>\n"
+	"</Setup>\n";
+	CXmlSearch	clsXml;
+
+	if( clsXml.Parse( pszXml, (int)strlen(pszXml) ) == -1 )
+	{
+		printf( "xml(%s) parser error\n", pszXml );
+		return false;
+	}
+
+	const char * pszTemp = clsXml.SelectAttribute( "Level", "Debug" );
+	if( strcmp( pszTemp, "true" ) )
+	{
+		printf( "xml(%s) SelectAttribute error\n", pszXml );
+		return false;
+	}
+
+	return true;
+}
+
 bool TestXmlSearch( )
 {
 	if( TestXmlSelectData("<Setup>\n"
@@ -377,6 +402,8 @@ bool TestXmlSearch( )
 		"  </LocalIpList>\n"
 		" </Sip>\n"
 		"</Setup>\n") == false ) return false;
+
+	if( TestXmlGetElementAttribute() == false ) return false;
 
 	return true;
 }

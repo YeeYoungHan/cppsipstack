@@ -41,10 +41,89 @@ CXmlSearch::~CXmlSearch()
 
 /**
  * @ingroup XmlParser
+ * @brief 애트리뷰트에 해당하는 값을 검색한다.
+ * @param pszName Element 이름
+ * @param pszAttrName 애트리뷰트 이름
+ * @param iIndex		Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @returns 성공하면 애트리뷰트의 값을 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
+const char * CXmlSearch::SelectAttribute( const char * pszName, const char * pszAttrName, const int iIndex )
+{
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
+	if( pclsElement )
+	{
+		return pclsElement->SelectAttribute( pszAttrName );
+	}
+
+	return NULL;
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 애트리뷰트에 해당하는 값을 검색한다.
+ * @param pszName Element 이름
+ * @param pszAttrName 애트리뷰트 이름
+ * @param strValue	애트리뷰트 값
+ * @param iIndex		Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CXmlSearch::SelectAttribute( const char * pszName, const char * pszAttrName, std::string & strValue, const int iIndex )
+{
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
+	if( pclsElement )
+	{
+		return pclsElement->SelectAttribute( pszAttrName, strValue );
+	}
+
+	return NULL;
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 애트리뷰트에 해당하는 값을 검색하여 int 변수에 저장한다.
+ * @param pszName Element 이름
+ * @param pszAttrName 애트리뷰트 이름
+ * @param iValue		애트리뷰트 값
+ * @param iIndex		Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CXmlSearch::SelectAttribute( const char * pszName, const char * pszAttrName, int & iValue, const int iIndex )
+{
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
+	if( pclsElement )
+	{
+		return pclsElement->SelectAttribute( pszAttrName, iValue );
+	}
+
+	return NULL;
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 애트리뷰트에 해당하는 값을 검색하여 bool 변수에 저장한다.
+ * @param pszName Element 이름
+ * @param pszAttrName 애트리뷰트 이름
+ * @param bValue		애트리뷰트 값
+ * @param iIndex		Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CXmlSearch::SelectAttribute( const char * pszName, const char * pszAttrName, bool & bValue, const int iIndex )
+{
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
+	if( pclsElement )
+	{
+		return pclsElement->SelectAttribute( pszAttrName, bValue );
+	}
+
+	return NULL;
+}
+
+/**
+ * @ingroup XmlParser
  * @brief 모든 하위 Element 를 검색하여서 내용을 저장한다.
- * @param pszName		하위 Element 이름
- * @param strData		하위 Elemnet 의 내용을 저장할 변수
- * @param iIndex		하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @param pszName		Element 이름
+ * @param strData		Elemnet 의 내용을 저장할 변수
+ * @param iIndex		Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool CXmlSearch::SelectElementData( const char * pszName, std::string & strData, const int iIndex )
@@ -62,9 +141,9 @@ bool CXmlSearch::SelectElementData( const char * pszName, std::string & strData,
 /**
  * @ingroup XmlParser
  * @brief 모든 하위 Element 를 검색하여서 정수 내용을 가져온다.
- * @param pszName 하위 Element 이름
- * @param iData	하위 Element 의 값을 저장하는 변수
- * @param iIndex	하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @param pszName Element 이름
+ * @param iData	Element 의 값을 저장하는 변수
+ * @param iIndex	Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool CXmlSearch::SelectElementData( const char * pszName, int & iData, const int iIndex )
@@ -83,9 +162,9 @@ bool CXmlSearch::SelectElementData( const char * pszName, int & iData, const int
 /**
  * @ingroup XmlParser
  * @brief 모든 하위 Element 를 검색하여서 bool 내용을 가져온다.
- * @param pszName 하위 Element 이름
- * @param bData		하위 Element 의 값을 저장하는 변수
- * @param iIndex		하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @param pszName Element 이름
+ * @param bData		Element 의 값을 저장하는 변수
+ * @param iIndex	Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool CXmlSearch::SelectElementData( const char * pszName, bool & bData, const int iIndex )
@@ -104,9 +183,9 @@ bool CXmlSearch::SelectElementData( const char * pszName, bool & bData, const in
  * @ingroup XmlParser
  * @brief 모든 하위 Element 를 검색하여서 내용을 저장한다.
  * @param pszName		Element 이름
- * @param pszChildName 하위 element 이름
- * @param strData		하위 Elemnet 의 내용을 저장할 변수
- * @param iIndex		하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @param pszChildName 하위 Element 이름
+ * @param strData		Elemnet 의 내용을 저장할 변수
+ * @param iIndex		Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool CXmlSearch::SelectElementData( const char * pszName, const char * pszChildName, std::string & strData, const int iIndex )
@@ -260,8 +339,8 @@ CXmlElement * CXmlSearch::SelectElement( const char * pszName, const int iIndex 
 /**
  * @ingroup XmlParser
  * @brief XML 의 모든 하위 element 중에서 입력된 이름과 일치하는 element 를 검색한다.
- * @param pszName 이름
- * @param pszChildName 하위 이름
+ * @param pszName Element 이름
+ * @param pszChildName 하위 Element 이름
  * @param iIndex 순번. 0 을 입력하면 첫번째 검색된 element 를 검색한다. 2 를 입력하면 세번째 검색된 element 를 검색한다.
  * @returns 검색되면 해당 element 의 포인터를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
  */
