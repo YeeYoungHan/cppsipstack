@@ -264,4 +264,10 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 		
 		// QQQ: strReferToId 로 전화호출하여야 한다.
 	}
+
+	@Override
+	public void EventMessage( String strFrom, String strTo, String strSms )
+	{
+		m_txtLog.setText( "EventMessage from(" + strFrom + ") to(" + strTo + ") sms(" + strSms + ")" );
+	}
 }

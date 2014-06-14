@@ -83,6 +83,14 @@ public class SipUserAgentHandler extends Handler implements SipUserAgentCallBack
 			
 			m_clsCallBack.EventBlindTransfer( strCallId, strReferToId );
 		}
+		else if( strCommand.equals( EVENT_MESSAGE ) )
+		{
+			String strFrom = b.getString( ARG_FROM );
+			String strTo = b.getString( ARG_TO );
+			String strSms = b.getString( ARG_SMS );
+			
+			m_clsCallBack.EventMessage( strFrom, strTo, strSms );
+		}
 	}
 
 	@Override
@@ -189,6 +197,20 @@ public class SipUserAgentHandler extends Handler implements SipUserAgentCallBack
   	b.putString( COMMAND, EVENT_BLIND_TRANSFER );
   	b.putString( ARG_CALL_ID, strCallId );
   	b.putString( ARG_REFER_TO_ID, strReferToId );
+  	m.setData( b );
+  	sendMessage( m );
+	}
+
+	@Override
+	public void EventMessage( String strFrom, String strTo, String strSms )
+	{
+		Bundle b = new Bundle();
+  	
+  	Message m = obtainMessage( );
+  	b.putString( COMMAND, EVENT_MESSAGE );
+  	b.putString( ARG_FROM, strFrom );
+  	b.putString( ARG_TO, strTo );
+  	b.putString( ARG_SMS, strSms );
   	m.setData( b );
   	sendMessage( m );
 	}

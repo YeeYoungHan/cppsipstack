@@ -460,6 +460,53 @@ FUNC_END:
  */
 bool CSipClient::EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage )
 {
+	if( pclsMessage->m_strBody.length() == 0 ) return false;
+
+	jstring jstrFrom = NULL, jstrTo = NULL, jstrSms = NULL;
+
+	JNIEnv * env;
+	int iRet;
+
+#ifdef WIN32
+	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
+#else
+	iRet = gjVm->AttachCurrentThread( &env, NULL );
+#endif
+
+	if( iRet != 0 )
+	{
+		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+		return true;
+	}
+
+	jstrFrom = env->NewStringUTF( pszFrom );
+	if( jstrFrom == NULL )
+	{
+		AndroidErrorLog( "%s NewStringUTF(%s) error", __FUNCTION__, pszFrom );
+		goto FUNC_END;
+	}
+
+	jstrTo = env->NewStringUTF( pszTo );
+	if( jstrTo == NULL )
+	{
+		AndroidErrorLog( "%s NewStringUTF(%s) error", __FUNCTION__, pszTo );
+		goto FUNC_END;
+	}
+
+	jstrSms = env->NewStringUTF( pclsMessage->m_strBody.c_str() );
+	if( jstrSms == NULL )
+	{
+		AndroidErrorLog( "%s NewStringUTF(%s) error", __FUNCTION__, jstrSms );
+		goto FUNC_END;
+	}
+
+	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventMessage, jstrFrom, jstrTo, jstrSms );
+
+FUNC_END:
+	if( jstrFrom ) env->DeleteLocalRef( jstrFrom );
+	if( jstrTo ) env->DeleteLocalRef( jstrTo );
+	if( jstrSms ) env->DeleteLocalRef( jstrSms );
+
 	return true;
 }
 

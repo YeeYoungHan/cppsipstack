@@ -16,6 +16,7 @@ public interface SipUserAgentHandlerDefine
 	final String EVENT_REINVITE = "EventReInvite";
 	final String EVENT_TRANSFER = "EventTransfer";
 	final String EVENT_BLIND_TRANSFER = "EventBlindTransfer";
+	final String EVENT_MESSAGE = "EventMessage";
 	
 	final String ARG_CALL_ID = "strCallId";
 	final String ARG_INFO = "clsInfo";
@@ -27,4 +28,5 @@ public interface SipUserAgentHandlerDefine
 	final String ARG_REFER_TO_CALL_ID = "strReferToCallId";
 	final String ARG_SCREENED_TRANSFER = "bScreenedTransfer";
 	final String ARG_REFER_TO_ID = "strReferToId";
+	final String ARG_SMS = "strSms";
 }
