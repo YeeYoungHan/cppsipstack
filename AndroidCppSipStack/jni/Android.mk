@@ -28,7 +28,8 @@ LOCAL_SRC_FILES := Directory.cpp Log.cpp ServerUtility.cpp \
 	SipMd5.cpp SipMutex.cpp \
 	SipTcp.cpp SipUdp.cpp \
 	StringUtility.cpp StringMap.cpp \
-	TimeString.cpp TimeUtility.cpp
+	TimeString.cpp TimeUtility.cpp \
+	FileUtility.cpp
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -43,7 +44,8 @@ LOCAL_MODULE    := libsipparser
 LOCAL_SRC_FILES := SipAcceptData.cpp SipCallId.cpp SipChallenge.cpp SipContentType.cpp \
 	SipCredential.cpp SipCSeq.cpp SipFrom.cpp SipHeader.cpp SipMessage.cpp \
 	SipParameter.cpp SipUri.cpp SipVia.cpp SipStatusCode.cpp SipReason.cpp \
-	SipUtility.cpp SipParameterList.cpp
+	SipUtility.cpp SipParameterList.cpp \
+	SipTransport.cpp
 LOCAL_C_INCLUDES := ../../SipPlatform
 
 include $(BUILD_STATIC_LIBRARY)
@@ -61,9 +63,12 @@ LOCAL_SRC_FILES := SipDeleteQueue.cpp \
 	SipInviteTransaction.cpp SipNonInviteTransaction.cpp SipTransactionList.cpp \
 	SipStack.cpp SipStackSetup.cpp \
 	SipStackThread.cpp SipUdpThread.cpp SipTcpThread.cpp SipTlsThread.cpp \
-	TcpSessionList.cpp TcpSocketMap.cpp TcpThreadList.cpp \
+	SipTcpClientThread.cpp SipTcpMessage.cpp \
+	SipTlsClientThread.cpp SipTlsMessage.cpp \
+	TcpSessionList.cpp TcpSocketMap.cpp TcpThreadList.cpp TcpConnectMap.cpp \
 	SipBuffer.cpp \
-	TlsFunction.cpp
+	TlsFunction.cpp \
+	MonitorString.cpp
 LOCAL_C_INCLUDES := ../../SipPlatform ../../SipParser include
 
 include $(BUILD_STATIC_LIBRARY)
@@ -93,7 +98,8 @@ LOCAL_MODULE    := libsipuseragent
 LOCAL_SRC_FILES := SipDialog.cpp \
 	SipRegisterThread.cpp SipServerInfo.cpp \
 	SipUserAgent.cpp \
-	SipDialog.cpp SipCdr.cpp
+	SipDialog.cpp SipCdr.cpp \
+	RtpDirection.cpp
 LOCAL_C_INCLUDES := ../../SipPlatform ../../SipParser ../../SipStack ../../SdpParser include
 
 include $(BUILD_STATIC_LIBRARY)
