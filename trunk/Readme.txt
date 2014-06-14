@@ -10,6 +10,9 @@ C++ SIP stack 프로젝트
  * C++ SIP stack 기반 IP-PBX 개발
  * C++ SIP stack 기반 로드밸런서 개발
  * C++ SIP stack 기반 SIP 서버 성능 측정 프로그램 개발
+ * C++ SIP stack 기반 SIP 서버 테스트 프로그램 개발
+ * C++ SIP stack 기반 MFC 응용 프로그램 개발
+ * C++ SIP stack 기반 java SIP stack 개발
 
  본 프로젝트의 라이선스는 GPLv3 이다.
  본 프로젝트를 진행하는 개발자 정보는 다음과 같다. 본 프로젝트에 대한 상용 라이선스 발급을 원하시면 아래의 이메일 주소로 연락해 주세요.
