@@ -123,6 +123,13 @@ bool CAndroidClass::Init( JNIEnv * env )
 		return false;
 	}
 
+	m_jmEventMessage = env->GetStaticMethodID( m_jcSipUserAgent, "EventMessage", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V" );
+	if( m_jmEventMessage == NULL )
+	{
+		AndroidErrorLog( "EventMessage is not found" );
+		return false;
+	}
+
 	//
 	m_jmSipServerInfoInit = env->GetMethodID( m_jcSipServerInfo, "<init>", "()V" );
 	if( m_jmSipServerInfoInit == NULL )

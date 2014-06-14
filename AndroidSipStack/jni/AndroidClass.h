@@ -44,6 +44,7 @@ public:
 	jmethodID m_jmEventReInvite;
 	jmethodID m_jmEventTransfer;
 	jmethodID m_jmEventBlindTransfer;
+	jmethodID m_jmEventMessage;
 	
 	jmethodID m_jmSipServerInfoInit;
 	jmethodID m_jmSipCallRtpInit;

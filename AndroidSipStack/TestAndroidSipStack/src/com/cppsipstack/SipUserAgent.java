@@ -203,6 +203,21 @@ public class SipUserAgent
 		}
 	}
 	
+	/** SMS 요청 수신 이벤트 핸들러
+	 * @param strFrom		SIP From 사용자 아이디
+	 * @param strTo			SIP To 사용자 아이디
+	 * @param strSms		SMS 내용
+	 */
+	public static void EventMessage( String strFrom, String strTo, String strSms )
+	{
+		SipLog.Debug( "EventMessage from(" + strFrom + ") to(" + strTo + ") sms(" + strSms + ")" );
+		
+		if( m_clsCallBack != null )
+		{
+			m_clsCallBack.EventMessage( strFrom, strTo, strSms );
+		}
+	}
+	
 	static
 	{
 		SipLog.Debug( "load AndroidSipStack" );

@@ -75,4 +75,11 @@ public interface SipUserAgentCallBack
 	 * @param strReferToId	통화 전환될 상대방 아이디
 	 */
 	public void EventBlindTransfer( String strCallId, String strReferToId );
+	
+	/** SMS 요청 수신 이벤트 핸들러
+	 * @param strFrom		SIP From 사용자 아이디
+	 * @param strTo			SIP To 사용자 아이디
+	 * @param strSms		SMS 내용
+	 */
+	public void EventMessage( String strFrom, String strTo, String strSms );
 }
