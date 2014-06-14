@@ -135,6 +135,12 @@ LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
 				m_pclsCallBack->EventTransferResponse( pclsParam->m_pszCallId, pclsParam->m_iSipStatus );
 			}
 			break;
+		case SMC_SMS:
+			{
+				CEventMessage * pclsParam = (CEventMessage *)lParam;
+				m_pclsCallBack->EventMessage( pclsParam->m_pszFrom, pclsParam->m_pszTo, pclsParam->m_pclsSipMessage );
+			}
+			break;
 		default:
 			bNotFound = true;
 			break;
@@ -318,7 +324,11 @@ void CSipUserAgentMFC::EventTransferResponse( const char * pszCallId, int iSipSt
  */
 bool CSipUserAgentMFC::EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage )
 {
-	return false;
+	CEventMessage clsParam( pszFrom, pszTo, pclsMessage ); 
+
+	_SendMessage( SMC_SMS, (LPARAM)&clsParam );
+
+	return true;
 }
 
 /**

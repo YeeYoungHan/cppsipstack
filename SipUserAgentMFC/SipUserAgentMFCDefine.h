@@ -19,20 +19,20 @@
 #ifndef _SIP_USER_AGENT_MFC_DEFINE_H_
 #define _SIP_USER_AGENT_MFC_DEFINE_H_
 
-#define SMC_REGISER					1
-#define SMC_INCOMING_CALL		2
-#define SMC_CALL_RINGING		3
-#define SMC_CALL_START			4
-#define SMC_CALL_END				5
-#define SMC_REINVITE				6
-#define SMC_TRANSFER				7
-#define SMC_BLIND_TRANSFER	8
-#define SMC_MESSAGE					9
-#define SMC_TRANSFER_RESPONSE	10
-#define SMC_PRACK						11
+#define SMC_REGISER						10
+#define SMC_INCOMING_CALL			21
+#define SMC_CALL_RINGING			22
+#define SMC_CALL_START				23
+#define SMC_CALL_END					24
+#define SMC_REINVITE					31
+#define SMC_TRANSFER					41
+#define SMC_BLIND_TRANSFER		42
+#define SMC_TRANSFER_RESPONSE	43
+#define SMC_SMS								51		// SIP MESSAGE 요청 수신 이벤트
+#define SMC_PRACK							61
 
-#define SMC_RECV_REQUEST		100
-#define SMC_RECV_RESPONSE		101
+#define SMC_RECV_REQUEST			100
+#define SMC_RECV_RESPONSE			101
 
 #define WMR_TRUE						0
 #define WMR_FALSE						1

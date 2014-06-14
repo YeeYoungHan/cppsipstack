@@ -148,6 +148,25 @@ public:
 
 /**
  * @ingroup SipUserAgentMFC
+ * @brief EventMessage 정보 전달 클래스
+ */
+class CEventMessage
+{
+public:
+	CEventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage )
+	{
+		m_pszFrom = pszFrom;
+		m_pszTo = pszTo;
+		m_pclsSipMessage = pclsMessage;
+	}
+
+	const char * m_pszFrom;
+	const char * m_pszTo;
+	CSipMessage * m_pclsSipMessage;
+};
+
+/**
+ * @ingroup SipUserAgentMFC
  * @brief SIP 메시지 수신 정보 전달 클래스
  */
 class CEventSipMessage
