@@ -266,6 +266,49 @@ static bool TestXmlGetElementAttribute()
 	return true;
 }
 
+static bool TestXmlSelectElementData()
+{
+	const char * pszXml = "<Setup>\n"
+		" <Sip>\n"
+		"  <LocalIp>192.168.0.1</LocalIp>\n"
+		" </Sip>\n"
+		"</Setup>\n";
+	CXmlSearch	clsXml;
+	std::string strData;
+
+	// XML 문자열을 파싱한다.
+	if( clsXml.Parse( pszXml, (int)strlen(pszXml) ) == -1 )
+	{
+		printf( "xml(%s) parser error\n", pszXml );
+		return false;
+	}
+
+	// LocalIp element data 를 가져온다.
+	if( clsXml.SelectElementData( "LocalIp", strData ) == false )
+	{
+		printf( "xml(%s) SelectElementData error\n", pszXml );
+		return false;
+	}
+
+	strData.clear();
+	clsXml.SelectElementData( "Sip", "LocalIp", strData );
+
+	pszXml = "<Setup>\n"
+		" <Sip>\n"
+		"  <LocalIpList>\n"
+		"    <LocalIp>192.168.0.1</LocalIp>\n"
+		"  </LocalIpList>\n"
+		" </Sip>\n"
+		"</Setup>\n";
+
+	clsXml.Parse( pszXml, (int)strlen(pszXml) );
+
+	strData.clear();
+	clsXml.SelectElementData( 0, strData, 3, "Sip", "LocalIpList", "LocalIp" );
+
+	return true;
+}
+
 bool TestXmlSearch( )
 {
 	if( TestXmlSelectData("<Setup>\n"
@@ -404,6 +447,7 @@ bool TestXmlSearch( )
 		"</Setup>\n") == false ) return false;
 
 	if( TestXmlGetElementAttribute() == false ) return false;
+	if( TestXmlSelectElementData() == false ) return false;
 
 	return true;
 }
