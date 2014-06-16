@@ -425,7 +425,7 @@ static bool gbIsStartPipeThread = false;
 static int giListenPort = 0;
 
 /** 윈도우용 pipe 메소드를 위한 쓰레드 */
-DWORD WINAPI PipeThread( LPVOID lpParameter )
+THREAD_API PipeThread( LPVOID lpParameter )
 {
 	int			iPort;
 	char		szBuf[12];

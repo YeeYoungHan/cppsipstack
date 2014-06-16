@@ -30,11 +30,7 @@ time_t giTime = 0;
  * @param lpParameter SIP stack 객체
  * @returns 0 을 리턴한다.
  */
-#ifdef WIN32
-DWORD WINAPI SipStackThread( LPVOID lpParameter )
-#else
-void * SipStackThread( void * lpParameter )
-#endif
+THREAD_API SipStackThread( LPVOID lpParameter )
 {
 	CSipStack * pclsSipStack = (CSipStack *)lpParameter;
 	struct timeval sttTime;

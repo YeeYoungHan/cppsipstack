@@ -27,11 +27,7 @@
  * @param lpParameter CSipUserAgent 객체의 포인터
  * @returns 0 을 리턴한다.
  */
-#ifdef WIN32
-DWORD WINAPI SipRegisterThread( LPVOID lpParameter )
-#else
-void * SipRegisterThread( void * lpParameter )
-#endif
+THREAD_API SipRegisterThread( LPVOID lpParameter )
 {
 	CSipUserAgent * pclsSipUserAgent = (CSipUserAgent *)lpParameter;
 	SIP_SERVER_INFO_LIST::iterator itList;

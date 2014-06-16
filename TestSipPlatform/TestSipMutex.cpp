@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipPlatformDefine.h"
 #include "ServerUtility.h"
 #include "SipMutex.h"
 
@@ -29,7 +30,7 @@ void PrintTickCount( const char * pszName )
 	printf( "%s tick[%u]\n", pszName, GetTickCount() );
 }
 
-DWORD WINAPI TestSipMutexThread( LPVOID lpParameter )
+THREAD_API TestSipMutexThread( LPVOID lpParameter )
 {
 	for( int i = 0; i < TEST_COUNT; ++i )
 	{

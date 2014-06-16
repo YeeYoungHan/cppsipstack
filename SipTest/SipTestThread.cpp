@@ -103,7 +103,7 @@ int StartCall( const char * pszTestName, CSipCallRtp & clsRtp, CSipCallRoute & c
  * @param lpParameter 
  * @returns 0 을 리턴한다.
  */
-DWORD WINAPI SipTestThread( LPVOID lpParameter )
+THREAD_API SipTestThread( LPVOID lpParameter )
 {
 	CSipCallRtp clsRtp;
 	CSipCallRoute clsRoute;

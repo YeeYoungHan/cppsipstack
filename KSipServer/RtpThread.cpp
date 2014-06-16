@@ -44,11 +44,7 @@ public:
  * @param lpParameter 의미없음
  * @returns 0 을 리턴한다.
  */
-#ifdef WIN32
-DWORD WINAPI RtpThread( LPVOID lpParameter )
-#else
-void * RtpThread( void * lpParameter )
-#endif
+THREAD_API RtpThread( LPVOID lpParameter )
 {
 	CRtpThreadInfo * pclsThreadInfo = (CRtpThreadInfo *)lpParameter;
 	int				iPort = pclsThreadInfo->m_iPort;

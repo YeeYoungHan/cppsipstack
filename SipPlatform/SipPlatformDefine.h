@@ -43,11 +43,16 @@ typedef int int32_t;
 typedef __int16 int16_t;
 typedef char int8_t;
 
+#define THREAD_API	DWORD WINAPI
+
 #else
 
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+
+#define THREAD_API	void *
+#define LPVOID			void *
 
 #endif
 
