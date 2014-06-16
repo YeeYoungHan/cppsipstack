@@ -45,11 +45,7 @@ static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const ch
  * @param lpParameter SIP stack 포인터
  * @returns 0 을 리턴한다.
  */
-#ifdef WIN32
-DWORD WINAPI SipUdpThread( LPVOID lpParameter )
-#else
-void * SipUdpThread( void * lpParameter )
-#endif
+THREAD_API SipUdpThread( LPVOID lpParameter )
 {
 	CSipStack * pclsSipStack = (CSipStack *)lpParameter;
 	struct pollfd arrPoll[1];

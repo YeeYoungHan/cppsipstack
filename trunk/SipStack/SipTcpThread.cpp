@@ -46,11 +46,7 @@ static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const ch
  * @param lpParameter CThreadListEntry 객체의 포인터
  * @returns 0 을 리턴한다.
  */
-#ifdef WIN32
-DWORD WINAPI SipTcpThread( LPVOID lpParameter )
-#else
-void * SipTcpThread( void * lpParameter )
-#endif
+THREAD_API SipTcpThread( LPVOID lpParameter )
 {
 	CThreadListEntry * pclsEntry = (CThreadListEntry *)lpParameter;
 	CSipStack * pclsSipStack = (CSipStack *)pclsEntry->m_pUser;
@@ -139,11 +135,7 @@ FUNC_END:
  * @param lpParameter SIP stack 포인터
  * @returns 0 을 리턴한다.
  */
-#ifdef WIN32
-DWORD WINAPI SipTcpListenThread( LPVOID lpParameter )
-#else
-void * SipTcpListenThread( void * lpParameter )
-#endif
+THREAD_API SipTcpListenThread( LPVOID lpParameter )
 {
 	CSipStack * pclsSipStack = (CSipStack *)lpParameter;
 	struct pollfd arrPollFd[2];

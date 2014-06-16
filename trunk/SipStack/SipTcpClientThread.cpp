@@ -37,11 +37,7 @@ public:
  * @param lpParameter CThreadListEntry 객체의 포인터
  * @returns 0 을 리턴한다.
  */
-#ifdef WIN32
-DWORD WINAPI SipTcpClientThread( LPVOID lpParameter )
-#else
-void * SipTcpClientThread( void * lpParameter )
-#endif
+THREAD_API SipTcpClientThread( LPVOID lpParameter )
 {
 	CSipTcpClientArg * pclsArg = (CSipTcpClientArg *)lpParameter;
 	bool bRes = false;

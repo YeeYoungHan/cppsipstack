@@ -25,11 +25,7 @@ bool StartSipUdpThread( CSipStack * pclsSipStack );
 bool StartSipStackThread( CSipStack * pclsSipStack );
 
 // SipTcpThread.cpp
-#ifdef WIN32
-DWORD WINAPI SipTcpThread( LPVOID lpParameter );
-#else
-void * SipTcpThread( void * lpParameter );
-#endif
+THREAD_API SipTcpThread( LPVOID lpParameter );
 
 bool StartSipTcpListenThread( CSipStack * pclsSipStack );
 
@@ -42,11 +38,7 @@ bool StartSipTlsClientThread( CSipStack * pclsSipStack, const char * pszIp, int 
 // SipTlsThread.cpp
 #ifdef USE_TLS
 
-#ifdef WIN32
-DWORD WINAPI SipTlsThread( LPVOID lpParameter );
-#else
-void * SipTlsThread( void * lpParameter );
-#endif
+THREAD_API SipTlsThread( LPVOID lpParameter );
 
 bool StartSipTlsListenThread( CSipStack * pclsSipStack );
 

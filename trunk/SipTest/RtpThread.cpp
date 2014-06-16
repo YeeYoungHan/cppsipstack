@@ -49,7 +49,7 @@ void InitRtpHeader( CRtpHeader * pclsRtpHeader )
  * @param lpParameter 
  * @returns 0 을 리턴한다.
  */
-DWORD WINAPI RtpThread( LPVOID lpParameter )
+THREAD_API RtpThread( LPVOID lpParameter )
 {
 	struct pollfd arrPoll[4];
 	char	szSendPacket[1500], szRecvPacket[1500], szIp[41];

@@ -30,11 +30,7 @@
  * @param lpParameter 의미없음
  * @returns 0 을 리턴한다.
  */
-#ifdef WIN32
-DWORD WINAPI ServerThread( LPVOID lpParameter )
-#else
-void * ServerThread( void * lpParameter )
-#endif
+THREAD_API ServerThread( LPVOID lpParameter )
 {
 	IMonitorCallBack * pclsCallBack = (IMonitorCallBack *)lpParameter;
 	Socket hMonitorSocket = INVALID_SOCKET;

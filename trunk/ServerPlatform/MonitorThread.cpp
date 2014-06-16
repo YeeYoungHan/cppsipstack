@@ -83,11 +83,7 @@ static bool MonitorCommand( CMonitorSocket * pclsArg, const char * pszPacket )
  * @param lpParameter 의미없음
  * @returns 0 을 리턴한다.
  */
-#ifdef WIN32
-DWORD WINAPI MonitorThread( LPVOID lpParameter )
-#else
-void * MonitorThread( void * lpParameter )
-#endif
+THREAD_API MonitorThread( LPVOID lpParameter )
 {
 	CMonitorSocket * pclsArg = ( CMonitorSocket * )lpParameter;
 	char	szPacket[1024];

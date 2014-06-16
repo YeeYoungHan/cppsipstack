@@ -39,7 +39,7 @@ extern CSipUserAgent		 gclsSipUserAgent;
  * @param lpParameter 
  * @returns 0 을 리턴한다.
  */
-DWORD WINAPI SipTestThread( LPVOID lpParameter )
+THREAD_API SipTestThread( LPVOID lpParameter )
 {
 	struct timeval sttStart, sttEnd;
 
