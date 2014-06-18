@@ -285,6 +285,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SdpAttributeCrypto.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SdpBandWidth.cpp"
 				>
 			</File>
@@ -316,6 +320,10 @@
 			>
 			<File
 				RelativePath=".\SdpAttribute.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SdpAttributeCrypto.h"
 				>
 			</File>
 			<File

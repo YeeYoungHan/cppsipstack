@@ -15,7 +15,7 @@ INC=-I ../SipParser -I../SipPlatform
 all: libsdpparser.a
 
 LIB_OBJ=SdpAttribute.o SdpBandWidth.o SdpConnection.o SdpMedia.o \
-	SdpMessage.o SdpOrigin.o SdpTime.o
+	SdpMessage.o SdpOrigin.o SdpTime.o SdpAttributeCrypto.o
 
 libsdpparser.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)
