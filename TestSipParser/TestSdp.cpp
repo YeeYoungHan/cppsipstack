@@ -17,6 +17,7 @@
  */
 
 #include "SdpMessage.h"
+#include "SdpAttributeCrypto.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -215,6 +216,23 @@ bool TestSdp()
 					"m=video 11263 RTP/AVP 97\r\n"
 					"a=rtpmap:97 H264/90000\r\n"
 					"a=fmtp:97 profile-level-id=428016;max-br=5000;max-mbps=490000;max-fs=9000;max-smbps=490000;max-fps=6000;max-rcmd-nalu-size=3456000\r\n" );
+
+	CSdpAttributeCrypto clsCrypto;
+	const char * pszCrypto = "1 AES_CM_128_HMAC_SHA1_80 inline:7s65riA38OlE4U5OepU5zgaoMvzOL19nSQqeursI";
+
+	if( clsCrypto.Parse( pszCrypto, strlen(pszCrypto) ) == -1 )
+	{
+		printf( "crypto[%s] parser error\n", pszCrypto );
+		return false;
+	}
+
+	if( strcmp( clsCrypto.m_strTag.c_str(), "1" ) || 
+			strcmp( clsCrypto.m_strCryptoSuite.c_str(), "AES_CM_128_HMAC_SHA1_80" ) ||
+			strcmp( clsCrypto.m_strKey.c_str(), "7s65riA38OlE4U5OepU5zgaoMvzOL19nSQqeursI" ) )
+	{
+		printf( "crypto[%s] parser result error\n", pszCrypto );
+		return false;
+	}
 
 	return true;
 }
