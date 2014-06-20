@@ -37,6 +37,7 @@ THREAD_API ServerThread( LPVOID lpParameter )
 	pollfd sttPoll[1];
 	char	szIp[16];
 	int		iPort, n;
+	std::string	strIp;
 
 	hMonitorSocket = TcpListen( pclsCallBack->m_iMonitorPort, 255 );
 	if( hMonitorSocket == INVALID_SOCKET )
@@ -71,7 +72,12 @@ THREAD_API ServerThread( LPVOID lpParameter )
 		}
 		else
 		{
-			CLog::Print( LOG_ERROR, "monitor client(%s:%d) is disconnected because it's ip is not monitor ip", szIp, iPort );
+			if( strcmp( strIp.c_str(), szIp ) )
+			{
+				CLog::Print( LOG_ERROR, "monitor client(%s:%d) is disconnected because it's ip is not monitor ip", szIp, iPort );
+				strIp = szIp;
+			}
+
 			closesocket( hClientSocket );
 		}
 	}
