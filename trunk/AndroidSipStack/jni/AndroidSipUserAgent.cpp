@@ -261,3 +261,29 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_TransferCall( JNIEn
 
 	return JNI_TRUE;
 }
+
+/**
+ * @ingroup AndroidSipStack
+ * @brief ReINVITE 메시지를 전송한다.
+ * @param env							JNIEnv
+ * @param jcSipUserAgent	java SipUserAgent 클래스
+ * @param strCallId				SIP call-id
+ * @param joSipCallRtp		RTP 정보
+ * @returns 성공하면 JNI_TRUE 를 리턴하고 실패하면 JNI_FALSE 를 리턴한다.
+ */
+JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_SendReInvite( JNIEnv * env, jclass, jstring jsCallId, jobject joSipCallRtp )
+{
+	std::string	strCallId;
+	CSipCallRtp clsRtp;
+
+	if( GetString( env, jsCallId, strCallId ) == false ) return JNI_FALSE;
+	if( GetSipCallRtp( env, joSipCallRtp, clsRtp ) == false ) return JNI_FALSE;
+
+	if( gclsUserAgent.SendReInvite( strCallId.c_str(), &clsRtp ) == false )
+	{
+		AndroidErrorLog( "StopCall - gclsUserAgent.SendReInvite error" );
+		return JNI_FALSE;
+	}
+
+	return JNI_TRUE;
+}
