@@ -87,6 +87,13 @@ public class SipUserAgent
 	 */
 	public static native boolean TransferCall( String strCallId, String strToCallId );
 	
+	/** ReINVITE 메시지를 전송한다.
+	 * @param strCallId	SIP Call-ID
+	 * @param clsRtp		local RTP 정보 저장 객체
+	 * @return 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+	 */
+	public static native boolean SendReInvite( String strCallId, SipCallRtp clsRtp );
+	
 	/** SipUserAgent 의 이벤트를 수신할 callback interface 를 등록한다.
 	 * @param clsCallBack	callback interface
 	 */
