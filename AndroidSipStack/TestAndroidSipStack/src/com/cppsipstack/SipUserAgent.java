@@ -94,6 +94,14 @@ public class SipUserAgent
 	 */
 	public static native boolean SendReInvite( String strCallId, SipCallRtp clsRtp );
 	
+	/** SMS 메시지를 전송한다.
+	 * @param strFrom	발신자 아이디
+	 * @param strTo		수신자 아이디
+	 * @param strText	메시지
+	 * @return 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+	 */
+	public static native boolean SendSms( String strFrom, String strTo, String strText );
+	
 	/** SipUserAgent 의 이벤트를 수신할 callback interface 를 등록한다.
 	 * @param clsCallBack	callback interface
 	 */

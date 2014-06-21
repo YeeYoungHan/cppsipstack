@@ -29,6 +29,23 @@
 CSipUserAgent gclsUserAgent;
 LogCallBack gclsLogCallBack;
 
+bool GetSipCallRoute( CSipCallRoute & clsRoute )
+{
+	SIP_SERVER_INFO_LIST::iterator	itList;
+
+	for( itList = gclsUserAgent.m_clsRegisterList.begin(); itList != gclsUserAgent.m_clsRegisterList.end(); ++itList )
+	{
+		if( itList->m_bLogin )
+		{
+			clsRoute.m_strDestIp = itList->m_strIp;
+			clsRoute.m_iDestPort = itList->m_iPort;
+			return true;
+		}
+	}
+
+	return false;
+}
+
 /**
  * @ingroup AndroidSipStack
  * @brief SIP 서버 정보를 저장한다.
@@ -125,21 +142,7 @@ JNIEXPORT jstring JNICALL Java_com_cppsipstack_SipUserAgent_StartCall( JNIEnv * 
 	if( GetString( env, jsTo, strTo ) == false ) return NULL;
 	if( GetSipCallRtp( env, joSipCallRtp, clsRtp ) == false ) return NULL;
 
-	SIP_SERVER_INFO_LIST::iterator	itList;
-	bool bRouteFound = false;
-
-	for( itList = gclsUserAgent.m_clsRegisterList.begin(); itList != gclsUserAgent.m_clsRegisterList.end(); ++itList )
-	{
-		if( itList->m_bLogin )
-		{
-			clsRoute.m_strDestIp = itList->m_strIp;
-			clsRoute.m_iDestPort = itList->m_iPort;
-			bRouteFound = true;
-			break;
-		}
-	}
-
-	if( bRouteFound == false )
+	if( GetSipCallRoute( clsRoute ) == false )
 	{
 		AndroidErrorLog( "StartCall - call route is not found" );
 		return NULL;
@@ -282,6 +285,41 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_SendReInvite( JNIEn
 	if( gclsUserAgent.SendReInvite( strCallId.c_str(), &clsRtp ) == false )
 	{
 		AndroidErrorLog( "StopCall - gclsUserAgent.SendReInvite error" );
+		return JNI_FALSE;
+	}
+
+	return JNI_TRUE;
+}
+
+/**
+ * @ingroup AndroidSipStack
+ * @brief text 기반 SMS 메시지를 전송한다.
+ * @param env							JNIEnv
+ * @param jcSipUserAgent	java SipUserAgent 클래스
+ * @param jsFrom					발신자 아이디
+ * @param jsTo						수신자 아이디
+ * @param jsText					텍스트 메시지
+ * @returns 성공하면 JNI_TRUE 를 리턴하고 실패하면 JNI_FALSE 를 리턴한다.
+ */
+JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_SendSms( JNIEnv * env, jclass, jstring jsFrom, jstring jsTo, jstring jsText )
+{
+	std::string	strFrom, strTo, strText;
+	CSipCallRtp clsRtp;
+	CSipCallRoute clsRoute;
+
+	if( GetString( env, jsFrom, strFrom ) == false ) return NULL;
+	if( GetString( env, jsTo, strTo ) == false ) return NULL;
+	if( GetString( env, jsTo, strText ) == false ) return NULL;
+
+	if( GetSipCallRoute( clsRoute ) == false )
+	{
+		AndroidErrorLog( "SendSms - call route is not found" );
+		return JNI_FALSE;
+	}
+
+	if( gclsUserAgent.SendSms( strFrom.c_str(), strTo.c_str(), strText.c_str(), &clsRoute ) == false )
+	{
+		AndroidErrorLog( "SendSms - gclsUserAgent.SendSms error" );
 		return JNI_FALSE;
 	}
 
