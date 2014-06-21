@@ -3,7 +3,7 @@
 ======
 
 * 안드로이드에서 사용할 수 있는 SIP stack NDK 라이브러리 및 java class 를 개발한다.
-
+* 안드로이드용 C++ SIP Stack NDK 라이브러리와 java class 를 테스트할 수 있는 앱을 개발한다.
 
 =======================
 AndroidSipStack NDK 컴파일 방법

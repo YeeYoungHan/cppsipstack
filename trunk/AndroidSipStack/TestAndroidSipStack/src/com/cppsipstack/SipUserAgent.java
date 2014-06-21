@@ -73,6 +73,13 @@ public class SipUserAgent
 	 */
 	public static native boolean AcceptCall( String strCallId, SipCallRtp clsRtp );
 	
+	/** Blind transfer 를 실행한다.
+	 * @param strCallId SIP Call-ID
+	 * @param strTo			통화 전달을 받을 아이디
+	 * @return 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+	 */
+	public static native boolean TransferCallBlind( String strCallId, String strTo );
+	
 	/** SipUserAgent 의 이벤트를 수신할 callback interface 를 등록한다.
 	 * @param clsCallBack	callback interface
 	 */
