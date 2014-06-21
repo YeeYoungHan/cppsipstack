@@ -48,7 +48,7 @@ CSipMessage * CSipUserAgent::DeleteIncomingCall( const char * pszCallId )
 
 /**
  * @ingroup SipUserAgent
- * @brief SIP 통화 요청에 대한 Ring / Session Progress 응답 메시지를 전송한다.
+ * @brief SIP 통화 요청에 대한 Ring / Session Progress 응답 메시지를 전송한다. IP-PBX 에서 Ring / Session Progress 메시지를 전달할 때에 사용된다.
  * @param pszCallId		SIP Call-ID
  * @param iSipStatus	SIP 응답 코드
  * @param pclsRtp			local RTP 정보 저장 객체
@@ -64,31 +64,28 @@ bool CSipUserAgent::RingCall( const char * pszCallId, int iSipStatus, CSipCallRt
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
-		if( itMap->second.m_sttStartTime.tv_sec == 0 )
+		if( itMap->second.m_sttStartTime.tv_sec == 0 && itMap->second.m_pclsInvite )
 		{
-			if( itMap->second.m_pclsInvite )
+			pclsMessage = itMap->second.m_pclsInvite->CreateResponse( iSipStatus );
+
+			if( pclsRtp )
 			{
-				pclsMessage = itMap->second.m_pclsInvite->CreateResponse( iSipStatus );
-
-				if( pclsRtp )
-				{
-					itMap->second.SetLocalRtp( pclsRtp );
-					itMap->second.AddSdp( pclsMessage );
-				}
-
-				if( itMap->second.m_iRSeq != -1 )
-				{
-					pclsMessage->AddHeader( "Allow", "PRACK, INVITE, ACK, BYE, CANCEL, REFER, NOTIFY, MESSAGE" );
-					pclsMessage->AddHeader( "Require", "100rel" );
-
-					char szRSeq[21];
-
-					snprintf( szRSeq, sizeof(szRSeq), "%d", itMap->second.m_iRSeq );
-					pclsMessage->AddHeader( "RSeq", szRSeq );
-				}
-
-				bRes = true;
+				itMap->second.SetLocalRtp( pclsRtp );
+				itMap->second.AddSdp( pclsMessage );
 			}
+
+			if( itMap->second.m_iRSeq != -1 )
+			{
+				pclsMessage->AddHeader( "Allow", "PRACK, INVITE, ACK, BYE, CANCEL, REFER, NOTIFY, MESSAGE" );
+				pclsMessage->AddHeader( "Require", "100rel" );
+
+				char szRSeq[21];
+
+				snprintf( szRSeq, sizeof(szRSeq), "%d", itMap->second.m_iRSeq );
+				pclsMessage->AddHeader( "RSeq", szRSeq );
+			}
+
+			bRes = true;
 		}
 	}
 	m_clsDialogMutex.release();
