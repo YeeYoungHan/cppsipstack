@@ -22,6 +22,7 @@
 #include <jni.h>
 
 /**
+ * @ingroup AndroidSipStack
  * @brief java 에서 사용하는 클래스 및 callback 메소드 저장 클래스
  */
 class CAndroidClass
@@ -42,6 +43,7 @@ public:
 	jmethodID m_jmEventCallStart;
 	jmethodID m_jmEventCallEnd;
 	jmethodID m_jmEventReInvite;
+	jmethodID m_jmEventPrack;
 	jmethodID m_jmEventTransfer;
 	jmethodID m_jmEventBlindTransfer;
 	jmethodID m_jmEventMessage;

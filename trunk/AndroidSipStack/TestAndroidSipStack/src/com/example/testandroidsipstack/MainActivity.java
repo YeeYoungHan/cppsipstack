@@ -250,6 +250,12 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	}
 	
 	@Override
+	public void EventPrack( String strCallId, SipCallRtp clsRtp )
+	{
+		m_txtLog.setText( "EventPrack" );
+	}
+	
+	@Override
 	public void EventTransfer( String strCallId, String strReferToCallId, boolean bScreenedTransfer )
 	{
 		m_txtLog.setText( "EventTransfer" );

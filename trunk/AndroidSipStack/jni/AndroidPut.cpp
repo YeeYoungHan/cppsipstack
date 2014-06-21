@@ -21,6 +21,7 @@
 #include <string.h>
 
 /**
+ * @ingroup AndroidSipStack
  * @brief java 객체의 문자열 멤버 변수에 값을 입력한다.
  * @param env				JNIEnv
  * @param jObject		java 객체
@@ -53,6 +54,7 @@ bool PutString( JNIEnv * env, jobject jObject, jclass jClass, const char * pszNa
 }
 
 /**
+ * @ingroup AndroidSipStack
  * @brief java 객체의 정수 멤버 변수에 값을 입력한다.
  * @param env				JNIEnv
  * @param jObject		java 객체

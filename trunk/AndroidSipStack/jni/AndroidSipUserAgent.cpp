@@ -30,6 +30,7 @@ CSipUserAgent gclsUserAgent;
 LogCallBack gclsLogCallBack;
 
 /**
+ * @ingroup AndroidSipStack
  * @brief SIP 서버 정보를 저장한다.
  * @param env							JNIEnv
  * @param jcSipUserAgent	java SipUserAgent 클래스
@@ -48,6 +49,7 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_InsertRegisterInfo(
 }
 
 /**
+ * @ingroup AndroidSipStack
  * @brief SIP stack 을 시작한다.
  * @param env							JNIEnv
  * @param jcSipUserAgent	java SipUserAgent 클래스
@@ -90,6 +92,7 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Start( JNIEnv * env
 }
 
 /**
+ * @ingroup AndroidSipStack
  * @brief SIP stack 을 종료한다.
  * @param env							JNIEnv
  * @param jcSipUserAgent	java SipUserAgent 클래스
@@ -103,6 +106,7 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Stop( JNIEnv * env,
 }
 
 /**
+ * @ingroup AndroidSipStack
  * @brief 전화 통화 요청한다.
  * @param env							JNIEnv
  * @param jcSipUserAgent	java SipUserAgent 클래스
@@ -159,6 +163,7 @@ JNIEXPORT jstring JNICALL Java_com_cppsipstack_SipUserAgent_StartCall( JNIEnv * 
 }
 
 /**
+ * @ingroup AndroidSipStack
  * @brief 전화 통화를 종료한다.
  * @param env							JNIEnv
  * @param jcSipUserAgent	java SipUserAgent 클래스
@@ -182,6 +187,7 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_StopCall( JNIEnv * 
 }
 
 /**
+ * @ingroup AndroidSipStack
  * @brief 통화 요청을 수락한다.
  * @param env							JNIEnv
  * @param jcSipUserAgent	java SipUserAgent 클래스

@@ -68,6 +68,13 @@ public class SipUserAgentHandler extends Handler implements SipUserAgentCallBack
 			
 			m_clsCallBack.EventReInvite( strCallId, clsRtp );
 		}
+		else if( strCommand.equals( EVENT_PRACK ) )
+		{
+			String strCallId = b.getString( ARG_CALL_ID );
+			SipCallRtp clsRtp = (SipCallRtp)b.getSerializable( ARG_RTP );
+			
+			m_clsCallBack.EventReInvite( strCallId, clsRtp );
+		}
 		else if( strCommand.equals( EVENT_TRANSFER ) )
 		{
 			String strCallId = b.getString( ARG_CALL_ID );
@@ -175,6 +182,19 @@ public class SipUserAgentHandler extends Handler implements SipUserAgentCallBack
 	}
 
 	@Override
+	public void EventPrack( String strCallId, SipCallRtp clsRtp )
+	{
+		Bundle b = new Bundle();
+  	
+  	Message m = obtainMessage( );
+  	b.putString( COMMAND, EVENT_PRACK );
+  	b.putString( ARG_CALL_ID, strCallId );
+  	b.putSerializable( ARG_RTP, clsRtp );
+  	m.setData( b );
+  	sendMessage( m );
+	}
+	
+	@Override
 	public void EventTransfer( String strCallId, String strReferToCallId, boolean bScreenedTransfer )
 	{
 		Bundle b = new Bundle();
@@ -214,4 +234,5 @@ public class SipUserAgentHandler extends Handler implements SipUserAgentCallBack
   	m.setData( b );
   	sendMessage( m );
 	}
+
 }

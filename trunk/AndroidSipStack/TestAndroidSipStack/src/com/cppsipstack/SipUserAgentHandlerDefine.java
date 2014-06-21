@@ -14,6 +14,7 @@ public interface SipUserAgentHandlerDefine
 	final String EVENT_CALL_START = "EventCallStart";
 	final String EVENT_CALL_END = "EventCallEnd";
 	final String EVENT_REINVITE = "EventReInvite";
+	final String EVENT_PRACK = "EventPrack";
 	final String EVENT_TRANSFER = "EventTransfer";
 	final String EVENT_BLIND_TRANSFER = "EventBlindTransfer";
 	final String EVENT_MESSAGE = "EventMessage";

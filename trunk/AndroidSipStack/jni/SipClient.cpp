@@ -26,7 +26,7 @@ CSipClient gclsSipClient;
 extern JavaVM * gjVm;
 
 /**
- * @ingroup SipClient
+ * @ingroup AndroidSipStack
  * @brief SIP REGISTER 응답 메시지 수신 이벤트 핸들러
  * @param pclsInfo	SIP REGISTER 응답 메시지를 전송한 IP-PBX 정보 저장 객체
  * @param iStatus		SIP REGISTER 응답 코드
@@ -69,7 +69,7 @@ FUNC_END:
 }
 
 /**
- * @ingroup SipClient
+ * @ingroup AndroidSipStack
  * @brief SIP 통화 요청 수신 이벤트 핸들러
  * @param	pszCallId	SIP Call-ID
  * @param pszFrom		SIP From 사용자 아이디
@@ -140,7 +140,7 @@ FUNC_END:
 }
 
 /**
- * @ingroup SipClient
+ * @ingroup AndroidSipStack
  * @brief SIP Ring / Session Progress 수신 이벤트 핸들러
  * @param	pszCallId		SIP Call-ID
  * @param iSipStatus	SIP 응답 코드
@@ -197,7 +197,7 @@ FUNC_END:
 }
 
 /**
- * @ingroup SipClient
+ * @ingroup AndroidSipStack
  * @brief SIP 통화 연결 이벤트 핸들러
  * @param	pszCallId	SIP Call-ID
  * @param pclsRtp		RTP 정보 저장 객체
@@ -253,7 +253,7 @@ FUNC_END:
 }
 
 /**
- * @ingroup SipClient
+ * @ingroup AndroidSipStack
  * @brief SIP 통화 종료 이벤트 핸들러
  * @param	pszCallId		SIP Call-ID
  * @param iSipStatus	SIP 응답 코드. INVITE 에 대한 오류 응답으로 전화가 종료된 경우, INVITE 의 응답 코드를 저장한다.
@@ -290,7 +290,7 @@ FUNC_END:
 }
 
 /**
- * @ingroup SipClient
+ * @ingroup AndroidSipStack
  * @brief SIP ReINVITE 수신 이벤트 핸들러
  * @param	pszCallId	SIP Call-ID
  * @param pclsRtp		RTP 정보 저장 객체
@@ -346,7 +346,63 @@ FUNC_END:
 }
 
 /**
- * @ingroup SipClient
+ * @ingroup AndroidSipStack
+ * @brief SIP PRACK 수신 이벤트 핸들러
+ * @param	pszCallId	SIP Call-ID
+ * @param pclsRtp		RTP 정보 저장 객체
+ */
+void CSipClient::EventPrack( const char * pszCallId, CSipCallRtp * pclsRtp )
+{
+	jstring jstrCallId = NULL;
+	jobject joSipCallRtp = NULL;
+
+	JNIEnv * env;
+	int iRet;
+
+#ifdef WIN32
+	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
+#else
+	iRet = gjVm->AttachCurrentThread( &env, NULL );
+#endif
+
+	if( iRet != 0 )
+	{
+		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
+		return;
+	}
+
+	jstrCallId = env->NewStringUTF( pszCallId );
+	if( jstrCallId == NULL )
+	{
+		AndroidErrorLog( "%s NewStringUTF(%s) error", __FUNCTION__, pszCallId );
+		goto FUNC_END;
+	}
+
+	joSipCallRtp = env->NewObject( gclsClass.m_jcSipCallRtp, gclsClass.m_jmSipCallRtpInit );
+	if( joSipCallRtp == NULL )
+	{
+		AndroidErrorLog( "%s NewObject error", __FUNCTION__ );
+		goto FUNC_END;
+	}
+
+	if( pclsRtp )
+	{
+		if( PutSipCallRtp( env, joSipCallRtp, *pclsRtp ) == false )
+		{
+			AndroidErrorLog( "%s PutSipCallRtp error", __FUNCTION__ );
+			goto FUNC_END;
+		}
+	}
+
+	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventPrack, jstrCallId, joSipCallRtp );
+
+FUNC_END:
+	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
+	if( joSipCallRtp ) env->DeleteLocalRef( joSipCallRtp );
+}
+
+/**
+ * @ingroup AndroidSipStack
  * @brief Screened / Unscreened Transfer 요청 수신 이벤트 핸들러
  * @param pszCallId					SIP Call-ID
  * @param pszReferToCallId	전화가 전달될 SIP Call-ID
@@ -402,7 +458,7 @@ FUNC_END:
 }
 
 /**
- * @ingroup SipClient
+ * @ingroup AndroidSipStack
  * @brief Blind Transfer 요청 수신 이벤트 핸들러
  * @param pszCallId			SIP Call-ID
  * @param pszReferToId	전화가 전달될 사용자 아이디
@@ -451,7 +507,7 @@ FUNC_END:
 }
 
 /**
- * @ingroup SipClient
+ * @ingroup AndroidSipStack
  * @brief SIP MESSAGE 수신 이벤트 핸들러
  * @param pszFrom			SIP 메시지 전송 아이디
  * @param pszTo				SIP 메시지 수신 아이디
@@ -511,7 +567,7 @@ FUNC_END:
 }
 
 /**
- * @ingroup SipClient
+ * @ingroup AndroidSipStack
  * @brief SIP 메시지 수신 쓰레드가 종료됨을 알려주는 이벤트 핸들러
  * @param iThreadId UDP 쓰레드 번호
  */

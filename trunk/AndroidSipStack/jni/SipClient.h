@@ -22,15 +22,15 @@
 #include "SipUserAgent.h"
 
 /**
- * @defgroup SipClient SipClient
+ * @defgroup AndroidSipStack AndroidSipStack
  * SIP Stack 을 이용한 SIP 클라이언트 예제 프로그램
  * SipUserAgent 라이브러리를 이용하여서 SIP stack 을 간접적으로 사용한다.
  * SIP 서버에 로그인하여 통화 요청/취소, 통화 종료, 통화 수신/수락/거절 기능을 수행한다.
  */
 
 /**
- * @ingroup SipClient
- * @brief 
+ * @ingroup AndroidSipStack
+ * @brief 안드로이드용 SIP stack 이벤트 클래스
  */
 class CSipClient : public ISipUserAgentCallBack
 {
@@ -42,6 +42,7 @@ public:
 	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
 	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
+	virtual void EventPrack( const char * pszCallId, CSipCallRtp * pclsRtp );
 	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer );
 	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId );
 	virtual bool EventMessage( const char * pszFrom, const char * pszTo, CSipMessage * pclsMessage );

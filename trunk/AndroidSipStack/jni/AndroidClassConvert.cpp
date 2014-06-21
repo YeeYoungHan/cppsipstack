@@ -22,6 +22,7 @@
 #include "AndroidPut.h"
 
 /**
+ * @ingroup AndroidSipStack
  * @brief Java SipServerInfo ∞¥√º∏¶ C++ CSipServerInfo ∞¥√º∑Œ ∫πªÁ«—¥Ÿ.
  * @param env							JNI
  * @param joSipServerInfo	Java SipServerInfo ∞¥√º
@@ -54,6 +55,7 @@ bool GetSipServerInfo( JNIEnv * env, jobject joSipServerInfo, CSipServerInfo & c
 }
 
 /**
+ * @ingroup AndroidSipStack
  * @brief C++ CSipServerInfo ∞¥√º∏¶ Java SipServerInfo ∞¥√º∑Œ ∫πªÁ«—¥Ÿ.
  * @param env							JNIEnv
  * @param joSipServerInfo Java SipServerInfo ∞¥√º
@@ -79,6 +81,7 @@ bool PutSipServerInfo( JNIEnv * env, jobject joSipServerInfo, CSipServerInfo & c
 }
 
 /**
+ * @ingroup AndroidSipStack
  * @brief Java SipStackSetup ∞¥√º∏¶ C++ CSipStackSetup ∞¥√º∑Œ ∫πªÁ«—¥Ÿ.
  * @param env							JNI
  * @param joSipStackSetup	Java SipStackSetup ∞¥√º
@@ -111,6 +114,7 @@ bool GetSipStackSetup( JNIEnv * env, jobject joSipStackSetup, CSipStackSetup & c
 }
 
 /**
+ * @ingroup AndroidSipStack
  * @brief Java SipCallRtp ∞¥√º∏¶ C++ CSipCallRtp ∞¥√º∑Œ ∫πªÁ«—¥Ÿ.
  * @param env						JNI
  * @param joSipCallRtp	Java SipCallRtp ∞¥√º
@@ -135,6 +139,7 @@ bool GetSipCallRtp( JNIEnv * env, jobject joSipCallRtp, CSipCallRtp & clsOutput 
 }
 
 /**
+ * @ingroup AndroidSipStack
  * @brief C++ CSipCallRtp ∞¥√º∏¶ Java SipCallRtp ∞¥√º∑Œ ∫πªÁ«—¥Ÿ.
  * @param env						JNI
  * @param joSipCallRtp	Java SipCallRtp ∞¥√º

@@ -63,6 +63,12 @@ public interface SipUserAgentCallBack
 	 */
 	public void EventReInvite( String strCallId, SipCallRtp clsRtp );
 	
+	/** SIP PRACK 수신 이벤트 핸들러
+	 * @param strCallId	SIP Call-ID
+	 * @param clsRtp		RTP 정보 저장 객체
+	 */
+	public void EventPrack( String strCallId, SipCallRtp clsRtp );
+	
 	/** Screened / Unscreened Transfer 요청 수신 이벤트 핸들러
 	 * @param strCallId					SIP Call-ID
 	 * @param strReferToCallId	전화가 전달될 SIP Call-ID
