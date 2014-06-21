@@ -31,6 +31,7 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_Stop( JNIEnv * env,
 JNIEXPORT jstring JNICALL Java_com_cppsipstack_SipUserAgent_StartCall( JNIEnv * env, jclass, jstring strFrom, jstring strTo, jobject joSipCallRtp );
 JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_StopCall( JNIEnv * env, jclass, jstring strCallId, jint iSipCode );
 JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_AcceptCall( JNIEnv * env, jclass, jstring strCallId, jobject joSipCallRtp );
+JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_TransferCallBlind( JNIEnv * env, jclass, jstring jsCallId, jstring jsTo );
 
 #ifdef __cplusplus
 }

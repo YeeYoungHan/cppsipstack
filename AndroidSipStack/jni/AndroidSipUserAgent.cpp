@@ -211,3 +211,28 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_AcceptCall( JNIEnv 
 
 	return JNI_TRUE;
 }
+
+/**
+ * @ingroup AndroidSipStack
+ * @brief Blind transfer 를 실행한다.
+ * @param env							JNIEnv
+ * @param jcSipUserAgent	java SipUserAgent 클래스
+ * @param strCallId				SIP call-id
+ * @param jsTo						통화 전달을 받을 아이디
+ * @returns 성공하면 JNI_TRUE 를 리턴하고 실패하면 JNI_FALSE 를 리턴한다.
+ */
+JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_TransferCallBlind( JNIEnv * env, jclass, jstring jsCallId, jstring jsTo )
+{
+	std::string	strCallId, strTo;
+
+	if( GetString( env, jsCallId, strCallId ) == false ) return JNI_FALSE;
+	if( GetString( env, jsTo, strTo ) == false ) return JNI_FALSE;
+
+	if( gclsUserAgent.TransferCallBlind( strCallId.c_str(), strTo.c_str() ) == false )
+	{
+		AndroidErrorLog( "StopCall - gclsUserAgent.TransferCallBlind error" );
+		return JNI_FALSE;
+	}
+
+	return JNI_TRUE;
+}
