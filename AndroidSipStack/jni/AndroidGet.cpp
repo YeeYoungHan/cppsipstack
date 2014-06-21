@@ -20,6 +20,7 @@
 #include "AndroidLog.h"
 
 /**
+ * @ingroup AndroidSipStack
  * @brief 객체의 멤버 문자열 변수에 저장된 값을 가져온다.
  * @param env				JNIEnv
  * @param jObject		java 객체
@@ -61,6 +62,7 @@ bool GetString( JNIEnv * env, jobject jObject, jclass jClass, const char * pszNa
 }
 
 /**
+ * @ingroup AndroidSipStack
  * @brief 객체의 멤버 정수 변수에 저장된 값을 가져온다.
  * @param env				JNIEnv
  * @param jObject		java 객체
@@ -84,6 +86,7 @@ bool GetInt( JNIEnv * env, jobject jObject, jclass jClass, const char * pszName,
 }
 
 /**
+ * @ingroup AndroidSipStack
  * @brief 객체의 멤버 boolean 변수에 저장된 값을 가져온다.
  * @param env				JNIEnv
  * @param jObject		java 객체
@@ -116,6 +119,7 @@ bool GetBool( JNIEnv * env, jobject jObject, jclass jClass, const char * pszName
 }
 
 /**
+ * @ingroup AndroidSipStack
  * @brief java 문자열 변수에 저장된 값을 가져온다.
  * @param env				JNIEnv
  * @param js				java 문자열 변수
