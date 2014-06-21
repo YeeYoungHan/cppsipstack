@@ -122,7 +122,7 @@ bool CSipUserAgent::StopCall( const char * pszCallId, int iSipCode )
 
 /**
  * @ingroup SipUserAgent
- * @brief 183 응답 메시지를 전송한다.
+ * @brief 183 응답 메시지를 전송한다. SIP 클라이언트에서 183 응답 메시지를 전송할 때에 사용된다.
  * @param pszCallId SIP Call-ID
  * @param pclsRtp		local RTP 정보 저장 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
