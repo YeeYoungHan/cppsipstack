@@ -46,6 +46,8 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	TextView m_txtLog;
 	String m_strCallId = "";
 	SipUserAgentHandler	 m_clsHandler;
+	
+	static final String TAG = "SipEvent";
 
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
@@ -242,23 +244,29 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 		m_btnStopCall.setEnabled( false );
 		m_btnAcceptCall.setEnabled( false );
 	}
+	
+	void Log( String strText )
+	{
+		m_txtLog.setText( strText );
+		Log.i( TAG, strText );
+	}
 
 	@Override
 	public void EventReInvite( String strCallId, SipCallRtp clsRtp )
 	{
-		m_txtLog.setText( "EventReInvite" );
+		Log( "EventReInvite" );
 	}
 	
 	@Override
 	public void EventPrack( String strCallId, SipCallRtp clsRtp )
 	{
-		m_txtLog.setText( "EventPrack" );
+		Log( "EventPrack" );
 	}
 	
 	@Override
 	public void EventTransfer( String strCallId, String strReferToCallId, boolean bScreenedTransfer )
 	{
-		m_txtLog.setText( "EventTransfer" );
+		Log( "EventTransfer" );
 		
 		// QQQ: 현재 통화를 교체해야 한다.
 	}
@@ -266,7 +274,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	@Override
 	public void EventBlindTransfer( String strCallId, String strReferToId )
 	{
-		m_txtLog.setText( "EventBlindTransfer" );
+		Log( "EventBlindTransfer" );
 		
 		// QQQ: strReferToId 로 전화호출하여야 한다.
 	}
@@ -274,6 +282,6 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	@Override
 	public void EventMessage( String strFrom, String strTo, String strSms )
 	{
-		m_txtLog.setText( "EventMessage from(" + strFrom + ") to(" + strTo + ") sms(" + strSms + ")" );
+		Log( "EventMessage from(" + strFrom + ") to(" + strTo + ") sms(" + strSms + ")" );
 	}
 }

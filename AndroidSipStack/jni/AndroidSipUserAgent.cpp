@@ -237,7 +237,6 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_TransferCallBlind( 
 	return JNI_TRUE;
 }
 
-
 /**
  * @ingroup AndroidSipStack
  * @brief Screened / Unscreened transfer 를 실행한다.
