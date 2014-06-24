@@ -435,21 +435,20 @@ bool CSipUserAgent::TransferCallBlind( const char * pszCallId, const char * pszT
 
 	SIP_DIALOG_MAP::iterator		itMap;
 	CSipMessage * pclsMessage = NULL;
+	char szReferTo[1024];
 
 	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		pclsMessage = itMap->second.CreateRefer();
+		snprintf( szReferTo, sizeof(szReferTo), "<sip:%s@%s:%d>", pszTo, itMap->second.m_strContactIp.c_str(), itMap->second.m_iContactPort );
 	}
 	m_clsDialogMutex.release();
 
 	if( pclsMessage == NULL ) return false;
 
-	char szUri[1024];
-
-	snprintf( szUri, sizeof(szUri), "<sip:%s@%s:%d>", pszTo, m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
-	pclsMessage->AddHeader( "Refer-To", szUri );
+	pclsMessage->AddHeader( "Refer-To", szReferTo );
 
 	return m_clsSipStack.SendSipMessage( pclsMessage );
 }
@@ -468,6 +467,7 @@ bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszToCall
 	SIP_DIALOG_MAP::iterator		itMap;
 	CSipMessage * pclsMessage = NULL;
 	std::string strReplaces, strToId;
+	char szReferTo[1024], szReferBy[512];
 
 	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszToCallId );
@@ -484,6 +484,11 @@ bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszToCall
 		strReplaces.append( "from-tag%3D" );
 		strReplaces.append( itMap->second.m_strFromTag );
 
+		snprintf( szReferTo, sizeof(szReferTo), "<sip:%s@%s:%d?Replaces=%s>"
+			, strToId.c_str(), itMap->second.m_strContactIp.c_str(),  itMap->second.m_iContactPort, strReplaces.c_str() );
+		snprintf( szReferBy, sizeof(szReferBy), "<sip:%s@%s:%d>"
+			, strToId.c_str(), m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
+
 		itMap = m_clsDialogMap.find( pszCallId );
 		if( itMap != m_clsDialogMap.end() )
 		{
@@ -494,11 +499,8 @@ bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszToCall
 
 	if( pclsMessage == NULL ) return false;
 
-	char szUri[1024];
-
-	snprintf( szUri, sizeof(szUri), "<sip:%s@%s:%d?Replaces=%s>"
-		, strToId.c_str(), m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort, strReplaces.c_str() );
-	pclsMessage->AddHeader( "Refer-To", szUri );
+	pclsMessage->AddHeader( "Refer-To", szReferTo );
+	pclsMessage->AddHeader( "Referred-By", szReferBy );
 
 	return m_clsSipStack.SendSipMessage( pclsMessage );
 }
