@@ -110,6 +110,11 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	{
 		*clsDialog.m_pclsInvite = *pclsMessage;
 		clsDialog.m_pclsInvite->m_clsTo.InsertParam( SIP_TAG, szTag );
+
+		if( clsDialog.m_pclsInvite->m_clsRecordRouteList.size() > 0 )
+		{
+			clsDialog.m_clsRouteList = clsDialog.m_pclsInvite->m_clsRecordRouteList;
+		}
 	}
 
 	// Dialog 를 저장한다.

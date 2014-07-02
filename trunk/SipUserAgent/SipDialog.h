@@ -123,6 +123,9 @@ public:
 	/** 수신된 INVITE 메시지 */
 	CSipMessage * m_pclsInvite;
 
+	/** 수신된 INVITE 메시지에 저장된 Record-Route 리스트로 생성한 Route 리스트 */
+	SIP_FROM_LIST	m_clsRouteList;
+
 	CSipStack		* m_pclsSipStack;
 
 	CSipMessage * CreateInvite( );

@@ -1010,6 +1010,12 @@ CSipMessage * CSipMessage::CreateResponse( int iStatus, const char * pszToTag )
 	pclsResponse->m_clsCSeq = m_clsCSeq;
 	pclsResponse->m_eTransport = m_eTransport;
 
+	if( iStatus != SIP_TRYING )
+	{
+		// 100 Trying 은 SIP Record-Route 헤더를 포함하지 않아도 된다.
+		pclsResponse->m_clsRecordRouteList = m_clsRecordRouteList;
+	}
+
 	if( pszToTag )
 	{
 		pclsResponse->m_clsTo.InsertParam( SIP_TAG, pszToTag );

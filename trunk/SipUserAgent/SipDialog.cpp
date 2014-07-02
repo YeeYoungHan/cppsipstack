@@ -462,8 +462,15 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	pclsMessage->AddHeader( "P-Asserted-Identity", szUri );
 	pclsMessage->AddHeader( "Diversion", szUri );
 
-	// Route
-	pclsMessage->AddRoute( m_strContactIp.c_str(), m_iContactPort, m_eTransport );
+	if( m_clsRouteList.size() > 0 )
+	{
+		// 수신된 Record-Route 가 존재하면 이를 Route 에 포함시킨다.
+		pclsMessage->m_clsRouteList = m_clsRouteList;
+	}
+	else
+	{
+		pclsMessage->AddRoute( m_strContactIp.c_str(), m_iContactPort, m_eTransport );
+	}
 
 	return pclsMessage;
 }
