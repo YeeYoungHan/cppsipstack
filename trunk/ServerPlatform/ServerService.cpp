@@ -129,6 +129,12 @@ const char * GetConfigFileName()
 {
 	static char szConfigFileName[1024];
 
+	// full path 로 설정파일이름을 입력한 경우
+	if( gclsService.m_strConfigFileName.length() > 3 &&	!strncmp( gclsService.m_strConfigFileName.c_str() + 1, ":\\", 2 ) )
+	{
+		return gclsService.m_strConfigFileName.c_str();
+	}
+
 	snprintf( szConfigFileName, sizeof(szConfigFileName), "%s\\%s", CDirectory::GetProgramDirectory(), gclsService.m_strConfigFileName.c_str() );
 
 	return szConfigFileName;
