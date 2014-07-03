@@ -431,20 +431,20 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 				const char * pszTemp;
 
 				pszTemp = SearchSipParameter( itViaList->m_clsParamList, SIP_TRANSPORT );
+				if( pszTemp == NULL )
+				{
+					pszTemp = itViaList->m_strTransport.c_str();
+				}
+
 				if( pszTemp )
 				{
 					if( !strcasecmp( pszTemp, SIP_TRANSPORT_TCP ) )
 					{
 						eTransport = E_SIP_TCP;
 					}
-				}
-				else
-				{
-					const char * pszTransport = itViaList->m_strTransport.c_str();
-
-					if( !strcasecmp( pszTransport, SIP_TRANSPORT_TCP ) )
+					else if( !strcasecmp( pszTemp, SIP_TRANSPORT_TLS ) )
 					{
-						eTransport = E_SIP_TCP;
+						eTransport = E_SIP_TLS;
 					}
 				}
 			}
@@ -452,7 +452,7 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 
 		CSipFrom clsContact;
 
-		clsContact.m_clsUri.m_strProtocol = SIP_PROTOCOL;
+		clsContact.m_clsUri.m_strProtocol = SipGetProtocol( eTransport );
 
 		if( pclsMessage->IsRequest() )
 		{
