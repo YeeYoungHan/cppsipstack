@@ -170,6 +170,12 @@ bool CSipUri::Empty()
 	return false;
 }
 
+/**
+ * @ingroup SipParser
+ * @brief uri param 을 추가한다.
+ * @param pszName		param 이름
+ * @param pszValue	param 값
+ */
 void CSipUri::InsertParam( const char * pszName, const char * pszValue )
 {
 	InsertSipParameter( m_clsUriParamList, pszName, pszValue );
@@ -185,6 +191,10 @@ void CSipUri::InsertTransport( ESipTransport eTransport )
 	if( eTransport == E_SIP_TCP )
 	{
 		InsertSipParameter( m_clsUriParamList, SIP_TRANSPORT, SIP_TRANSPORT_TCP );
+	}
+	else if( eTransport == E_SIP_TLS )
+	{
+		InsertSipParameter( m_clsUriParamList, SIP_TRANSPORT, SIP_TRANSPORT_TLS );
 	}
 }
 
@@ -209,6 +219,10 @@ ESipTransport CSipUri::SelectTransport( )
 		if( !strcasecmp( pszValue, SIP_TRANSPORT_TCP ) )
 		{
 			return E_SIP_TCP;
+		}
+		else if( !strcasecmp( pszValue, SIP_TRANSPORT_TLS ) )
+		{
+			return E_SIP_TLS;
 		}
 	}
 
