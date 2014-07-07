@@ -86,8 +86,6 @@ namespace __gnu_cxx
 
 #endif
 
-void MiliSleep( int iMiliSecond );
-
 // 자료구조 모니터링
 #define MR_COL_SEP							"|"
 #define MR_ROW_SEP							"\n"
