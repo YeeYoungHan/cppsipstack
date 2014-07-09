@@ -342,9 +342,20 @@ void CLog::SetMaxLogSize( int iSize )
  */
 void CLog::SetMaxFolderSize( int64_t iSize )
 {
-	if( iSize < ( MIN_LOG_FILE_SIZE * 30 ) )
+	// 최소 30일 로그 파일 저장 공간을 확보한다.
+	if( m_iMaxLogSize == 0 )
 	{
-		iSize = MIN_LOG_FILE_SIZE * 30;
+		if( iSize < ( MIN_LOG_FILE_SIZE * 30 ) )
+		{
+			iSize = MIN_LOG_FILE_SIZE * 30;
+		}
+	}
+	else
+	{
+		if( iSize < m_iMaxLogSize * 30 )
+		{
+			iSize = m_iMaxLogSize * 30;
+		}
 	}
 
 	m_iMaxFolderSize = iSize;
