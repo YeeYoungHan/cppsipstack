@@ -48,6 +48,7 @@ public:
 	static bool FileList( const char * pszDirName, FILE_LIST & clsFileList );
 	static char * GetProgramDirectory( );
 	static int64_t GetSize( const char * pszDirName );
+	static void DeleteAllFile( const char * pszDirName );
 };
 
 #endif

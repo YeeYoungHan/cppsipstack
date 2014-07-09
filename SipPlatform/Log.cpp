@@ -37,9 +37,10 @@ char CLog::m_szDate[9] = { '\0' };
 FILE * CLog::m_sttFd = NULL;
 CSipMutex * CLog::m_pThreadMutex = NULL;
 int CLog::m_iLevel = LOG_ERROR;
-int CLog::m_iMaxLogSize = 0;
+int CLog::m_iMaxLogSize = DEFAULT_LOG_FILE_SIZE;
 int CLog::m_iLogSize = 0;
-int64_t CLog::m_iMaxFolderSize = 0;
+int64_t CLog::m_iMaxFolderSize = DEFAULT_LOG_FOLDER_SIZE;
+int64_t CLog::m_iFolderSize = 0;
 int CLog::m_iIndex = 1;
 ILogCallBack * CLog::m_pclsCallBack = NULL;
 
@@ -82,7 +83,7 @@ bool CLog::SetDirectory( const char * pszDirName )
 
 	if( CDirectory::Create( m_pszDirName ) != 0 ) return false;
 
-	DeleteOldFile();
+	m_iFolderSize = CDirectory::GetSize( m_pszDirName );
 
 	return true;
 }
@@ -232,14 +233,19 @@ OPEN_FILE:
 
 	if( m_sttFd )
 	{
+		int iWrite;
+
 #ifdef WIN32
-		m_iLogSize += fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%u] %s\n"
+		iWrite = fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%u] %s\n"
 			, sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec, sttTime.tv_usec, szHeader, GetCurrentThreadId(), szBuf );
 #else
-		m_iLogSize += fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%lu] %s\n"
+		iWrite = fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%lu] %s\n"
 			, sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec, (unsigned int)sttTime.tv_usec, szHeader, (unsigned long)pthread_self(), szBuf );
 #endif
 		fflush( m_sttFd );
+
+		m_iLogSize += iWrite;
+		m_iFolderSize += iWrite;
 	}
 	else if( m_pclsCallBack )
 	{
@@ -336,19 +342,9 @@ void CLog::SetMaxLogSize( int iSize )
  */
 void CLog::SetMaxFolderSize( int64_t iSize )
 {
-	if( m_iMaxLogSize == 0 )
+	if( iSize < ( MIN_LOG_FILE_SIZE * 30 ) )
 	{
-		if( iSize < ( MIN_LOG_FILE_SIZE * 30 ) )
-		{
-			iSize = MIN_LOG_FILE_SIZE * 30;
-		}
-	}
-	else
-	{
-		if( iSize < m_iMaxLogSize * 30 )
-		{
-			iSize = m_iMaxLogSize * 30;
-		}
+		iSize = MIN_LOG_FILE_SIZE * 30;
 	}
 
 	m_iMaxFolderSize = iSize;
@@ -364,6 +360,32 @@ int CLog::GetLogIndex()
 	return m_iIndex;
 }
 
+static bool LogFileCompare( const std::string & strFirst, const std::string & strSecond )
+{
+	int iFirstLen = strFirst.length();
+	int iSecondLen = strSecond.length();
+
+	if( iFirstLen == iSecondLen )
+	{
+		for( int i = 0; i < iFirstLen; ++i )
+		{
+			if( strFirst[i] < strSecond[i] ) 
+			{
+				return true;
+			}
+			else if( strFirst[i] > strSecond[i] )
+			{
+				return false;
+			}
+		}
+	}
+	else if( iFirstLen > iSecondLen )
+	{
+		return false;
+	}
+
+  return true;
+}
 
 /**
  * @ingroup SipPlatform
@@ -374,33 +396,34 @@ void CLog::DeleteOldFile( )
 	if( m_iMaxFolderSize == 0 ) return;
 	if( m_pszDirName == NULL ) return;
 
-	int64_t iSize = CDirectory::GetSize( m_pszDirName );
-	if( iSize < m_iMaxFolderSize ) return;
-
-	FILE_LIST clsFileList;
-	FILE_LIST::iterator	itList;
-	int64_t iFileSize;
-
-	CDirectory::FileList( m_pszDirName, clsFileList );
-
-	clsFileList.sort();
-
-	for( itList = clsFileList.begin(); itList != clsFileList.end(); ++itList )
+	if( m_iFolderSize >= m_iMaxFolderSize )
 	{
-		std::string strFileName = m_pszDirName;
+		int64_t iWantSize = m_iMaxFolderSize * 8 / 10;
+		FILE_LIST clsFileList;
+		FILE_LIST::iterator	itList;
+		int64_t iFileSize;
 
-		CDirectory::AppendName( strFileName, itList->c_str() );
+		CDirectory::FileList( m_pszDirName, clsFileList );
 
-		iFileSize = GetFileSize( strFileName.c_str() );
+		clsFileList.sort( LogFileCompare );
 
-#ifdef WIN32
-		DeleteFile( strFileName.c_str() );
-#else
-		unlink( strFileName.c_str() );
-#endif
+		for( itList = clsFileList.begin(); itList != clsFileList.end(); ++itList )
+		{
+			std::string strFileName = m_pszDirName;
 
-		iSize -= iFileSize;
-	
-		if( iSize < m_iMaxFolderSize ) break;
+			CDirectory::AppendName( strFileName, itList->c_str() );
+
+			iFileSize = GetFileSize( strFileName.c_str() );
+
+	#ifdef WIN32
+			DeleteFile( strFileName.c_str() );
+	#else
+			unlink( strFileName.c_str() );
+	#endif
+
+			m_iFolderSize -= iFileSize;
+		
+			if( m_iFolderSize < iWantSize ) break;
+		}
 	}
 }

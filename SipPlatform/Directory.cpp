@@ -351,6 +351,12 @@ char * CDirectory::GetProgramDirectory( )
 
 #define MAX_INT	4294967296L
 
+/**
+ * @ingroup SipPlatform
+ * @brief 폴더 크기를 가져온다.
+ * @param pszDirName 폴더 fulll path
+ * @returns 폴더 크기를 리턴한다.
+ */
 int64_t CDirectory::GetSize( const char * pszDirName )
 {
 	uint64_t iTotalSize = 0;
@@ -428,4 +434,30 @@ int64_t CDirectory::GetSize( const char * pszDirName )
 #endif
 
 	return iTotalSize;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 폴더에 포함된 파일들을 모두 삭제한다.
+ * @param pszDirName 폴더 full path
+ */
+void CDirectory::DeleteAllFile( const char * pszDirName )
+{
+	FILE_LIST::iterator	itFile;
+	FILE_LIST clsFileList;
+
+	FileList( pszDirName, clsFileList );
+
+	for( itFile = clsFileList.begin(); itFile != clsFileList.end(); ++itFile )
+	{
+		std::string strFileName = pszDirName;
+
+		CDirectory::AppendName( strFileName, itFile->c_str() );
+
+#ifdef WIN32
+		DeleteFile( strFileName.c_str() );
+#else
+		unlink( strFileName.c_str() );
+#endif		
+	}
 }
