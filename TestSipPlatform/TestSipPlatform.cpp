@@ -38,7 +38,7 @@ bool TestLog();
  */
 int main( int argc, char * argv[] )
 {
-	if( TestLog() == false ) goto FUNC_END;
+	//if( TestLog() == false ) goto FUNC_END;
 	if( TestServerUtility() == false ) goto FUNC_END;
 	if( TestStringSort() == false ) goto FUNC_END;
 	if( TestDirectory() == false ) goto FUNC_END;
