@@ -27,6 +27,8 @@
 #define FULLPATH_FILENAME_MAX_SIZE	1024
 #define MIN_LOG_FILE_SIZE						1024*1024
 #define MAX_LOG_FILE_SIZE						1024*1024*1024
+#define DEFAULT_LOG_FILE_SIZE				1024*1024*10
+#define DEFAULT_LOG_FOLDER_SIZE			3145728000L
 
 /** 
  * @ingroup SipPlatform
@@ -79,6 +81,7 @@ private:
 	static int				m_iLogSize;			// 현재까지 저장된 로그 크기
 	static int				m_iIndex;				// 로그 파일 인덱스
 	static int64_t		m_iMaxFolderSize;	// 로그 폴더의 최대 크기
+	static int64_t		m_iFolderSize;		// 로그 폴더 크기
 
 	static ILogCallBack * m_pclsCallBack;	// 로그 callback
 

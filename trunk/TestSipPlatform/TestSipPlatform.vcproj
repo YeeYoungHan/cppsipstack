@@ -177,6 +177,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestLog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestServerUtility.cpp"
 				>
 			</File>
