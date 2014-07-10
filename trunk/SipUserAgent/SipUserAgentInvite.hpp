@@ -27,7 +27,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 {
 	std::string	strCallId;
 	bool	bReINVITE = false;
-	CSipCallRtp clsRtp;
+	CSipCallRtp clsRtp, clsLocalRtp;
 	char	szTag[SIP_TAG_MAX_SIZE];
 	CSipMessage * pclsResponse = NULL;
 	SIP_DIALOG_MAP::iterator itMap;
@@ -47,18 +47,27 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	if( itMap != m_clsDialogMap.end() )
 	{
 		bReINVITE = true;
-		
+		itMap->second.SelectLocalRtp( &clsLocalRtp );
 		itMap->second.SetRemoteRtp( &clsRtp );
-
-		pclsResponse = pclsMessage->CreateResponse( SIP_OK );
-		itMap->second.AddSdp( pclsResponse );
 	}
 	m_clsDialogMutex.release();
 
 	if( bReINVITE )
 	{
+		if( m_pclsCallBack ) m_pclsCallBack->EventReInvite( strCallId.c_str(), &clsRtp, &clsLocalRtp );
+
+		m_clsDialogMutex.acquire();
+		itMap = m_clsDialogMap.find( strCallId );
+		if( itMap != m_clsDialogMap.end() )
+		{
+			itMap->second.SetLocalRtp( &clsLocalRtp );
+			pclsResponse = pclsMessage->CreateResponse( SIP_OK );
+			itMap->second.AddSdp( pclsResponse );
+		}
+		m_clsDialogMutex.release();
+
 		if( pclsResponse ) m_clsSipStack.SendSipMessage( pclsResponse );
-		m_pclsCallBack->EventReInvite( strCallId.c_str(), &clsRtp );
+
 		return true;
 	}
 

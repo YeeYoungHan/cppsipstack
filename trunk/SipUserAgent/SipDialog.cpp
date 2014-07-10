@@ -368,6 +368,28 @@ bool CSipDialog::SetRemoteRtp( CSipCallRtp * pclsRtp )
 
 /**
  * @ingroup SipUserAgent
+ * @brief my SIP 클라이언트의 RTP 정보를 가져온다.
+ * @param pclsRtp SIP 클라이언트의 RTP 정보를 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipDialog::SelectLocalRtp( CSipCallRtp * pclsRtp )
+{
+	if( pclsRtp == NULL ) return false;
+
+	pclsRtp->m_strIp = m_strLocalRtpIp;
+	pclsRtp->m_iPort = m_iLocalRtpPort;
+	pclsRtp->m_iCodec = m_iCodec;
+	pclsRtp->m_eDirection = m_eLocalDirection;
+
+#ifdef USE_MEDIA_LIST
+	pclsRtp->m_clsMediaList = m_clsLocalMediaList;
+#endif
+
+	return true;
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief SIP 클라이언트의 RTP 정보를 가져온다.
  * @param pclsRtp SIP 클라이언트의 RTP 정보를 저장할 변수
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.

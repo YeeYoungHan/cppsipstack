@@ -345,9 +345,10 @@ void CSipClientMFCDlg::EventCallEnd( const char * pszCallId, int iSipStatus )
  * @ingroup SipClientMFC
  * @brief SIP ReINVITE 수신 이벤트 핸들러
  * @param	pszCallId	SIP Call-ID
- * @param pclsRtp		RTP 정보 저장 객체
+ * @param pclsRemoteRtp		상대방 RTP 정보 저장 객체
+ * @param pclsLocalRtp		내 RTP 정보 저장 객체
  */
-void CSipClientMFCDlg::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
+void CSipClientMFCDlg::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRemoteRtp, CSipCallRtp * pclsLocalRtp )
 {
 }
 

@@ -64,16 +64,17 @@ public class SipUserAgentHandler extends Handler implements SipUserAgentCallBack
 		else if( strCommand.equals( EVENT_REINVITE ) )
 		{
 			String strCallId = b.getString( ARG_CALL_ID );
-			SipCallRtp clsRtp = (SipCallRtp)b.getSerializable( ARG_RTP );
+			SipCallRtp clsRemoteRtp = (SipCallRtp)b.getSerializable( ARG_REMOTE_RTP );
+			SipCallRtp clsLocalRtp = (SipCallRtp)b.getSerializable( ARG_LOCAL_RTP );
 			
-			m_clsCallBack.EventReInvite( strCallId, clsRtp );
+			m_clsCallBack.EventReInvite( strCallId, clsRemoteRtp, clsLocalRtp );
 		}
 		else if( strCommand.equals( EVENT_PRACK ) )
 		{
 			String strCallId = b.getString( ARG_CALL_ID );
 			SipCallRtp clsRtp = (SipCallRtp)b.getSerializable( ARG_RTP );
 			
-			m_clsCallBack.EventReInvite( strCallId, clsRtp );
+			m_clsCallBack.EventPrack( strCallId, clsRtp );
 		}
 		else if( strCommand.equals( EVENT_TRANSFER ) )
 		{
@@ -169,14 +170,15 @@ public class SipUserAgentHandler extends Handler implements SipUserAgentCallBack
 	}
 
 	@Override
-	public void EventReInvite( String strCallId, SipCallRtp clsRtp )
+	public void EventReInvite( String strCallId, SipCallRtp clsRemoteRtp, SipCallRtp clsLocalRtp )
 	{
 		Bundle b = new Bundle();
   	
   	Message m = obtainMessage( );
   	b.putString( COMMAND, EVENT_REINVITE );
   	b.putString( ARG_CALL_ID, strCallId );
-  	b.putSerializable( ARG_RTP, clsRtp );
+  	b.putSerializable( ARG_REMOTE_RTP, clsRemoteRtp );
+  	b.putSerializable( ARG_LOCAL_RTP, clsLocalRtp );
   	m.setData( b );
   	sendMessage( m );
 	}

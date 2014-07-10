@@ -394,9 +394,10 @@ void CSipServer::EventCallEnd( const char * pszCallId, int iSipStatus )
  * @ingroup KSipServer
  * @brief SIP ReINVITE 수신 이벤트 핸들러
  * @param	pszCallId	SIP Call-ID
- * @param pclsRtp		RTP 정보 저장 객체
+ * @param pclsRemoteRtp		상대방 RTP 정보 저장 객체
+ * @param pclsLocalRtp		내 RTP 정보 저장 객체
  */
-void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
+void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRemoteRtp, CSipCallRtp * pclsLocalRtp )
 {
 	CCallInfo	clsCallInfo;
 
@@ -404,12 +405,12 @@ void CSipServer::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 	if( gclsCallMap.Select( pszCallId, clsCallInfo ) )
 	{
-		if( pclsRtp && clsCallInfo.m_iPeerRtpPort > 0 )
+		if( pclsRemoteRtp && clsCallInfo.m_iPeerRtpPort > 0 )
 		{
-			pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsCallInfo.m_iPeerRtpPort, SOCKET_COUNT_PER_MEDIA );
+			pclsRemoteRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsCallInfo.m_iPeerRtpPort, SOCKET_COUNT_PER_MEDIA );
 		}
 
-		gclsUserAgent.SendReInvite( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp );
+		gclsUserAgent.SendReInvite( clsCallInfo.m_strPeerCallId.c_str(), pclsRemoteRtp );
 	}
 }
 

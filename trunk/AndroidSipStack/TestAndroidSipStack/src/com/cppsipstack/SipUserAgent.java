@@ -189,16 +189,17 @@ public class SipUserAgent
 	
 	/** SIP ReINVITE 수신 이벤트 핸들러
 	 * @param strCallId	SIP Call-ID
-	 * @param clsRtp		RTP 정보 저장 객체
+	 * @param clsRemoteRtp	remote RTP 정보 저장 객체
+	 * @param clsLocalRtp		local RTP 정보 저장 객체
 	 */
-	public static void EventReInvite( String strCallId, SipCallRtp clsRtp )
+	public static void EventReInvite( String strCallId, SipCallRtp clsRemoteRtp, SipCallRtp clsLocalRtp )
 	{
 		SipLog.Debug( "EventReInvite callid(" + strCallId + ") rtp("
-				+ clsRtp.m_strIp + ":" + clsRtp.m_iPort + ") codec(" + clsRtp.m_iCodec + ") direction(" + clsRtp.m_iDirection + ")" );
+				+ clsRemoteRtp.m_strIp + ":" + clsRemoteRtp.m_iPort + ") codec(" + clsRemoteRtp.m_iCodec + ") direction(" + clsRemoteRtp.m_iDirection + ")" );
 		
 		if( m_clsCallBack != null )
 		{
-			m_clsCallBack.EventReInvite( strCallId, clsRtp );
+			m_clsCallBack.EventReInvite( strCallId, clsRemoteRtp, clsLocalRtp );
 		}
 	}
 	

@@ -250,25 +250,26 @@ void CSipTestDlg::EventCallEnd( const char * pszCallId, int iSipStatus )
  * @ingroup SipTest
  * @brief SIP ReINVITE 수신 이벤트 핸들러
  * @param	pszCallId	SIP Call-ID
- * @param pclsRtp		RTP 정보 저장 객체
+ * @param pclsRemoteRtp		상대방 RTP 정보 저장 객체
+ * @param pclsLocalRtp		내 RTP 정보 저장 객체
  */
-void CSipTestDlg::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
+void CSipTestDlg::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRemoteRtp, CSipCallRtp * pclsLocalRtp )
 {
 	if( gclsTestInfo.m_eTestType == E_TEST_TRANSFER_CALL ) 
 	{
 		// blind transfer 결과로 수신되는 ReINVITE 는 callee 에게 수신된다.
-		gclsTestInfo.m_clsCalleePeerRtp = *pclsRtp;
+		gclsTestInfo.m_clsCalleePeerRtp = *pclsRemoteRtp;
 		StartRtpThread();
 	}
 	else if( gclsTestInfo.m_eTestType == E_TEST_SCREENED_TRANSFER_CALL )
 	{
 		if( !strcmp( gclsTestInfo.m_strCallerCallId.c_str(), pszCallId ) )
 		{
-			gclsTestInfo.m_clsCallerPeerRtp = *pclsRtp;
+			gclsTestInfo.m_clsCallerPeerRtp = *pclsRemoteRtp;
 		}
 		else if( !strcmp( gclsTestInfo.m_strCalleeCallId.c_str(), pszCallId ) )
 		{
-			gclsTestInfo.m_clsCalleePeerRtp = *pclsRtp;
+			gclsTestInfo.m_clsCalleePeerRtp = *pclsRemoteRtp;
 			StartRtpThread();
 		}
 	}

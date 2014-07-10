@@ -180,4 +180,24 @@ public:
 	CSipMessage * m_pclsSipMessage;
 };
 
+/**
+ * @ingroup SipUserAgentMFC
+ * @brief EventReInvite 정보 전달 클래스
+ */
+class CEventReInvite
+{
+public:
+	CEventReInvite( const char * pszCallId, CSipCallRtp * pclsRemoteRtp, CSipCallRtp * pclsLocalRtp )
+	{
+		m_pszCallId = pszCallId;
+		m_pclsRemoteRtp = pclsRemoteRtp;
+		m_pclsLocalRtp = pclsLocalRtp;
+	}
+
+	const char * m_pszCallId;
+	CSipCallRtp * m_pclsRemoteRtp;
+	CSipCallRtp * m_pclsLocalRtp;
+};
+
+
 #endif
