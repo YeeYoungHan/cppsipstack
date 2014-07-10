@@ -18,6 +18,8 @@
 
 #include "XmlSearch.h"
 #include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define MAKE_NAME_LIST va_list ap; \
 	char * pszTemp; \
