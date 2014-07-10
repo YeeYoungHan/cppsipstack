@@ -59,9 +59,10 @@ public interface SipUserAgentCallBack
 	
 	/** SIP ReINVITE 수신 이벤트 핸들러
 	 * @param strCallId	SIP Call-ID
-	 * @param clsRtp		RTP 정보 저장 객체
+	 * @param clsRemoteRtp	remote RTP 정보 저장 객체
+	 * @param clsLocalRtp		local RTP 정보 저장 객체
 	 */
-	public void EventReInvite( String strCallId, SipCallRtp clsRtp );
+	public void EventReInvite( String strCallId, SipCallRtp clsRemoteRtp, SipCallRtp clsLocalRtp );
 	
 	/** SIP PRACK 수신 이벤트 핸들러
 	 * @param strCallId	SIP Call-ID

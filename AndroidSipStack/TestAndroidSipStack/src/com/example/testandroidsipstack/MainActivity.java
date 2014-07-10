@@ -252,7 +252,7 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 	}
 
 	@Override
-	public void EventReInvite( String strCallId, SipCallRtp clsRtp )
+	public void EventReInvite( String strCallId, SipCallRtp clsRemoteRtp, SipCallRtp clsLocalRtp )
 	{
 		Log( "EventReInvite" );
 	}

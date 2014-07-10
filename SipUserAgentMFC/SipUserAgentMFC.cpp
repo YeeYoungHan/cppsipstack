@@ -107,8 +107,8 @@ LRESULT CSipUserAgentMFC::OnSipMessage( WPARAM wParam, LPARAM lParam )
 			break;
 		case SMC_REINVITE:
 			{		
-				CEventCallStart * pclsParam = (CEventCallStart *)lParam;
-				m_pclsCallBack->EventReInvite( pclsParam->m_pszCallId, pclsParam->m_pclsRtp );
+				CEventReInvite * pclsParam = (CEventReInvite *)lParam;
+				m_pclsCallBack->EventReInvite( pclsParam->m_pszCallId, pclsParam->m_pclsRemoteRtp, pclsParam->m_pclsLocalRtp );
 			}
 			break;
 		case SMC_PRACK:
@@ -246,11 +246,12 @@ void CSipUserAgentMFC::EventCallEnd( const char * pszCallId, int iSipStatus )
  * @ingroup SipUserAgentMFC
  * @brief SIP ReINVITE 수신 이벤트 핸들러
  * @param	pszCallId	SIP Call-ID
- * @param pclsRtp		RTP 정보 저장 객체
+ * @param pclsRemoteRtp		상대방 RTP 정보 저장 객체
+ * @param pclsLocalRtp		내 RTP 정보 저장 객체
  */
-void CSipUserAgentMFC::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
+void CSipUserAgentMFC::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRemoteRtp, CSipCallRtp * pclsLocalRtp )
 {
-	CEventCallStart clsParam( pszCallId, pclsRtp );
+	CEventReInvite clsParam( pszCallId, pclsRemoteRtp, pclsLocalRtp );
 
 	_SendMessage( SMC_REINVITE, (LPARAM)&clsParam );
 }

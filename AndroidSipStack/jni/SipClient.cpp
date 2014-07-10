@@ -293,12 +293,13 @@ FUNC_END:
  * @ingroup AndroidSipStack
  * @brief SIP ReINVITE 수신 이벤트 핸들러
  * @param	pszCallId	SIP Call-ID
- * @param pclsRtp		RTP 정보 저장 객체
+ * @param pclsRemoteRtp		상대방 RTP 정보 저장 객체
+ * @param pclsLocalRtp		내 RTP 정보 저장 객체
  */
-void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
+void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRemoteRtp, CSipCallRtp * pclsLocalRtp )
 {
 	jstring jstrCallId = NULL;
-	jobject joSipCallRtp = NULL;
+	jobject joRemoteRtp = NULL, joLocalRtp = NULL;
 
 	JNIEnv * env;
 	int iRet;
@@ -322,27 +323,44 @@ void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
 		goto FUNC_END;
 	}
 
-	joSipCallRtp = env->NewObject( gclsClass.m_jcSipCallRtp, gclsClass.m_jmSipCallRtpInit );
-	if( joSipCallRtp == NULL )
+	joRemoteRtp = env->NewObject( gclsClass.m_jcSipCallRtp, gclsClass.m_jmSipCallRtpInit );
+	if( joRemoteRtp == NULL )
 	{
 		AndroidErrorLog( "%s NewObject error", __FUNCTION__ );
 		goto FUNC_END;
 	}
 
-	if( pclsRtp )
+	joLocalRtp = env->NewObject( gclsClass.m_jcSipCallRtp, gclsClass.m_jmSipCallRtpInit );
+	if( joLocalRtp == NULL )
 	{
-		if( PutSipCallRtp( env, joSipCallRtp, *pclsRtp ) == false )
+		AndroidErrorLog( "%s NewObject error", __FUNCTION__ );
+		goto FUNC_END;
+	}
+
+	if( pclsRemoteRtp )
+	{
+		if( PutSipCallRtp( env, joRemoteRtp, *pclsRemoteRtp ) == false )
 		{
 			AndroidErrorLog( "%s PutSipCallRtp error", __FUNCTION__ );
 			goto FUNC_END;
 		}
 	}
 
-	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventReInvite, jstrCallId, joSipCallRtp );
+	if( pclsLocalRtp )
+	{
+		if( PutSipCallRtp( env, joLocalRtp, *pclsLocalRtp ) == false )
+		{
+			AndroidErrorLog( "%s PutSipCallRtp error", __FUNCTION__ );
+			goto FUNC_END;
+		}
+	}
+
+	env->CallStaticVoidMethod( gclsClass.m_jcSipUserAgent, gclsClass.m_jmEventReInvite, jstrCallId, joRemoteRtp, joLocalRtp );
 
 FUNC_END:
 	if( jstrCallId ) env->DeleteLocalRef( jstrCallId );
-	if( joSipCallRtp ) env->DeleteLocalRef( joSipCallRtp );
+	if( joRemoteRtp ) env->DeleteLocalRef( joRemoteRtp );
+	if( joLocalRtp ) env->DeleteLocalRef( joLocalRtp );
 }
 
 /**

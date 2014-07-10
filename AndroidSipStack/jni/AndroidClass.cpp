@@ -102,7 +102,7 @@ bool CAndroidClass::Init( JNIEnv * env )
 		return false;
 	}
 
-	m_jmEventReInvite = env->GetStaticMethodID( m_jcSipUserAgent, "EventReInvite", "(Ljava/lang/String;Lcom/cppsipstack/SipCallRtp;)V" );
+	m_jmEventReInvite = env->GetStaticMethodID( m_jcSipUserAgent, "EventReInvite", "(Ljava/lang/String;Lcom/cppsipstack/SipCallRtp;Lcom/cppsipstack/SipCallRtp;)V" );
 	if( m_jmEventReInvite == NULL )
 	{
 		AndroidErrorLog( "EventReInvite is not found" );
@@ -110,7 +110,7 @@ bool CAndroidClass::Init( JNIEnv * env )
 	}
 
 	m_jmEventPrack = env->GetStaticMethodID( m_jcSipUserAgent, "EventPrack", "(Ljava/lang/String;Lcom/cppsipstack/SipCallRtp;)V" );
-	if( m_jmEventReInvite == NULL )
+	if( m_jmEventPrack == NULL )
 	{
 		AndroidErrorLog( "EventPrack is not found" );
 		return false;

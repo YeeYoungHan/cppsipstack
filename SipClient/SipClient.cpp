@@ -101,15 +101,16 @@ void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
  * @ingroup SipClient
  * @brief SIP ReINVITE 수신 이벤트 핸들러
  * @param	pszCallId	SIP Call-ID
- * @param pclsRtp		RTP 정보 저장 객체
+ * @param pclsRemoteRtp		상대방 RTP 정보 저장 객체
+ * @param pclsLocalRtp		내 RTP 정보 저장 객체
  */
-void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
+void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRemoteRtp, CSipCallRtp * pclsLocalRtp )
 {
 	printf( "EventReInvite(%s)\n", pszCallId );
 
-	if( pclsRtp )
+	if( pclsRemoteRtp )
 	{
-		printf( "=> RTP(%s:%d) codec(%d)\n", pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort, pclsRtp->m_iCodec );
+		printf( "=> RTP(%s:%d) codec(%d)\n", pclsRemoteRtp->m_strIp.c_str(), pclsRemoteRtp->m_iPort, pclsRemoteRtp->m_iCodec );
 	}
 }
 

@@ -25,6 +25,8 @@ public interface SipUserAgentHandlerDefine
 	final String ARG_FROM = "strFrom";
 	final String ARG_TO = "strTo";
 	final String ARG_RTP = "clsRtp";
+	final String ARG_REMOTE_RTP = "clsRemoteRtp";
+	final String ARG_LOCAL_RTP = "clsLocalRtp";
 	final String ARG_SIP_STATUS = "iSipStatus";
 	final String ARG_REFER_TO_CALL_ID = "strReferToCallId";
 	final String ARG_SCREENED_TRANSFER = "bScreenedTransfer";
