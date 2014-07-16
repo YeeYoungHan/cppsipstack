@@ -171,12 +171,14 @@ THREAD_API SipTlsListenThread( LPVOID lpParameter )
 {
 	CSipStack * pclsSipStack = (CSipStack *)lpParameter;
 	struct pollfd arrPollFd[2];
-	int		iSocketCount = 0, n, i;
+	int		iSocketCount = 0, n, i, iThreadId;
 	bool	bRes;
 	Socket	hConnFd;
 	struct sockaddr_in sttAddr;
 	socklen_t		iAddrLen;
 	CTcpComm		clsTcpComm;
+
+	pclsSipStack->IncreateTcpThreadCount( iThreadId );
 
 	if( pclsSipStack->m_hTlsSocket != INVALID_SOCKET )
 	{
@@ -226,6 +228,8 @@ THREAD_API SipTlsListenThread( LPVOID lpParameter )
 	}
 
 FUNC_END:
+	pclsSipStack->DecreateTcpThreadCount( );
+
 	return 0;
 }
 
