@@ -435,20 +435,25 @@ bool CSipUserAgent::TransferCallBlind( const char * pszCallId, const char * pszT
 
 	SIP_DIALOG_MAP::iterator		itMap;
 	CSipMessage * pclsMessage = NULL;
-	char szReferTo[1024];
+	char szReferTo[1024], szReferBy[512];
 
 	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
 		pclsMessage = itMap->second.CreateRefer();
-		snprintf( szReferTo, sizeof(szReferTo), "<sip:%s@%s:%d>", pszTo, itMap->second.m_strContactIp.c_str(), itMap->second.m_iContactPort );
+
+		snprintf( szReferTo, sizeof(szReferTo), "<sip:%s@%s:%d>"
+			, pszTo, itMap->second.m_strContactIp.c_str(), itMap->second.m_iContactPort );
+		snprintf( szReferBy, sizeof(szReferBy), "<sip:%s@%s:%d>"
+			, itMap->second.m_strFromId.c_str(), m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
 	}
 	m_clsDialogMutex.release();
 
 	if( pclsMessage == NULL ) return false;
 
 	pclsMessage->AddHeader( "Refer-To", szReferTo );
+	pclsMessage->AddHeader( "Referred-By", szReferBy );
 
 	return m_clsSipStack.SendSipMessage( pclsMessage );
 }
@@ -466,13 +471,14 @@ bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszToCall
 
 	SIP_DIALOG_MAP::iterator		itMap;
 	CSipMessage * pclsMessage = NULL;
-	std::string strReplaces, strToId;
+	std::string strReplaces, strToId, strFromId;
 	char szReferTo[1024], szReferBy[512];
 
 	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszToCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
+		strFromId = itMap->second.m_strFromId;
 		strToId = itMap->second.m_strToId;
 
 		strReplaces = pszToCallId;
@@ -487,7 +493,7 @@ bool CSipUserAgent::TransferCall( const char * pszCallId, const char * pszToCall
 		snprintf( szReferTo, sizeof(szReferTo), "<sip:%s@%s:%d?Replaces=%s>"
 			, strToId.c_str(), itMap->second.m_strContactIp.c_str(),  itMap->second.m_iContactPort, strReplaces.c_str() );
 		snprintf( szReferBy, sizeof(szReferBy), "<sip:%s@%s:%d>"
-			, strToId.c_str(), m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
+			, strFromId.c_str(), m_clsSipStack.m_clsSetup.m_strLocalIp.c_str(), m_clsSipStack.m_clsSetup.m_iLocalUdpPort );
 
 		itMap = m_clsDialogMap.find( pszCallId );
 		if( itMap != m_clsDialogMap.end() )
