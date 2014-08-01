@@ -67,7 +67,7 @@ void CStatsSipMethod::SaveFile( const char * pszDate )
 
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
-		fprintf( fd, "%s,%s," LONG_LONG_FORMAT "\n", pszDate, itMap->first.c_str(), itMap->second );
+		fprintf( fd, "%s,%s," UNSIGNED_LONG_LONG_FORMAT "\n", pszDate, itMap->first.c_str(), itMap->second );
 	}
 
 	fclose( fd );

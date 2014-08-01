@@ -28,7 +28,7 @@ bool TestDirectory()
 	iTotalSize = CDirectory::GetSize( "/tmp" );
 #endif
 
-	printf( "directory size = " LONG_LONG_FORMAT "\n", iTotalSize );
+	printf( "directory size = " UNSIGNED_LONG_LONG_FORMAT "\n", iTotalSize );
 
 	return true;
 }

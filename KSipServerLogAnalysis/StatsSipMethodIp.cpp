@@ -80,7 +80,7 @@ void CStatsSipMethodIp::SaveFile( const char * pszDate )
 
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
 	{
-		fprintf( fd, "%s,%s,%s," LONG_LONG_FORMAT "\n", pszDate, itMap->second.m_strMethod.c_str(), itMap->second.m_strIp.c_str(), itMap->second.m_iCount );
+		fprintf( fd, "%s,%s,%s," UNSIGNED_LONG_LONG_FORMAT "\n", pszDate, itMap->second.m_strMethod.c_str(), itMap->second.m_strIp.c_str(), itMap->second.m_iCount );
 	}
 
 	fclose( fd );
