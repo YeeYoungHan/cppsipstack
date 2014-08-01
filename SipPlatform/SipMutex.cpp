@@ -126,10 +126,12 @@ bool CSipMutexSignal::wait()
 		return true;
 	}
 
+	release();
 	if( WaitForSingleObject( m_sttCond, INFINITE ) == WAIT_FAILED )
 	{
 		return false;
 	}
+	acquire();
 
 	return true;
 #else
