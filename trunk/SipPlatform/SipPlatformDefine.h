@@ -71,9 +71,11 @@ typedef char int8_t;
 #endif
 
 #if defined LINUX_64
-#define LONG_LONG_FORMAT	"%lu"
+#define UNSIGNED_LONG_LONG_FORMAT	"%lu"
+#define LONG_LONG_FORMAT	"%ld"
 #else
-#define LONG_LONG_FORMAT	"%llu"
+#define UNSIGNED_LONG_LONG_FORMAT	"%llu"
+#define LONG_LONG_FORMAT	"%lld"
 #endif
 
 /**
