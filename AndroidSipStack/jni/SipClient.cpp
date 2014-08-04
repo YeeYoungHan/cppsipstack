@@ -34,20 +34,9 @@ extern JavaVM * gjVm;
 void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
 	JNIEnv * env;
-	int iRet;
 	jobject joSipServerInfo = NULL;
 
-#ifdef WIN32
-	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
-#else
-	iRet = gjVm->AttachCurrentThread( &env, NULL );
-#endif
-
-	if( iRet != 0 )
-	{
-		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
-		return;
-	}
+	if( AttachCurrentThread( &env ) == false ) return;
 
 	joSipServerInfo = env->NewObject( gclsClass.m_jcSipServerInfo, gclsClass.m_jmSipServerInfoInit );
 	if( joSipServerInfo == NULL )
@@ -80,21 +69,9 @@ void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom
 {
 	jstring jstrCallId = NULL, jstrFrom = NULL, jstrTo = NULL;
 	jobject joSipCallRtp = NULL;
-
 	JNIEnv * env;
-	int iRet;
 
-#ifdef WIN32
-	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
-#else
-	iRet = gjVm->AttachCurrentThread( &env, NULL );
-#endif
-
-	if( iRet != 0 )
-	{
-		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
-		return;
-	}
+	if( AttachCurrentThread( &env ) == false ) return;
 
 	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
@@ -150,21 +127,9 @@ void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
 {
 	jstring jstrCallId = NULL;
 	jobject joSipCallRtp = NULL;
-
 	JNIEnv * env = NULL;
-	int iRet;
 
-#ifdef WIN32
-	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
-#else
-	iRet = gjVm->AttachCurrentThread( &env, NULL );
-#endif
-
-	if( iRet != 0 )
-	{
-		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
-		return;
-	}
+	if( AttachCurrentThread( &env ) == false ) return;
 
 	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
@@ -206,21 +171,9 @@ void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
 	jstring jstrCallId = NULL;
 	jobject joSipCallRtp = NULL;
-
 	JNIEnv * env;
-	int iRet;
 
-#ifdef WIN32
-	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
-#else
-	iRet = gjVm->AttachCurrentThread( &env, NULL );
-#endif
-
-	if( iRet != 0 )
-	{
-		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
-		return;
-	}
+	if( AttachCurrentThread( &env ) == false ) return;
 
 	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
@@ -262,19 +215,8 @@ void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
 	jstring jstrCallId = NULL;
 	JNIEnv * env;
-	int iRet;
 
-#ifdef WIN32
-	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
-#else
-	iRet = gjVm->AttachCurrentThread( &env, NULL );
-#endif
-
-	if( iRet != 0 )
-	{
-		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
-		return;
-	}
+	if( AttachCurrentThread( &env ) == false ) return;
 
 	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
@@ -300,21 +242,9 @@ void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRemote
 {
 	jstring jstrCallId = NULL;
 	jobject joRemoteRtp = NULL, joLocalRtp = NULL;
-
 	JNIEnv * env;
-	int iRet;
 
-#ifdef WIN32
-	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
-#else
-	iRet = gjVm->AttachCurrentThread( &env, NULL );
-#endif
-
-	if( iRet != 0 )
-	{
-		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
-		return;
-	}
+	if( AttachCurrentThread( &env ) == false ) return;
 
 	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
@@ -373,21 +303,9 @@ void CSipClient::EventPrack( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
 	jstring jstrCallId = NULL;
 	jobject joSipCallRtp = NULL;
-
 	JNIEnv * env;
-	int iRet;
 
-#ifdef WIN32
-	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
-#else
-	iRet = gjVm->AttachCurrentThread( &env, NULL );
-#endif
-
-	if( iRet != 0 )
-	{
-		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
-		return;
-	}
+	if( AttachCurrentThread( &env ) == false ) return;
 
 	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
@@ -431,21 +349,9 @@ bool CSipClient::EventTransfer( const char * pszCallId, const char * pszReferToC
 {
 	jstring jstrCallId = NULL, jstrReferToCallId = NULL;
 	jboolean jbScreenedTransfer = JNI_FALSE;
-
 	JNIEnv * env;
-	int iRet;
 
-#ifdef WIN32
-	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
-#else
-	iRet = gjVm->AttachCurrentThread( &env, NULL );
-#endif
-
-	if( iRet != 0 )
-	{
-		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
-		return true;
-	}
+	if( AttachCurrentThread( &env ) == false ) return true;
 
 	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
@@ -485,21 +391,9 @@ FUNC_END:
 bool CSipClient::EventBlindTransfer( const char * pszCallId, const char * pszReferToId )
 {
 	jstring jstrCallId = NULL, jstrReferToId = NULL;
-
 	JNIEnv * env;
-	int iRet;
 
-#ifdef WIN32
-	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
-#else
-	iRet = gjVm->AttachCurrentThread( &env, NULL );
-#endif
-
-	if( iRet != 0 )
-	{
-		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
-		return true;
-	}
+	if( AttachCurrentThread( &env ) == false ) return true;
 
 	jstrCallId = env->NewStringUTF( pszCallId );
 	if( jstrCallId == NULL )
@@ -537,21 +431,9 @@ bool CSipClient::EventMessage( const char * pszFrom, const char * pszTo, CSipMes
 	if( pclsMessage->m_strBody.length() == 0 ) return false;
 
 	jstring jstrFrom = NULL, jstrTo = NULL, jstrSms = NULL;
-
 	JNIEnv * env;
-	int iRet;
 
-#ifdef WIN32
-	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
-#else
-	iRet = gjVm->AttachCurrentThread( &env, NULL );
-#endif
-
-	if( iRet != 0 )
-	{
-		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
-		return true;
-	}
+	if( AttachCurrentThread( &env ) == false ) return true;
 
 	jstrFrom = env->NewStringUTF( pszFrom );
 	if( jstrFrom == NULL )
@@ -592,19 +474,27 @@ FUNC_END:
 void CSipClient::EventThreadEnd( int iThreadId )
 {
 	JNIEnv * env;
+
+	if( AttachCurrentThread( &env ) == false ) return;
+
+	gjVm->DetachCurrentThread();
+}
+
+bool CSipClient::AttachCurrentThread( JNIEnv ** env )
+{
 	int iRet;
 
 #ifdef WIN32
-	iRet = gjVm->AttachCurrentThread( (void **)&env, NULL );
+	iRet = gjVm->AttachCurrentThread( (void **)env, NULL );
 #else
-	iRet = gjVm->AttachCurrentThread( &env, NULL );
+	iRet = gjVm->AttachCurrentThread( env, NULL );
 #endif
 
 	if( iRet != 0 )
 	{
 		AndroidErrorLog( "%s AttachCurrentThread return(%d)", __FUNCTION__, iRet );
-		return;
+		return false;
 	}
 
-	gjVm->DetachCurrentThread();
+	return true;
 }
