@@ -61,6 +61,8 @@ public:
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
+
+	bool SelectMedia( const char * pszMediaName, CSdpMedia ** ppclsMedia );
 };
 
 #endif
