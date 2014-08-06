@@ -337,3 +337,26 @@ void CSdpMessage::Clear()
 	m_clsAttributeList.clear();
 	m_clsMediaList.clear();
 }
+
+/**
+ * @ingroup SdpParser
+ * @brief 미디어를 검색한다.
+ * @param pszMediaName	미디어 이름
+ * @param ppclsMedia		미디어 객체의 포인터 저장 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSdpMessage::SelectMedia( const char * pszMediaName, CSdpMedia ** ppclsMedia )
+{
+	SDP_MEDIA_LIST::iterator	itList;
+
+	for( itList = m_clsMediaList.begin(); itList != m_clsMediaList.end(); ++itList )
+	{
+		if( !strcmp( itList->m_strMedia.c_str(), pszMediaName ) )
+		{
+			*ppclsMedia = &(*itList);
+			return true;
+		}
+	}
+
+	return false;
+}
