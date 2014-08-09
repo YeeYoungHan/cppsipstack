@@ -1,0 +1,55 @@
+본 포스트를 읽기 전에 아래의 문서를 읽어 볼 것을 권장합니다.
+
+C++ SIP stack 으로 IP-PBX 에 로그인하는 방법.txt
+
+CSipUserAgent 를 이용하여서 SIP INVITE 메시지를 전송하여 통화 호출하는 방법은 다음과 같습니다.
+
+1. CSipCallRtp 객체 생성 및 설정
+
+CSipCallRtp 클래스는 RTP 정보를 저장하는 클래스입니다. 즉, RTP 프로토콜에 사용된 IP 주소 및 포트 번호, 코덱 정보 등이 저장됩니다. 아래와 같이 CSipCallRtp 객체를 생성합니다.
+
+CSipCallRtp clsRtp;  
+
+아래와 같이 RTP 패킷을 수신할 호스트 IP 주소를 입력합니다. 통화를 호출할 계획이므로 자신의 IP 주소를 넣어 주시면 됩니다.
+
+clsRtp.m_strIp = "192.1.1.1";
+
+아래와 같이 RTP 패킷을 전송/수신할 포트 번호를 입력합니다. 
+
+clsRtp.m_iPort = 2000;
+
+아래와 같이 RTP payload 에 포함될 코덱 payload type 을 입력합니다. 0 은 PCMU 이고 8 은 PCMA 입니다.? 
+
+clsRtp.m_iCodec = 0; 
+
+2. CSipCallRoute 객체 생성 및 설정
+
+CSipCallRoute 는 SIP 메시지를 전송할 목적지 주소 정보를 저장하는 클래스입니다. 즉, IP-PBX IP 주소 및 포트 번호, 프로토콜 등이 저장됩니다. 아래와 같이 CSipCallRoute 객체를 생성합니다.
+
+CSipCallRoute clsRoute;
+
+아래와 같이 SIP INVITE 메시지를 전송할 IP-PBX IP 주소를 입력합니다.
+
+clsRoute.m_strDestIp = "211.1.1.1";
+
+아래와 같이 SIP INVITE 메시지를 전송할 IP-PBX 포트 번호를 입력합니다. 
+
+clsRoute.m_iDestPort = 5060; 
+
+3. 통화 요청 
+
+위에서 생성한 CSipCallRtp 객체와 CSipCallRoute 객체를 이용하여서 1000 사용자가 1001 사용자로 통화 요청하려면 아래와 같이 실행합니다.
+
+std::string gstrInviteId;
+
+clsUserAgent.StartCall( "1000", "1001", &clsRtp, &clsRoute, gstrInviteId ); 
+
+위의 호출이 성공하면 gstrInviteId 에 전송한 SIP INVITE ?메시지의 SIP Call-ID 가 저장됩니다.
+
+4. 통화 연결 이벤트 처리? 
+
+통화 연결되면 ISipUserAgentCallBack 인터페이스의 EventCallStart 메소드가 호출됩니다. EventCallStart 메소드의 CSipCallRtp 객체에서 RTP 패킷을 전송할 IP 주소, 포트 번호 및 코덱 payload type 을 가져와서 RTP 패킷을 전송하면 통화 연결 처리가 완료됩니다.
+
+5. 통화 종료 이벤트 처리
+
+통화 종료되면 ISipUserAgentCallBack 인터페이스의 EventCallEnd 메소드가 호출됩니다. SIP INVITE 메시지가 거절될 경우 EventCallEnd 메소드의 iSipStatus 변수에 SIP INVITE 메시지의 응답 코드가 저장됩니다. 
