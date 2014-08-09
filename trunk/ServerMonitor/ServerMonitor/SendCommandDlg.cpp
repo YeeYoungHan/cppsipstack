@@ -89,6 +89,8 @@ BOOL CSendCommandDlg::OnInitDialog()
 		{
 			m_clsCommand.AddString( it->c_str() );
 		}
+
+		m_clsCommand.SetCurSel(0);
 	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
