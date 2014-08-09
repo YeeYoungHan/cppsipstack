@@ -1,0 +1,76 @@
+C++ SIP stack 으로 IP-PBX 에 로그인하는 방법은 다음과 같습니다. 본 포스트에서는 UDP 프로토콜 기반으로 IP-PBX 에 로그인하는 기능을 설명합니다.
+
+1. CSipUserAgent 객체 선언
+
+CSipUserAgent 는 C++ SIP stack 기반으로 개발된 SIP User Agent 클래스입니다. CSipUserAgent 클래스에서 IP-PBX 로그인 및 SIP 다이얼로그 관리를 수행하므로 CSipUserAgent 객체를 생성하여서 IP-PBX 로그인 및 전화 통화 연결이 가능합니다.
+
+ CSipUserAgent clsUserAgent;
+
+2. CSipServerInfo 객체 선언 및 IP-PBX 접속 정보 입력
+
+CSipUserAgent 에서 로그인하는 IP-PBX 정보를 저장하는 클래스가 CSipServerInfo 클래스입니다. 이에 CSipServerInfo 객체를 생성한 후, IP-PBX 접속 정보를 저장해야 CSipUserAgent 가 시작되면 SIP REGISTER 메시지를 설정된 IP-PBX 로 전송하여서 IP-PBX 에 로그인이 됩니다.
+
+ CSipServerInfo clsServerInfo;
+
+아래와 같이 IP-PBX 의 IP 주소를 입력합니다. 
+
+ clsServerInfo.m_strIp = "211.1.1.1";
+
+아래와 같이 IP-PBX 의 포트 번호를 입력합니다. 
+
+ clsServerInfo.m_iPort = 5060;
+
+아래와 같이 IP-PBX 에 로그인할 사용자 아이디를 입력합니다. 
+
+ clsServerInfo.m_strUserId = "1000";
+
+아래와 같이 IP-PBX 에 로그인할 사용자 아이디의 비밀번호를 입력합니다. 
+
+
+ clsServerInfo.m_strPassWord = "1234";
+
+아래와 같이 실행하여서 CSipUserAgent 에 위에서 설정한 CSipServerInfo 객체를 추가하면 CSipUserAgent 에 접속할 IP-PBX 정보 추가가 됩니다. 
+
+ clsUserAgent.InsertRegisterInfo( clsServerInfo );
+
+3. CSipStackSetup 객체 생성 및 설정
+
+C++ SIP stack 의 실행 방식은 CSipStackSetup 클래스에서 정의할 수 있습니다. 아래와 같이 CSipStackSetup 객체를 생성합니다.
+
+ CSipStackSetup clsSetup;
+
+기본적으로 SIP stack 을 실행하는데 필요한 정보인 로컬 IP 주소와 SIP 포트 번호를 아래와 같이 설정합니다.
+
+ GetLocalIp( clsSetup.m_strLocalIp );
+
+ clsSetup.m_iLocalUdpPort = 5060;
+
+4. ISipUserAgentCallBack 인터페이스를 상속받은 클래스를 생성한 후, 해당 객체를 생성합니다.
+
+CSipUserAgent 에서 발생되는 callback 을 수신하려면 ISipUserAgentCallBack 인터페이스를 상속받은 클래스를 생성한 후, 이를 CSipUserAgent 시작할 때에 등록해 주어야 합니다. ?ISipUserAgentCallBack 인터페이스를 상속받은 클래스 소스 코드는 SipClient 폴더의 SipClient.h 및 SipClient.cpp 소스 코드를 참조하시기 바랍니다. 
+
+ISipUserAgentCallBack 인터페이스를 상속받은 클래스의 이름이 CSipClient 인 경우, 아래와 같이 CSipClient 객체를 생성합니다.
+
+ CSipClient clsSipClient;
+
+5. CSipUserAgent 시작하기
+
+CSipUserAgent 를 시작하면 CSipStack 이 시작되고 로그인할 IP-PBX 에 로그인하며 SIP 다이얼로드 관리 기능이 시작됩니다. 아래와 같이 실행하여서 CSipUserAgent 의 기능을 실행합니다.
+
+ clsUserAgent.Start( clsSetup, &clsSipClient )
+
+6. 무한 대기
+
+CSipUserAgent 가 정상적으로 실행되기 위해서는 main 함수가 종료되면 안 되므로 아래와 같이 무한 대기 소스 코드를 추가합니다.
+
+ char szCommand[1024];
+ int  iLen;
+
+ memset( szCommand, 0, sizeof(szCommand) );
+ while( fgets( szCommand, sizeof(szCommand), stdin ) )
+ {
+  if( szCommand[0] == 'Q' || szCommand[0] == 'q' ) break;
+
+ }
+
+CSipUserAgent 에서 등록된 IP-PBX 로 SIP REGISTER 메시지를 전송하여서 IP-PBX 로그인이 정상적으로 실행되는지 WireShark 로 패킷 덤프하여서 확인해 보세요.

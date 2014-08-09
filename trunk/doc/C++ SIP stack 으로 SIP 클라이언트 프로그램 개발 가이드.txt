@@ -1,0 +1,17 @@
+C++ SIP stack 으로 SIP 클라이언트를 개발하실 계획이시면 다음과 같이 시작해 보실 것을 권장해 드립니다. 
+
+1. SipClient 폴더의 소스 코드 읽기 
+
+  - SipClient 프로젝트는 C++ SIP stack 의 User Agent 의 기능을 SIP 클라이언트 입장에서 테스트하는 용도로 개발된 
+    소스 코드입니다. 
+  - SipClient 에는 3개의 소스 파일이 포함되어 있고 각각에 대한 설명은 다음과 같습니다. 
+    * SipClient.cpp : SIP UserAgent callback 처리 클래스 정의 
+    * SipClient.h : SIP UserAgent callback 처리 클래스 선언 
+    * SipClientMain.cpp : SIP UserAgent 를 시작하고 기능 테스트 
+
+2. SipClientMFC 폴더의 소스 코드 읽기 
+
+  - SipClientMFC 프로젝트는 MFC 기반 SIP 클라이언트 개발 예제 소스 코드입니다. 
+  - SipClientMFC 프로젝트에서는 SipUserAgent 와 SipUserAgentMFC 라이브러리를 이용하여서 개발하였습니다. 
+  - SipUserAgentMFC 라이브러리는 MFC 기반 윈도우 프로그램에서 효율적으로 callback 처리를 할 수 있는 
+    기능이 개발되어 있습니다. 
