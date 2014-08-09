@@ -207,6 +207,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ServerMonitorAbout.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ServerMonitorDoc.cpp"
 				>
 			</File>

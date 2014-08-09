@@ -34,7 +34,6 @@
 #define new DEBUG_NEW
 #endif
 
-
 // CServerMonitorApp
 
 BEGIN_MESSAGE_MAP(CServerMonitorApp, CWinAppEx)
@@ -44,6 +43,7 @@ BEGIN_MESSAGE_MAP(CServerMonitorApp, CWinAppEx)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
 END_MESSAGE_MAP()
 
+#include "ServerMonitorAbout.hpp"
 
 // CServerMonitorApp 생성
 
@@ -171,42 +171,6 @@ BOOL CServerMonitorApp::InitInstance()
 
 	return TRUE;
 }
-
-
-
-// 응용 프로그램 정보에 사용되는 CAboutDlg 대화 상자입니다.
-
-class CAboutDlg : public CDialog
-{
-public:
-	CAboutDlg();
-
-// 대화 상자 데이터입니다.
-	enum { IDD = IDD_ABOUTBOX };
-
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
-
-// 구현입니다.
-protected:
-	DECLARE_MESSAGE_MAP()
-public:
-	CString m_strBuildDate;
-};
-
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
-, m_strBuildDate("Build Date : " __DATE__ " " __TIME__ )
-{
-}
-
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_BUILD_DATE, m_strBuildDate);
-}
-
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-END_MESSAGE_MAP()
 
 // 대화 상자를 실행하기 위한 응용 프로그램 명령입니다.
 void CServerMonitorApp::OnAppAbout()
