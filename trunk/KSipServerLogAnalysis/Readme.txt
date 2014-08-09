@@ -6,7 +6,17 @@ KSipServerLogAnalysis
 
  한국형 IP-PBX 인 KSipServer 의 어제 로그를 분석하여서 통계 데이터를 생성하는 프로그램을 개발한다.
 
-2. 배포 버전 설치하는 방법
+2. 개발자 정보
+  
+ * 이름   : 이영한
+ * 이메일 : websearch@naver.com
+ * 블로그 : http://blog.naver.com/websearch
+
+3. 라이선스
+
+ * 본 프로젝트의 라이선스는 GPLv3 이고 기업용 라이선스는 websearch@naver.com 으로 문의해 주세요.
+
+4. 배포 버전 설치하는 방법
 
  * 압축 파일의 압축을 해제한다.
  * LogAnalysisSetup.xml 을 실행 환경에 적합하게 수정한다.
