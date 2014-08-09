@@ -16,41 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "Version.h"
+#ifndef _VERSION_H_
+#define _VERSION_H_
 
-// 응용 프로그램 정보에 사용되는 CAboutDlg 대화 상자입니다.
+#define APP_VERSION "0.31"
 
-class CAboutDlg : public CDialog
-{
-public:
-	CAboutDlg();
-
-// 대화 상자 데이터입니다.
-	enum { IDD = IDD_ABOUTBOX };
-
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
-
-// 구현입니다.
-protected:
-	DECLARE_MESSAGE_MAP()
-public:
-	CString m_strBuildDate;
-	CString m_strVersion;
-};
-
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
-, m_strBuildDate("Build Date : " __DATE__ " " __TIME__ )
-, m_strVersion("ServerMonitor, Version " APP_VERSION )
-{
-}
-
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_BUILD_DATE, m_strBuildDate);
-	DDX_Text(pDX, IDC_VERSION, m_strVersion);
-}
-
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-END_MESSAGE_MAP()
+#endif
