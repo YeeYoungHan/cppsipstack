@@ -190,15 +190,19 @@ protected:
 // 구현입니다.
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	CString m_strBuildDate;
 };
 
 CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
+, m_strBuildDate("Build Date : " __DATE__ " " __TIME__ )
 {
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_BUILD_DATE, m_strBuildDate);
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
