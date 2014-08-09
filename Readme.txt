@@ -101,6 +101,9 @@ C++ SIP stack 프로젝트
  * SipTest
    - SIP 서버 기능 테스트 프로그램
 
+ * doc
+   - C++ SIP stack 사용법 및 C++ SIP stack 기반으로 개발된 프로그램 사용법을 기술한 문서가 저장되어 있다.
+
 3. 컴파일 방법
 
  * VC++ 2008
