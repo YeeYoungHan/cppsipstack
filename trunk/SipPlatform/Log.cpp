@@ -192,7 +192,11 @@ OPEN_FILE:
 		snprintf( szFileName, sizeof(szFileName), "%s%c%04d%02d%02d_%d.txt", m_pszDirName, DIR_SEP, sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday, m_iIndex );
 		
 		// 이미 Open 된 파일이 있는 경우에는 이를 닫는다.
-		if( m_sttFd ) fclose( m_sttFd );
+		if( m_sttFd ) 
+		{
+			fclose( m_sttFd );
+			m_sttFd = NULL;
+		}
 
 		DeleteOldFile();
 
