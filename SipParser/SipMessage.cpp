@@ -397,7 +397,7 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 	{
 		if( m_iContentLength > ( iTextLen - iCurPos ) ) return -1;
 
-		m_strBody.append( pszText + iCurPos );
+		m_strBody.append( pszText + iCurPos, m_iContentLength );
 		return iTextLen;
 	}
 
