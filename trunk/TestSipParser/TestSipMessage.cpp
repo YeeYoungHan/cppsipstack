@@ -1126,5 +1126,21 @@ bool TestSipMessage()
 		"Content-Length: 0\r\n"
 		"\r\n" ) == false ) return false;
 
+	++giTestSipMessageIndex;
+
+	if( Test( 
+		"MESSAGE sip:carol@chicago.com SIP/2.0\r\n"
+		"To: <sip:carol@chicago.com>\r\n"
+  	"From: Alice <sip:alice@atlanta.com>;tag=1928301774\r\n"
+		"Content-Length: 10\r\n"
+		"\r\n"
+		"12345678901234567890",
+		"MESSAGE sip:carol@chicago.com SIP/2.0\r\n"
+    "From: \"Alice\" <sip:alice@atlanta.com>;tag=1928301774\r\n"
+    "To: <sip:carol@chicago.com>\r\n"
+		"Content-Length: 10\r\n"
+		"\r\n"
+		"1234567890" ) == false ) return false;
+
 	return true;
 }
