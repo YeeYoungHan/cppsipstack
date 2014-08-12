@@ -35,6 +35,7 @@ CTcpSocket::~CTcpSocket()
 }
 
 /**
+ * @ingroup ServerMonitor
  * @brief 모니터링 서버 포트에 연결한다.
  * @param pszIp 서버 IP 주소
  * @param iPort 서버 포트 번호
@@ -55,6 +56,7 @@ bool CTcpSocket::Connect( const char * pszIp, int iPort )
 }
 
 /**
+ * @ingroup ServerMonitor
  * @brief 모니터링 서버 포트에 연결한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
@@ -72,6 +74,7 @@ bool CTcpSocket::Connect( )
 }
 
 /**
+ * @ingroup ServerMonitor
  * @brief 서버 연결을 종료한다.
  */
 void CTcpSocket::Close( )
@@ -91,6 +94,7 @@ void CTcpSocket::Close( )
 }
 
 /**
+ * @ingroup ServerMonitor
  * @brief 수신 이벤트를 대기한다.
  * @returns 수신 이벤트가 발생하면 양수를 리턴하고 그렇지 않으면 0 또는 -1 을 리턴한다.
  */
@@ -104,6 +108,7 @@ int CTcpSocket::Poll( )
 }
 
 /**
+ * @ingroup ServerMonitor
  * @brief 모니터링 결과를 수신하고 화면에 보여준다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
@@ -185,6 +190,7 @@ bool CTcpSocket::Receive( )
 }
 
 /**
+ * @ingroup ServerMonitor
  * @brief 명령을 추가한다.
  * @param pszCommand 명령
  * @param pclsListCtrl 명령 결과를 수신할 CListCtrl
@@ -209,6 +215,7 @@ bool CTcpSocket::AddCommand( const char * pszCommand, CListCtrl * pclsListCtrl, 
 }
 
 /**
+ * @ingroup ServerMonitor
  * @brief 명령을 삭제한다.
  * @param pszCommand 명령
  * @param pclsListCtrl 명령 결과를 수신할 CListCtrl
@@ -244,6 +251,7 @@ bool CTcpSocket::DeleteCommand( const char * pszCommand, CListCtrl * pclsListCtr
 }
 
 /**
+ * @ingroup ServerMonitor
  * @brief 모니터링 명령을 요청한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
@@ -296,6 +304,7 @@ bool CTcpSocket::Execute()
 }
 
 /**
+ * @ingroup ServerMonitor
  * @brief 명령을 전송한다.
  * @param pszCommand 명령 문자열
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
@@ -353,6 +362,16 @@ static void CommaSepString( std::string & strText )
 	}
 }
 
+/**
+ * @ingroup ServerMonitor
+ * @brief 모니터링 결과를 리스트 뷰에 보여준다.
+ * @param pszBuf			모니터링 결과 문자열
+ * @param clsCommand	현재 명령 저장 객체
+ * @param iPos				모니터링 결과 문자열의 이전 위치
+ * @param i						모니터링 결과 문자열의 현재 위치
+ * @param iRow				리스트 뷰의 row
+ * @param iColumn			리스트 뷰의 column
+ */
 void CTcpSocket::SetItemText( const char * pszBuf, CMonitorCommand & clsCommand, int & iPos, int & i, int iRow, int iColumn )
 {
 	std::string strText;
@@ -377,6 +396,7 @@ void CTcpSocket::SetItemText( const char * pszBuf, CMonitorCommand & clsCommand,
 }
 
 /**
+ * @ingroup ServerMonitor
  * @brief 수신된 모니터링 결과를 파싱하여서 CListCtrl 에 보여준다.
  * @param pszBuf 수신된 모니터링 결과
  * @param clsCommand 모니터링 명령 저장 객체
