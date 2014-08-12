@@ -30,6 +30,12 @@ CMonitorSetup::~CMonitorSetup()
 {
 }
 
+/**
+ * @ingroup ServerMonitor
+ * @brief 파일에서 모니터링 명령을 읽어서 자료구조에 저장한다.
+ * @param pszFileName 파일 이름
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CMonitorSetup::Read( const char * pszFileName )
 {
 	CXmlElement clsXml, * pclsRoot;
@@ -150,6 +156,13 @@ bool CMonitorSetup::Read( const char * pszFileName )
 	return true;
 }
 
+/**
+ * @ingroup ServerMonitor
+ * @brief 명령에 해당하는 모니터링 명령 저장 객체를 검색한다.
+ * @param pszCommand	명령 문자열
+ * @param clsEntry		모니터링 명령 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CMonitorSetup::Select( const char * pszCommand, CMonitorEntry & clsEntry )
 {
 	MONITOR_LIST::iterator	itCommand;
@@ -159,18 +172,28 @@ bool CMonitorSetup::Select( const char * pszCommand, CMonitorEntry & clsEntry )
 		if( !strcmp( itCommand->m_strCommand.c_str(), pszCommand ) )
 		{
 			clsEntry = *itCommand;
-			break;
+			return true;
 		}
 	}
 
-	return true;
+	return false;
 }
 
+/**
+ * @ingroup ServerMonitor
+ * @brief 모니터링 명령 개수를 리턴한다.
+ * @returns 모니터링 명령 개수를 리턴한다.
+ */
 int CMonitorSetup::GetCount( )
 {
 	return m_clsList.size();
 }
 
+/**
+ * @ingroup ServerMonitor
+ * @brief 다음 전송 모니터링 명령을 가져온다.
+ * @returns 다음 전송 모니터링 명령을 리턴한다.
+ */
 const char * CMonitorSetup::GetNextCommand( )
 {
 	if( m_clsList.size() == 0 ) return "";
@@ -192,6 +215,11 @@ const char * CMonitorSetup::GetNextCommand( )
 	return m_clsList[m_iCurrentCommandIndex].m_strCommand.c_str();
 }
 
+/**
+ * @ingroup ServerMonitor
+ * @brief 에러 메시지를 리턴한다.
+ * @returns 에러 메시지를 리턴한다.
+ */
 const char * CMonitorSetup::GetErrorMessage( )
 {
 	return m_strErrorMessage.c_str();

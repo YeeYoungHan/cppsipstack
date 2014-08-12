@@ -22,12 +22,20 @@
 #include <vector>
 #include <list>
 
+/**
+ * @ingroup ServerMonitor
+ * @brief 모니터링 컬럼 보여주는 방법
+ */
 enum EMonitorAttributeType
 {
 	E_MAT_NULL = 0,
 	E_MAT_COMMA_SEP
 };
 
+/**
+ * @ingroup ServerMonitor
+ * @brief 하나의 모니터링 컬럼 정보 저장 클래스
+ */
 class CMonitorAttribute
 {
 public:
@@ -41,6 +49,10 @@ public:
 
 typedef std::vector< CMonitorAttribute > MONITOR_ATTRIBUTE_LIST;
 
+/**
+ * @ingroup ServerMonitor
+ * @brief 하나의 모니터링 명령 정보 저장 클래스
+ */
 class CMonitorEntry
 {
 public:
@@ -60,6 +72,10 @@ public:
 typedef std::vector<CMonitorEntry> MONITOR_LIST;
 typedef std::vector<std::string> SEND_COMMAND_LIST;
 
+/**
+ * @ingroup ServerMonitor
+ * @brief 모니터링 명령을 저장하는 자료구조 클래스
+ */
 class CMonitorSetup
 {
 public:
