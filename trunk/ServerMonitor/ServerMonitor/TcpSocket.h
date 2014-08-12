@@ -31,6 +31,7 @@ class CMonitorCommand
 public:
 	std::string		m_strCommand;
 	CListCtrl			* m_pclsListCtrl;
+	CMonitorEntry m_clsEntry;
 };
 
 typedef std::list< CMonitorCommand > MONITOR_COMMAND_LIST;
@@ -51,7 +52,7 @@ public:
 
 	bool Receive( );
 
-	bool AddCommand( const char * pszCommand, CListCtrl * pclsListCtrl );
+	bool AddCommand( const char * pszCommand, CListCtrl * pclsListCtrl, CMonitorEntry & clsEntry );
 	bool DeleteCommand( const char * pszCommand, CListCtrl * pclsListCtrl );
 	bool Execute();
 	bool SendCommand( const char * pszCommand );
@@ -65,7 +66,8 @@ private:
 	std::string           m_strIp;
 	int                   m_iPort;
 
-	void ParseRecvData( const char * pszBuf, CListCtrl * pclsListCtrl );
+	void SetItemText( const char * pszBuf, CMonitorCommand & clsCommand, int & iPos, int & i, int iRow, int iColumn );
+	void ParseRecvData( const char * pszBuf, CMonitorCommand & clsCommand );
 };
 
 extern CTcpSocket gclsSocket;

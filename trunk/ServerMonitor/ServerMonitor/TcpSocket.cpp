@@ -147,40 +147,38 @@ bool CTcpSocket::Receive( )
 		}
 	}
 
-	CListCtrl * pclsListCtrl = NULL;
+	CMonitorCommand clsCommand;
 
 	m_clsMutex.Lock();
 	if( m_clsSendCommandList.size() > 0 )
 	{
-		CMonitorCommand clsCommand = m_clsSendCommandList.front();
+		clsCommand = m_clsSendCommandList.front();
 		m_clsSendCommandList.pop_front();
 
 		TRACE( "Recv command(%s)\n", clsCommand.m_strCommand.c_str() );
-
-		pclsListCtrl = clsCommand.m_pclsListCtrl;
 	}
 	m_clsMutex.Unlock();
 
-	if( pclsListCtrl )
+	if( clsCommand.m_pclsListCtrl )
 	{
-		pclsListCtrl->DeleteAllItems();
+		clsCommand.m_pclsListCtrl->DeleteAllItems();
 
 		if( iPacketLen > 0 )
 		{
-			ParseRecvData( strPacket.c_str(), pclsListCtrl );
+			ParseRecvData( strPacket.c_str(), clsCommand );
 		}
 
 		CString			strBuf;
 		SYSTEMTIME	sttTime;
-		int					iRow = pclsListCtrl->GetItemCount();
+		int					iRow = clsCommand.m_pclsListCtrl->GetItemCount();
 
 		strBuf.Format( _T("count=%d"), iRow );
-		pclsListCtrl->InsertItem( iRow, strBuf );
+		clsCommand.m_pclsListCtrl->InsertItem( iRow, strBuf );
 
 		GetLocalTime( &sttTime );
 
 		strBuf.Format( _T("%02d:%02d:%02d.%03d"), sttTime.wHour, sttTime.wMinute, sttTime.wSecond, sttTime.wMilliseconds );
-		pclsListCtrl->SetItemText( iRow, 1, strBuf );
+		clsCommand.m_pclsListCtrl->SetItemText( iRow, 1, strBuf );
 	}
 
 	return true;
@@ -190,9 +188,10 @@ bool CTcpSocket::Receive( )
  * @brief 명령을 추가한다.
  * @param pszCommand 명령
  * @param pclsListCtrl 명령 결과를 수신할 CListCtrl
+ * @param clsEntry			모니터링 명령 정보 저장 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CTcpSocket::AddCommand( const char * pszCommand, CListCtrl * pclsListCtrl )
+bool CTcpSocket::AddCommand( const char * pszCommand, CListCtrl * pclsListCtrl, CMonitorEntry & clsEntry )
 {
 	if( m_hSocket == INVALID_SOCKET ) return false;
 
@@ -200,6 +199,7 @@ bool CTcpSocket::AddCommand( const char * pszCommand, CListCtrl * pclsListCtrl )
 
 	clsCommand.m_strCommand = pszCommand;
 	clsCommand.m_pclsListCtrl = pclsListCtrl;
+	clsCommand.m_clsEntry = clsEntry;
 
 	m_clsMutex.Lock();
 	m_clsCommandList.push_back( clsCommand );
@@ -338,15 +338,53 @@ bool CTcpSocket::SendCommand( const char * pszCommand )
 	return true;
 }
 
+static void CommaSepString( std::string & strText )
+{
+	int iLen = (int)strText.length();
+	int iCount = 0;
+
+	for( int i = iLen - 1; i > 0; --i )
+	{
+		if( i % 3 == 0 )
+		{
+			strText.insert( iLen - i + iCount, "," );
+			++iCount;
+		}
+	}
+}
+
+void CTcpSocket::SetItemText( const char * pszBuf, CMonitorCommand & clsCommand, int & iPos, int & i, int iRow, int iColumn )
+{
+	std::string strText;
+
+	strText.append( pszBuf + iPos, i - iPos );
+	iPos = i + 1;
+
+	EMonitorAttributeType eType = clsCommand.m_clsEntry.GetType( iColumn );
+	if( eType == E_MAT_COMMA_SEP )
+	{
+		CommaSepString( strText );
+	}
+
+	if( iColumn == 0 )
+	{
+		clsCommand.m_pclsListCtrl->InsertItem( iRow, strText.c_str() );
+	}
+	else
+	{
+		clsCommand.m_pclsListCtrl->SetItemText( iRow, iColumn, strText.c_str() );
+	}
+}
+
 /**
  * @brief 수신된 모니터링 결과를 파싱하여서 CListCtrl 에 보여준다.
  * @param pszBuf 수신된 모니터링 결과
- * @param pclsListCtrl 모니터링 결과를 보여줄 CListCtrl
+ * @param clsCommand 모니터링 명령 저장 객체
  */
-void CTcpSocket::ParseRecvData( const char * pszBuf, CListCtrl * pclsListCtrl )
+void CTcpSocket::ParseRecvData( const char * pszBuf, CMonitorCommand & clsCommand )
 {
 	int	iPos = 0, iRow = 0, iColumn = 0;
-	std::string	strText;
+	CListCtrl * pclsListCtrl = clsCommand.m_pclsListCtrl;
 
 	USES_CONVERSION;
 
@@ -354,38 +392,16 @@ void CTcpSocket::ParseRecvData( const char * pszBuf, CListCtrl * pclsListCtrl )
 	{
 		if( !strncmp( pszBuf + i, MR_ROW_SEP, 1 ) )
 		{
-			strText.append( pszBuf + iPos, i - iPos );
-			iPos = i + 1;
-
-			if( iColumn == 0 )
-			{
-				pclsListCtrl->InsertItem( iRow, strText.c_str() );
-			}
-			else
-			{
-				pclsListCtrl->SetItemText( iRow, iColumn, strText.c_str() );
-			}
+			SetItemText( pszBuf, clsCommand, iPos, i, iRow, iColumn );
 
 			iColumn = 0;
 			++iRow;
-			strText.clear();
 		}
 		else if( !strncmp( pszBuf + i, MR_COL_SEP, 1 ) )
 		{
-			strText.append( pszBuf + iPos, i - iPos );
-			iPos = i + 1;
-
-			if( iColumn == 0 )
-			{
-				pclsListCtrl->InsertItem( iRow, strText.c_str() );
-			}
-			else
-			{
-				pclsListCtrl->SetItemText( iRow, iColumn, strText.c_str() );
-			}
+			SetItemText( pszBuf, clsCommand, iPos, i, iRow, iColumn );
 
 			++iColumn;
-			strText.clear();
 		}
 	}
 }
