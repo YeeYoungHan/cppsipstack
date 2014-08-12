@@ -22,11 +22,35 @@
 #include <vector>
 #include <list>
 
-typedef std::list<std::string> MONITOR_ATTRIBUTE_LIST;
+enum EMonitorAttributeType
+{
+	E_MAT_NULL = 0,
+	E_MAT_COMMA_SEP
+};
+
+class CMonitorAttribute
+{
+public:
+	CMonitorAttribute() : m_eType(E_MAT_NULL)
+	{
+	}
+
+	std::string						m_strName;
+	EMonitorAttributeType	m_eType;
+};
+
+typedef std::vector< CMonitorAttribute > MONITOR_ATTRIBUTE_LIST;
 
 class CMonitorEntry
 {
 public:
+	EMonitorAttributeType GetType( int iCol )
+	{
+		if( iCol >= (int)m_lstAttribute.size() ) return E_MAT_NULL;
+
+		return m_lstAttribute[iCol].m_eType;
+	}
+
 	std::string	m_strCommand;
 	std::string	m_strTitle;
 

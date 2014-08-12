@@ -80,10 +80,10 @@ void CServerMonitorView::OnInitialUpdate()
 
 		for( itAttribute = clsEntry.m_lstAttribute.begin(); itAttribute != clsEntry.m_lstAttribute.end(); ++itAttribute )
 		{
-			clsListCtrl.InsertColumn( iIndex++, itAttribute->c_str(), LVCFMT_LEFT, gclsSetup.GetInt( strCommand.c_str(), iIndex, 100 ) );
+			clsListCtrl.InsertColumn( iIndex++, itAttribute->m_strName.c_str(), LVCFMT_LEFT, gclsSetup.GetInt( strCommand.c_str(), iIndex, 100 ) );
 		}
 
-		gclsSocket.AddCommand( strCommand.c_str(), &clsListCtrl );
+		gclsSocket.AddCommand( strCommand.c_str(), &clsListCtrl, clsEntry );
 		m_bInit = true;
 	}
 }

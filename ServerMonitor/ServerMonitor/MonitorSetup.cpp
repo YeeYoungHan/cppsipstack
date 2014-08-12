@@ -102,7 +102,7 @@ bool CMonitorSetup::Read( const char * pszFileName )
 
 		for( itAttribute = lstAttribute.begin(); itAttribute != lstAttribute.end(); ++itAttribute )
 		{
-			std::string strName;
+			std::string strName, strType;
 
 			itAttribute->SelectAttribute( "name", strName );
 			if( strName.length() == 0 )
@@ -112,7 +112,18 @@ bool CMonitorSetup::Read( const char * pszFileName )
 				return false;
 			}
 
-			clsEntry.m_lstAttribute.push_back( strName );
+			itAttribute->SelectAttribute( "type", strType );
+
+			CMonitorAttribute clsAttr;
+
+			clsAttr.m_strName = strName;
+
+			if( !strcmp( strType.c_str(), "comma" ) )
+			{
+				clsAttr.m_eType = E_MAT_COMMA_SEP;
+			}
+
+			clsEntry.m_lstAttribute.push_back( clsAttr );
 		}
 
 		m_clsList.push_back( clsEntry );
