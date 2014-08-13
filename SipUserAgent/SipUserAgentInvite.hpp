@@ -47,8 +47,8 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	if( itMap != m_clsDialogMap.end() )
 	{
 		bReINVITE = true;
-		itMap->second.SelectLocalRtp( &clsLocalRtp );
 		itMap->second.SetRemoteRtp( &clsRtp );
+		itMap->second.SelectLocalRtp( &clsLocalRtp );
 	}
 	m_clsDialogMutex.release();
 
