@@ -18,6 +18,9 @@
 
 #include "SipSpeedLinux.h"
 #include "SipSpeedSetup.h"
+#include "SipClient.h"
+
+CSipUserAgent		 gclsSipUserAgent;
 
 int main( int argc, char * argv[] )
 {
@@ -27,7 +30,53 @@ int main( int argc, char * argv[] )
 		return 0;
 	}
 
-	if( gclsSetup.Read( argv[1] ) == false ) return 0;
+	const char * pszSetupFileName = argv[1];
+
+	if( gclsSetup.Read( pszSetupFileName ) == false ) return 0;
+
+	// SipStack 을 시작한다.
+	CSipStackSetup clsSetup;
+	CSipServerInfo clsInfo;
+	CSipClient clsCallBack;
+
+	GetLocalIp( clsSetup.m_strLocalIp );
+
+	clsInfo.m_strIp = gclsSetup.m_strSipServerIp;
+	clsInfo.m_iPort = gclsSetup.m_iSipServerPort;
+	clsInfo.m_strDomain = gclsSetup.m_strSipDomain;
+	clsInfo.m_strUserId = gclsSetup.m_strCallerId;
+	clsInfo.m_strPassWord = gclsSetup.m_strCallerPassWord;
+
+	gclsSipUserAgent.InsertRegisterInfo( clsInfo );
+
+	clsInfo.m_strUserId = gclsSetup.m_strCalleeId;
+	clsInfo.m_strPassWord = gclsSetup.m_strCalleePassWord;
+
+	gclsSipUserAgent.InsertRegisterInfo( clsInfo );
+
+	bool bSuccess = false;
+
+	clsSetup.m_iUdpThreadCount = 4;
+	clsSetup.m_iStackExecutePeriod = 100;
+	clsSetup.m_iTimerD = 4000;
+	clsSetup.m_iTimerJ = 4000;
+
+	for( int i = 0; i < 100; ++i )
+	{
+		clsSetup.m_iLocalUdpPort = i + 10000;
+
+		if( gclsSipUserAgent.Start( clsSetup, &clsCallBack ) )
+		{
+			bSuccess = true;
+			break;
+		}
+	}
+
+	if( bSuccess == false )
+	{
+		printf( "gclsSipUserAgent.Start() error\n" );
+		return 0;
+	}
 
 	return 0;
 }

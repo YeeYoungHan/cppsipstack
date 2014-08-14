@@ -16,11 +16,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_SPEED_LINUX_H_
-#define _SIP_SPEED_LINUX_H_
+#ifndef _SIP_CLIENT_H_
+#define _SIP_CLIENT_H_
 
-#include "SipUserAgent.h"
+#include "SipUserAgentCallBack.h"
 
-extern CSipUserAgent gclsSipUserAgent;
+class CSipClient : public ISipUserAgentCallBack
+{
+public:
+	CSipClient();
+	~CSipClient();
+
+	virtual void EventRegister( CSipServerInfo * pclsInfo, int iStatus );
+	virtual void EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp );
+	virtual void EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
+	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );
+	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
+};
 
 #endif
