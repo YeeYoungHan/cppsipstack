@@ -16,18 +16,33 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "SipSpeedLinux.h"
-#include "SipSpeedSetup.h"
+#ifndef _SIP_SPEED_SETUP_H_
+#define _SIP_SPEED_SETUP_H_
 
-int main( int argc, char * argv[] )
+#include <string>
+
+class CSipSpeedSetup
 {
-	if( argc != 2 )
-	{
-		printf( "[Usage] %s {setup filename}\n", argv[0] );
-		return 0;
-	}
+public:
+	CSipSpeedSetup();
+	~CSipSpeedSetup();
 
-	if( gclsSetup.Read( argv[1] ) == false ) return 0;
+	bool Read( const char * pszFileName );
 
-	return 0;
-}
+	std::string m_strSipServerIp;
+	int         m_iSipServerPort;
+	std::string m_strSipDomain;
+
+	std::string m_strCallerId;
+	std::string m_strCallerPassWord;
+	
+	std::string m_strCalleeId;
+	std::string m_strCalleePassWord;
+	
+	int					m_iCallTotalCount;
+	int					m_iCallConcurrentCount;
+};
+
+extern CSipSpeedSetup gclsSetup;
+
+#endif
