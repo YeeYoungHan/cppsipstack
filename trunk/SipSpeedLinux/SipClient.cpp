@@ -16,11 +16,37 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_SPEED_LINUX_H_
-#define _SIP_SPEED_LINUX_H_
+#include "SipClient.h"
 
-#include "SipUserAgent.h"
+CSipClient::CSipClient()
+{
+}
 
-extern CSipUserAgent gclsSipUserAgent;
+CSipClient::~CSipClient()
+{
+}
 
-#endif
+void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
+{
+
+}
+
+void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
+{
+
+}
+
+void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
+{
+
+}
+
+void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
+{
+
+}
+
+void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
+{
+
+}
