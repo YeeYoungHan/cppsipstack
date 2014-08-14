@@ -181,6 +181,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipClient.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SipSpeedLinux.cpp"
 				>
 			</File>
@@ -201,10 +205,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\SipClient.h"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
