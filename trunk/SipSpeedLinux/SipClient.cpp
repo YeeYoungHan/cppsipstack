@@ -17,8 +17,9 @@
  */
 
 #include "SipClient.h"
+#include "SipSpeedSetup.h"
 
-CSipClient::CSipClient()
+CSipClient::CSipClient() : m_bCallerLogin(false), m_bCalleeLogin(false)
 {
 }
 
@@ -28,7 +29,59 @@ CSipClient::~CSipClient()
 
 void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
+	std::string	strCommand;
 
+	if( pclsInfo->m_bLogin )
+	{
+		strCommand = "login";
+	}
+	else
+	{
+		strCommand = "logout";
+	}
+
+	if( !strcmp( pclsInfo->m_strUserId.c_str(), gclsSetup.m_strCallerId.c_str() ) )
+	{
+		if( iStatus == SIP_OK )
+		{
+			if( pclsInfo->m_bLogin )
+			{
+				m_bCallerLogin = true;
+			}
+			else
+			{
+				m_bCallerLogin = false;
+			}
+
+			printf( "Caller(%s) %s success", gclsSetup.m_strCallerId.c_str(), strCommand.c_str() );
+		}
+		else
+		{
+			m_bCallerLogin = false;
+			printf( "Caller(%s) %s error(%d)", gclsSetup.m_strCallerId.c_str(), strCommand.c_str(), iStatus );
+		}
+	}
+	else if( !strcmp( pclsInfo->m_strUserId.c_str(), gclsSetup.m_strCalleeId.c_str() ) )
+	{
+		if( iStatus == SIP_OK )
+		{
+			if( pclsInfo->m_bLogin )
+			{
+				m_bCalleeLogin = true;
+			}
+			else
+			{
+				m_bCalleeLogin = false;
+			}
+
+			printf( "Callee(%s) %s success", gclsSetup.m_strCalleeId.c_str(), strCommand.c_str() );
+		}
+		else
+		{
+			m_bCalleeLogin = false;
+			printf( "Callee(%s) %s error(%d)", gclsSetup.m_strCalleeId.c_str(), strCommand.c_str(), iStatus );
+		}
+	}
 }
 
 void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
