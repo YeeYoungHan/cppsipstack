@@ -35,6 +35,12 @@ public:
 
 	bool m_bCallerLogin;
 	bool m_bCalleeLogin;
+
+	int m_iCallSuccess;
+	int m_iCallError;
+
+private:
+	CSipMutex	m_clsMutex;
 };
 
 #endif

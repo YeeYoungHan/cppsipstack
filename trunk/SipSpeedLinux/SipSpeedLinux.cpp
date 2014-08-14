@@ -84,6 +84,10 @@ int main( int argc, char * argv[] )
 		MiliSleep(20);
 	}
 
+	struct timeval sttStart, sttEnd;
+
+	gettimeofday( &sttStart, NULL );
+
 	CSipCallRtp clsRtp;
 	CSipCallRoute clsRoute;
 	std::string strCallId;
@@ -116,7 +120,19 @@ int main( int argc, char * argv[] )
 		MiliSleep(20);
 	}
 
+	gettimeofday( &sttEnd, NULL );
 
+	int iDiff = DiffTimeval( &sttStart, &sttEnd );
+	double fCps = 0.0;
+
+	if( iDiff > 0 )
+	{
+		fCps = (double)( clsCallBack.m_iCallSuccess + clsCallBack.m_iCallError ) / ( (double)iDiff / 1000 );
+	}
+
+	printf( "call success(%d) / error(%d) / cps(%.3f) / time(%d ms)", clsCallBack.m_iCallSuccess, clsCallBack.m_iCallError, fCps, iDiff );
+
+	gclsSipUserAgent.Stop();
 
 	return 0;
 }
