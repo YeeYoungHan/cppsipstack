@@ -18,6 +18,7 @@ all:
 	cd KSipServer && make
 	cd KSipServerLogAnalysis && make
 	cd SipLoadBalancer && make
+	cd SipSpeedLinux && make
 
 clean:
 	cd SipPlatform && make clean
@@ -33,6 +34,7 @@ clean:
 	cd KSipServer && make clean
 	cd KSipServerLogAnalysis && make clean
 	cd SipLoadBalancer && make clean
+	cd SipSpeedLinux && make clean
 
 install:
 

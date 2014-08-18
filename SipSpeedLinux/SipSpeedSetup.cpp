@@ -18,6 +18,7 @@
 
 #include "SipSpeedSetup.h"
 #include "XmlElement.h"
+#include <stdio.h>
 
 CSipSpeedSetup gclsSetup;
 
