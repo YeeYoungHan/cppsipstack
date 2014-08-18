@@ -84,6 +84,8 @@ int main( int argc, char * argv[] )
 		MiliSleep(20);
 	}
 
+	printf( "start test\n" );
+
 	struct timeval sttStart, sttEnd;
 
 	gettimeofday( &sttStart, NULL );
@@ -130,7 +132,7 @@ int main( int argc, char * argv[] )
 		fCps = (double)( clsCallBack.m_iCallSuccess + clsCallBack.m_iCallError ) / ( (double)iDiff / 1000 );
 	}
 
-	printf( "call success(%d) / error(%d) / cps(%.3f) / time(%d ms)", clsCallBack.m_iCallSuccess, clsCallBack.m_iCallError, fCps, iDiff );
+	printf( "call success(%d) / error(%d) / cps(%.3f) / time(%d ms)\n", clsCallBack.m_iCallSuccess, clsCallBack.m_iCallError, fCps, iDiff );
 
 	gclsSipUserAgent.Stop();
 
