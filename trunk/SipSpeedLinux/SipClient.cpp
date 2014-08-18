@@ -55,12 +55,12 @@ void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 				m_bCallerLogin = false;
 			}
 
-			printf( "Caller(%s) %s success", gclsSetup.m_strCallerId.c_str(), strCommand.c_str() );
+			printf( "Caller(%s) %s success\n", gclsSetup.m_strCallerId.c_str(), strCommand.c_str() );
 		}
 		else
 		{
 			m_bCallerLogin = false;
-			printf( "Caller(%s) %s error(%d)", gclsSetup.m_strCallerId.c_str(), strCommand.c_str(), iStatus );
+			printf( "Caller(%s) %s error(%d)\n", gclsSetup.m_strCallerId.c_str(), strCommand.c_str(), iStatus );
 		}
 	}
 	else if( !strcmp( pclsInfo->m_strUserId.c_str(), gclsSetup.m_strCalleeId.c_str() ) )
@@ -76,12 +76,12 @@ void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 				m_bCalleeLogin = false;
 			}
 
-			printf( "Callee(%s) %s success", gclsSetup.m_strCalleeId.c_str(), strCommand.c_str() );
+			printf( "Callee(%s) %s success\n", gclsSetup.m_strCalleeId.c_str(), strCommand.c_str() );
 		}
 		else
 		{
 			m_bCalleeLogin = false;
-			printf( "Callee(%s) %s error(%d)", gclsSetup.m_strCalleeId.c_str(), strCommand.c_str(), iStatus );
+			printf( "Callee(%s) %s error(%d)\n", gclsSetup.m_strCalleeId.c_str(), strCommand.c_str(), iStatus );
 		}
 	}
 }
