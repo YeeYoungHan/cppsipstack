@@ -104,8 +104,6 @@ void CSipClient::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
 
 void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
-	bool bModify = false;
-
 	m_clsMutex.acquire();
 	++m_iCallSuccess;
 	m_clsMutex.release();
