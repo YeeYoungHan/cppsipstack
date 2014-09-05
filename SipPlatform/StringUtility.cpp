@@ -101,3 +101,12 @@ bool SearchValue( std::string & strText, const char * pszKey, char cSep, int & i
 
 	return false;
 }
+
+void LeftTrimString( std::string & strText )
+{
+	int iIndex = strText.find_first_not_of( " \t" );
+	if( iIndex >= 0 )
+	{
+		strText.erase( 0, iIndex );
+	}
+}

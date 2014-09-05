@@ -16,14 +16,29 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _STRING_UTILITY_H_
-#define _STRING_UTILITY_H_
+#include "StringUtility.h"
 
-#include <string>
+static bool TestLeftTrim( const char * pszInput, const char * pszOutput )
+{
+	std::string strText = pszInput;
 
-void ReplaceString( std::string & strCallId, const char * pszBefore, const char * pszAfter );
-bool SearchValue( std::string & strText, const char * pszKey, char cSep, std::string & strValue );
-bool SearchValue( std::string & strText, const char * pszKey, char cSep, int & iValue );
-void LeftTrimString( std::string & strText );
+	LeftTrimString( strText );
+	
+	if( strcmp( pszOutput, strText.c_str() ) )
+	{
+		printf( "%s input(%s) output(%s) => result(%s)", __FUNCTION__, pszInput, pszOutput, strText.c_str() );
+		return false;
+	}
 
-#endif
+	return true;
+}
+
+bool TestStringUtility()
+{
+	if( TestLeftTrim( "abcd", "abcd" ) == false ) return false;
+	if( TestLeftTrim( " abcd", "abcd" ) == false ) return false;
+	if( TestLeftTrim( "  abcd", "abcd" ) == false ) return false;
+	if( TestLeftTrim( " \t abcd", "abcd" ) == false ) return false;
+
+	return true;
+}
