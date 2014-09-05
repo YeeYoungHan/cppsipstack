@@ -48,6 +48,21 @@ static bool TestRightTrim( const char * pszInput, const char * pszOutput )
 	return true;
 }
 
+static bool TestTrim( const char * pszInput, const char * pszOutput )
+{
+	std::string strText = pszInput;
+
+	TrimString( strText );
+	
+	if( strcmp( pszOutput, strText.c_str() ) )
+	{
+		printf( "%s input(%s) output(%s) => result(%s)", __FUNCTION__, pszInput, pszOutput, strText.c_str() );
+		return false;
+	}
+
+	return true;
+}
+
 bool TestStringUtility()
 {
 	if( TestLeftTrim( "abcd", "abcd" ) == false ) return false;
@@ -57,6 +72,7 @@ bool TestStringUtility()
 	if( TestLeftTrim( " abcd  ", "abcd  " ) == false ) return false;
 	if( TestLeftTrim( " ab  cd", "ab  cd" ) == false ) return false;
 	if( TestLeftTrim( "    ", "" ) == false ) return false;
+	if( TestLeftTrim( "", "" ) == false ) return false;
 
 	if( TestRightTrim( "abcd", "abcd" ) == false ) return false;
 	if( TestRightTrim( "abcd ", "abcd" ) == false ) return false;
@@ -65,6 +81,19 @@ bool TestStringUtility()
 	if( TestRightTrim( "  abcd  ", "  abcd" ) == false ) return false;
 	if( TestRightTrim( "  ab  cd  ", "  ab  cd" ) == false ) return false;
 	if( TestRightTrim( "   ", "" ) == false ) return false;
+	if( TestRightTrim( "", "" ) == false ) return false;
+
+	if( TestTrim( "abcd", "abcd" ) == false ) return false;
+	if( TestTrim( " abcd", "abcd" ) == false ) return false;
+	if( TestTrim( "  abcd", "abcd" ) == false ) return false;
+	if( TestTrim( " \t abcd", "abcd" ) == false ) return false;
+	if( TestTrim( "abcd ", "abcd" ) == false ) return false;
+	if( TestTrim( "abcd  ", "abcd" ) == false ) return false;
+	if( TestTrim( "abcd \t ", "abcd" ) == false ) return false;
+	if( TestTrim( " abcd ", "abcd" ) == false ) return false;
+	if( TestTrim( "  abcd  ", "abcd" ) == false ) return false;
+	if( TestTrim( "  ", "" ) == false ) return false;
+	if( TestTrim( "", "" ) == false ) return false;
 
 	return true;
 }

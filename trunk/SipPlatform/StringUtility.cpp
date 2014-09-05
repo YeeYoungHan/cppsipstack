@@ -153,3 +153,14 @@ void RightTrimString( std::string & strText )
 		strText.clear();
 	}
 }
+
+/**
+ * @ingroup SipPlatform
+ * @brief 문자열의 왼쪽, 오른쪽 공백을 제거한다.
+ * @param strText 문자열
+ */
+void TrimString( std::string & strText )
+{
+	LeftTrimString( strText );
+	RightTrimString( strText );
+}
