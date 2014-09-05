@@ -26,5 +26,6 @@ bool SearchValue( std::string & strText, const char * pszKey, char cSep, std::st
 bool SearchValue( std::string & strText, const char * pszKey, char cSep, int & iValue );
 void LeftTrimString( std::string & strText );
 void RightTrimString( std::string & strText );
+void TrimString( std::string & strText );
 
 #endif
