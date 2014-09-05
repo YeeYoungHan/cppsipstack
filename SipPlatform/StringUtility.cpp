@@ -102,11 +102,54 @@ bool SearchValue( std::string & strText, const char * pszKey, char cSep, int & i
 	return false;
 }
 
+/**
+ * @ingroup SipPlatform
+ * @brief 문자열의 왼쪽 공백을 제거한다.
+ * @param strText 문자열
+ */
 void LeftTrimString( std::string & strText )
 {
-	int iIndex = strText.find_first_not_of( " \t" );
-	if( iIndex >= 0 )
+	int iIndex;
+	int iLen = strText.length();
+	for( iIndex = 0; iIndex < iLen; ++iIndex )
 	{
+		char c = strText.at(iIndex);
+		if( c == ' ' || c == '\t' ) continue;
+
 		strText.erase( 0, iIndex );
+		break;
+	}
+
+	if( iIndex == iLen )
+	{
+		strText.clear();
+	}
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 문자열의 오른쪽 공백을 제거한다.
+ * @param strText 문자열
+ */
+void RightTrimString( std::string & strText )
+{
+	int iIndex;
+	int iLen = strText.length();
+	for( iIndex = iLen - 1; iIndex >= 0; --iIndex )
+	{
+		char c = strText.at(iIndex);
+		if( c == ' ' || c == '\t' ) continue;
+
+		if( iIndex != ( iLen - 1 ) )
+		{
+			strText.erase( iIndex + 1 );
+		}
+
+		break;
+	}
+
+	if( iIndex == -1 )
+	{
+		strText.clear();
 	}
 }
