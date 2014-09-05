@@ -25,5 +25,6 @@ void ReplaceString( std::string & strCallId, const char * pszBefore, const char 
 bool SearchValue( std::string & strText, const char * pszKey, char cSep, std::string & strValue );
 bool SearchValue( std::string & strText, const char * pszKey, char cSep, int & iValue );
 void LeftTrimString( std::string & strText );
+void RightTrimString( std::string & strText );
 
 #endif
