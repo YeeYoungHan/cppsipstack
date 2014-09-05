@@ -18,6 +18,7 @@
 
 #include "SipPlatformDefine.h"
 #include "XmlElement.h"
+#include "StringUtility.h"
 #include <stdlib.h>
 #include "MemoryDebug.h"
 
@@ -320,6 +321,30 @@ bool CXmlElement::SelectAttribute( const char * pszName, std::string & strValue 
 
 /**
  * @ingroup XmlParser
+ * @brief 애트리뷰트에 해당하는 값을 검색한다. 검색에 성공하면 값의 왼쪽, 오른쪽 공백을 제거한다.
+ * @param pszName		애트리뷰트 이름
+ * @param strValue	애트리뷰트 값
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CXmlElement::SelectAttributeTrim( const char * pszName, std::string & strValue )
+{
+	XML_ATTRIBUTE_MAP::iterator	itAM;
+
+	strValue.clear();
+
+	itAM = m_clsAttributeMap.find( pszName );
+	if( itAM != m_clsAttributeMap.end() )
+	{
+		strValue = itAM->second;
+		TrimString( strValue );
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup XmlParser
  * @brief 애트리뷰트에 해당하는 값을 검색하여 int 변수에 저장한다.
  * @param pszName		애트리뷰트 이름
  * @param iValue		애트리뷰트 값
@@ -334,6 +359,7 @@ bool CXmlElement::SelectAttribute( const char * pszName, int & iValue )
 	itAM = m_clsAttributeMap.find( pszName );
 	if( itAM != m_clsAttributeMap.end() )
 	{
+		TrimString( itAM->second );
 		iValue = atoi( itAM->second.c_str() );
 		return true;
 	}
@@ -357,6 +383,7 @@ bool CXmlElement::SelectAttribute( const char * pszName, bool & bValue )
 	itAM = m_clsAttributeMap.find( pszName );
 	if( itAM != m_clsAttributeMap.end() )
 	{
+		TrimString( itAM->second );
 		bValue = GetBoolean( itAM->second.c_str() );
 
 		return true;
@@ -445,6 +472,29 @@ bool CXmlElement::SelectElementData( const char * pszName, std::string & strData
 
 /**
  * @ingroup XmlParser
+ * @brief 하위 Element 를 검색하여서 내용을 저장한다. 검색에 성공하면 내용의 왼쪽, 오른쪽 공백을 제거한다.
+ * @param pszName		하위 Element 이름
+ * @param strData		하위 Elemnet 의 내용을 저장할 변수
+ * @param iIndex		하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CXmlElement::SelectElementTrimData( const char * pszName, std::string & strData, const int iIndex )
+{
+	strData.clear();
+
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
+	if( pclsElement )
+	{
+		strData = pclsElement->m_strData;
+		TrimString( strData );
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup XmlParser
  * @brief 하위 Element 를 검색하여서 정수 내용을 가져온다.
  * @param pszName 하위 Element 이름
  * @param piData	하위 Element 의 값을 저장하는 변수
@@ -456,6 +506,7 @@ bool CXmlElement::SelectElementData( const char * pszName, int & iData, const in
 	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
 	if( pclsElement )
 	{
+		TrimString( pclsElement->m_strData );
 		iData = atoi( pclsElement->m_strData.c_str() );
 
 		return true;
@@ -479,6 +530,7 @@ bool CXmlElement::SelectElementData( const char * pszName, bool & bData, const i
 	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
 	if( pclsElement )
 	{
+		TrimString( pclsElement->m_strData );
 		bData = GetBoolean( pclsElement->m_strData.c_str() );
 
 		return true;
