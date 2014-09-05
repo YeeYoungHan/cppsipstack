@@ -196,6 +196,10 @@
 				RelativePath=".\TestStringSort.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\TestStringUtility.cpp"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
