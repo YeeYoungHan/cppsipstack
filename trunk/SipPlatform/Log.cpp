@@ -19,6 +19,7 @@
 #include "FileUtility.h"
 #include <string.h>
 #include <stdarg.h>
+#include <stdlib.h>
 #include "Log.h"
 #include "Directory.h"
 #include "TimeUtility.h"
@@ -379,6 +380,9 @@ static bool LogFileCompare( const std::string & strFirst, const std::string & st
 {
 	int iFirstLen = (int)strFirst.length();
 	int iSecondLen = (int)strSecond.length();
+
+	if( iFirstLen < 10 ) return true;
+	if( iSecondLen < 10 ) return false;
 
 	int n = strncmp( strFirst.c_str(), strSecond.c_str(), 8 );
 
