@@ -377,29 +377,18 @@ int CLog::GetLogIndex()
 
 static bool LogFileCompare( const std::string & strFirst, const std::string & strSecond )
 {
-	int iFirstLen = (int)strFirst.length();
-	int iSecondLen = (int)strSecond.length();
+	int iFirstLen = strFirst.length();
+	int iSecondLen = strSecond.length();
 
-	if( iFirstLen == iSecondLen )
-	{
-		for( int i = 0; i < iFirstLen; ++i )
-		{
-			if( strFirst[i] < strSecond[i] ) 
-			{
-				return true;
-			}
-			else if( strFirst[i] > strSecond[i] )
-			{
-				return false;
-			}
-		}
-	}
-	else if( iFirstLen > iSecondLen )
-	{
-		return false;
-	}
+	int n = strncmp( strFirst.c_str(), strSecond.c_str(), 8 );
 
-  return true;
+	if( n < 0 ) return true;
+	if( n > 0 ) return false;
+
+	int iFirstIndex = atoi( strFirst.c_str() + 9 );
+	int iSecondIndex = atoi( strSecond.c_str() + 9 );
+
+	return ( iFirstIndex < iSecondIndex );
 }
 
 /**
