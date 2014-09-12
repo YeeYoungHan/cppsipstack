@@ -110,7 +110,7 @@ bool SearchValue( std::string & strText, const char * pszKey, char cSep, int & i
 void LeftTrimString( std::string & strText )
 {
 	int iIndex;
-	int iLen = strText.length();
+	int iLen = (int)strText.length();
 	for( iIndex = 0; iIndex < iLen; ++iIndex )
 	{
 		char c = strText.at(iIndex);
@@ -134,7 +134,7 @@ void LeftTrimString( std::string & strText )
 void RightTrimString( std::string & strText )
 {
 	int iIndex;
-	int iLen = strText.length();
+	int iLen = (int)strText.length();
 	for( iIndex = iLen - 1; iIndex >= 0; --iIndex )
 	{
 		char c = strText.at(iIndex);
