@@ -30,17 +30,47 @@ void PrintFileList( const char * pszName, FILE_LIST & clsList )
 	}
 }
 
+static bool LogFileCompare( const std::string & strFirst, const std::string & strSecond )
+{
+	int iFirstLen = strFirst.length();
+	int iSecondLen = strSecond.length();
+
+	int n = strncmp( strFirst.c_str(), strSecond.c_str(), 8 );
+
+	if( n < 0 ) return true;
+	if( n > 0 ) return false;
+
+	int iFirstIndex = atoi( strFirst.c_str() + 9 );
+	int iSecondIndex = atoi( strSecond.c_str() + 9 );
+
+	return ( iFirstIndex < iSecondIndex );
+}
+
 bool TestStringSort()
 {
 	FILE_LIST	clsFileList;
 
+	clsFileList.push_back( "20140608_10.txt" );
+	clsFileList.push_back( "20140612_9.txt" );
+	clsFileList.push_back( "20140612_22.txt" );
+	clsFileList.push_back( "20140612_21.txt" );
+	clsFileList.push_back( "20140612_32.txt" );
+	clsFileList.push_back( "20140612_31.txt" );
+	clsFileList.push_back( "20140612_12.txt" );
+	clsFileList.push_back( "20140612_11.txt" );
+	clsFileList.push_back( "20140612_2.txt" );
+	clsFileList.push_back( "20140612_3.txt" );
+	clsFileList.push_back( "20140612_4.txt" );
+	clsFileList.push_back( "20140612_1.txt" );
 	clsFileList.push_back( "20140608_2.txt" );
 	clsFileList.push_back( "20140608_3.txt" );
 	clsFileList.push_back( "20140608_1.txt" );
 
 	PrintFileList( "before sort", clsFileList );
 
-	clsFileList.sort();
+	//clsFileList.sort();
+
+	clsFileList.sort( LogFileCompare );
 
 	PrintFileList( "after sort", clsFileList );
 
