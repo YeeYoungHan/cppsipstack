@@ -28,6 +28,7 @@ bool TestDirectory();
 bool TestStringSort();
 bool TestServerUtility();
 bool TestLog();
+bool TestLogMacro();
 bool TestStringUtility();
 
 /**
@@ -40,6 +41,7 @@ bool TestStringUtility();
 int main( int argc, char * argv[] )
 {
 	//if( TestLog() == false ) goto FUNC_END;
+	if( TestLogMacro() == false ) goto FUNC_END;
 	if( TestStringUtility() == false ) goto FUNC_END;
 	if( TestServerUtility() == false ) goto FUNC_END;
 	if( TestStringSort() == false ) goto FUNC_END;

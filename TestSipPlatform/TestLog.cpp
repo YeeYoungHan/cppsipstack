@@ -34,7 +34,7 @@ bool TestLog()
 	int64_t iFolderSize = CDirectory::GetSize( pszFolder );
 	if( iFolderSize != 0 )
 	{
-		printf( "%s folder(%s) size(%ld) is not 0\n", __FUNCTION__, pszFolder, iFolderSize );
+		printf( "%s folder(%s) size(" LONG_LONG_FORMAT ") is not 0\n", __FUNCTION__, pszFolder, iFolderSize );
 		return false;
 	}
 
@@ -62,10 +62,19 @@ bool TestLog()
 
 		if( iFolderSize >= 1024*1024*31 )
 		{
-			printf( "%s folder(%s) size(%ld) error\n", __FUNCTION__, pszFolder, iFolderSize );
+			printf( "%s folder(%s) size(" LONG_LONG_FORMAT ") error\n", __FUNCTION__, pszFolder, iFolderSize );
 			return false;
 		}
 	}
+
+	return true;
+}
+
+#define LOGE(fmt,...) CLog::Print( LOG_ERROR, fmt " (%s:%d)", ##__VA_ARGS__, __FUNCTION__, __LINE__ )
+
+bool TestLogMacro()
+{
+	LOGE( "Test int(%d) string(%s)", 1, "test" );
 
 	return true;
 }

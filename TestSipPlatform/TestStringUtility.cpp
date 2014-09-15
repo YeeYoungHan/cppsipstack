@@ -17,6 +17,8 @@
  */
 
 #include "StringUtility.h"
+#include <string.h>
+#include <stdio.h>
 
 static bool TestLeftTrim( const char * pszInput, const char * pszOutput )
 {
