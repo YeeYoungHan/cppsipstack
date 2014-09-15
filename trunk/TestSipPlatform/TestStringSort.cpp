@@ -17,6 +17,7 @@
  */
 
 #include "Directory.h"
+#include <stdlib.h>
 
 void PrintFileList( const char * pszName, FILE_LIST & clsList )
 {
@@ -32,9 +33,6 @@ void PrintFileList( const char * pszName, FILE_LIST & clsList )
 
 static bool LogFileCompare( const std::string & strFirst, const std::string & strSecond )
 {
-	int iFirstLen = strFirst.length();
-	int iSecondLen = strSecond.length();
-
 	int n = strncmp( strFirst.c_str(), strSecond.c_str(), 8 );
 
 	if( n < 0 ) return true;

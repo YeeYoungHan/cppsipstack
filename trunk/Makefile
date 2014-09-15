@@ -13,6 +13,7 @@ all:
 	cd SipUserAgent && make
 	cd ServerPlatform && make
 	cd TestSipParser && make
+	cd TestSipPlatform && make
 	cd SipClient && make
 	cd SimpleSipServer && make
 	cd KSipServer && make
@@ -29,6 +30,7 @@ clean:
 	cd SipUserAgent && make clean
 	cd ServerPlatform && make clean
 	cd TestSipParser && make clean
+	cd TestSipPlatform && make clean
 	cd SipClient && make clean
 	cd SimpleSipServer && make clean
 	cd KSipServer && make clean
