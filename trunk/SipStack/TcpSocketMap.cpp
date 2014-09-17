@@ -21,6 +21,9 @@
 #include "MemoryDebug.h"
 
 CTcpSocketInfo::CTcpSocketInfo() : m_hSocket(INVALID_SOCKET)
+#ifdef USE_TLS
+	, m_psttSsl(NULL)
+#endif
 {
 
 }
