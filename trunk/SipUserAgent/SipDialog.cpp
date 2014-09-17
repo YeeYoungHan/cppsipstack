@@ -27,7 +27,7 @@
  * @brief »ý¼ºÀÚ
  */
 CSipDialog::CSipDialog( CSipStack * pclsSipStack ) : m_iSeq(0), m_iNextSeq(0), m_iContactPort(-1), m_eTransport(E_SIP_UDP)
-	, m_iLocalRtpPort(-1), m_iRemoteRtpPort(-1), m_iCodec(-1), m_iRSeq(-1), m_b100rel(false)
+	, m_iLocalRtpPort(-1), m_eLocalDirection(E_RTP_SEND_RECV), m_iRemoteRtpPort(-1), m_eRemoteDirection(E_RTP_SEND_RECV), m_iCodec(-1), m_iRSeq(-1), m_b100rel(false)
 	, m_pclsInvite(NULL), m_pclsSipStack( pclsSipStack )
 {
 	memset( &m_sttInviteTime, 0, sizeof(m_sttInviteTime) );
@@ -195,7 +195,7 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 	else
 #endif
 	{
-		if( pclsMessage->IsRequest() && m_clsCodecList.size() > 0 )
+		if( pclsMessage->IsRequest() && m_clsCodecList.empty() == false )
 		{
 			CODEC_LIST::iterator	itList;
 			bool bFound;
