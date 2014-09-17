@@ -223,7 +223,7 @@ int CSdpMessage::ToString( char * pszText, int iTextSize )
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "u=%s\r\n", m_strUri.c_str() );
 	}
 
-	if( m_clsEmailList.size() > 0 )
+	if( m_clsEmailList.empty() == false )
 	{
 		SDP_EMAIL_LIST::iterator	itList;
 
@@ -233,7 +233,7 @@ int CSdpMessage::ToString( char * pszText, int iTextSize )
 		}
 	}
 
-	if( m_clsPhoneList.size() > 0 )
+	if( m_clsPhoneList.empty() == false )
 	{
 		SDP_PHONE_LIST::iterator	itList;
 
@@ -252,7 +252,7 @@ int CSdpMessage::ToString( char * pszText, int iTextSize )
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
 	}
 
-	if( m_clsBandWidthList.size() > 0 )
+	if( m_clsBandWidthList.empty() == false )
 	{
 		SDP_BANDWIDTH_LIST::iterator	itList;
 
@@ -266,7 +266,7 @@ int CSdpMessage::ToString( char * pszText, int iTextSize )
 		}
 	}
 
-	if( m_clsTimeList.size() > 0 )
+	if( m_clsTimeList.empty() == false )
 	{
 		SDP_TIME_LIST::iterator	itList;
 
@@ -284,7 +284,7 @@ int CSdpMessage::ToString( char * pszText, int iTextSize )
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "z=%s\r\n", m_strTimeZone.c_str() );
 	}
 
-	if( m_clsAttributeList.size() > 0 )
+	if( m_clsAttributeList.empty() == false )
 	{
 		SDP_ATTRIBUTE_LIST::iterator	itList;
 
@@ -298,7 +298,7 @@ int CSdpMessage::ToString( char * pszText, int iTextSize )
 		}
 	}
 
-	if( m_clsMediaList.size() > 0 )
+	if( m_clsMediaList.empty() == false )
 	{
 		SDP_MEDIA_LIST::iterator	itList;
 

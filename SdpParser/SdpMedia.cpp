@@ -36,11 +36,9 @@ CSdpMedia::CSdpMedia() : m_iPort(-1), m_iNumOfPort(-1)
  * @param iPort				포트 번호
  * @param pszProtocol 전송 프로토콜
  */
-CSdpMedia::CSdpMedia( const char * pszMedia, int iPort, const char * pszProtocol ) : m_iNumOfPort(-1)
+CSdpMedia::CSdpMedia( const char * pszMedia, int iPort, const char * pszProtocol ) : 
+	m_strMedia(pszMedia), m_iPort(iPort), m_iNumOfPort(-1), m_strProtocol(pszProtocol)
 {
-	m_strMedia = pszMedia;
-	m_iPort = iPort;
-	m_strProtocol = pszProtocol;
 }
 
 /**
@@ -134,7 +132,7 @@ int CSdpMedia::ToString( char * pszText, int iTextSize )
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
 	}
 
-	if( m_clsBandWidthList.size() > 0 )
+	if( m_clsBandWidthList.empty() == false )
 	{
 		SDP_BANDWIDTH_LIST::iterator	itBL;
 
@@ -148,7 +146,7 @@ int CSdpMedia::ToString( char * pszText, int iTextSize )
 		}
 	}
 
-	if( m_clsAttributeList.size() > 0 )
+	if( m_clsAttributeList.empty() == false )
 	{
 		SDP_ATTRIBUTE_LIST::iterator	itAL;
 

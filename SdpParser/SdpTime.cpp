@@ -87,7 +87,7 @@ int CSdpTime::ToString( char * pszText, int iTextSize )
 
 	iLen = snprintf( pszText, iTextSize, "%s %s\r\n", m_strStartTime.c_str(), m_strStopTime.c_str() );
 
-	if( m_clsRepeatTimeList.size() > 0 )
+	if( m_clsRepeatTimeList.empty() == false )
 	{
 		SDP_REPEAT_TIME_LIST::iterator	itRTL;
 
