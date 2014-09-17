@@ -161,8 +161,6 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
  */
 void CSipICTList::Execute( struct timeval * psttTime )
 {
-	if( m_clsMap.size() == 0 ) return;
-
 	INVITE_TRANSACTION_MAP::iterator	itMap, itNext;
 	SIP_MESSAGE_LIST	clsResponseList;
 
