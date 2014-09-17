@@ -37,7 +37,7 @@
 class CSipCallRoute
 {
 public:
-	CSipCallRoute() : m_eTransport( E_SIP_UDP ), m_b100rel(false)
+	CSipCallRoute() : m_iDestPort(0), m_eTransport( E_SIP_UDP ), m_b100rel(false)
 	{}
 
 	/** 格利瘤 IP 林家 */

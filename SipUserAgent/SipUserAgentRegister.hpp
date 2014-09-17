@@ -25,7 +25,7 @@
  */
 bool CSipUserAgent::RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessage )
 {
-	SIP_SERVER_INFO_LIST::iterator itSL, itNext;
+	SIP_SERVER_INFO_LIST::iterator itSL;
 	const char * pszUserId = pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str();
 	bool bRes = false;
 

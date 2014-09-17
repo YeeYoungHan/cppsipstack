@@ -25,8 +25,6 @@
  */
 bool CSipUserAgent::RecvMessageRequest( int iThreadId, CSipMessage * pclsMessage )
 {
-	std::string strCallId;
-
 	if( m_pclsCallBack )
 	{
 		if( m_pclsCallBack->EventIncomingRequestAuth( pclsMessage ) == false )

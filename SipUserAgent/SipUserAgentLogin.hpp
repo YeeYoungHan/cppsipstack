@@ -128,8 +128,6 @@ bool CSipUserAgent::DeleteRegisterInfo( CSipServerInfo & clsInfo )
  */
 void CSipUserAgent::DeleteRegisterInfoAll( )
 {
-	SIP_SERVER_INFO_LIST::iterator	it;
-
 	m_clsRegisterMutex.acquire();
 	m_clsRegisterList.clear();
 	m_clsRegisterMutex.release();
