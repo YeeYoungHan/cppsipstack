@@ -112,8 +112,6 @@ bool CSipNICTList::Insert( CSipMessage * pclsMessage )
  */
 void CSipNICTList::Execute( struct timeval * psttTime )
 {
-	if( m_clsMap.size() == 0 ) return;
-
 	NON_INVITE_TRANSACTION_MAP::iterator	itMap, itNext;
 	SIP_MESSAGE_LIST	clsResponseList;
 
@@ -234,8 +232,6 @@ void CSipNICTList::GetString( CMonitorString & strBuf )
  */
 bool CSipNICTList::DeleteCancel( CSipMessage * pclsMessage )
 {
-	if( m_clsMap.size() == 0 ) return false;
-
 	std::string strKey;
 	NON_INVITE_TRANSACTION_MAP::iterator	itMap;
 	bool	bRes = false;

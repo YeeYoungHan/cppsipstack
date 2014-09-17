@@ -120,8 +120,6 @@ bool CSipNISTList::Insert( CSipMessage * pclsMessage )
  */
 void CSipNISTList::Execute( struct timeval * psttTime )
 {
-	if( m_clsMap.size() == 0 ) return;
-
 	NON_INVITE_TRANSACTION_MAP::iterator	itMap, itNext;
 	SIP_MESSAGE_LIST	clsResponseList;
 
