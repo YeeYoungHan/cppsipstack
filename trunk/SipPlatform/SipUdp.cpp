@@ -54,7 +54,7 @@ Socket UdpSocket()
  */
 Socket UdpListen( unsigned short iPort, const char * pszIp )
 {
-	if( iPort <= 0 )
+	if( iPort == 0 )
 	{
 		return INVALID_SOCKET;
 	}
@@ -186,7 +186,7 @@ bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, unsigned int * piIp, unsig
  */
 bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort )
 {
-	if( iFd == INVALID_SOCKET || pszBuf == NULL || iBufLen <= 0 || pszIp == NULL || iPort <= 0 ) return false;
+	if( iFd == INVALID_SOCKET || pszBuf == NULL || iBufLen <= 0 || pszIp == NULL || iPort == 0 ) return false;
 	
   struct sockaddr_in sttAddr;
   
@@ -215,7 +215,7 @@ bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, const char * pszIp, 
  */
 bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, unsigned int iIp, unsigned short iPort )
 {
-	if( iFd == INVALID_SOCKET || pszBuf == NULL || iBufLen <= 0 || iPort <= 0 ) return false;
+	if( iFd == INVALID_SOCKET || pszBuf == NULL || iBufLen <= 0 || iPort == 0 ) return false;
 	
   struct sockaddr_in sttAddr;
   
