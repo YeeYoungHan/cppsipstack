@@ -33,8 +33,9 @@
 class CTcpComm
 {
 public:
-	CTcpComm() : m_psttSsl(NULL), m_cUseTimeout(1)
+	CTcpComm() : m_iPort(0), m_psttSsl(NULL), m_cUseTimeout(1)
 	{
+		m_szIp[0] = '\0';
 	}
 
 	void SetUseTimeout( bool bUseTimeout )
