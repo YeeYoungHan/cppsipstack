@@ -37,6 +37,7 @@ CTcpSocketMap::~CTcpSocketMap()
 }
 
 /**
+ * @ingroup SipStack
  * @brief 클라이언트 정보를 저장한다.
  * @param pszIp		클라이언트 IP 주소
  * @param iPort		클라이언트 포트 번호
@@ -70,6 +71,7 @@ bool CTcpSocketMap::Insert( const char * pszIp, int iPort, Socket hSocket, SSL *
 }
 
 /**
+ * @ingroup SipStack
  * @brief 클라이언트 IP 주소와 포트 번호와 연관된 TCP 소켓 핸들을 검색한다.
  * @param pszIp		클라이언트 IP 주소
  * @param iPort		클라이언트 포트 번호
@@ -98,6 +100,7 @@ bool CTcpSocketMap::Select( const char * pszIp, int iPort, Socket & hSocket )
 
 #ifdef USE_TLS
 /**
+ * @ingroup SipStack
  * @brief 클라이언트 IP 주소와 포트 번호와 연관된 TCP 소켓 정보를 검색한다.
  * @param pszIp		클라이언트 IP 주소
  * @param iPort		클라이언트 포트 번호
@@ -126,6 +129,7 @@ bool CTcpSocketMap::Select( const char * pszIp, int iPort, CTcpSocketInfo ** ppc
 #endif
 
 /**
+ * @ingroup SipStack
  * @brief 자료구조에서 클라이언트 IP 주소와 포트번호에 해당하는 정보를 삭제한다.
  * @param pszIp 클라이언트 IP 주소
  * @param iPort 클라이언트 포트 번호
@@ -152,6 +156,7 @@ bool CTcpSocketMap::Delete( const char * pszIp, int iPort )
 }
 
 /**
+ * @ingroup SipStack
  * @brief TCP 세션들의 정보를 하나의 문자열에 저장한다.
  * @param strBuf TCP 세션들의 정보를 저장할 문자열 변수
  */
@@ -170,6 +175,7 @@ void CTcpSocketMap::GetString( CMonitorString & strBuf )
 }
 
 /**
+ * @ingroup SipStack
  * @brief 클라이언트 IP 주소와 포트 번호로 자료구조의 키를 생성하여 저장한다.
  * @param pszIp		클라이언트 IP 주소
  * @param iPort		클라이언트 포트 번호
