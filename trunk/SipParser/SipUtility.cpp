@@ -140,7 +140,7 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 
 		gettimeofday( &sttTime, NULL );
 		memcpy( szValue, &sttTime.tv_sec, 2 );
-		memcpy( szValue, &sttTime.tv_usec, 2 );
+		memcpy( szValue + 2, &sttTime.tv_usec, 2 );
 
 		SipMakePrintString( ( unsigned char *)szValue, 4, pszBranch + iLen, iBranchSize - iLen );
 	}
@@ -189,7 +189,7 @@ void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 
 		gettimeofday( &sttTime, NULL );
 		memcpy( szValue, &sttTime.tv_sec, 2 );
-		memcpy( szValue, &sttTime.tv_usec, 2 );
+		memcpy( szValue + 2, &sttTime.tv_usec, 2 );
 
 		SipMakePrintString( ( unsigned char *)szValue, 4, pszCallId + iLen, iCallIdSize - iLen );
 	}
