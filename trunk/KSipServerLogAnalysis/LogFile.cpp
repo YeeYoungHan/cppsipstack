@@ -91,8 +91,10 @@ bool CLogFile::ReadSip( CLogHeader * psttLogHeader, char * pszBuf, int iBufSize 
 			psttLogHeader->m_bSend = true;
 
 			CheckLineEnd( szTemp );
-			if( SaveLogHeader( szTemp, psttLogHeader, pszBuf, iBufSize, iPos ) == false ) return false;
-			bStart = true;
+			if( SaveLogHeader( szTemp, psttLogHeader, pszBuf, iBufSize, iPos ) )
+			{
+				bStart = true;
+			}
 		}
 		else if( strstr( szTemp, "Recv" ) )
 		{
@@ -100,8 +102,10 @@ bool CLogFile::ReadSip( CLogHeader * psttLogHeader, char * pszBuf, int iBufSize 
 			psttLogHeader->m_bSend = false;
 
 			CheckLineEnd( szTemp );
-			if( SaveLogHeader( szTemp, psttLogHeader, pszBuf, iBufSize, iPos ) == false ) return false;
-			bStart = true;
+			if( SaveLogHeader( szTemp, psttLogHeader, pszBuf, iBufSize, iPos ) )
+			{
+				bStart = true;
+			}
 		}
 		
 		memset( szTemp, 0, sizeof(szTemp) );

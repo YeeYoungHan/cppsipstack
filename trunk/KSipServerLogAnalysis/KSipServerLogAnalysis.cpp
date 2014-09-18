@@ -69,21 +69,22 @@ bool ReadLogFile( const char * pszFileName )
 	memset( szPacket, 0, sizeof(szPacket) );
 	while( clsLogFile.ReadSip( &clsLogHeader, szPacket, sizeof(szPacket) ) )
 	{
-		if( clsLogHeader.m_bSend == false )
-		{
-			CSipMessage clsMessage;
+		CSipMessage clsMessage;
 
-			if( clsMessage.Parse( szPacket, (int)strlen(szPacket) ) > 0 )
+		if( clsMessage.Parse( szPacket, (int)strlen(szPacket) ) > 0 )
+		{
+			if( clsLogHeader.m_bSend == false )
 			{
 				gclsStatsSipMethod.AddSipMessage( &clsMessage );
 				gclsStatsSipMethodIp.AddSipMessage( &clsMessage, clsLogHeader.m_szIp );
 				gclsStatsSipMethodUserAgent.AddSipMessage( &clsMessage );
-				gclsStatsSipReSend.AddSipMessage( &clsMessage );
 			}
-			else
-			{
-				printf( "[ERROR] CSipMessage.Parse(%s)\n", szPacket );
-			}
+
+			gclsStatsSipReSend.AddSipMessage( &clsMessage );
+		}
+		else
+		{
+			printf( "[ERROR] CSipMessage.Parse(%s)\n", szPacket );
 		}
 
 		memset( szPacket, 0, sizeof(szPacket) );
