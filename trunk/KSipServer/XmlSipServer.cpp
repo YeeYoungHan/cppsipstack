@@ -48,14 +48,15 @@ CXmlSipServer::~CXmlSipServer()
 bool CXmlSipServer::Parse( const char * pszFileName )
 {
 	CXmlElement clsXml;
+	bool bUse;
 
 	Clear();
 
 	if( clsXml.ParseFile( pszFileName ) == false ) return false;
 
-	if( clsXml.SelectElementData( "Use", m_bUse ) )
+	if( clsXml.SelectElementData( "Use", bUse ) )
 	{
-		if( m_bUse == false ) return false;
+		if( bUse == false ) return false;
 	}
 
 	clsXml.SelectElementData( "Ip", m_strIp );
