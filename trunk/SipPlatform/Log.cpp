@@ -21,7 +21,6 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include "Log.h"
-#include "Directory.h"
 #include "TimeUtility.h"
 
 #ifdef WIN32
@@ -434,4 +433,14 @@ void CLog::DeleteOldFile( )
 			if( m_iFolderSize < iWantSize ) break;
 		}
 	}
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 로그 파일 리스트를 오래된 날짜에서 최근 날짜로 정렬한다.
+ * @param clsFileList 로그 파일 리스트
+ */
+void CLog::SortFileList( FILE_LIST & clsFileList )
+{
+	clsFileList.sort( LogFileCompare );
 }
