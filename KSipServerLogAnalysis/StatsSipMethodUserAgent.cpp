@@ -31,6 +31,7 @@ CStatsSipMethodUserAgent::~CStatsSipMethodUserAgent()
 }
 
 /**
+ * @ingroup KSipServerLogAnalysis
  * @brief SIP 메시지별 SIP UserAgent 를 저장한다.
  * @param pclsMessage SIP 메시지
  */
@@ -61,6 +62,7 @@ void CStatsSipMethodUserAgent::AddSipMessage( CSipMessage * pclsMessage )
 }
 
 /**
+ * @ingroup KSipServerLogAnalysis
  * @brief SIP 메시지별 SIP UserAgent 를 파일에 저장한다.
  * @param pszDate 통계 생성 날짜
  */

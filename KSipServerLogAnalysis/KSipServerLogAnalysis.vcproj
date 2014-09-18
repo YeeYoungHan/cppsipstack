@@ -337,6 +337,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\KSipServerLogAnalysis.h"
+				>
+			</File>
+			<File
 				RelativePath=".\LogAnalysisSetup.cpp"
 				>
 			</File>

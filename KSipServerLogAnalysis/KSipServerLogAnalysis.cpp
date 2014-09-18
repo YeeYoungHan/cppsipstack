@@ -28,6 +28,7 @@
 #include "Version.h"
 
 /**
+ * @ingroup KSipServerLogAnalysis
  * @brief 어제 날짜를 구한다.
  * @param strDate 어제 날짜를 저장할 변수
  */
@@ -50,6 +51,12 @@ void GetYesterday( std::string & strDate )
 	strDate = szDate;
 }
 
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief 로그 파일을 분석한 후, 통계 정보에 저장한다.
+ * @param pszFileName 로그 파일 이름
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool ReadLogFile( const char * pszFileName )
 {
 	char	szPacket[4096];
@@ -85,6 +92,13 @@ bool ReadLogFile( const char * pszFileName )
 	return true;
 }
 
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief main 함수
+ * @param argc 
+ * @param argv 
+ * @returns 
+ */
 int main( int argc, char * argv[] )
 {
 	if( argc != 2 && argc != 3 )
