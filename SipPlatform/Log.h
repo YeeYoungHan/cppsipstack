@@ -22,6 +22,7 @@
 #include "SipPlatformDefine.h"
 #include <stdio.h>
 #include "SipMutex.h"
+#include "Directory.h"
 
 #define LOG_MAX_SIZE								1024*8
 #define FULLPATH_FILENAME_MAX_SIZE	1024
@@ -101,6 +102,8 @@ public:
 	static void SetMaxFolderSize( int64_t iSize );
 	static int GetLogIndex();
 	static void DeleteOldFile( );
+
+	static void SortFileList( FILE_LIST & clsFileList );
 };
 
 #endif
