@@ -58,7 +58,7 @@ void GetYesterday( std::string & strDate )
  * @param pszFileName 로그 파일 이름
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool ReadLogFile( const char * pszFileName )
+bool ReadLogFile( const char * pszFileName, const char * pszName )
 {
 	char	szPacket[4096];
 	CLogFile clsLogFile;
@@ -80,7 +80,7 @@ bool ReadLogFile( const char * pszFileName )
 				gclsStatsSipMethodUserAgent.AddSipMessage( &clsMessage );
 			}
 
-			gclsStatsSipReSend.AddSipMessage( &clsMessage );
+			gclsStatsSipReSend.AddSipMessage( &clsLogHeader, &clsMessage );
 		}
 		else
 		{
@@ -91,6 +91,8 @@ bool ReadLogFile( const char * pszFileName )
 	}
 
 	clsLogFile.Close();
+
+	gclsStatsSipReSend.SaveReSendInfoFile( pszName );
 	gclsStatsSipReSend.Clear();
 
 	return true;
@@ -146,6 +148,8 @@ int main( int argc, char * argv[] )
 		GetYesterday( strDate );
 	}
 
+	CDirectory::Create( gclsSetup.m_strResultFolder.c_str() );
+
 	if( !strcmp( strDate.c_str(), "all" ) )
 	{
 		FILE_LIST	clsFileList;
@@ -158,7 +162,7 @@ int main( int argc, char * argv[] )
 		{
 			strFileName = gclsSetup.m_strLogFolder;
 			CDirectory::AppendName( strFileName, itList->c_str() );
-			ReadLogFile( strFileName.c_str() );
+			ReadLogFile( strFileName.c_str(), itList->c_str() );
 		}
 	}
 	else
@@ -170,10 +174,11 @@ int main( int argc, char * argv[] )
 
 		for( int i = 1; ; ++i )
 		{
-			char	szFileName[1024];
+			char	szFileName[1024], szName[255];
 			
 			snprintf( szFileName, sizeof(szFileName), "%s_%d.txt", strFileName.c_str(), i );
-			if( ReadLogFile( szFileName ) == false ) break;
+			snprintf( szName, sizeof(szName), "%s_%d.txt", strDate.c_str(), i );
+			if( ReadLogFile( szFileName, szName ) == false ) break;
 		}
 	}
 

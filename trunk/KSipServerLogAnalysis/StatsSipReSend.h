@@ -20,7 +20,10 @@
 #define _STATS_SIP_RESEND_H_
 
 #include "SipMessage.h"
+#include "TimeUtility.h"
+#include "LogFile.h"
 #include <map>
+#include <list>
 
 class CSipSendInfo
 {
@@ -28,8 +31,17 @@ public:
 	struct timeval	m_sttTime;
 };
 
+class CSipReSendInfo
+{
+public:
+	std::string			m_strKey;
+	struct timeval	m_sttTime;
+};
+
 // key = {req/res}_{sip call-id}_{cseq}
 typedef std::map< std::string, CSipSendInfo > SIP_SEND_MAP;
+
+typedef std::list< CSipReSendInfo > SIP_RESEND_LIST;
 
 class CStatsSipReSend
 {
@@ -37,11 +49,14 @@ public:
 	CStatsSipReSend();
 	~CStatsSipReSend();
 
-	void AddSipMessage( CSipMessage * pclsMessage );
+	void AddSipMessage( CLogHeader * pclsLogHeader, CSipMessage * pclsMessage );
 	void Clear();
+	void SaveFile( const char * pszDate );
+	void SaveReSendInfoFile( const char * pszLogFileName );
 
 private:
-	SIP_SEND_MAP	m_clsMap;
+	SIP_SEND_MAP		m_clsMap;
+	SIP_RESEND_LIST	m_clsReSendList;
 
 	void GetKey( CSipMessage * pclsMessage, std::string & strKey );
 };

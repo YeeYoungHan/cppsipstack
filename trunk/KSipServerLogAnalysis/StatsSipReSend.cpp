@@ -17,6 +17,9 @@
  */
 
 #include "StatsSipReSend.h"
+#include "LogAnalysisSetup.h"
+#include "Directory.h"
+#include "TimeString.h"
 
 CStatsSipReSend gclsStatsSipReSend;
 
@@ -28,7 +31,7 @@ CStatsSipReSend::~CStatsSipReSend()
 {
 }
 
-void CStatsSipReSend::AddSipMessage( CSipMessage * pclsMessage )
+void CStatsSipReSend::AddSipMessage( CLogHeader * pclsLogHeader, CSipMessage * pclsMessage )
 {
 	SIP_SEND_MAP::iterator	itMap;
 	std::string	strKey;
@@ -40,17 +43,69 @@ void CStatsSipReSend::AddSipMessage( CSipMessage * pclsMessage )
 	{
 		CSipSendInfo clsInfo;
 
+		clsInfo.m_sttTime = pclsLogHeader->m_sttTime;
+
 		m_clsMap.insert( SIP_SEND_MAP::value_type( strKey, clsInfo ) );
 	}
 	else
 	{
-		printf( "resend(%s)\n", strKey.c_str() );
+		CSipReSendInfo clsInfo;
+
+		clsInfo.m_strKey = strKey;
+		clsInfo.m_sttTime = pclsLogHeader->m_sttTime;
+
+		m_clsReSendList.push_back( clsInfo );
+
+		//printf( "resend(%s)\n", strKey.c_str() );
 	}
 }
 
 void CStatsSipReSend::Clear()
 {
 	m_clsMap.clear();
+	m_clsReSendList.clear();
+}
+
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief SIP 재전송 통계를 파일에 저장한다.
+ * @param pszDate 통계 생성 날짜
+ */
+void CStatsSipReSend::SaveFile( const char * pszDate )
+{
+	FILE * fd;
+	std::string strFileName = gclsSetup.m_strResultFolder;
+	CDirectory::AppendName( strFileName, "resend_" );
+	strFileName.append( pszDate );
+	strFileName.append( ".csv" );
+
+	fd = fopen( strFileName.c_str(), "w" );
+	if( fd == NULL ) return;
+
+	fclose( fd );
+}
+
+void CStatsSipReSend::SaveReSendInfoFile( const char * pszLogFileName )
+{
+	FILE * fd;
+	std::string strFileName = gclsSetup.m_strResultFolder;
+	CDirectory::AppendName( strFileName, "resend_" );
+	strFileName.append( pszLogFileName );
+
+	fd = fopen( strFileName.c_str(), "w" );
+	if( fd == NULL ) return;
+
+	SIP_RESEND_LIST::iterator	itList;
+	char szTime[11];
+
+	for( itList = m_clsReSendList.begin(); itList != m_clsReSendList.end(); ++itList )
+	{
+		GetTimeString( itList->m_sttTime.tv_sec, szTime, sizeof(szTime) );
+
+		fprintf( fd, "[%s] [%s]\n", itList->m_strKey.c_str(), szTime );
+	}
+
+	fclose( fd );
 }
 
 void CStatsSipReSend::GetKey( CSipMessage * pclsMessage, std::string & strKey )
