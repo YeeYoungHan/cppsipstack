@@ -16,12 +16,36 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _KSIP_SERVER_LOG_ANALYSIS_H_
-#define _KSIP_SERVER_LOG_ANALYSIS_H_
+#ifndef _STATS_SIP_RESEND_H_
+#define _STATS_SIP_RESEND_H_
 
-/**
- * @defgroup KSipServerLogAnalysis KSipServerLogAnalysis
- * C++ SIP stack 에서 저장한 로그 파일에서 SIP 메시지를 분석하여서 통계를 생성하는 프로그램
- */
+#include "SipMessage.h"
+#include <map>
+
+class CSipSendInfo
+{
+public:
+	struct timeval	m_sttTime;
+};
+
+// key = {req/res}_{sip call-id}_{cseq}
+typedef std::map< std::string, CSipSendInfo > SIP_SEND_MAP;
+
+class CStatsSipReSend
+{
+public:
+	CStatsSipReSend();
+	~CStatsSipReSend();
+
+	void AddSipMessage( CSipMessage * pclsMessage );
+	void Clear();
+
+private:
+	SIP_SEND_MAP	m_clsMap;
+
+	void GetKey( CSipMessage * pclsMessage, std::string & strKey );
+};
+
+extern CStatsSipReSend gclsStatsSipReSend;
 
 #endif

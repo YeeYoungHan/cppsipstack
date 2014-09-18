@@ -22,6 +22,7 @@
 #include "StatsSipMethod.h"
 #include "StatsSipMethodIp.h"
 #include "StatsSipMethodUserAgent.h"
+#include "StatsSipReSend.h"
 #include "TimeString.h"
 #include "Directory.h"
 #include "Log.h"
@@ -77,6 +78,7 @@ bool ReadLogFile( const char * pszFileName )
 				gclsStatsSipMethod.AddSipMessage( &clsMessage );
 				gclsStatsSipMethodIp.AddSipMessage( &clsMessage, clsLogHeader.m_szIp );
 				gclsStatsSipMethodUserAgent.AddSipMessage( &clsMessage );
+				gclsStatsSipReSend.AddSipMessage( &clsMessage );
 			}
 			else
 			{
@@ -88,6 +90,7 @@ bool ReadLogFile( const char * pszFileName )
 	}
 
 	clsLogFile.Close();
+	gclsStatsSipReSend.Clear();
 
 	return true;
 }

@@ -388,6 +388,14 @@
 				RelativePath=".\StatsSipMethodUserAgent.h"
 				>
 			</File>
+			<File
+				RelativePath=".\StatsSipReSend.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\StatsSipReSend.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
