@@ -25,7 +25,7 @@
 
 CTcpSocket gclsSocket;
 
-CTcpSocket::CTcpSocket() : m_hSocket(INVALID_SOCKET)
+CTcpSocket::CTcpSocket() : m_hSocket(INVALID_SOCKET), m_iPort(0)
 {
 	memset( m_szSendPacket, 0, sizeof(m_szSendPacket) );
 }
@@ -85,10 +85,7 @@ void CTcpSocket::Close( )
 		m_hSocket = INVALID_SOCKET;
 
 		m_clsMutex.Lock();
-		if( m_clsSendCommandList.size() > 0 )
-		{
-			m_clsSendCommandList.clear();
-		}
+		m_clsSendCommandList.clear();
 		m_clsMutex.Unlock();
 	}
 }
@@ -155,7 +152,7 @@ bool CTcpSocket::Receive( )
 	CMonitorCommand clsCommand;
 
 	m_clsMutex.Lock();
-	if( m_clsSendCommandList.size() > 0 )
+	if( m_clsSendCommandList.empty() == false )
 	{
 		clsCommand = m_clsSendCommandList.front();
 		m_clsSendCommandList.pop_front();

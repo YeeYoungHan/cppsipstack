@@ -198,8 +198,6 @@ const char * CMonitorSetup::GetNextCommand( )
 {
 	if( m_clsList.size() == 0 ) return "";
 	
-	MONITOR_LIST::iterator	itCommand;
-
 	if( m_iCurrentCommandIndex == -1 )
 	{
 		m_iCurrentCommandIndex = 0;
