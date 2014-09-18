@@ -22,7 +22,9 @@
 #include "StatsSipMethod.h"
 #include "StatsSipMethodIp.h"
 #include "StatsSipMethodUserAgent.h"
-#include <time.h>
+#include "TimeString.h"
+#include "Directory.h"
+#include "Log.h"
 #include "Version.h"
 
 /**
@@ -48,12 +50,47 @@ void GetYesterday( std::string & strDate )
 	strDate = szDate;
 }
 
+bool ReadLogFile( const char * pszFileName )
+{
+	char	szPacket[4096];
+	CLogFile clsLogFile;
+	CLogHeader clsLogHeader;
+
+	if( clsLogFile.Open( pszFileName ) == false ) return false;
+
+	memset( szPacket, 0, sizeof(szPacket) );
+	while( clsLogFile.ReadSip( &clsLogHeader, szPacket, sizeof(szPacket) ) )
+	{
+		if( clsLogHeader.m_bSend == false )
+		{
+			CSipMessage clsMessage;
+
+			if( clsMessage.Parse( szPacket, (int)strlen(szPacket) ) > 0 )
+			{
+				gclsStatsSipMethod.AddSipMessage( &clsMessage );
+				gclsStatsSipMethodIp.AddSipMessage( &clsMessage, clsLogHeader.m_szIp );
+				gclsStatsSipMethodUserAgent.AddSipMessage( &clsMessage );
+			}
+			else
+			{
+				printf( "[ERROR] CSipMessage.Parse(%s)\n", szPacket );
+			}
+		}
+
+		memset( szPacket, 0, sizeof(szPacket) );
+	}
+
+	clsLogFile.Close();
+
+	return true;
+}
+
 int main( int argc, char * argv[] )
 {
-	if( argc != 2 )
+	if( argc != 2 && argc != 3 )
 	{
 		printf( "%s (version - %s)\n", argv[0], PROGRAM_VERSION );
-		printf( "[Usage] %s {setup xml filename}\n", argv[0] );
+		printf( "[Usage] %s {setup xml filename} {date}\n", argv[0] );
 		return -1;
 	}
 
@@ -64,50 +101,62 @@ int main( int argc, char * argv[] )
 	}
 
 	std::string strDate, strFileName;
-	char	szFileName[1024], szPacket[4096];
-	CLogFile clsLogFile;
-	CLogHeader clsLogHeader;
 
-	GetYesterday( strDate );
-	strFileName = gclsSetup.m_strLogFolder;
-
-#ifdef WIN32
-	strFileName.append( "\\" );
-#else
-	strFileName.append( "/" );
-#endif
-
-	strFileName.append( strDate );
-
-	for( int i = 1; ; ++i )
+	if( argc == 3 )
 	{
-		snprintf( szFileName, sizeof(szFileName), "%s_%d.txt", strFileName.c_str(), i );
+		strDate = argv[2];
 
-		if( clsLogFile.Open( szFileName ) == false ) break;
-
-		memset( szPacket, 0, sizeof(szPacket) );
-		while( clsLogFile.ReadSip( &clsLogHeader, szPacket, sizeof(szPacket) ) )
+		if( !strcmp( strDate.c_str(), "all" ) )
 		{
-			if( clsLogHeader.m_bSend == false )
-			{
-				CSipMessage clsMessage;
 
-				if( clsMessage.Parse( szPacket, (int)strlen(szPacket) ) > 0 )
-				{
-					gclsStatsSipMethod.AddSipMessage( &clsMessage );
-					gclsStatsSipMethodIp.AddSipMessage( &clsMessage, clsLogHeader.m_szIp );
-					gclsStatsSipMethodUserAgent.AddSipMessage( &clsMessage );
-				}
-				else
-				{
-					printf( "[ERROR] CSipMessage.Parse(%s)\n", szPacket );
-				}
-			}
-
-			memset( szPacket, 0, sizeof(szPacket) );
 		}
+		else if( !strcmp( strDate.c_str(), "today" ) )
+		{
+			char szDate[11];
 
-		clsLogFile.Close();
+			GetDateString( szDate, sizeof(szDate) );
+			strDate = szDate;
+		}
+		else if( strDate.length() != 8 )
+		{
+			printf( "date(%s) is not correct\n", strDate.c_str() );
+			return -1;
+		}
+	}
+	else
+	{
+		GetYesterday( strDate );
+	}
+
+	if( !strcmp( strDate.c_str(), "all" ) )
+	{
+		FILE_LIST	clsFileList;
+		FILE_LIST::iterator	itList;
+
+		CDirectory::FileList( gclsSetup.m_strLogFolder.c_str(), clsFileList );
+		CLog::SortFileList( clsFileList );
+
+		for( itList = clsFileList.begin(); itList != clsFileList.end(); ++itList )
+		{
+			strFileName = gclsSetup.m_strLogFolder;
+			CDirectory::AppendName( strFileName, itList->c_str() );
+			ReadLogFile( strFileName.c_str() );
+		}
+	}
+	else
+	{
+		strFileName = gclsSetup.m_strLogFolder;
+		CDirectory::AppendName( strFileName, strDate.c_str() );
+
+		strFileName.append( strDate );
+
+		for( int i = 1; ; ++i )
+		{
+			char	szFileName[1024];
+			
+			snprintf( szFileName, sizeof(szFileName), "%s_%d.txt", strFileName.c_str(), i );
+			if( ReadLogFile( szFileName ) == false ) break;
+		}
 	}
 
 	gclsStatsSipMethod.SaveFile( strDate.c_str() );
