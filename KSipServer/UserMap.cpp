@@ -26,7 +26,7 @@
 
 CUserMap gclsUserMap;
 
-CUserInfo::CUserInfo() : m_iLoginTime(0), m_iLoginTimeout(3600), m_iOptionsSeq(0), m_iSendOptionsTime(0)
+CUserInfo::CUserInfo() : m_iPort(0), m_iLoginTime(0), m_iLoginTimeout(3600), m_iOptionsSeq(0), m_iSendOptionsTime(0)
 {
 }
 
@@ -172,7 +172,7 @@ bool CUserMap::SelectGroup( const char * pszGroupId, USER_ID_LIST & clsList )
 	}
 	m_clsMutex.release();
 
-	if( clsList.size() > 0 ) return true;
+	if( clsList.empty() == false ) return true;
 
 	return false;
 }

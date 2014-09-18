@@ -76,7 +76,6 @@ bool CSipServerMap::ReadDir( const char * pszDirName )
 {
 	FILE_LIST	clsFileList;
 	FILE_LIST::iterator	itFL;
-	SIP_SERVER_MAP::iterator	itMap;
 	std::string		strFileName;
 
 	if( CDirectory::FileList( pszDirName, clsFileList ) == false ) return false;

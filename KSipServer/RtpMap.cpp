@@ -25,7 +25,8 @@
 
 CRtpMap gclsRtpMap;
 
-CRtpInfo::CRtpInfo( uint8_t iSocketCount ) : m_iStartPort(0), m_bStop(false), m_iSocketCount(iSocketCount)
+CRtpInfo::CRtpInfo( uint8_t iSocketCount ) : m_phSocket(NULL), m_piIp(NULL), m_piPort(NULL)
+	, m_iStartPort(0), m_bStop(false), m_iSocketCount(iSocketCount)
 {
 	
 }

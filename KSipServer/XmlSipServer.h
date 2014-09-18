@@ -77,9 +77,6 @@ public:
 	/** 자료구조 관리를 위해서 사용되는 Flag */
 	int						m_iFlag;
 
-	/** 사용 유무 */
-	bool					m_bUse;
-
 	/** Call 라우팅을 위한 전화번호 prefix 리스트 */
 	ROUTE_PREFIX_LIST	m_clsRoutePrefixList;
 
