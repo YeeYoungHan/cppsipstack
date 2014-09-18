@@ -401,7 +401,6 @@ void CTcpSocket::SetItemText( const char * pszBuf, CMonitorCommand & clsCommand,
 void CTcpSocket::ParseRecvData( const char * pszBuf, CMonitorCommand & clsCommand )
 {
 	int	iPos = 0, iRow = 0, iColumn = 0;
-	CListCtrl * pclsListCtrl = clsCommand.m_pclsListCtrl;
 
 	USES_CONVERSION;
 
