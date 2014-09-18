@@ -22,6 +22,7 @@
 #include <string>
 
 /**
+ * @ingroup KSipServerLogAnalysis
  * @brief SIP 로그의 발신/수신 정보를 저장하는 클래스
  */
 class CLogHeader
@@ -36,6 +37,7 @@ public:
 };
 
 /**
+ * @ingroup KSipServerLogAnalysis
  * @brief SIP 로그 파일 읽기 클래스
  */
 class CLogFile

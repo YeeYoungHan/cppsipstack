@@ -24,6 +24,7 @@
 #include <map>
 
 /**
+ * @ingroup KSipServerLogAnalysis
  * @brief UserAgent 통계 저장 클래스
  */
 class CUserAgent
@@ -37,6 +38,7 @@ public:
 typedef std::map< std::string, CUserAgent > STATS_SIP_METHOD_USER_AGENT_MAP;
 
 /**
+ * @ingroup KSipServerLogAnalysis
  * @brief SIP 메소드별 UserAgent 통계 저장 클래스
  */
 class CStatsSipMethodUserAgent

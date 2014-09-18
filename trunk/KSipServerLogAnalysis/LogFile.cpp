@@ -19,6 +19,10 @@
 #include "SipParserDefine.h"
 #include "LogFile.h"
 
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief 자료구조를 초기화시킨다.
+ */
 void CLogHeader::Clear()
 {
 	memset( this, 0, sizeof(CLogHeader) );
@@ -33,6 +37,12 @@ CLogFile::~CLogFile(void)
 	Close();
 }
 
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief 로그 파일을 오픈한다.
+ * @param pszFileName 로그 파일 이름
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CLogFile::Open( const char * pszFileName )
 {
 	if( m_sttFd ) return false;
@@ -43,6 +53,14 @@ bool CLogFile::Open( const char * pszFileName )
 	return true;
 }
 
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief SIP 메시지를 읽는다.
+ * @param psttLogHeader 로그 헤더 저장 객체
+ * @param pszBuf				SIP 메시지 저장용 변수
+ * @param iBufSize			SIP 메시지 저장용 변수 크기
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CLogFile::ReadSip( CLogHeader * psttLogHeader, char * pszBuf, int iBufSize )
 {
 	if( m_sttFd == NULL ) return false;
@@ -92,6 +110,10 @@ bool CLogFile::ReadSip( CLogHeader * psttLogHeader, char * pszBuf, int iBufSize 
 	return false;
 }
 
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief 로그 파일을 닫는다.
+ */
 void CLogFile::Close( )
 {
 	if( m_sttFd )
@@ -101,6 +123,16 @@ void CLogFile::Close( )
 	}
 }
 
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief 로그 헤더 및 SIP 메시지를 저장한다.
+ * @param pszTemp				로그 라인 문자열
+ * @param psttLogHeader 로그 헤더 정보 저장용 객체
+ * @param pszBuf				SIP 메시지 저장용 변수
+ * @param iBufSize			SIP 메시지 저장용 변수 크기
+ * @param iPos					SIP 메시지 저장용 변수에 저장된 크기
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CLogFile::SaveLogHeader( const char * pszTemp, CLogHeader * psttLogHeader, char * pszBuf, int iBufSize, int & iPos )
 {
 	char	cType = 0;
@@ -154,6 +186,11 @@ bool CLogFile::SaveLogHeader( const char * pszTemp, CLogHeader * psttLogHeader, 
 	return true;
 }
 
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief 라인의 종료 문자가 부정확한 경우 수정한다.
+ * @param pszTemp 라인 문자열
+ */
 void CLogFile::CheckLineEnd( char * pszTemp )
 {
 	int iLen = (int)strlen( pszTemp );
