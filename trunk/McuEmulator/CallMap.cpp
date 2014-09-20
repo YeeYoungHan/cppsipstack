@@ -94,7 +94,6 @@ bool CCallMap::Select( CSipMessage * pclsMessage, CCallInfo & clsCallInfo )
 
 bool CCallMap::Select( const char * pszKey, CCallInfo & clsCallInfo )
 {
-	std::string	strKey;
 	CALL_MAP::iterator	itMap;
 	bool	bRes = false;
 
