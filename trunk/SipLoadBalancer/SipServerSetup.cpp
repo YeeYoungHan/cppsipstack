@@ -63,6 +63,7 @@ CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10)
 	, m_iTcpPort(5060), m_iTcpThreadCount(10), m_iTcpRecvTimeout(300)
 	, m_iTlsPort(5061), m_iTlsAcceptTimeout(10)
 	, m_iLogLevel(0), m_iLogMaxSize(20000000)
+	, m_iMonitorPort(6000), m_iFileSize(0)
 {
 }
 
