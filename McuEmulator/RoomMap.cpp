@@ -108,7 +108,6 @@ bool CRoomMap::Select( const char * pszRoomId, CRoomInfo & clsRoomInfo )
 bool CRoomMap::Delete( const char * pszRoomId, const char * pszCallId )
 {
 	ROOM_MAP::iterator	itMap;
-	CALL_ID_LIST::iterator	itList;
 	bool	bRes = false;
 
 	m_clsMutex.acquire();
