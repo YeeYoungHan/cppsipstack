@@ -24,6 +24,7 @@
 #include "MemoryDebug.h"
 
 CSipMessage::CSipMessage() : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(-1), m_iMaxForwards(-1), m_eTransport(E_SIP_UDP)
+	, m_iClientPort(0)
 	, m_bUseCompact(false), m_iUseCount(0)
 {
 }
@@ -562,7 +563,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 	iLen += snprintf( pszText + iLen, iTextSize - iLen, "%s: %d\r\n", ( m_bUseCompact ? "l" : "Content-Length" ), m_iContentLength );
 
 #ifdef USE_ACCEPT_HEADER
-	if( m_clsAcceptList.size() > 0 )
+	if( m_clsAcceptList.empty() == false )
 	{
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Accept: " );
 		for( SIP_CONTENT_TYPE_LIST::iterator itList = m_clsAcceptList.begin(); itList != m_clsAcceptList.end(); ++itList )
@@ -578,7 +579,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
 	}
 
-	if( m_clsAcceptEncodingList.size() > 0 )
+	if( m_clsAcceptEncodingList.empty() == false )
 	{
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Accept-Encoding: " );
 		for( SIP_ACCEPT_DATA_LIST::iterator itList = m_clsAcceptEncodingList.begin(); itList != m_clsAcceptEncodingList.end(); ++itList )
@@ -594,7 +595,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
 	}
 
-	if( m_clsAcceptLanguageList.size() > 0 )
+	if( m_clsAcceptLanguageList.empty() == false )
 	{
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Accept-Language: " );
 		for( SIP_ACCEPT_DATA_LIST::iterator itList = m_clsAcceptLanguageList.begin(); itList != m_clsAcceptLanguageList.end(); ++itList )
