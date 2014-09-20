@@ -22,7 +22,7 @@
 
 CSipSpeedSetup gclsSetup;
 
-CSipSpeedSetup::CSipSpeedSetup()
+CSipSpeedSetup::CSipSpeedSetup() : m_iSipServerPort(5060), m_iCallTotalCount(100), m_iCallConcurrentCount(10)
 {
 }
 
