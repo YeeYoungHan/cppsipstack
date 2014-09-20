@@ -23,7 +23,7 @@
 static bool Test( const char * pszText, const char * pszResult, int iTextLen )
 {
 	CSipVia clsVia;
-	int		iPos, iLen;
+	int		iPos;
 	char	szResult[255];
 
 	memset( szResult, 0, sizeof(szResult) );
@@ -41,7 +41,7 @@ static bool Test( const char * pszText, const char * pszResult, int iTextLen )
 		return false;
 	}
 
-	iLen = clsVia.ToString( szResult, sizeof(szResult) );
+	clsVia.ToString( szResult, sizeof(szResult) );
 	if( strcmp( pszResult, szResult ) )
 	{
 		printf( "sip via(%s) != result(%s)\n", pszResult, szResult );

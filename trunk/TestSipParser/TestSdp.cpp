@@ -24,7 +24,7 @@
 static bool Test( const char * pszText, const char * pszResult )
 {
 	CSdpMessage	clsSdp;
-	int		iPos, iLen, iTextLen = (int)strlen(pszText);
+	int		iPos, iTextLen = (int)strlen(pszText);
 	char	szResult[512];
 
 	memset( szResult, 0, sizeof(szResult) );
@@ -42,7 +42,7 @@ static bool Test( const char * pszText, const char * pszResult )
 		return false;
 	}
 
-	iLen = clsSdp.ToString( szResult, sizeof(szResult) );
+	clsSdp.ToString( szResult, sizeof(szResult) );
 	if( strcmp( pszResult, szResult ) )
 	{
 		printf( "sdp(%s) != result(%s)\n", pszResult, szResult );
