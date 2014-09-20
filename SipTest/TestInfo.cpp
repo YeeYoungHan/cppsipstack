@@ -66,7 +66,7 @@ void CTestRtpInfo::Clear( )
 	m_iRecvCount = 0;
 }
 
-CTestInfo::CTestInfo() : m_eTestType(E_TEST_NULL), m_bResult(false), m_eTransferResult(E_TR_NULL)
+CTestInfo::CTestInfo() : m_eTestType(E_TEST_NULL), m_bResult(false), m_eTransferResult(E_TR_NULL), m_bRtpThreadEnd(false)
 {
 }
 
