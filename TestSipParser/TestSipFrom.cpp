@@ -24,7 +24,7 @@ static bool Test( const char * pszText, const char * pszResult )
 {
 	CSipFrom clsFrom;
 	int		iTextLen = (int)strlen( pszText );
-	int		iPos, iLen;
+	int		iPos;
 	char	szResult[255];
 
 	memset( szResult, 0, sizeof(szResult) );
@@ -42,7 +42,7 @@ static bool Test( const char * pszText, const char * pszResult )
 		return false;
 	}
 
-	iLen = clsFrom.ToString( szResult, sizeof(szResult) );
+	clsFrom.ToString( szResult, sizeof(szResult) );
 	if( strcmp( pszResult, szResult ) )
 	{
 		printf( "sip from(%s) != result(%s)\n", pszResult, szResult );

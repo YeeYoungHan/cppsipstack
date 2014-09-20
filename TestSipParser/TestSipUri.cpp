@@ -24,7 +24,7 @@ static bool Test( const char * pszText )
 {
 	CSipUri clsUri;
 	int		iTextLen = (int)strlen( pszText );
-	int		iPos, iLen;
+	int		iPos;
 	char	szResult[255];
 
 	memset( szResult, 0, sizeof(szResult) );
@@ -42,7 +42,7 @@ static bool Test( const char * pszText )
 		return false;
 	}
 
-	iLen = clsUri.ToString( szResult, sizeof(szResult) );
+	clsUri.ToString( szResult, sizeof(szResult) );
 	if( strcmp( pszText, szResult ) )
 	{
 		printf( "sip uri(%s) != result(%s)\n", pszText, szResult );

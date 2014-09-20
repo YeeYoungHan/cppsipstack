@@ -26,7 +26,7 @@ static bool Test( const char * pszText, const char * pszResult )
 {
 	CSipMessage clsMessage;
 	int		iTextLen = (int)strlen( pszText );
-	int		iPos, iLen;
+	int		iPos;
 	char	szResult[2000];
 
 	memset( szResult, 0, sizeof(szResult) );
@@ -38,7 +38,7 @@ static bool Test( const char * pszText, const char * pszResult )
 		return false;
 	}
 
-	iLen = clsMessage.ToString( szResult, sizeof(szResult) );
+	clsMessage.ToString( szResult, sizeof(szResult) );
 	if( strcmp( pszResult, szResult ) )
 	{
 		printf( "sip message(%s) != result(%s)\n", pszResult, szResult );
