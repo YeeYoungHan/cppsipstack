@@ -69,7 +69,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 			break;
 		}
 
-		if( clsRoomInfo.m_clsCallIdList.size() == 0 )
+		if( clsRoomInfo.m_clsCallIdList.empty() )
 		{
 			CLog::Print( LOG_DEBUG, "%s room_id(%s) callid count is zero", __FUNCTION__, pclsRtpThreadInfo->m_strRoomId.c_str() );
 			break;
