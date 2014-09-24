@@ -138,9 +138,8 @@ FUNC_END:
 THREAD_API SipTcpListenThread( LPVOID lpParameter )
 {
 	CSipStack * pclsSipStack = (CSipStack *)lpParameter;
-	struct pollfd arrPollFd[2];
-	int		iSocketCount = 0, n, i, iThreadId;
-	bool	bRes;
+	struct pollfd arrPollFd[1];
+	int		n, iThreadId;
 	Socket	hConnFd;
 	struct sockaddr_in sttAddr;
 	socklen_t		iAddrLen;
@@ -148,49 +147,40 @@ THREAD_API SipTcpListenThread( LPVOID lpParameter )
 
 	pclsSipStack->IncreateTcpThreadCount( iThreadId );
 
-	if( pclsSipStack->m_hTcpSocket != INVALID_SOCKET )
+	if( pclsSipStack->m_hTcpSocket == INVALID_SOCKET )
 	{
-		TcpSetPollIn( arrPollFd[iSocketCount], pclsSipStack->m_hTcpSocket );
-		++iSocketCount;
+		CLog::Print( LOG_ERROR, "%s pclsSipStack->m_hTcpSocket == INVALID_SOCKET", __FUNCTION__ );
+		goto FUNC_END;
 	}
 
-	if( iSocketCount == 0 ) goto FUNC_END;
+	TcpSetPollIn( arrPollFd[0], pclsSipStack->m_hTcpSocket );
 
 	while( pclsSipStack->m_bStopEvent == false )
 	{
-		n = poll( arrPollFd, iSocketCount, 1000 );
+		n = poll( arrPollFd, 1, 1000 );
 		if( n > 0 )
 		{
-			for( i = 0; i < iSocketCount; ++i )
+			if( !(arrPollFd[0].revents & POLLIN) ) continue;
+
+			iAddrLen = sizeof(sttAddr);
+			hConnFd = accept( arrPollFd[0].fd, (struct sockaddr *)&sttAddr, &iAddrLen );
+			if( hConnFd == INVALID_SOCKET )
 			{
-				if( !(arrPollFd[i].revents & POLLIN) ) continue;
+				continue;
+			}
 
-				iAddrLen = sizeof(sttAddr);
-				hConnFd = accept( arrPollFd[i].fd, (struct sockaddr *)&sttAddr, &iAddrLen );
-				if( hConnFd == INVALID_SOCKET )
-				{
-					continue;
-				}
-
-				clsTcpComm.m_hSocket = hConnFd;
-				clsTcpComm.m_iPort = ntohs( sttAddr.sin_port );
+			clsTcpComm.m_hSocket = hConnFd;
+			clsTcpComm.m_iPort = ntohs( sttAddr.sin_port );
 
 #ifdef WIN32
-				snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", inet_ntoa( sttAddr.sin_addr ) );
+			snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", inet_ntoa( sttAddr.sin_addr ) );
 #else
-				inet_ntop( AF_INET, &sttAddr.sin_addr, clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp) );
+			inet_ntop( AF_INET, &sttAddr.sin_addr, clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp) );
 #endif
 
-				bRes = false;
-				if( arrPollFd[i].fd == pclsSipStack->m_hTcpSocket )
-				{
-					bRes = pclsSipStack->m_clsTcpThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) );
-				}
-
-				if( bRes == false )
-				{
-					closesocket( hConnFd );
-				}
+			if( pclsSipStack->m_clsTcpThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
+			{
+				closesocket( hConnFd );
 			}
 		}
 	}
