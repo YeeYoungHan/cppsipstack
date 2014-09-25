@@ -102,7 +102,7 @@ bool CSipUserAgent::StopCall( const char * pszCallId, int iSipCode )
 				//gettimeofday( &itMap->second.m_sttEndTime, NULL );
 				Delete( itMap );
 			}
-			else if( itMap->second.m_sttCancelTime.tv_sec == 0 )
+			else if( itMap->second.m_sttCancelTime.tv_sec == 0 && itMap->second.m_sttEndTime.tv_sec == 0 )
 			{
 				pclsMessage = itMap->second.CreateCancel();
 				gettimeofday( &itMap->second.m_sttCancelTime, NULL );
