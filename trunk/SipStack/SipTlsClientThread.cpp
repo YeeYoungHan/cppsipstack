@@ -35,6 +35,7 @@ public:
 #ifdef USE_TLS
 
 /**
+ * @ingroup SipStack
  * @brief TLS 클라이언트 세션 연결을 위한 쓰레드 함수
  * @param lpParameter CThreadListEntry 객체의 포인터
  * @returns 0 을 리턴한다.

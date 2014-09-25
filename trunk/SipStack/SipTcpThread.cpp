@@ -42,6 +42,7 @@ static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const ch
 }
 
 /**
+ * @ingroup SipStack
  * @brief TCP 세션을 위한 쓰레드 함수
  * @param lpParameter CThreadListEntry 객체의 포인터
  * @returns 0 을 리턴한다.
