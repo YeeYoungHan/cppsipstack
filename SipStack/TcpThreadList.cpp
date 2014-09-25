@@ -27,6 +27,10 @@ CThreadListEntry::CThreadListEntry() : m_hSend(INVALID_SOCKET), m_hRecv(INVALID_
 
 }
 
+/**
+ * @ingroup SipStack
+ * @brief 소켓을 종료한다.
+ */
 void CThreadListEntry::Close()
 {
 	if( m_hSend != INVALID_SOCKET )
