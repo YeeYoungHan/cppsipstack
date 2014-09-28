@@ -168,21 +168,28 @@ bool CThreadList::SendCommand( const char * pszData, int iDataLen, int iThreadIn
 	gclsMutex.acquire();
 	if( iThreadIndex == -1 )
 	{
-		THREAD_LIST::iterator	it;
+		THREAD_LIST::iterator	it, itSel;
+		int iMinSocketCount = m_iMaxSocketPerThread;
+		int iMinThreadIndex = -1;
 
 		for( it = m_clsList.begin(), iThreadIndex = 0; it != m_clsList.end(); ++it, ++iThreadIndex )
 		{
-			if( m_iMaxSocketPerThread > (*it)->m_iSocketCount )
+			if( m_iMaxSocketPerThread > (*it)->m_iSocketCount && iMinSocketCount > (*it)->m_iSocketCount )
 			{
-				bRes = _SendCommand( (*it)->m_hSend, pszData, iDataLen );
-				if( bRes ) (*it)->IncreaseSocketCount( false );
-				if( piThreadIndex ) *piThreadIndex = iThreadIndex;
+				iMinSocketCount = (*it)->m_iSocketCount;
+				iMinThreadIndex = iThreadIndex;
+				itSel = it;
 				bFound = true;
-				break;
 			}
 		}
 
-		if( bFound == false )
+		if( bFound )
+		{
+			bRes = _SendCommand( (*itSel)->m_hSend, pszData, iDataLen );
+			if( bRes ) (*itSel)->IncreaseSocketCount( false );
+			if( piThreadIndex ) *piThreadIndex = iMinThreadIndex;
+		}
+		else
 		{
 			if( AddThread() )
 			{
