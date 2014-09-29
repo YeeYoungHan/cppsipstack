@@ -20,6 +20,7 @@
 #include "LogAnalysisSetup.h"
 #include "Directory.h"
 #include "TimeString.h"
+#include "StatsSipMethod.h"
 
 CStatsSipReSend gclsStatsSipReSend;
 
@@ -52,6 +53,8 @@ void CStatsSipReSend::AddSipMessage( CLogHeader * pclsLogHeader, CSipMessage * p
 		CSipReSendInfo clsInfo;
 
 		clsInfo.m_strKey = strKey;
+		clsInfo.m_strMethod = pclsMessage->m_strSipMethod;
+		clsInfo.m_bReq = pclsMessage->IsRequest();
 		clsInfo.m_sttTime = pclsLogHeader->m_sttTime;
 
 		m_clsReSendList.push_back( clsInfo );
@@ -79,8 +82,38 @@ void CStatsSipReSend::SaveFile( const char * pszDate )
 	strFileName.append( pszDate );
 	strFileName.append( ".csv" );
 
+	CStatsSipMethod clsSendList, clsRecvList;
+	SIP_RESEND_LIST::iterator	itList;
+
+	for( itList = m_clsReSendList.begin(); itList != m_clsReSendList.end(); ++itList )
+	{
+		if( itList->m_bReq )
+		{
+			clsSendList.AddSipMethod( itList->m_strMethod.c_str() );
+		}
+		else
+		{
+			clsRecvList.AddSipMethod( itList->m_strMethod.c_str() );
+		}
+	}
+
 	fd = fopen( strFileName.c_str(), "w" );
 	if( fd == NULL ) return;
+
+	STATS_SIP_METHOD_MAP * pclsMap;
+	STATS_SIP_METHOD_MAP::iterator	itMap;
+
+	pclsMap = clsSendList.GetMap();
+	for( itMap = pclsMap->begin(); itMap != pclsMap->end(); ++itMap )
+	{
+		fprintf( fd, "%s,req," UNSIGNED_LONG_LONG_FORMAT "\n", itMap->first.c_str(), itMap->second );
+	}
+
+	pclsMap = clsRecvList.GetMap();
+	for( itMap = pclsMap->begin(); itMap != pclsMap->end(); ++itMap )
+	{
+		fprintf( fd, "%s,rep," UNSIGNED_LONG_LONG_FORMAT "\n", itMap->first.c_str(), itMap->second );
+	}
 
 	fclose( fd );
 }

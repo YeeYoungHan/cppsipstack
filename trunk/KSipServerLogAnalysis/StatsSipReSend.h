@@ -35,6 +35,8 @@ class CSipReSendInfo
 {
 public:
 	std::string			m_strKey;
+	std::string			m_strMethod;
+	bool						m_bReq;
 	struct timeval	m_sttTime;
 };
 

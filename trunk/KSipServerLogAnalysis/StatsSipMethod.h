@@ -36,7 +36,9 @@ public:
 	~CStatsSipMethod();
 
 	void AddSipMessage( CSipMessage * pclsMessage );
+	void AddSipMethod( const char * pszMethod );
 	void SaveFile( const char * pszDate );
+	STATS_SIP_METHOD_MAP * GetMap();
 
 private:
 	STATS_SIP_METHOD_MAP m_clsMap;
