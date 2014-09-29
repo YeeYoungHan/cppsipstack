@@ -221,6 +221,66 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 /**
  * @ingroup SipUserAgent
+ * @brief 통화 hold 요청 메시지를 전송한다.
+ * @param pszCallId SIP Call-ID
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::HoldCall( const char * pszCallId )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	CSipMessage * pclsRequest = NULL;
+	bool	bRes = false;
+
+	m_clsDialogMutex.acquire();
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
+	{
+		itMap->second.m_eLocalDirection = E_RTP_SEND;
+		pclsRequest = itMap->second.CreateInvite();
+		bRes = true;
+	}
+	m_clsDialogMutex.release();
+
+	if( pclsRequest )
+	{
+		m_clsSipStack.SendSipMessage( pclsRequest );
+	}
+
+	return bRes;
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief 통화 resume 요청 메시지를 전송한다.
+ * @param pszCallId SIP Call-ID
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::ResumeCall( const char * pszCallId )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	CSipMessage * pclsRequest = NULL;
+	bool	bRes = false;
+
+	m_clsDialogMutex.acquire();
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
+	{
+		itMap->second.m_eLocalDirection = E_RTP_SEND_RECV;
+		pclsRequest = itMap->second.CreateInvite();
+		bRes = true;
+	}
+	m_clsDialogMutex.release();
+
+	if( pclsRequest )
+	{
+		m_clsSipStack.SendSipMessage( pclsRequest );
+	}
+
+	return bRes;
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief SIP PRACK 메시지를 전송한다.
  * @param pszCallId SIP Call-ID
  * @param pclsRtp		local RTP 정보 저장 객체
