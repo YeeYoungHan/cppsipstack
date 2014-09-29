@@ -45,6 +45,10 @@ typedef std::map< std::string, CSipSendInfo > SIP_SEND_MAP;
 
 typedef std::list< CSipReSendInfo > SIP_RESEND_LIST;
 
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief 재전송 정보 저장 자료구조
+ */
 class CStatsSipReSend
 {
 public:
