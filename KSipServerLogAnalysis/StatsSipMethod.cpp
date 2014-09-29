@@ -50,6 +50,21 @@ void CStatsSipMethod::AddSipMessage( CSipMessage * pclsMessage )
 	}
 }
 
+void CStatsSipMethod::AddSipMethod( const char * pszMethod )
+{
+	STATS_SIP_METHOD_MAP::iterator	itMap;
+
+	itMap = m_clsMap.find( pszMethod );
+	if( itMap == m_clsMap.end() )
+	{
+		m_clsMap.insert( STATS_SIP_METHOD_MAP::value_type( pszMethod, 1 ) );
+	}
+	else
+	{
+		++itMap->second;
+	}
+}
+
 /**
  * @ingroup KSipServerLogAnalysis
  * @brief SIP 메소드별 통계를 파일에 저장한다.
@@ -73,4 +88,9 @@ void CStatsSipMethod::SaveFile( const char * pszDate )
 	}
 
 	fclose( fd );
+}
+
+STATS_SIP_METHOD_MAP * CStatsSipMethod::GetMap()
+{
+	return &m_clsMap;
 }
