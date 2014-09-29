@@ -32,6 +32,12 @@ CStatsSipReSend::~CStatsSipReSend()
 {
 }
 
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief SIP 메시지 재전송 유무를 검사하기 위한 SIP 메시지를 입력한다.
+ * @param pclsLogHeader SIP 로그의 발신/수신 정보를 저장하는 객체
+ * @param pclsMessage		SIP 메시지
+ */
 void CStatsSipReSend::AddSipMessage( CLogHeader * pclsLogHeader, CSipMessage * pclsMessage )
 {
 	SIP_SEND_MAP::iterator	itMap;
@@ -63,6 +69,10 @@ void CStatsSipReSend::AddSipMessage( CLogHeader * pclsLogHeader, CSipMessage * p
 	}
 }
 
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief 자료구조를 초기화시킨다.
+ */
 void CStatsSipReSend::Clear()
 {
 	m_clsMap.clear();
@@ -118,6 +128,11 @@ void CStatsSipReSend::SaveFile( const char * pszDate )
 	fclose( fd );
 }
 
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief 재전송 정보를 파일에 저장한다.
+ * @param pszLogFileName 로그 파일 이름
+ */
 void CStatsSipReSend::SaveReSendInfoFile( const char * pszLogFileName )
 {
 	FILE * fd;
@@ -141,6 +156,12 @@ void CStatsSipReSend::SaveReSendInfoFile( const char * pszLogFileName )
 	fclose( fd );
 }
 
+/**
+ * @ingroup KSipServerLogAnalysis
+ * @brief 재전송 자료구조에 저장할 키를 생성한다.
+ * @param pclsMessage SIP 메시지
+ * @param strKey			키 저장용 변수
+ */
 void CStatsSipReSend::GetKey( CSipMessage * pclsMessage, std::string & strKey )
 {
 	std::string strCallId;
