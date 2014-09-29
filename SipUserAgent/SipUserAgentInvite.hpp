@@ -170,28 +170,35 @@ bool CSipUserAgent::RecvInviteResponse( int iThreadId, CSipMessage * pclsMessage
 	if( pclsMessage->m_iStatusCode == SIP_TRYING ) return true;
 
 	CSipCallRtp clsRtp;
-	bool bRtp = false;
+	bool bRtp = false, bReInvite = false;
 	std::string	strCallId;
 
 	pclsMessage->GetCallId( strCallId );
 
 	if( GetSipCallRtp( pclsMessage, clsRtp ) ) bRtp = true;
 
-	if( SetInviteResponse( strCallId, pclsMessage, bRtp ? &clsRtp : NULL ) )
+	if( SetInviteResponse( strCallId, pclsMessage, bRtp ? &clsRtp : NULL, bReInvite ) )
 	{
-		if( pclsMessage->m_iStatusCode > SIP_TRYING && pclsMessage->m_iStatusCode < SIP_OK )
+		if( bReInvite )
 		{
-			if( m_pclsCallBack ) m_pclsCallBack->EventCallRing( strCallId.c_str(), pclsMessage->m_iStatusCode, bRtp ? &clsRtp : NULL );
-		}
-		else if( pclsMessage->m_iStatusCode >= SIP_OK && pclsMessage->m_iStatusCode < SIP_MULTIPLE_CHOICES )
-		{
-			if( m_pclsCallBack ) m_pclsCallBack->EventCallStart( strCallId.c_str(), bRtp ? &clsRtp : NULL );
+			if( m_pclsCallBack ) m_pclsCallBack->EventReInviteResponse( strCallId.c_str(), pclsMessage->m_iStatusCode, bRtp ? &clsRtp : NULL );
 		}
 		else
 		{
-			if( m_pclsCallBack ) m_pclsCallBack->EventCallEnd( strCallId.c_str(), pclsMessage->m_iStatusCode );
+			if( pclsMessage->m_iStatusCode > SIP_TRYING && pclsMessage->m_iStatusCode < SIP_OK )
+			{
+				if( m_pclsCallBack ) m_pclsCallBack->EventCallRing( strCallId.c_str(), pclsMessage->m_iStatusCode, bRtp ? &clsRtp : NULL );
+			}
+			else if( pclsMessage->m_iStatusCode >= SIP_OK && pclsMessage->m_iStatusCode < SIP_MULTIPLE_CHOICES )
+			{
+				if( m_pclsCallBack ) m_pclsCallBack->EventCallStart( strCallId.c_str(), bRtp ? &clsRtp : NULL );
+			}
+			else
+			{
+				if( m_pclsCallBack ) m_pclsCallBack->EventCallEnd( strCallId.c_str(), pclsMessage->m_iStatusCode );
 
-			Delete( strCallId.c_str() );
+				Delete( strCallId.c_str() );
+			}
 		}
 	}
 

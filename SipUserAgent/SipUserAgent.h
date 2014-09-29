@@ -166,7 +166,7 @@ private:
 	bool Delete( const char * pszCallId );
 	void Delete( SIP_DIALOG_MAP::iterator & itMap );
 
-	bool SetInviteResponse( std::string & strCallId, CSipMessage * pclsMessage, CSipCallRtp * pclsRtp );
+	bool SetInviteResponse( std::string & strCallId, CSipMessage * pclsMessage, CSipCallRtp * pclsRtp, bool & bReInvite );
 	bool GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsRtp );
 
 	int GetSeqNum( );

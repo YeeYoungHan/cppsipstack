@@ -260,13 +260,16 @@ void CSipUserAgent::Delete( SIP_DIALOG_MAP::iterator & itMap )
  * @param strCallId		SIP Call-ID
  * @param pclsMessage SIP INVITE 응답 메시지
  * @param pclsRtp			remote RTP 정보 저장 객체
+ * @param bReINVITE		ReINVITE 유무
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pclsMessage, CSipCallRtp * pclsRtp )
+bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pclsMessage, CSipCallRtp * pclsRtp, bool & bReInvite )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
-	bool	bFound = false, bReInvite = false;
+	bool	bFound = false;
 	CSipMessage *pclsAck = NULL, *pclsInvite = NULL;
+
+	bReInvite = false;
 
 	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( strCallId );
@@ -359,8 +362,6 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 		// 인증 정보를 포함한 INVITE 메시지를 전송한 경우, 응용으로 callback 호출하지 않는다.
 		return false;
 	}
-
-	if( bReInvite ) return false;
 
 	return bFound;
 }
