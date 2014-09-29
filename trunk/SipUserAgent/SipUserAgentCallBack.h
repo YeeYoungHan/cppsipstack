@@ -136,6 +136,15 @@ public:
 
 	/**
    * @ingroup SipUserAgent
+	 * @brief SIP ReINVITE 응답 메시지 수신 이벤트 핸들러
+	 * @param	pszCallId	SIP Call-ID
+	 * @param iSipStatus	SIP 응답 코드
+	 * @param pclsRemoteRtp		상대방 RTP 정보 저장 객체
+	 */
+	virtual void EventReInviteResponse( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRemoteRtp ){};
+
+	/**
+   * @ingroup SipUserAgent
 	 * @brief SIP PRACK 수신 이벤트 핸들러
 	 * @param	pszCallId	SIP Call-ID
 	 * @param pclsRtp		RTP 정보 저장 객체
