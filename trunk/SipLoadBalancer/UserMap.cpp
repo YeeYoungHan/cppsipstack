@@ -142,7 +142,7 @@ bool CUserMap::Select( CSipMessage * pclsRequest, CUserInfo & clsUserInfo )
  */
 void CUserMap::DeleteSipServer( const char * pszIp, int iPort )
 {
-	USER_MAP::iterator	itMap, itNext;
+	USER_MAP::iterator	itMap;
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
@@ -150,14 +150,8 @@ void CUserMap::DeleteSipServer( const char * pszIp, int iPort )
 LOOP_START:
 		if( itMap->second.EqualSipServer( pszIp, iPort ) == false ) continue;
 
-		itNext = itMap;
-		++itNext;
-
-		m_clsMap.erase( itMap );
-
-		if( itNext == m_clsMap.end() ) break;
-		itMap = itNext;
-
+		itMap = m_clsMap.erase( itMap );
+		if( itMap == m_clsMap.end() ) break;
 		goto LOOP_START;
 	}
 	m_clsMutex.release();
