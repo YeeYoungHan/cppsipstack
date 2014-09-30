@@ -30,6 +30,7 @@
 IMPLEMENT_DYNCREATE(CChildFrame, CMDIChildWndEx)
 
 BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWndEx)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // CChildFrame 积己/家戈
@@ -68,3 +69,10 @@ void CChildFrame::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 // CChildFrame 皋矫瘤 贸府扁
+
+void CChildFrame::OnDestroy()
+{
+	WaitStopMonitorThread();
+
+	CMDIChildWndEx::OnDestroy();
+}
