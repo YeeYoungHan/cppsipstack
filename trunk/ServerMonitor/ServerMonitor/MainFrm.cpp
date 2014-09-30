@@ -356,8 +356,6 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 
 void CMainFrame::OnDestroy()
 {
-	CMDIFrameWndEx::OnDestroy();
-
 	KillTimer( MONITOR_TIMER );
 
 	StopMonitorThread( );
@@ -365,6 +363,8 @@ void CMainFrame::OnDestroy()
 	gclsSetup.PutFile();
 
 	WaitStopMonitorThread( );
+
+	CMDIFrameWndEx::OnDestroy();
 }
 
 void CMainFrame::OnSetup()
