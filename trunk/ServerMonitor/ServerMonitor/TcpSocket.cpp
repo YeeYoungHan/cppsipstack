@@ -163,7 +163,10 @@ bool CTcpSocket::Receive( )
 
 	if( clsCommand.m_pclsListCtrl )
 	{
-		clsCommand.m_pclsListCtrl->DeleteAllItems();
+		if( clsCommand.m_clsEntry.m_bUpdateRow == false )
+		{
+			clsCommand.m_pclsListCtrl->DeleteAllItems();
+		}
 
 		if( iPacketLen > 0 )
 		{
@@ -173,9 +176,27 @@ bool CTcpSocket::Receive( )
 		CString			strBuf;
 		SYSTEMTIME	sttTime;
 		int					iRow = clsCommand.m_pclsListCtrl->GetItemCount();
+		bool				bInsertItem = false;
 
 		strBuf.Format( _T("count=%d"), iRow );
-		clsCommand.m_pclsListCtrl->InsertItem( iRow, strBuf );
+
+		if( clsCommand.m_clsEntry.m_bUpdateRow )
+		{
+			if( iRow > 0 )
+			{
+				CString strText = clsCommand.m_pclsListCtrl->GetItemText( iRow - 1, 0 );
+				if( !strncmp( strText, "count=", 6 ) )
+				{
+					iRow = iRow - 1;
+					bInsertItem = true;
+				}
+			}
+		}
+
+		if( bInsertItem == false )
+		{
+			clsCommand.m_pclsListCtrl->InsertItem( iRow, strBuf );
+		}
 
 		GetLocalTime( &sttTime );
 
@@ -384,7 +405,23 @@ void CTcpSocket::SetItemText( const char * pszBuf, CMonitorCommand & clsCommand,
 
 	if( iColumn == 0 )
 	{
-		clsCommand.m_pclsListCtrl->InsertItem( iRow, strText.c_str() );
+		if( clsCommand.m_clsEntry.m_bUpdateRow )
+		{
+			int iRowCount = clsCommand.m_pclsListCtrl->GetItemCount();
+
+			if( iRowCount == iRow )
+			{
+				clsCommand.m_pclsListCtrl->InsertItem( iRow, strText.c_str() );
+			}
+			else
+			{
+				clsCommand.m_pclsListCtrl->SetItemText( iRow, iColumn, strText.c_str() );
+			}
+		}
+		else
+		{
+			clsCommand.m_pclsListCtrl->InsertItem( iRow, strText.c_str() );
+		}
 	}
 	else
 	{

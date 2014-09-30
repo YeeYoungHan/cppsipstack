@@ -56,6 +56,10 @@ typedef std::vector< CMonitorAttribute > MONITOR_ATTRIBUTE_LIST;
 class CMonitorEntry
 {
 public:
+	CMonitorEntry() : m_bUpdateRow(false)
+	{
+	}
+
 	EMonitorAttributeType GetType( int iCol )
 	{
 		if( iCol >= (int)m_lstAttribute.size() ) return E_MAT_NULL;
@@ -65,6 +69,7 @@ public:
 
 	std::string	m_strCommand;
 	std::string	m_strTitle;
+	bool m_bUpdateRow;
 
 	MONITOR_ATTRIBUTE_LIST m_lstAttribute;
 };
