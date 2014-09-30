@@ -184,7 +184,7 @@ void CSipServerMap::SetDeleteAll( )
  */
 void CSipServerMap::DeleteIfSet( )
 {
-	SIP_SERVER_LIST::iterator itList, itNext;
+	SIP_SERVER_LIST::iterator itList;
 
 	m_clsMutex.acquire();
 	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
@@ -199,15 +199,9 @@ LOOP_START:
 			continue;
 		}
 
-		itNext = itList;
-		++itNext;
-
 		gclsUserMap.DeleteSipServer( itList->m_strIp.c_str(), itList->m_iPort );
-		m_clsList.erase( itList );
-
-		if( itNext == m_clsList.end() ) break;
-
-		itList = itNext;
+		itList = m_clsList.erase( itList );
+		if( itList == m_clsList.end() ) break;
 		goto LOOP_START;
 	}
 	m_clsMutex.release();

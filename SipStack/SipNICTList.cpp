@@ -112,7 +112,7 @@ bool CSipNICTList::Insert( CSipMessage * pclsMessage )
  */
 void CSipNICTList::Execute( struct timeval * psttTime )
 {
-	NON_INVITE_TRANSACTION_MAP::iterator	itMap, itNext;
+	NON_INVITE_TRANSACTION_MAP::iterator	itMap;
 	SIP_MESSAGE_LIST	clsResponseList;
 
 	m_clsMutex.acquire();
@@ -124,14 +124,9 @@ LOOP_START:
 			if( DiffTimeval( &itMap->second->m_sttStopTime, psttTime ) >= 5000 )
 			{
 DELETE_TRANSACTION:
-				itNext = itMap;
-				++itNext;
-
 				delete itMap->second;
-				m_clsMap.erase( itMap );
-
-				if( itNext == m_clsMap.end() ) break;
-				itMap = itNext;
+				itMap = m_clsMap.erase( itMap );
+				if( itMap == m_clsMap.end() ) break;
 				goto LOOP_START;
 			}
 		}
