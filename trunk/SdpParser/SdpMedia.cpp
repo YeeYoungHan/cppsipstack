@@ -228,7 +228,7 @@ bool CSdpMedia::SelectFmt( int iPayLoadType )
  */
 bool CSdpMedia::DeleteAttribute( const char * pszName )
 {
-	SDP_ATTRIBUTE_LIST::iterator	itAttr;
+	SDP_ATTRIBUTE_LIST::iterator	itAttr, itNext;
 	bool bRes = false;
 
 	for( itAttr = m_clsAttributeList.begin(); itAttr != m_clsAttributeList.end(); ++itAttr )
@@ -237,8 +237,14 @@ LOOP_START:
 		if( !strcmp( itAttr->m_strName.c_str(), pszName ) )
 		{
 			bRes = true;
-			itAttr = m_clsAttributeList.erase( itAttr );
-			if( itAttr == m_clsAttributeList.end() ) break;
+
+			itNext = itAttr;
+			++itNext;
+
+			m_clsAttributeList.erase( itAttr );
+
+			if( itNext == m_clsAttributeList.end() ) break;
+			itAttr = itNext;
 			goto LOOP_START;
 		}
 	}
