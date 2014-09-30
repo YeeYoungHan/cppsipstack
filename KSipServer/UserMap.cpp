@@ -227,7 +227,7 @@ bool CUserMap::SetIpPort( const char * pszUserId, const char * pszIp, int iPort 
  */
 void CUserMap::DeleteTimeout( int iTimeout )
 {
-	USER_MAP::iterator	itMap;
+	USER_MAP::iterator	itMap, itNext;
 	time_t iTime;
 
 	time( &iTime );
@@ -238,10 +238,14 @@ void CUserMap::DeleteTimeout( int iTimeout )
 LOOP_START:
 		if( iTime > ( itMap->second.m_iLoginTime + itMap->second.m_iLoginTimeout + iTimeout ) )
 		{
+			itNext = itMap;
+			++itNext;
+
 			CLog::Print( LOG_DEBUG, "user(%s) is deleted - timeout", itMap->first.c_str() );
 
-			itMap = m_clsMap.erase( itMap );
-			if( itMap == m_clsMap.end() ) break;
+			m_clsMap.erase( itMap );
+			if( itNext == m_clsMap.end() ) break;
+			itMap = itNext;
 			goto LOOP_START;
 		}
 	}

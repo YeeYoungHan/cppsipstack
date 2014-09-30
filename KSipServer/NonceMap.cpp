@@ -118,7 +118,7 @@ bool CNonceMap::Select( const char * pszNonce, bool bIsRemove )
  */
 void CNonceMap::DeleteTimeout( int iSecond )
 {
-	NONCE_MAP::iterator it;
+	NONCE_MAP::iterator it, itNext;
 	time_t	iTime;
 
 	time( &iTime );
@@ -128,9 +128,18 @@ void CNonceMap::DeleteTimeout( int iSecond )
 LOOP_START:
 		if( iTime > ( it->second.m_iTime + iSecond ) )
 		{
-			it = m_clsMap.erase( it );
-			if( it == m_clsMap.end() ) break;
-			goto LOOP_START;
+			itNext = it;
+			++itNext;
+			m_clsMap.erase( it );
+			if( itNext == m_clsMap.end() )
+			{
+				break;
+			}
+			else
+			{
+				it = itNext;
+				goto LOOP_START;
+			}
 		}
 	}
 	m_clsMutex.release();

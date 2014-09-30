@@ -20,7 +20,7 @@
 #define _SIP_STACK_DEFINE_H_
 
 // TLS 기능 없이 SIP stack 을 빌드하고 싶으면 아래의 선언을 주석 처리하세요.
-//#define USE_TLS
+#define USE_TLS
 
 // MAP 대신 HASH MAP 을 사용할 경우 아래의 선언을 사용하세요.
 // HASH MAP 을 사용하면 iterator 에서 MAP 보다 많은 연산을 하는 것으로 추정됩니다.

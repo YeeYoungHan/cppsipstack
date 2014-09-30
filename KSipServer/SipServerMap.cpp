@@ -104,7 +104,7 @@ bool CSipServerMap::ReadDir( const char * pszDirName )
  */
 bool CSipServerMap::SetSipUserAgentRegisterInfo( )
 {
-	SIP_SERVER_MAP::iterator	itMap;
+	SIP_SERVER_MAP::iterator	itMap, itNext;
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
@@ -122,8 +122,13 @@ LOOP_START:
 		{
 			gclsUserAgent.DeleteRegisterInfo( itMap->second );
 
-			itMap = m_clsMap.erase( itMap );
-			if( itMap == m_clsMap.end() ) break;
+			itNext = itMap;
+			++itNext;
+
+			m_clsMap.erase( itMap );
+			if( itNext == m_clsMap.end() ) break;
+			
+			itMap = itNext;
 			goto LOOP_START;
 		}
 	}

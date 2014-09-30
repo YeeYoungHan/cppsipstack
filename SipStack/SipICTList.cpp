@@ -161,7 +161,7 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
  */
 void CSipICTList::Execute( struct timeval * psttTime )
 {
-	INVITE_TRANSACTION_MAP::iterator	itMap;
+	INVITE_TRANSACTION_MAP::iterator	itMap, itNext;
 	SIP_MESSAGE_LIST	clsResponseList;
 
 	m_clsMutex.acquire();
@@ -173,9 +173,14 @@ LOOP_START:
 			if( DiffTimeval( &itMap->second->m_sttStopTime, psttTime ) >= m_iTimerD )
 			{
 DELETE_TRANSACTION:
+				itNext = itMap;
+				++itNext;
+
 				delete itMap->second;
-				itMap = m_clsMap.erase( itMap );
-				if( itMap == m_clsMap.end() ) break;
+				m_clsMap.erase( itMap );
+
+				if( itNext == m_clsMap.end() ) break;
+				itMap = itNext;
 				goto LOOP_START;
 			}
 		}
