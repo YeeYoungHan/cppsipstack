@@ -71,7 +71,7 @@ bool CMonitorSetup::Read( const char * pszFileName )
 		XML_ELEMENT_LIST lstAttribute;
 		XML_ELEMENT_LIST::iterator	itAttribute;
 		CMonitorEntry clsEntry;
-		std::string strShow;
+		std::string strShow, strUpdate;
 
 		itElement->SelectAttribute( "command", clsEntry.m_strCommand );
 		itElement->SelectAttribute( "title", clsEntry.m_strTitle );
@@ -82,6 +82,16 @@ bool CMonitorSetup::Read( const char * pszFileName )
 			if( _stricmp( strShow.c_str(), "true" ) && _stricmp( strShow.c_str(), "on" ) && _stricmp( strShow.c_str(), "use" ) )
 			{
 				continue;
+			}
+		}
+
+		itElement->SelectAttribute( "update", strUpdate );
+
+		if( strUpdate.length() > 0 )
+		{
+			if( !_stricmp( strUpdate.c_str(), "true" ) || !_stricmp( strUpdate.c_str(), "on" ) || !_stricmp( strUpdate.c_str(), "use" ) )
+			{
+				clsEntry.m_bUpdateRow = true;
 			}
 		}
 
