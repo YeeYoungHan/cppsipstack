@@ -139,6 +139,9 @@ bool CMonitorSetup::Read( const char * pszFileName )
 				clsAttr.m_eType = E_MAT_COMMA_SEP;
 			}
 
+			itAttribute->SelectAttribute( "showIfEqual", clsAttr.m_strShowIfEqual );
+			itAttribute->SelectAttribute( "showIfNotEqual", clsAttr.m_strShowIfNotEqual );
+
 			clsEntry.m_lstAttribute.push_back( clsAttr );
 		}
 

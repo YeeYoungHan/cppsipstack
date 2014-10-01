@@ -45,6 +45,8 @@ public:
 
 	std::string						m_strName;
 	EMonitorAttributeType	m_eType;
+	std::string						m_strShowIfEqual;
+	std::string						m_strShowIfNotEqual;
 };
 
 typedef std::vector< CMonitorAttribute > MONITOR_ATTRIBUTE_LIST;
@@ -62,9 +64,31 @@ public:
 
 	EMonitorAttributeType GetType( int iCol )
 	{
-		if( iCol >= (int)m_lstAttribute.size() ) return E_MAT_NULL;
+		if( iCol < 0 || iCol >= (int)m_lstAttribute.size() ) return E_MAT_NULL;
 
 		return m_lstAttribute[iCol].m_eType;
+	}
+
+	bool GetShowIfEqual( int iCol, std::string & strText )
+	{
+		if( iCol < 0 || iCol >= (int)m_lstAttribute.size() ) return false;
+
+		if( m_lstAttribute[iCol].m_strShowIfEqual.empty() ) return false;
+
+		strText = m_lstAttribute[iCol].m_strShowIfEqual;
+
+		return true;
+	}
+
+	bool GetShowIfNotEqual( int iCol, std::string & strText )
+	{
+		if( iCol < 0 || iCol >= (int)m_lstAttribute.size() ) return false;
+
+		if( m_lstAttribute[iCol].m_strShowIfNotEqual.empty() ) return false;
+
+		strText = m_lstAttribute[iCol].m_strShowIfNotEqual;
+
+		return true;
 	}
 
 	std::string	m_strCommand;
