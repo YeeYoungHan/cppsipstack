@@ -16,23 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "RtspUri.h"
+#ifndef _TEST_RTSP_PARSER_H_
+#define _TEST_RTSP_PARSER_H_
 
-CRtspUri::CRtspUri()
-{
-}
 
-CRtspUri::~CRtspUri()
-{
-}
-
-int CRtspUri::Parse( const char * pszText, int iTextLen )
-{
-
-	return 0;
-}
-
-int CRtspUri::ToString( char * pszText, int iTextSize )
-{
-	return 0;
-}
+#endif
