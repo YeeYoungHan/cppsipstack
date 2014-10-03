@@ -173,6 +173,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestRtspParser", "TestRtspP
 		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB} = {11E19CA3-F409-41E3-BD62-E1CEA134B7DB}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RtspServer", "RtspServer\RtspServer.vcproj", "{65A5C2D7-4618-4223-B198-A229FD9F07B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -379,6 +381,12 @@ Global
 		{37075F51-6F6D-4066-B959-0B76AC539377}.Release|Win32.ActiveCfg = Release|Win32
 		{37075F51-6F6D-4066-B959-0B76AC539377}.Release|Win32.Build.0 = Release|Win32
 		{37075F51-6F6D-4066-B959-0B76AC539377}.Release|x64.ActiveCfg = Release|Win32
+		{65A5C2D7-4618-4223-B198-A229FD9F07B1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{65A5C2D7-4618-4223-B198-A229FD9F07B1}.Debug|Win32.Build.0 = Debug|Win32
+		{65A5C2D7-4618-4223-B198-A229FD9F07B1}.Debug|x64.ActiveCfg = Debug|Win32
+		{65A5C2D7-4618-4223-B198-A229FD9F07B1}.Release|Win32.ActiveCfg = Release|Win32
+		{65A5C2D7-4618-4223-B198-A229FD9F07B1}.Release|Win32.Build.0 = Release|Win32
+		{65A5C2D7-4618-4223-B198-A229FD9F07B1}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
