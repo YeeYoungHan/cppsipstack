@@ -174,6 +174,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestRtspParser", "TestRtspP
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RtspServer", "RtspServer\RtspServer.vcproj", "{65A5C2D7-4618-4223-B198-A229FD9F07B1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A3B65370-A9DA-4A25-BD27-E74BADC296A5} = {A3B65370-A9DA-4A25-BD27-E74BADC296A5}
+		{59766094-16E8-4602-9621-6C1E5ED9AF5F} = {59766094-16E8-4602-9621-6C1E5ED9AF5F}
+		{37B903A3-633B-4F2C-9146-AA7D49C92B95} = {37B903A3-633B-4F2C-9146-AA7D49C92B95}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
