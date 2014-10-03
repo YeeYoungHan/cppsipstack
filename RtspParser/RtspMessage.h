@@ -47,7 +47,7 @@ public:
 	std::string		m_strReasonPhrase;
 
 	/** RTSP CSeq 헤더 */
-	CSipCSeq				m_clsCSeq;
+	int							m_iCSeq;
 
 	/** RTSP Content-Type 헤더 */
 	CSipContentType	m_clsContentType;
@@ -63,6 +63,8 @@ public:
 
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
+
+	CRtspMessage * CreateResponse( int iStatus );
 
 private:
 	int ParseStatusLine( const char * pszText, int iTextLen );

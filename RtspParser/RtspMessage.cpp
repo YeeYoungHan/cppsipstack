@@ -20,7 +20,7 @@
 #include "RtspMessage.h"
 #include "SipStatusCode.h"
 
-CRtspMessage::CRtspMessage() : m_iStatusCode(-1), m_iContentLength(0)
+CRtspMessage::CRtspMessage() : m_iStatusCode(-1), m_iCSeq(0), m_iContentLength(0)
 {
 }
 
@@ -40,7 +40,7 @@ int CRtspMessage::Parse( const char * pszText, int iTextLen )
 	bool bNotFound;
 #endif
 
-	if( !strncmp( pszText, "SIP/", 4 ) )
+	if( !strncmp( pszText, "RTSP/", 4 ) )
 	{
 		iCurPos = ParseStatusLine( pszText, iTextLen );
 	}
@@ -64,11 +64,15 @@ int CRtspMessage::Parse( const char * pszText, int iTextLen )
 		pszValue = clsHeader.m_strValue.c_str();
 		iValueLen = (int)clsHeader.m_strValue.length();
 
-		if( !strcasecmp( pszName, "Content-Type" ) || !strcasecmp( pszName, "c" ) )
+		if( !strcasecmp( pszName, "CSeq" ) )
+		{
+			m_iCSeq = atoi( pszValue );
+		}
+		if( !strcasecmp( pszName, "Content-Type" ) )
 		{
 			if( m_clsContentType.Parse( pszValue, iValueLen ) == -1 ) return -1;
 		}
-		else if( !strcasecmp( pszName, "Content-Length" ) || !strcasecmp( pszName, "l" ) )
+		else if( !strcasecmp( pszName, "Content-Length" ) )
 		{
 			m_iContentLength = atoi( pszValue );
 		}
@@ -116,14 +120,7 @@ int CRtspMessage::ToString( char * pszText, int iTextSize )
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, " %s\r\n", m_strRtspVersion.c_str() );
 	}
 
-	if( m_clsCSeq.Empty() == false )
-	{
-		iLen += snprintf( pszText + iLen, iTextSize - iLen, "CSeq: " );
-		n = m_clsCSeq.ToString( pszText + iLen, iTextSize - iLen );
-		if( n == -1 ) return -1;
-		iLen += n;
-		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
-	}
+	iLen += snprintf( pszText + iLen, iTextSize - iLen, "%s: %d\r\n", "CSeq", m_iCSeq );
 
 	if( m_clsContentType.Empty() == false )
 	{
@@ -149,6 +146,17 @@ int CRtspMessage::ToString( char * pszText, int iTextSize )
 	}
 
 	return iLen;
+}
+
+CRtspMessage * CRtspMessage::CreateResponse( int iStatus )
+{
+	CRtspMessage * pclsResponse = new CRtspMessage();
+	if( pclsResponse == NULL ) return NULL;
+
+	pclsResponse->m_iStatusCode = iStatus;
+	pclsResponse->m_iCSeq = m_iCSeq;
+
+	return pclsResponse;
 }
 
 /**
