@@ -18,7 +18,7 @@
 
 #include "RtspMessage.h"
 
-CRtspMessage::CRtspMessage()
+CRtspMessage::CRtspMessage() : m_iStatusCode(-1), m_iContentLength(0)
 {
 }
 

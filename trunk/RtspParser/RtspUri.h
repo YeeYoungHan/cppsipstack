@@ -16,34 +16,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _RTSP_MESSAGE_H_
-#define _RTSP_MESSAGE_H_
+#ifndef _RTSP_URI_H_
+#define _RTSP_URI_H_
 
-#include "RtspUri.h"
+#include <string>
 
-class CRtspMessage
+class CRtspUri
 {
 public:
-	CRtspMessage();
-	~CRtspMessage();
-
-	/** RTSP 메소드 ( SETUP, PLAY 등 ) */
-	std::string		m_strRtspMethod;
-
-	/** RTSP request URI */
-	CRtspUri				m_clsReqUri;
-
-	/** RTSP version ( SIP/2.0 ) */
-	std::string		m_strRtspVersion;
-
-	/** RTSP 응답 코드. RTSP 응답 메시지인 경우에만 0 보다 큰 값을 가지고 있다. */
-	int						m_iStatusCode;
-
-	/** RTSP 응답 메시지 */
-	std::string		m_strReasonPhrase;
-
-	/** RTSP Content-Length 헤더의 값 */
-	int							m_iContentLength;
+	CRtspUri();
+	~CRtspUri();
 };
 
 #endif
