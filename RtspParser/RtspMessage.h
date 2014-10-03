@@ -19,6 +19,7 @@
 #ifndef _RTSP_MESSAGE_H_
 #define _RTSP_MESSAGE_H_
 
+#include "RtspParserDefine.h"
 #include "RtspUri.h"
 #include "SipCSeq.h"
 #include "SipHeader.h"

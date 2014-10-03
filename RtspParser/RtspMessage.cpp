@@ -18,6 +18,7 @@
 
 #include "SipPlatformDefine.h"
 #include "RtspMessage.h"
+#include "SipStatusCode.h"
 
 CRtspMessage::CRtspMessage() : m_iStatusCode(-1), m_iContentLength(0)
 {
@@ -90,7 +91,64 @@ int CRtspMessage::Parse( const char * pszText, int iTextLen )
 
 int CRtspMessage::ToString( char * pszText, int iTextSize )
 {
-	return 0;
+	if( pszText == NULL || iTextSize <= 0 ) return -1;
+
+	int iLen, n;
+
+	if( m_strRtspVersion.empty() ) m_strRtspVersion = RTSP_VERSION;
+
+	if( m_iStatusCode > 0 )
+	{
+		if( m_strReasonPhrase.empty() )
+		{
+			m_strReasonPhrase = GetReasonPhrase( m_iStatusCode );
+		}
+
+		iLen = snprintf( pszText, iTextSize, "%s %d %s\r\n", m_strRtspVersion.c_str(), m_iStatusCode, m_strReasonPhrase.c_str() );
+	}
+	else
+	{
+		if( m_strRtspMethod.empty() || m_clsReqUri.Empty() || m_strRtspVersion.empty() ) return -1;
+		iLen = snprintf( pszText, iTextSize, "%s ", m_strRtspMethod.c_str() );
+		n = m_clsReqUri.ToString( pszText + iLen, iTextSize - iLen );
+		if( n == -1 ) return -1;
+		iLen += n;
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, " %s\r\n", m_strRtspVersion.c_str() );
+	}
+
+	if( m_clsCSeq.Empty() == false )
+	{
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, "CSeq: " );
+		n = m_clsCSeq.ToString( pszText + iLen, iTextSize - iLen );
+		if( n == -1 ) return -1;
+		iLen += n;
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
+	}
+
+	if( m_clsContentType.Empty() == false )
+	{
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Content-Type: " );
+		n = m_clsContentType.ToString( pszText + iLen, iTextSize - iLen );
+		if( n == -1 ) return -1;
+		iLen += n;
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
+	}
+
+	iLen += snprintf( pszText + iLen, iTextSize - iLen, "%s: %d\r\n", "Content-Length", m_iContentLength );
+
+	for( SIP_HEADER_LIST::iterator itList = m_clsHeaderList.begin(); itList != m_clsHeaderList.end(); ++itList )
+	{
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, "%s: %s\r\n", itList->m_strName.c_str(), itList->m_strValue.c_str() );
+	}
+
+	iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
+
+	if( m_iContentLength > 0 )
+	{
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, "%s", m_strBody.c_str() );
+	}
+
+	return iLen;
 }
 
 /**

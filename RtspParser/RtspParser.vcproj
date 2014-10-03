@@ -169,6 +169,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RtspParserDefine.h"
+				>
+			</File>
+			<File
 				RelativePath=".\RtspUri.h"
 				>
 			</File>

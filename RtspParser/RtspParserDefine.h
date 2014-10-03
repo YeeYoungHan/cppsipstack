@@ -16,20 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _RTSP_URI_H_
-#define _RTSP_URI_H_
+#ifndef _RTSP_PARSER_DEFINE_H_
+#define _RTSP_PARSER_DEFINE_H_
 
-#include <string>
-
-class CRtspUri
-{
-public:
-	CRtspUri();
-	~CRtspUri();
-
-	int Parse( const char * pszText, int iTextLen );
-	int ToString( char * pszText, int iTextSize );
-	bool Empty();
-};
+#define RTSP_VERSION "RTSP/1.0"
 
 #endif

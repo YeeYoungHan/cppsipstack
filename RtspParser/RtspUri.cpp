@@ -36,3 +36,8 @@ int CRtspUri::ToString( char * pszText, int iTextSize )
 {
 	return 0;
 }
+
+bool CRtspUri::Empty()
+{
+	return true;
+}
