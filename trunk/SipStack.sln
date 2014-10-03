@@ -166,6 +166,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SipSpeedLinux", "SipSpeedLi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RtspParser", "RtspParser\RtspParser.vcproj", "{A3B65370-A9DA-4A25-BD27-E74BADC296A5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestRtspParser", "TestRtspParser\TestRtspParser.vcproj", "{37075F51-6F6D-4066-B959-0B76AC539377}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A3B65370-A9DA-4A25-BD27-E74BADC296A5} = {A3B65370-A9DA-4A25-BD27-E74BADC296A5}
+		{59766094-16E8-4602-9621-6C1E5ED9AF5F} = {59766094-16E8-4602-9621-6C1E5ED9AF5F}
+		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB} = {11E19CA3-F409-41E3-BD62-E1CEA134B7DB}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -366,6 +373,12 @@ Global
 		{A3B65370-A9DA-4A25-BD27-E74BADC296A5}.Release|Win32.ActiveCfg = Release|Win32
 		{A3B65370-A9DA-4A25-BD27-E74BADC296A5}.Release|Win32.Build.0 = Release|Win32
 		{A3B65370-A9DA-4A25-BD27-E74BADC296A5}.Release|x64.ActiveCfg = Release|Win32
+		{37075F51-6F6D-4066-B959-0B76AC539377}.Debug|Win32.ActiveCfg = Debug|Win32
+		{37075F51-6F6D-4066-B959-0B76AC539377}.Debug|Win32.Build.0 = Debug|Win32
+		{37075F51-6F6D-4066-B959-0B76AC539377}.Debug|x64.ActiveCfg = Debug|Win32
+		{37075F51-6F6D-4066-B959-0B76AC539377}.Release|Win32.ActiveCfg = Release|Win32
+		{37075F51-6F6D-4066-B959-0B76AC539377}.Release|Win32.Build.0 = Release|Win32
+		{37075F51-6F6D-4066-B959-0B76AC539377}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -20,6 +20,9 @@
 #define _RTSP_MESSAGE_H_
 
 #include "RtspUri.h"
+#include "SipCSeq.h"
+#include "SipHeader.h"
+#include "SipContentType.h"
 
 class CRtspMessage
 {
@@ -42,8 +45,27 @@ public:
 	/** RTSP 응답 메시지 */
 	std::string		m_strReasonPhrase;
 
+	/** RTSP CSeq 헤더 */
+	CSipCSeq				m_clsCSeq;
+
+	/** RTSP Content-Type 헤더 */
+	CSipContentType	m_clsContentType;
+
 	/** RTSP Content-Length 헤더의 값 */
 	int							m_iContentLength;
+
+	/** RTSP 헤더 리스트. CRtspMessage 에서 구분하여서 정의한 헤더에 저장되지 않는 헤더들을 저장한다. */
+	SIP_HEADER_LIST				m_clsHeaderList;
+
+	/** RTSP body 메시지 */
+	std::string			m_strBody;
+
+	int Parse( const char * pszText, int iTextLen );
+	int ToString( char * pszText, int iTextSize );
+
+private:
+	int ParseStatusLine( const char * pszText, int iTextLen );
+	int ParseRequestLine( const char * pszText, int iTextLen );
 };
 
 #endif

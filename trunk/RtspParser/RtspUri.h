@@ -26,6 +26,9 @@ class CRtspUri
 public:
 	CRtspUri();
 	~CRtspUri();
+
+	int Parse( const char * pszText, int iTextLen );
+	int ToString( char * pszText, int iTextSize );
 };
 
 #endif
