@@ -64,6 +64,8 @@ public:
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
 
+	bool AddHeader( const char * pszName, const char * pszValue );
+
 	CRtspMessage * CreateResponse( int iStatus );
 
 private:

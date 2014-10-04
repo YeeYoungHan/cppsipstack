@@ -148,6 +148,27 @@ int CRtspMessage::ToString( char * pszText, int iTextSize )
 	return iLen;
 }
 
+/**
+ * @ingroup RtspParser
+ * @brief SIP 헤더 자료구조에 이름과 값을 추가한다.
+ * @param pszName		SIP 헤더 이름
+ * @param pszValue	SIP 헤더 값
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CRtspMessage::AddHeader( const char * pszName, const char * pszValue )
+{
+	if( pszName == NULL || pszValue == NULL ) return false;
+
+	CSipHeader clsHeader;
+
+	clsHeader.m_strName = pszName;
+	clsHeader.m_strValue = pszValue;
+
+	m_clsHeaderList.push_back( clsHeader );
+
+	return true;
+}
+
 CRtspMessage * CRtspMessage::CreateResponse( int iStatus )
 {
 	CRtspMessage * pclsResponse = new CRtspMessage();
