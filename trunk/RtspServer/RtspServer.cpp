@@ -65,6 +65,8 @@ int main( int argc, char * argv[] )
 			pclsResponse = clsMessage.CreateResponse( SIP_OK );
 			if( pclsResponse == NULL ) break;
 
+			pclsResponse->AddHeader( "Session", "1" );
+
 			char	szSdp[4096];
 			int		iLen = 0;
 
@@ -79,6 +81,39 @@ int main( int argc, char * argv[] )
 			pclsResponse->m_clsContentType.Set( "application", "sdp" );
 			pclsResponse->m_iContentLength = iLen;
 			pclsResponse->m_strBody = szSdp;
+			n = pclsResponse->ToString( szPacket, sizeof(szPacket) );
+
+			TcpSend( hConn, szPacket, n );
+			CLog::Print( LOG_NETWORK, "TcpSend[%s]", szPacket );
+		}
+		else if( !strcasecmp( clsMessage.m_strRtspMethod.c_str(), "TEARDOWN" ) )
+		{
+			pclsResponse = clsMessage.CreateResponse( SIP_OK );
+			if( pclsResponse == NULL ) break;
+			pclsResponse->AddHeader( "Session", "1" );
+
+			n = pclsResponse->ToString( szPacket, sizeof(szPacket) );
+
+			TcpSend( hConn, szPacket, n );
+			CLog::Print( LOG_NETWORK, "TcpSend[%s]", szPacket );
+		}
+		else if( !strcasecmp( clsMessage.m_strRtspMethod.c_str(), "PLAY" ) )
+		{
+			pclsResponse = clsMessage.CreateResponse( SIP_OK );
+			if( pclsResponse == NULL ) break;
+			pclsResponse->AddHeader( "Session", "1" );
+
+			n = pclsResponse->ToString( szPacket, sizeof(szPacket) );
+
+			TcpSend( hConn, szPacket, n );
+			CLog::Print( LOG_NETWORK, "TcpSend[%s]", szPacket );
+		}
+		else if( !strcasecmp( clsMessage.m_strRtspMethod.c_str(), "SETUP" ) )
+		{
+			pclsResponse = clsMessage.CreateResponse( SIP_OK );
+			if( pclsResponse == NULL ) break;
+			pclsResponse->AddHeader( "Session", "1" );
+
 			n = pclsResponse->ToString( szPacket, sizeof(szPacket) );
 
 			TcpSend( hConn, szPacket, n );
