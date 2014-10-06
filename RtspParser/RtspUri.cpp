@@ -41,3 +41,8 @@ bool CRtspUri::Empty()
 {
 	return true;
 }
+
+void CRtspUri::Clear()
+{
+
+}
