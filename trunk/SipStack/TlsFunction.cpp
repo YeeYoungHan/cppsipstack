@@ -139,12 +139,6 @@ bool SSLServerStart( const char * szCertFile, const char * szCaCertFile )
 
 	if( SSLStart() == false ) return false;
 
-	if( !SSL_library_init() )
-	{
-		CLog::Print( LOG_ERROR, "SSL_init_library error");
-		return false;
-	}
-
 	SSL_load_error_strings();
 	SSLeay_add_ssl_algorithms();
 
