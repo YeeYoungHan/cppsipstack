@@ -32,6 +32,8 @@ int CRtspMessage::Parse( const char * pszText, int iTextLen )
 {
 	if( pszText == NULL || iTextLen <= 4 ) return -1;
 
+	Clear();
+
 	int iPos, iCurPos, iNameLen, iValueLen;
 	const char * pszName, * pszValue;
 	CSipHeader	clsHeader;
@@ -91,6 +93,20 @@ int CRtspMessage::Parse( const char * pszText, int iTextLen )
 	}
 
 	return iCurPos;
+}
+
+void CRtspMessage::Clear()
+{
+	m_strRtspMethod.clear();
+	m_clsReqUri.Clear();
+	m_strRtspVersion.clear();
+	m_iStatusCode = -1;
+	m_strReasonPhrase.clear();
+	m_iCSeq = 0;
+	m_clsContentType.Clear();
+	m_iContentLength = 0;
+	m_clsHeaderList.clear();
+	m_strBody.clear();
 }
 
 int CRtspMessage::ToString( char * pszText, int iTextSize )

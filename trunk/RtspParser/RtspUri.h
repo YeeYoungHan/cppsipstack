@@ -30,6 +30,7 @@ public:
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
 	bool Empty();
+	void Clear();
 };
 
 #endif

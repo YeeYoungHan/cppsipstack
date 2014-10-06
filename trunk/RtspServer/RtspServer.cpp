@@ -40,84 +40,73 @@ int main( int argc, char * argv[] )
 	int iPort, n;
 	CRtspMessage clsMessage, * pclsResponse;
 
-	Socket hConn = TcpAccept( hSocket, szIp, sizeof(szIp), &iPort );
-	
 	while( 1 )
 	{
-		memset( szPacket, 0, sizeof(szPacket) );
-		n = TcpRecv( hConn, szPacket, sizeof(szPacket), 5 );
-		if( n <= 0 ) 
+		Socket hConn = TcpAccept( hSocket, szIp, sizeof(szIp), &iPort );
+		
+		while( 1 )
 		{
-			CLog::Print( LOG_DEBUG, "TcpRecv error n(%d)", n );
-			break;
-		}
+			memset( szPacket, 0, sizeof(szPacket) );
+			n = TcpRecv( hConn, szPacket, sizeof(szPacket), 5 );
+			if( n <= 0 ) 
+			{
+				CLog::Print( LOG_DEBUG, "TcpRecv error n(%d)", n );
+				break;
+			}
 
-		CLog::Print( LOG_NETWORK, "TcpRecv[%s]", szPacket );
+			CLog::Print( LOG_NETWORK, "TcpRecv[%s]", szPacket );
 
-		if( clsMessage.Parse( szPacket, n ) == -1 )
-		{
-			CLog::Print( LOG_ERROR, "clsMessage.Parse error" );
-			break;
-		}
+			if( clsMessage.Parse( szPacket, n ) == -1 )
+			{
+				CLog::Print( LOG_ERROR, "clsMessage.Parse error" );
+				break;
+			}
 
-		if( !strcasecmp( clsMessage.m_strRtspMethod.c_str(), "DESCRIBE" ) )
-		{
-			pclsResponse = clsMessage.CreateResponse( SIP_OK );
-			if( pclsResponse == NULL ) break;
+			if( !strcasecmp( clsMessage.m_strRtspMethod.c_str(), "DESCRIBE" ) )
+			{
+				pclsResponse = clsMessage.CreateResponse( SIP_OK );
+				if( pclsResponse == NULL ) break;
 
-			pclsResponse->AddHeader( "Session", "1" );
+				pclsResponse->AddHeader( "Session", "1" );
+				pclsResponse->AddHeader( "Server", "WMServer/9.5.6001.18000" );
 
-			char	szSdp[4096];
-			int		iLen = 0;
+				char	szSdp[4096];
+				int		iLen = 0;
 
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "v=0\r\n"
-							"o=CSS 4 2 IN IP4 %s\r\n"
-							"s=CSS\r\n", "127.0.0.1" );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "v=0\r\n"
+								"o=CSS 4 2 IN IP4 %s\r\n"
+								"s=CSS\r\n", "192.168.0.7" );
 
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "c=IN IP4 %s\r\n", "127.0.0.1" );
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "t=0 0\r\n" );
-			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio 0 RTP/AVP 0" );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "c=IN IP4 %s\r\n", "0.0.0.0" );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "t=0 0\r\n" );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "b=AS:879\r\n" );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=maxps:3200\r\n" );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio 0 RTP/AVP 0\r\n" );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:0 PCMU/8000\r\n" );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=control:audio\r\n" );
+				iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "b=AS:879\r\n" );
 
-			pclsResponse->m_clsContentType.Set( "application", "sdp" );
-			pclsResponse->m_iContentLength = iLen;
-			pclsResponse->m_strBody = szSdp;
-			n = pclsResponse->ToString( szPacket, sizeof(szPacket) );
+				pclsResponse->m_clsContentType.Set( "application", "sdp" );
+				pclsResponse->m_iContentLength = iLen;
+				pclsResponse->m_strBody = szSdp;
+				n = pclsResponse->ToString( szPacket, sizeof(szPacket) );
 
-			TcpSend( hConn, szPacket, n );
-			CLog::Print( LOG_NETWORK, "TcpSend[%s]", szPacket );
-		}
-		else if( !strcasecmp( clsMessage.m_strRtspMethod.c_str(), "TEARDOWN" ) )
-		{
-			pclsResponse = clsMessage.CreateResponse( SIP_OK );
-			if( pclsResponse == NULL ) break;
-			pclsResponse->AddHeader( "Session", "1" );
+				TcpSend( hConn, szPacket, n );
+				CLog::Print( LOG_NETWORK, "TcpSend[%s]", szPacket );
+				delete pclsResponse;
+			}
+			else
+			{
+				pclsResponse = clsMessage.CreateResponse( SIP_OK );
+				if( pclsResponse == NULL ) break;
+				pclsResponse->AddHeader( "Session", "1" );
 
-			n = pclsResponse->ToString( szPacket, sizeof(szPacket) );
+				n = pclsResponse->ToString( szPacket, sizeof(szPacket) );
 
-			TcpSend( hConn, szPacket, n );
-			CLog::Print( LOG_NETWORK, "TcpSend[%s]", szPacket );
-		}
-		else if( !strcasecmp( clsMessage.m_strRtspMethod.c_str(), "PLAY" ) )
-		{
-			pclsResponse = clsMessage.CreateResponse( SIP_OK );
-			if( pclsResponse == NULL ) break;
-			pclsResponse->AddHeader( "Session", "1" );
-
-			n = pclsResponse->ToString( szPacket, sizeof(szPacket) );
-
-			TcpSend( hConn, szPacket, n );
-			CLog::Print( LOG_NETWORK, "TcpSend[%s]", szPacket );
-		}
-		else if( !strcasecmp( clsMessage.m_strRtspMethod.c_str(), "SETUP" ) )
-		{
-			pclsResponse = clsMessage.CreateResponse( SIP_OK );
-			if( pclsResponse == NULL ) break;
-			pclsResponse->AddHeader( "Session", "1" );
-
-			n = pclsResponse->ToString( szPacket, sizeof(szPacket) );
-
-			TcpSend( hConn, szPacket, n );
-			CLog::Print( LOG_NETWORK, "TcpSend[%s]", szPacket );
+				TcpSend( hConn, szPacket, n );
+				CLog::Print( LOG_NETWORK, "TcpSend[%s]", szPacket );
+				delete pclsResponse;
+			}
 		}
 	}
 
