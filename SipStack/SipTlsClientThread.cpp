@@ -52,23 +52,8 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 
 		if( SSLConnect( hSocket, &psttSsl ) )
 		{
-			CTcpComm		clsTcpComm;
-
-			clsTcpComm.m_hSocket = hSocket;
-			snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", pclsArg->m_strIp.c_str() );
-			clsTcpComm.m_iPort = pclsArg->m_iPort;
-			clsTcpComm.m_psttSsl = psttSsl;
-			clsTcpComm.SetUseTimeout( false );
-
-			if( pclsArg->m_pclsSipStack->m_clsTlsThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
+			if( SipTlsSend( hSocket, psttSsl, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage ) )
 			{
-				SSLClose( psttSsl );
-				closesocket( hSocket );
-			}
-			else
-			{
-				SipTlsSend( hSocket, psttSsl, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage );
-
 				SIP_MESSAGE_LIST clsSipMessageList;
 
 				if( pclsArg->m_pclsSipStack->m_clsTlsConnectMap.Delete( pclsArg->m_strIp.c_str(), pclsArg->m_iPort, clsSipMessageList ) )
@@ -82,6 +67,20 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 					}
 				}
 
+				CTcpComm		clsTcpComm;
+
+				clsTcpComm.m_hSocket = hSocket;
+				snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", pclsArg->m_strIp.c_str() );
+				clsTcpComm.m_iPort = pclsArg->m_iPort;
+				clsTcpComm.m_psttSsl = psttSsl;
+				clsTcpComm.SetUseTimeout( false );
+
+				if( pclsArg->m_pclsSipStack->m_clsTlsThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
+				{
+					SSLClose( psttSsl );
+					closesocket( hSocket );
+				}
+				
 				bRes = true;
 			}
 		}
