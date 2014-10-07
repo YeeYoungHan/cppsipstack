@@ -20,7 +20,8 @@ LIB=-L../SipParser -lsipparser \
 all: KSipServerLogAnalysis.exe
 
 SRV_OBJ=KSipServerLogAnalysis.o LogAnalysisSetup.o LogFile.o \
-  StatsSipMethod.o StatsSipMethodIp.o StatsSipMethodUserAgent.o
+  StatsSipMethod.o StatsSipMethodIp.o StatsSipMethodUserAgent.o \
+  StatsSipReSend.o
 
 KSipServerLogAnalysis.exe: $(SRV_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)
