@@ -96,7 +96,7 @@ THREAD_API SipTlsThread( LPVOID lpParameter )
 					SSL	* psttSsl;
 					bool	bRes = false;
 
-					if( SSLAccept( clsTcpComm.m_hSocket, &psttSsl, false, 0, pclsSipStack->m_clsSetup.m_iTlsAcceptTimeout ) )
+					if( SSLAccept( clsTcpComm.m_hSocket, &psttSsl, false, 0, pclsSipStack->m_clsSetup.m_iTlsAcceptTimeout * 1000 ) )
 					{
 						if( clsSessionList.Insert( clsTcpComm, psttSsl ) )
 						{
