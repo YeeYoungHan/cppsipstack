@@ -212,6 +212,12 @@ DELETE_TRANSACTION:
 		{
 			if( DiffTimeval( &itMap->second->m_sttRingTime, psttTime ) >= SIP_RING_TIMEOUT )
 			{
+				CSipMessage * psttResponse = itMap->second->m_pclsRequest->CreateResponse( SIP_REQUEST_TIME_OUT );
+				if( psttResponse )
+				{
+					clsResponseList.push_back( psttResponse );
+				}
+
 				goto DELETE_TRANSACTION;
 			}
 		}
