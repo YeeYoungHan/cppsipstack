@@ -75,6 +75,7 @@
 #define SIP_DECLINE                       603
 #define SIP_DOES_NOT_EXIST_ANYWHERE       604
 #define SIP_CONNECT_ERROR									660
+#define SIP_RING_TIMEOUT_ERROR						661
 
 const char * GetReasonPhrase( int iSipCode );
 
