@@ -177,6 +177,7 @@ int main( int argc, char * argv[] )
 	clsService.m_strDescription = SERVICE_DESCRIPTION_STRING;
 	clsService.m_strConfigFileName = CONFIG_FILENAME;
 	clsService.m_strVersion = KSIP_SERVER_VERSION;
+	clsService.SetBuildDate( __DATE__, __TIME__ );
 
 	if( argc == 3 && !strcmp( argv[2], "-n" ) )
 	{

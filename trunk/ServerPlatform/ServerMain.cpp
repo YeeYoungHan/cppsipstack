@@ -64,7 +64,7 @@ int ServerMain( int argc, char * argv[], CServerService & clsService, ServerFunc
 	gclsService.m_strConfigFileName = argv[1];
 	if( !strcmp( argv[1], "-h" ) || !strcmp( argv[1], "-v" ) )
 	{
-		printf( "%s version-%s ( build %s %s )\n", argv[0], gclsService.m_strVersion.c_str(), __DATE__, __TIME__ );
+		printf( "%s version-%s ( build %s )\n", argv[0], gclsService.m_strVersion.c_str(), gclsService.m_strBuildDate.c_str() );
 		printf( "[Usage] %s {config filename}\n", argv[0] );
 #ifdef WIN32
 		printf( "        %s -i : install service\n", argv[0] );

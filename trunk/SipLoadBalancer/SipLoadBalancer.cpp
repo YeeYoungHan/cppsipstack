@@ -129,6 +129,7 @@ int main( int argc, char * argv[] )
 	clsService.m_strDescription = SERVICE_DESCRIPTION_STRING;
 	clsService.m_strConfigFileName = CONFIG_FILENAME;
 	clsService.m_strVersion = SIP_LOAD_BALANCER_VERSION;
+	clsService.SetBuildDate( __DATE__, __TIME__ );
 
 	ServerMain( argc, argv, clsService, ServiceMain );
 
