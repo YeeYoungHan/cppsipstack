@@ -29,6 +29,13 @@
 class CServerService
 {
 public:
+	void SetBuildDate( const char * pszDate, const char * pszTime )
+	{
+		m_strBuildDate = pszDate;
+		m_strBuildDate.append( " " );
+		m_strBuildDate.append( pszTime );
+	}
+
 	/** 서비스 이름 */
 	std::string m_strName;
 
@@ -43,6 +50,9 @@ public:
 
 	/** 서비스 설정 파일 이름 - 서비스 프로그램 저장 폴더에 저장된 파일 이름 */
 	std::string m_strConfigFileName;
+
+	/** 서비스 빌드 날짜 */
+	std::string	m_strBuildDate;
 };
 
 typedef int (*ServerFunc)();
