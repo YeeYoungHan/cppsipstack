@@ -37,11 +37,12 @@
  *	"c:\temp" 디렉토리가 존재하지 않으면 이를 생성한 후, "c:\temp\test" 디렉토리를 생성한다.
  *
  * @param	szDirName	[in] 생성할 디렉토리의 full pathname
+ * @param iDirMode	[in] 생성할 디렉토리의 권한
  * @return	성공하면 0 을 리턴한다. 이미 디렉토리가 존재하여도 0 을 리턴한다.
  *			실패하면 -1 을 리턴한다. 
  *			디렉토리 full pathname 중간에 디렉토리가 아닌 항목이 포함된 경우, -1 을 리턴한다.
  */
-int CDirectory::Create( const char * szDirName )
+int CDirectory::Create( const char * szDirName, int iDirMode )
 {
 	int		i, iLen, iCount, n;
 	char	* pszName;
@@ -75,7 +76,7 @@ int CDirectory::Create( const char * szDirName )
 #ifdef WIN32
 					if( CreateDirectory( pszName, NULL ) == FALSE )
 #else
-					if( mkdir( pszName, DIR_MODE ) != 0 )
+					if( mkdir( pszName, iDirMode ) != 0 )
 #endif
 					{
 						fisError = 1;
@@ -109,7 +110,7 @@ int CDirectory::Create( const char * szDirName )
 #ifdef WIN32
 			if( CreateDirectory( szDirName, NULL ) == FALSE )
 #else
-			if( mkdir( szDirName, DIR_MODE ) != 0 )
+			if( mkdir( szDirName, iDirMode ) != 0 )
 #endif
 			{
 				return -1;
