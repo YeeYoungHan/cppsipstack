@@ -111,7 +111,7 @@ bool GetIpByName( const char * szHostName, char * szIp, int iLen )
 
 	if( (hptr = gethostbyname(szHostName)) == NULL ) return false;
 	
-	snprintf( szIp, iLen, "%s", inet_ntoa( *(struct in_addr *)hptr->h_addr_list[0] ));
+	inet_ntop( AF_INET, (struct in_addr *)hptr->h_addr_list[0], szIp, iLen );
 	
 	return true;
 }
@@ -150,7 +150,8 @@ Socket TcpConnect( const char * pszIp, int iPort, int iTimeout )
 
 	addr.sin_family = AF_INET;
 	addr.sin_port   = htons(iPort);
-	addr.sin_addr.s_addr = inet_addr( szIp );	
+
+	inet_pton( AF_INET, szIp, &addr.sin_addr.s_addr );
 
 #ifndef WIN32
 	if( iTimeout > 0 )
@@ -287,7 +288,7 @@ Socket TcpListen( int iPort, int iListenQ, const char * pszIp )
 
 	if( pszIp )
 	{
-		addr.sin_addr.s_addr = inet_addr(pszIp);
+		inet_pton( AF_INET, pszIp, &addr.sin_addr.s_addr );
 	}
 	else
 	{
@@ -338,7 +339,7 @@ Socket TcpAccept( Socket hListenFd, char * pszIp, int iIpSize, int * piPort )
 
 		if( pszIp && iIpSize > 0 )
 		{
-			snprintf( pszIp, iIpSize, "%s", inet_ntoa( sttAddr.sin_addr ) );
+			inet_ntop( AF_INET, &sttAddr.sin_addr, pszIp, iIpSize );
 		}
 	}
 
@@ -359,10 +360,12 @@ bool GetLocalIpPort( Socket hSocket, std::string & strIp, int & iPort )
 
 	struct sockaddr_in sttAddr;
 	int iAddrSize = sizeof(sttAddr);
+	char szIp[51];
 
 	if( getsockname( hSocket, (struct sockaddr *)&sttAddr, (socklen_t*)&iAddrSize ) == SOCKET_ERROR ) return false;
 
-	strIp = inet_ntoa( sttAddr.sin_addr );
+	inet_ntop( AF_INET, &sttAddr.sin_addr, szIp, sizeof(szIp) );
+	strIp = szIp;
 	iPort = ntohs( sttAddr.sin_port );
 
 	return true;
@@ -399,7 +402,7 @@ static Socket TcpListenNotReuse( int iPort, int iListenQ, const char * pszIp )
 
 	if( pszIp )
 	{
-		addr.sin_addr.s_addr = inet_addr(pszIp);
+		inet_pton( AF_INET, pszIp, &addr.sin_addr.s_addr );
 	}
 	else
 	{

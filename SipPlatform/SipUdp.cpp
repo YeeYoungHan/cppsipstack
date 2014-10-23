@@ -74,7 +74,7 @@ Socket UdpListen( unsigned short iPort, const char * pszIp )
 	
 	if( pszIp )
 	{
-	  addr.sin_addr.s_addr = inet_addr(pszIp);
+	  inet_pton( AF_INET, pszIp, &addr.sin_addr.s_addr );
 	}
 	else
 	{
@@ -120,11 +120,7 @@ bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, char * pszIp, int iIpSize,
 	if( piPort ) *piPort = ntohs( sttAddr.sin_port );
 	if( pszIp )
 	{
-#ifdef WIN32
-		snprintf( pszIp, iIpSize, "%s", inet_ntoa( sttAddr.sin_addr ) );
-#else
 		inet_ntop( AF_INET, &sttAddr.sin_addr, pszIp, iIpSize );
-#endif
 	}
 
 	if( (*piLen)+1 >= iBufSize )
@@ -193,7 +189,7 @@ bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, const char * pszIp, 
   memset( &sttAddr, 0, sizeof(sttAddr) );
   sttAddr.sin_family = AF_INET;
   sttAddr.sin_port = htons( iPort );
-  sttAddr.sin_addr.s_addr = inet_addr( pszIp );
+	inet_pton( AF_INET, pszIp, &sttAddr.sin_addr.s_addr );
   
   if( sendto( iFd, pszBuf, iBufLen, 0,(sockaddr*)&sttAddr, sizeof(sttAddr) ) != iBufLen )
 	{
@@ -337,7 +333,7 @@ bool GetLocalIp( std::string & strIp )
 	for( int i = 0; psttHost->h_addr_list[i]; i++ )
 	{
 		memcpy( &sttAddr.sin_addr, psttHost->h_addr_list[i], psttHost->h_length );
-		snprintf( szIpAddr, sizeof(szIpAddr), "%s", inet_ntoa(sttAddr.sin_addr) );
+		inet_ntop( AF_INET, &sttAddr.sin_addr, szIpAddr, sizeof(szIpAddr) );
 		if( strcmp( szIpAddr, "127.0.0.1" ) )
 		{
 			strIp = szIpAddr;
