@@ -140,8 +140,10 @@ bool CSipStackSetup::Check( )
 
 	srand( sttTime.tv_usec );
 
-	uint32_t iIp = inet_addr(m_strLocalIp.c_str()); 
+	uint32_t iIp; 
 	uint16_t iPort = m_iLocalUdpPort;
+
+	inet_pton( AF_INET, m_strLocalIp.c_str(), &iIp );
 
 	memcpy( szValue, &iIp, 4 );
 	memcpy( szValue+4, &iPort, 2 );

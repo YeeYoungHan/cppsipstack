@@ -173,11 +173,7 @@ THREAD_API SipTcpListenThread( LPVOID lpParameter )
 			clsTcpComm.m_hSocket = hConnFd;
 			clsTcpComm.m_iPort = ntohs( sttAddr.sin_port );
 
-#ifdef WIN32
-			snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", inet_ntoa( sttAddr.sin_addr ) );
-#else
 			inet_ntop( AF_INET, &sttAddr.sin_addr, clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp) );
-#endif
 
 			if( pclsSipStack->m_clsTcpThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
 			{
