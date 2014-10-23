@@ -26,6 +26,7 @@
 #ifdef WIN32
 # include <windows.h>
 # define DIR_SEP	'\\'
+# define DIR_MODE		0
 #else
 # include <sys/stat.h>
 # define DIR_SEP	'/'
@@ -41,7 +42,7 @@ typedef std::list< std::string > FILE_LIST;
 class CDirectory
 {
 public:
-	static int Create( const char * szDirName );
+	static int Create( const char * szDirName, int iDirMode = DIR_MODE );
 	static int IsDirectory( const char * szDirName );
 	static void AppendName( std::string & strFileName, const char * pszAppend );
 	static bool List( const char * pszDirName, FILE_LIST & clsFileList );
