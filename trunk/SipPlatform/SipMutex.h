@@ -62,7 +62,7 @@ public:
 
 private:
 #ifdef WIN32
-	HANDLE						m_sttCond;
+	CONDITION_VARIABLE		m_sttCond;
 #else
 	pthread_cond_t		m_sttCond;
 #endif
