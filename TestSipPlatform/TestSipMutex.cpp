@@ -35,7 +35,10 @@ THREAD_API TestSipMutexThread( LPVOID lpParameter )
 	for( int i = 0; i < TEST_COUNT; ++i )
 	{
 		Sleep(20);
+		gclsMutexSignal.acquire();
+		PrintTickCount( "signal" );
 		gclsMutexSignal.signal();
+		gclsMutexSignal.release();
 	}
 
 	return 0;
@@ -50,7 +53,10 @@ bool TestSipMutex()
 	for( int i = 0; i < TEST_COUNT; ++i )
 	{
 		PrintTickCount( "Start" );
+		gclsMutexSignal.acquire();
+		PrintTickCount( "wait" );
 		gclsMutexSignal.wait();
+		gclsMutexSignal.release();
 		PrintTickCount( "End  " );
 	}
 #endif
