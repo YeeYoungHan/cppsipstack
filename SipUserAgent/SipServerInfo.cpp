@@ -124,6 +124,7 @@ CSipMessage * CSipServerInfo::CreateRegister( CSipStack * pclsSipStack, CSipMess
 	
 	// CSeq: 1 REGISTER
 	++m_iSeqNo;
+	if( m_iSeqNo >= 2000000000 ) m_iSeqNo = 1;
 	pclsRequest->m_clsCSeq.m_iDigit = m_iSeqNo;
 	pclsRequest->m_clsCSeq.m_strMethod = SIP_METHOD_REGISTER;
 
