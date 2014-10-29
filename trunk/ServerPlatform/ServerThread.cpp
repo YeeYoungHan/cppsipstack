@@ -82,6 +82,8 @@ THREAD_API ServerThread( LPVOID lpParameter )
 		}
 	}
 
+	closesocket( hMonitorSocket );
+
 	CLog::Print( LOG_INFO, "MonitorServerThread is terminated" );
 
 	return 0;
