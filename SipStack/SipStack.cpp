@@ -80,12 +80,12 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 
 	InitNetwork();
 
-	m_hUdpSocket = UdpListen( m_clsSetup.m_iLocalUdpPort, NULL );
+	m_hUdpSocket = UdpListen( m_clsSetup.m_iLocalUdpPort, NULL, m_clsSetup.m_bIpv6 );
 	if( m_hUdpSocket == INVALID_SOCKET ) return false;
 
 	if( m_clsSetup.m_iLocalTcpPort > 0 )
 	{
-		m_hTcpSocket = TcpListen( m_clsSetup.m_iLocalTcpPort, 255, NULL );
+		m_hTcpSocket = TcpListen( m_clsSetup.m_iLocalTcpPort, 255, NULL, m_clsSetup.m_bIpv6 );
 		if( m_hTcpSocket == INVALID_SOCKET ) 
 		{
 			_Stop();
@@ -115,7 +115,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 			return false;
 		}
 
-		m_hTlsSocket = TcpListen( m_clsSetup.m_iLocalTlsPort, 255, NULL );
+		m_hTlsSocket = TcpListen( m_clsSetup.m_iLocalTlsPort, 255, NULL, m_clsSetup.m_bIpv6 );
 		if( m_hTlsSocket == INVALID_SOCKET ) 
 		{
 			_Stop();
@@ -339,6 +339,7 @@ bool CSipStack::_Stop( )
 	}
 
 	m_clsTlsThreadList.Final();
+	SSLServerStop();
 #endif
 
 	DeleteAllTransaction();

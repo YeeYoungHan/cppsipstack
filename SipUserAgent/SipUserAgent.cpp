@@ -386,6 +386,7 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 		}
 
 		clsRtp.m_strIp = clsSdp.m_clsConnection.m_strAddr;
+		SipIpv6Parse( clsRtp.m_strIp );
 
 		SDP_MEDIA_LIST::iterator itMedia = clsSdp.m_clsMediaList.begin();
 		if( itMedia == clsSdp.m_clsMediaList.end() ) 

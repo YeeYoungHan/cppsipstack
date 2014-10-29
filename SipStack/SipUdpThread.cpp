@@ -64,7 +64,7 @@ THREAD_API SipUdpThread( LPVOID lpParameter )
 		if( n > 0 )
 		{
 			iPacketSize = sizeof(szPacket);
-			bRes = UdpRecv( pclsSipStack->m_hUdpSocket, szPacket, &iPacketSize, szIp, sizeof(szIp), &sPort );
+			bRes = UdpRecv( pclsSipStack->m_hUdpSocket, szPacket, &iPacketSize, szIp, sizeof(szIp), &sPort, pclsSipStack->m_clsSetup.m_bIpv6 );
 			pclsSipStack->m_clsUdpRecvMutex.release();
 
 			if( bRes )

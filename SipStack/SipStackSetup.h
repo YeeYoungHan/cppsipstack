@@ -79,6 +79,8 @@ public:
 
 	/** timer J 만료시간 (ms 단위) */
 	int					m_iTimerJ;
+	/** IPv6 사용 유무 */
+	bool				m_bIpv6;
 };
 
 #endif

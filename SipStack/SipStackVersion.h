@@ -19,9 +19,12 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.21"
+#define SIP_STACK_VERSION "0.22"
 
 /* 버전 정보
+
+= 버전 0.22 ( 2014년 10월 29일 ) =
+ * IPv6 기능을 추가함
 
 = 버전 0.21 ( 2014년 6월 10일 ) =
  * TCP / TLS 클라이언트로 연결하는 기능을 추가함

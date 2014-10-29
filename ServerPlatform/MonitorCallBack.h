@@ -27,6 +27,10 @@
 class IMonitorCallBack
 {
 public:
+	IMonitorCallBack() : m_iMonitorPort(0), m_bIpv6(false)
+	{
+	}
+
 	virtual ~IMonitorCallBack(){};
 
 	/**
@@ -44,7 +48,9 @@ public:
 	 */
 	virtual bool IsMonitorIp( const char * pszIp ) = 0;
 
-	int m_iMonitorPort;
+	int		m_iMonitorPort;
+
+	bool	m_bIpv6;
 };
 
 #endif
