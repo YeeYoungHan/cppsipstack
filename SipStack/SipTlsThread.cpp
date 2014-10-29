@@ -176,14 +176,13 @@ THREAD_API SipTlsListenThread( LPVOID lpParameter )
 	Socket	hConnFd;
 	CTcpComm		clsTcpComm;
 
-	pclsSipStack->IncreateTcpThreadCount( iThreadId );
-
 	if( pclsSipStack->m_hTlsSocket == INVALID_SOCKET )
 	{
 		CLog::Print( LOG_ERROR, "%s pclsSipStack->m_hTlsSocket == INVALID_SOCKET", __FUNCTION__ );
 		goto FUNC_END;
 	}
 
+	pclsSipStack->IncreateTcpThreadCount( iThreadId );
 	TcpSetPollIn( arrPollFd[0], pclsSipStack->m_hTlsSocket );
 
 	while( pclsSipStack->m_bStopEvent == false )
