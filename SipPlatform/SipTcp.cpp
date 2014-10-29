@@ -126,11 +126,9 @@ bool GetIpByName( const char * szHostName, char * szIp, int iLen )
  */
 Socket TcpConnect( const char * pszIp, int iPort, int iTimeout )
 {
-	char		szIp[16];
+	char		szIp[INET6_ADDRSTRLEN];
 	Socket	fd;
 
-	struct	sockaddr_in	addr;		
-	
 	memset( szIp, 0, sizeof(szIp) );
 	if( isdigit(pszIp[0]) == 0 )
 	{
@@ -142,32 +140,69 @@ Socket TcpConnect( const char * pszIp, int iPort, int iTimeout )
 		snprintf( szIp, sizeof(szIp), "%s", pszIp );
 	}
 
-	// connect server.
-	if( ( fd = socket( AF_INET, SOCK_STREAM, 0 )) == INVALID_SOCKET )
+	if( strstr( szIp, ":" ) )
 	{
-		return INVALID_SOCKET;
-	}
+		struct	sockaddr_in6	addr;		
 
-	addr.sin_family = AF_INET;
-	addr.sin_port   = htons(iPort);
+		// connect server.
+		if( ( fd = socket( AF_INET, SOCK_STREAM, 0 )) == INVALID_SOCKET )
+		{
+			return INVALID_SOCKET;
+		}
 
-	inet_pton( AF_INET, szIp, &addr.sin_addr.s_addr );
+		addr.sin6_family = AF_INET6;
+		addr.sin6_port   = htons(iPort);
+
+		inet_pton( AF_INET6, szIp, &addr.sin6_addr );
 
 #ifndef WIN32
-	if( iTimeout > 0 )
-	{
-		if( ConnectTimeout( fd, (struct sockaddr *)&addr, sizeof(addr), iTimeout ) != 0 )
+		if( iTimeout > 0 )
+		{
+			if( ConnectTimeout( fd, (struct sockaddr *)&addr, sizeof(addr), iTimeout ) != 0 )
+			{
+				closesocket( fd );
+				return INVALID_SOCKET;
+			}
+		}
+		else
+#endif
+		if( connect( fd, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR )
 		{
 			closesocket( fd );
 			return INVALID_SOCKET;
 		}
 	}
 	else
-#endif
-	if( connect( fd, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR )
 	{
-		closesocket( fd );
-		return INVALID_SOCKET;
+		struct	sockaddr_in	addr;		
+
+		// connect server.
+		if( ( fd = socket( AF_INET, SOCK_STREAM, 0 )) == INVALID_SOCKET )
+		{
+			return INVALID_SOCKET;
+		}
+	
+		addr.sin_family = AF_INET;
+		addr.sin_port   = htons(iPort);
+	
+		inet_pton( AF_INET, szIp, &addr.sin_addr.s_addr );
+	
+#ifndef WIN32
+		if( iTimeout > 0 )
+		{
+			if( ConnectTimeout( fd, (struct sockaddr *)&addr, sizeof(addr), iTimeout ) != 0 )
+			{
+				closesocket( fd );
+				return INVALID_SOCKET;
+			}
+		}
+		else
+#endif
+		if( connect( fd, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR )
+		{
+			closesocket( fd );
+			return INVALID_SOCKET;
+		}
 	}
 
 	return fd;
@@ -266,44 +301,83 @@ int TcpRecvSize( Socket fd, char * szBuf, int iBufLen, int iSecond )
  * @param	iPort			TCP 포트 번호
  * @param	iListenQ	queue number to listen
  * @param	pszIp			수신 IP 주소
+ * @param bIpv6			IPv6 인가?
  * @return 성공하면 소켓 핸들을 리턴하고 실패하면 INVALID_SOCKET 를 리턴한다.
  */
-Socket TcpListen( int iPort, int iListenQ, const char * pszIp )
+Socket TcpListen( int iPort, int iListenQ, const char * pszIp, bool bIpv6 )
 {
 	Socket	fd;
-
-	struct	sockaddr_in	addr;
 	const 	int		on = 1;
 
-	// create socket.
-	if( ( fd = socket( AF_INET, SOCK_STREAM, 0 )) == INVALID_SOCKET )
+	if( bIpv6 )
 	{
-		return INVALID_SOCKET;
-	}
-	
-	memset( &addr, 0, sizeof(addr));
-	
-	addr.sin_family = AF_INET;
-	addr.sin_port   = htons(iPort);
+		struct	sockaddr_in6	addr;
 
-	if( pszIp )
-	{
-		inet_pton( AF_INET, pszIp, &addr.sin_addr.s_addr );
+		// create socket.
+		if( ( fd = socket( AF_INET6, SOCK_STREAM, 0 )) == INVALID_SOCKET )
+		{
+			return INVALID_SOCKET;
+		}
+		
+		memset( &addr, 0, sizeof(addr));
+		
+		addr.sin6_family = AF_INET6;
+		addr.sin6_port   = htons(iPort);
+
+		if( pszIp )
+		{
+			inet_pton( AF_INET6, pszIp, &addr.sin6_addr );
+		}
+		else
+		{
+			addr.sin6_addr = in6addr_any;	
+		}
+
+		if( setsockopt( fd, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof(on)) == -1 )
+		{
+			
+		}
+
+		if( bind( fd, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR )
+		{
+			closesocket( fd );
+			return INVALID_SOCKET;
+		}
 	}
 	else
 	{
-		addr.sin_addr.s_addr = INADDR_ANY;	
-	}
-
-	if( setsockopt( fd, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof(on)) == -1 )
-	{
+		struct	sockaddr_in	addr;
+	
+		// create socket.
+		if( ( fd = socket( AF_INET, SOCK_STREAM, 0 )) == INVALID_SOCKET )
+		{
+			return INVALID_SOCKET;
+		}
 		
-	}
-
-	if( bind( fd, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR )
-	{
-		closesocket( fd );
-		return INVALID_SOCKET;
+		memset( &addr, 0, sizeof(addr));
+		
+		addr.sin_family = AF_INET;
+		addr.sin_port   = htons(iPort);
+	
+		if( pszIp )
+		{
+			inet_pton( AF_INET, pszIp, &addr.sin_addr.s_addr );
+		}
+		else
+		{
+			addr.sin_addr.s_addr = INADDR_ANY;	
+		}
+	
+		if( setsockopt( fd, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof(on)) == -1 )
+		{
+			
+		}
+	
+		if( bind( fd, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR )
+		{
+			closesocket( fd );
+			return INVALID_SOCKET;
+		}
 	}
 
 	if( listen( fd, iListenQ ) == SOCKET_ERROR )
@@ -322,24 +396,43 @@ Socket TcpListen( int iPort, int iListenQ, const char * pszIp )
  * @param pszIp			연결된 클라이언트 IP 주소가 저장될 변수
  * @param iIpSize		pszIp 변수의 크기
  * @param piPort		연결된 클라이언트 포트가 저장될 변수
+ * @param bIpv6			IPv6 인가?
  * @returns 성공하면 연결된 클라이언트 소켓 핸들을 리턴한다.
  *					실패하면 INVALID_SOCKET 를 리턴한다.
  */
-Socket TcpAccept( Socket hListenFd, char * pszIp, int iIpSize, int * piPort )
+Socket TcpAccept( Socket hListenFd, char * pszIp, int iIpSize, int * piPort, bool bIpv6 )
 {
-	struct sockaddr_in sttAddr;
 	socklen_t		iAddrLen;
 	Socket			hConnFd;
 
-	iAddrLen = sizeof(sttAddr);
-	hConnFd = accept( hListenFd, (struct sockaddr *)&sttAddr, &iAddrLen );
-	if( hConnFd != INVALID_SOCKET )
+	if( bIpv6 )
 	{
-		if( piPort ) *piPort = ntohs( sttAddr.sin_port );
-
-		if( pszIp && iIpSize > 0 )
+		struct sockaddr_in6 sttAddr;
+		iAddrLen = sizeof(sttAddr);
+		hConnFd = accept( hListenFd, (struct sockaddr *)&sttAddr, &iAddrLen );
+		if( hConnFd != INVALID_SOCKET )
 		{
-			inet_ntop( AF_INET, &sttAddr.sin_addr, pszIp, iIpSize );
+			if( piPort ) *piPort = ntohs( sttAddr.sin6_port );
+
+			if( pszIp && iIpSize > 0 )
+			{
+				inet_ntop( AF_INET6, &sttAddr.sin6_addr, pszIp, iIpSize );
+			}
+		}
+	}
+	else
+	{
+		struct sockaddr_in sttAddr;
+		iAddrLen = sizeof(sttAddr);
+		hConnFd = accept( hListenFd, (struct sockaddr *)&sttAddr, &iAddrLen );
+		if( hConnFd != INVALID_SOCKET )
+		{
+			if( piPort ) *piPort = ntohs( sttAddr.sin_port );
+	
+			if( pszIp && iIpSize > 0 )
+			{
+				inet_ntop( AF_INET, &sttAddr.sin_addr, pszIp, iIpSize );
+			}
 		}
 	}
 
@@ -360,7 +453,7 @@ bool GetLocalIpPort( Socket hSocket, std::string & strIp, int & iPort )
 
 	struct sockaddr_in sttAddr;
 	int iAddrSize = sizeof(sttAddr);
-	char szIp[51];
+	char szIp[INET6_ADDRSTRLEN];
 
 	if( getsockname( hSocket, (struct sockaddr *)&sttAddr, (socklen_t*)&iAddrSize ) == SOCKET_ERROR ) return false;
 

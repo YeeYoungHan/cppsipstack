@@ -50,6 +50,8 @@ int poll( struct pollfd *fds, unsigned int nfds, int timeout );
 #include <poll.h>
 
 typedef int Socket;
+typedef struct in6_addr IN6_ADDR;
+
 #define INVALID_SOCKET	-1
 #define SOCKET_ERROR		-1
 
@@ -60,12 +62,15 @@ inline int GetError() { return errno; }
 
 #include <errno.h>
 
-Socket UdpSocket();
-Socket UdpListen( unsigned short iPort, const char * pszIp );
+Socket UdpSocket( bool bIpv6 = false );
+Socket UdpListen( unsigned short iPort, const char * pszIp, bool bIpv6 = false );
+
 bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, unsigned int * piIp, unsigned short* piPort );
-bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, char * pszIp, int iIpSize, unsigned short* piPort );
+bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, IN6_ADDR * psttIp, unsigned short* piPort );
+bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, char * pszIp, int iIpSize, unsigned short* piPort, bool bIpv6 = false );
 bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort );
 bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, unsigned int iIp, unsigned short iPort );
+bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, IN6_ADDR * psttIp, unsigned short iPort );
 void TcpSetPollIn( struct pollfd & sttPollFd, Socket hSocket );
 void InitNetwork();
 
