@@ -479,7 +479,14 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	// SK 브로드밴드 IP-PBX 와 연동하기 위해서 필요한 기능 ( RFC3325 )
 	char szUri[1024];
 
-	snprintf( szUri, sizeof(szUri), "<sip:%s@%s:%d>", m_strFromId.c_str(), m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.m_iLocalUdpPort );
+	if( strstr( m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), ":" ) )
+	{
+		snprintf( szUri, sizeof(szUri), "<sip:%s@[%s]:%d>", m_strFromId.c_str(), m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.m_iLocalUdpPort );
+	}
+	else
+	{
+		snprintf( szUri, sizeof(szUri), "<sip:%s@%s:%d>", m_strFromId.c_str(), m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.m_iLocalUdpPort );
+	}
 
 	pclsMessage->AddHeader( "P-Asserted-Identity", szUri );
 	pclsMessage->AddHeader( "Diversion", szUri );
