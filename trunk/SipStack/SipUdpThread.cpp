@@ -50,7 +50,7 @@ THREAD_API SipUdpThread( LPVOID lpParameter )
 	CSipStack * pclsSipStack = (CSipStack *)lpParameter;
 	struct pollfd arrPoll[1];
 	int		iThreadId, n, iPacketSize;
-	char	szPacket[SIP_PACKET_MAX_SIZE], szIp[16];
+	char	szPacket[SIP_PACKET_MAX_SIZE], szIp[INET6_ADDRSTRLEN];
 	unsigned short sPort;
 	bool	bRes;
 

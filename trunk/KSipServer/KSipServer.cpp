@@ -89,6 +89,7 @@ int ServiceMain( )
 	clsSetup.m_iStackExecutePeriod = gclsSetup.m_iStackExecutePeriod;
 	clsSetup.m_iTimerD = gclsSetup.m_iTimerD;
 	clsSetup.m_iTimerJ = gclsSetup.m_iTimerJ;
+	clsSetup.m_bIpv6 = gclsSetup.m_bIpv6;
 
 	Fork( gbFork );
 	SetCoreDumpEnable();

@@ -61,7 +61,7 @@ void InsertStringMap( CXmlElement * pclsElement, const char * pszTagName, const 
  */
 CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10)
 	, m_iTcpPort(5060), m_iTcpThreadCount(10), m_iTcpRecvTimeout(SIP_TCP_RECV_TIMEOUT)
-	, m_iTlsPort(0), m_iTlsAcceptTimeout(SIP_TLS_ACCEPT_TIMEOUT), m_iStackExecutePeriod(20), m_iTimerD(32000), m_iTimerJ(32000)
+	, m_iTlsPort(0), m_iTlsAcceptTimeout(SIP_TLS_ACCEPT_TIMEOUT), m_iStackExecutePeriod(20), m_iTimerD(32000), m_iTimerJ(32000), m_bIpv6(false)
 	, m_iMinRegisterTimeout(300)
 	, m_bUseRtpRelay(false), m_iBeginRtpPort(10000), m_iEndRtpPort(60000)
 	, m_iSendOptionsPeriod(0)
@@ -111,6 +111,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "StackExecutePeriod", m_iStackExecutePeriod );
 	pclsElement->SelectElementData( "TimerD", m_iTimerD );
 	pclsElement->SelectElementData( "TimerJ", m_iTimerJ );
+	pclsElement->SelectElementData( "Ipv6", m_bIpv6 );
 
 	// ·Î±×
 	pclsElement = clsXml.SelectElement( "Log" );
