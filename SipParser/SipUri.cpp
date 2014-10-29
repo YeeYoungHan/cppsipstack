@@ -19,6 +19,7 @@
 #include "SipParserDefine.h"
 #include "SipUri.h"
 #include <stdlib.h>
+#include "SipUtility.h"
 #include "MemoryDebug.h"
 
 CSipUri::CSipUri() : m_iPort(0)
@@ -53,6 +54,8 @@ int CSipUri::Parse( const char * pszText, int iTextLen )
 	iPos = ParseHost( pszText + iCurPos, iTextLen - iCurPos );
 	if( iPos == -1 ) return -1;
 	iCurPos += iPos;
+
+	SipIpv6Parse( m_strHost );
 
 	while( iCurPos < iTextLen )
 	{
@@ -110,7 +113,7 @@ int CSipUri::ToString( char * pszText, int iTextSize )
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "%s@", m_strUser.c_str() );
 	}
 
-	iLen += snprintf( pszText + iLen, iTextSize - iLen, "%s", m_strHost.c_str() );
+	iLen += SipIpv6Print( m_strHost, pszText, iTextSize, iLen );
 
 	if( m_iPort > 0 )
 	{
@@ -321,16 +324,43 @@ int CSipUri::ParseHost( const char * pszText, int iTextLen )
 {
 	int iPos, iPortPos = -1;
 
-	for( iPos = 0; iPos < iTextLen; ++iPos )
+	if( pszText[0] == '[' )
 	{
-		if( pszText[iPos] == ':' )
+		bool bIpFound = false;
+
+		for( iPos = 1; iPos < iTextLen; ++iPos )
 		{
-			m_strHost.append( pszText, iPos );
-			iPortPos = iPos + 1;
+			if( bIpFound == false )
+			{
+				if( pszText[iPos] == ']' )
+				{
+					m_strHost.append( pszText, iPos );
+					bIpFound = true;
+				}
+			}
+			else if( pszText[iPos] == ':' )
+			{
+				iPortPos = iPos + 1;
+			}
+			else if( pszText[iPos] == ';' || pszText[iPos] == '?' )
+			{
+				break;
+			}
 		}
-		else if( pszText[iPos] == ';' || pszText[iPos] == '?' )
+	}
+	else
+	{
+		for( iPos = 0; iPos < iTextLen; ++iPos )
 		{
-			break;
+			if( pszText[iPos] == ':' )
+			{
+				m_strHost.append( pszText, iPos );
+				iPortPos = iPos + 1;
+			}
+			else if( pszText[iPos] == ';' || pszText[iPos] == '?' )
+			{
+				break;
+			}
 		}
 	}
 

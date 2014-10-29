@@ -253,7 +253,7 @@ bool SipMakePrintString( const unsigned char * pszInput, int iInputSize, char * 
 }
 
 /**
- * @ingroup SipUserAgent
+ * @ingroup SipParser
  * @brief 평문을 MD5 문자열로 변환한다.
  * @param pszInput 평문
  * @param szResult MD5 문자열 저장 변수
@@ -265,4 +265,41 @@ void SipMd5String21( char * pszInput, char szResult[22] )
 	SipMd5Byte( pszInput, szDigest );
 
 	SipMakePrintString( szDigest, 16, szResult, 22 );
+}
+
+/**
+ * @ingroup SipParser
+ * @brief [] 로 둘러쌓인 IPv6 주소에서 [] 를 제거한다.
+ * @param strHost IP 주소
+ */
+void SipIpv6Parse( std::string & strHost )
+{
+	int iLen = (int)strHost.length();
+	if( iLen > 0 )
+	{
+		const char * pszHost = strHost.c_str();
+		if( pszHost[0] == '[' && pszHost[iLen-1] == ']' )
+		{
+			strHost.erase( iLen-1, 1 );
+			strHost.erase( 0, 1 );
+		}
+	}
+}
+
+int SipIpv6Print( std::string & strHost, char * pszText, int iTextSize, int iLen )
+{
+	int n, iHostLen = strHost.length();
+	
+	const char * pszHost = strHost.c_str();
+	if( iHostLen > 2 && pszHost[0] != '[' && strstr( pszHost, ":" ) )
+	{
+		// IPv6
+		n = snprintf( pszText + iLen, iTextSize - iLen, "[%s]", pszHost );
+	}
+	else
+	{
+		n = snprintf( pszText + iLen, iTextSize - iLen, "%s", pszHost );
+	}
+
+	return n;
 }
