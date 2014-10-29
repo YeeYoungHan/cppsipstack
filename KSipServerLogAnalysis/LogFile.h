@@ -29,7 +29,7 @@ class CLogHeader
 {
 public:
 	struct timeval	m_sttTime;
-	char						m_szIp[16];
+	char						m_szIp[INET6_ADDRSTRLEN];
 	int							m_iPort;
 	bool						m_bSend;
 

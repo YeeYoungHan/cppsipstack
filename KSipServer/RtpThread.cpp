@@ -23,6 +23,7 @@
 #include "RtpMap.h"
 #include "ServerService.h"
 #include "ServerUtility.h"
+#include "SipServerSetup.h"
 #include "MemoryDebug.h"
 
 static int giRtpThreadCount = 0;
@@ -53,8 +54,10 @@ THREAD_API RtpThread( LPVOID lpParameter )
 	int				n, iPacketLen;
 	char			szPacket[1500];
 	uint32_t	iIp;
+	IN6_ADDR	sttIp;
 	uint16_t	sPort;
 	uint8_t		cPos, cNext;
+	bool			bRecv;
 
 	delete pclsThreadInfo;
 
@@ -95,13 +98,33 @@ THREAD_API RtpThread( LPVOID lpParameter )
 			if( psttPoll[cPos].revents & POLLIN )
 			{
 				iPacketLen = sizeof(szPacket);
-				if( UdpRecv( pclsRtpInfo->m_phSocket[cPos], szPacket, &iPacketLen, &iIp, &sPort ) )
-				{
-					if( pclsRtpInfo->m_piIp[cPos] == 0 )
-					{
-						pclsRtpInfo->SetIpPort( cPos, iIp, sPort );
-					}
 
+				if( gclsSetup.m_bIpv6 )
+				{
+					bRecv = UdpRecv( pclsRtpInfo->m_phSocket[cPos], szPacket, &iPacketLen, &sttIp, &sPort );
+					if( bRecv )
+					{
+						if( pclsRtpInfo->m_piIp[cPos] == 0 )
+						{
+							pclsRtpInfo->SetIpPort( cPos, &sttIp, sPort );
+							pclsRtpInfo->m_piIp[cPos] = 1;
+						}
+					}
+				}
+				else
+				{
+					bRecv = UdpRecv( pclsRtpInfo->m_phSocket[cPos], szPacket, &iPacketLen, &iIp, &sPort );
+					if( bRecv )
+					{
+						if( pclsRtpInfo->m_piIp[cPos] == 0 )
+						{
+							pclsRtpInfo->SetIpPort( cPos, iIp, sPort );
+						}
+					}
+				}
+
+				if( bRecv )
+				{
 					if( cNext % 2 == 0 )
 					{
 						if( pclsRtpInfo->m_piIp[cPos+2] )

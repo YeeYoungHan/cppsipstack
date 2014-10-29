@@ -25,10 +25,9 @@
 
 CRtpMap gclsRtpMap;
 
-CRtpInfo::CRtpInfo( uint8_t iSocketCount ) : m_phSocket(NULL), m_piIp(NULL), m_piPort(NULL)
+CRtpInfo::CRtpInfo( uint8_t iSocketCount ) : m_phSocket(NULL), m_piIp(NULL), m_psttIp(NULL), m_piPort(NULL)
 	, m_iStartPort(0), m_bStop(false), m_iSocketCount(iSocketCount)
 {
-	
 }
 
 /**
@@ -43,6 +42,13 @@ bool CRtpInfo::Create()
 
 	m_piIp = new uint32_t[m_iSocketCount];
 	if( m_piIp == NULL )
+	{
+		Close();
+		return false;
+	}
+
+	m_psttIp = new IN6_ADDR[m_iSocketCount];
+	if( m_psttIp == NULL )
 	{
 		Close();
 		return false;
@@ -75,6 +81,9 @@ void CRtpInfo::Close()
 
 	delete [] m_phSocket;
 	m_phSocket = NULL;
+
+	delete [] m_psttIp;
+	m_psttIp = NULL;
 
 	delete [] m_piIp;
 	m_piIp = NULL;
@@ -117,6 +126,19 @@ void CRtpInfo::SetIpPort( int iIndex, uint32_t iIp, uint16_t sPort )
 
 /**
  * @ingroup KSipServer
+ * @brief SIP 클라이언트의 RTP IPv6/Port 정보를 설정한다.
+ * @param iIndex	소켓 인덱스
+ * @param iIp			SIP 클라이언트의 RTP IP 주소
+ * @param sPort		SIP 클라이언트의 RTP 포트 번호
+ */
+void CRtpInfo::SetIpPort( int iIndex, IN6_ADDR * psttAddr, uint16_t sPort )
+{
+	memcpy( &m_psttIp[iIndex], psttAddr, sizeof(m_psttIp[iIndex]) );
+	m_piPort[iIndex] = sPort;
+}
+
+/**
+ * @ingroup KSipServer
  * @brief SIP 클라이언트의 RTP IP/Port 정보를 초기화시킨다.
  */
 void CRtpInfo::ReSetIPPort( )
@@ -138,7 +160,14 @@ void CRtpInfo::ReSetIPPort( )
  */
 bool CRtpInfo::Send( int iIndex, char * pszPacket, int iPacketLen )
 {
-	return UdpSend( m_phSocket[iIndex], pszPacket, iPacketLen, m_piIp[iIndex], m_piPort[iIndex] );
+	if( gclsSetup.m_bIpv6 )
+	{
+		return UdpSend( m_phSocket[iIndex], pszPacket, iPacketLen, &m_psttIp[iIndex], m_piPort[iIndex] );
+	}
+	else
+	{
+		return UdpSend( m_phSocket[iIndex], pszPacket, iPacketLen, m_piIp[iIndex], m_piPort[iIndex] );
+	}
 }
 
 CRtpMap::CRtpMap() : m_iStartPort(0)
@@ -345,7 +374,7 @@ bool CRtpMap::CreatePort( CRtpInfo & clsInfo, int iStart, int iEnd )
 
 		for( int i = 0; i < clsInfo.m_iSocketCount; ++i )
 		{
-			clsInfo.m_phSocket[i] = UdpListen( iPort + i, NULL );
+			clsInfo.m_phSocket[i] = UdpListen( iPort + i, NULL, gclsSetup.m_bIpv6 );
 			if( clsInfo.m_phSocket[i] == INVALID_SOCKET )
 			{
 				bError = true;

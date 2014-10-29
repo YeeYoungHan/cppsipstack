@@ -35,7 +35,7 @@ THREAD_API ServerThread( LPVOID lpParameter )
 	IMonitorCallBack * pclsCallBack = (IMonitorCallBack *)lpParameter;
 	Socket hMonitorSocket;
 	pollfd sttPoll[1];
-	char	szIp[16];
+	char	szIp[INET6_ADDRSTRLEN];
 	int		iPort, n;
 	std::string	strIp;
 

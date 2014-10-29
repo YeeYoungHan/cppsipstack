@@ -38,6 +38,7 @@ public:
 
 	Socket		* m_phSocket;
 	uint32_t	* m_piIp;
+	IN6_ADDR	* m_psttIp;
 	uint16_t	* m_piPort;
 
 	int			m_iStartPort;
@@ -49,6 +50,7 @@ public:
 
 	void CloseSocket();
 	void SetIpPort( int iIndex, uint32_t iIp, uint16_t sPort );
+	void SetIpPort( int iIndex, IN6_ADDR * psttAddr, uint16_t sPort );
 	void ReSetIPPort( );
 	bool Send( int iIndex, char * pszPacket, int iPacketLen );
 };
