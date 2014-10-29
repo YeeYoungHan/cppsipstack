@@ -82,5 +82,35 @@ bool TestSipVia()
 	  "SIP/2.0/UDP 192.168.1.100:5060;ttl=60;maddr=200.201.203.205;received=203.44.2.2;branch=1234567890",
 		97 ) == false ) return false;
 
+	// IPv6 Å×½ºÆ®
+	if( Test( 
+		"SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71]",
+	  "SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71]",
+		50 ) == false ) return false;
+	if( Test( 
+		"SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71]:5060",
+	  "SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71]:5060",
+		55 ) == false ) return false;
+	if( Test( 
+		"SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71]:5060;ttl=60;maddr=200.201.203.205;received=203.44.2.2;branch=1234567890",
+	  "SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71]:5060;ttl=60;maddr=200.201.203.205;received=203.44.2.2;branch=1234567890",
+		122 ) == false ) return false;
+	if( Test(  
+		"SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71]:5060 ;ttl=60;maddr=200.201.203.205;received=203.44.2.2;branch=1234567890",
+	  "SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71]:5060;ttl=60;maddr=200.201.203.205;received=203.44.2.2;branch=1234567890",
+		123 ) == false ) return false;
+	if( Test(  
+		"SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71]:5060 ; ttl=60;maddr=200.201.203.205;received=203.44.2.2;branch=1234567890",
+	  "SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71]:5060;ttl=60;maddr=200.201.203.205;received=203.44.2.2;branch=1234567890",
+		124 ) == false ) return false;
+	if( Test(  
+		"SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71];ttl=60;maddr=200.201.203.205;received=203.44.2.2;branch=1234567890",
+	  "SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71];ttl=60;maddr=200.201.203.205;received=203.44.2.2;branch=1234567890",
+		117 ) == false ) return false;
+	if( Test( 		
+		"SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71]:5060;ttl=60;maddr=200.201.203.205;received=203.44.2.2;branch=1234567890,SIP/2.0/UDP 1.1.1.1:5060;ttl=60;maddr=2.2.2.2;received=3.3.3.3;branch=0987654321",
+	  "SIP/2.0/UDP [5f05:2000:80ad:5800:58:800:2023:1d71]:5060;ttl=60;maddr=200.201.203.205;received=203.44.2.2;branch=1234567890",
+		122 ) == false ) return false;
+
 	return true;
 }

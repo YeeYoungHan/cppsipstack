@@ -68,5 +68,20 @@ bool TestSipUri()
 	if( Test( "sip:alice@atlanta.com" ) == false ) return false;
 	if( Test( "tel:1212@gateway.com" ) == false ) return false;
 
+	// IPv6 Å×½ºÆ®
+	if( Test( "sip:alice@[5f05:2000:80ad:5800:58:800:2023:1d71]:5060" ) == false ) return false;
+	if( Test( "sip:alice@[5f05:2000:80ad:5800:58:800:2023:1d71]" ) == false ) return false;
+	if( Test( "sip:alice:secretword@[5f05:2000:80ad:5800:58:800:2023:1d71];transport=tcp" ) == false ) return false;
+	if( Test( "sips:alice@[5f05:2000:80ad:5800:58:800:2023:1d71]?subject=project%20x&priority=urgent" ) == false ) return false;
+	if( Test( "sip:+1-212-555-1212:1234@[5f05:2000:80ad:5800:58:800:2023:1d71];user=phone" ) == false ) return false;
+	if( Test( "sip:+1-212-555-1212:1234@[5f05:2000:80ad:5800:58:800:2023:1d71]:5080;user=phone" ) == false ) return false;
+	if( Test( "sips:1212@[5f05:2000:80ad:5800:58:800:2023:1d71]" ) == false ) return false;
+	if( Test( "sip:alice@[5f05:2000:80ad:5800:58:800:2023:1d71]" ) == false ) return false;
+	if( Test( "sip:[5f05:2000:80ad:5800:58:800:2023:1d71];method=REGISTER?to=alice%40atlanta.com" ) == false ) return false;
+	if( Test( "sip:alice;day=tuesday@[5f05:2000:80ad:5800:58:800:2023:1d71]" ) == false ) return false;
+	if( Test( "sip:alice@[5f05:2000:80ad:5800:58:800:2023:1d71];maddr=239.255.255.1;ttl=15" ) == false ) return false;
+	if( Test( "sip:alice@[5f05:2000:80ad:5800:58:800:2023:1d71]" ) == false ) return false;
+	if( Test( "tel:1212@[5f05:2000:80ad:5800:58:800:2023:1d71]" ) == false ) return false;
+
 	return true;
 }
