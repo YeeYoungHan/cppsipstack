@@ -174,8 +174,6 @@ THREAD_API SipTlsListenThread( LPVOID lpParameter )
 	struct pollfd arrPollFd[1];
 	int		n, iThreadId;
 	Socket	hConnFd;
-	struct sockaddr_in sttAddr;
-	socklen_t		iAddrLen;
 	CTcpComm		clsTcpComm;
 
 	pclsSipStack->IncreateTcpThreadCount( iThreadId );
@@ -195,17 +193,13 @@ THREAD_API SipTlsListenThread( LPVOID lpParameter )
 		{
 			if( !(arrPollFd[0].revents & POLLIN) ) continue;
 
-			iAddrLen = sizeof(sttAddr);
-			hConnFd = accept( arrPollFd[0].fd, (struct sockaddr *)&sttAddr, &iAddrLen );
+			hConnFd = TcpAccept( arrPollFd[0].fd, clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), &clsTcpComm.m_iPort, pclsSipStack->m_clsSetup.m_bIpv6 );
 			if( hConnFd == INVALID_SOCKET )
 			{
 				continue;
 			}
 
 			clsTcpComm.m_hSocket = hConnFd;
-			clsTcpComm.m_iPort = ntohs( sttAddr.sin_port );
-
-			inet_ntop( AF_INET, &sttAddr.sin_addr, clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp) );
 
 			if( pclsSipStack->m_clsTlsThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
 			{

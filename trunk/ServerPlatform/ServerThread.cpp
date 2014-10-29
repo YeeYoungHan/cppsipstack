@@ -39,7 +39,7 @@ THREAD_API ServerThread( LPVOID lpParameter )
 	int		iPort, n;
 	std::string	strIp;
 
-	hMonitorSocket = TcpListen( pclsCallBack->m_iMonitorPort, 255 );
+	hMonitorSocket = TcpListen( pclsCallBack->m_iMonitorPort, 255, NULL, pclsCallBack->m_bIpv6 );
 	if( hMonitorSocket == INVALID_SOCKET )
 	{
 		CLog::Print( LOG_ERROR, "Monitor Tcp Server Port(%d) open error(%d)", pclsCallBack->m_iMonitorPort, GetError() );

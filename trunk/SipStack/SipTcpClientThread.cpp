@@ -46,21 +46,8 @@ THREAD_API SipTcpClientThread( LPVOID lpParameter )
 	Socket hSocket = TcpConnect( pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipStack->m_clsSetup.m_iTcpConnectTimeout );
 	if( hSocket != INVALID_SOCKET )
 	{
-		CTcpComm		clsTcpComm;
-
-		clsTcpComm.m_hSocket = hSocket;
-		snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", pclsArg->m_strIp.c_str() );
-		clsTcpComm.m_iPort = pclsArg->m_iPort;
-		clsTcpComm.SetUseTimeout( false );
-
-		if( pclsArg->m_pclsSipStack->m_clsTcpThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
+		if( SipTcpSend( hSocket, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage ) )
 		{
-			closesocket( hSocket );
-		}
-		else
-		{
-			SipTcpSend( hSocket, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage );
-
 			SIP_MESSAGE_LIST clsSipMessageList;
 
 			if( pclsArg->m_pclsSipStack->m_clsTcpConnectMap.Delete( pclsArg->m_strIp.c_str(), pclsArg->m_iPort, clsSipMessageList ) )
@@ -74,6 +61,18 @@ THREAD_API SipTcpClientThread( LPVOID lpParameter )
 				}
 			}
 
+			CTcpComm		clsTcpComm;
+
+			clsTcpComm.m_hSocket = hSocket;
+			snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", pclsArg->m_strIp.c_str() );
+			clsTcpComm.m_iPort = pclsArg->m_iPort;
+			clsTcpComm.SetUseTimeout( false );
+
+			if( pclsArg->m_pclsSipStack->m_clsTcpThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
+			{
+				closesocket( hSocket );
+			}
+			
 			bRes = true;
 		}
 	}
@@ -122,7 +121,7 @@ THREAD_API SipTcpClientThread( LPVOID lpParameter )
  * @param pclsSipStack	SIP stack 포인터
  * @param pszIp					SIP 메시지를 전송할 IP 주소
  * @param iPort					SIP 메시지를 전송할 포트 번호
- * @param pszSipMessage	전송할 SIP 메시지
+ * @param pclsSipMessage	전송할 SIP 메시지
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool StartSipTcpClientThread( CSipStack * pclsSipStack, const char * pszIp, int iPort, CSipMessage * pclsSipMessage )
