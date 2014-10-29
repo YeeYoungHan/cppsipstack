@@ -55,8 +55,6 @@ int CSipUri::Parse( const char * pszText, int iTextLen )
 	if( iPos == -1 ) return -1;
 	iCurPos += iPos;
 
-	SipIpv6Parse( m_strHost );
-
 	while( iCurPos < iTextLen )
 	{
 		if( pszText[iCurPos] == '?' )
@@ -334,7 +332,7 @@ int CSipUri::ParseHost( const char * pszText, int iTextLen )
 			{
 				if( pszText[iPos] == ']' )
 				{
-					m_strHost.append( pszText, iPos );
+					m_strHost.append( pszText + 1, iPos - 1 );
 					bIpFound = true;
 				}
 			}
@@ -347,6 +345,17 @@ int CSipUri::ParseHost( const char * pszText, int iTextLen )
 				break;
 			}
 		}
+
+		if( bIpFound == false ) return -1;
+		if( iPortPos != -1 && iPortPos < iPos )
+		{
+			std::string strTemp;
+
+			strTemp.append( pszText + iPortPos, iPos - iPortPos );
+			m_iPort = atoi( strTemp.c_str() );
+		}
+
+		return iPos;
 	}
 	else
 	{
@@ -362,27 +371,27 @@ int CSipUri::ParseHost( const char * pszText, int iTextLen )
 				break;
 			}
 		}
-	}
 
-	if( iPortPos == -1 )
-	{
-		if( iPos > 0 )
+		if( iPortPos == -1 )
 		{
-			m_strHost.append( pszText, iPos );
+			if( iPos > 0 )
+			{
+				m_strHost.append( pszText, iPos );
+				return iPos;
+			}
+		}
+		else
+		{
+			if( iPortPos < iPos )
+			{
+				std::string strTemp;
+
+				strTemp.append( pszText + iPortPos, iPos - iPortPos );
+				m_iPort = atoi( strTemp.c_str() );
+			}
+
 			return iPos;
 		}
-	}
-	else
-	{
-		if( iPortPos < iPos )
-		{
-			std::string strTemp;
-
-			strTemp.append( pszText + iPortPos, iPos - iPortPos );
-			m_iPort = atoi( strTemp.c_str() );
-		}
-
-		return iPos;
 	}
 
 	return -1;

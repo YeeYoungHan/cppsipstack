@@ -171,7 +171,7 @@ int CSipVia::ParseSentBy( const char * pszText, int iTextLen )
 			{
 				if( pszText[iPos] == ']' )
 				{
-					m_strHost.append( pszText, iPos );
+					m_strHost.append( pszText + 1, iPos - 1 );
 					bIpFound = true;
 				}
 			}
@@ -184,6 +184,17 @@ int CSipVia::ParseSentBy( const char * pszText, int iTextLen )
 				break;
 			}
 		}
+
+		if( bIpFound == false ) return -1;
+		if( iPortPos != -1 && iPortPos < iPos )
+		{
+			std::string strTemp;
+
+			strTemp.append( pszText + iPortPos, iPos - iPortPos );
+			m_iPort = atoi( strTemp.c_str() );
+		}
+
+		return iPos;
 	}
 	else
 	{
@@ -199,21 +210,19 @@ int CSipVia::ParseSentBy( const char * pszText, int iTextLen )
 				break;
 			}
 		}
-	}
 
-	if( m_strHost.empty() )
-	{
-		m_strHost.append( pszText, iPos );
-	}
-	else
-	{
-		std::string	strPort;
+		if( m_strHost.empty() )
+		{
+			m_strHost.append( pszText, iPos );
+		}
+		else
+		{
+			std::string	strPort;
 
-		strPort.append( pszText + iPortPos, iPos - iPortPos );
-		m_iPort = atoi( strPort.c_str() );
+			strPort.append( pszText + iPortPos, iPos - iPortPos );
+			m_iPort = atoi( strPort.c_str() );
+		}
 	}
-
-	SipIpv6Parse( m_strHost );
 
 	return iPos;
 }
