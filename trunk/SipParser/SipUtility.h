@@ -19,11 +19,16 @@
 #ifndef _SIP_UTILITY_H_
 #define _SIP_UTILITY_H_
 
+#include <string>
+
 void SipSetSystemId( const char * pszId );
 void SipMakeTag( char * pszTag, int iTagSize );
 void SipMakeBranch( char * pszBranch, int iBranchSize );
 void SipMakeCallIdName( char * pszCallId, int iCallIdSize );
 bool SipMakePrintString( const unsigned char * pszInput, int iInputSize, char * pszOutput, int iOutputSize );
 void SipMd5String21( char * string, char result[22] );
+
+void SipIpv6Parse( std::string & strHost );
+int SipIpv6Print( std::string & strHost, char * pszText, int iTextSize, int iLen );
 
 #endif

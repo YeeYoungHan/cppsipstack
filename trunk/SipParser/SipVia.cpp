@@ -19,6 +19,7 @@
 #include "SipParserDefine.h"
 #include "SipVia.h"
 #include <stdlib.h>
+#include "SipUtility.h"
 #include "MemoryDebug.h"
 
 CSipVia::CSipVia() : m_iPort(-1)
@@ -72,7 +73,9 @@ int CSipVia::ToString( char * pszText, int iTextSize )
 
 	int iLen = 0, iPos;
 
-	iLen += snprintf( pszText, iTextSize, "%s/%s/%s %s", m_strProtocolName.c_str(), m_strProtocolVersion.c_str(), m_strTransport.c_str(), m_strHost.c_str() );
+	iLen += snprintf( pszText, iTextSize, "%s/%s/%s ", m_strProtocolName.c_str(), m_strProtocolVersion.c_str(), m_strTransport.c_str() );
+
+	iLen += SipIpv6Print( m_strHost, pszText, iTextSize, iLen );
 
 	if( m_iPort > 0 )
 	{
@@ -158,16 +161,43 @@ int CSipVia::ParseSentBy( const char * pszText, int iTextLen )
 {
 	int		iPos, iPortPos = -1;
 
-	for( iPos = 0; iPos < iTextLen; ++iPos )
+	if( pszText[0] == '[' )
 	{
-		if( pszText[iPos] == ':' )
+		bool bIpFound = false;
+
+		for( iPos = 1; iPos < iTextLen; ++iPos )
 		{
-			m_strHost.append( pszText, iPos );
-			iPortPos = iPos + 1;
+			if( bIpFound == false )
+			{
+				if( pszText[iPos] == ']' )
+				{
+					m_strHost.append( pszText, iPos );
+					bIpFound = true;
+				}
+			}
+			else if( pszText[iPos] == ':' )
+			{
+				iPortPos = iPos + 1;
+			}
+			else if( pszText[iPos] == ' ' || pszText[iPos] == ';' || pszText[iPos] == ',' )
+			{
+				break;
+			}
 		}
-		else if( pszText[iPos] == ' ' || pszText[iPos] == ';' || pszText[iPos] == ',' )
+	}
+	else
+	{
+		for( iPos = 0; iPos < iTextLen; ++iPos )
 		{
-			break;
+			if( pszText[iPos] == ':' )
+			{
+				m_strHost.append( pszText, iPos );
+				iPortPos = iPos + 1;
+			}
+			else if( pszText[iPos] == ' ' || pszText[iPos] == ';' || pszText[iPos] == ',' )
+			{
+				break;
+			}
 		}
 	}
 
@@ -182,6 +212,8 @@ int CSipVia::ParseSentBy( const char * pszText, int iTextLen )
 		strPort.append( pszText + iPortPos, iPos - iPortPos );
 		m_iPort = atoi( strPort.c_str() );
 	}
+
+	SipIpv6Parse( m_strHost );
 
 	return iPos;
 }

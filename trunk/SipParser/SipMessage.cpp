@@ -1114,6 +1114,27 @@ bool CSipMessage::SetTopViaIpPort( const char * pszIp, int iPort, ESipTransport 
 
 /**
  * @ingroup SipParser
+ * @brief Top Via 헤더의 transport 문자열을 수정한다.
+ * @param eTransport transport
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ *					이미 저장된 값과 동일한 값이면 false 를 리턴한다.
+ */
+bool CSipMessage::SetTopViaTransPort( ESipTransport eTransport )
+{
+	SIP_VIA_LIST::iterator itViaList = m_clsViaList.begin();
+	if( itViaList == m_clsViaList.end() ) return false;
+
+	const char * pszTransport = SipGetTransport( eTransport );
+
+	if( !strcmp( itViaList->m_strTransport.c_str(), pszTransport ) ) return false;
+
+	itViaList->m_strTransport = pszTransport;
+
+	return true;
+}
+
+/**
+ * @ingroup SipParser
  * @brief Top Contact 헤더의 IP 주소와 포트 번호를 수정한다.
  * @param pszIp		IP 주소
  * @param iPort		포트 번호
