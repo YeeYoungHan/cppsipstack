@@ -173,12 +173,18 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 {
 	char	szSdp[4096];
 	int		iLen = 0;
+	const char * pszAddrType = "IP4";
+
+	if( strstr( m_strLocalRtpIp.c_str(), ":" ) )
+	{
+		pszAddrType = "IP6";
+	}
 
 	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "v=0\r\n"
-					"o=CSS 4 2 IN IP4 %s\r\n"
-					"s=CSS\r\n", m_strLocalRtpIp.c_str() );
+					"o=CSS 4 2 IN %s %s\r\n"
+					"s=CSS\r\n", pszAddrType, m_strLocalRtpIp.c_str() );
 
-	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "c=IN IP4 %s\r\n", m_strLocalRtpIp.c_str() );
+	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "c=IN %s %s\r\n", pszAddrType, m_strLocalRtpIp.c_str() );
 	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "t=0 0\r\n" );
 
 #ifdef USE_MEDIA_LIST
