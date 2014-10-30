@@ -93,6 +93,8 @@ public:
 	static void SetCallBack( ILogCallBack * pclsCallBack );
 
 	static int Print( EnumLogLevel iLevel, const char * fmt, ... );
+	static void Print( void (* func)( FILE * fd ) );
+
 	static void SetLevel( int iLevel );
 	static void SetNullLevel();
 
