@@ -119,6 +119,11 @@ static bool SSLStop( )
 	return true;
 }
 
+static void SSLPrintError( )
+{
+	CLog::Print( ERR_print_errors_fp );
+}
+
 /**
  * @ingroup SipStack
  * @brief SSL 서버 라이브러리를 시작한다.
@@ -159,6 +164,7 @@ bool SSLServerStart( const char * szCertFile, const char * szCaCertFile )
 	if( SSL_CTX_use_certificate_file(gpsttServerCtx, szCertFile, SSL_FILETYPE_PEM) <= 0 )
 	{
 		CLog::Print( LOG_ERROR, "SSL_CTX_use_certificate_file error" );
+		SSLPrintError( );
 		return false;
 	}
 

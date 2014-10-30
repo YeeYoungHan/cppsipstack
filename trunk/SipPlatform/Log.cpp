@@ -275,6 +275,16 @@ OPEN_FILE:
 	return iResult;
 }
 
+/**
+ * @ingroup SipPlatform
+ * @brief 응용에서 로그를 출력하는 경우, FILE 핸들을 응용 함수로 전달한다.
+ * @param func 로그 출력 함수
+ */
+void CLog::Print( void (* func)( FILE * fd ) )
+{
+	func( m_sttFd );
+}
+
 /**	
  * @ingroup SipPlatform
  * @brief  로그 파일에 저장할 로그 레벨을 설정한다. 
