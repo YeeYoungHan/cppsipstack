@@ -19,6 +19,7 @@
 #ifndef _LOG_FILE_H_
 #define _LOG_FILE_H_
 
+#include "SipUdp.h"
 #include <string>
 
 /**
