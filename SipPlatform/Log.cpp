@@ -282,7 +282,14 @@ OPEN_FILE:
  */
 void CLog::Print( void (* func)( FILE * fd ) )
 {
+	if( m_sttFd == NULL ) return;
+
+	if( m_pThreadMutex && m_pThreadMutex->acquire() == false ) return;
+
 	func( m_sttFd );
+	fflush( m_sttFd );
+
+	if( m_pThreadMutex ) m_pThreadMutex->release();
 }
 
 /**	

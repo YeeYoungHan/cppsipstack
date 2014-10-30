@@ -321,6 +321,7 @@ bool SSLAccept( Socket iFd, SSL ** ppsttSsl, bool bCheckClientCert, int iVerifyD
 		if( SSL_accept( psttSsl ) == -1 )
 		{
 			CLog::Print( LOG_ERROR, "SSL_accept() error" );
+			SSLPrintError( );
 			SSL_free( psttSsl );
 			return false;
 		}
