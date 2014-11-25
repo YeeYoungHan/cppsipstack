@@ -71,6 +71,7 @@ Socket UdpListen( unsigned short iPort, const char * pszIp, bool bIpv6 )
 		return INVALID_SOCKET;
 	}
 	
+#ifndef WINXP
 	if( bIpv6 )
 	{
 		struct sockaddr_in6 addr;
@@ -90,6 +91,7 @@ Socket UdpListen( unsigned short iPort, const char * pszIp, bool bIpv6 )
 		n = bind( iFd,(struct sockaddr*)&addr, sizeof(addr));
 	}
 	else
+#endif
 	{
 		struct sockaddr_in addr;
 		memset((char*) &(addr),0, sizeof((addr)));
@@ -98,7 +100,11 @@ Socket UdpListen( unsigned short iPort, const char * pszIp, bool bIpv6 )
 		
 		if( pszIp )
 		{
+#ifdef WINXP
+			addr.sin_addr.s_addr = inet_addr(pszIp);
+#else
 		  inet_pton( AF_INET, pszIp, &addr.sin_addr.s_addr );
+#endif
 		}
 		else
 		{
@@ -136,6 +142,7 @@ bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, char * pszIp, int iIpSize,
 	int iBufSize = *piLen;
 	if( iBufSize <= 0 ) return false;
 	
+#ifndef WINXP
 	if( bIpv6 )
 	{
 		struct sockaddr_in6 sttAddr;
@@ -154,6 +161,7 @@ bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, char * pszIp, int iIpSize,
 		}
 	}
 	else
+#endif
 	{
 		struct sockaddr_in sttAddr;
 		int iAddrSize = sizeof(sttAddr);
@@ -167,7 +175,11 @@ bool UdpRecv( Socket iFd, char * pszBuf, int * piLen, char * pszIp, int iIpSize,
 		if( piPort ) *piPort = ntohs( sttAddr.sin_port );
 		if( pszIp )
 		{
+#ifdef WINXP
+			snprintf( pszIp, iIpSize, "%s", inet_ntoa( sttAddr.sin_addr ) );
+#else
 			inet_ntop( AF_INET, &sttAddr.sin_addr, pszIp, iIpSize );
+#endif
 		}
 	}
 
@@ -272,6 +284,7 @@ bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, const char * pszIp, 
 	
 	int n;
 
+#ifndef WINXP
 	if( strstr( pszIp, ":" ) )
 	{
 		struct sockaddr_in6 sttAddr;
@@ -284,13 +297,19 @@ bool UdpSend( Socket iFd, const char * pszBuf, int iBufLen, const char * pszIp, 
 		n = sendto( iFd, pszBuf, iBufLen, 0, (sockaddr*)&sttAddr, sizeof(sttAddr) );
 	}
 	else
+#endif
 	{
 	  struct sockaddr_in sttAddr;
 	  
 	  memset( &sttAddr, 0, sizeof(sttAddr) );
 	  sttAddr.sin_family = AF_INET;
 	  sttAddr.sin_port = htons( iPort );
+
+#ifdef WINXP
+		sttAddr.sin_addr.s_addr = inet_addr( pszIp );
+#else
 		inet_pton( AF_INET, pszIp, &sttAddr.sin_addr.s_addr );
+#endif
   
 		n = sendto( iFd, pszBuf, iBufLen, 0, (sockaddr*)&sttAddr, sizeof(sttAddr) );
 	}
@@ -467,7 +486,13 @@ bool GetLocalIp( std::string & strIp )
 	for( int i = 0; psttHost->h_addr_list[i]; i++ )
 	{
 		memcpy( &sttAddr.sin_addr, psttHost->h_addr_list[i], psttHost->h_length );
+
+#ifdef WINXP
+		snprintf( szIpAddr, sizeof(szIpAddr), "%s", inet_ntoa(sttAddr.sin_addr) );
+#else
 		inet_ntop( AF_INET, &sttAddr.sin_addr, szIpAddr, sizeof(szIpAddr) );
+#endif
+
 		if( strcmp( szIpAddr, "127.0.0.1" ) )
 		{
 			strIp = szIpAddr;
