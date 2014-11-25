@@ -143,7 +143,14 @@ bool CSipStackSetup::Check( )
 	uint32_t iIp; 
 	uint16_t iPort = m_iLocalUdpPort;
 
-	inet_pton( AF_INET, m_strLocalIp.c_str(), &iIp );
+	if( strstr( m_strLocalIp.c_str(), ":" ) )
+	{
+		iIp = rand();
+	}
+	else
+	{
+		iIp = inet_addr(m_strLocalIp.c_str());
+	}
 
 	memcpy( szValue, &iIp, 4 );
 	memcpy( szValue+4, &iPort, 2 );

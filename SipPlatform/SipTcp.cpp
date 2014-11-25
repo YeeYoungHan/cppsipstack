@@ -111,8 +111,12 @@ bool GetIpByName( const char * szHostName, char * szIp, int iLen )
 
 	if( (hptr = gethostbyname(szHostName)) == NULL ) return false;
 	
+#ifdef WINXP
+	snprintf( szIp, iLen, "%s", inet_ntoa( *(struct in_addr *)hptr->h_addr_list[0] ));
+#else
 	inet_ntop( AF_INET, (struct in_addr *)hptr->h_addr_list[0], szIp, iLen );
-	
+#endif
+
 	return true;
 }
 
@@ -140,6 +144,7 @@ Socket TcpConnect( const char * pszIp, int iPort, int iTimeout )
 		snprintf( szIp, sizeof(szIp), "%s", pszIp );
 	}
 
+#ifndef WINXP
 	if( strstr( szIp, ":" ) )
 	{
 		struct	sockaddr_in6	addr;		
@@ -173,6 +178,7 @@ Socket TcpConnect( const char * pszIp, int iPort, int iTimeout )
 		}
 	}
 	else
+#endif
 	{
 		struct	sockaddr_in	addr;		
 
@@ -185,8 +191,12 @@ Socket TcpConnect( const char * pszIp, int iPort, int iTimeout )
 		addr.sin_family = AF_INET;
 		addr.sin_port   = htons(iPort);
 	
+#ifdef WINXP
+		addr.sin_addr.s_addr = inet_addr( szIp );
+#else
 		inet_pton( AF_INET, szIp, &addr.sin_addr.s_addr );
-	
+#endif
+
 #ifndef WIN32
 		if( iTimeout > 0 )
 		{
@@ -309,6 +319,7 @@ Socket TcpListen( int iPort, int iListenQ, const char * pszIp, bool bIpv6 )
 	Socket	fd;
 	const 	int		on = 1;
 
+#ifndef WINXP
 	if( bIpv6 )
 	{
 		struct	sockaddr_in6	addr;
@@ -345,6 +356,7 @@ Socket TcpListen( int iPort, int iListenQ, const char * pszIp, bool bIpv6 )
 		}
 	}
 	else
+#endif
 	{
 		struct	sockaddr_in	addr;
 	
@@ -361,7 +373,11 @@ Socket TcpListen( int iPort, int iListenQ, const char * pszIp, bool bIpv6 )
 	
 		if( pszIp )
 		{
+#ifdef WINXP
+			addr.sin_addr.s_addr = inet_addr(pszIp);
+#else
 			inet_pton( AF_INET, pszIp, &addr.sin_addr.s_addr );
+#endif
 		}
 		else
 		{
@@ -405,6 +421,7 @@ Socket TcpAccept( Socket hListenFd, char * pszIp, int iIpSize, int * piPort, boo
 	socklen_t		iAddrLen;
 	Socket			hConnFd;
 
+#ifndef WINXP
 	if( bIpv6 )
 	{
 		struct sockaddr_in6 sttAddr;
@@ -421,6 +438,7 @@ Socket TcpAccept( Socket hListenFd, char * pszIp, int iIpSize, int * piPort, boo
 		}
 	}
 	else
+#endif
 	{
 		struct sockaddr_in sttAddr;
 		iAddrLen = sizeof(sttAddr);
@@ -431,7 +449,11 @@ Socket TcpAccept( Socket hListenFd, char * pszIp, int iIpSize, int * piPort, boo
 	
 			if( pszIp && iIpSize > 0 )
 			{
+#ifdef WINXP
+				snprintf( pszIp, iIpSize, "%s", inet_ntoa( sttAddr.sin_addr ) );
+#else
 				inet_ntop( AF_INET, &sttAddr.sin_addr, pszIp, iIpSize );
+#endif
 			}
 		}
 	}
@@ -457,7 +479,12 @@ bool GetLocalIpPort( Socket hSocket, std::string & strIp, int & iPort )
 
 	if( getsockname( hSocket, (struct sockaddr *)&sttAddr, (socklen_t*)&iAddrSize ) == SOCKET_ERROR ) return false;
 
+#ifdef WINXP
+	snprintf( szIp, sizeof(szIp), "%s", inet_ntoa( sttAddr.sin_addr ) );
+#else
 	inet_ntop( AF_INET, &sttAddr.sin_addr, szIp, sizeof(szIp) );
+#endif
+
 	strIp = szIp;
 	iPort = ntohs( sttAddr.sin_port );
 
@@ -495,7 +522,11 @@ static Socket TcpListenNotReuse( int iPort, int iListenQ, const char * pszIp )
 
 	if( pszIp )
 	{
+#ifdef WINXP
+		addr.sin_addr.s_addr = inet_addr(pszIp);
+#else
 		inet_pton( AF_INET, pszIp, &addr.sin_addr.s_addr );
+#endif
 	}
 	else
 	{

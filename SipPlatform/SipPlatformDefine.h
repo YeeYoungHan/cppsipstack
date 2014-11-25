@@ -22,6 +22,9 @@
 #ifdef WIN32
 #define _CRT_SECURE_NO_WARNINGS
 
+// Window XP 에서 빌드할 때에는 아래의 주석을 해제하라.
+//#define WINXP
+
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
 
