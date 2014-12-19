@@ -37,7 +37,6 @@ END_MESSAGE_MAP()
 
 CChildFrame::CChildFrame()
 {
-	// TODO: 여기에 멤버 초기화 코드를 추가합니다.
 }
 
 CChildFrame::~CChildFrame()
@@ -47,7 +46,6 @@ CChildFrame::~CChildFrame()
 
 BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: CREATESTRUCT cs를 수정하여 여기에서 Window 클래스 또는 스타일을 수정합니다.
 	if( !CMDIChildWndEx::PreCreateWindow(cs) )
 		return FALSE;
 
@@ -72,7 +70,8 @@ void CChildFrame::Dump(CDumpContext& dc) const
 
 void CChildFrame::OnDestroy()
 {
-	WaitStopMonitorThread();
+	// 아래의 메소드를 호출하면 child frame 을 종료할 때에 무한 대기하여서 window 가 멈춘다.
+	//WaitStopMonitorThread();
 
 	CMDIChildWndEx::OnDestroy();
 }

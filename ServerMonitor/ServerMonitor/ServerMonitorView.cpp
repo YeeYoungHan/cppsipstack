@@ -42,8 +42,6 @@ END_MESSAGE_MAP()
 
 CServerMonitorView::CServerMonitorView() : m_bInit(false)
 {
-	// TODO: 여기에 생성 코드를 추가합니다.
-
 }
 
 CServerMonitorView::~CServerMonitorView()
@@ -52,9 +50,6 @@ CServerMonitorView::~CServerMonitorView()
 
 BOOL CServerMonitorView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: CREATESTRUCT cs를 수정하여 여기에서
-	//  Window 클래스 또는 스타일을 수정합니다.
-
 	return CListView::PreCreateWindow(cs);
 }
 
