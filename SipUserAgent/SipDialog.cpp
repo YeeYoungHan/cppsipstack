@@ -484,14 +484,26 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 
 	// SK 브로드밴드 IP-PBX 와 연동하기 위해서 필요한 기능 ( RFC3325 )
 	char szUri[1024];
+	std::string strProtocol = "sip";
+	int iPort = m_pclsSipStack->m_clsSetup.m_iLocalUdpPort;
+
+	if( m_eTransport == E_SIP_TCP )
+	{
+		iPort = m_pclsSipStack->m_clsSetup.m_iLocalTcpPort;
+	}
+	else if( m_eTransport == E_SIP_TLS )
+	{
+		strProtocol = "sips";
+		iPort = m_pclsSipStack->m_clsSetup.m_iLocalTlsPort;
+	}
 
 	if( strstr( m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), ":" ) )
 	{
-		snprintf( szUri, sizeof(szUri), "<sip:%s@[%s]:%d>", m_strFromId.c_str(), m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.m_iLocalUdpPort );
+		snprintf( szUri, sizeof(szUri), "<%s:%s@[%s]:%d>", strProtocol.c_str(), m_strFromId.c_str(), m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), iPort );
 	}
 	else
 	{
-		snprintf( szUri, sizeof(szUri), "<sip:%s@%s:%d>", m_strFromId.c_str(), m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.m_iLocalUdpPort );
+		snprintf( szUri, sizeof(szUri), "<%s:%s@%s:%d>", strProtocol.c_str(), m_strFromId.c_str(), m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), iPort );
 	}
 
 	pclsMessage->AddHeader( "P-Asserted-Identity", szUri );
