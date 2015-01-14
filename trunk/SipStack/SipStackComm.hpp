@@ -464,7 +464,20 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 		}
 
 		clsContact.m_clsUri.m_strHost = m_clsSetup.m_strLocalIp;
-		clsContact.m_clsUri.m_iPort = m_clsSetup.m_iLocalUdpPort;
+	
+		if( eTransport == E_SIP_UDP )
+		{
+			clsContact.m_clsUri.m_iPort = m_clsSetup.m_iLocalUdpPort;
+		}
+		else if( eTransport == E_SIP_TCP )
+		{
+			clsContact.m_clsUri.m_iPort = m_clsSetup.m_iLocalTcpPort;
+		}
+		else if( eTransport == E_SIP_TLS )
+		{
+			clsContact.m_clsUri.m_iPort = m_clsSetup.m_iLocalTlsPort;
+		}
+
 		clsContact.m_clsUri.InsertTransport( eTransport );
 
 		pclsMessage->m_clsContactList.push_back( clsContact );
