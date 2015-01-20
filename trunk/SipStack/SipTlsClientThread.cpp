@@ -55,6 +55,7 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 			if( SipTlsSend( hSocket, psttSsl, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage ) )
 			{
 				SIP_MESSAGE_LIST clsSipMessageList;
+				bool bError = false;
 
 				if( pclsArg->m_pclsSipStack->m_clsTlsConnectMap.Delete( pclsArg->m_strIp.c_str(), pclsArg->m_iPort, clsSipMessageList ) )
 				{
@@ -62,26 +63,55 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 
 					for( itList = clsSipMessageList.begin(); itList != clsSipMessageList.end(); ++itList )
 					{
-						SipTlsSend( hSocket, psttSsl, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, *itList );
-						--(*itList)->m_iUseCount;
+						if( bError == false )
+						{
+							if( SipTlsSend( hSocket, psttSsl, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, *itList ) == false )
+							{
+								bError = true;
+							}
+						}
+
+						if( bError )
+						{
+							delete (*itList);
+						}
+						else
+						{
+							--(*itList)->m_iUseCount;
+						}
 					}
 				}
 
-				CTcpComm		clsTcpComm;
+				if( bError == false )
+				{
+					CTcpComm		clsTcpComm;
 
-				clsTcpComm.m_hSocket = hSocket;
-				snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", pclsArg->m_strIp.c_str() );
-				clsTcpComm.m_iPort = pclsArg->m_iPort;
-				clsTcpComm.m_psttSsl = psttSsl;
-				clsTcpComm.SetUseTimeout( false );
+					clsTcpComm.m_hSocket = hSocket;
+					snprintf( clsTcpComm.m_szIp, sizeof(clsTcpComm.m_szIp), "%s", pclsArg->m_strIp.c_str() );
+					clsTcpComm.m_iPort = pclsArg->m_iPort;
+					clsTcpComm.m_psttSsl = psttSsl;
+					clsTcpComm.SetUseTimeout( false );
 
-				if( pclsArg->m_pclsSipStack->m_clsTlsThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
+					if( pclsArg->m_pclsSipStack->m_clsTlsThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
+					{
+						SSLClose( psttSsl );
+						closesocket( hSocket );
+					}
+					else
+					{
+						bRes = true;
+					}
+				}
+				else
 				{
 					SSLClose( psttSsl );
 					closesocket( hSocket );
 				}
-				
-				bRes = true;
+			}
+			else
+			{
+				SSLClose( psttSsl );
+				closesocket( hSocket );
 			}
 		}
 		else
