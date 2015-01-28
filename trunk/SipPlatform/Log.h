@@ -95,6 +95,7 @@ public:
 	static int Print( EnumLogLevel iLevel, const char * fmt, ... );
 	static void Print( void (* func)( FILE * fd ) );
 
+	static int GetLevel( );
 	static void SetLevel( int iLevel );
 	static void SetNullLevel();
 

@@ -96,14 +96,14 @@ void CLog::Release()
 {
 	if( CLog::m_pszDirName )
 	{
-		delete [] CLog::m_pszDirName;
-		CLog::m_pszDirName = NULL;
+		delete [] m_pszDirName;
+		m_pszDirName = NULL;
 	}
 
-	if( CLog::m_pThreadMutex )
+	if( m_pThreadMutex )
 	{
 		delete CLog::m_pThreadMutex;
-		CLog::m_pThreadMutex = NULL;
+		m_pThreadMutex = NULL;
 	}
 }
 
@@ -294,16 +294,25 @@ void CLog::Print( void (* func)( FILE * fd ) )
 
 /**	
  * @ingroup SipPlatform
- * @brief  로그 파일에 저장할 로그 레벨을 설정한다. 
- *	여러 로그를 저장할 경우, '|' 연산자를 이용하여서 여러 로그 레벨을 설정할 수 있다.
- *	@param	iLevel	[in] 디버그 로그를 저장할 경우, LOG_DEBUG 를 설정한다.
- *					정보 로그를 저장할 경우, LOG_INFO 를 설정한다.
- *					에러 로그를 저장할 경우, LOG_ERROR 를 설정한다.
+ * @brief	로그 레벨을 가져온다.
+ * @return 로그 레벨을 리턴한다.
+ */
+int CLog::GetLevel( )
+{
+	return m_iLevel;
+}
+
+/**	
+ * @ingroup SipPlatform
+ * @brief 로그 파일에 저장할 로그 레벨을 설정한다. 여러 로그를 저장할 경우, '|' 연산자를 이용하여서 여러 로그 레벨을 설정할 수 있다.
+ * @param	iLevel	[in] 디버그 로그를 저장할 경우, LOG_DEBUG 를 설정한다.
+ *				정보 로그를 저장할 경우, LOG_INFO 를 설정한다.
+ *				에러 로그를 저장할 경우, LOG_ERROR 를 설정한다.
  */
 void CLog::SetLevel( int iLevel )
 {
-	CLog::m_iLevel = LOG_ERROR | LOG_SYSTEM;
-	CLog::m_iLevel |= iLevel;
+	m_iLevel = LOG_ERROR | LOG_SYSTEM;
+	m_iLevel |= iLevel;
 }
 
 /** 
@@ -313,7 +322,7 @@ void CLog::SetLevel( int iLevel )
  */
 void CLog::SetNullLevel()
 {
-	CLog::m_iLevel = 0;
+	m_iLevel = 0;
 }
 
 /** 
@@ -322,7 +331,7 @@ void CLog::SetNullLevel()
  */
 void CLog::SetDebugLevel( )
 {
-	CLog::m_iLevel |= LOG_DEBUG;
+	m_iLevel |= LOG_DEBUG;
 }
 
 /** 
@@ -333,7 +342,7 @@ void CLog::SetDebugLevel( )
  */
 bool CLog::IsPrintLogLevel( EnumLogLevel iLevel )
 {
-	if( ( CLog::m_iLevel & iLevel ) == 0 ) return false;
+	if( ( m_iLevel & iLevel ) == 0 ) return false;
 
 	return true;
 }
