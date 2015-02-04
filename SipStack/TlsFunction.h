@@ -39,6 +39,9 @@ int SSLSend( SSL * ssl, const char * szBuf, int iBufLen );
 int SSLRecv( SSL * ssl, char * szBuf, int iBufLen );
 bool SSLClose( SSL * ssl );
 
+void SSLPrintLogServerCipherList( );
+void SSLPrintLogClientCipherList( );
+
 #else
 
 #define SSL void

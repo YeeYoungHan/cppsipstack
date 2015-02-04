@@ -416,4 +416,44 @@ bool SSLClose( SSL * ssl )
 	return true;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SSL 서버에서 사용되는 cipher list 를 로그로 출력한다.
+ */
+void SSLPrintLogServerCipherList( )
+{
+	if( gpsttServerCtx == NULL )
+	{
+		CLog::Print( LOG_ERROR, "gpsttServerCtx is null" );
+		return;
+	}
+
+	int iNum = sk_SSL_CIPHER_num( gpsttServerCtx->cipher_list );
+	for( int i = 0; i < iNum; ++i )
+	{
+		const SSL_CIPHER *c = sk_SSL_CIPHER_value( gpsttServerCtx->cipher_list, i );
+		CLog::Print( LOG_DEBUG, "[%s] [%s] [0x%04X] (%d)", SSL_CIPHER_get_version(c), SSL_CIPHER_get_name(c), c->id - 0x3000000, i );
+	}
+}
+
+/**
+ * @ingroup SipStack
+ * @brief SSL 클라이언트에서 사용되는 cipher list 를 로그로 출력한다.
+ */
+void SSLPrintLogClientCipherList( )
+{
+	if( gpsttClientCtx == NULL )
+	{
+		CLog::Print( LOG_ERROR, "gpsttServerCtx is null" );
+		return;
+	}
+
+	int iNum = sk_SSL_CIPHER_num( gpsttClientCtx->cipher_list );
+	for( int i = 0; i < iNum; ++i )
+	{
+		const SSL_CIPHER *c = sk_SSL_CIPHER_value( gpsttClientCtx->cipher_list, i );
+		CLog::Print( LOG_DEBUG, "[%s] [%s] [0x%04X] (%d)", SSL_CIPHER_get_version(c), SSL_CIPHER_get_name(c), c->id - 0x3000000, i );
+	}
+}
+
 #endif
