@@ -22,12 +22,12 @@
 #ifdef USE_TLS
 
 #include "SipTcp.h"
-#include <openssl/rsa.h>
-#include <openssl/crypto.h>
-#include <openssl/x509.h>
-#include <openssl/pem.h>
-#include <openssl/ssl.h>
-#include <openssl/err.h>
+#include "openssl/rsa.h"
+#include "openssl/crypto.h"
+#include "openssl/x509.h"
+#include "openssl/pem.h"
+#include "openssl/ssl.h"
+#include "openssl/err.h"
 
 bool SSLServerStart( const char * szCertFile, const char * szCaCertFile );
 bool SSLServerStop( );
