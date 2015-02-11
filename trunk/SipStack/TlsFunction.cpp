@@ -70,7 +70,7 @@ static unsigned long SSLIdFunction( )
 #ifdef WIN32
 	return GetCurrentThreadId();
 #else
-	return pthread_self();
+	return (unsigned long)pthread_self();
 #endif
 }
 
