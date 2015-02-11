@@ -6,11 +6,12 @@
 
 include ../Makefile.mk
 
-INC=-I../SipStack -I../SipParser -I../SdpParser -I../SipPlatform
+INC=-I../SipStack -I../SipParser -I../SdpParser -I../SipPlatform \
+	$(OPENSSL_INC)
 LIB=-L../SipStack -lsipstack \
 	-L../SipParser -lsipparser \
 	-L../SipPlatform -lsipplatform \
-	-lssl -lpthread
+	$(OPENSSL_LIB) -lssl -lpthread
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
