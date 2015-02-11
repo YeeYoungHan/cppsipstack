@@ -27,6 +27,7 @@
 #include <time.h>
 #else
 #include <sys/time.h>
+#include <unistd.h>
 #endif
 
 #include "MemoryDebug.h"
