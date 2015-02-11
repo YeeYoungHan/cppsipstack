@@ -6,4 +6,6 @@
 
 CC=g++
 CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
+OPENSSL_INC=
+OPENSSL_LIB=
 

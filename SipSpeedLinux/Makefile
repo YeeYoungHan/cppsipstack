@@ -7,14 +7,14 @@
 include ../Makefile.mk
 
 INC=-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser \
-	-I../XmlParser -I../SipPlatform
+	-I../XmlParser -I../SipPlatform $(OPENSSL_INC)
 LIB=-L../SipUserAgent -lsipuseragent \
 	-L../SipStack -lsipstack \
 	-L../SipParser -lsipparser \
 	-L../SdpParser -lsdpparser \
 	-L../XmlParser -lxmlparser \
 	-L../SipPlatform -lsipplatform \
-	-lssl -lpthread
+	$(OPENSSL_LIB) -lssl -lpthread
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
