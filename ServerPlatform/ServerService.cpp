@@ -35,7 +35,7 @@ static DWORD					giNowState;
  * @param dwState		status
  * @param dwAccept	afforded status
  */
-void ServiceSetStatus( DWORD dwState, DWORD dwAccept = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_PAUSE_CONTINUE )
+void ServiceSetStatus( DWORD dwState, DWORD dwAccept = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN | SERVICE_ACCEPT_PAUSE_CONTINUE )
 {
 	SERVICE_STATUS ss;
 
@@ -69,6 +69,7 @@ void ServiceHandler( DWORD fdwControl )
 	case SERVICE_CONTROL_CONTINUE:
 		break;
 	case SERVICE_CONTROL_STOP:
+	case SERVICE_CONTROL_SHUTDOWN:
 		ServiceSetStatus( SERVICE_STOP_PENDING, 0 );
 		gbStop = true;
 		break;
