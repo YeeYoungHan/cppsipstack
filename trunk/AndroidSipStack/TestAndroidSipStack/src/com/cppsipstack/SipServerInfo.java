@@ -26,6 +26,8 @@ import java.io.Serializable;
  */
 public class SipServerInfo implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	/** SIP 서버의 IP 주소 */
 	public String m_strIp;
 	

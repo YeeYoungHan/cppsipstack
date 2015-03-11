@@ -26,6 +26,8 @@ import java.io.Serializable;
  */
 public class SipCallRtp implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	public final int E_RTP_SEND_RECV = 0;
 	public final int E_RTP_SEND = 1;
 	public final int E_RTP_RECV = 2;
