@@ -395,6 +395,12 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 			return false;
 		}
 
+		if( clsRtp.m_strIp.empty() )
+		{
+			clsRtp.m_strIp = itMedia->m_clsConnection.m_strAddr;
+			SipIpv6Parse( clsRtp.m_strIp );
+		}
+
 		clsRtp.m_iPort = itMedia->m_iPort;
 
 		SDP_FMT_LIST::iterator itFmt;
