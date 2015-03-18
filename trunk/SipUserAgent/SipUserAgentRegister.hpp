@@ -66,8 +66,29 @@ bool CSipUserAgent::RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessa
 				CSipMessage * pclsRequest = itSL->CreateRegister( &m_clsSipStack, pclsMessage );
 				m_clsSipStack.SendSipMessage( pclsRequest );
 			}
+			else if( iStatusCode == SIP_INTERVAL_TOO_BRIEF )
+			{
+				CSipHeader * pclsHeader = pclsMessage->GetHeader( "Min-Expires" );
+				if( pclsHeader == NULL )
+				{
+					CLog::Print( LOG_ERROR, "Min-Expires header is not found" );
+					goto CLEAR_LOGIN;
+				}
+
+				int iMinExpires = atoi( pclsHeader->m_strValue.c_str() );
+				if( iMinExpires <= 0 )
+				{
+					CLog::Print( LOG_ERROR, "Min-Expires header's value is not correct" );
+					goto CLEAR_LOGIN;
+				}
+
+				itSL->m_iLoginTimeout = iMinExpires;
+				CSipMessage * pclsRequest = itSL->CreateRegister( &m_clsSipStack, pclsMessage );
+				m_clsSipStack.SendSipMessage( pclsRequest );
+			}
 			else
 			{
+CLEAR_LOGIN:
 				itSL->ClearLogin();
 				time( &itSL->m_iNextSendTime );
 				itSL->m_iNextSendTime += 60;
