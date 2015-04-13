@@ -109,7 +109,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 #ifdef USE_TLS
 	if( m_clsSetup.m_iLocalTlsPort > 0 )
 	{
-		if( SSLServerStart( m_clsSetup.m_strCertFile.c_str(), "" ) == false )
+		if( SSLServerStart( m_clsSetup.m_strCertFile.c_str(), m_clsSetup.m_strCaCertFile.c_str() ) == false )
 		{
 			_Stop();
 			return false;

@@ -106,6 +106,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "TlsPort", m_iTlsPort );
 	pclsElement->SelectElementData( "TlsAcceptTimeout", m_iTlsAcceptTimeout );
 	pclsElement->SelectElementData( "CertFile", m_strCertFile );
+	pclsElement->SelectElementData( "CaCertFile", m_strCaCertFile );
 	pclsElement->SelectElementData( "MinRegisterTimeout", m_iMinRegisterTimeout );
 	pclsElement->SelectElementData( "CallPickupId", m_strCallPickupId );
 	pclsElement->SelectElementData( "StackExecutePeriod", m_iStackExecutePeriod );
