@@ -187,6 +187,9 @@ bool SSLServerStart( const char * szCertFile, const char * szCaCertFile )
 			CLog::Print( LOG_ERROR, "[SSL] CaCertFile(%s) load error", szCaCertFile );
 			return false;
 		}
+
+		SSL_CTX_set_verify( gpsttServerCtx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL );
+		//SSL_CTX_set_verify_depth( gpsttServerCtx, 1 );
 	}
 
 	gbStartSslServer = true;

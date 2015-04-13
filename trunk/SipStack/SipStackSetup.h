@@ -65,6 +65,9 @@ public:
 	/** TLS 세션을 위한 서버 인증서 + 개인키를 포함한 PEM 파일 */
 	std::string	m_strCertFile;
 
+	/** TLS 세션으로 연결한 클라이언트 인증을 위한 인증 기관 인증서 PEM 파일 */
+	std::string m_strCaCertFile;
+
 	/** SIP UserAgent 헤더에 저장될 문자열 */
 	std::string	m_strUserAgent;
 

@@ -82,6 +82,7 @@ int ServiceMain( )
 	clsSetup.m_iLocalTlsPort = gclsSetup.m_iTlsPort;
 	clsSetup.m_iTlsAcceptTimeout = gclsSetup.m_iTlsAcceptTimeout;
 	clsSetup.m_strCertFile = gclsSetup.m_strCertFile;
+	clsSetup.m_strCaCertFile = gclsSetup.m_strCaCertFile;
 	
 	clsSetup.m_strUserAgent = "KSipServer_";
 	clsSetup.m_strUserAgent.append( KSIP_SERVER_VERSION );
