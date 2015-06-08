@@ -19,6 +19,7 @@
 #include "SipStackDefine.h"
 #include "TcpSessionList.h"
 #include "SipStack.h"
+#include "Log.h"
 #include <time.h>
 #include "MemoryDebug.h"
 
@@ -247,6 +248,17 @@ void CTcpSessionList::DeleteTimeout( int iTimeout, CThreadListEntry * pclsEntry 
 
 		if( m_clsList[i].m_iRecvTime < iTime )
 		{
+			CLog::Print( LOG_DEBUG, "%s (%s,%d) timeout", __FUNCTION__, m_clsList[i].m_strIp.c_str(), m_clsList[i].m_iPort );
+
+			if( m_eTransport == E_SIP_TCP )
+			{
+				m_pclsSipStack->m_clsTcpSocketMap.Delete( m_clsList[i].m_strIp.c_str(), m_clsList[i].m_iPort );
+			}
+			else if( m_eTransport == E_SIP_TLS )
+			{
+				m_pclsSipStack->m_clsTlsSocketMap.Delete( m_clsList[i].m_strIp.c_str(), m_clsList[i].m_iPort );
+			}
+
 			Delete( i, pclsEntry );
 		}
 	}
