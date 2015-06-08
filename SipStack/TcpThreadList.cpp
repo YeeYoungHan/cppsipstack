@@ -168,28 +168,35 @@ bool CThreadList::SendCommand( const char * pszData, int iDataLen, int iThreadIn
 	gclsMutex.acquire();
 	if( iThreadIndex == -1 )
 	{
-		THREAD_LIST::iterator	it, itSel;
-		int iMinSocketCount = m_iMaxSocketPerThread;
-		int iMinThreadIndex = -1;
+		THREAD_LIST::iterator	it;
+		int iMinCount = 2000000000;
 
+		// 소켓을 최소 사용하는 쓰레드를 검색한다.
 		for( it = m_clsList.begin(), iThreadIndex = 0; it != m_clsList.end(); ++it, ++iThreadIndex )
 		{
-			if( m_iMaxSocketPerThread > (*it)->m_iSocketCount && iMinSocketCount > (*it)->m_iSocketCount )
+			if( iMinCount > (*it)->m_iSocketCount )
 			{
-				iMinSocketCount = (*it)->m_iSocketCount;
-				iMinThreadIndex = iThreadIndex;
-				itSel = it;
-				bFound = true;
+				iMinCount = (*it)->m_iSocketCount;
+				if( iMinCount == 0 ) break;
 			}
 		}
 
-		if( bFound )
+		if( iMinCount < m_iMaxSocketPerThread )
 		{
-			bRes = _SendCommand( (*itSel)->m_hSend, pszData, iDataLen );
-			if( bRes ) (*itSel)->IncreaseSocketCount( false );
-			if( piThreadIndex ) *piThreadIndex = iMinThreadIndex;
+			for( it = m_clsList.begin(), iThreadIndex = 0; it != m_clsList.end(); ++it, ++iThreadIndex )
+			{
+				if( iMinCount == (*it)->m_iSocketCount )
+				{
+					bRes = _SendCommand( (*it)->m_hSend, pszData, iDataLen );
+					if( bRes ) (*it)->IncreaseSocketCount( false );
+					if( piThreadIndex ) *piThreadIndex = iThreadIndex;
+					bFound = true;
+					break;
+				}
+			}
 		}
-		else
+
+		if( bFound == false )
 		{
 			if( AddThread() )
 			{
