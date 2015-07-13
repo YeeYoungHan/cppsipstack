@@ -120,6 +120,7 @@ bool CSipUserAgent::Stop( )
 	}
 
 	m_bStopEvent = true;
+	m_clsSipStack.Stop();
 
 	// SipRegisterThread 가 종료할 때까지 대기한다.
 	for( int i = 0; i < 100; ++i )
@@ -129,7 +130,6 @@ bool CSipUserAgent::Stop( )
 	}
 
 	DeleteRegisterInfoAll( );
-	m_clsSipStack.Stop();
 
 	m_bStart = false;
 
