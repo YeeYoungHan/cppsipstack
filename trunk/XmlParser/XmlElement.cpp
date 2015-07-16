@@ -517,6 +517,28 @@ bool CXmlElement::SelectElementData( const char * pszName, int & iData, const in
 
 /**
  * @ingroup XmlParser
+ * @brief 하위 Element 를 검색하여서 64bit 정수 내용을 가져온다.
+ * @param pszName 하위 Element 이름
+ * @param iData		하위 Element 의 값을 저장하는 변수
+ * @param iIndex	하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CXmlElement::SelectElementData( const char * pszName, int64_t & iData, const int iIndex )
+{
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
+	if( pclsElement )
+	{
+		TrimString( pclsElement->m_strData );
+		iData = atoll( pclsElement->m_strData.c_str() );
+
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup XmlParser
  * @brief 하위 Element 를 검색하여서 bool 내용을 가져온다.
  * @param pszName 하위 Element 이름
  * @param bData		하위 Element 의 값을 저장하는 변수

@@ -47,6 +47,7 @@ typedef __int16 int16_t;
 typedef char int8_t;
 
 #define THREAD_API	DWORD WINAPI
+#define atoll(x) _atoi64(x)
 
 #else
 
