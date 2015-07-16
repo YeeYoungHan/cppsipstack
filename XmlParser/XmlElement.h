@@ -19,6 +19,7 @@
 #ifndef _XML_ELEMENT_H_
 #define _XML_ELEMENT_H_
 
+#include "SipPlatformDefine.h"
 #include <string>
 #include <list>
 #include <map>
@@ -71,6 +72,7 @@ public:
 	bool SelectElementData( const char * pszName, std::string & strData, const int iIndex = 0 );
 	bool SelectElementTrimData( const char * pszName, std::string & strData, const int iIndex = 0 );
 	bool SelectElementData( const char * pszName, int & iData, const int iIndex = 0 );
+	bool SelectElementData( const char * pszName, int64_t & iData, const int iIndex = 0 );
 	bool SelectElementData( const char * pszName, bool & bData, const int iIndex = 0 );
 
 	const char * GetName();
