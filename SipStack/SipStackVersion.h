@@ -19,9 +19,13 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.23"
+#define SIP_STACK_VERSION "0.24"
 
 /* 버전 정보
+
+= 버전 0.24 ( 2015년 7월 28일 ) =
+ * Stack Stop 할 때에 TCP 소켓 맵 자료구조를 초기화시킨다.
+ * Stack Stop 할 때에 TCP 쓰레드 자료구조를 초기화시킨다.
 
 = 버전 0.23 ( 2015년 6월 8일 ) =
  * TCP/TLS 세션 timeout 된 이후에 TCP/TLS 세션 자료구조에서 삭제하는 기능을 추가함

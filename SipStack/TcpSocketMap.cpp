@@ -157,6 +157,17 @@ bool CTcpSocketMap::Delete( const char * pszIp, int iPort )
 
 /**
  * @ingroup SipStack
+ * @brief 자료구조를 초기화한다.
+ */
+void CTcpSocketMap::DeleteAll( )
+{
+	m_clsMutex.acquire();
+	m_clsMap.clear();
+	m_clsMutex.release();
+}
+
+/**
+ * @ingroup SipStack
  * @brief TCP 세션들의 정보를 하나의 문자열에 저장한다.
  * @param strBuf TCP 세션들의 정보를 저장할 문자열 변수
  */
