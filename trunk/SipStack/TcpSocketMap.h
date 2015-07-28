@@ -62,6 +62,8 @@ public:
 #endif
 
 	bool Delete( const char * pszIp, int iPort );
+	void DeleteAll( );
+
 	void GetString( CMonitorString & strBuf );
 
 private:

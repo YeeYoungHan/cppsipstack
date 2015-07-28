@@ -330,6 +330,7 @@ bool CSipStack::_Stop( )
 	}
 
 	m_clsTcpThreadList.Final();
+	m_clsTcpSocketMap.DeleteAll();
 
 #ifdef USE_TLS
 	if( m_hTlsSocket != INVALID_SOCKET )
@@ -339,6 +340,7 @@ bool CSipStack::_Stop( )
 	}
 
 	m_clsTlsThreadList.Final();
+	m_clsTlsSocketMap.DeleteAll();
 	SSLServerStop();
 #endif
 

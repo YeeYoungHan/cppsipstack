@@ -119,6 +119,8 @@ void CThreadList::Final()
 		(*it)->Close();
 		delete (*it);
 	}
+
+	m_clsList.clear();
 }
 
 /**
