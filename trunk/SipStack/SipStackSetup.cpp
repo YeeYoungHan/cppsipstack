@@ -60,30 +60,38 @@ bool CSipStackSetup::Check( )
 	}
 
 	// UDP 관련 설정 점검
-	if( m_iLocalUdpPort <= 0 || m_iLocalUdpPort > 65535 ) 
-	{
-		CLog::Print( LOG_ERROR, "%s m_iLocalUdpPort(%d) is invalid", __FUNCTION__, m_iLocalUdpPort );
-		return false;
-	}
+	if( m_iLocalUdpPort < 0 || m_iLocalUdpPort > 65535 ) m_iLocalUdpPort = 0;
 
 	if( m_iUdpThreadCount <= 0 ) 
 	{
-		CLog::Print( LOG_ERROR, "%s m_iUdpThreadCount(%d) is invalid", __FUNCTION__, m_iUdpThreadCount );
-		return false;
+		if( m_iLocalUdpPort > 0 )
+		{
+			CLog::Print( LOG_ERROR, "%s m_iUdpThreadCount(%d) is invalid", __FUNCTION__, m_iUdpThreadCount );
+			return false;
+		}
+
+		m_iUdpThreadCount = 0;
 	}
 
 	// TCP 관련 설정 점검
 	if( m_iLocalTcpPort < 0 || m_iLocalTcpPort > 65535 ) m_iLocalTcpPort = 0;
 	if( m_iLocalTlsPort < 0 || m_iLocalTlsPort > 65535 ) m_iLocalTlsPort = 0;
 
-	if( m_iTcpThreadCount < 0 ) 
+	if( m_iTcpThreadCount <= 0 ) 
 	{
 		if( m_iLocalTcpPort > 0 || m_iLocalTlsPort > 0 ) 
 		{
 			CLog::Print( LOG_ERROR, "%s m_iTcpThreadCount(%d) is invalid", __FUNCTION__, m_iTcpThreadCount );
 			return false;
 		}
-		m_iTcpThreadCount = 1;
+
+		m_iTcpThreadCount = 0;
+	}
+
+	if( m_iLocalUdpPort == 0 && m_iLocalTcpPort == 0 && m_iLocalTlsPort == 0 )
+	{
+		CLog::Print( LOG_ERROR, "%s udp/tcp/tls port is 0", __FUNCTION__ );
+		return false;
 	}
 	
 	if( m_iTcpMaxSocketPerThread < 0 ) 

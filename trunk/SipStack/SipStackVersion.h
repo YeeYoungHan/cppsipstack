@@ -19,9 +19,12 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.24"
+#define SIP_STACK_VERSION "0.25"
 
 /* 버전 정보
+
+= 버전 0.25 ( 2015년 8월 11일 ) =
+ * UDP 포트를 설정하지 않고 사용할 수 있는 기능을 추가함
 
 = 버전 0.24 ( 2015년 7월 28일 ) =
  * Stack Stop 할 때에 TCP 소켓 맵 자료구조를 초기화시킨다.

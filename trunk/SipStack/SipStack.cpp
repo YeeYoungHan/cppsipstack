@@ -80,8 +80,11 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 
 	InitNetwork();
 
-	m_hUdpSocket = UdpListen( m_clsSetup.m_iLocalUdpPort, NULL, m_clsSetup.m_bIpv6 );
-	if( m_hUdpSocket == INVALID_SOCKET ) return false;
+	if( m_clsSetup.m_iLocalUdpPort > 0 )
+	{
+		m_hUdpSocket = UdpListen( m_clsSetup.m_iLocalUdpPort, NULL, m_clsSetup.m_bIpv6 );
+		if( m_hUdpSocket == INVALID_SOCKET ) return false;
+	}
 
 	if( m_clsSetup.m_iLocalTcpPort > 0 )
 	{
@@ -137,10 +140,13 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	}
 #endif
 
-	if( StartSipUdpThread( this ) == false )
+	if( m_clsSetup.m_iLocalUdpPort > 0 )
 	{
-		_Stop();
-		return false;
+		if( StartSipUdpThread( this ) == false )
+		{
+			_Stop();
+			return false;
+		}
 	}
 
 	if( StartSipStackThread( this ) == false )
@@ -298,17 +304,20 @@ bool CSipStack::_Stop( )
 {
 	m_bStopEvent = true;
 
-	// SIP 메시지 수신 쓰레드가 N 개 실행되므로 N 초 대기하는 것을 방지하기 위한 코드이다.
-	Socket hSocket = UdpSocket();
-
-	if( hSocket != INVALID_SOCKET )
+	if( m_clsSetup.m_iLocalUdpPort > 0 )
 	{
-		for( int i = 0; i < m_clsSetup.m_iUdpThreadCount; ++i )
-		{
-			UdpSend( hSocket, "\r\n", 2, "127.0.0.1", m_clsSetup.m_iLocalUdpPort );
-		}
+		// SIP 메시지 수신 쓰레드가 N 개 실행되므로 N 초 대기하는 것을 방지하기 위한 코드이다.
+		Socket hSocket = UdpSocket();
 
-		closesocket( hSocket );
+		if( hSocket != INVALID_SOCKET )
+		{
+			for( int i = 0; i < m_clsSetup.m_iUdpThreadCount; ++i )
+			{
+				UdpSend( hSocket, "\r\n", 2, "127.0.0.1", m_clsSetup.m_iLocalUdpPort );
+			}
+
+			closesocket( hSocket );
+		}
 	}
 
 	// 모든 쓰레드가 종료할 때까지 대기한다.
