@@ -19,9 +19,12 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.21"
+#define SIP_USER_AGENT_VERSION "0.25"
 
 /* 버전 정보
+
+= 버전 0.25 ( 2015년 8월 11일 ) =
+ * UDP 포트가 존재하지 않아도 정상적으로 REGISTER 전송할 수 있다.
 
 = 버전 0.21 ( 2014년 6월 10일 ) =
  * TCP / TLS 클라이언트로 로그인하는 기능을 추가함

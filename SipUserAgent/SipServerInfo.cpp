@@ -156,6 +156,8 @@ CSipMessage * CSipServerInfo::CreateRegister( CSipStack * pclsSipStack, CSipMess
 		*/
 	}
 
+	pclsRequest->m_eTransport = m_eTransport;
+
 	return pclsRequest;
 }
 
