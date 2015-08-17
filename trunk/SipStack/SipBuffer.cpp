@@ -175,7 +175,7 @@ bool CSipBuffer::ShiftBuf( int iLen )
 {
 	if( iLen > m_iBufLen ) return false;
 
-	memcpy( m_pszBuf, m_pszBuf + iLen, m_iBufLen - iLen );
+	memmove( m_pszBuf, m_pszBuf + iLen, m_iBufLen - iLen );
 	m_iBufLen -= iLen;
 
 	return true;
