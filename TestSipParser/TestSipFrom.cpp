@@ -25,7 +25,7 @@ static bool Test( const char * pszText, const char * pszResult )
 	CSipFrom clsFrom;
 	int		iTextLen = (int)strlen( pszText );
 	int		iPos;
-	char	szResult[255];
+	char	szResult[1024];
 
 	memset( szResult, 0, sizeof(szResult) );
 
@@ -112,6 +112,8 @@ bool TestSipFrom()
 	if( Test( "<sip:+1-212-555-1212:1234@gateway.com;user=phone>", "<sip:+1-212-555-1212:1234@gateway.com;user=phone>" ) == false ) return false;
 	if( Test( "sips:1212@gateway.com", "<sips:1212@gateway.com>" ) == false ) return false;
 	if( Test( "sip:alice@192.0.2.4", "<sip:alice@192.0.2.4>" ) == false ) return false;
+	if( Test( "<sip:1001@192.168.0.2;x-nearend;x-refci=26528012;x-nearendclusterid=StandAloneCluster;x-nearenddevice=SEP002545941441;x-nearendaddr=1001;x-farendrefci=26528013;x-farendclusterid=StandAloneCluster;x-farenddevice=SEPF02929E28A35;x-farendaddr=1000>;tag=84501~ec4d89fd-07f4-46f8-99c5-63220364acb6-26528017"
+		, "<sip:1001@192.168.0.2;x-nearend;x-refci=26528012;x-nearendclusterid=StandAloneCluster;x-nearenddevice=SEP002545941441;x-nearendaddr=1001;x-farendrefci=26528013;x-farendclusterid=StandAloneCluster;x-farenddevice=SEPF02929E28A35;x-farendaddr=1000>;tag=84501~ec4d89fd-07f4-46f8-99c5-63220364acb6-26528017" ) == false ) return false;
 
 	// 아래의 테스트는 SIP From 규격에 적합하지 않는다. SIP URI 규격에만 적합하다.
 	//if( Test( "sip:atlanta.com;method=REGISTER?to=alice%40atlanta.com", "<sip:atlanta.com>;method=REGISTER?to=alice%40atlanta.com" ) == false ) return false;
