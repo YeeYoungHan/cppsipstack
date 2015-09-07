@@ -130,5 +130,13 @@ bool TestSipFrom()
 	if( TestDiversion( "<sip:+19195551002>;reason=no-answer;privacy=\"full\";counter=4", "no-answer" ) == false ) return false;
 	if( TestDiversion( "<sip:+19195551002>;reason=intercom-direct-call;privacy=\"full\";counter=4", "intercom-direct-call" ) == false ) return false;
 
+	CSipFrom clsFrom;
+	const char * pszTest = "<sip:1001@192.168.0.2;x-nearend;x-refci=26528012;x-nearendclusterid=StandAloneCluster;x-nearenddevice=SEP002545941441;x-nearendaddr=1001;x-farendrefci=26528013;x-farendclusterid=StandAloneCluster;x-farenddevice=SEPF02929E28A35;x-farendaddr=1000>;tag=84501~ec4d89fd-07f4-46f8-99c5-63220364acb6-26528017";
+	std::string strValue;
+
+	clsFrom.Parse( pszTest, strlen(pszTest) );
+
+	SearchSipParameter( clsFrom.m_clsUri.m_clsUriParamList, "x-farendaddr", strValue );
+
 	return true;
 }
