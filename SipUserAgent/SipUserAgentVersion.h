@@ -19,9 +19,12 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.25"
+#define SIP_USER_AGENT_VERSION "0.26"
 
 /* 버전 정보
+
+= 버전 0.26 ( 2015년 9월 15일 ) =
+ * SIP REGISTER transaction 이 종료되기 전에 새로운 SIP REGISTER 메시지가 전송되지 않는 기능을 추가함
 
 = 버전 0.25 ( 2015년 8월 11일 ) =
  * UDP 포트가 존재하지 않아도 정상적으로 REGISTER 전송할 수 있다.

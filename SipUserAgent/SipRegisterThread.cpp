@@ -55,13 +55,14 @@ THREAD_API SipRegisterThread( LPVOID lpParameter )
 						if( pclsSipUserAgent->m_clsSipStack.SendSipMessage( pclsRequest ) )
 						{
 							itList->m_iSendTime = iTime;
+							itList->m_iResponseTime = 0;
 						}
 					}
 				}
 			}
 			else
 			{
-				if( ( ( iTime - itList->m_iLoginTime ) > ( itList->m_iLoginTimeout / 2 ) ) || itList->m_iLoginTimeout == 0 )
+				if( ( ( iTime - itList->m_iLoginTime ) > ( itList->m_iLoginTimeout / 2 ) && itList->m_iResponseTime != 0 ) || itList->m_iLoginTimeout == 0 )
 				{
 					CSipMessage * pclsRequest = itList->CreateRegister( &pclsSipUserAgent->m_clsSipStack, NULL );
 					if( pclsRequest )
@@ -69,6 +70,7 @@ THREAD_API SipRegisterThread( LPVOID lpParameter )
 						if( pclsSipUserAgent->m_clsSipStack.SendSipMessage( pclsRequest ) )
 						{
 							itList->m_iSendTime = iTime;
+							itList->m_iResponseTime = 0;
 						}
 					}
 				}

@@ -46,6 +46,7 @@ bool CSipUserAgent::RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessa
 				{
 					itSL->m_bLogin = true;
 					time( &itSL->m_iLoginTime );
+					itSL->m_iResponseTime = itSL->m_iLoginTime;
 
 					int iExpires = pclsMessage->GetExpires();
 					if( iExpires > 0 && iExpires != itSL->m_iLoginTimeout )
