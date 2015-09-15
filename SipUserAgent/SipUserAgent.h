@@ -83,7 +83,7 @@ public:
 	bool StopCall( const char * pszCallId, int iSipCode = 0 );
 	bool RingCall( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp );
-	bool HoldCall( const char * pszCallId );
+	bool HoldCall( const char * pszCallId, ERtpDirection eDirection = E_RTP_SEND );
 	bool ResumeCall( const char * pszCallId );
 	bool SendPrack( const char * pszCallId, CSipCallRtp * pclsRtp );
 

@@ -223,9 +223,10 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
  * @ingroup SipUserAgent
  * @brief 통화 hold 요청 메시지를 전송한다.
  * @param pszCallId SIP Call-ID
+ * @param eDirection	미디어 direction
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CSipUserAgent::HoldCall( const char * pszCallId )
+bool CSipUserAgent::HoldCall( const char * pszCallId, ERtpDirection eDirection )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
 	CSipMessage * pclsRequest = NULL;
@@ -235,7 +236,7 @@ bool CSipUserAgent::HoldCall( const char * pszCallId )
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
-		itMap->second.m_eLocalDirection = E_RTP_SEND;
+		itMap->second.m_eLocalDirection = eDirection;
 		pclsRequest = itMap->second.CreateInvite();
 		bRes = true;
 	}
