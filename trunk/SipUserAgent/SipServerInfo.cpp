@@ -93,6 +93,7 @@ void CSipServerInfo::ClearLogin()
 	m_bLogin = false;
 	m_iLoginTime = 0;
 	m_iSendTime = 0;
+	m_iResponseTime = 0;
 	m_clsCallId.Clear();
 }
 

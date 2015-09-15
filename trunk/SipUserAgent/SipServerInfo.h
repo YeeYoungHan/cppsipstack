@@ -64,6 +64,7 @@ public:
 	bool					m_bLogin;
 	time_t				m_iLoginTime;
 	time_t				m_iSendTime;
+	time_t				m_iResponseTime;
 	time_t				m_iNextSendTime;
 	CSipCallId		m_clsCallId;
 	int						m_iSeqNo;
