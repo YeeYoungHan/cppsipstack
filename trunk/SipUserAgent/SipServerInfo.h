@@ -68,7 +68,8 @@ public:
 	time_t				m_iNextSendTime;
 	CSipCallId		m_clsCallId;
 	int						m_iSeqNo;
-
+	bool					m_bAuth;
+	
 	bool					m_bDelete;
 
 	CSipMessage * CreateRegister( CSipStack * pclsSipStack, CSipMessage * pclsResponse );

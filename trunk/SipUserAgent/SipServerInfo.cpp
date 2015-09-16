@@ -28,7 +28,7 @@
  */
 CSipServerInfo::CSipServerInfo() : m_iPort(5060), m_iLoginTimeout(3600)
 	, m_eTransport(E_SIP_UDP), m_iNatTimeout(0)
-	, m_iNextSendTime(0), m_iSeqNo(0), m_bDelete(false)
+	, m_iNextSendTime(0), m_iSeqNo(0), m_bAuth(false), m_bDelete(false)
 {
 	ClearLogin();
 }
@@ -143,9 +143,11 @@ CSipMessage * CSipServerInfo::CreateRegister( CSipStack * pclsSipStack, CSipMess
 		pclsRequest->m_clsCallId = m_clsCallId;
 	}
 
+	m_bAuth = false;
+
 	if( pclsResponse )
 	{
-		AddAuth( pclsRequest, pclsResponse );
+		m_bAuth = AddAuth( pclsRequest, pclsResponse );
 
 		/* 아래의 소스 코드 때문에 FreeSwitch 에 REGISTER 되지 않아서 주석 처리함
 		std::string	strToTag;

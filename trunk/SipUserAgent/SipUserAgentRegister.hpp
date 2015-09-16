@@ -64,8 +64,16 @@ bool CSipUserAgent::RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessa
 			}
 			else if( iStatusCode == SIP_UNAUTHORIZED || iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
 			{
-				CSipMessage * pclsRequest = itSL->CreateRegister( &m_clsSipStack, pclsMessage );
-				m_clsSipStack.SendSipMessage( pclsRequest );
+				if( itSL->m_bAuth )
+				{
+					// 인증 정보를 포함한 REGISTER 메시지에 대한 응답인 경우 로그인 오류 처리한다.
+					goto CLEAR_LOGIN;
+				}
+				else
+				{
+					CSipMessage * pclsRequest = itSL->CreateRegister( &m_clsSipStack, pclsMessage );
+					m_clsSipStack.SendSipMessage( pclsRequest );
+				}
 			}
 			else if( iStatusCode == SIP_INTERVAL_TOO_BRIEF )
 			{
