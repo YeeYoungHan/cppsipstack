@@ -20,6 +20,7 @@
 #include "XmlElement.h"
 #include "StringUtility.h"
 #include <stdlib.h>
+#include "Log.h"
 #include "MemoryDebug.h"
 
 /**
@@ -109,7 +110,11 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 
 				iLen = (int)m_strName.length();
 
-				if( iTextLen - ( iPos + 2 ) < (int)( iLen + 1 ) ) return -1;
+				if( iTextLen - ( iPos + 2 ) < (int)( iLen + 1 ) ) 
+				{
+					CLog::Print( LOG_ERROR, "end tag is not correct for start tag(%s)", m_strName.c_str() );
+					return -1;
+				}
 
 				if( !strncmp( pszText + iPos + 2, m_strName.c_str(), iLen ) )
 				{
@@ -118,6 +123,7 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 				}
 				else
 				{
+					CLog::Print( LOG_ERROR, "end tag(%.*s) is not correct for start tag(%s)", iLen, pszText + iPos + 2, m_strName.c_str() );
 					return -1;
 				}
 			}
@@ -147,6 +153,7 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 			}
 			else if( iPos < 2 )
 			{
+				CLog::Print( LOG_ERROR, "iPos(%d) < 2 : pszText[iPos](%s)", iPos, pszText + iPos );
 				return -1;
 			}
 			else if( pszText[iPos-1] == '/' )
@@ -166,7 +173,11 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 			}
 			else if( pszText[iPos] == '=' && strName.empty() )
 			{
-				if( pszText[iPos+1] != '"' ) return -1;
+				if( pszText[iPos+1] != '"' )
+				{
+					CLog::Print( LOG_ERROR, "iPos(%d+1) != '\"' : pszText[iPos](%s)", iPos, pszText + iPos );
+					return -1;
+				}
 
 				strName.append( pszText + iStartPos, iPos - iStartPos );
 				++iPos;
