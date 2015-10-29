@@ -19,7 +19,11 @@
 #ifndef _STRING_UTILITY_H_
 #define _STRING_UTILITY_H_
 
+#include "SipPlatformDefine.h"
 #include <string>
+#include <list>
+
+typedef std::list< std::string > STRING_LIST;
 
 void ReplaceString( std::string & strCallId, const char * pszBefore, const char * pszAfter );
 bool SearchValue( std::string & strText, const char * pszKey, char cSep, std::string & strValue );
@@ -27,5 +31,9 @@ bool SearchValue( std::string & strText, const char * pszKey, char cSep, int & i
 void LeftTrimString( std::string & strText );
 void RightTrimString( std::string & strText );
 void TrimString( std::string & strText );
+void SplitString( const char * pszText, STRING_LIST & clsList, char cSep );
+
+uint32_t GetUInt32( const char * pszText );
+uint64_t GetUInt64( const char * pszText );
 
 #endif
