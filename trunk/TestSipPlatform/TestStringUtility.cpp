@@ -97,5 +97,60 @@ bool TestStringUtility()
 	if( TestTrim( "  ", "" ) == false ) return false;
 	if( TestTrim( "", "" ) == false ) return false;
 
+	STRING_LIST clsList;
+	STRING_LIST::iterator	itList;
+
+	SplitString( "a/b", clsList, '/' );
+
+	if( clsList.size() != 2 ) return false;
+	itList = clsList.begin();
+	if( strcmp( itList->c_str(), "a" ) ) return false;
+	++itList;
+	if( strcmp( itList->c_str(), "b" ) ) return false;
+
+	SplitString( "/a/b", clsList, '/' );
+
+	if( clsList.size() != 2 ) return false;
+	itList = clsList.begin();
+	if( strcmp( itList->c_str(), "a" ) ) return false;
+	++itList;
+	if( strcmp( itList->c_str(), "b" ) ) return false;
+
+	SplitString( "a/b/", clsList, '/' );
+
+	if( clsList.size() != 2 ) return false;
+	itList = clsList.begin();
+	if( strcmp( itList->c_str(), "a" ) ) return false;
+	++itList;
+	if( strcmp( itList->c_str(), "b" ) ) return false;
+
+	SplitString( "a//b", clsList, '/' );
+
+	if( clsList.size() != 2 ) return false;
+	itList = clsList.begin();
+	if( strcmp( itList->c_str(), "a" ) ) return false;
+	++itList;
+	if( strcmp( itList->c_str(), "b" ) ) return false;
+
+	SplitString( "abc/d/ef/ghij/klmnop/qr/s/tu", clsList, '/' );
+
+	if( clsList.size() != 8 ) return false;
+	itList = clsList.begin();
+	if( strcmp( itList->c_str(), "abc" ) ) return false;
+	++itList;
+	if( strcmp( itList->c_str(), "d" ) ) return false;
+	++itList;
+	if( strcmp( itList->c_str(), "ef" ) ) return false;
+	++itList;
+	if( strcmp( itList->c_str(), "ghij" ) ) return false;
+	++itList;
+	if( strcmp( itList->c_str(), "klmnop" ) ) return false;
+	++itList;
+	if( strcmp( itList->c_str(), "qr" ) ) return false;
+	++itList;
+	if( strcmp( itList->c_str(), "s" ) ) return false;
+	++itList;
+	if( strcmp( itList->c_str(), "tu" ) ) return false;
+
 	return true;
 }

@@ -164,3 +164,75 @@ void TrimString( std::string & strText )
 	LeftTrimString( strText );
 	RightTrimString( strText );
 }
+
+/**
+ * @ingroup SipPlatform
+ * @brief 입력 문자열을 구분자로 분리하여서 문자열 리스트에 저장한다.
+ * @param pszText 입력 문자열
+ * @param clsList 문자열 리스트
+ * @param cSep		구분자
+ */
+void SplitString( const char * pszText, STRING_LIST & clsList, char cSep )
+{
+	int iStartPos = -1, i;
+
+	clsList.clear();
+
+	for( i = 0; pszText[i]; ++i )
+	{
+		if( pszText[i] == cSep )
+		{
+			if( iStartPos >= 0 && iStartPos != i )
+			{
+				std::string strTemp;
+
+				strTemp.append( pszText + iStartPos, i - iStartPos );
+				clsList.push_back( strTemp );
+			}
+
+			iStartPos = i + 1;
+		}
+		else if( i == 0 )
+		{
+			iStartPos = 0;
+		}
+	}
+
+	if( iStartPos >= 0 && iStartPos != i )
+	{
+		std::string strTemp;
+
+		strTemp.append( pszText + iStartPos, i - iStartPos );
+		clsList.push_back( strTemp );
+	}
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 문자열을 unsigned int 로 변환한다.
+ * @param pszText 문자열
+ * @returns unsigned int 를 리턴한다.
+ */
+uint32_t GetUInt32( const char * pszText )
+{
+	if( pszText == NULL ) return 0;
+
+	return strtoul( pszText, NULL, 10 );
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 문자열을 unsigned long long 으로 변환한다.
+ * @param pszText 문자열
+ * @returns unsigned long long 을 리턴한다.
+ */
+uint64_t GetUInt64( const char * pszText )
+{
+	if( pszText == NULL ) return 0;
+
+#ifdef WIN32
+	return _strtoui64( pszText, NULL, 10 );
+#else
+	return strtoull( pszText, NULL, 10 );
+#endif
+}
