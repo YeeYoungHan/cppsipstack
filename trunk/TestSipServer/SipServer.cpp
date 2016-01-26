@@ -81,6 +81,17 @@ bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 			return true;
 		}
 	}
+#ifdef _DEBUG
+	else if( pclsMessage->IsMethod( SIP_METHOD_REFER ) && pclsMessage->m_clsAuthorizationList.empty() )
+	{
+		CSipMessage * pclsResponse = pclsMessage->CreateResponseWithToTag( SIP_UNAUTHORIZED );
+		if( pclsResponse )
+		{
+			gclsSipStack.SendSipMessage( pclsResponse );
+			return true;
+		}
+	}
+#endif
 	else
 	{
 		CUserInfo clsUserInfo;
