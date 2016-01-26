@@ -65,7 +65,7 @@ int main( int argc, char * argv[] )
 	GetLocalIp( clsSetup.m_strLocalIp );
 
 	// SIP 서버의 listen port 로 사용할 UDP 포트 번호를 넣어주세요.
-	clsSetup.m_iLocalUdpPort = 5060;
+	clsSetup.m_iLocalUdpPort = 5080;
 
 	// UDP 수신 쓰레드의 기본 개수는 1개이다. 이를 수정하려면 CSipStackSetup.m_iUdpThreadCount 를 수정하면 된다.
 
@@ -78,10 +78,6 @@ int main( int argc, char * argv[] )
 	while( gbStop == false )
 	{
 		sleep(1);
-
-#ifdef _DEBUG
-		gclsUserMap.Print();
-#endif
 	}
 
 	gclsSipServer.Stop();
