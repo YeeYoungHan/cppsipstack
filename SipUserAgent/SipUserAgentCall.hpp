@@ -122,6 +122,44 @@ bool CSipUserAgent::StopCall( const char * pszCallId, int iSipCode )
 
 /**
  * @ingroup SipUserAgent
+ * @brief 착신 전환한다.
+ * @param pszCallId		SIP Call-ID
+ * @param pszForward	착신 전환 전화번호
+ * @returns 착신 전환에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipUserAgent::StopCall( const char * pszCallId, const char * pszForward )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+	CSipMessage * pclsMessage = NULL;
+
+	m_clsDialogMutex.acquire();
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
+	{
+		if( itMap->second.m_sttStartTime.tv_sec == 0 && itMap->second.m_pclsInvite )
+		{
+			pclsMessage = itMap->second.m_pclsInvite->CreateResponse( SIP_MOVED_TEMPORARILY );
+			Delete( itMap );
+		}
+	}
+	m_clsDialogMutex.release();
+
+	if( pclsMessage )
+	{
+		CSipFrom clsContact = pclsMessage->m_clsFrom;
+		clsContact.m_clsUri.m_strUser = pszForward;
+		pclsMessage->m_clsContactList.push_back( clsContact );
+
+		m_clsSipStack.SendSipMessage( pclsMessage );
+		bRes = true;
+	}
+
+	return bRes;
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief 183 응답 메시지를 전송한다. SIP 클라이언트에서 183 응답 메시지를 전송할 때에 사용된다.
  * @param pszCallId SIP Call-ID
  * @param pclsRtp		local RTP 정보 저장 객체
