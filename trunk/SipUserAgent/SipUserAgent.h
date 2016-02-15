@@ -81,6 +81,7 @@ public:
 	// 통화 관련
 	bool StartCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId );
 	bool StopCall( const char * pszCallId, int iSipCode = 0 );
+	bool StopCall( const char * pszCallId, const char * pszForward );
 	bool RingCall( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool HoldCall( const char * pszCallId, ERtpDirection eDirection = E_RTP_SEND );
