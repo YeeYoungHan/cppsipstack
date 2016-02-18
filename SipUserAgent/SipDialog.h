@@ -128,6 +128,9 @@ public:
 
 	CSipStack		* m_pclsSipStack;
 
+	/** 발신 전화인가? */
+	bool m_bSendCall;
+
 	CSipMessage * CreateInvite( );
 	CSipMessage * CreateAck( );
 	CSipMessage * CreateCancel( );
