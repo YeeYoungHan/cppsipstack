@@ -29,6 +29,7 @@
 CSipDialog::CSipDialog( CSipStack * pclsSipStack ) : m_iSeq(0), m_iNextSeq(0), m_iContactPort(-1), m_eTransport(E_SIP_UDP)
 	, m_iLocalRtpPort(-1), m_eLocalDirection(E_RTP_SEND_RECV), m_iRemoteRtpPort(-1), m_eRemoteDirection(E_RTP_SEND_RECV), m_iCodec(-1), m_iRSeq(-1), m_b100rel(false)
 	, m_pclsInvite(NULL), m_pclsSipStack( pclsSipStack )
+	, m_bSendCall(true)
 {
 	memset( &m_sttInviteTime, 0, sizeof(m_sttInviteTime) );
 	memset( &m_sttCancelTime, 0, sizeof(m_sttCancelTime) );
@@ -529,9 +530,18 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
  */
 void CSipDialog::GetCdr( CSipCdr * pclsCdr )
 {
-	// CSipDialog 의 From, To 는 SipUserAgent 가 SIP 요청 메시지를 전송하는 입장에서 저장되어 있으므로 CDR 을 위해서는 반대로 저장해 준다.
-	pclsCdr->m_strFromId = m_strToId;
-	pclsCdr->m_strToId = m_strFromId;
+	if( m_bSendCall )
+	{
+		pclsCdr->m_strFromId = m_strFromId;
+		pclsCdr->m_strToId = m_strToId;
+	}
+	else
+	{
+		// CSipDialog 의 From, To 는 SipUserAgent 가 SIP 요청 메시지를 전송하는 입장에서 저장되어 있으므로 CDR 을 위해서는 반대로 저장해 준다.
+		pclsCdr->m_strFromId = m_strToId;
+		pclsCdr->m_strToId = m_strFromId;
+	}
+
 	pclsCdr->m_strCallId = m_strCallId;
 	pclsCdr->m_sttInviteTime = m_sttInviteTime;
 	pclsCdr->m_sttStartTime = m_sttStartTime;

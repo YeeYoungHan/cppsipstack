@@ -125,6 +125,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 			clsDialog.m_clsRouteList = clsDialog.m_pclsInvite->m_clsRecordRouteList;
 		}
 	}
+	clsDialog.m_bSendCall = false;
 
 	// Dialog 를 저장한다.
 	m_clsDialogMutex.acquire();
