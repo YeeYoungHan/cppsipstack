@@ -50,6 +50,8 @@ public:
 	static char * GetProgramDirectory( );
 	static int64_t GetSize( const char * pszDirName );
 	static void DeleteAllFile( const char * pszDirName );
+	static void GetDirName( const char * pszFileName, std::string & strDirName );
+	static bool Delete( const char * pszDirName );
 };
 
 #endif
