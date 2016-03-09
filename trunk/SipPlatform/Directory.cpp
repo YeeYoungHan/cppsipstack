@@ -463,3 +463,115 @@ void CDirectory::DeleteAllFile( const char * pszDirName )
 #endif		
 	}
 }
+
+/**
+ * @ingroup SipPlatform
+ * @brief 파일이름에서 폴더 이름을 가져온다.
+ * @param pszFileName 파일 이름
+ * @param strDirName	폴더 이름을 저장할 변수
+ */
+void CDirectory::GetDirName( const char * pszFileName, std::string & strDirName )
+{
+	int iLen = strlen( pszFileName );
+
+	strDirName.clear();
+
+	for( int i = iLen - 1; i >= 0; --i )
+	{
+#ifdef WIN32
+		if( pszFileName[i] == '\\' )
+#else
+		if( pszFileName[i] == '/' )
+#endif
+		{
+			strDirName.append( pszFileName, i );
+			break;
+		}
+	}
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 폴더를 모두 삭제한다.
+ * @param pszDirName 폴더 이름
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CDirectory::Delete( const char * pszDirName )
+{
+#ifdef WIN32
+	WIN32_FIND_DATA	sttFindData;
+	HANDLE			hFind;
+	BOOL				bNext = TRUE;
+	std::string	strPath = pszDirName;
+	std::string strFileName;
+
+	strPath.append( "\\*.*" );
+
+	hFind = FindFirstFile( strPath.c_str(), &sttFindData );
+	if( hFind == INVALID_HANDLE_VALUE )
+	{
+		CLog::Print( LOG_ERROR, "FindFirstFile(%s) error(%d)", pszDirName, GetLastError() );
+		return false;
+	}
+
+	for( ; bNext == TRUE; bNext = FindNextFile( hFind, &sttFindData ) )
+	{
+		if( !strcmp( sttFindData.cFileName, "." ) || !strcmp( sttFindData.cFileName, ".." ) ) continue;
+
+		strFileName = pszDirName;
+		CDirectory::AppendName( strFileName, sttFindData.cFileName );
+
+		if( sttFindData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY )
+		{
+			CDirectory::Delete( strFileName.c_str() );
+			RemoveDirectory( strFileName.c_str() );
+		}
+		else
+		{
+			DeleteFile( strFileName.c_str() );
+		}
+	}
+
+	FindClose( hFind );
+
+	RemoveDirectory( pszDirName );
+#else
+	DIR						* psttDir;
+	struct dirent	* psttDirent, sttDirent;
+	struct stat		sttStat;
+	int		n;
+	std::string		strFileName;
+
+	psttDir = opendir( pszDirName );
+	if( psttDir == NULL )
+	{
+		CLog::Print( LOG_ERROR, "opendir(%s) error(%d)", pszDirName, errno );
+		return false;
+	}
+
+	for( n = readdir_r( psttDir, &sttDirent, &psttDirent ); psttDirent && n == 0; n = readdir_r( psttDir, &sttDirent, &psttDirent ) )
+	{
+		if( !strcmp( psttDirent->d_name, "." ) || !strcmp( psttDirent->d_name, ".." ) ) continue;
+
+		strFileName = pszDirName;
+		AppendName( strFileName, psttDirent->d_name );
+
+		if( lstat( strFileName.c_str(), &sttStat ) < 0 ) continue;
+		if( S_ISDIR( sttStat.st_mode ) )
+		{
+			CDirectory::Delete( strFileName.c_str() );
+			rmdir( strFileName.c_str() );
+		}
+		else
+		{
+			unlink( strFileName.c_str() );
+		}
+	}
+
+	closedir( psttDir );
+	rmdir( pszDirName );
+#endif
+
+	return true;
+}
+
