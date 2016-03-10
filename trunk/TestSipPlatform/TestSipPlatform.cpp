@@ -17,6 +17,7 @@
  */
 
 #include <stdio.h>
+#include "Directory.h"
 
 /**
  * @defgroup TestSipPlatform TestSipPlatform
@@ -40,6 +41,15 @@ bool TestStringUtility();
  */
 int main( int argc, char * argv[] )
 {
+	if( argc == 3 )
+	{
+		if( !strcmp( argv[1], "-d" ) )
+		{
+			CDirectory::Delete( argv[2] );
+			return 0;
+		}
+	}
+
 	//if( TestLog() == false ) goto FUNC_END;
 	if( TestLogMacro() == false ) goto FUNC_END;
 	if( TestStringUtility() == false ) goto FUNC_END;
