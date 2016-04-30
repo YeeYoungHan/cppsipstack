@@ -466,25 +466,51 @@ void CDirectory::DeleteAllFile( const char * pszDirName )
 
 /**
  * @ingroup SipPlatform
- * @brief 파일이름에서 폴더 이름을 가져온다.
- * @param pszFileName 파일 이름
+ * @brief 파일 경로에서 폴더 이름을 가져온다.
+ * @param pszFilePath 파일 경로
  * @param strDirName	폴더 이름을 저장할 변수
  */
-void CDirectory::GetDirName( const char * pszFileName, std::string & strDirName )
+void CDirectory::GetDirName( const char * pszFilePath, std::string & strDirName )
 {
-	int iLen = strlen( pszFileName );
+	int iLen = strlen( pszFilePath );
 
 	strDirName.clear();
 
 	for( int i = iLen - 1; i >= 0; --i )
 	{
 #ifdef WIN32
-		if( pszFileName[i] == '\\' )
+		if( pszFilePath[i] == '\\' )
 #else
-		if( pszFileName[i] == '/' )
+		if( pszFilePath[i] == '/' )
 #endif
 		{
-			strDirName.append( pszFileName, i );
+			strDirName.append( pszFilePath, i );
+			break;
+		}
+	}
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 파일 경로에서 파일 이름을 가져온다.
+ * @param pszFilePath 파일 경로
+ * @param strFileName 파일 이름을 저장할 변수
+ */
+void CDirectory::GetFileName( const char * pszFilePath, std::string & strFileName )
+{
+	int iLen = strlen( pszFilePath );
+
+	strFileName.clear();
+
+	for( int i = iLen - 1; i >= 0; --i )
+	{
+#ifdef WIN32
+		if( pszFilePath[i] == '\\' )
+#else
+		if( pszFilePath[i] == '/' )
+#endif
+		{
+			strFileName = pszFilePath + i + 1;
 			break;
 		}
 	}

@@ -30,5 +30,14 @@ bool TestDirectory()
 
 	printf( "directory size = " UNSIGNED_LONG_LONG_FORMAT "\n", iTotalSize );
 
+	std::string strFileName;
+
+	CDirectory::GetFileName( "c:\\temp\\test\\me.pcap", strFileName );
+	if( strcmp( strFileName.c_str(), "me.pcap" ) )
+	{
+		printf( "CDirectory::GetFileName error\n" );
+		return false;
+	}
+
 	return true;
 }
