@@ -254,6 +254,143 @@ LOOP_START:
 
 /**
  * @ingroup SdpParser
+ * @brief FMT 리스트에 payload type 이 존재하면 해당 payload type 을 FMT 리스트 및 애트리뷰트에서 삭제한다.
+ * @param iPayLoadType payload type
+ * @returns FMT 리스트에 payload type 이 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSdpMedia::DeleteFmtAttribute( int iPayLoadType )
+{
+	SDP_ATTRIBUTE_LIST::iterator	itAttr, itNext;
+	SDP_FMT_LIST::iterator itFL;
+	bool bRes = false;
+
+	for( itFL = m_clsFmtList.begin(); itFL != m_clsFmtList.end(); ++itFL )
+	{
+		int iCodec = atoi( itFL->c_str() );
+
+		if( iCodec == iPayLoadType )
+		{
+			m_clsFmtList.erase( itFL );
+			bRes = true;
+			break;
+		}
+	}
+
+	if( bRes )
+	{
+		for( itAttr = m_clsAttributeList.begin(); itAttr != m_clsAttributeList.end(); ++itAttr )
+		{
+LOOP_START:
+			if( !strcmp( itAttr->m_strName.c_str(), "rtpmap" ) || !strcmp( itAttr->m_strName.c_str(), "fmtp" ) )
+			{
+				int iCodec = atoi( itAttr->m_strValue.c_str() );
+
+				if( iCodec == iPayLoadType )
+				{
+					itNext = itAttr;
+					++itNext;
+
+					m_clsAttributeList.erase( itAttr );
+					
+					if( itNext == m_clsAttributeList.end() ) break;
+					itAttr = itNext;
+					goto LOOP_START;
+				}
+			}
+		}
+	}
+
+	return bRes;
+}
+
+/**
+ * @ingroup SdpParser
+ * @brief FMT 리스트에 payload type 이 존재하면 해당 payload type 을 FMT 리스트 및 애트리뷰트의 최상단으로 이동한다.
+ * @param iPayLoadType payload type
+ * @returns FMT 리스트에 payload type 이 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSdpMedia::MakeTopFmtAttribute( int iPayLoadType )
+{
+	SDP_ATTRIBUTE_LIST::iterator	itAttr, itBegin;
+	SDP_FMT_LIST::iterator itFL;
+	bool bRes = false;
+
+	for( itFL = m_clsFmtList.begin(); itFL != m_clsFmtList.end(); ++itFL )
+	{
+		int iCodec = atoi( itFL->c_str() );
+
+		if( iCodec == iPayLoadType )
+		{
+			if( itFL == m_clsFmtList.begin() )
+			{
+				// 입력한 payload type 이 top 이면 변경할 필요가 없다.
+				return true;
+			}
+
+			std::string strFmt = *itFL;
+			m_clsFmtList.erase( itFL );
+			m_clsFmtList.push_front( strFmt );
+			bRes = true;
+			break;
+		}
+	}
+
+	if( bRes )
+	{
+		itBegin = m_clsAttributeList.end();
+
+		for( itAttr = m_clsAttributeList.begin(); itAttr != m_clsAttributeList.end(); ++itAttr )
+		{
+			if( itBegin == m_clsAttributeList.end() && 
+					( !strcmp( itAttr->m_strName.c_str(), "rtpmap" ) || !strcmp( itAttr->m_strName.c_str(), "fmtp" ) ) )
+			{
+				itBegin = itAttr;
+			}
+
+			if( !strcmp( itAttr->m_strName.c_str(), "fmtp" ) )
+			{
+				int iCodec = atoi( itAttr->m_strValue.c_str() );
+
+				if( iCodec == iPayLoadType )
+				{
+					CSdpAttribute clsAttr = *itAttr;
+					m_clsAttributeList.erase( itAttr );
+					m_clsAttributeList.insert( itBegin, clsAttr );
+					break;
+				}
+			}
+		}
+
+		itBegin = m_clsAttributeList.end();
+
+		for( itAttr = m_clsAttributeList.begin(); itAttr != m_clsAttributeList.end(); ++itAttr )
+		{
+			if( itBegin == m_clsAttributeList.end() && 
+					( !strcmp( itAttr->m_strName.c_str(), "rtpmap" ) || !strcmp( itAttr->m_strName.c_str(), "fmtp" ) ) )
+			{
+				itBegin = itAttr;
+			}
+
+			if( !strcmp( itAttr->m_strName.c_str(), "rtpmap" ) )
+			{
+				int iCodec = atoi( itAttr->m_strValue.c_str() );
+
+				if( iCodec == iPayLoadType )
+				{
+					CSdpAttribute clsAttr = *itAttr;
+					m_clsAttributeList.erase( itAttr );
+					m_clsAttributeList.insert( itBegin, clsAttr );
+					break;
+				}
+			}
+		}
+	}
+
+	return bRes;
+}
+
+/**
+ * @ingroup SdpParser
  * @brief 애트리뷰트를 추가한다. rtpmap 이면 fmt 로 추가한다.
  * @param pclsAttr 애트리뷰트 객체
  */
