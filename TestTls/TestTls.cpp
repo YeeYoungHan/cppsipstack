@@ -5,6 +5,8 @@
    Simplified to be even more minimal 
    12/98 - 4/99 Wade Scholine <wades@mail.cybg.com> */ 
 
+#include "SipPlatformDefine.h"
+
 #include <stdio.h> 
 #include <memory.h> 
 #include <errno.h> 

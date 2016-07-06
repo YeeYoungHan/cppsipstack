@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;C:\Program Files\Java\jdk1.6.0_35\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_35\include\win32&quot;;../../SipPlatform;../../SipParser;../../SipStack;../../SdpParser;../../SipUserAgent;../../openssl-32bit/include"
+				AdditionalIncludeDirectories="&quot;C:\Program Files\Java\jdk1.8.0_25\include&quot;;&quot;C:\Program Files\Java\jdk1.8.0_25\include\win32&quot;;../../SipPlatform;../../SipParser;../../SipStack;../../SdpParser;../../SipUserAgent;../../openssl-32bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
