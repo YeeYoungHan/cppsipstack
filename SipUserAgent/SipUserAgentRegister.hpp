@@ -32,7 +32,7 @@ bool CSipUserAgent::RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessa
 	m_clsRegisterMutex.acquire();
 	for( itSL = m_clsRegisterList.begin(); itSL != m_clsRegisterList.end(); ++itSL )
 	{
-		if( !strcmp( itSL->m_strUserId.c_str(), pszUserId ) )
+		if( !strcmp( itSL->m_strUserId.c_str(), pszUserId ) && !strcmp( itSL->m_strIp.c_str(), pclsMessage->m_strClientIp.c_str() ) )
 		{
 			int iStatusCode = pclsMessage->m_iStatusCode;
 
