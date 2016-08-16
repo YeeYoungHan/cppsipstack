@@ -40,11 +40,12 @@ DWORD WINAPI MonitorThread( LPVOID lpParameter )
 			if( gclsSocket.Receive() == false )
 			{
 				gclsSocket.Close();
-				if( gclsSocket.Connect() == false )
-				{
-					break;
-				}
+				gclsSocket.Connect();
 			}
+		}
+		else if( gclsSocket.IsConnected() == false )
+		{
+			gclsSocket.Connect();
 		}
 	}
 

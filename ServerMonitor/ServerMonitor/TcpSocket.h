@@ -51,6 +51,7 @@ public:
 	bool Connect( );
 	void Close( );
 	int Poll( );
+	bool IsConnected();
 
 	bool Receive( );
 

@@ -19,6 +19,13 @@
 #ifndef _VERSION_H_
 #define _VERSION_H_
 
-#define APP_VERSION "0.31"
+#define APP_VERSION "0.32"
+
+/* 버전 정보
+
+= 버전 0.32 ( 2016년 8월 16일 ) =
+ * TCP 세션이 종료된 경우, 재연결하는 기능을 추가함
+
+*/
 
 #endif

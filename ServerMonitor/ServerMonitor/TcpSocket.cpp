@@ -97,11 +97,25 @@ void CTcpSocket::Close( )
  */
 int CTcpSocket::Poll( )
 {
+	if( m_hSocket == INVALID_SOCKET ) return -1;
+
 	struct pollfd arrPoll[1];
 
 	TcpSetPollIn( arrPoll[0], m_hSocket );
 
 	return poll( arrPoll, 1, 100 );
+}
+
+/**
+ * @ingroup ServerMonitor
+ * @brief TCP 세션이 연결되어 있는가?
+ * @returns TCP 세션이 연결되어 있으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CTcpSocket::IsConnected()
+{
+	if( m_hSocket == INVALID_SOCKET ) return false;
+
+	return true;
 }
 
 /**
