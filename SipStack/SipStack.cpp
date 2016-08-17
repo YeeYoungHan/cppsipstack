@@ -77,6 +77,8 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	m_clsSetup = clsSetup;
 	m_clsICT.SetTimerD( m_clsSetup.m_iTimerD );
 	m_clsNIST.SetTimerJ( m_clsSetup.m_iTimerJ );
+	m_clsTcpConnectMap.SetStateful( m_clsSetup.m_bStateful );
+	m_clsTlsConnectMap.SetStateful( m_clsSetup.m_bStateful );
 
 	InitNetwork();
 
@@ -91,6 +93,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 		m_hTcpSocket = TcpListen( m_clsSetup.m_iLocalTcpPort, 255, NULL, m_clsSetup.m_bIpv6 );
 		if( m_hTcpSocket == INVALID_SOCKET ) 
 		{
+			CLog::Print( LOG_ERROR, "TcpListen(%d) error", m_clsSetup.m_iLocalTcpPort );
 			_Stop();
 			return false;
 		}
@@ -121,6 +124,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 		m_hTlsSocket = TcpListen( m_clsSetup.m_iLocalTlsPort, 255, NULL, m_clsSetup.m_bIpv6 );
 		if( m_hTlsSocket == INVALID_SOCKET ) 
 		{
+				CLog::Print( LOG_ERROR, "TcpListen(%d) error", m_clsSetup.m_iLocalTlsPort );
 			_Stop();
 			return false;
 		}
@@ -149,10 +153,13 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 		}
 	}
 
-	if( StartSipStackThread( this ) == false )
+	if( m_clsSetup.m_bStateful )
 	{
-		_Stop();
-		return false;
+		if( StartSipStackThread( this ) == false )
+		{
+			_Stop();
+			return false;
+		}
 	}
 
 	m_bStarted = true;

@@ -33,7 +33,10 @@ typedef std::list< CSipMessage * > SIP_MESSAGE_LIST;
 class CTcpConnectInfo
 {
 public:
+	CTcpConnectInfo();
+
 	SIP_MESSAGE_LIST	m_clsSipMessageList;
+	time_t						m_iCreateTime;
 };
 
 // key = ip:port
@@ -54,12 +57,14 @@ public:
 	bool Delete( const char * pszIp, int iPort, SIP_MESSAGE_LIST & clsList );
 	bool Delete( const char * pszIp, int iPort );
 	int GetSize();
+	void SetStateful( bool bStateful );
 
 	void GetString( CMonitorString & strBuf );
 
 private:
 	TCP_CONNECT_MAP m_clsMap;
 	CSipMutex				m_clsMutex;
+	bool						m_bStateful;
 
 	void GetKey( const char * pszIp, int iPort, std::string & strKey );
 };

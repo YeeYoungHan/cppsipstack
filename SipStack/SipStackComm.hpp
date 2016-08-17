@@ -26,53 +26,67 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 {
 	if( pclsMessage == NULL ) return false;
 
-	CheckSipMessage( pclsMessage );
-	++pclsMessage->m_iUseCount;
-
-	if( pclsMessage->IsRequest() )
+	if( m_clsSetup.m_bStateful )
 	{
-		if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) || pclsMessage->IsMethod( SIP_METHOD_ACK ) )
+		CheckSipMessage( pclsMessage );
+		++pclsMessage->m_iUseCount;
+
+		if( pclsMessage->IsRequest() )
 		{
-			if( m_clsICT.Insert( pclsMessage ) )
+			if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) || pclsMessage->IsMethod( SIP_METHOD_ACK ) )
 			{
-				Send( pclsMessage, false );
-				--pclsMessage->m_iUseCount;
-				return true;
+				if( m_clsICT.Insert( pclsMessage ) )
+				{
+					Send( pclsMessage, false );
+					--pclsMessage->m_iUseCount;
+					return true;
+				}
+			}
+			else
+			{
+				if( m_clsNICT.Insert( pclsMessage ) )
+				{
+					Send( pclsMessage, false );
+					--pclsMessage->m_iUseCount;
+					return true;
+				}
 			}
 		}
 		else
 		{
-			if( m_clsNICT.Insert( pclsMessage ) )
+			if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) )
 			{
-				Send( pclsMessage, false );
-				--pclsMessage->m_iUseCount;
-				return true;
+				if( m_clsIST.Insert( pclsMessage ) )
+				{
+					Send( pclsMessage, false );
+					--pclsMessage->m_iUseCount;
+					return true;
+				}
+			}
+			else
+			{
+				if( m_clsNIST.Insert( pclsMessage ) )
+				{
+					Send( pclsMessage, false );
+					--pclsMessage->m_iUseCount;
+					return true;
+				}
 			}
 		}
+
+		delete pclsMessage;
 	}
 	else
 	{
-		if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) )
-		{
-			if( m_clsIST.Insert( pclsMessage ) )
-			{
-				Send( pclsMessage, false );
-				--pclsMessage->m_iUseCount;
-				return true;
-			}
-		}
-		else
-		{
-			if( m_clsNIST.Insert( pclsMessage ) )
-			{
-				Send( pclsMessage, false );
-				--pclsMessage->m_iUseCount;
-				return true;
-			}
-		}
-	}
+		Send( pclsMessage, false );
 
-	delete pclsMessage;
+		if( pclsMessage->m_iUseCount == 0 )
+		{
+			delete pclsMessage;
+		}
+
+		return true;
+	}
 
 	return false;
 }
@@ -87,58 +101,82 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
  */
 bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 {
-	++pclsMessage->m_iUseCount;
-
-	if( pclsMessage->IsRequest() )
+	if( m_clsSetup.m_bStateful )
 	{
-		if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) || pclsMessage->IsMethod( SIP_METHOD_ACK ) )
+		++pclsMessage->m_iUseCount;
+
+		if( pclsMessage->IsRequest() )
 		{
-			if( m_clsIST.Insert( pclsMessage ) )
+			if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) || pclsMessage->IsMethod( SIP_METHOD_ACK ) )
 			{
-				RecvRequest( iThreadId, pclsMessage );
-				--pclsMessage->m_iUseCount;
-				return true;
+				if( m_clsIST.Insert( pclsMessage ) )
+				{
+					RecvRequest( iThreadId, pclsMessage );
+					--pclsMessage->m_iUseCount;
+					return true;
+				}
+			}
+			else
+			{
+				if( m_clsNIST.Insert( pclsMessage ) )
+				{
+					RecvRequest( iThreadId, pclsMessage );
+					--pclsMessage->m_iUseCount;
+					return true;
+				}
 			}
 		}
 		else
 		{
-			if( m_clsNIST.Insert( pclsMessage ) )
+			if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) )
 			{
-				RecvRequest( iThreadId, pclsMessage );
-				--pclsMessage->m_iUseCount;
-				return true;
+				// INVITE 메시지에 대한 CANCEL 메시지가 존재하면 이를 SIP stack 에서 삭제한다.
+				if( pclsMessage->m_iStatusCode >= 200 )
+				{
+					m_clsNICT.DeleteCancel( pclsMessage );
+				}
+
+				if( m_clsICT.Insert( pclsMessage ) )
+				{
+					RecvResponse( iThreadId, pclsMessage );
+					--pclsMessage->m_iUseCount;
+					return true;
+				}
+			}
+			else
+			{
+				if( m_clsNICT.Insert( pclsMessage ) )
+				{
+					RecvResponse( iThreadId, pclsMessage );
+					--pclsMessage->m_iUseCount;
+					return true;
+				}
 			}
 		}
+
+		delete pclsMessage;
 	}
 	else
 	{
-		if( pclsMessage->IsMethod( SIP_METHOD_INVITE ) )
-		{
-			// INVITE 메시지에 대한 CANCEL 메시지가 존재하면 이를 SIP stack 에서 삭제한다.
-			if( pclsMessage->m_iStatusCode >= 200 )
-			{
-				m_clsNICT.DeleteCancel( pclsMessage );
-			}
+		++pclsMessage->m_iUseCount;
 
-			if( m_clsICT.Insert( pclsMessage ) )
-			{
-				RecvResponse( iThreadId, pclsMessage );
-				--pclsMessage->m_iUseCount;
-				return true;
-			}
+		if( pclsMessage->IsRequest() )
+		{
+			RecvRequest( iThreadId, pclsMessage );
 		}
 		else
 		{
-			if( m_clsNICT.Insert( pclsMessage ) )
-			{
-				RecvResponse( iThreadId, pclsMessage );
-				--pclsMessage->m_iUseCount;
-				return true;
-			}
+			RecvResponse( iThreadId, pclsMessage );
 		}
-	}
 
-	delete pclsMessage;
+		--pclsMessage->m_iUseCount;
+		if( pclsMessage->m_iUseCount == 0 )
+		{
+			delete pclsMessage;
+		}
+
+		return true;
+	}
 
 	return false;
 }

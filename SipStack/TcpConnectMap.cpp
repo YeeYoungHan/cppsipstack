@@ -17,7 +17,13 @@
  */
 
 #include "TcpConnectMap.h"
+#include "TimeUtility.h"
+#include "Log.h"
 #include "MemoryDebug.h"
+
+CTcpConnectInfo::CTcpConnectInfo() : m_iCreateTime(0)
+{
+}
 
 CTcpConnectMap::CTcpConnectMap()
 {
@@ -48,8 +54,36 @@ bool CTcpConnectMap::Insert( const char * pszIp, int iPort )
 	{
 		CTcpConnectInfo clsInfo;
 
+		time( &clsInfo.m_iCreateTime );
 		m_clsMap.insert( TCP_CONNECT_MAP::value_type( strKey, clsInfo ) );
 		bRes = true;
+	}
+	else
+	{
+		time_t iTime;
+
+		time( &iTime );
+
+		if( iTime >= ( itMap->second.m_iCreateTime + 120 ) )
+		{
+			CLog::Print( LOG_ERROR, "%s connect(%s:%d) too long time", __FUNCTION__, pszIp, iPort );
+
+			SIP_MESSAGE_LIST::iterator	itList;
+
+			for( itList = itMap->second.m_clsSipMessageList.begin(); itList != itMap->second.m_clsSipMessageList.end(); ++itList )
+			{
+				--(*itList)->m_iUseCount;
+
+				if( m_bStateful == false && (*itList)->m_iUseCount == 0 )
+				{
+					delete *itList;
+				}
+			}
+			
+			itMap->second.m_clsSipMessageList.clear();
+			bRes = true;
+			time( &itMap->second.m_iCreateTime );
+		}
 	}
 	m_clsMutex.release();
 
@@ -138,6 +172,11 @@ bool CTcpConnectMap::Delete( const char * pszIp, int iPort )
 		for( itList = itMap->second.m_clsSipMessageList.begin(); itList != itMap->second.m_clsSipMessageList.end(); ++itList )
 		{
 			--(*itList)->m_iUseCount;
+
+			if( m_bStateful == false && (*itList)->m_iUseCount == 0 )
+			{
+				delete *itList;
+			}
 		}
 
 		m_clsMap.erase( itMap );
@@ -162,6 +201,16 @@ int CTcpConnectMap::GetSize()
 	m_clsMutex.release();
 
 	return iSize;
+}
+
+/**
+ * @ingroup SipStack
+ * @brief stateful 여부를 설정한다.
+ * @param bStateful stateful 이면 true 이다.
+ */
+void CTcpConnectMap::SetStateful( bool bStateful )
+{
+	m_bStateful = bStateful;
 }
 
 /**

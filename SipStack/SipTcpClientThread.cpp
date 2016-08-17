@@ -63,6 +63,11 @@ THREAD_API SipTcpClientThread( LPVOID lpParameter )
 				{
 					SipTcpSend( hSocket, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, *itList );
 					--(*itList)->m_iUseCount;
+
+					if( pclsArg->m_pclsSipStack->m_clsSetup.m_bStateful == false && (*itList)->m_iUseCount == 0 )
+					{
+						delete *itList;
+					}
 				}
 			}
 
@@ -108,6 +113,11 @@ THREAD_API SipTcpClientThread( LPVOID lpParameter )
 					pclsArg->m_pclsSipStack->RecvSipMessage( 0, pclsResponse );
 				}
 				--(*itList)->m_iUseCount;
+
+				if( pclsArg->m_pclsSipStack->m_clsSetup.m_bStateful == false && (*itList)->m_iUseCount == 0 )
+				{
+					delete *itList;
+				}
 			}
 		}
 
@@ -115,6 +125,10 @@ THREAD_API SipTcpClientThread( LPVOID lpParameter )
 	}
 
 	--pclsArg->m_pclsSipMessage->m_iUseCount;
+	if( pclsArg->m_pclsSipStack->m_clsSetup.m_bStateful == false && pclsArg->m_pclsSipMessage->m_iUseCount == 0 )
+	{
+		delete pclsArg->m_pclsSipMessage;
+	}
 
 	CLog::Print( LOG_DEBUG, "%s(%s:%d) end", __FUNCTION__, pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
 
