@@ -44,6 +44,11 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 {
 	CSipTlsClientArg * pclsArg = (CSipTlsClientArg *)lpParameter;
 	bool bRes = false;
+	int iThreadCount = 0;
+
+	pclsArg->m_pclsSipStack->IncreateTcpThreadCount( iThreadCount );
+
+	CLog::Print( LOG_DEBUG, "%s(%s:%d) start", __FUNCTION__, pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
 
 	Socket hSocket = TcpConnect( pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipStack->m_clsSetup.m_iTcpConnectTimeout );
 	if( hSocket != INVALID_SOCKET )
@@ -154,6 +159,10 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 	}
 
 	--pclsArg->m_pclsSipMessage->m_iUseCount;
+
+	CLog::Print( LOG_DEBUG, "%s(%s:%d) end", __FUNCTION__, pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
+
+	pclsArg->m_pclsSipStack->DecreateTcpThreadCount();
 	delete pclsArg;
 
 	return 0;
