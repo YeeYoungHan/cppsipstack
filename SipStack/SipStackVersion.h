@@ -19,9 +19,12 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.25"
+#define SIP_STACK_VERSION "0.26"
 
 /* 버전 정보
+
+= 버전 0.26 ( 2015년 8월 18일 ) =
+ * stateful stateless 기능을 설정할 수 있다.
 
 = 버전 0.25 ( 2015년 8월 11일 ) =
  * UDP 포트를 설정하지 않고 사용할 수 있는 기능을 추가함
