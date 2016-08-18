@@ -359,15 +359,9 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 	else if( eTransport == E_SIP_TLS )
 	{
 #ifdef USE_TLS
-		CTcpSocketInfo * pclsInfo = NULL;
-
-		if( m_clsTlsSocketMap.Select( pszIp, iPort, &pclsInfo ) )
+		if( m_clsTlsSocketMap.SendTls( pszIp, iPort, pclsMessage ) )
 		{
-			bRes = SipTlsSend( pclsInfo->m_hSocket, pclsInfo->m_psttSsl, pszIp, iPort, pclsMessage );
-			if( bRes == false )
-			{
-				m_clsTlsSocketMap.Delete( pszIp, iPort );
-			}
+			bRes = true;
 		}
 		else
 		{
@@ -418,15 +412,7 @@ bool CSipStack::Send( const char * pszMessage, const char * pszIp, unsigned shor
 	else if( eTransport == E_SIP_TLS )
 	{
 #ifdef USE_TLS
-		CTcpSocketInfo * pclsInfo = NULL;
-
-		if( m_clsTlsSocketMap.Select( pszIp, iPort, &pclsInfo ) )
-		{
-			if( SSLSend( pclsInfo->m_psttSsl, pszMessage, iMessageSize ) == iMessageSize )
-			{
-				bRes = true;
-			}
-		}
+		bRes = m_clsTlsSocketMap.SendTls( pszIp, iPort, pszMessage, iMessageSize );
 #else
 		CLog::Print( LOG_ERROR, "TLS is not supported. rebuild with USE_TLS option" );
 #endif

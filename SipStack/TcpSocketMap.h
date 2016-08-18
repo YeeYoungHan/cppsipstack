@@ -58,7 +58,8 @@ public:
 	bool Select( const char * pszIp, int iPort, Socket & hSocket );
 
 #ifdef USE_TLS
-	bool Select( const char * pszIp, int iPort, CTcpSocketInfo ** ppclsInfo );
+	bool SendTls( const char * pszIp, int iPort, CSipMessage * pclsMessage );
+	bool SendTls( const char * pszIp, int iPort, const char * pszMessage, int iMessageSize );
 #endif
 
 	bool Delete( const char * pszIp, int iPort );

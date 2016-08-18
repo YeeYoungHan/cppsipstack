@@ -18,6 +18,8 @@
 
 #include "SipStackDefine.h"
 #include "TcpSocketMap.h"
+#include "SipTlsMessage.h"
+#include "Log.h"
 #include "MemoryDebug.h"
 
 CTcpSocketInfo::CTcpSocketInfo() : m_hSocket(INVALID_SOCKET)
@@ -101,13 +103,14 @@ bool CTcpSocketMap::Select( const char * pszIp, int iPort, Socket & hSocket )
 #ifdef USE_TLS
 /**
  * @ingroup SipStack
- * @brief 클라이언트 IP 주소와 포트 번호와 연관된 TCP 소켓 정보를 검색한다.
+ * @brief TLS 메시지를 전송한다.
  * @param pszIp		클라이언트 IP 주소
  * @param iPort		클라이언트 포트 번호
- * @param ppclsInfo TCP 소켓 정보를 저장할 변수의 포인터
- * @returns 검색에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ * @param pclsMessage SIP 메시지
+ * @param iLocalPort	로컬 포트 번호
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CTcpSocketMap::Select( const char * pszIp, int iPort, CTcpSocketInfo ** ppclsInfo )
+bool CTcpSocketMap::SendTls( const char * pszIp, int iPort, CSipMessage * pclsMessage )
 {
 	bool	bRes = false;
 	std::string	strKey;
@@ -119,8 +122,51 @@ bool CTcpSocketMap::Select( const char * pszIp, int iPort, CTcpSocketInfo ** ppc
 	it = m_clsMap.find( strKey );
 	if( it != m_clsMap.end() )
 	{
-		*ppclsInfo = &it->second;
-		bRes = true;
+		if( SipTlsSend( it->second.m_hSocket, it->second.m_psttSsl, pszIp, iPort, pclsMessage ) == false )
+		{
+			CLog::Print( LOG_DEBUG, "%s(%s,%d) TLS deleted", __FUNCTION__, pszIp, iPort );
+			m_clsMap.erase( it );			
+		}
+		else
+		{
+			bRes = true;
+		}
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+/**
+ * @ingroup SipStack
+ * @brief TLS 메시지를 전송한다.
+ * @param pszIp		클라이언트 IP 주소
+ * @param iPort		클라이언트 포트 번호
+ * @param pszMessage	 SIP 메시지
+ * @param iMessageSize SIP 메시지 길이
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CTcpSocketMap::SendTls( const char * pszIp, int iPort, const char * pszMessage, int iMessageSize )
+{
+	bool	bRes = false;
+	std::string	strKey;
+	TCP_SOCKET_MAP::iterator	it;
+	
+	GetKey( pszIp, iPort, strKey );
+
+	m_clsMutex.acquire();
+	it = m_clsMap.find( strKey );
+	if( it != m_clsMap.end() )
+	{
+		if( SSLSend( it->second.m_psttSsl, pszMessage, iMessageSize ) != iMessageSize )
+		{
+			CLog::Print( LOG_DEBUG, "%s(%s,%d) TLS deleted", __FUNCTION__, pszIp, iPort );
+			m_clsMap.erase( it );
+		}
+		else
+		{
+			bRes = true;
+		}
 	}
 	m_clsMutex.release();
 
