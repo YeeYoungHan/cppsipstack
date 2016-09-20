@@ -58,7 +58,7 @@ THREAD_API SipTlsThread( LPVOID lpParameter )
 	CTcpSessionList	clsSessionList( pclsSipStack, E_SIP_TLS );
 	CTcpComm			clsTcpComm;
 	int		n, i, iBufLen, iThreadId;
-	char	szBuf[2048], *pszBuf;
+	char	szBuf[4096], *pszBuf;
 	time_t	iTime, iDeleteTime;
 
 	pclsSipStack->IncreateTcpThreadCount( iThreadId );
