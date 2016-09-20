@@ -19,9 +19,13 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.26"
+#define SIP_STACK_VERSION "0.27"
 
 /* 버전 정보
+
+= 버전 0.27 ( 2016년 9월 20일 ) =
+ * TLS 수신 버퍼 크기를 16384 로 수정함
+ * TCP/TLS SIP 메시지 버퍼 크기를 16384 로 수정함
 
 = 버전 0.26 ( 2015년 8월 18일 ) =
  * stateful stateless 기능을 설정할 수 있다.

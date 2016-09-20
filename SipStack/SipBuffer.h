@@ -19,7 +19,8 @@
 #ifndef _SIP_BUFFER_H_
 #define _SIP_BUFFER_H_
 
-#define SIP_MAX_BUF_SIZE	8192
+// TCP 기반 SIP 메시지 수신 버퍼 최대 크기 = openssl 의 SSL_read 함수의 최대 버퍼 크기
+#define SIP_MAX_BUF_SIZE	16384
 
 #include "SipUdp.h"
 
