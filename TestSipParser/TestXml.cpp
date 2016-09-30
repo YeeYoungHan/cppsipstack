@@ -137,6 +137,10 @@ bool TestXml()
 		"<setup><![CDATA[3300000]]></setup>",
 		"<setup>3300000</setup>\n" ) == false ) return false;
 
+	if( Test( 
+		"<setup>12<![CDATA[3300000]]>56</setup>",
+		"<setup>12330000056</setup>\n" ) == false ) return false;
+
 	const char * pszXml = "<userlist>\r\n"
 		"  <user id=\"1000\">\r\n"
 		"    <password>1234</password>\r\n"
