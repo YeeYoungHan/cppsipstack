@@ -46,6 +46,7 @@ CXmlElement::~CXmlElement()
 #define XML_ELEMENT_NAME_END		4
 #define XML_ELEMENT_DATA_PARSE	5
 #define XML_ELEMENT_COMMENT			6
+#define XML_ELEMENT_CDATA				7
 
 /**
  * @ingroup XmlParser
@@ -89,12 +90,36 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 				strValue.clear();
 			}
 		}
+		else if( cType == XML_ELEMENT_CDATA )
+		{
+			if( pszText[iPos] == ']' )
+			{
+				if( iPos + 3 < iTextLen && !strncmp( pszText + iPos + 1, "]>", 2 ) )
+				{
+					m_strData.append( pszText + iStartPos, iPos - iStartPos );
+					cType = XML_ELEMENT_DATA;
+					iPos += 2;
+					iStartPos = iPos + 1;
+				}
+			}
+		}
 		else if( pszText[iPos] == '<' )
 		{
 			if( iPos + 4 < iTextLen && !strncmp( pszText + iPos + 1, "!--", 3 ) )
 			{
 				cTypeOld = cType;
 				cType = XML_ELEMENT_COMMENT;
+			}
+			else if( iPos + 9 < iTextLen && !strncmp( pszText + iPos + 1, "![CDATA[", 8 ) )
+			{
+				if( cType == XML_ELEMENT_DATA )
+				{
+					m_strData.append( pszText + iStartPos, iPos - iStartPos );
+				}
+
+				cTypeOld = cType;
+				cType = XML_ELEMENT_CDATA;
+				iStartPos = iPos + 9;
 			}
 			else if( cType == XML_ELEMENT_NULL )
 			{

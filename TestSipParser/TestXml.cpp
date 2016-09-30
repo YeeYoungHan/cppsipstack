@@ -133,6 +133,10 @@ bool TestXml()
 		"</Security>\n"
 		"</Setup>\n" ) == false ) return false;
 
+	if( Test( 
+		"<setup><![CDATA[3300000]]></setup>",
+		"<setup>3300000</setup>\n" ) == false ) return false;
+
 	const char * pszXml = "<userlist>\r\n"
 		"  <user id=\"1000\">\r\n"
 		"    <password>1234</password>\r\n"
