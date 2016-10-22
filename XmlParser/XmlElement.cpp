@@ -47,6 +47,7 @@ CXmlElement::~CXmlElement()
 #define XML_ELEMENT_DATA_PARSE	5
 #define XML_ELEMENT_COMMENT			6
 #define XML_ELEMENT_CDATA				7
+#define XML_ELEMENT_DECLARATION	8
 
 /**
  * @ingroup XmlParser
@@ -74,6 +75,15 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 					iPos += 2;
 					cType = cTypeOld;
 				}
+			}
+
+			continue;
+		}
+		else if( cType == XML_ELEMENT_DECLARATION )
+		{
+			if( pszText[iPos] == '>' )
+			{
+				cType = XML_ELEMENT_NULL;
 			}
 
 			continue;
@@ -120,6 +130,11 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 				cTypeOld = cType;
 				cType = XML_ELEMENT_CDATA;
 				iStartPos = iPos + 9;
+			}
+			else if( iPos + 1 < iTextLen && pszText[iPos+1] == '?' )
+			{
+				cTypeOld = cType;
+				cType = XML_ELEMENT_DECLARATION;
 			}
 			else if( cType == XML_ELEMENT_NULL )
 			{
@@ -272,6 +287,59 @@ int CXmlElement::ToString( char * pszText, int iTextSize )
 	}
 
 	return iLen;
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 멤버 변수에 저장된 값을 이용하여서 XML 문자열을 생성한다.
+ * @param strText XML 문자열을 저장할 변수
+ */
+void CXmlElement::ToString( std::string & strText )
+{
+	strText.append( "<" );
+	strText.append( m_strName );
+
+	if( m_clsAttributeMap.empty() == false )
+	{
+		XML_ATTRIBUTE_MAP::iterator	itAM;
+
+		for( itAM = m_clsAttributeMap.begin(); itAM != m_clsAttributeMap.end(); ++itAM )
+		{
+			strText.append( " " );
+			strText.append( itAM->first );
+			strText.append( "=\"" );
+			strText.append( itAM->second );
+			strText.append( "\"" );
+		}
+	}
+
+	if( m_strData.empty() == false )
+	{
+		strText.append( ">" );
+		strText.append( m_strData );
+		strText.append( "</" );
+		strText.append( m_strName );
+		strText.append( ">\n" );
+	}
+	else if( m_clsElementList.empty() == false )
+	{
+		XML_ELEMENT_LIST::iterator	itEL;
+
+		strText.append( ">\n" );
+
+		for( itEL = m_clsElementList.begin(); itEL != m_clsElementList.end(); ++itEL )
+		{
+			itEL->ToString( strText );
+		}
+
+		strText.append( "</" );
+		strText.append( m_strName );
+		strText.append( ">\n" );
+	}
+	else
+	{
+		strText.append( "/>\n" );
+	}
 }
 
 /**
@@ -460,6 +528,32 @@ CXmlElement * CXmlElement::SelectElement( const char * pszName, const int iIndex
 
 /**
  * @ingroup XmlParser
+ * @brief 하위 Element 를 검색한다.
+ * @param iIndex 하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @returns 성공하면 하위 Element 객체의 포인터를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
+CXmlElement * CXmlElement::SelectElement( const int iIndex )
+{
+	XML_ELEMENT_LIST::iterator	itEL;
+	int iCount = 0;
+
+	if( iIndex < 0 ) return NULL;
+
+	for( itEL = m_clsElementList.begin(); itEL != m_clsElementList.end(); ++itEL )
+	{
+		if( iCount == iIndex )
+		{
+			return &(*itEL);
+		}
+
+		++iCount;
+	}
+
+	return NULL;
+}
+
+/**
+ * @ingroup XmlParser
  * @brief 하위 Element 를 검색하여서 Element 리스트에 저장한다.
  * @param pszName		하위 Element 이름
  * @param clsList		하위 Element 를 저장할 변수
@@ -625,6 +719,118 @@ const char * CXmlElement::GetData()
 bool CXmlElement::IsDataEmpty()
 {
 	return m_strData.empty();
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief Element 이름을 설정한다.
+ * @param pszName Element 이름
+ */
+void CXmlElement::SetName( const char * pszName )
+{
+	m_strName = pszName;
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 를 추가한다.
+ * @param pszName 하위 Element 이름
+ * @param pszData 하위 Element 의 data 값
+ */
+void CXmlElement::InsertElementData( const char * pszName, const char * pszData )
+{
+	CXmlElement clsElement;
+
+	clsElement.m_strName = pszName;
+
+	if( pszData )
+	{
+		if( strstr( pszData, "<" ) || strstr( pszData, ">" ) )
+		{
+			clsElement.m_strData = "<![CDATA[";
+			clsElement.m_strData.append( pszData );
+			clsElement.m_strData.append( "]]>" );
+		}
+		else
+		{
+			clsElement.m_strData = pszData;
+		}
+	}
+
+	m_clsElementList.push_back( clsElement );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 를 추가한다.
+ * @param pszName 하위 Element 이름
+ * @param strData 하위 Element 의 data 값
+ */
+void CXmlElement::InsertElementData( const char * pszName, std::string & strData )
+{
+	InsertElementData( pszName, strData.c_str() );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 를 추가한다.
+ * @param pszName 하위 Element 이름
+ * @param iData		하위 Element 의 data 값
+ */
+void CXmlElement::InsertElementData( const char * pszName, int iData )
+{
+	char szData[11];
+
+	snprintf( szData, sizeof(szData), "%d", iData );
+
+	InsertElementData( pszName, szData );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 를 추가한다.
+ * @param pszName 하위 Element 이름
+ * @param iData		하위 Element 의 data 값
+ */
+void CXmlElement::InsertElementData( const char * pszName, int64_t iData )
+{
+	char szData[21];
+
+	snprintf( szData, sizeof(szData), LONG_LONG_FORMAT, iData );
+
+	InsertElementData( pszName, szData );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 를 추가한다.
+ * @param pszName 하위 Element 이름
+ * @param bData		하위 Element 의 data 값
+ */
+void CXmlElement::InsertElementData( const char * pszName, bool bData )
+{
+	InsertElementData( pszName, bData ? "true" : "false" );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 를 추가한다.
+ * @param pclsElement 하위 Element
+ */
+void CXmlElement::InsertElement( CXmlElement * pclsElement )
+{
+	m_clsElementList.push_back( *pclsElement );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 애트리뷰트를 추가한다.
+ * @param pszName		애트리뷰트 이름
+ * @param pszValue	애트리뷰트 값
+ */
+void CXmlElement::InsertAttribute( const char * pszName, const char * pszValue )
+{
+	m_clsAttributeMap.insert( XML_ATTRIBUTE_MAP::value_type( pszName, pszValue ) );
 }
 
 /**

@@ -56,6 +56,7 @@ public:
 
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
+	void ToString( std::string & strText );
 	void Clear( );
 
 	bool ParseFile( const char * pszFileName );
@@ -67,6 +68,7 @@ public:
 	bool SelectAttribute( const char * pszName, bool & bValue );
 
 	CXmlElement * SelectElement( const char * pszName, const int iIndex = 0 );
+	CXmlElement * SelectElement( const int iIndex );
 	bool SelectElementList( const char * pszName, XML_ELEMENT_LIST & clsList );
 
 	bool SelectElementData( const char * pszName, std::string & strData, const int iIndex = 0 );
@@ -79,6 +81,15 @@ public:
 	const char * GetData();
 
 	bool IsDataEmpty();
+
+	void SetName( const char * pszName );
+	void InsertElementData( const char * pszName, const char * pszData );
+	void InsertElementData( const char * pszName, std::string & strData );
+	void InsertElementData( const char * pszName, int iData );
+	void InsertElementData( const char * pszName, int64_t iData );
+	void InsertElementData( const char * pszName, bool bData );
+	void InsertElement( CXmlElement * pclsElement );
+	void InsertAttribute( const char * pszName, const char * pszValue );
 
 	XML_ELEMENT_LIST * GetElementList();
 
