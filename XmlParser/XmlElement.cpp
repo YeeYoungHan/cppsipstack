@@ -241,6 +241,17 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 
 /**
  * @ingroup XmlParser
+ * @brief XML 문자열을 파싱하여서 멤버 변수에 저장한다.
+ * @param strText XML 문자열
+ * @returns 성공하면 파싱한 XML 문자열의 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
+int CXmlElement::Parse( std::string & strText )
+{
+	return Parse( strText.c_str(), strText.length() );
+}
+
+/**
+ * @ingroup XmlParser
  * @brief 멤버 변수에 저장된 값을 이용하여서 XML 문자열을 생성한다.
  * @param pszText			XML 문자열을 저장할 변수
  * @param iTextSize		XML 문자열을 저장할 변수의 크기

@@ -55,6 +55,8 @@ public:
 	~CXmlElement();
 
 	int Parse( const char * pszText, int iTextLen );
+	int Parse( std::string & strText );
+
 	int ToString( char * pszText, int iTextSize );
 	void ToString( std::string & strText );
 	void Clear( );
