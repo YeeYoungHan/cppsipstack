@@ -19,11 +19,12 @@
 #include "FileLog.h"
 #include "TimeUtility.h"
 #include "FileUtility.h"
+#include <stdarg.h>
 
 extern bool LogFileCompare( const std::string & strFirst, const std::string & strSecond );
 
 CFileLog::CFileLog() : m_sttFd(NULL), m_iLevel(LOG_ERROR), m_iMaxLogSize(DEFAULT_LOG_FILE_SIZE), m_iLogSize(0)
-	, m_iMaxFolderSize(DEFAULT_LOG_FOLDER_SIZE), m_iFolderSize(0), m_iIndex(1)
+	, m_iIndex(1), m_iMaxFolderSize(DEFAULT_LOG_FOLDER_SIZE), m_iFolderSize(0)
 {
 	memset( m_szDate, 0, sizeof(m_szDate) );
 }
