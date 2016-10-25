@@ -14,7 +14,7 @@ INC=
 
 all: libsipplatform.a
 
-LIB_OBJ=Directory.o Log.o ServerUtility.o \
+LIB_OBJ=Directory.o Log.o FileLog.o ServerUtility.o \
 	SipMd5.o SipMutex.o \
 	SipTcp.o SipUdp.o \
 	StringUtility.o StringMap.o \

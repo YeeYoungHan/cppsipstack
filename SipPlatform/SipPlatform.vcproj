@@ -281,6 +281,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FileLog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FileUtility.cpp"
 				>
 			</File>
@@ -332,6 +336,10 @@
 			>
 			<File
 				RelativePath=".\Directory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FileLog.h"
 				>
 			</File>
 			<File

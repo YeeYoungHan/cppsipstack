@@ -17,6 +17,7 @@
  */
 
 #include "Log.h"
+#include "FileLog.h"
 #include "Directory.h"
 
 bool TestLog()
@@ -66,6 +67,16 @@ bool TestLog()
 			return false;
 		}
 	}
+
+	CLog::Release();
+
+	CFileLog clsLog;
+
+	clsLog.Open( "c:\\temp\\log_test2" );
+
+	clsLog.Print( LOG_ERROR, "test error" );
+
+	clsLog.Close();
 
 	return true;
 }
