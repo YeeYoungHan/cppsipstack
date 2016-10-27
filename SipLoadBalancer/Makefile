@@ -13,7 +13,7 @@ LIB=-L../SipStack -lsipstack \
 	-L../XmlParser -lxmlparser \
 	-L../SipPlatform -lsipplatform \
 	-L../ServerPlatform -lserverplatform \
-	$(OPENSSL_LIB) -lssl -lpthread
+	$(OPENSSL_LIB) -lssl -lcrypto -lpthread
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp

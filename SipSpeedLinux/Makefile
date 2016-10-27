@@ -14,7 +14,7 @@ LIB=-L../SipUserAgent -lsipuseragent \
 	-L../SdpParser -lsdpparser \
 	-L../XmlParser -lxmlparser \
 	-L../SipPlatform -lsipplatform \
-	$(OPENSSL_LIB) -lssl -lpthread
+	$(OPENSSL_LIB) -lssl -lcrypto -lpthread
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp

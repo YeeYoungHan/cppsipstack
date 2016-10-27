@@ -11,7 +11,7 @@ INC=-I../SipStack -I../SipParser -I../SdpParser -I../SipPlatform \
 LIB=-L../SipStack -lsipstack \
 	-L../SipParser -lsipparser \
 	-L../SipPlatform -lsipplatform \
-	$(OPENSSL_LIB) -lssl -lpthread
+	$(OPENSSL_LIB) -lssl -lcrypto -lpthread
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
