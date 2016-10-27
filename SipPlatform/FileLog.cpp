@@ -21,6 +21,10 @@
 #include "FileUtility.h"
 #include <stdarg.h>
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 extern bool LogFileCompare( const std::string & strFirst, const std::string & strSecond );
 
 CFileLog::CFileLog() : m_sttFd(NULL), m_iLevel(LOG_ERROR), m_iMaxLogSize(DEFAULT_LOG_FILE_SIZE), m_iLogSize(0)
@@ -116,7 +120,6 @@ bool CFileLog::Print( EnumLogLevel iLevel, const char * fmt, ... )
 	va_list		ap;
 	char		szBuf[LOG_MAX_SIZE];
 	char		szDate[9], szHeader[30];
-	int			iResult = 0;
 	struct tm	sttTm;
 
 	switch( iLevel )
@@ -195,7 +198,6 @@ OPEN_FILE:
 		if( m_sttFd == NULL )
 		{
 			printf( "log file(%s) open error\n", szFileName );
-			iResult = -1;
 		}
 
 		snprintf( m_szDate, sizeof(m_szDate), "%s", szDate );
