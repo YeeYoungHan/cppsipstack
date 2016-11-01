@@ -24,6 +24,7 @@
 #include <string>
 #include <time.h>
 #include <stdlib.h>
+#include "Random.h"
 #include "MemoryDebug.h"
 
 static CSipMutex gclsMutex;
@@ -52,7 +53,6 @@ static void InitRandomString()
 	struct timeval sttTime;
 
 	gettimeofday( &sttTime, NULL );
-	srand( sttTime.tv_sec * sttTime.tv_usec );
 
 	int i, iPos = 0;
 
@@ -84,7 +84,7 @@ void SipMakeTag( char * pszTag, int iTagSize )
 	gclsMutex.acquire();
 	if( giTag <= 0 || giTag > 2000000000 )
 	{
-		giTag = rand();
+		giTag = RandomGet();
 	}
 	else
 	{
@@ -112,7 +112,7 @@ void SipMakeBranch( char * pszBranch, int iBranchSize )
 	gclsMutex.acquire();
 	if( giBranch <= 0 || giBranch > 2000000000 )
 	{
-		giBranch = rand();
+		giBranch = RandomGet();
 	}
 	else
 	{
@@ -161,7 +161,7 @@ void SipMakeCallIdName( char * pszCallId, int iCallIdSize )
 	gclsMutex.acquire();
 	if( giCallId <= 0 || giCallId > 2000000000 )
 	{
-		giCallId = rand();
+		giCallId = RandomGet();
 	}
 	else
 	{

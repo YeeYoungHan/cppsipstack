@@ -23,6 +23,7 @@
 #include "SipUtility.h"
 #include "Log.h"
 #include "TimeUtility.h"
+#include "Random.h"
 #include "MemoryDebug.h"
 
 /**
@@ -147,14 +148,12 @@ bool CSipStackSetup::Check( )
 	memset( szValue, 0, sizeof(szValue) );
 	gettimeofday( &sttTime, NULL );
 
-	srand( sttTime.tv_usec );
-
 	uint32_t iIp; 
 	uint16_t iPort = m_iLocalUdpPort;
 
 	if( strstr( m_strLocalIp.c_str(), ":" ) )
 	{
-		iIp = rand();
+		iIp = RandomGet();
 	}
 	else
 	{

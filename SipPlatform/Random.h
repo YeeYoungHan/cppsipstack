@@ -37,4 +37,6 @@ private:
 #endif
 };
 
+int RandomGet();
+
 #endif

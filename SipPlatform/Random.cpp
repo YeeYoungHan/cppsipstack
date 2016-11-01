@@ -22,6 +22,8 @@
 #include <stdlib.h>
 #include "TimeUtility.h"
 
+static CRandom gclsRandom;
+
 CRandom::CRandom()
 {
 #ifndef WIN32
@@ -54,4 +56,14 @@ int CRandom::Get()
 	}
 
 	return iRand;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief random 정수를 리턴한다.
+ * @returns random 정수를 리턴한다.
+ */
+int RandomGet()
+{
+	return gclsRandom.Get();
 }

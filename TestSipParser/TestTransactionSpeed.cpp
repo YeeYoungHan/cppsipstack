@@ -52,8 +52,6 @@ void TestTransactionSpeed( int iLoopCount )
 	memset( szValue, 0, sizeof(szValue) );
 	gettimeofday( &sttTime, NULL );
 
-	srand( sttTime.tv_usec );
-
 	uint32_t iIp = inet_addr("127.0.0.1"); 
 	uint16_t iPort = 5060;
 

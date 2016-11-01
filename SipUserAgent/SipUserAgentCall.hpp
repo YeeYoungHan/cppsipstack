@@ -186,7 +186,7 @@ bool CSipUserAgent::RingCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 			{
 				if( itMap->second.m_pclsInvite->Is100rel() )
 				{
-					int		iRSeq = itMap->second.m_pclsInvite->m_clsCSeq.m_iDigit + rand() % 10000;
+					int		iRSeq = itMap->second.m_pclsInvite->m_clsCSeq.m_iDigit + RandomGet() % 10000;
 					char	szRSeq[21];
 
 					snprintf( szRSeq, sizeof(szRSeq), "%d", iRSeq );

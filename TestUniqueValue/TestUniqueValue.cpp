@@ -17,18 +17,16 @@
  */
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include "Random.h"
 
 int main( int argc, char * argv[] )
 {
-	// 동일한 초에 본 프로그램을 실행하면 동일한 값이 출력된다.
-	srand( (unsigned int)time(NULL) );
+	CRandom clsRandom;
 
-	printf( "%d\n", rand() );
-	printf( "%d\n", rand() );
-	printf( "%d\n", rand() );
-	printf( "%d\n", rand() );
+	printf( "%d\n", clsRandom.Get() );
+	printf( "%d\n", clsRandom.Get() );
+	printf( "%d\n", clsRandom.Get() );
+	printf( "%d\n", clsRandom.Get() );
 
 	return 0;
 }

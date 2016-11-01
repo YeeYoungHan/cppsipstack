@@ -24,6 +24,7 @@
 #include "TimeString.h"
 #include "TimeUtility.h"
 #include "Log.h"
+#include "Random.h"
 #include "MemoryDebug.h"
 
 #include "SipUserAgentLogin.hpp"
