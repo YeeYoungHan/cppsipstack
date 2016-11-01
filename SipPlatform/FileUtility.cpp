@@ -68,6 +68,8 @@ bool GetFileExt( const char * pszFileName, std::string & strExt )
 {
 	int iLen = strlen( pszFileName );
 
+	strExt.clear();
+
 	for( int i = iLen - 1; i >= 0; --i )
 	{
 		if( pszFileName[i] == '.' )
