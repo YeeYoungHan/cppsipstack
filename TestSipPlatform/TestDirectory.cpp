@@ -32,7 +32,11 @@ bool TestDirectory()
 
 	std::string strFileName;
 
+#ifdef WIN32
 	CDirectory::GetFileName( "c:\\temp\\test\\me.pcap", strFileName );
+#else
+	CDirectory::GetFileName( "/temp/test/me.pcap", strFileName );
+#endif
 	if( strcmp( strFileName.c_str(), "me.pcap" ) )
 	{
 		printf( "CDirectory::GetFileName error\n" );
