@@ -56,3 +56,26 @@ int64_t GetFileSize( const char * pszFileName )
 
 	return sttStat.st_size;
 }
+
+/**
+ * @ingroup SipPlatform
+ * @brief 파일 이름에서 파일 확장자를 가져온다.
+ * @param pszFileName 파일 이름
+ * @param strExt			파일 확장자 저장 변수
+ * @returns 파일 확장자가 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool GetFileExt( const char * pszFileName, std::string & strExt )
+{
+	int iLen = strlen( pszFileName );
+
+	for( int i = iLen - 1; i >= 0; --i )
+	{
+		if( pszFileName[i] == '.' )
+		{
+			strExt = pszFileName + i + 1;
+			return true;
+		}
+	}
+
+	return false;
+}
