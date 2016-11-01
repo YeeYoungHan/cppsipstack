@@ -30,6 +30,11 @@ public:
 	~CRandom();
 
 	int Get();
+
+#ifndef WIN32
+private:
+	unsigned int m_iSeed;
+#endif
 };
 
 #endif

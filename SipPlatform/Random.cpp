@@ -25,7 +25,7 @@
 CRandom::CRandom()
 {
 #ifndef WIN32
-	srandom( time(NULL) );
+	m_iSeed = time(NULL);
 #endif
 }
 
@@ -40,14 +40,12 @@ CRandom::~CRandom()
  */
 int CRandom::Get()
 {
-#ifdef WIN32
 	unsigned int iRand;
 
+#ifdef WIN32
 	rand_s( &iRand );
 #else
-	long int iRand;
-
-	iRand = random();
+	iRand = rand_r( &m_iSeed );
 #endif
 
 	if( iRand > 2000000000 )
