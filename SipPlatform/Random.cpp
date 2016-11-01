@@ -20,6 +20,7 @@
 
 #define _CRT_RAND_S
 #include <stdlib.h>
+#include "TimeUtility.h"
 
 CRandom::CRandom()
 {
