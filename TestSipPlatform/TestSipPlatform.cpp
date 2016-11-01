@@ -31,6 +31,7 @@ bool TestServerUtility();
 bool TestLog();
 bool TestLogMacro();
 bool TestStringUtility();
+bool TestRandom();
 
 /**
  * @ingroup TestSipParser
@@ -51,6 +52,7 @@ int main( int argc, char * argv[] )
 	}
 
 	//if( TestLog() == false ) goto FUNC_END;
+	if( TestRandom() == false ) goto FUNC_END;
 	if( TestLogMacro() == false ) goto FUNC_END;
 	if( TestStringUtility() == false ) goto FUNC_END;
 	if( TestServerUtility() == false ) goto FUNC_END;

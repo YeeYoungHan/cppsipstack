@@ -293,6 +293,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Random.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ServerUtility.cpp"
 				>
 			</File>
@@ -352,6 +356,10 @@
 			</File>
 			<File
 				RelativePath=".\MemoryDebug.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Random.h"
 				>
 			</File>
 			<File

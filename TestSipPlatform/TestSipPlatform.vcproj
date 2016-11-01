@@ -181,6 +181,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestRandom.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestServerUtility.cpp"
 				>
 			</File>
