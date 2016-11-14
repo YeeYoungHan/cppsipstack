@@ -19,6 +19,7 @@
 #include "SipPlatformDefine.h"
 #include "ServerUtility.h"
 #include "SipMutex.h"
+#include <map>
 
 #define TEST_COUNT 10
 
@@ -62,4 +63,38 @@ bool TestSipMutex()
 #endif
 
 	return true;
+}
+
+class CTestMutex
+{
+public:
+	CSipMutex m_clsMutex;
+};
+
+typedef std::map< int, CTestMutex > TEST_MUTEX_MAP;
+TEST_MUTEX_MAP clsMap;
+
+void TestSipMutexDeadInsert()
+{
+	CTestMutex clsMutex;
+
+	clsMap.insert( TEST_MUTEX_MAP::value_type( 1, clsMutex ) );
+}
+
+void TestSipMutexDeadSelect()
+{
+	TEST_MUTEX_MAP::iterator itMap;
+
+	itMap = clsMap.find( 1 );
+	if( itMap != clsMap.end() )
+	{
+		itMap->second.m_clsMutex.acquire();
+		itMap->second.m_clsMutex.release();
+	}
+}
+
+void TestSipMutexDead()
+{
+	TestSipMutexDeadInsert();
+	TestSipMutexDeadSelect();
 }

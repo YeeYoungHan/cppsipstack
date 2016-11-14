@@ -32,6 +32,7 @@ bool TestLog();
 bool TestLogMacro();
 bool TestStringUtility();
 bool TestRandom();
+void TestSipMutexDead();
 
 /**
  * @ingroup TestSipParser
@@ -47,6 +48,11 @@ int main( int argc, char * argv[] )
 		if( !strcmp( argv[1], "-d" ) )
 		{
 			CDirectory::Delete( argv[2] );
+			return 0;
+		}
+		else if( !strcmp( argv[1], "-m" ) )
+		{
+			TestSipMutexDead();
 			return 0;
 		}
 	}
