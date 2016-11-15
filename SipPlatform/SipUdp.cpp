@@ -506,6 +506,7 @@ bool GetLocalIp( std::string & strIp )
 	int len = 100 * sizeof(struct ifreq);
 	
 	char buf[ len ];
+	char szError[255];
 	
 	ifc.ifc_len = len;
 	ifc.ifc_buf = buf;
@@ -537,7 +538,7 @@ bool GetLocalIp( std::string & strIp )
 		e = ioctl( hSocket, SIOCGIFADDR, &ifr2 );
 		if( e == -1 )
 		{
-			printf( "ioctl error(%d) - %s\n", errno, strerror(errno) );
+			printf( "ioctl error(%d) - %s\n", errno, strerror_r( errno, szError, sizeof(szError) ) );
 			continue;
 		}
 		

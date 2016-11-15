@@ -90,16 +90,18 @@ bool Fork( bool bIsFork )
 bool ChangeExecuteUser( const char * pszUserId )
 {
 #ifndef WIN32
-	struct passwd * psttPassWord = getpwnam( pszUserId );
-	if( psttPassWord == NULL )
+	struct passwd sttPassWord, *psttPassWord = NULL;
+	char szError[255], szPassWord[1024];
+
+	if( getpwnam_r( pszUserId, &sttPassWord, szPassWord, sizeof(szPassWord), &psttPassWord ) != 0 || psttPassWord == NULL )
 	{
-		CLog::Print( LOG_ERROR, "getpwnam(%s) error(%d) - %s", pszUserId, errno, strerror(errno) );
+		CLog::Print( LOG_ERROR, "getpwnam(%s) error(%d) - %s", pszUserId, errno, strerror_r( errno, szError, sizeof(szError) ) );
 		return false;
 	}
 
 	if( setuid( psttPassWord->pw_uid ) != 0 )
 	{
-		CLog::Print( LOG_ERROR, "seteuid(%s) error(%d) - %s", pszUserId, errno, strerror(errno) );
+		CLog::Print( LOG_ERROR, "seteuid(%s) error(%d) - %s", pszUserId, errno, strerror_r( errno, szError, sizeof(szError) ) );
 		return false;
 	}
 
