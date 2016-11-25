@@ -271,3 +271,19 @@ bool HexToString( const char * pszInput, std::string & strOutput )
 	return true;
 }
 
+/**
+ * @ingroup SipPlatform
+ * @brief 문자열이 출력 가능한지 검사한다.
+ * @param pszText		문자열
+ * @param iTextLen	문자열 길이
+ * @returns 문자열이 출력 가능하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool IsPrintString( const char * pszText, int iTextLen )
+{
+	for( int i = 0; i < iTextLen; ++i )
+	{
+		if( isprint( pszText[i] ) == 0 ) return false;
+	}
+
+	return true;
+}
