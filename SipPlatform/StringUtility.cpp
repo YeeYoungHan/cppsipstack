@@ -236,3 +236,38 @@ uint64_t GetUInt64( const char * pszText )
 	return strtoull( pszText, NULL, 10 );
 #endif
 }
+
+/**
+ * @ingroup SipPlatform
+ * @brief HEX 만 저장된 문자열을 숫자로 변환한 문자열을 생성한다.
+ * @param pszInput	HEX 만 저장된 문자열
+ * @param strOutput 숫자로 변환된 문자열 저장용 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool HexToString( const char * pszInput, std::string & strOutput )
+{
+	int iLen = (int)strlen( pszInput );
+	int iValue;
+
+	strOutput.clear();
+
+	if( iLen >= 2 )
+	{
+		if( pszInput[0] == '0' && pszInput[1] == 'x' )
+		{
+			pszInput += 2;
+			iLen -= 2;
+		}
+	}
+
+	if( iLen == 0 || iLen % 2 == 1 ) return false;
+
+	for( int i = 0; i < iLen; i += 2 )
+	{
+		sscanf( pszInput + i, "%02x", &iValue );
+		strOutput.push_back( (char)iValue );
+	}
+
+	return true;
+}
+

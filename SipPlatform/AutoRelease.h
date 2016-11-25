@@ -16,26 +16,36 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _STRING_UTILITY_H_
-#define _STRING_UTILITY_H_
+#ifndef _AUTO_RELEASE_H_
+#define _AUTO_RELEASE_H_
 
-#include "SipPlatformDefine.h"
-#include <string>
-#include <list>
+#include <stdio.h>
 
-typedef std::list< std::string > STRING_LIST;
+/**
+ * @brief 객체가 삭제될 때에 Release 메소드를 호출하는 클래스
+ * @param T_MAP		맵 자료구조 클래스
+ * @param T_DATA	맵 자료구조의 데이터 클래스
+ */
+template< class T_MAP, class T_DATA >
+class CAutoRelease
+{
+	T_MAP		* m_pclsMap;
 
-void ReplaceString( std::string & strCallId, const char * pszBefore, const char * pszAfter );
-bool SearchValue( std::string & strText, const char * pszKey, char cSep, std::string & strValue );
-bool SearchValue( std::string & strText, const char * pszKey, char cSep, int & iValue );
-void LeftTrimString( std::string & strText );
-void RightTrimString( std::string & strText );
-void TrimString( std::string & strText );
-void SplitString( const char * pszText, STRING_LIST & clsList, char cSep );
+public:
+	T_DATA	* m_pclsData;
 
-uint32_t GetUInt32( const char * pszText );
-uint64_t GetUInt64( const char * pszText );
+	CAutoRelease( T_MAP & clsMap ) : m_pclsData(NULL)
+	{
+		m_pclsMap = &clsMap;
+	}
 
-bool HexToString( const char * pszInput, std::string & strOutput );
+	~CAutoRelease()
+	{
+		if( m_pclsData )
+		{
+			m_pclsMap->Release( m_pclsData );
+		}
+	}
+};
 
 #endif

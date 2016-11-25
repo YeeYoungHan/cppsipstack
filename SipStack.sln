@@ -166,11 +166,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RtspServer", "RtspServer\Rt
 		{37B903A3-633B-4F2C-9146-AA7D49C92B95} = {37B903A3-633B-4F2C-9146-AA7D49C92B95}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestTls", "TestTls\TestTls.vcproj", "{18E457BB-7C40-452C-B963-574A53B17AE8}"
-	ProjectSection(ProjectDependencies) = postProject
-		{59766094-16E8-4602-9621-6C1E5ED9AF5F} = {59766094-16E8-4602-9621-6C1E5ED9AF5F}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -367,12 +362,6 @@ Global
 		{65A5C2D7-4618-4223-B198-A229FD9F07B1}.Release|Win32.ActiveCfg = Release|Win32
 		{65A5C2D7-4618-4223-B198-A229FD9F07B1}.Release|Win32.Build.0 = Release|Win32
 		{65A5C2D7-4618-4223-B198-A229FD9F07B1}.Release|x64.ActiveCfg = Release|Win32
-		{18E457BB-7C40-452C-B963-574A53B17AE8}.Debug|Win32.ActiveCfg = Debug|Win32
-		{18E457BB-7C40-452C-B963-574A53B17AE8}.Debug|Win32.Build.0 = Debug|Win32
-		{18E457BB-7C40-452C-B963-574A53B17AE8}.Debug|x64.ActiveCfg = Debug|Win32
-		{18E457BB-7C40-452C-B963-574A53B17AE8}.Release|Win32.ActiveCfg = Release|Win32
-		{18E457BB-7C40-452C-B963-574A53B17AE8}.Release|Win32.Build.0 = Release|Win32
-		{18E457BB-7C40-452C-B963-574A53B17AE8}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
