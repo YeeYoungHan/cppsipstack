@@ -42,8 +42,9 @@ typedef std::list< std::string > FILE_LIST;
 class CDirectory
 {
 public:
-	static int Create( const char * szDirName, int iDirMode = DIR_MODE );
-	static int IsDirectory( const char * szDirName );
+	static bool Create( const char * szDirName, int iDirMode = DIR_MODE );
+	static bool IsDirectory( const char * szDirName );
+	static int IsDirectoryCheck( const char * szDirName );
 	static void AppendName( std::string & strFileName, const char * pszAppend );
 	static bool List( const char * pszDirName, FILE_LIST & clsFileList );
 	static bool FileList( const char * pszDirName, FILE_LIST & clsFileList );

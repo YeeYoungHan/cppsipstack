@@ -39,11 +39,9 @@
  *
  * @param	szDirName	[in] 생성할 디렉토리의 full pathname
  * @param iDirMode	[in] 생성할 디렉토리의 권한
- * @return	성공하면 0 을 리턴한다. 이미 디렉토리가 존재하여도 0 을 리턴한다.
- *			실패하면 -1 을 리턴한다. 
- *			디렉토리 full pathname 중간에 디렉토리가 아닌 항목이 포함된 경우, -1 을 리턴한다.
+ * @return	성공하면 true 을 리턴하고 실패하면 false 를 리턴한다.
  */
-int CDirectory::Create( const char * szDirName, int iDirMode )
+bool CDirectory::Create( const char * szDirName, int iDirMode )
 {
 	int		i, iLen, iCount, n;
 	char	* pszName;
@@ -64,7 +62,7 @@ int CDirectory::Create( const char * szDirName, int iDirMode )
 			// 구분자 부터 디렉토리를 생성하면 된다.
 			if( iCount >= 2 )
 			{
-				n = CDirectory::IsDirectory( pszName );
+				n = CDirectory::IsDirectoryCheck( pszName );
 				if( n == -1 )
 				{
 					// 디렉토리가 아닌 경우
@@ -92,18 +90,18 @@ int CDirectory::Create( const char * szDirName, int iDirMode )
 
 	delete [] pszName;
 
-	if( fisNotDirectory == 1 ) return -1;
-	if( fisError == 1 ) return -1;
+	if( fisNotDirectory == 1 ) return false;
+	if( fisError == 1 ) return false;
 
 	// 디렉토리 이름이 "c:\test\temp" 또는 "/test/temp" 일 경우, 위의 loop 에서 temp 디렉토리를 
 	// 생성하지 않으므로 이를 생성하기 위해서 아래의 코드가 필요하다.
 	if( szDirName[iLen-1] != DIR_SEP )
 	{
-		n = CDirectory::IsDirectory( szDirName );
+		n = CDirectory::IsDirectoryCheck( szDirName );
 		if( n == -1 )
 		{
 			// 디렉토리가 아닌 경우
-			return -1;
+			return false;
 		}
 		else if( n == -2 )
 		{
@@ -114,12 +112,25 @@ int CDirectory::Create( const char * szDirName, int iDirMode )
 			if( mkdir( szDirName, iDirMode ) != 0 )
 #endif
 			{
-				return -1;
+				return false;
 			}
 		}
 	}
 
-	return 0;
+	return true;
+}
+
+/** 
+ * @ingroup SipPlatform
+ * @brief 사용자가 입력한 path 가 디렉토리인지를 점검한다.
+ * @param	szDirName	[in] 디렉토리 이름
+ * @return	입력된 path 가 디렉토리이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CDirectory::IsDirectory( const char * szDirName )
+{
+	if( CDirectory::IsDirectoryCheck( szDirName ) == 0 ) return true;
+
+	return false;
 }
 
 /** 
@@ -127,11 +138,10 @@ int CDirectory::Create( const char * szDirName, int iDirMode )
  * @brief 사용자가 입력한 path 가 디렉토리인지를 점검한다.
  * @param	szDirName	[in] 디렉토리 이름
  * @return	입력된 path 가 디렉토리이면 0 을 리턴한다.
- *			존재하지 않으면 -2 을 리턴한다.
- *			디렉토리가 아니면 -1 을 리턴한다.
+ *					존재하지 않으면 -2 을 리턴한다.
+ *					디렉토리가 아니면 -1 을 리턴한다.
  */
-
-int CDirectory::IsDirectory( const char * szDirName )
+int CDirectory::IsDirectoryCheck( const char * szDirName )
 {
 #ifdef WIN32
 	// ACE 에서 S_ISDIR 을 지원하지 않기 때문에 윈도우의 경우를 위하여 WINAPI 를 사용하였음.

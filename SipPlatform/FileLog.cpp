@@ -70,7 +70,7 @@ bool CFileLog::Open( const char * pszDirName )
 			m_strDirName = pszDirName;
 		}
 
-		if( CDirectory::Create( m_strDirName.c_str() ) == 0 )
+		if( CDirectory::Create( m_strDirName.c_str() ) )
 		{
 			m_iFolderSize = CDirectory::GetSize( m_strDirName.c_str() );
 			bRes = true;

@@ -20,6 +20,24 @@
 
 bool TestDirectory()
 {
+	bool bRes = false;
+
+#ifdef WIN32
+	bRes = CDirectory::IsDirectory( "c:\\temp" );
+#else
+	bRes = CDirectory::IsDirectory( "/tmp" );
+#endif
+	if( bRes == false ) return false;
+
+#ifdef WIN32
+	bRes = CDirectory::IsDirectory( "c:\\Windows\\write.exe" );
+#else
+	bRes = CDirectory::IsDirectory( "/etc/hosts" );
+#endif
+	if( bRes ) return false;
+
+	CDirectory::Create( "c:\\temp\\log\\test\\me2" );
+
 	uint64_t iTotalSize;	
 
 #ifdef WIN32

@@ -82,7 +82,7 @@ bool CLog::SetDirectory( const char * pszDirName )
 
 	m_pThreadMutex->release();
 
-	if( CDirectory::Create( m_pszDirName ) != 0 ) return false;
+	if( CDirectory::Create( m_pszDirName ) == false ) return false;
 
 	m_iFolderSize = CDirectory::GetSize( m_pszDirName );
 
