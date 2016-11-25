@@ -36,7 +36,9 @@ bool TestDirectory()
 #endif
 	if( bRes ) return false;
 
+#ifdef WIN32
 	CDirectory::Create( "c:\\temp\\log\\test\\me2" );
+#endif
 
 	uint64_t iTotalSize;	
 
