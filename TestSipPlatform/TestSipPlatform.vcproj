@@ -197,6 +197,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestSipPlatform.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TestStringSort.cpp"
 				>
 			</File>

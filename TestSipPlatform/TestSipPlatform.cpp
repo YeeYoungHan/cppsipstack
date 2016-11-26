@@ -18,21 +18,7 @@
 
 #include <stdio.h>
 #include "Directory.h"
-
-/**
- * @defgroup TestSipPlatform TestSipPlatform
- * SipPlatform 라이브러리 기능을 테스트한다.
- */
-
-bool TestSipMutex();
-bool TestDirectory();
-bool TestStringSort();
-bool TestServerUtility();
-bool TestLog();
-bool TestLogMacro();
-bool TestStringUtility();
-bool TestRandom();
-void TestSipMutexDead();
+#include "TestSipPlatform.h"
 
 /**
  * @ingroup TestSipParser
@@ -57,6 +43,8 @@ int main( int argc, char * argv[] )
 		}
 	}
 
+	bool bRes = false;
+
 	//if( TestLog() == false ) goto FUNC_END;
 	if( TestRandom() == false ) goto FUNC_END;
 	if( TestLogMacro() == false ) goto FUNC_END;
@@ -66,8 +54,17 @@ int main( int argc, char * argv[] )
 	if( TestDirectory() == false ) goto FUNC_END;
 	if( TestSipMutex() == false ) goto FUNC_END;
 
-	printf( "All test is O.K.\n" );
-
+	bRes = true;
+	
 FUNC_END:
+	if( bRes )
+	{
+		printf( "All test is O.K.\n" );
+	}
+	else
+	{
+		printf( "ERROR!!!\n" );
+	}
+
 	return 0;
 }

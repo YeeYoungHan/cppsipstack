@@ -17,51 +17,59 @@
  */
 
 #include "Directory.h"
+#include "TestSipPlatform.h"
 
-bool TestDirectory()
+bool TestDirectoryWin32()
 {
-	bool bRes = false;
+	Check( CDirectory::IsDirectory( "c:\\Windows" ) );
+	Check( CDirectory::IsDirectory( "c:\\Windows\\write.exe" ) == false );
 
-#ifdef WIN32
-	bRes = CDirectory::IsDirectory( "c:\\temp" );
-#else
-	bRes = CDirectory::IsDirectory( "/tmp" );
-#endif
-	if( bRes == false ) return false;
+	if( CDirectory::IsDirectory( "c:\\temp" ) )
+	{
+		if( CDirectory::IsDirectory( "c:\\temp\\testdirectory" ) == false )
+		{
+			Check( CDirectory::Create( "c:\\temp\\testdirectory\\test\\me2" ) );
+			Check( CDirectory::Create( "c:\\temp\\testdirectory\\test\\me2" ) );
+			Check( CDirectory::IsDirectory( "c:\\temp\\testdirectory\\test\\me2" ) );
+			Check( CDirectory::Delete( "c:\\temp\\testdirectory" ) );
+			Check( CDirectory::IsDirectory( "c:\\temp\\testdirectory" ) == false );
+		}
+	}
 
-#ifdef WIN32
-	bRes = CDirectory::IsDirectory( "c:\\Windows\\write.exe" );
-#else
-	bRes = CDirectory::IsDirectory( "/etc/hosts" );
-#endif
-	if( bRes ) return false;
+	uint64_t iTotalSize;
 
-#ifdef WIN32
-	CDirectory::Create( "c:\\temp\\log\\test\\me2" );
-#endif
-
-	uint64_t iTotalSize;	
-
-#ifdef WIN32
 	iTotalSize = CDirectory::GetSize( "c:\\temp" );
-#else
-	iTotalSize = CDirectory::GetSize( "/tmp" );
-#endif
-
-	printf( "directory size = " UNSIGNED_LONG_LONG_FORMAT "\n", iTotalSize );
 
 	std::string strFileName;
 
-#ifdef WIN32
 	CDirectory::GetFileName( "c:\\temp\\test\\me.pcap", strFileName );
-#else
-	CDirectory::GetFileName( "/temp/test/me.pcap", strFileName );
-#endif
-	if( strcmp( strFileName.c_str(), "me.pcap" ) )
-	{
-		printf( "CDirectory::GetFileName error\n" );
-		return false;
-	}
+	Check( !strcmp( strFileName.c_str(), "me.pcap" ) );
 
 	return true;
+}
+
+bool TestDirectoryLinux()
+{
+	Check( CDirectory::IsDirectory( "/tmp" ) );
+	Check( CDirectory::IsDirectory( "/etc/hosts" ) == false );
+
+	uint64_t iTotalSize;	
+
+	iTotalSize = CDirectory::GetSize( "/tmp" );
+
+	std::string strFileName;
+
+	CDirectory::GetFileName( "/temp/test/me.pcap", strFileName );
+	Check( !strcmp( strFileName.c_str(), "me.pcap" ) );
+
+	return true;
+}
+
+bool TestDirectory()
+{
+#ifdef WIN32
+	return TestDirectoryWin32();
+#else
+	return TestDirectoryLinux();
+#endif
 }
