@@ -20,6 +20,10 @@
 #include "SipTcp.h"
 #include "MemoryDebug.h"
 
+#ifdef WIN32
+#pragma comment( lib, "ws2_32" )
+#endif
+
 #ifndef WIN32
 #include <ctype.h>
 
@@ -257,9 +261,7 @@ int TcpRecv( Socket fd, char * szBuf, int iBufLen, int iSecond )
 	int				n;
 	pollfd sttPoll[1];
 
-	sttPoll[0].fd = fd;
-	sttPoll[0].events = POLLIN;
-	sttPoll[0].revents = 0;
+	TcpSetPollIn( sttPoll[0], fd );
 
 	n = poll( sttPoll, 1, 1000 * iSecond );
 	if( n <= 0 )
@@ -284,9 +286,7 @@ int TcpRecvSize( Socket fd, char * szBuf, int iBufLen, int iSecond )
 	int		 n, iRecvLen = 0;
 	pollfd sttPoll[1];
 
-	sttPoll[0].fd = fd;
-	sttPoll[0].events = POLLIN;
-	sttPoll[0].revents = 0;
+	TcpSetPollIn( sttPoll[0], fd );
 
 	while( iRecvLen < iBufLen )
 	{

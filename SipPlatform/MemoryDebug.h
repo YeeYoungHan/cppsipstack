@@ -20,7 +20,7 @@
 #define _MEMORY_DEBUG_H_
 
 // 메모리 누수 검사를 위해서 아래의 주석을 해제한 후, 빌드하고 실행 & 종료하면 메모리 누수가 발생한 소스 코드가 출력된다.
-// #define MEMORY_DEBUG
+#define MEMORY_DEBUG
 
 #ifdef WIN32
 #ifdef _DEBUG
