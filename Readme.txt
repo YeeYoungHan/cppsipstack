@@ -108,6 +108,7 @@ C++ SIP stack 프로젝트
 
  * VC++ 2008
    - SipStack.sln 더블클릭한 후, 빌드한다.
+   - Visual Studio 2008 버전 9.0.30729.1 SP 에서 빌드할 것을 권장합니다.
 
  * 리눅스 / OSX
    - make 를 실행한다.
