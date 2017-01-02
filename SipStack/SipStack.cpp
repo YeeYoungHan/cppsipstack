@@ -21,6 +21,7 @@
 #include "SipDeleteQueue.h"
 #include "SipTcpMessage.h"
 #include "SipTlsMessage.h"
+#include "SipQueue.h"
 #include "TimeUtility.h"
 #include "Log.h"
 #include "MemoryDebug.h"
@@ -159,6 +160,18 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 		{
 			_Stop();
 			return false;
+		}
+	}
+
+	if( m_clsSetup.m_iTcpCallBackThreadCount > 0 )
+	{
+		for( int i = 0; i < m_clsSetup.m_iTcpCallBackThreadCount; ++i )
+		{
+			if( StartSipQueueThread( this ) == false )
+			{
+				_Stop();
+				return false;
+			}
 		}
 	}
 
@@ -326,6 +339,8 @@ bool CSipStack::_Stop( )
 			closesocket( hSocket );
 		}
 	}
+
+	gclsSipQueue.BroadCast();
 
 	// 모든 쓰레드가 종료할 때까지 대기한다.
 	while( m_iUdpThreadRunCount > 0 || m_iTcpThreadRunCount > 0 || m_bStackThreadRun || GetTcpConnectingCount() > 0 )

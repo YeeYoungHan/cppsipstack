@@ -24,6 +24,9 @@
 bool StartSipUdpThread( CSipStack * pclsSipStack );
 bool StartSipStackThread( CSipStack * pclsSipStack );
 
+// SipQueueThread.cpp
+bool StartSipQueueThread( CSipStack * pclsSipStack );
+
 // SipTcpThread.cpp
 THREAD_API SipTcpThread( LPVOID lpParameter );
 

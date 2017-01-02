@@ -19,6 +19,7 @@
 #include "SipStackThread.h"
 #include "TcpSessionList.h"
 #include "ServerUtility.h"
+#include "SipQueue.h"
 #include "Log.h"
 #include <time.h>
 #include "MemoryDebug.h"
@@ -37,6 +38,11 @@
 static bool SipMessageProcess( CSipStack * pclsSipStack, int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort )
 {
 	CLog::Print( LOG_NETWORK, "TcpRecv(%s:%d) [%.*s]", pszIp, iPort, iBufLen, pszBuf );
+
+	if( pclsSipStack->m_clsSetup.m_iTcpCallBackThreadCount > 0 )
+	{
+		return gclsSipQueue.Insert( pszBuf, iBufLen, pszIp, iPort, E_SIP_TCP );
+	}
 
 	return pclsSipStack->RecvSipMessage( iThreadId, pszBuf, iBufLen, pszIp, iPort, E_SIP_TCP );
 }

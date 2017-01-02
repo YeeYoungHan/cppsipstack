@@ -32,7 +32,7 @@
  */
 CSipStackSetup::CSipStackSetup() : m_iLocalUdpPort(SIP_UDP_PORT), m_iUdpThreadCount(1)
 	, m_iLocalTcpPort(0), m_iLocalTlsPort(0)
-	, m_iTcpThreadCount(1), m_iTcpMaxSocketPerThread(SIP_TCP_MAX_SOCKET_PER_THREAD)
+	, m_iTcpThreadCount(1), m_iTcpCallBackThreadCount(0), m_iTcpMaxSocketPerThread(SIP_TCP_MAX_SOCKET_PER_THREAD)
 	, m_iTcpRecvTimeout(SIP_TCP_RECV_TIMEOUT), m_iTcpConnectTimeout(SIP_TCP_CONNECT_TIMEOUT)
 	, m_iTlsAcceptTimeout(SIP_TLS_ACCEPT_TIMEOUT), m_bUseSipCompactForm(false), m_iStackExecutePeriod(20)
 	, m_iTimerD(32000), m_iTimerJ(32000), m_bIpv6(false)

@@ -50,6 +50,10 @@ public:
 	/** SIP 메시지 수신용 TCP 쓰레드 개수 */
 	int					m_iTcpThreadCount;
 
+	/** SIP 메시지 수신 callback 처리를 위한 TCP 쓰레드 개수. 
+			본 개수가 0 이면 TCP 수신 쓰레드에서 callback 을 호출하고 0 보다 크면 tcp callback 쓰레드에서 callback 을 호출한다. */
+	int					m_iTcpCallBackThreadCount;
+
 	/** SIP 메시지 수신용 TCP 쓰레드 하나에 포함될 수 있는 최대 소켓 개수 */
 	int					m_iTcpMaxSocketPerThread;
 

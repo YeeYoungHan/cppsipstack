@@ -353,6 +353,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SipQueue.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipQueue.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SipStack.cpp"
 				>
 			</File>
@@ -392,6 +400,10 @@
 		<Filter
 			Name="¾²·¹µå"
 			>
+			<File
+				RelativePath=".\SipQueueThread.cpp"
+				>
+			</File>
 			<File
 				RelativePath=".\SipStackThread.cpp"
 				>

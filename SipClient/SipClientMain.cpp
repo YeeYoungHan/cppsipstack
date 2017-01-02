@@ -68,6 +68,8 @@ int main( int argc, char * argv[] )
 
 #ifdef WIN32
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF );
+	CLog::SetDirectory( "c:\\temp\\sipclient" );
+	CLog::SetLevel( LOG_NETWORK | LOG_DEBUG | LOG_INFO );
 #endif
 	
 	CSipUserAgent clsUserAgent;
@@ -92,6 +94,7 @@ int main( int argc, char * argv[] )
 	if( eTransport == E_SIP_TCP )
 	{
 		clsSetup.m_iLocalTcpPort = iLocalPort;
+		clsSetup.m_iTcpCallBackThreadCount = 2;
 	}
 	else if( eTransport == E_SIP_TLS )
 	{
