@@ -22,6 +22,7 @@
 #include "SipTransport.h"
 #include "SipMutex.h"
 #include <list>
+#include <string>
 
 /**
  * @ingroup SipStack
