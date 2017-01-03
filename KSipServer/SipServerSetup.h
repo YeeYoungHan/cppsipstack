@@ -49,6 +49,10 @@ public:
 	/** SIP 통신을 위한 TCP 수신 쓰레드 개수 */
 	int					m_iTcpThreadCount;
 
+	/** SIP 메시지 수신 callback 처리를 위한 TCP 쓰레드 개수. 
+			본 개수가 0 이면 TCP 수신 쓰레드에서 callback 을 호출하고 0 보다 크면 tcp callback 쓰레드에서 callback 을 호출한다. */
+	int					m_iTcpCallBackThreadCount;
+
 	/** SIP 통신을 위한 TCP 수신 최대 대기 시간 ( 초단위 ) */
 	int					m_iTcpRecvTimeout;
 

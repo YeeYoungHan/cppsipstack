@@ -78,6 +78,7 @@ int ServiceMain( )
 
 	clsSetup.m_iLocalTcpPort = gclsSetup.m_iTcpPort;
 	clsSetup.m_iTcpThreadCount = gclsSetup.m_iTcpThreadCount;
+	clsSetup.m_iTcpCallBackThreadCount = gclsSetup.m_iTcpCallBackThreadCount;
 
 	clsSetup.m_iLocalTlsPort = gclsSetup.m_iTlsPort;
 	clsSetup.m_iTlsAcceptTimeout = gclsSetup.m_iTlsAcceptTimeout;
