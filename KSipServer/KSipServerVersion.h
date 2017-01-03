@@ -19,9 +19,12 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.19"
+#define KSIP_SERVER_VERSION	"0.22"
 
 /* 버전 정보 
+
+= 버전 0.22 ( 2017년 1월 3일 ) =
+ * TcpCallBackThreadCount 설정 기능을 추가함
 
 = 버전 0.21 ( 2014년 6월 10일 ) =
  * 모니터링 문자열에 CMonitorString 를 사용하도록 수정함

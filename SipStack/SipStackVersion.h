@@ -19,9 +19,12 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.27"
+#define SIP_STACK_VERSION "0.28"
 
 /* 버전 정보
+
+= 버전 0.28 ( 2017년 1월 3일 ) =
+ * m_iTcpCallBackThreadCount 설정 기능을 추가함 - 하나의 TCP 세션에 대해서 N 개의 callback 쓰레드로 동작할 수 있다.
 
 = 버전 0.27 ( 2016년 9월 20일 ) =
  * TLS 수신 버퍼 크기를 16384 로 수정함
