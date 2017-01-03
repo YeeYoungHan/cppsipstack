@@ -28,6 +28,16 @@ CSipQueue::~CSipQueue()
 {
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SIP 수신 메시지를 저장한다.
+ * @param pszBuf			SIP 수신 메시지
+ * @param iBufLen			SIP 수신 메시지 길이
+ * @param pszIp				SIP 전송 IP 주소
+ * @param sPort				SIP 전송 포트 번호
+ * @param eTransport	SIP 전송 프로토콜
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipQueue::Insert( const char * pszBuf, int iBufLen, const char * pszIp, unsigned short sPort, ESipTransport eTransport )
 {
 	CSipQueueEntry * pclsEntry = new CSipQueueEntry();
@@ -46,6 +56,12 @@ bool CSipQueue::Insert( const char * pszBuf, int iBufLen, const char * pszIp, un
 	return true;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SIP 수신 메시지를 가져온다.
+ * @param ppclsEntry SIP 수신 메시지를 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipQueue::Select( CSipQueueEntry ** ppclsEntry )
 {
 	bool bRes = false;
@@ -67,6 +83,10 @@ bool CSipQueue::Select( CSipQueueEntry ** ppclsEntry )
 	return bRes;
 }
 
+/**
+ * @ingroup SipStack
+ * @brief SIP 수신 메시지를 대기하는 쓰레드를 모두 깨운다.
+ */
 void CSipQueue::BroadCast( )
 {
 	m_clsMutex.broadcast();

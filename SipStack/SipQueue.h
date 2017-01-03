@@ -23,17 +23,32 @@
 #include "SipMutex.h"
 #include <list>
 
+/**
+ * @ingroup SipStack
+ * @brief SIP 수신 메시지를 저장하는 클래스
+ */
 class CSipQueueEntry
 {
 public:
+	/** SIP 수신 메시지 */
 	std::string m_strBuf;
+
+	/** SIP 메시지 전송 IP 주소 */
 	std::string m_strIp;
+
+	/** SIP 메시지 전송 IP 주소 */
 	unsigned short m_sPort;
+
+	/** SIP 메시지 전송 프로토콜 */
 	ESipTransport m_eTransport;
 };
 
 typedef std::list< CSipQueueEntry * > SIP_QUEUE;
 
+/**
+ * @ingroup SipStack
+ * @brief SIP 수신 메시지 리스트를 저장하는 자료구조 클래스
+ */
 class CSipQueue
 {
 public:
