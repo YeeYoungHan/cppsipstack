@@ -28,7 +28,7 @@
 
 #ifdef USE_TLS
 // TLS 를 최종 종료할 때에 메모리 할당을 해제하는 기능을 사용하고 싶지 않을 경우 주석 처리하세요.
-//#define USE_TLS_FREE
+#define USE_TLS_FREE
 #endif
 
 #include "SipParserDefine.h"

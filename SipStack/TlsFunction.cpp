@@ -26,8 +26,8 @@
 #include "FileUtility.h"
 #include "MemoryDebug.h"
 
-static SSL_CTX	* gpsttServerCtx;
-static SSL_CTX	* gpsttClientCtx;
+static SSL_CTX	* gpsttServerCtx = NULL;
+static SSL_CTX	* gpsttClientCtx = NULL;
 
 #if OPENSSL_VERSION_NUMBER >= 0x10000003L
 static const SSL_METHOD	* gpsttServerMeth;
@@ -38,7 +38,7 @@ static SSL_METHOD * gpsttClientMeth;
 #endif
 
 static bool gbStartSslServer = false;
-static CSipMutex * garrMutex;
+static CSipMutex * garrMutex = NULL;
 
 /**
  * @ingroup SipStack
@@ -81,6 +81,11 @@ static unsigned long SSLIdFunction( )
  */
 static bool SSLStart( )
 {
+	if( garrMutex )
+	{
+		return true;
+	}
+
 	garrMutex = new CSipMutex[ CRYPTO_num_locks() ];
 	if( garrMutex == NULL )
 	{
@@ -207,7 +212,18 @@ bool SSLServerStop( )
 	if( gbStartSslServer )
 	{
 		SSLStop();
-		SSL_CTX_free( gpsttServerCtx );
+
+		if( gpsttServerCtx )
+		{
+			SSL_CTX_free( gpsttServerCtx );
+			gpsttServerCtx = NULL;
+		}
+
+		if( gpsttClientCtx )
+		{
+			SSL_CTX_free( gpsttClientCtx );
+			gpsttClientCtx = NULL;
+		}
 
 		gbStartSslServer = false;
 	}
