@@ -27,8 +27,12 @@
  * @ingroup XmlParser
  * @brief 생성자
  */
-CXmlElement::CXmlElement()
+CXmlElement::CXmlElement( const char * pszName )
 {
+	if( pszName )
+	{
+		SetName( pszName );
+	}
 }
 
 /**
@@ -745,14 +749,27 @@ void CXmlElement::SetName( const char * pszName )
 /**
  * @ingroup XmlParser
  * @brief 하위 Element 를 추가한다.
+ * @param pszName			하위 Element 이름
+ * @param pclsElement 하위 Element 의 element;
+ */
+void CXmlElement::InsertElementData( const char * pszName, CXmlElement * pclsElement )
+{
+	CXmlElement clsElement( pszName );
+
+	clsElement.InsertElement( pclsElement );
+
+	m_clsElementList.push_back( clsElement );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 를 추가한다.
  * @param pszName 하위 Element 이름
  * @param pszData 하위 Element 의 data 값
  */
 void CXmlElement::InsertElementData( const char * pszName, const char * pszData )
 {
-	CXmlElement clsElement;
-
-	clsElement.m_strName = pszName;
+	CXmlElement clsElement( pszName );
 
 	if( pszData )
 	{
@@ -842,6 +859,58 @@ void CXmlElement::InsertElement( CXmlElement * pclsElement )
 void CXmlElement::InsertAttribute( const char * pszName, const char * pszValue )
 {
 	m_clsAttributeMap.insert( XML_ATTRIBUTE_MAP::value_type( pszName, pszValue ) );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 애트리뷰트를 추가한다.
+ * @param pszName		애트리뷰트 이름
+ * @param strValue	애트리뷰트 값
+ */
+void CXmlElement::InsertAttribute( const char * pszName, std::string & strValue )
+{
+	InsertAttribute( pszName, strValue.c_str() );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 애트리뷰트를 추가한다.
+ * @param pszName		애트리뷰트 이름
+ * @param iValue		애트리뷰트 값
+ */
+void CXmlElement::InsertAttribute( const char * pszName, int iValue )
+{
+	char szValue[11];
+
+	snprintf( szValue, sizeof(szValue), "%d", iValue );
+
+	InsertElementData( pszName, szValue );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 애트리뷰트를 추가한다.
+ * @param pszName 애트리뷰트 이름
+ * @param iValue	애트리뷰트 값
+ */
+void CXmlElement::InsertAttribute( const char * pszName, int64_t iValue )
+{
+	char szValue[21];
+
+	snprintf( szValue, sizeof(szValue), LONG_LONG_FORMAT, iValue );
+
+	InsertAttribute( pszName, szValue );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 애트리뷰트를 추가한다.
+ * @param pszName 애트리뷰트 이름
+ * @param bValue	애트리뷰트 값
+ */
+void CXmlElement::InsertAttribute( const char * pszName, bool bValue )
+{
+	InsertAttribute( pszName, bValue ? "true" : "false" );
 }
 
 /**

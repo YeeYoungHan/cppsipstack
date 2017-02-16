@@ -51,7 +51,7 @@ typedef std::list< CXmlElement > XML_ELEMENT_LIST;
 class CXmlElement
 {
 public:
-	CXmlElement();
+	CXmlElement( const char * pszName = NULL );
 	~CXmlElement();
 
 	int Parse( const char * pszText, int iTextLen );
@@ -85,13 +85,20 @@ public:
 	bool IsDataEmpty();
 
 	void SetName( const char * pszName );
+
+	void InsertElementData( const char * pszName, CXmlElement * pclsElement );
 	void InsertElementData( const char * pszName, const char * pszData );
 	void InsertElementData( const char * pszName, std::string & strData );
 	void InsertElementData( const char * pszName, int iData );
 	void InsertElementData( const char * pszName, int64_t iData );
 	void InsertElementData( const char * pszName, bool bData );
 	void InsertElement( CXmlElement * pclsElement );
+
 	void InsertAttribute( const char * pszName, const char * pszValue );
+	void InsertAttribute( const char * pszName, std::string & strValue );
+	void InsertAttribute( const char * pszName, int iValue );
+	void InsertAttribute( const char * pszName, int64_t iValue );
+	void InsertAttribute( const char * pszName, bool bValue );
 
 	XML_ELEMENT_LIST * GetElementList();
 
