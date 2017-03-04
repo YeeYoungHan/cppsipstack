@@ -85,6 +85,7 @@ public:
 	bool IsDataEmpty();
 
 	void SetName( const char * pszName );
+	void SetData( const char * pszData );
 
 	void InsertElementData( const char * pszName, CXmlElement * pclsElement );
 	void InsertElementData( const char * pszName, const char * pszData );
@@ -93,6 +94,12 @@ public:
 	void InsertElementData( const char * pszName, int64_t iData );
 	void InsertElementData( const char * pszName, bool bData );
 	void InsertElement( CXmlElement * pclsElement );
+
+	bool UpdateElementData( const char * pszName, const char * pszData, const int iIndex = 0 );
+	bool UpdateElementData( const char * pszName, std::string & strData, const int iIndex = 0 );
+	bool UpdateElementData( const char * pszName, int iData, const int iIndex = 0 );
+	bool UpdateElementData( const char * pszName, int64_t iData, const int iIndex = 0 );
+	bool UpdateElementData( const char * pszName, bool bData, const int iIndex = 0 );
 
 	void InsertAttribute( const char * pszName, const char * pszValue );
 	void InsertAttribute( const char * pszName, std::string & strValue );

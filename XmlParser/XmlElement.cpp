@@ -748,6 +748,16 @@ void CXmlElement::SetName( const char * pszName )
 
 /**
  * @ingroup XmlParser
+ * @brief Element 내용을 저장한다.
+ * @param pszData Element 내용
+ */
+void CXmlElement::SetData( const char * pszData )
+{
+	m_strData = pszData;
+}
+
+/**
+ * @ingroup XmlParser
  * @brief 하위 Element 를 추가한다.
  * @param pszName			하위 Element 이름
  * @param pclsElement 하위 Element 의 element;
@@ -852,13 +862,103 @@ void CXmlElement::InsertElement( CXmlElement * pclsElement )
 
 /**
  * @ingroup XmlParser
- * @brief 애트리뷰트를 추가한다.
+ * @brief 하위 Element 에서 입력된 이름과 동일한 Element 의 내용을 수정한다.
+ * @param pszName 하위 Element 이름
+ * @param pszData 하위 Element 의 data 값
+ * @param iIndex	하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 수정하고 1 을 입력하면 두번째 검색된 하위 Element 를 수정한다.
+ * @return 하위 Element 내용 수정에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CXmlElement::UpdateElementData( const char * pszName, const char * pszData, const int iIndex )
+{
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
+	if( pclsElement )
+	{
+		pclsElement->SetData( pszData );
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 에서 입력된 이름과 동일한 Element 의 내용을 수정한다.
+ * @param pszName 하위 Element 이름
+ * @param strData 하위 Element 의 data 값
+ * @param iIndex	하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 수정하고 1 을 입력하면 두번째 검색된 하위 Element 를 수정한다.
+ * @returns 하위 Element 내용 수정에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CXmlElement::UpdateElementData( const char * pszName, std::string & strData, const int iIndex )
+{
+	return UpdateElementData( pszName, strData.c_str(), iIndex );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 에서 입력된 이름과 동일한 Element 의 내용을 수정한다.
+ * @param pszName 하위 Element 이름
+ * @param iData 
+ * @param iIndex	하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 수정하고 1 을 입력하면 두번째 검색된 하위 Element 를 수정한다.
+ * @returns 하위 Element 내용 수정에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CXmlElement::UpdateElementData( const char * pszName, int iData, const int iIndex )
+{
+	char szData[11];
+
+	snprintf( szData, sizeof(szData), "%d", iData );
+
+	return UpdateElementData( pszName, szData, iIndex );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 에서 입력된 이름과 동일한 Element 의 내용을 수정한다.
+ * @param pszName 하위 Element 이름
+ * @param iData		하위 Element 의 data 값
+ * @param iIndex	하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 수정하고 1 을 입력하면 두번째 검색된 하위 Element 를 수정한다.
+ * @returns 하위 Element 내용 수정에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CXmlElement::UpdateElementData( const char * pszName, int64_t iData, const int iIndex )
+{
+	char szData[21];
+
+	snprintf( szData, sizeof(szData), LONG_LONG_FORMAT, iData );
+
+	return UpdateElementData( pszName, szData, iIndex );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 에서 입력된 이름과 동일한 Element 의 내용을 수정한다.
+ * @param pszName 하위 Element 이름
+ * @param bData		하위 Element 의 data 값
+ * @param iIndex	하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 수정하고 1 을 입력하면 두번째 검색된 하위 Element 를 수정한다.
+ * @returns 하위 Element 내용 수정에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CXmlElement::UpdateElementData( const char * pszName, bool bData, const int iIndex )
+{
+	return UpdateElementData( pszName, bData ? "true" : "false", iIndex );
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 애트리뷰트 이름이 존재하지 않으면 애트리뷰트를 추가하고 애트리뷰트 이름이 존재하면 해당 값을 수정한다.
  * @param pszName		애트리뷰트 이름
  * @param pszValue	애트리뷰트 값
  */
 void CXmlElement::InsertAttribute( const char * pszName, const char * pszValue )
 {
-	m_clsAttributeMap.insert( XML_ATTRIBUTE_MAP::value_type( pszName, pszValue ) );
+	XML_ATTRIBUTE_MAP::iterator itMap;
+
+	itMap = m_clsAttributeMap.find( pszName );
+	if( itMap == m_clsAttributeMap.end() )
+	{
+		m_clsAttributeMap.insert( XML_ATTRIBUTE_MAP::value_type( pszName, pszValue ) );
+	}
+	else
+	{
+		itMap->second = pszValue;
+	}
 }
 
 /**
@@ -884,7 +984,7 @@ void CXmlElement::InsertAttribute( const char * pszName, int iValue )
 
 	snprintf( szValue, sizeof(szValue), "%d", iValue );
 
-	InsertElementData( pszName, szValue );
+	InsertAttribute( pszName, szValue );
 }
 
 /**
