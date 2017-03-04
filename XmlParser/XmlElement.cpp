@@ -434,6 +434,29 @@ bool CXmlElement::ParseFile( const char * pszFileName )
 
 /**
  * @ingroup XmlParser
+ * @brief XML 을 파일에 저장한다.
+ * @param pszFileName		XML 파일 이름
+ * @param bUseTab			TAB 문자를 사용하는가? 하위 element 시작시 TAB 문자를 넣어주고 싶으면 true 를 입력하고 그렇지 않으면 false 를 입력한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CXmlElement::WriteFile( const char * pszFileName, bool bUseTab )
+{
+	FILE * fd;
+	std::string strXml;
+
+	fd = fopen( pszFileName, "w" );
+	if( fd == NULL ) return false;
+
+	ToString( strXml, bUseTab );
+	fwrite( strXml.c_str(), 1, strXml.length(), fd );
+
+	fclose( fd );
+
+	return true;
+}
+
+/**
+ * @ingroup XmlParser
  * @brief 애트리뷰트에 해당하는 값을 검색한다.
  * @param pszName 애트리뷰트 이름
  * @returns 성공하면 애트리뷰트의 값을 리턴하고 그렇지 않으면 NULL 을 리턴한다.

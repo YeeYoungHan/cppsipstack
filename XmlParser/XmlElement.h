@@ -62,6 +62,7 @@ public:
 	void Clear( );
 
 	bool ParseFile( const char * pszFileName );
+	bool WriteFile( const char * pszFileName, bool bUseTab );
 
 	const char * SelectAttribute( const char * pszName );
 	bool SelectAttribute( const char * pszName, std::string & strValue );
