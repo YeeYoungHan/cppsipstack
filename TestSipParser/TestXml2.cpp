@@ -221,11 +221,45 @@ static bool TestXmlString()
 	return true;
 }
 
+static bool TestXmlUpdate()
+{
+	std::string strXml;
+	CXmlElement clsXml( "Root" );
+	clsXml.InsertElementData( "Child", "1" );
+
+	clsXml.UpdateElementData( "Child", "2" );
+
+	strXml.clear();
+	clsXml.ToString( strXml );
+	if( strcmp( strXml.c_str(), "<Root>\n<Child>2</Child>\n</Root>\n" ) )
+	{
+		printf( "%s error\n", __FUNCTION__ );
+		return false;
+	}
+
+	CXmlElement * pclsChild = clsXml.SelectElement( "Child" );
+	if( pclsChild )
+	{
+		pclsChild->SetData( "3" );
+	}
+
+	strXml.clear();
+	clsXml.ToString( strXml );
+	if( strcmp( strXml.c_str(), "<Root>\n<Child>3</Child>\n</Root>\n" ) )
+	{
+		printf( "%s error\n", __FUNCTION__ );
+		return false;
+	}
+
+	return true;
+}
+
 bool TestXml2()
 {
 	if( TestXmlGetElementData() == false ) return false;
 	if( TestXmlGetElementAttribute() == false ) return false;
 	if( TestXmlString() == false ) return false;
+	if( TestXmlUpdate() == false ) return false;
 
 	return true;
 }
