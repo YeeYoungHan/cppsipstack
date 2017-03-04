@@ -197,10 +197,35 @@ static bool TestXmlGetElementAttribute()
 	return true;
 }
 
+static bool TestXmlString()
+{
+	std::string strXml;
+	CXmlElement clsXml( "Root" );
+	clsXml.InsertElementData( "Child", "1" );
+
+	clsXml.ToString( strXml );
+	if( strcmp( strXml.c_str(), "<Root>\n<Child>1</Child>\n</Root>\n" ) )
+	{
+		printf( "%s error\n", __FUNCTION__ );
+		return false;
+	}
+
+	strXml.clear();
+	clsXml.ToString( strXml, true );
+	if( strcmp( strXml.c_str(), "<Root>\n\t<Child>1</Child>\n</Root>\n" ) )
+	{
+		printf( "%s error\n", __FUNCTION__ );
+		return false;
+	}
+
+	return true;
+}
+
 bool TestXml2()
 {
 	if( TestXmlGetElementData() == false ) return false;
 	if( TestXmlGetElementAttribute() == false ) return false;
+	if( TestXmlString() == false ) return false;
 
 	return true;
 }
