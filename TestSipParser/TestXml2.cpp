@@ -30,6 +30,14 @@ static bool TestXmlGetElementData()
   "  <UseRtp>false</UseRtp>\n"
   " </Sip>\n"
 	"</Setup>\n";
+	const char * pszUpdateXml = "<Setup>\n"
+	"<Sip>\n"
+  "<LocalIp>192.168.0.100</LocalIp>\n"
+  "<LocalPort>5061</LocalPort>\n"
+  "<UseRtp>false</UseRtp>\n"
+  "<UseRtp>true</UseRtp>\n"
+  "</Sip>\n"
+	"</Setup>\n";
 	CXmlElement	clsXml, * pclsElement;
 	std::string strLocalIp;
 
@@ -99,6 +107,20 @@ static bool TestXmlGetElementData()
 	if( bUseRtp )
 	{
 		printf( "UseRtp2 is not correct\n" );
+		return false;
+	}
+
+	pclsElement->UpdateElementData( "LocalIp", "192.168.0.100" );
+	pclsElement->UpdateElementData( "LocalPort", 5061 );
+	pclsElement->UpdateElementData( "UseRtp", false, 0 );
+	pclsElement->UpdateElementData( "UseRtp", true, 1 );
+
+	std::string strXml;
+
+	clsXml.ToString( strXml );
+	if( strcmp( strXml.c_str(), pszUpdateXml ) )
+	{
+		printf( "xml(%s) != want xml(%s)", strXml.c_str(), pszUpdateXml );
 		return false;
 	}
 
