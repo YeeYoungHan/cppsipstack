@@ -218,30 +218,35 @@ bool TestXml()
 
 	std::string strUrl, strStatus;
 
-	CXmlElement * pclsPresence = clsXml.SelectElement( "presence" );
-	if( pclsPresence )
+	CXmlElement * pclsTuple = clsXml.SelectElement( "tuple" );
+	if( pclsTuple )
 	{
-		CXmlElement * pclsTuple = pclsPresence->SelectElement( "tuple" );
-		if( pclsTuple )
+		CXmlElement * pclsAddress = pclsTuple->SelectElement( "address" );
+		if( pclsAddress )
 		{
-			CXmlElement * pclsAddress = pclsTuple->SelectElement( "address" );
-			if( pclsAddress )
+			pclsAddress->SelectAttribute( "uri", strUrl );
+			CXmlElement * pclsStatus = pclsAddress->SelectElement( "status" );
+			if( pclsStatus )
 			{
-				pclsAddress->SelectAttribute( "uri", strUrl );
-				CXmlElement * pclsStatus = pclsAddress->SelectElement( "status" );
-				if( pclsStatus )
+				if( pclsStatus->GetData() != NULL )
 				{
-					if( pclsStatus->GetData() != NULL )
-					{
-						strStatus = pclsStatus->GetData();
-					}
+					strStatus = pclsStatus->GetData();
 				}
 			}
 		}
 	}
 
-	if( strcmp( strUrl.c_str(), "sip:1001@192.168.1.1" ) ) return false;
-	if( strcmp( strStatus.c_str(), "busy" ) ) return false;
+	if( strcmp( strUrl.c_str(), "sip:1001@192.168.1.1" ) )
+	{
+		printf( "xml(%s) uri error", pszXml );
+		return false;
+	}
+
+	if( strcmp( strStatus.c_str(), "busy" ) )
+	{
+		printf( "xml(%s) status error", pszXml );
+		return false;
+	}
 
 	return true;
 }
