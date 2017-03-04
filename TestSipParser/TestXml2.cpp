@@ -30,6 +30,16 @@ static bool TestXmlGetElementData()
   "  <UseRtp>false</UseRtp>\n"
   " </Sip>\n"
 	"</Setup>\n";
+
+	const char * pszTabXml = "<Setup>\n"
+	"\t<Sip>\n"
+  "\t\t<LocalIp>192.168.0.1</LocalIp>\n"
+  "\t\t<LocalPort>5060</LocalPort>\n"
+  "\t\t<UseRtp>true</UseRtp>\n"
+  "\t\t<UseRtp>false</UseRtp>\n"
+  "\t</Sip>\n"
+	"</Setup>\n";
+
 	const char * pszUpdateXml = "<Setup>\n"
 	"<Sip>\n"
   "<LocalIp>192.168.0.100</LocalIp>\n"
@@ -39,11 +49,27 @@ static bool TestXmlGetElementData()
   "</Sip>\n"
 	"</Setup>\n";
 	CXmlElement	clsXml, * pclsElement;
-	std::string strLocalIp;
+	std::string strLocalIp, strXml;
+	char szXml[2048];
 
 	if( clsXml.Parse( pszXml, (int)strlen(pszXml) ) == -1 )
 	{
 		printf( "xml(%s) parser error\n", pszXml );
+		return false;
+	}
+
+	strXml.clear();
+	clsXml.ToString( strXml, true );
+	if( strcmp( strXml.c_str(), pszTabXml ) )
+	{
+		printf( "xml(%s) != want xml(%s)", strXml.c_str(), pszTabXml );
+		return false;
+	}
+
+	clsXml.ToString( szXml, sizeof(szXml), true );
+	if( strcmp( szXml, pszTabXml ) )
+	{
+		printf( "xml(%s) != want xml(%s)", szXml, pszTabXml );
 		return false;
 	}
 
@@ -115,8 +141,7 @@ static bool TestXmlGetElementData()
 	pclsElement->UpdateElementData( "UseRtp", false, 0 );
 	pclsElement->UpdateElementData( "UseRtp", true, 1 );
 
-	std::string strXml;
-
+	strXml.clear();
 	clsXml.ToString( strXml );
 	if( strcmp( strXml.c_str(), pszUpdateXml ) )
 	{

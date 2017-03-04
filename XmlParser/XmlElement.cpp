@@ -259,13 +259,23 @@ int CXmlElement::Parse( std::string & strText )
  * @brief 멤버 변수에 저장된 값을 이용하여서 XML 문자열을 생성한다.
  * @param pszText			XML 문자열을 저장할 변수
  * @param iTextSize		XML 문자열을 저장할 변수의 크기
+ * @param bUseTab			TAB 문자를 사용하는가? 하위 element 시작시 TAB 문자를 넣어주고 싶으면 true 를 입력하고 그렇지 않으면 false 를 입력한다.
+ * @param	iDepth			XML 하위 element 깊이. 맨 위의 XML element 는 0 이고 그 하위 element 는 1 이다.
  * @returns 생성된 XML 문자열의 길이를 리턴한다.
  */
-int CXmlElement::ToString( char * pszText, int iTextSize )
+int CXmlElement::ToString( char * pszText, int iTextSize, bool bUseTab, int iDepth )
 {
-	int iLen, n;
+	int iLen = 0, n;
 
-	iLen = snprintf( pszText, iTextSize, "<%s", m_strName.c_str() );
+	if( bUseTab )
+	{
+		for( int i = 0; i < iDepth; ++i )
+		{
+			iLen += snprintf( pszText + iLen, iTextSize, "\t" );
+		}
+	}
+
+	iLen += snprintf( pszText + iLen, iTextSize, "<%s", m_strName.c_str() );
 
 	if( m_clsAttributeMap.empty() == false )
 	{
@@ -289,9 +299,17 @@ int CXmlElement::ToString( char * pszText, int iTextSize )
 
 		for( itEL = m_clsElementList.begin(); itEL != m_clsElementList.end(); ++itEL )
 		{
-			n = itEL->ToString( pszText + iLen, iTextSize - iLen );
+			n = itEL->ToString( pszText + iLen, iTextSize - iLen, bUseTab, iDepth + 1 );
 			if( n == -1 ) return -1;
 			iLen += n;
+		}
+
+		if( bUseTab )
+		{
+			for( int i = 0; i < iDepth; ++i )
+			{
+				iLen += snprintf( pszText + iLen, iTextSize, "\t" );
+			}
 		}
 
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "</%s>\n", m_strName.c_str() );
@@ -308,9 +326,19 @@ int CXmlElement::ToString( char * pszText, int iTextSize )
  * @ingroup XmlParser
  * @brief 멤버 변수에 저장된 값을 이용하여서 XML 문자열을 생성한다.
  * @param strText XML 문자열을 저장할 변수
+ * @param bUseTab			TAB 문자를 사용하는가? 하위 element 시작시 TAB 문자를 넣어주고 싶으면 true 를 입력하고 그렇지 않으면 false 를 입력한다.
+ * @param	iDepth			XML 하위 element 깊이. 맨 위의 XML element 는 0 이고 그 하위 element 는 1 이다.
  */
-void CXmlElement::ToString( std::string & strText )
+void CXmlElement::ToString( std::string & strText, bool bUseTab, int iDepth )
 {
+	if( bUseTab )
+	{
+		for( int i = 0; i < iDepth; ++i )
+		{
+			strText.append( "\t" );
+		}
+	}
+
 	strText.append( "<" );
 	strText.append( m_strName );
 
@@ -344,7 +372,15 @@ void CXmlElement::ToString( std::string & strText )
 
 		for( itEL = m_clsElementList.begin(); itEL != m_clsElementList.end(); ++itEL )
 		{
-			itEL->ToString( strText );
+			itEL->ToString( strText, bUseTab, iDepth + 1 );
+		}
+
+		if( bUseTab )
+		{
+			for( int i = 0; i < iDepth; ++i )
+			{
+				strText.append( "\t" );
+			}
 		}
 
 		strText.append( "</" );
@@ -866,7 +902,7 @@ void CXmlElement::InsertElement( CXmlElement * pclsElement )
  * @param pszName 하위 Element 이름
  * @param pszData 하위 Element 의 data 값
  * @param iIndex	하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 수정하고 1 을 입력하면 두번째 검색된 하위 Element 를 수정한다.
- * @return 하위 Element 내용 수정에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ * @returns 하위 Element 내용 수정에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
 bool CXmlElement::UpdateElementData( const char * pszName, const char * pszData, const int iIndex )
 {

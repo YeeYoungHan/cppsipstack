@@ -57,8 +57,8 @@ public:
 	int Parse( const char * pszText, int iTextLen );
 	int Parse( std::string & strText );
 
-	int ToString( char * pszText, int iTextSize );
-	void ToString( std::string & strText );
+	int ToString( char * pszText, int iTextSize, bool bUseTab = false, int iDepth = 0 );
+	void ToString( std::string & strText, bool bUseTab = false, int iDepth = 0 );
 	void Clear( );
 
 	bool ParseFile( const char * pszFileName );
