@@ -141,7 +141,10 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 
 			// 180/183 응답 메시지를 수신한 후, 200 OK 를 수신하지 못 한 경우 ICT 에서 삭제하기 위한 기능
 			// 200 OK 를 수신하고 ACK 를 전송하지 않은 경우 ICT 에서 삭제하기 위한 기능
-			gettimeofday( &itMap->second->m_sttRingTime, NULL );
+			if( itMap->second->m_sttRingTime.tv_sec == 0 )
+			{
+				gettimeofday( &itMap->second->m_sttRingTime, NULL );
+			}
 
 			if( itMap->second->m_pclsAck )
 			{

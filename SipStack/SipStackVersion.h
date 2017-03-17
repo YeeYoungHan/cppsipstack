@@ -19,9 +19,12 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.28"
+#define SIP_STACK_VERSION "0.29"
 
 /* 버전 정보
+
+= 버전 0.29 ( 2017년 3월 17일 ) =
+ * ICT 에서 SIP 응답을 계속 수신하여도 Ring timeout 시간은 한 번만 설정된다.
 
 = 버전 0.28 ( 2017년 1월 3일 ) =
  * m_iTcpCallBackThreadCount 설정 기능을 추가함 - 하나의 TCP 세션에 대해서 N 개의 callback 쓰레드로 동작할 수 있다.
