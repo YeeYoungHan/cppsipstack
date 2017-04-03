@@ -350,6 +350,10 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 		gclsCallMap.Insert( strReferToCallId.c_str(), pszCallId, iStartPort );
 		gclsTransCallMap.Delete( pszCallId, false );
 	}
+	else
+	{
+		gclsUserAgent.StopCall( pszCallId );
+	}
 }
 
 /**
