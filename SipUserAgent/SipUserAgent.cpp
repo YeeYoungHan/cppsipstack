@@ -321,29 +321,56 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 			}
 			else if( pclsMessage->m_iStatusCode == SIP_UNAUTHORIZED || pclsMessage->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
 			{
-				itMap->second.m_strToTag.clear();
-
-				pclsInvite = itMap->second.CreateInvite();
-				if( pclsInvite )
+				if( itMap->second.m_sttCancelTime.tv_sec == 0 )
 				{
-					SIP_SERVER_INFO_LIST::iterator itSL;
-					const char * pszUserId = pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str();
+					itMap->second.m_strToTag.clear();
 
-					m_clsRegisterMutex.acquire();
-					for( itSL = m_clsRegisterList.begin(); itSL != m_clsRegisterList.end(); ++itSL )
+					pclsInvite = itMap->second.CreateInvite();
+					if( pclsInvite )
 					{
-						if( !strcmp( itSL->m_strUserId.c_str(), pszUserId ) )
+						SIP_SERVER_INFO_LIST::iterator itSL;
+						const char * pszUserId = pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str();
+
+						m_clsRegisterMutex.acquire();
+						for( itSL = m_clsRegisterList.begin(); itSL != m_clsRegisterList.end(); ++itSL )
 						{
-							itSL->AddAuth( pclsInvite, pclsMessage );
-							break;
+							if( !strcmp( itSL->m_strUserId.c_str(), pszUserId ) )
+							{
+								itSL->AddAuth( pclsInvite, pclsMessage );
+								break;
+							}
 						}
+						m_clsRegisterMutex.release();
 					}
-					m_clsRegisterMutex.release();
 				}
 			}
 			else
 			{
-				gettimeofday( &itMap->second.m_sttEndTime, NULL );
+				if( itMap->second.m_sttStartTime.tv_sec == 0 )
+				{
+					gettimeofday( &itMap->second.m_sttEndTime, NULL );
+
+					if( pclsMessage->m_iStatusCode == SIP_MOVED_TEMPORARILY )
+					{
+						if( itMap->second.m_sttCancelTime.tv_sec == 0 )
+						{
+							SIP_FROM_LIST::iterator	itContact = pclsMessage->m_clsContactList.begin();
+							if( itContact != pclsMessage->m_clsContactList.end() )
+							{
+								itMap->second.m_strToId = itContact->m_clsUri.m_strUser;
+								pclsInvite = itMap->second.CreateInvite();
+								if( pclsInvite )
+								{
+									pclsInvite->m_clsReqUri = itContact->m_clsUri;
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					bReInvite = true;
+				}
 			}
 		}
 
