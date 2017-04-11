@@ -47,11 +47,7 @@ void GetDateTimeString( time_t iTime, char * pszTime, int iTimeSize )
 {
 	struct tm	sttTm;
 
-#ifdef WIN32
-	localtime_s( &sttTm, &iTime );
-#else
-	localtime_r( &iTime, &sttTm );	
-#endif
+	LocalTime( iTime, sttTm );
 
 	snprintf( pszTime, iTimeSize, "%04d%02d%02d%02d%02d%02d", sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday
 		, sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec );
@@ -83,11 +79,7 @@ void GetDateString( time_t iTime, char * pszDate, int iDateSize )
 {
 	struct tm	sttTm;
 
-#ifdef WIN32
-	localtime_s( &sttTm, &iTime );
-#else
-	localtime_r( &iTime, &sttTm );	
-#endif
+	LocalTime( iTime, sttTm );
 
 	snprintf( pszDate, iDateSize, "%04d%02d%02d", sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday );
 }
@@ -118,11 +110,7 @@ void GetTimeString( time_t iTime, char * pszTime, int iTimeSize )
 {
 	struct tm	sttTm;
 
-#ifdef WIN32
-	localtime_s( &sttTm, &iTime );
-#else
-	localtime_r( &iTime, &sttTm );	
-#endif
+	LocalTime( iTime, sttTm );
 
 	snprintf( pszTime, iTimeSize, "%02d%02d%02d", sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec );
 }
