@@ -1,3 +1,3 @@
-VC++ 2008 ¿ë static openssl library - 32bit ¿ë
+VC++ 2008 static openssl library - 32bit
 
 openssl-1.0.2k
