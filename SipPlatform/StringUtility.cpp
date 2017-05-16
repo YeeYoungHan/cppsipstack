@@ -104,6 +104,113 @@ bool SearchValue( std::string & strText, const char * pszKey, char cSep, int & i
 
 /**
  * @ingroup SipPlatform
+ * @brief 검색 문자열이 문자열 리스트에 존재하는지 검사한다.
+ * @param clsList 문자열 리스트
+ * @param pszKey	검색 문자열
+ * @returns 검색 문자열이 문자열 리스트에 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool SearchStringList( STRING_LIST & clsList, const char * pszKey )
+{
+	STRING_LIST::iterator itList;
+
+	for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+	{
+		if( !strcmp( pszKey, itList->c_str() ) )
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 검색 문자열이 문자열 리스트에 존재하면 삭제한다.
+ * @param clsList 문자열 리스트
+ * @param pszKey	검색 문자열
+ * @returns 검색 문자열이 문자열 리스트에 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool DeleteStringList( STRING_LIST & clsList, const char * pszKey )
+{
+	STRING_LIST::iterator itList;
+
+	for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+	{
+		if( !strcmp( pszKey, itList->c_str() ) )
+		{
+			clsList.erase( itList );
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 문자열이 문자열 리스트에 존재하지 않으면 추가한다.
+ * @param clsList 문자열 리스트
+ * @param pszKey	문자열
+ */
+void InsertStringList( STRING_LIST & clsList, const char * pszKey )
+{
+	STRING_LIST::iterator itList;
+
+	for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+	{
+		if( !strcmp( pszKey, itList->c_str() ) )
+		{
+			return;
+		}
+	}
+
+	clsList.push_back( pszKey );
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 입력 문자열 리스트의 각 문자열이 저장 문자열 리스트에 존재하지 않으면 저장 문자열 리스트에 저장한다.
+ * @param clsList			저장 문자열 리스트
+ * @param clsSrcList	입력 문자열 리스트
+ */
+void InsertStringList( STRING_LIST & clsList, STRING_LIST & clsSrcList )
+{
+	STRING_LIST::iterator itList;
+
+	for( itList = clsSrcList.begin(); itList != clsSrcList.end(); ++itList )
+	{
+		InsertStringList( clsList, itList->c_str() );
+	}
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 문자열 리스트를 로그로 출력한다.
+ * @param eLevel	로그 레벨
+ * @param pszName 로그 메시지 이름
+ * @param clsList 문자열 리스트
+ */
+void LogStringList( EnumLogLevel eLevel, const char * pszName, STRING_LIST & clsList )
+{
+	if( CLog::IsPrintLogLevel( eLevel ) )
+	{
+		STRING_LIST::iterator itList;
+		std::string strData;
+
+		for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+		{
+			if( strData.empty() == false ) strData.append( ", " );
+			strData.append( *itList );
+		}
+
+		CLog::Print( eLevel, "%s [%s]", pszName, strData.c_str() );
+	}
+}
+
+
+/**
+ * @ingroup SipPlatform
  * @brief 문자열의 왼쪽 공백을 제거한다.
  * @param strText 문자열
  */

@@ -20,14 +20,23 @@
 #define _STRING_UTILITY_H_
 
 #include "SipPlatformDefine.h"
+#include "Log.h"
 #include <string>
 #include <list>
 
 typedef std::list< std::string > STRING_LIST;
 
 void ReplaceString( std::string & strCallId, const char * pszBefore, const char * pszAfter );
+
 bool SearchValue( std::string & strText, const char * pszKey, char cSep, std::string & strValue );
 bool SearchValue( std::string & strText, const char * pszKey, char cSep, int & iValue );
+
+bool SearchStringList( STRING_LIST & clsList, const char * pszKey );
+bool DeleteStringList( STRING_LIST & clsList, const char * pszKey );
+void InsertStringList( STRING_LIST & clsList, const char * pszKey );
+void InsertStringList( STRING_LIST & clsList, STRING_LIST & clsSrcList );
+void LogStringList( EnumLogLevel eLevel, const char * pszName, STRING_LIST & clsList );
+
 void LeftTrimString( std::string & strText );
 void RightTrimString( std::string & strText );
 void TrimString( std::string & strText );
