@@ -16,20 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _FILE_UTILITY_H_
-#define _FILE_UTILITY_H_
+#include "FileUtility.h"
+#include "TestSipPlatform.h"
 
-#include "SipPlatformDefine.h"
-#include <string>
+bool TestFileUtility()
+{
+	CpFile( "c:\\temp\\ars\\20170519_1.txt", "c:\\temp\\ars\\3000.txt" );
 
-bool IsExistFile( const char * pszFileName );
-
-int64_t GetFileSize( const char * pszFileName );
-bool GetFileExt( const char * pszFileName, std::string & strExt );
-bool GetFolderPathOfFilePath( const char * pszFilePath, std::string & strFolder );
-bool GetFileNameOfFilePath( const char * pszFilePath, std::string & strFileName );
-
-void DelFile( const char * pszFileName );
-bool CpFile( const char * pszSrcFileName, const char * pszDestFileName );
-
-#endif
+	return true;
+}

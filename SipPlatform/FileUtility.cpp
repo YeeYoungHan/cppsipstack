@@ -17,6 +17,8 @@
  */
 
 #include "FileUtility.h"
+#include "SipTcp.h"
+#include "Log.h"
 #include <sys/stat.h>
 
 #include "MemoryDebug.h"
@@ -80,4 +82,156 @@ bool GetFileExt( const char * pszFileName, std::string & strExt )
 	}
 
 	return false;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 파일 경로에서 폴더 경로 가져오기
+ * @param pszFilePath	파일 경로
+ * @param strFolder		폴더 경로 저장 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool GetFolderPathOfFilePath( const char * pszFilePath, std::string & strFolder )
+{
+	strFolder.clear();
+
+	if( pszFilePath == NULL ) return false;
+
+	int iLen = (int)strlen( pszFilePath );
+	if( iLen < 2 ) return false;
+
+#ifdef WIN32
+	if( pszFilePath[iLen-1] == '\\' ) return false;
+#else
+	if( pszFilePath[iLen-1] == '/' ) return false;
+#endif
+
+	for( int i = iLen - 2; i >= 0; --i )
+	{
+#ifdef WIN32
+		if( pszFilePath[i] == '\\' )
+#else
+		if( pszFilePath[i] == '/' )
+#endif
+		{
+
+#ifndef WIN32
+			if( i == 0 )
+			{
+				strFolder = "/";
+				return true;
+			}
+#endif
+
+			strFolder.append( pszFilePath, i );
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 파일 경로에서 파일 이름 가져오기
+ * @param pszFilePath 파일 경로
+ * @param strFileName 파일 이름 저장 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool GetFileNameOfFilePath( const char * pszFilePath, std::string & strFileName )
+{
+	strFileName.clear();
+
+	if( pszFilePath == NULL ) return false;
+
+	int iLen = (int)strlen( pszFilePath );
+	if( iLen < 2 ) return false;
+
+#ifdef WIN32
+	if( pszFilePath[iLen-1] == '\\' ) return false;
+#else
+	if( pszFilePath[iLen-1] == '/' ) return false;
+#endif
+
+	for( int i = iLen - 2; i >= 0; --i )
+	{
+#ifdef WIN32
+		if( pszFilePath[i] == '\\' )
+#else
+		if( pszFilePath[i] == '/' )
+#endif
+		{
+			strFileName.append( pszFilePath + i + 1 );
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 파일을 삭제한다.
+ * @param pszFileName 파일 이름
+ */
+void DelFile( const char * pszFileName )
+{
+#ifdef WIN32
+	DeleteFile( pszFileName );
+#else
+	unlink( pszFileName );
+#endif
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 파일을 복사한다.
+ * @param pszSrcFileName	원본 파일 path
+ * @param pszDestFileName 복사본 파일 path
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CpFile( const char * pszSrcFileName, const char * pszDestFileName )
+{
+	FILE * fdSrc = fopen( pszSrcFileName, "rb" );
+	if( fdSrc == NULL )
+	{
+		CLog::Print( LOG_ERROR, "%s src file(%s) open error(%d)", __FUNCTION__, pszSrcFileName, GetError() );
+		return false;
+	}
+
+	FILE * fdDest = fopen( pszDestFileName, "wb" );
+	if( fdDest == NULL )
+	{
+		fclose( fdSrc );
+		CLog::Print( LOG_ERROR, "%s dest file(%s) open error(%d)", __FUNCTION__, pszDestFileName, GetError() );
+		return false;
+	}
+
+	size_t iRead;
+	char szBuf[8192];
+	bool bError = false;
+
+	while( 1 )
+	{
+		iRead = fread( szBuf, 1, sizeof(szBuf), fdSrc );
+		if( iRead <= 0 ) break;
+
+		if( fwrite( szBuf, 1, iRead, fdDest ) != iRead )
+		{
+			CLog::Print( LOG_ERROR, "%s dest file(%s) write error(%d)", __FUNCTION__, pszDestFileName, GetError() );
+			bError = true;
+			break;
+		}
+	}
+
+	fclose( fdDest );
+	fclose( fdSrc );
+
+	if( bError )
+	{
+		DelFile( pszDestFileName );
+		return false;
+	}
+
+	return true;
 }

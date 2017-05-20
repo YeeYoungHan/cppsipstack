@@ -16,7 +16,8 @@ LIB=-L../SipPlatform -lsipplatform
 all: TestSipPlatform.exe
 
 SRV_OBJ=TestSipPlatform.o TestSipMutex.o TestDirectory.o TestStringSort.o \
-	TestServerUtility.o TestStringUtility.o TestLog.o TestRandom.o
+	TestServerUtility.o TestStringUtility.o TestLog.o TestRandom.o \
+	TestFileUtility.o
 
 TestSipPlatform.exe: $(SRV_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)

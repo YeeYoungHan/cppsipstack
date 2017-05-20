@@ -33,6 +33,7 @@ bool TestLogMacro();
 bool TestStringUtility();
 bool TestRandom();
 void TestSipMutexDead();
+bool TestFileUtility();
 
 #define Check(x)	if( !(x) ){ printf( "%s %d error\n", __FILE__, __LINE__ ); return false; }
 

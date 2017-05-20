@@ -41,6 +41,11 @@ int main( int argc, char * argv[] )
 			TestSipMutexDead();
 			return 0;
 		}
+		else if( !strcmp( argv[1], "-f" ) )
+		{
+			TestFileUtility();
+			return 0;
+		}
 	}
 
 	bool bRes = false;
