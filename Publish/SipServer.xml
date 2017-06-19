@@ -1,0 +1,43 @@
+<Setup>
+	<Sip>
+		<LocalIp>192.168.1.8</LocalIp>
+		<UdpPort>5060</UdpPort>
+		<UdpThreadCount>2</UdpThreadCount>
+		<TcpPort>5060</TcpPort>
+		<TcpThreadCount>2</TcpThreadCount>
+		<TcpRecvTimeout>600</TcpRecvTimeout>
+		<Realm>ksipserver</Realm>
+		<MinRegisterTimeout>300</MinRegisterTimeout>
+		<CallPickupId>**</CallPickupId>
+		<StackExecutePeriod>20</StackExecutePeriod>
+	</Sip>
+	<RtpRelay>
+		<UseRtpRelay>false</UseRtpRelay>
+		<BeginPort>10000</BeginPort>
+		<EndPort>60000</EndPort>
+	</RtpRelay>
+	<Log>
+		<Folder>c:\temp\sipserver</Folder>
+		<Level Debug="true" Info="true" Network="true" Sql="true" />
+		<MaxSize>10000000</MaxSize>
+	</Log>
+	<XmlFolder>
+		<User>C:\OpenProject\CppSipStack\trunk\Publish\UserXml</User>
+		<SipServer>C:\OpenProject\CppSipStack\trunk\Publish\SipServerXml</SipServer>
+	</XmlFolder>
+	<Cdr>
+		<Folder>c:\temp\cdr</Folder>
+	</Cdr>
+	<Monitor>
+	  <Port>6000</Port>
+	  <ClientIpList>
+	    <ClientIp>127.0.0.1</ClientIp>
+	  </ClientIpList>
+	</Monitor>
+	<Security>
+		<DenySipUserAgentList>
+			<SipUserAgent>friendly-scanner</SipUserAgent>
+			<SipUserAgent>sundayddr</SipUserAgent>
+		</DenySipUserAgentList>
+	</Security>
+</Setup>
