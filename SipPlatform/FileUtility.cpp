@@ -19,6 +19,7 @@
 #include "FileUtility.h"
 #include "SipTcp.h"
 #include "Log.h"
+#include "TimeString.h"
 #include <sys/stat.h>
 
 #include "MemoryDebug.h"
@@ -167,6 +168,33 @@ bool GetFileNameOfFilePath( const char * pszFilePath, std::string & strFileName 
 	}
 
 	return false;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 파일의 수정 시간을 가져온다.
+ * @param pszFileName 파일 이름
+ * @param strDate			[out] 파일 수정 시간 저장 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool GetFileDate( const char * pszFileName, std::string & strDate )
+{
+	strDate.clear();
+
+	if( pszFileName == NULL ) return false;
+
+	struct stat sttStat;
+	char szDate[21];
+
+	if( stat( pszFileName, &sttStat ) == -1 )
+	{
+		return false;
+	}
+
+	GetDateTimeString( sttStat.st_mtime, szDate, sizeof(szDate) );
+	strDate = szDate;
+
+	return true;
 }
 
 /**
