@@ -29,6 +29,7 @@ bool GetFileExt( const char * pszFileName, std::string & strExt );
 bool GetFolderPathOfFilePath( const char * pszFilePath, std::string & strFolder );
 bool GetFileNameOfFilePath( const char * pszFilePath, std::string & strFileName );
 bool GetFileDate( const char * pszFileName, std::string & strDate );
+bool SetFileDate( const char * pszFileName, const char * pszDate );
 
 void DelFile( const char * pszFileName );
 bool CpFile( const char * pszSrcFileName, const char * pszDestFileName );

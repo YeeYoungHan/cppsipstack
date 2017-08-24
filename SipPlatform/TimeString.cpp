@@ -19,6 +19,7 @@
 #include "SipPlatformDefine.h"
 #include <stdio.h>
 #include "TimeString.h"
+#include "StringUtility.h"
 #include "MemoryDebug.h"
 
 /**
@@ -128,4 +129,29 @@ void GetTimeString( char * pszTime, int iTimeSize )
 	time( &iTime );
 
 	GetTimeString( iTime, pszTime, iTimeSize );
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 년월일시분초 문자열을 time_t 로 변환한다.
+ * @param pszTime 년월일시분초 문자열
+ * @returns 성공하면 time_t 값이 리턴되고 실패하면 0 이 리턴된다.
+ */
+time_t ParseDateTimeString( const char * pszTime )
+{
+	struct tm	sttTm;
+	int iLen = (int)strlen( pszTime );
+
+	if( iLen < 14 ) return 0;
+
+	memset( &sttTm, 0, sizeof(sttTm) );
+
+	sttTm.tm_year = GetInt( pszTime, 4 ) - 1900;
+	sttTm.tm_mon = GetInt( pszTime+4, 2 ) - 1;
+	sttTm.tm_mday = GetInt( pszTime+6, 2 );
+	sttTm.tm_hour = GetInt( pszTime+8, 2 );
+	sttTm.tm_min = GetInt( pszTime+10, 2 );
+	sttTm.tm_sec = GetInt( pszTime+12, 2 );
+
+	return mktime( &sttTm );
 }

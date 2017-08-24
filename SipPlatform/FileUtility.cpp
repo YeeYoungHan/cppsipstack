@@ -199,6 +199,45 @@ bool GetFileDate( const char * pszFileName, std::string & strDate )
 
 /**
  * @ingroup SipPlatform
+ * @brief 파일의 수정 시간을 설정한다.
+ * @param pszFileName 파일 이름
+ * @param pszDate			파일 수정 시간
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool SetFileDate( const char * pszFileName, const char * pszDate )
+{
+	if( pszFileName == NULL || pszDate == NULL ) return false;
+	if( strlen( pszDate ) != 14 ) return false;
+
+	time_t iTime = ParseDateTimeString( pszDate );
+
+#ifdef WIN32
+	LONGLONG ll;
+	FILETIME sttTime;
+
+	ll = Int32x32To64( iTime, 10000000 ) + 116444736000000000;
+	sttTime.dwLowDateTime = (DWORD)ll;
+	sttTime.dwHighDateTime = ll >> 32;
+	
+	HANDLE hFile = CreateFile( pszFileName, FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ|FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
+	if( hFile == INVALID_HANDLE_VALUE ) return false;
+
+	SetFileTime( hFile, NULL, NULL, &sttTime );
+	CloseHandle( hFile );
+#else
+	struct utimbuf sttTime;
+
+	sttTime.actime = iTime;
+	sttTime.modtime = iTime;
+	
+	if( utime( pszFileName, sttTime ) == -1 ) return false;
+#endif
+
+	return true;
+}
+
+/**
+ * @ingroup SipPlatform
  * @brief 파일을 삭제한다.
  * @param pszFileName 파일 이름
  */

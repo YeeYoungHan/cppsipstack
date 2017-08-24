@@ -346,6 +346,25 @@ uint64_t GetUInt64( const char * pszText )
 
 /**
  * @ingroup SipPlatform
+ * @brief 지정될 길이만큼의 문자열을 숫자로 변환한다.
+ * @param pszText		숫자 문자열
+ * @param iTextLen	문자열 길이
+ * @returns 성공하면 원하는 숫자가 리턴되고 실패하면 0 이 리턴된다.
+ */
+int GetInt( const char * pszText, int iTextLen )
+{
+	char szNum[11];
+
+	if( iTextLen > 10 || iTextLen <= 0 ) return 0;
+
+	memcpy( szNum, pszText, iTextLen );
+	szNum[iTextLen] = '\0';
+
+	return atoi( szNum );
+}
+
+/**
+ * @ingroup SipPlatform
  * @brief HEX 만 저장된 문자열을 숫자로 변환한 문자열을 생성한다.
  * @param pszInput	HEX 만 저장된 문자열
  * @param strOutput 숫자로 변환된 문자열 저장용 변수

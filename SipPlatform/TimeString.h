@@ -32,4 +32,6 @@ void GetDateString( char * pszDate, int iDateSize );
 void GetTimeString( time_t iTime, char * pszTime, int iTimeSize );
 void GetTimeString( char * pszTime, int iTimeSize );
 
+time_t ParseDateTimeString( const char * pszTime );
+
 #endif
