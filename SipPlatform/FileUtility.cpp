@@ -22,6 +22,10 @@
 #include "TimeString.h"
 #include <sys/stat.h>
 
+#ifndef WIN32
+#include <utime.h>
+#endif
+
 #include "MemoryDebug.h"
 
 /**
