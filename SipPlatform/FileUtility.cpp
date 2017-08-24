@@ -23,6 +23,7 @@
 #include <sys/stat.h>
 
 #ifndef WIN32
+#include <sys/types.h>
 #include <utime.h>
 #endif
 
