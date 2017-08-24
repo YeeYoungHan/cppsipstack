@@ -23,7 +23,6 @@
 #include <sys/stat.h>
 
 #ifndef WIN32
-#include <sys/types.h>
 #include <utime.h>
 #endif
 
@@ -235,7 +234,7 @@ bool SetFileDate( const char * pszFileName, const char * pszDate )
 	sttTime.actime = iTime;
 	sttTime.modtime = iTime;
 	
-	if( utime( pszFileName, sttTime ) == -1 ) return false;
+	if( utime( pszFileName, &sttTime ) == -1 ) return false;
 #endif
 
 	return true;
