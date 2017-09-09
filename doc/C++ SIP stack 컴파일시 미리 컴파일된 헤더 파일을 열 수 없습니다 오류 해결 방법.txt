@@ -1,0 +1,5 @@
+C++ SIP stack 프로젝트를 VC++ 2008 에서 컴파일시 아래와 같은 오류 메시지가 출력된다면 해당 프로젝트의 속성 -> C/C++ -> 미리 컴파일된 헤더에서 "미리 컴파일된 헤더 만들기"로 설정한 후, 컴파일하시면 됩니다.
+
+sipuseragentmfc\sipuseragentmfc.cpp(19) : fatal error C1083: 미리 컴파일된 헤더 파일을 열 수 없습니다. 'Debug\SipUserAgentMFC.pch': No such file or directory 
+
+컴파일에 성공하면 해당 프로젝트의 속성 -> C/C++ -> 미리 컴파일된 헤더에서 "미리 컴파일된 헤더 사용"으로 수정하세요. 
