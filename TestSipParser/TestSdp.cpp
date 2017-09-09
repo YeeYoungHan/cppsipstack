@@ -381,7 +381,7 @@ bool TestSdp()
 	CSdpAttributeCrypto clsCrypto;
 	const char * pszCrypto = "1 AES_CM_128_HMAC_SHA1_80 inline:7s65riA38OlE4U5OepU5zgaoMvzOL19nSQqeursI";
 
-	if( clsCrypto.Parse( pszCrypto, strlen(pszCrypto) ) == -1 )
+	if( clsCrypto.Parse( pszCrypto, (int)strlen(pszCrypto) ) == -1 )
 	{
 		printf( "crypto[%s] parser error\n", pszCrypto );
 		return false;
