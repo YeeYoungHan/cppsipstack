@@ -6,11 +6,11 @@
 
 include ../Makefile.mk
 
-INC=-I../SipParser -I../SipStack -I../SipPlatform \
-	-I../XmlParser
-LIB=-L../SipParser -lsipparser \
-	-L../XmlParser -lxmlparser \
-	-L../SipPlatform -lsipplatform \
+INC=-I../../SipParser -I../../SipStack -I../../SipPlatform \
+	-I../../XmlParser
+LIB=-L../../SipParser -lsipparser \
+	-L../../XmlParser -lxmlparser \
+	-L../../SipPlatform -lsipplatform \
 	-lpthread
 
 .SUFFIXES: .o .cpp

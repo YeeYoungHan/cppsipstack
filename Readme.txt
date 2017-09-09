@@ -65,17 +65,11 @@ C++ SIP stack 프로젝트
  * KSipServer
    - 한국형 SIP 서버 프로그램
 
- * KSipServerMonitor
-   - KSipServer 자료구조 모니터링 프로그램
-
  * KSipServerLogAnalysis
    - 어제 날짜의 로그를 분석하여서 MySQL 데이터베이스에 통계를 저장하는 프로그램
 
  * SipLoadBalancer
    - SIP 로드밸런서 프로그램
-
- * SipLoadBalancerMonitor
-   - SIP 로드밸런서 자료구조 모니터링 프로그램
 
  * FindNoLiceseFile
    - 폴더에서 라이선스 문구가 포함되지 않은 소스 코드를 검색하는 프로그램
@@ -84,10 +78,6 @@ C++ SIP stack 프로젝트
    - SimpleSipServer 소스 코드를 가져와서 테스트용으로 사용할 IP-PBX 를 개발함.
    - 테스트용이므로 클라이언트 로그인 정보를 파일로 저장하였다가 실행될 때 읽어 오는 기능이 존재함.
    - 영상 디바이스 연동 테스트용으로 개발됨.
-
- * McuControlServer
-   - TestSipServer 소스 코드를 가져와서 테스트용으로 사용할 IP-PBX 를 개발함.
-   - Radvision MCU 와 연동하여서 영상 디바이스 연결 테스트용으로 개발됨.
 
  * AndroidCppSipStack
    - 안드로이드 NDK 빌드를 위한 sip stack static library 빌드용
