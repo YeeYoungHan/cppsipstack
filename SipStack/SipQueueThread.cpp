@@ -41,7 +41,7 @@ THREAD_API SipQueueThread( LPVOID lpParameter )
 	{
 		if( gclsSipQueue.Select( &pclsEntry ) )
 		{
-			pclsSipStack->RecvSipMessage( iThreadId, pclsEntry->m_strBuf.c_str(), pclsEntry->m_strBuf.length()
+			pclsSipStack->RecvSipMessage( iThreadId, pclsEntry->m_strBuf.c_str(), (int)pclsEntry->m_strBuf.length()
 				, pclsEntry->m_strIp.c_str(), pclsEntry->m_sPort, pclsEntry->m_eTransport );
 
 			delete pclsEntry;

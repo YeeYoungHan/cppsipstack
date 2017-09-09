@@ -141,7 +141,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../openssl-64bit/lib"
+				AdditionalLibraryDirectories="../openssl-64bit/lib-debug"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="17"

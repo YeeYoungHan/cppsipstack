@@ -48,7 +48,7 @@ bool CFileLog::Open( const char * pszDirName )
 {
 	if( pszDirName == NULL ) return false;
 
-	int iLen = strlen( pszDirName );
+	int iLen = (int)strlen( pszDirName );
 	bool bRes = false;
 
 	if( iLen < 3 ) return false;

@@ -482,7 +482,7 @@ void CDirectory::DeleteAllFile( const char * pszDirName )
  */
 void CDirectory::GetDirName( const char * pszFilePath, std::string & strDirName )
 {
-	int iLen = strlen( pszFilePath );
+	int iLen = (int)strlen( pszFilePath );
 
 	strDirName.clear();
 
@@ -508,7 +508,7 @@ void CDirectory::GetDirName( const char * pszFilePath, std::string & strDirName 
  */
 void CDirectory::GetFileName( const char * pszFilePath, std::string & strFileName )
 {
-	int iLen = strlen( pszFilePath );
+	int iLen = (int)strlen( pszFilePath );
 
 	strFileName.clear();
 

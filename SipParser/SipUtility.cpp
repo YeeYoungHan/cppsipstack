@@ -288,7 +288,7 @@ void SipIpv6Parse( std::string & strHost )
 
 int SipIpv6Print( std::string & strHost, char * pszText, int iTextSize, int iLen )
 {
-	int n, iHostLen = strHost.length();
+	int n, iHostLen = (int)strHost.length();
 	
 	const char * pszHost = strHost.c_str();
 	if( iHostLen > 2 && pszHost[0] != '[' && strstr( pszHost, ":" ) )

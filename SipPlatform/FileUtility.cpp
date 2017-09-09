@@ -73,7 +73,7 @@ int64_t GetFileSize( const char * pszFileName )
  */
 bool GetFileExt( const char * pszFileName, std::string & strExt )
 {
-	int iLen = strlen( pszFileName );
+	int iLen = (int)strlen( pszFileName );
 
 	strExt.clear();
 
