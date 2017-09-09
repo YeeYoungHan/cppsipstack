@@ -17,7 +17,6 @@ all:
 	cd SipClient && make
 	cd SimpleSipServer && make
 	cd KSipServer && make
-	cd KSipServerLogAnalysis && make
 	cd SipLoadBalancer && make
 	cd SipSpeedLinux && make
 
@@ -34,7 +33,6 @@ clean:
 	cd SipClient && make clean
 	cd SimpleSipServer && make clean
 	cd KSipServer && make clean
-	cd KSipServerLogAnalysis && make clean
 	cd SipLoadBalancer && make clean
 	cd SipSpeedLinux && make clean
 
