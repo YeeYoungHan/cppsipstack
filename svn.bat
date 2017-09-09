@@ -3,4 +3,4 @@ TortoiseProc.exe /command:update /path:"C:\OpenProject\CppSipStack\" /closeonend
 TortoiseProc.exe /command:update /path:"C:\OpenProject\CppSnmpStack\" /closeonend:1
 TortoiseProc.exe /command:update /path:"C:\OpenProject\DbMysqlPool\" /closeonend:1
 TortoiseProc.exe /command:update /path:"C:\OpenProject\DbSQLite\" /closeonend:1
-TortoiseProc.exe /command:update /path:"C:\OpenProject\WinBackup\" /closeonend:1
+TortoiseProc.exe /command:update /path:"C:\OpenProject\WinUtility\" /closeonend:1
