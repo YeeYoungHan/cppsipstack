@@ -329,6 +329,14 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\TestSipParser.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Å×½ºÆ®"
+			>
+			<File
 				RelativePath=".\TestInt.cpp"
 				>
 			</File>
@@ -357,10 +365,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TestSipParser.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\TestSipReason.cpp"
 				>
 			</File>
@@ -382,18 +386,6 @@
 			</File>
 			<File
 				RelativePath=".\TestTransactionSpeed.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TestXml.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TestXml2.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TestXmlSearch.cpp"
 				>
 			</File>
 		</Filter>

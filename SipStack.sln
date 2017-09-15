@@ -143,6 +143,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SipSpeedLinux", "SipSpeedLi
 		{AF551BC2-1AF3-419B-9B54-04C2EF4FAC72} = {AF551BC2-1AF3-419B-9B54-04C2EF4FAC72}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestXmlParser", "TestXmlParser\TestXmlParser.vcproj", "{06F4C80A-E4F8-4ABE-8981-75DE4603FED4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{59766094-16E8-4602-9621-6C1E5ED9AF5F} = {59766094-16E8-4602-9621-6C1E5ED9AF5F}
+		{AF551BC2-1AF3-419B-9B54-04C2EF4FAC72} = {AF551BC2-1AF3-419B-9B54-04C2EF4FAC72}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -313,6 +319,12 @@ Global
 		{17161B63-D749-4FF1-A7CE-295E78CE00A3}.Release|Win32.ActiveCfg = Release|Win32
 		{17161B63-D749-4FF1-A7CE-295E78CE00A3}.Release|Win32.Build.0 = Release|Win32
 		{17161B63-D749-4FF1-A7CE-295E78CE00A3}.Release|x64.ActiveCfg = Release|Win32
+		{06F4C80A-E4F8-4ABE-8981-75DE4603FED4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{06F4C80A-E4F8-4ABE-8981-75DE4603FED4}.Debug|Win32.Build.0 = Debug|Win32
+		{06F4C80A-E4F8-4ABE-8981-75DE4603FED4}.Debug|x64.ActiveCfg = Debug|Win32
+		{06F4C80A-E4F8-4ABE-8981-75DE4603FED4}.Release|Win32.ActiveCfg = Release|Win32
+		{06F4C80A-E4F8-4ABE-8981-75DE4603FED4}.Release|Win32.Build.0 = Release|Win32
+		{06F4C80A-E4F8-4ABE-8981-75DE4603FED4}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

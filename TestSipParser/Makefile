@@ -18,7 +18,6 @@ all: TestSipParser.exe
 
 SRV_OBJ=TestSipFrom.o TestSipMessage.o TestSipUri.o TestSipVia.o \
 	TestSdp.o \
-	TestXml.o TestXml2.o TestXmlSearch.o \
 	TestSipParser.o \
 	TestInt.o \
 	TestMd5.o \
