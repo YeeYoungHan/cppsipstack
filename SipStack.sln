@@ -149,6 +149,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestXmlParser", "TestXmlPar
 		{AF551BC2-1AF3-419B-9B54-04C2EF4FAC72} = {AF551BC2-1AF3-419B-9B54-04C2EF4FAC72}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestOpenssl", "TestOpenssl\TestOpenssl.vcproj", "{509BCBF0-143D-4844-A2AC-00D988732E42}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A74D7687-3A0C-46C8-AC3D-304A68C7C635} = {A74D7687-3A0C-46C8-AC3D-304A68C7C635}
+		{59766094-16E8-4602-9621-6C1E5ED9AF5F} = {59766094-16E8-4602-9621-6C1E5ED9AF5F}
+		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB} = {11E19CA3-F409-41E3-BD62-E1CEA134B7DB}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -325,6 +332,12 @@ Global
 		{06F4C80A-E4F8-4ABE-8981-75DE4603FED4}.Release|Win32.ActiveCfg = Release|Win32
 		{06F4C80A-E4F8-4ABE-8981-75DE4603FED4}.Release|Win32.Build.0 = Release|Win32
 		{06F4C80A-E4F8-4ABE-8981-75DE4603FED4}.Release|x64.ActiveCfg = Release|Win32
+		{509BCBF0-143D-4844-A2AC-00D988732E42}.Debug|Win32.ActiveCfg = Debug|Win32
+		{509BCBF0-143D-4844-A2AC-00D988732E42}.Debug|Win32.Build.0 = Debug|Win32
+		{509BCBF0-143D-4844-A2AC-00D988732E42}.Debug|x64.ActiveCfg = Debug|Win32
+		{509BCBF0-143D-4844-A2AC-00D988732E42}.Release|Win32.ActiveCfg = Release|Win32
+		{509BCBF0-143D-4844-A2AC-00D988732E42}.Release|Win32.Build.0 = Release|Win32
+		{509BCBF0-143D-4844-A2AC-00D988732E42}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
