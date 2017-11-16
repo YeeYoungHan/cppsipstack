@@ -1,10 +1,10 @@
-﻿====================
-TestSipParser 프로젝트
-====================
+﻿=================
+TestOpenssl
+=================
 
 1. 개요
 
- * C++ SIP Parser / SDP Parser 라이브러리 기능 테스트
+ * openssl thread 안정성 테스트
  
 2. 개발자 정보
   
@@ -15,3 +15,4 @@ TestSipParser 프로젝트
 3. 라이선스
 
  * 본 프로젝트의 라이선스는 GPLv3 이고 기업용 라이선스는 websearch@naver.com 으로 문의해 주세요.
+
