@@ -41,6 +41,9 @@ THREAD_API ClientThread( LPVOID lpParameter )
 		}
 	}
 
+	SSLClose( psttSsl );
+	closesocket( hSocket );
+
 	return 0;
 }
 
