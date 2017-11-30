@@ -27,6 +27,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SipUserAgent", "SipUserAgen
 		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB} = {11E19CA3-F409-41E3-BD62-E1CEA134B7DB}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HttpParser", "HttpParser\HttpParser.vcproj", "{FDC90DE9-6824-47BE-B089-2B22CF515D7F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{59766094-16E8-4602-9621-6C1E5ED9AF5F} = {59766094-16E8-4602-9621-6C1E5ED9AF5F}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -73,6 +78,12 @@ Global
 		{372B4708-6047-480E-8A4E-98E80CC8AC66}.Release|Win32.Build.0 = Release|Win32
 		{372B4708-6047-480E-8A4E-98E80CC8AC66}.Release|x64.ActiveCfg = Release|x64
 		{372B4708-6047-480E-8A4E-98E80CC8AC66}.Release|x64.Build.0 = Release|x64
+		{FDC90DE9-6824-47BE-B089-2B22CF515D7F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FDC90DE9-6824-47BE-B089-2B22CF515D7F}.Debug|Win32.Build.0 = Debug|Win32
+		{FDC90DE9-6824-47BE-B089-2B22CF515D7F}.Debug|x64.ActiveCfg = Debug|Win32
+		{FDC90DE9-6824-47BE-B089-2B22CF515D7F}.Release|Win32.ActiveCfg = Release|Win32
+		{FDC90DE9-6824-47BE-B089-2B22CF515D7F}.Release|Win32.Build.0 = Release|Win32
+		{FDC90DE9-6824-47BE-B089-2B22CF515D7F}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
