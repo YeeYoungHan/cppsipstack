@@ -73,6 +73,7 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 		CTcpComm clsTcpComm;
 		bool bAccept = true;
 
+#ifdef USE_TLS
 		if( pclsArg->m_pclsStack->m_clsSetup.m_bUseTls )
 		{
 			if( SSLConnect( hConn, &clsTcpComm.m_psttSsl ) == false )
@@ -84,6 +85,7 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 				bAccept = false;
 			}
 		}
+#endif
 
 		if( bAccept )
 		{

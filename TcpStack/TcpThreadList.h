@@ -43,11 +43,13 @@ public:
 
 	void Close()
 	{
+#ifdef USE_TLS
 		if( m_psttSsl )
 		{
 			SSLClose( m_psttSsl );
 			m_psttSsl = NULL;
 		}
+#endif
 
 		if( m_hSocket != INVALID_SOCKET )
 		{

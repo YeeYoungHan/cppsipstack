@@ -80,6 +80,7 @@ THREAD_API TcpPipeThread( LPVOID lpParameter )
 				{
 					bAccept = true;
 
+#ifdef USE_TLS
 					if( pclsStack->m_clsSetup.m_bUseTls && clsTcpComm.m_bClient == false )
 					{
 						if( SSLAccept( clsTcpComm.m_hSocket, &clsTcpComm.m_psttSsl, false, 0, 10000 ) == false )
@@ -87,6 +88,7 @@ THREAD_API TcpPipeThread( LPVOID lpParameter )
 							bAccept = false;
 						}
 					}
+#endif
 
 					if( bAccept )
 					{
@@ -141,6 +143,7 @@ THREAD_API TcpPipeThread( LPVOID lpParameter )
 		{
 			if( !(pclsSessionList->m_psttPollFd[iIndex].revents & POLLIN) ) continue;
 
+#ifdef USE_TLS
 			if( pclsSessionList->m_pclsSession[iIndex].m_psttSsl )
 			{
 				pclsSessionList->m_pclsSession[iIndex].m_clsMutex.acquire();
@@ -148,6 +151,7 @@ THREAD_API TcpPipeThread( LPVOID lpParameter )
 				pclsSessionList->m_pclsSession[iIndex].m_clsMutex.release();
 			}
 			else
+#endif
 			{
 				n = recv( pclsSessionList->m_psttPollFd[iIndex].fd, szPacket, sizeof(szPacket), 0 );
 			}

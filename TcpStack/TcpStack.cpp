@@ -49,6 +49,7 @@ bool CTcpStack::Start( CTcpStackSetup * pclsSetup, ITcpStackCallBack * pclsCallB
 
 	if( pclsSetup->m_iListenPort > 0 )
 	{
+#ifdef USE_TLS
 		if( pclsSetup->m_bUseTls )
 		{
 			if( SSLServerStart( pclsSetup->m_strCertFile.c_str(), "" ) == false )
@@ -57,6 +58,7 @@ bool CTcpStack::Start( CTcpStackSetup * pclsSetup, ITcpStackCallBack * pclsCallB
 				return false;
 			}
 		}
+#endif
 
 		if( pclsSetup->m_strListenIp.empty() )
 		{
@@ -128,6 +130,7 @@ bool CTcpStack::Stop( )
 		m_hTcpListenFd = INVALID_SOCKET;
 	}
 
+#ifdef USE_TLS
 	if( m_clsSetup.m_bUseTls )
 	{
 		if( m_clsSetup.m_iListenPort > 0 )
@@ -135,6 +138,7 @@ bool CTcpStack::Stop( )
 			SSLServerStop();
 		}
 	}
+#endif
 
 	return true;
 }

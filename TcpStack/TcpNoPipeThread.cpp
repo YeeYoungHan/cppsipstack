@@ -47,6 +47,7 @@ THREAD_API TcpNoPipeThread( LPVOID lpParameter )
 	clsSessionInfo.m_iPort = pclsArg->m_iPort;
 	time( &clsSessionInfo.m_iConnectTime );
 
+#ifdef USE_TLS
 	if( pclsStack->m_clsSetup.m_bUseTls && pclsArg->m_bClient == false )
 	{
 		if( SSLAccept( clsSessionInfo.m_hSocket, &clsSessionInfo.m_psttSsl, false, 0, 10000 ) == false )
@@ -54,6 +55,7 @@ THREAD_API TcpNoPipeThread( LPVOID lpParameter )
 			bAccept = false;
 		}
 	}
+#endif
 
 	delete pclsArg;
 
@@ -109,6 +111,7 @@ THREAD_API TcpNoPipeThread( LPVOID lpParameter )
 						continue;
 					}
 
+#ifdef USE_TLS
 					if( clsSessionInfo.m_psttSsl )
 					{
 						clsSessionInfo.m_clsMutex.acquire();
@@ -116,6 +119,7 @@ THREAD_API TcpNoPipeThread( LPVOID lpParameter )
 						clsSessionInfo.m_clsMutex.release();
 					}
 					else
+#endif
 					{
 						n = recv( clsSessionInfo.m_hSocket, szPacket, sizeof(szPacket), 0 );
 					}

@@ -55,6 +55,7 @@ bool CTcpSessionInfo::Send( const char * pszPacket, int iPacketLen )
 	}
 
 	m_clsMutex.acquire();
+#ifdef USE_TLS
 	if( m_psttSsl )
 	{
 		if( SSLSend( m_psttSsl, pszPacket, iPacketLen ) == iPacketLen )
@@ -62,7 +63,9 @@ bool CTcpSessionInfo::Send( const char * pszPacket, int iPacketLen )
 			bRes = true;
 		}
 	}
-	else if( m_hSocket != INVALID_SOCKET )
+	else 
+#endif
+	if( m_hSocket != INVALID_SOCKET )
 	{
 		if( TcpSend( m_hSocket, pszPacket, iPacketLen ) == iPacketLen )
 		{
@@ -136,11 +139,13 @@ void CTcpSessionInfo::Log( const char * pszPacket, int iPacketLen, bool bSend )
 void CTcpSessionInfo::Clear()
 {
 	m_clsMutex.acquire();
+#ifdef USE_TLS
 	if( m_psttSsl )
 	{
 		SSLClose( m_psttSsl );
 		m_psttSsl = NULL;
 	}
+#endif
 
 	m_hSocket = INVALID_SOCKET;
 	m_clsMutex.release();
