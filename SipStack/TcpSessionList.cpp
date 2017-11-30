@@ -254,10 +254,12 @@ void CTcpSessionList::DeleteTimeout( int iTimeout, CThreadListEntry * pclsEntry 
 			{
 				m_pclsSipStack->m_clsTcpSocketMap.Delete( m_clsList[i].m_strIp.c_str(), m_clsList[i].m_iPort );
 			}
+#ifdef USE_TLS
 			else if( m_eTransport == E_SIP_TLS )
 			{
 				m_pclsSipStack->m_clsTlsSocketMap.Delete( m_clsList[i].m_strIp.c_str(), m_clsList[i].m_iPort );
 			}
+#endif
 
 			Delete( i, pclsEntry );
 		}

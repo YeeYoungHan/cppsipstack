@@ -79,7 +79,10 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	m_clsICT.SetTimerD( m_clsSetup.m_iTimerD );
 	m_clsNIST.SetTimerJ( m_clsSetup.m_iTimerJ );
 	m_clsTcpConnectMap.SetStateful( m_clsSetup.m_bStateful );
+
+#ifdef USE_TLS
 	m_clsTlsConnectMap.SetStateful( m_clsSetup.m_bStateful );
+#endif
 
 	InitNetwork();
 
