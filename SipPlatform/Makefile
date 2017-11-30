@@ -20,7 +20,7 @@ LIB_OBJ=Directory.o Log.o FileLog.o ServerUtility.o \
 	StringUtility.o StringMap.o \
 	TimeString.o TimeUtility.o \
 	FileUtility.o \
-	Random.o
+	Random.o Base64.o
 
 libsipplatform.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)
