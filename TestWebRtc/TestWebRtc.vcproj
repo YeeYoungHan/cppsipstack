@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipStack;../SipParser;../HttpStack;../TcpStack;../HttpParser;../XmlParser;../SipPlatform;../openssl/window/32bit/include"
+				AdditionalIncludeDirectories="../SipUserAgent;../SipStack;../SipParser;../SdpParser;../HttpStack;../TcpStack;../HttpParser;../XmlParser;../SipPlatform;../openssl/window/32bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipStack;../SipParser;../HttpStack;../TcpStack;../HttpParser;../XmlParser;../SipPlatform;../openssl/window/32bit/include"
+				AdditionalIncludeDirectories="../SipUserAgent;../SipStack;../SipParser;../SdpParser;../HttpStack;../TcpStack;../HttpParser;../XmlParser;../SipPlatform;../openssl/window/32bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -180,14 +180,6 @@
 				RelativePath=".\Main.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\WebRtcServer.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\WebRtcServer.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="자료구조"
@@ -206,6 +198,30 @@
 			</File>
 			<File
 				RelativePath=".\UserMap.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="SIP"
+			>
+			<File
+				RelativePath=".\SipCallBack.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipCallBack.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="HTTP"
+			>
+			<File
+				RelativePath=".\HttpCallBack.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\HttpCallBack.h"
 				>
 			</File>
 		</Filter>

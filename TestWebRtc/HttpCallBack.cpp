@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "WebRtcServer.h"
+#include "HttpCallBack.h"
 #include "HttpStatusCode.h"
 #include "FileUtility.h"
 #include "Directory.h"
@@ -27,22 +27,22 @@
 
 extern CHttpStack gclsStack;
 
-CWebRtcServer::CWebRtcServer() : m_bStop(false)
+CHttpCallBack::CHttpCallBack() : m_bStop(false)
 {
 }
 
-CWebRtcServer::~CWebRtcServer()
+CHttpCallBack::~CHttpCallBack()
 {
 }
 
 /**
- * @ingroup TestHttpStack
+ * @ingroup TestWebRtc
  * @brief HTTP 요청 수신 이벤트 callback
  * @param pclsRequest		HTTP 요청 메시지
  * @param pclsResponse	HTTP 응답 메시지 - 응용에서 저장한다.
  * @returns 응용에서 HTTP 응답 메시지를 정상적으로 생성하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool CWebRtcServer::RecvHttpRequest( CHttpMessage * pclsRequest, CHttpMessage * pclsResponse )
+bool CHttpCallBack::RecvHttpRequest( CHttpMessage * pclsRequest, CHttpMessage * pclsResponse )
 {
 	std::string strPath = m_strDocumentRoot;
 	std::string strExt;
@@ -140,23 +140,23 @@ bool CWebRtcServer::RecvHttpRequest( CHttpMessage * pclsRequest, CHttpMessage * 
 }
 
 /**
- * @ingroup TestHttpStack
+ * @ingroup TestWebRtc
  * @brief WebSocket 클라이언트 TCP 연결 시작 이벤트 callback
  * @param pszClientIp WebSocket 클라이언트 IP 주소
  * @param iClientPort WebSocket 클라이언트 포트 번호
  */
-void CWebRtcServer::WebSocketConnected( const char * pszClientIp, int iClientPort )
+void CHttpCallBack::WebSocketConnected( const char * pszClientIp, int iClientPort )
 {
 	printf( "WebSocket[%s:%d] connected\n", pszClientIp, iClientPort );
 }
 
 /**
- * @ingroup TestHttpStack
+ * @ingroup TestWebRtc
  * @brief WebSocket 클라이언트 TCP 연결 종료 이벤트 callback
  * @param pszClientIp WebSocket 클라이언트 IP 주소
  * @param iClientPort WebSocket 클라이언트 포트 번호
  */
-void CWebRtcServer::WebSocketClosed( const char * pszClientIp, int iClientPort )
+void CHttpCallBack::WebSocketClosed( const char * pszClientIp, int iClientPort )
 {
 	printf( "WebSocket[%s:%d] closed\n", pszClientIp, iClientPort );
 
@@ -167,14 +167,14 @@ void CWebRtcServer::WebSocketClosed( const char * pszClientIp, int iClientPort )
 }
 
 /**
- * @ingroup TestHttpStack
+ * @ingroup TestWebRtc
  * @brief WebSocket 클라이언트 데이터 수신 이벤트 callback
  * @param pszClientIp WebSocket 클라이언트 IP 주소
  * @param iClientPort WebSocket 클라이언트 포트 번호
  * @param strData			WebSocket 클라이언트가 전송한 데이터
  * @returns WebSocket 클라이언트 연결을 유지하려면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool CWebRtcServer::WebSocketData( const char * pszClientIp, int iClientPort, std::string & strData )
+bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, std::string & strData )
 {
 	printf( "WebSocket[%s:%d] recv[%s]\n", pszClientIp, iClientPort, strData.c_str() );
 
@@ -288,7 +288,7 @@ bool CWebRtcServer::WebSocketData( const char * pszClientIp, int iClientPort, st
  * @param fmt					전송 문자열
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool CWebRtcServer::Send( const char * pszClientIp, int iClientPort, const char * fmt, ... )
+bool CHttpCallBack::Send( const char * pszClientIp, int iClientPort, const char * fmt, ... )
 {
 	va_list	ap;
 	char		szBuf[8192];
@@ -316,7 +316,7 @@ bool CWebRtcServer::Send( const char * pszClientIp, int iClientPort, const char 
  * @param strUserId		전송된 사용자 아이디
  * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool CWebRtcServer::SendCall( const char * pszClientIp, int iClientPort, std::string & strData, std::string & strUserId )
+bool CHttpCallBack::SendCall( const char * pszClientIp, int iClientPort, std::string & strData, std::string & strUserId )
 {
 	std::string strOtherId;
 	CUserInfo clsOtherInfo;

@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "WebRtcServer.h"
+#include "HttpCallBack.h"
 #include "Directory.h"
 #include "Log.h"
 #include "MemoryDebug.h"
@@ -35,7 +35,7 @@ int main( int argc, char * argv[] )
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF );
 #endif
 
-	CWebRtcServer clsServer;
+	CHttpCallBack clsServer;
 	CTcpStackSetup clsSetup;
 
 #ifdef WIN32

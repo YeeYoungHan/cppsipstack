@@ -23,14 +23,14 @@
 #include "StringUtility.h"
 
 /**
- * @ingroup TestHttpStack
+ * @ingroup TestWebRtc
  * @brief HTTP 요청 및 WebSocket callback 클래스
  */
-class CWebRtcServer : public IHttpStackCallBack
+class CHttpCallBack : public IHttpStackCallBack
 {
 public:
-	CWebRtcServer();
-	virtual ~CWebRtcServer();
+	CHttpCallBack();
+	virtual ~CHttpCallBack();
 
 	virtual bool RecvHttpRequest( CHttpMessage * pclsRequest, CHttpMessage * pclsResponse );
 

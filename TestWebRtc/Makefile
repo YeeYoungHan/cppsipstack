@@ -2,12 +2,17 @@
 #
 # programmer : yee young han ( websearch@naver.com )
 #            : http://blog.naver.com/websearch
-# start date : 2017/11/16
+# start date : 2017/12/01
 
 include ../Makefile.mk
 
-INC=-I../HttpStack -I../TcpStack -I../HttpParser -I../XmlParser -I../SipPlatform
-LIB=-L../HttpStack -lhttpstack \
+INC=-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser \
+	-I../HttpStack -I../TcpStack -I../HttpParser -I../XmlParser -I../SipPlatform
+LIB=-L../SipUserAgent -lsipuseragent \
+	-L../SipStack -lsipstack \
+	-L../SipParser -lsipparser \
+	-L../SdpParser -lsdpparser \
+	-L../HttpStack -lhttpstack \
 	-L../TcpStack -ltcpstack \
 	-L../HttpParser -lhttpparser \
 	-L../XmlParser -lxmlparser \
@@ -21,7 +26,8 @@ LIB=-L../HttpStack -lhttpstack \
 all: TestWebRtc.exe
 
 SRV_OBJ=Main.o \
-	WebRtcServer.o \
+	HttpCallBack.o \
+	SipCallBack.o \
 	UserMap.o CallMap.o
 
 TestWebRtc.exe: $(SRV_OBJ)
