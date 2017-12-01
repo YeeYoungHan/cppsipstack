@@ -19,6 +19,10 @@ all:
 	cd KSipServer && make
 	cd SipLoadBalancer && make
 	cd SipSpeedLinux && make
+	cd TcpStack && make
+	cd HttpParser && make
+	cd HttpStack && make
+	cd TestWebRtc && make
 
 clean:
 	cd SipPlatform && make clean
@@ -35,6 +39,10 @@ clean:
 	cd KSipServer && make clean
 	cd SipLoadBalancer && make clean
 	cd SipSpeedLinux && make clean
+	cd TcpStack && make clean
+	cd HttpParser && make clean
+	cd HttpStack && make clean
+	cd TestWebRtc && make clean
 
 install:
 
