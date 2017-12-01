@@ -17,11 +17,13 @@
  */
 
 #include "HttpCallBack.h"
+#include "SipCallBack.h"
 #include "Directory.h"
 #include "Log.h"
 #include "MemoryDebug.h"
 
-CHttpStack gclsStack;
+CHttpStack		gclsHttpStack;
+CSipUserAgent gclsSipStack;
 
 int main( int argc, char * argv[] )
 {
@@ -68,7 +70,7 @@ int main( int argc, char * argv[] )
 	}
 
 	// HTTP 서버를 시작한다. HTTP 요청이 수신되면 이에 대한 이벤트를 CSimpleHttpServer 객체로 전달한다.
-	if( gclsStack.Start( &clsSetup, &clsServer ) == false )
+	if( gclsHttpStack.Start( &clsSetup, &clsServer ) == false )
 	{
 		printf( "clsStack.Start error\n" );
 		return 0;
@@ -79,7 +81,7 @@ int main( int argc, char * argv[] )
 		sleep(1);
 	}
 
-	gclsStack.Stop();
+	gclsHttpStack.Stop();
 
 	// 모든 쓰레드가 종료될 때까지 대기한다.
 	sleep(2);

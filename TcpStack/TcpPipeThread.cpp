@@ -24,14 +24,14 @@
 #include "Log.h"
 #include "MemoryDebug.h"
 
-static void DeleteSession( CTcpSessionList * pclsSessionList, CTcpStack * pclsStack, int iIndex )
+static void DeleteSession( CTcpStackSessionList * pclsSessionList, CTcpStack * pclsStack, int iIndex )
 {
 	pclsStack->m_clsClientMap.Delete( pclsSessionList->m_pclsSession[iIndex].m_strIp.c_str(), pclsSessionList->m_pclsSession[iIndex].m_iPort );
 	pclsStack->m_pclsCallBack->SessionClosed( &pclsSessionList->m_pclsSession[iIndex] );
 	pclsSessionList->Delete( iIndex );
 }
 
-static void BeforeDelete( CTcpSessionList * pclsSessionList, int iIndex, void * pclsArg )
+static void BeforeDelete( CTcpStackSessionList * pclsSessionList, int iIndex, void * pclsArg )
 {
 	CTcpStack * pclsStack = (CTcpStack *)pclsArg;
 	pclsStack->m_clsClientMap.Delete( pclsSessionList->m_pclsSession[iIndex].m_strIp.c_str(), pclsSessionList->m_pclsSession[iIndex].m_iPort );
@@ -47,7 +47,7 @@ static void BeforeDelete( CTcpSessionList * pclsSessionList, int iIndex, void * 
 THREAD_API TcpPipeThread( LPVOID lpParameter )
 {
 	CTcpThreadInfo * pclsThreadInfo = (CTcpThreadInfo *)lpParameter;
-	CTcpSessionList * pclsSessionList = &pclsThreadInfo->m_clsSessionList;
+	CTcpStackSessionList * pclsSessionList = &pclsThreadInfo->m_clsSessionList;
 	CTcpStack * pclsStack = pclsThreadInfo->m_pclsStack;
 	CTcpComm			clsTcpComm;
 	int		n, iIndex;

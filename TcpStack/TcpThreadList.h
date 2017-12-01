@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _TCP_THREAD_LIST_H_
-#define _TCP_THREAD_LIST_H_
+#ifndef _TCP_THREAD_LIST2_H_
+#define _TCP_THREAD_LIST2_H_
 
 #include "SipStackDefine.h"
 #include "SipTcp.h"
@@ -83,11 +83,11 @@ public:
 	Socket		m_hSend;				// 송신 pipe
 	Socket		m_hRecv;				// 수신 pipe
 
-	CTcpSessionList	m_clsSessionList;
+	CTcpStackSessionList	m_clsSessionList;
 	CTcpStack	* m_pclsStack;
 };
 
-typedef std::vector< CTcpThreadInfo * > THREAD_LIST;
+typedef std::vector< CTcpThreadInfo * > TCP_THREAD_LIST;
 
 /**
  * @ingroup TcpStack
@@ -117,7 +117,7 @@ public:
 	void GetString( CMonitorString & strBuf );
 
 private:
-	THREAD_LIST	m_clsList;
+	TCP_THREAD_LIST	m_clsList;
 	int					m_iMaxSocketPerThread;
 	int					m_iThreadIndex;
 	CSipMutex		m_clsMutex;

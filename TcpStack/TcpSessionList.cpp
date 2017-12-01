@@ -163,11 +163,11 @@ void CTcpSessionInfo::Clear()
 	}
 }
 
-CTcpSessionList::CTcpSessionList( ) : m_psttPollFd(NULL), m_pclsSession(NULL), m_iPollFdMax(0), m_iPoolFdCount(0)
+CTcpStackSessionList::CTcpStackSessionList( ) : m_psttPollFd(NULL), m_pclsSession(NULL), m_iPollFdMax(0), m_iPoolFdCount(0)
 {
 }
 
-CTcpSessionList::~CTcpSessionList()
+CTcpStackSessionList::~CTcpStackSessionList()
 {
 	if( m_psttPollFd )
 	{
@@ -189,7 +189,7 @@ CTcpSessionList::~CTcpSessionList()
  * @param iPollFdMax TCP 세션 개수
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CTcpSessionList::Init( int iThreadIndex, int iPollFdMax )
+bool CTcpStackSessionList::Init( int iThreadIndex, int iPollFdMax )
 {
 	m_iPollFdMax = iPollFdMax;
 
@@ -223,7 +223,7 @@ bool CTcpSessionList::Init( int iThreadIndex, int iPollFdMax )
  * @param hSocket TCP 소켓
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CTcpSessionList::Insert( Socket hSocket )
+bool CTcpStackSessionList::Insert( Socket hSocket )
 {
 	if( m_iPoolFdCount >= m_iPollFdMax ) return false;
 
@@ -239,7 +239,7 @@ bool CTcpSessionList::Insert( Socket hSocket )
  * @param clsTcpComm	TCP 세션 정보 저장 객체
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-int CTcpSessionList::Insert( CTcpComm & clsTcpComm )
+int CTcpStackSessionList::Insert( CTcpComm & clsTcpComm )
 {
 	if( m_iPoolFdCount >= m_iPollFdMax )
 	{
@@ -267,11 +267,11 @@ int CTcpSessionList::Insert( CTcpComm & clsTcpComm )
  * @param iIndex		TCP 세션 인덱스
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CTcpSessionList::Delete( int iIndex )
+bool CTcpStackSessionList::Delete( int iIndex )
 {
 	if( iIndex >= m_iPoolFdCount || iIndex < 0 ) return false;
 
-	CLog::Print( LOG_INFO, "CTcpSessionList::Delete(%d) (%s:%d)", iIndex, m_pclsSession[iIndex].m_strIp.c_str(), m_pclsSession[iIndex].m_iPort );
+	CLog::Print( LOG_INFO, "CTcpStackSessionList::Delete(%d) (%s:%d)", iIndex, m_pclsSession[iIndex].m_strIp.c_str(), m_pclsSession[iIndex].m_iPort );
 
 	m_pclsSession[iIndex].Clear();
 	ClearFd( iIndex );
@@ -292,7 +292,7 @@ bool CTcpSessionList::Delete( int iIndex )
  * @ingroup TcpStack
  * @brief 모든 TCP 세션 정보를 삭제한다.
  */
-void CTcpSessionList::DeleteAll( )
+void CTcpStackSessionList::DeleteAll( )
 {
 	for( int i = 0; i < m_iPoolFdCount; ++i )
 	{
@@ -311,8 +311,8 @@ void CTcpSessionList::DeleteAll( )
  * @param BeforeDelete	삭제하기 전에 호출하는 callback 함수
  * @param pclsArg				응용 프로그램 변수
  */
-void CTcpSessionList::DeleteTimeout( int iTimeout, int iNoPacketTimeout
-	, void (*BeforeDelete)( CTcpSessionList * pclsSessionList, int iIndex, void * pclsArg ), void * pclsArg )
+void CTcpStackSessionList::DeleteTimeout( int iTimeout, int iNoPacketTimeout
+	, void (*BeforeDelete)( CTcpStackSessionList * pclsSessionList, int iIndex, void * pclsArg ), void * pclsArg )
 {
 	time_t	iTime, iNoPacketTime;
 
@@ -350,7 +350,7 @@ void CTcpSessionList::DeleteTimeout( int iTimeout, int iNoPacketTimeout
  * @param iPacketLen	패킷 길이
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CTcpSessionList::Send( int iIndex, const char * pszPacket, int iPacketLen )
+bool CTcpStackSessionList::Send( int iIndex, const char * pszPacket, int iPacketLen )
 {
 	return m_pclsSession[iIndex].Send( pszPacket, iPacketLen );
 }
@@ -363,7 +363,7 @@ bool CTcpSessionList::Send( int iIndex, const char * pszPacket, int iPacketLen )
  * @param pclsCallBack	세션별로 전송 유무를 결정하는 callback 객체
  * @returns true 를 리턴한다.
  */
-bool CTcpSessionList::SendAll( const char * pszPacket, int iPacketLen, ITcpStackCallBack * pclsCallBack )
+bool CTcpStackSessionList::SendAll( const char * pszPacket, int iPacketLen, ITcpStackCallBack * pclsCallBack )
 {
 	for( int i = 1; i < m_iPoolFdCount; ++i )
 	{
@@ -389,7 +389,7 @@ bool CTcpSessionList::SendAll( const char * pszPacket, int iPacketLen, ITcpStack
  * @param iSessionIndex 전송하지 않을 세션 인덱스
  * @returns true 를 리턴한다.
  */
-bool CTcpSessionList::SendAllExcept( const char * pszPacket, int iPacketLen, ITcpStackCallBack * pclsCallBack, int iThreadIndex, int iSessionIndex )
+bool CTcpStackSessionList::SendAllExcept( const char * pszPacket, int iPacketLen, ITcpStackCallBack * pclsCallBack, int iThreadIndex, int iSessionIndex )
 {
 	for( int i = 1; i < m_iPoolFdCount; ++i )
 	{
@@ -413,7 +413,7 @@ bool CTcpSessionList::SendAllExcept( const char * pszPacket, int iPacketLen, ITc
  * @param iIndex			세션 순번
  * @param clsTcpComm	세션 인덱스
  */
-void CTcpSessionList::Insert( int iIndex, CTcpComm & clsTcpComm )
+void CTcpStackSessionList::Insert( int iIndex, CTcpComm & clsTcpComm )
 {
 	time_t	iTime;
 
@@ -439,7 +439,7 @@ void CTcpSessionList::Insert( int iIndex, CTcpComm & clsTcpComm )
 	m_pclsSession[iIndex].m_psttSsl = clsTcpComm.m_psttSsl;
 	m_pclsSession[iIndex].m_clsMutex.release();
 
-	CLog::Print( LOG_INFO, "CTcpSessionList::Insert(%d) (%s:%d) client(%s)"
+	CLog::Print( LOG_INFO, "CTcpStackSessionList::Insert(%d) (%s:%d) client(%s)"
 		, iIndex, m_pclsSession[iIndex].m_strIp.c_str(), m_pclsSession[iIndex].m_iPort, clsTcpComm.m_bClient ? "true" : "false" );
 }
 
@@ -448,7 +448,7 @@ void CTcpSessionList::Insert( int iIndex, CTcpComm & clsTcpComm )
  * @brief 세션 소켓 정보를 초기화시킨다.
  * @param iIndex 세션 인덱스
  */
-void CTcpSessionList::ClearFd( int iIndex )
+void CTcpStackSessionList::ClearFd( int iIndex )
 {
 	m_pclsSession[iIndex].m_clsMutex.acquire();
 	if( m_psttPollFd[iIndex].fd != INVALID_SOCKET )

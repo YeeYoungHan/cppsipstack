@@ -107,7 +107,7 @@ bool CTcpThreadList::Create( CTcpStack * pclsStack )
  */
 void CTcpThreadList::Destroy()
 {
-	THREAD_LIST::iterator	itTL;
+	TCP_THREAD_LIST::iterator	itTL;
 	CTcpComm		clsTcpComm;
 
 	SendCommandAll( (char *)&clsTcpComm, sizeof(clsTcpComm) );
@@ -127,7 +127,7 @@ void CTcpThreadList::Destroy()
 bool CTcpThreadList::SendCommand( const char * pszData, int iDataLen )
 {
 	bool	bRes = false, bFound = false;
-	THREAD_LIST::iterator	itTL;
+	TCP_THREAD_LIST::iterator	itTL;
 	int iMinCount = 2000000000;
 
 	m_clsMutex.acquire();
@@ -178,7 +178,7 @@ bool CTcpThreadList::SendCommand( const char * pszData, int iDataLen )
 bool CTcpThreadList::SendCommand( const char * pszData, int iDataLen, int iThreadIndex )
 {
 	bool	bRes = false;
-	THREAD_LIST::iterator	itTL;
+	TCP_THREAD_LIST::iterator	itTL;
 
 	m_clsMutex.acquire();
 	for( itTL = m_clsList.begin(); itTL != m_clsList.end(); ++itTL )
@@ -202,7 +202,7 @@ bool CTcpThreadList::SendCommand( const char * pszData, int iDataLen, int iThrea
  */
 void CTcpThreadList::SendCommandAll( const char * pszData, int iDataLen )
 {
-	THREAD_LIST::iterator	itTL;
+	TCP_THREAD_LIST::iterator	itTL;
 
 	m_clsMutex.acquire();
 	for( itTL = m_clsList.begin(); itTL != m_clsList.end(); ++itTL )
@@ -271,7 +271,7 @@ bool CTcpThreadList::Send( int iThreadIndex, int iSessionIndex, const char * psz
  */
 bool CTcpThreadList::SendAll( const char * pszPacket, int iPacketLen, ITcpStackCallBack * pclsCallBack )
 {
-	THREAD_LIST::iterator	itTL;
+	TCP_THREAD_LIST::iterator	itTL;
 
 	m_clsMutex.acquire();
 	for( itTL = m_clsList.begin(); itTL != m_clsList.end(); ++itTL )
@@ -295,7 +295,7 @@ bool CTcpThreadList::SendAll( const char * pszPacket, int iPacketLen, ITcpStackC
  */
 bool CTcpThreadList::SendAllExcept( const char * pszPacket, int iPacketLen, ITcpStackCallBack * pclsCallBack, int iThreadIndex, int iSessionIndex )
 {
-	THREAD_LIST::iterator	itTL;
+	TCP_THREAD_LIST::iterator	itTL;
 
 	m_clsMutex.acquire();
 	for( itTL = m_clsList.begin(); itTL != m_clsList.end(); ++itTL )
@@ -315,7 +315,7 @@ typedef std::list< int > THREAD_INDEX_LIST;
  */
 void CTcpThreadList::DeleteNoUseThread()
 {
-	THREAD_LIST::iterator	itTL;
+	TCP_THREAD_LIST::iterator	itTL;
 	THREAD_INDEX_LIST clsDeleteList;
 	THREAD_INDEX_LIST::iterator itTIL;
 	int iUseCount = 0;
@@ -377,7 +377,7 @@ void CTcpThreadList::DeleteNoUseThread()
  */
 bool CTcpThreadList::DeleteThread( int iThreadIndex )
 {
-	THREAD_LIST::iterator	itTL;
+	TCP_THREAD_LIST::iterator	itTL;
 	CTcpComm		clsTcpComm;
 	bool bRes = false;
 
@@ -422,7 +422,7 @@ bool CTcpThreadList::DeleteThread( int iThreadIndex )
  */
 void CTcpThreadList::GetString( CMonitorString & strBuf )
 {
-	THREAD_LIST::iterator	itTL;
+	TCP_THREAD_LIST::iterator	itTL;
 
 	strBuf.Clear();
 
@@ -571,7 +571,7 @@ int CTcpThreadList::GetThreadIndex()
  */
 bool CTcpThreadList::SelectThreadIndex( int iThreadIndex )
 {
-	THREAD_LIST::iterator itTL;
+	TCP_THREAD_LIST::iterator itTL;
 
 	for( itTL = m_clsList.begin(); itTL != m_clsList.end(); ++itTL )
 	{

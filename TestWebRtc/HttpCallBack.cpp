@@ -25,7 +25,7 @@
 #include "CallMap.h"
 #include "MemoryDebug.h"
 
-extern CHttpStack gclsStack;
+extern CHttpStack gclsHttpStack;
 
 CHttpCallBack::CHttpCallBack() : m_bStop(false)
 {
@@ -298,7 +298,7 @@ bool CHttpCallBack::Send( const char * pszClientIp, int iClientPort, const char 
 	iBufLen = vsnprintf( szBuf, sizeof(szBuf)-1, fmt, ap );
 	va_end( ap );
 
-	if( gclsStack.SendWebSocketPacket( pszClientIp, iClientPort, szBuf, iBufLen ) )
+	if( gclsHttpStack.SendWebSocketPacket( pszClientIp, iClientPort, szBuf, iBufLen ) )
 	{
 		printf( "WebSocket[%s:%d] send[%s]\n", pszClientIp, iClientPort, szBuf );
 		return true;

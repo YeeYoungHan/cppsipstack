@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _TCP_SESSION_LIST_H_
-#define _TCP_SESSION_LIST_H_
+#ifndef _TCP_SESSION_LIST2_H_
+#define _TCP_SESSION_LIST2_H_
 
 #include "SipTcp.h"
 #include "SipMutex.h"
@@ -75,11 +75,11 @@ public:
  * @ingroup TcpStack
  * @brief TCP 쓰레드 별로 관리하는 TCP 세션 정보를 저장하는 클래스 - m_bUseThreadPipe 가 true 일 때에 사용된다.
  */
-class CTcpSessionList
+class CTcpStackSessionList
 {
 public:
-	CTcpSessionList( );
-	~CTcpSessionList( );
+	CTcpStackSessionList( );
+	~CTcpStackSessionList( );
 
 	bool Init( int iThreadIndex, int iPollFdMax );
 	bool Insert( Socket hSocket );
@@ -87,7 +87,7 @@ public:
 	bool Delete( int iIndex );
 	void DeleteAll( );
 	void DeleteTimeout( int iTimeout, int iNoPacketTimeout
-		, void (*BeforeDelete)( CTcpSessionList * pclsSessionList, int iIndex, void * pclsArg ), void * pclsArg );
+		, void (*BeforeDelete)( CTcpStackSessionList * pclsSessionList, int iIndex, void * pclsArg ), void * pclsArg );
 
 	bool Send( int iIndex, const char * pszPacket, int iPacketLen );
 	bool SendAll( const char * pszPacket, int iPacketLen, ITcpStackCallBack * pclsCallBack );
