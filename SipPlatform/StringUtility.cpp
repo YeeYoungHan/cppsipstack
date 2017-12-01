@@ -316,6 +316,48 @@ void SplitString( const char * pszText, STRING_LIST & clsList, char cSep )
 
 /**
  * @ingroup SipPlatform
+ * @brief 입력 문자열을 구분자로 분리하여서 문자열 리스트에 저장한다.
+ * @param pszText 입력 문자열
+ * @param clsList 문자열 리스트
+ * @param cSep		구분자
+ */
+void SplitString( const char * pszText, STRING_VECTOR & clsList, char cSep )
+{
+	int iStartPos = -1, i;
+
+	clsList.clear();
+
+	for( i = 0; pszText[i]; ++i )
+	{
+		if( pszText[i] == cSep )
+		{
+			if( iStartPos >= 0 && iStartPos != i )
+			{
+				std::string strTemp;
+
+				strTemp.append( pszText + iStartPos, i - iStartPos );
+				clsList.push_back( strTemp );
+			}
+
+			iStartPos = i + 1;
+		}
+		else if( i == 0 )
+		{
+			iStartPos = 0;
+		}
+	}
+
+	if( iStartPos >= 0 && iStartPos != i )
+	{
+		std::string strTemp;
+
+		strTemp.append( pszText + iStartPos, i - iStartPos );
+		clsList.push_back( strTemp );
+	}
+}
+
+/**
+ * @ingroup SipPlatform
  * @brief 문자열을 unsigned int 로 변환한다.
  * @param pszText 문자열
  * @returns unsigned int 를 리턴한다.
