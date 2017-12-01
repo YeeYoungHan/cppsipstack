@@ -6,15 +6,16 @@
 
 include ../Makefile.mk
 
-INC=-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser \
-	-I../HttpStack -I../TcpStack -I../HttpParser -I../XmlParser -I../SipPlatform
-LIB=-L../SipUserAgent -lsipuseragent \
+INC=-I../HttpStack -I../TcpStack -I../HttpParser \
+	-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser \
+	-I../XmlParser -I../SipPlatform
+LIB=-L../HttpStack -lhttpstack \
+	-L../TcpStack -ltcpstack \
+	-L../HttpParser -lhttpparser \
+	-L../SipUserAgent -lsipuseragent \
 	-L../SipStack -lsipstack \
 	-L../SipParser -lsipparser \
 	-L../SdpParser -lsdpparser \
-	-L../HttpStack -lhttpstack \
-	-L../TcpStack -ltcpstack \
-	-L../HttpParser -lhttpparser \
 	-L../XmlParser -lxmlparser \
 	-L../SipPlatform -lsipplatform \
 	-lssl -lcrypto -lpthread
