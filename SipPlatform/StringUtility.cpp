@@ -450,7 +450,7 @@ bool IsPrintString( const char * pszText, int iTextLen )
 {
 	for( int i = 0; i < iTextLen; ++i )
 	{
-		if( isprint( pszText[i] ) == 0 ) return false;
+		if( isprint( (uint8_t)pszText[i] ) == 0 ) return false;
 	}
 
 	return true;

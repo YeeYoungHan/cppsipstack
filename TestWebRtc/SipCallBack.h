@@ -34,4 +34,7 @@ public:
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
 };
 
+extern CSipUserAgent gclsSipStack;
+extern CSipCallBack gclsSipCallBack;
+
 #endif

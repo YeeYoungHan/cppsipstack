@@ -30,6 +30,9 @@
 class CUserInfo
 {
 public:
+	std::string	m_strPassWord;
+	std::string	m_strSipServerIp;
+
 	std::string m_strIp;
 	int					m_iPort;
 };
@@ -50,9 +53,12 @@ public:
 	CUserMap();
 	~CUserMap();
 
-	bool Insert( const char * pszUserId, const char * pszIp, int iPort );
+	bool Insert( const char * pszUserId, const char * pszPassWord, const char * pszSipServerIp, const char * pszIp, int iPort );
+	
 	bool Select( const char * pszUserId, CUserInfo & clsUserInfo );
 	bool SelectUserId( const char * pszIp, int iPort, std::string & strUserId );
+
+	bool Delete( const char * pszUserId );
 	bool Delete( const char * pszIp, int iPort, std::string & strUserId );
 
 private:

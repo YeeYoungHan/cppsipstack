@@ -33,11 +33,13 @@ CUserMap::~CUserMap()
  * @ingroup TestWebRtc
  * @brief 사용자 정보를 저장한다.
  * @param pszUserId 사용자 아이디
+ * @param pszPassWord			SIP 서버 로그인 비밀번호
+ * @param pszSipServerIp	SIP 서버 IP 주소
  * @param pszIp			WebSocket 클라이언트 IP 주소
  * @param iPort			WebSocket 클라이언트 포트 번호
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CUserMap::Insert( const char * pszUserId, const char * pszIp, int iPort )
+bool CUserMap::Insert( const char * pszUserId, const char * pszPassWord, const char * pszSipServerIp, const char * pszIp, int iPort )
 {
 	bool bRes = false;
 	std::string strKey;
@@ -55,6 +57,8 @@ bool CUserMap::Insert( const char * pszUserId, const char * pszIp, int iPort )
 		{
 			CUserInfo clsInfo;
 
+			clsInfo.m_strPassWord = pszPassWord;
+			clsInfo.m_strSipServerIp = pszSipServerIp;
 			clsInfo.m_strIp = pszIp;
 			clsInfo.m_iPort = iPort;
 
@@ -115,6 +119,40 @@ bool CUserMap::SelectUserId( const char * pszIp, int iPort, std::string & strUse
 	if( itKeyMap != m_clsKeyMap.end() )
 	{
 		strUserId = itKeyMap->second;
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+/**
+ * @ingroup TestWebRtc
+ * @brief 사용자 아이디로 사용자 정보를 삭제한다.
+ * @param pszUserId 사용자 아이디
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CUserMap::Delete( const char * pszUserId )
+{
+	bool bRes = false;
+	std::string strKey;
+	USER_MAP::iterator itMap;
+	USER_KEY_MAP::iterator itKeyMap;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszUserId );
+	if( itMap != m_clsMap.end() )
+	{
+		GetKey( itMap->second.m_strIp.c_str(), itMap->second.m_iPort, strKey );
+
+		itKeyMap = m_clsKeyMap.find( strKey );
+		if( itKeyMap != m_clsKeyMap.end() )
+		{
+			m_clsKeyMap.erase( itKeyMap );
+		}
+
+		m_clsMap.erase( itMap );
+
 		bRes = true;
 	}
 	m_clsMutex.release();

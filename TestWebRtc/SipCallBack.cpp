@@ -17,6 +17,12 @@
  */
 
 #include "SipCallBack.h"
+#include "HttpCallBack.h"
+#include "UserMap.h"
+#include "MemoryDebug.h"
+
+CSipUserAgent gclsSipStack;
+CSipCallBack gclsSipCallBack;
 
 CSipCallBack::CSipCallBack()
 {
@@ -28,7 +34,18 @@ CSipCallBack::~CSipCallBack()
 
 void CSipCallBack::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
+	CUserInfo clsUserInfo;
 
+	if( gclsUserMap.Select( pclsInfo->m_strUserId.c_str(), clsUserInfo ) )
+	{
+		gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|register|%d", iStatus );
+
+		if( iStatus != SIP_OK )
+		{
+			gclsSipStack.DeleteRegisterInfo( *pclsInfo );
+			gclsUserMap.Delete( pclsInfo->m_strUserId.c_str() );
+		}
+	}
 }
 
 void CSipCallBack::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )

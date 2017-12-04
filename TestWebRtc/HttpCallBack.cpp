@@ -23,9 +23,11 @@
 #include "Log.h"
 #include "UserMap.h"
 #include "CallMap.h"
+#include "SipCallBack.h"
 #include "MemoryDebug.h"
 
-extern CHttpStack gclsHttpStack;
+CHttpStack gclsHttpStack;
+CHttpCallBack	gclsHttpCallBack;
 
 CHttpCallBack::CHttpCallBack() : m_bStop(false)
 {
@@ -197,19 +199,29 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 
 	if( !strcmp( pszCommand, "register" ) )
 	{
-		if( iCount < 3 )
+		if( iCount < 5 )
 		{
 			printf( "register request arg is not correct\n" );
 			return false;
 		}
 
-		if( gclsUserMap.Insert( clsList[2].c_str(), pszClientIp, iClientPort ) == false )
+		if( gclsUserMap.Insert( clsList[2].c_str(), clsList[3].c_str(), clsList[4].c_str(), pszClientIp, iClientPort ) == false )
 		{
 			Send( pszClientIp, iClientPort, "res|register|500" );
 		}
 		else
 		{
-			Send( pszClientIp, iClientPort, "res|register|200" );
+			CSipServerInfo clsServerInfo;
+
+			clsServerInfo.m_strUserId = clsList[2];
+			clsServerInfo.m_strPassWord = clsList[3];
+			clsServerInfo.m_strIp = clsList[4];
+
+			if( gclsSipStack.InsertRegisterInfo( clsServerInfo ) == false )
+			{
+				gclsUserMap.Delete( clsList[2].c_str() );
+				Send( pszClientIp, iClientPort, "res|register|500" );
+			}
 		}
 	}
 	else if( !strcmp( pszCommand, "invite" ) )

@@ -1,4 +1,6 @@
 var gstrUserId = "";
+var gstrUserPw = "";
+var gstrSipServerIp = "";
 var gstrToId = "";
 var gstrSdp = "";
 var ws;
@@ -11,11 +13,28 @@ btnBye.disabled = true;
 function StartSession()
 {
   var txtUserId = document.getElementById('user_id');
+  var txtUserPw = document.getElementById('user_pw');
+  var txtSipServerIp = document.getElementById('sip_server_ip');
+  
   gstrUserId = txtUserId.value;
+  gstrUserPw = txtUserPw.value;
+  gstrSipServerIp = txtSipServerIp.value;
 
   if( gstrUserId.length == 0 )
   {
     alert( "user id is not defined" );
+    return;
+  }
+  
+  if( gstrUserPw.length == 0 )
+  {
+  	alert( "user pw is not defined" );
+    return;
+  }
+  
+  if( gstrSipServerIp.length == 0 )
+  {
+  	alert( "sip server ip is not defined" );
     return;
   }
   
@@ -25,7 +44,7 @@ function StartSession()
   	
   	// websocket 서버에 연결되면 연결 메시지를 화면에 출력한다.
 		ws.onopen = function(e){
-			Send( "req|register|" + gstrUserId );
+			Send( "req|register|" + gstrUserId + "|" + gstrUserPw + "|" + gstrSipServerIp );
 		};
 
 		// websocket 에서 수신한 메시지를 화면에 출력한다.
@@ -43,8 +62,11 @@ function StartSession()
 				case "register":
 					if( arrData[2] == '200' )
 					{
-						btnRegister.disabled = true;
-						btnInvite.disabled = false;
+						if( btnRegister.disabled == false )
+						{
+							btnRegister.disabled = true;
+							btnInvite.disabled = false;
+						}
 					}
 					else
 					{

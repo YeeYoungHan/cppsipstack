@@ -22,9 +22,6 @@
 #include "Log.h"
 #include "MemoryDebug.h"
 
-CHttpStack		gclsHttpStack;
-CSipUserAgent gclsSipStack;
-
 int main( int argc, char * argv[] )
 {
 	if( argc != 2 )
@@ -37,8 +34,8 @@ int main( int argc, char * argv[] )
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF );
 #endif
 
-	CHttpCallBack clsServer;
-	CTcpStackSetup clsSetup;
+	CTcpStackSetup clsHttpSetup;
+	CSipStackSetup clsSipSetup;
 
 #ifdef WIN32
 	CLog::SetDirectory( "c:\\temp\\http" );
@@ -48,40 +45,42 @@ int main( int argc, char * argv[] )
 #endif
 
 	// HTTP 수신 포트 번호를 설정한다.
-	clsSetup.m_iListenPort = 8080;
-	clsSetup.m_iMaxSocketPerThread = 1;
-	clsSetup.m_iThreadMaxCount = 0;
-	clsSetup.m_bUseThreadPipe = false;
-	
-	/*
-	//thread pool 을 사용할 경우
-	clsSetup.m_iMaxSocketPerThread = 10;
-	clsSetup.m_iThreadMaxCount = 10;
-	clsSetup.m_bUseThreadPipe = true;
-	*/
+	clsHttpSetup.m_iListenPort = 8080;
+	clsHttpSetup.m_iMaxSocketPerThread = 1;
+	clsHttpSetup.m_iThreadMaxCount = 0;
+	clsHttpSetup.m_bUseThreadPipe = false;
 
 	// HTTP 서버에서 사용할 Document root 폴더를 설정한다.
-	clsServer.m_strDocumentRoot = argv[1];
+	gclsHttpCallBack.m_strDocumentRoot = argv[1];
 
-	if( CDirectory::IsDirectory( clsServer.m_strDocumentRoot.c_str() ) == false )
+	if( CDirectory::IsDirectory( gclsHttpCallBack.m_strDocumentRoot.c_str() ) == false )
 	{
-		printf( "[%s] is not directory\n", clsServer.m_strDocumentRoot.c_str() );
+		printf( "[%s] is not directory\n", gclsHttpCallBack.m_strDocumentRoot.c_str() );
 		return 0;
 	}
 
 	// HTTP 서버를 시작한다. HTTP 요청이 수신되면 이에 대한 이벤트를 CSimpleHttpServer 객체로 전달한다.
-	if( gclsHttpStack.Start( &clsSetup, &clsServer ) == false )
+	if( gclsHttpStack.Start( &clsHttpSetup, &gclsHttpCallBack ) == false )
 	{
-		printf( "clsStack.Start error\n" );
+		printf( "gclsHttpStack.Start error\n" );
 		return 0;
 	}
 
-	while( clsServer.m_bStop == false )
+	GetLocalIp( clsSipSetup.m_strLocalIp );
+
+	if( gclsSipStack.Start( clsSipSetup, &gclsSipCallBack ) == false )
+	{
+		printf( "gclsSipStack.Start error\n" );
+		return 0;
+	}
+
+	while( gclsHttpCallBack.m_bStop == false )
 	{
 		sleep(1);
 	}
 
 	gclsHttpStack.Stop();
+	gclsSipStack.Stop();
 
 	// 모든 쓰레드가 종료될 때까지 대기한다.
 	sleep(2);

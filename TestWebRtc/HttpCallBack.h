@@ -38,12 +38,14 @@ public:
 	virtual void WebSocketClosed( const char * pszClientIp, int iClientPort );
 	virtual bool WebSocketData( const char * pszClientIp, int iClientPort, std::string & strData );
 
-	std::string m_strDocumentRoot;
-	bool m_bStop;
-
-private:
 	bool Send( const char * pszClientIp, int iClientPort, const char * fmt, ... );
 	bool SendCall( const char * pszClientIp, int iClientPort, std::string & strData, std::string & strUserId );
+
+	std::string m_strDocumentRoot;
+	bool m_bStop;
 };
+
+extern CHttpStack			gclsHttpStack;
+extern CHttpCallBack	gclsHttpCallBack;
 
 #endif
