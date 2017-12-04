@@ -162,43 +162,6 @@ bool CUserMap::Delete( const char * pszUserId )
 
 /**
  * @ingroup TestWebRtc
- * @brief WebSocket 클라이언트 정보로 사용자 정보를 삭제한다.
- * @param pszIp			WebSocket 클라이언트 IP 주소
- * @param iPort			WebSocket 클라이언트 포트 번호
- * @param strUserId 사용자 아이디
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CUserMap::Delete( const char * pszIp, int iPort, std::string & strUserId )
-{
-	bool bRes = false;
-	std::string strKey;
-	USER_MAP::iterator itMap;
-	USER_KEY_MAP::iterator itKeyMap;
-
-	GetKey( pszIp, iPort, strKey );
-
-	m_clsMutex.acquire();
-	itKeyMap = m_clsKeyMap.find( strKey );
-	if( itKeyMap != m_clsKeyMap.end() )
-	{
-		strUserId = itKeyMap->second;
-
-		itMap = m_clsMap.find( itKeyMap->second );
-		if( itMap != m_clsMap.end() )
-		{
-			m_clsMap.erase( itMap );
-		}
-
-		m_clsKeyMap.erase( itKeyMap );
-		bRes = true;
-	}
-	m_clsMutex.release();
-
-	return bRes;
-}
-
-/**
- * @ingroup TestWebRtc
  * @brief 자료구조에 사용할 키를 생성한다.
  * @param pszIp		WebSocket 클라이언트 IP 주소
  * @param iPort		WebSocket 클라이언트 포트 번호

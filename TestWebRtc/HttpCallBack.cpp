@@ -163,9 +163,23 @@ void CHttpCallBack::WebSocketClosed( const char * pszClientIp, int iClientPort )
 	printf( "WebSocket[%s:%d] closed\n", pszClientIp, iClientPort );
 
 	std::string strUserId;
+	CUserInfo clsUserInfo;
 
-	gclsUserMap.Delete( pszClientIp, iClientPort, strUserId );
-	gclsCallMap.Delete( strUserId.c_str() );
+	if( gclsUserMap.SelectUserId( pszClientIp, iClientPort, strUserId ) )
+	{
+		if( gclsUserMap.Select( strUserId.c_str(), clsUserInfo ) )
+		{
+			CSipServerInfo clsServerInfo;
+
+			clsServerInfo.m_strUserId = strUserId;
+			clsServerInfo.m_strIp = clsUserInfo.m_strSipServerIp;
+
+			gclsSipStack.DeleteRegisterInfo( clsServerInfo );
+			gclsUserMap.Delete( strUserId.c_str() );
+		}
+
+		gclsCallMap.Delete( strUserId.c_str() );
+	}
 }
 
 /**
