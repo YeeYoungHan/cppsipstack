@@ -19,6 +19,7 @@
 #ifndef _CALL_MAP_H_
 #define _CALL_MAP_H_
 
+#include "SipUserAgent.h"
 #include <string>
 #include <map>
 #include "SipMutex.h"
@@ -47,7 +48,7 @@ public:
 	bool Select( const char * pszCallId, CCallInfo & clsCallInfo );
 
 	bool Delete( const char * pszCallId );
-	bool DeleteUserId( const char * pszUserId );
+	bool DeleteUserId( const char * pszUserId, SIP_CALL_ID_LIST & clsCallIdList );
 
 private:
 	CALL_MAP	m_clsMap;

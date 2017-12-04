@@ -34,7 +34,16 @@ bool CCallMap::Insert( const char * pszCallId, const char * pszUserId )
 	bool bRes = false;
 
 	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap == m_clsMap.end() )
+	{
+		CCallInfo clsInfo;
 
+		clsInfo.m_strUserId = pszUserId;
+
+		m_clsMap.insert( CALL_MAP::value_type( pszCallId, clsInfo ) );
+		bRes = true;
+	}
 	m_clsMutex.release();
 
 	return bRes;
@@ -46,7 +55,12 @@ bool CCallMap::Select( const char * pszCallId, CCallInfo & clsCallInfo )
 	bool bRes = false;
 
 	m_clsMutex.acquire();
-
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		clsCallInfo = itMap->second;
+		bRes = true;
+	}
 	m_clsMutex.release();
 
 	return bRes;
@@ -58,20 +72,48 @@ bool CCallMap::Delete( const char * pszCallId )
 	bool bRes = false;
 
 	m_clsMutex.acquire();
-
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		m_clsMap.erase( itMap );
+		bRes = true;
+	}
 	m_clsMutex.release();
 
 	return bRes;
 }
 
-bool CCallMap::DeleteUserId( const char * pszUserId )
+bool CCallMap::DeleteUserId( const char * pszUserId, SIP_CALL_ID_LIST & clsCallIdList )
 {
-	CALL_MAP::iterator itMap;
+	CALL_MAP::iterator itMap, itNext;
 	bool bRes = false;
 
-	m_clsMutex.acquire();
+	clsCallIdList.clear();
 
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+LOOP_START:
+		if( !strcmp( pszUserId, itMap->second.m_strUserId.c_str() ) )
+		{
+			clsCallIdList.push_back( itMap->first );
+
+			itNext = itMap;
+			++itNext;
+
+			m_clsMap.erase( itMap );
+
+			if( itNext == m_clsMap.end() ) break;
+			itMap = itNext;
+			goto LOOP_START;
+		}
+	}
 	m_clsMutex.release();
+
+	if( clsCallIdList.size() > 0 )
+	{
+		bRes = true;
+	}
 
 	return bRes;
 }

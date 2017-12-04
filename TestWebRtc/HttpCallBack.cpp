@@ -180,7 +180,15 @@ void CHttpCallBack::WebSocketClosed( const char * pszClientIp, int iClientPort )
 			gclsUserMap.Delete( strUserId.c_str() );
 		}
 
-		gclsCallMap.DeleteUserId( strUserId.c_str() );
+		SIP_CALL_ID_LIST clsCallIdList;
+		SIP_CALL_ID_LIST::iterator itCIL;
+
+		gclsCallMap.DeleteUserId( strUserId.c_str(), clsCallIdList );
+
+		for( itCIL = clsCallIdList.begin(); itCIL != clsCallIdList.end(); ++itCIL )
+		{
+			gclsSipStack.StopCall( itCIL->c_str() );
+		}
 	}
 }
 
@@ -279,7 +287,12 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 				return true;
 			}
 
-
+			if( gclsCallMap.Insert( strCallId.c_str(), strUserId.c_str() ) == false )
+			{
+				gclsSipStack.StopCall( strCallId.c_str() );
+				Send( pszClientIp, iClientPort, "res|invite|500" );
+				return true;
+			}
 
 			/*
 			else if( gclsUserMap.Select( pszToId, clsToUser ) == false )

@@ -32,6 +32,8 @@ public:
 	virtual void EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
 	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
+
+	bool MakeSdp( CSipCallRtp * pclsRtp, std::string & strSdp );
 };
 
 extern CSipUserAgent gclsSipStack;
