@@ -23,8 +23,14 @@
 #include <map>
 #include "SipMutex.h"
 
-// key = caller user id, value = callee user id
-typedef std::map< std::string, std::string > CALL_MAP;
+class CCallInfo
+{
+public:
+	std::string m_strUserId;
+};
+
+// key = SIP Call-ID
+typedef std::map< std::string, CCallInfo > CALL_MAP;
 
 /**
  * @ingroup TestWebRtc
@@ -36,9 +42,12 @@ public:
 	CCallMap();
 	~CCallMap();
 
-	bool Insert( const char * pszCaller, const char * pszCallee );
-	bool Select( const char * pszUserId, std::string & strOtherId );
-	bool Delete( const char * pszUserId );
+	bool Insert( const char * pszCallId, const char * pszUserId );
+
+	bool Select( const char * pszCallId, CCallInfo & clsCallInfo );
+
+	bool Delete( const char * pszCallId );
+	bool DeleteUserId( const char * pszUserId );
 
 private:
 	CALL_MAP	m_clsMap;

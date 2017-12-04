@@ -39,7 +39,6 @@ public:
 	virtual bool WebSocketData( const char * pszClientIp, int iClientPort, std::string & strData );
 
 	bool Send( const char * pszClientIp, int iClientPort, const char * fmt, ... );
-	bool SendCall( const char * pszClientIp, int iClientPort, std::string & strData, std::string & strUserId );
 
 	std::string m_strDocumentRoot;
 	bool m_bStop;

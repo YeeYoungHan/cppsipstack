@@ -81,7 +81,7 @@ function handleUserMediaError(error)
 function startLocal()
 {
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-  navigator.getUserMedia( { audio:true, video:true }, handleLocalMedia, handleUserMediaError );
+  navigator.getUserMedia( { audio:true, video:false }, handleLocalMedia, handleUserMediaError );
 }
 
 function stopPeer()
