@@ -202,6 +202,7 @@ void CHttpCallBack::WebSocketClosed( const char * pszClientIp, int iClientPort )
  */
 bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, std::string & strData )
 {
+	CLog::Print( LOG_NETWORK, "WebSocket[%s:%d] recv[%s]", pszClientIp, iClientPort, strData.c_str() );
 	printf( "WebSocket[%s:%d] recv[%s]\n", pszClientIp, iClientPort, strData.c_str() );
 
 	STRING_VECTOR clsList;
@@ -357,6 +358,8 @@ bool CHttpCallBack::Send( const char * pszClientIp, int iClientPort, const char 
 		printf( "WebSocket[%s:%d] send[%s]\n", pszClientIp, iClientPort, szBuf );
 		return true;
 	}
+
+	CLog::Print( LOG_NETWORK, "WebSocket[%s:%d] send[%s]", pszClientIp, iClientPort, szBuf );
 
 	return false;
 }
