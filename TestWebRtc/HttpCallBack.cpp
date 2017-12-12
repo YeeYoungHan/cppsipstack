@@ -236,6 +236,9 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 		}
 		else
 		{
+#ifdef _DEBUG
+			Send( pszClientIp, iClientPort, "res|register|200" );
+#else
 			CSipServerInfo clsServerInfo;
 
 			clsServerInfo.m_strUserId = clsList[2];
@@ -247,6 +250,7 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 				gclsUserMap.Delete( clsList[2].c_str() );
 				Send( pszClientIp, iClientPort, "res|register|500" );
 			}
+#endif
 		}
 	}
 	else if( !strcmp( pszCommand, "invite" ) )
@@ -272,6 +276,34 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 				Send( pszClientIp, iClientPort, "res|invite|403" );
 				return true;
 			}
+
+#ifdef _DEBUG
+			char szSdp[8192], szPacket[1024], szIp[21];
+			int iLocalPort = 10000;
+			unsigned short iPort;
+			int iPacketLen;
+
+			Socket hUdpSocket = UdpListen( iLocalPort, NULL );
+
+			snprintf( szSdp, sizeof(szSdp), "v=0\r\n"
+				"o=- 4532014611503881976 0 IN IP4 127.0.0.1\r\n"
+				"s=-\r\n"
+				"t=0 0\r\n"
+				"m=audio %d RTP/AVP 0\r\n"
+				"c=IN IP4 192.168.0.32\r\n"
+				"a=rtpmap:0 PCMU/8000\r\n"
+				"a=sendrecv\r\n"
+				"a=ice-ufrag:lMRb\r\n"
+				"a=ice-pwd:FNPRfT4qUaVOKa0ivkn64mMY\r\n"
+				"a=fingerprint:sha-256 0D:F6:43:E7:2D:94:11:47:47:84:A4:E4:AF:42:34:A4:B1:B9:58:AB:A9:BF:82:37:7A:73:C4:04:F0:62:7C:36\r\n"
+				"a=candidate:1 1 udp 2130706431 %s %d typ host\r\n", iLocalPort, gstrLocalIp.c_str(), iLocalPort );
+			Send( pszClientIp, iClientPort, "res|invite|200|%s", szSdp );
+
+			iPacketLen = sizeof(szPacket);
+			UdpRecv( hUdpSocket, szPacket, &iPacketLen, szIp, sizeof(szIp), &iPort );
+
+			return true;
+#endif
 
 			if( GetLocalRtp( pszSdp, clsRtp ) == false )
 			{

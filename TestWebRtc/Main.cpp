@@ -22,6 +22,7 @@
 #include "Log.h"
 #include "MemoryDebug.h"
 
+std::string gstrLocalIp;
 std::string gstrLocalIpPrefix;
 
 int main( int argc, char * argv[] )
@@ -70,6 +71,7 @@ int main( int argc, char * argv[] )
 
 	// 2개 이상의 IP 주소를 가지고 있을 수 있으므로 SIP 통신에 사용할 IP 주소를 실행 인자로 받아들이고 해당 IP 주소와 동일 대역의 IP 주소만 RTP 용으로 사용한다.
 	clsSipSetup.m_strLocalIp = argv[1];
+	gstrLocalIp = clsSipSetup.m_strLocalIp;
 	gstrLocalIpPrefix = clsSipSetup.m_strLocalIp;
 	const char * pszLocalIp = gstrLocalIpPrefix.c_str();
 	int iLen = gstrLocalIpPrefix.length();
