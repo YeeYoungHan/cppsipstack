@@ -197,7 +197,7 @@ bool DTLSConnect( const char * pszIp, int iPort, SSL ** ppsttSsl )
 	{
 		return false;
 	}
-	
+
 	SSL_set_fd( psttSsl, (int)fd );
 
 	if( SSL_connect( psttSsl ) == -1 )
@@ -298,6 +298,4 @@ void UdpServer( const char * pszCertFile )
 
 	SSLClose( psttSsl );
 	closesocket( hListen );
-
-	sleep(1);
 }
