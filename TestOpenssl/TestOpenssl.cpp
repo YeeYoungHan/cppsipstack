@@ -28,11 +28,11 @@ int main( int argc, char * argv[] )
 
 	if( !strcmp( argv[2], "tcp" ) )
 	{
-		TestOpensslTcp( argv[1] );
+		TcpServer( argv[1] );
 	}
 	else
 	{
-		TestOpensslUdp( argv[1] );
+		UdpServer( argv[1] );
 	}
 
 	return 0;

@@ -28,7 +28,7 @@
 bool StartTcpClientThread();
 bool StartTcpSendThread( SSL * psttSsl );
 
-void TestOpensslTcp( const char * pszCertFile );
-void TestOpensslUdp( const char * pszCertFile );
+void TcpServer( const char * pszCertFile );
+void UdpServer( const char * pszCertFile );
 
 #endif

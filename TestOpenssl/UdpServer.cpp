@@ -18,7 +18,7 @@
 
 #include "TestOpenssl.h"
 
-void TestOpensslUdp( const char * pszCertFile )
+void UdpServer( const char * pszCertFile )
 {
 	char szIp[51];
 	int iPort;

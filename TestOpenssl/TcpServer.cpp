@@ -18,7 +18,7 @@
 
 #include "TestOpenssl.h"
 
-void TestOpensslTcp( const char * pszCertFile )
+void TcpServer( const char * pszCertFile )
 {
 	char szIp[51];
 	int iPort;

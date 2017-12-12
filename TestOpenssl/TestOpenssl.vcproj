@@ -184,6 +184,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TcpServer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestOpenssl.cpp"
 				>
 			</File>
@@ -192,11 +196,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TestOpensslTcp.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TestOpensslUdp.cpp"
+				RelativePath=".\UdpServer.cpp"
 				>
 			</File>
 		</Filter>
