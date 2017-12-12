@@ -140,6 +140,7 @@ bool DTLSServerStart( const char * szCertFile, const char * szCaCertFile )
 
 	SSL_CTX_set_cipher_list(gpsttClientCtx, "eNULL:!MD5");
 
+	/*
 	if( SSL_CTX_use_certificate_file(gpsttClientCtx, szCertFile, SSL_FILETYPE_PEM) <= 0 )
 	{
 		CLog::Print( LOG_ERROR, "SSL_CTX_use_certificate_file error" );
@@ -151,7 +152,7 @@ bool DTLSServerStart( const char * szCertFile, const char * szCaCertFile )
 		CLog::Print( LOG_ERROR, "SSL_CTX_use_PrivateKey_file error(%d)", n );
 		return false;
 	}
-
+	*/
 
 	return true;
 }
