@@ -176,11 +176,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\ClientThread.cpp"
+				RelativePath=".\TcpClientThread.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SendThread.cpp"
+				RelativePath=".\TcpSendThread.cpp"
 				>
 			</File>
 			<File
@@ -189,6 +189,14 @@
 			</File>
 			<File
 				RelativePath=".\TestOpenssl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TestOpensslTcp.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TestOpensslUdp.cpp"
 				>
 			</File>
 		</Filter>

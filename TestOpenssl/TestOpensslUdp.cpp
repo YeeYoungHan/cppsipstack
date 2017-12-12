@@ -16,19 +16,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _TEST_OPENSSL_H_
-#define _TEST_OPENSSL_H_
+#include "TestOpenssl.h"
 
-#define USE_TLS
+void TestOpensslUdp( const char * pszCertFile )
+{
+	char szIp[51];
+	int iPort;
 
-#include "SipPlatformDefine.h"
-#include "ServerUtility.h"
-#include "TlsFunction.h"
+	InitNetwork();
 
-bool StartTcpClientThread();
-bool StartTcpSendThread( SSL * psttSsl );
+	if( SSLServerStart( pszCertFile, "" ) == false )
+	{
+		printf( "SSLServerStart() error\n" );
+		return;
+	}
 
-void TestOpensslTcp( const char * pszCertFile );
-void TestOpensslUdp( const char * pszCertFile );
+	Socket hListen = UdpListen( 3333, NULL );
+	if( hListen == INVALID_SOCKET )
+	{
+		printf( "TcpListen() error\n" );
+		return;
+	}
 
-#endif
+
+}

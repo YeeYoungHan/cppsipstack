@@ -18,22 +18,54 @@
 
 #include "TestOpenssl.h"
 
-int main( int argc, char * argv[] )
+THREAD_API TcpClientThread( LPVOID lpParameter )
 {
-	if( argc != 3 )
+	Socket hSocket = TcpConnect( "127.0.0.1", 3333 );
+	if( hSocket == INVALID_SOCKET )
 	{
-		printf( "[Usage] %s {pem filename} {tcp|udp}\n", argv[0] );
+		printf( "TcpConnect() error\n" );
 		return 0;
 	}
 
-	if( !strcmp( argv[2], "tcp" ) )
+	SSL * psttSsl;
+	char	szPacket[8192];
+	int n, iSize = 0, iCount = 0;
+
+	if( SSLConnect( hSocket, &psttSsl ) == false )
 	{
-		TestOpensslTcp( argv[1] );
-	}
-	else
-	{
-		TestOpensslUdp( argv[1] );
+		printf( "SSLConnect() error\n" );
+		return 0;
 	}
 
+	StartTcpSendThread( psttSsl );
+
+	while( 1 )
+	{
+		n = SSLRecv( psttSsl, szPacket, sizeof(szPacket) );
+		if( n <= 0 )
+		{
+			printf( "SSLRecv error\n" );
+			break;
+		}
+
+		iSize += n;
+		++iCount;
+
+		if( iSize >= 1000000000 )
+		{
+			printf( "%s size(%d) count(%d)\n", __FUNCTION__, iSize, iCount );
+			iSize = 0;
+			iCount = 0;
+		}
+	}
+
+	SSLClose( psttSsl );
+	closesocket( hSocket );
+
 	return 0;
+}
+
+bool StartTcpClientThread()
+{
+	return StartThread( "TcpClientThread", TcpClientThread, NULL );
 }

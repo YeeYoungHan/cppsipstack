@@ -16,19 +16,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _TEST_OPENSSL_H_
-#define _TEST_OPENSSL_H_
+#include "TestOpenssl.h"
 
-#define USE_TLS
+THREAD_API TcpSendThread( LPVOID lpParameter )
+{
+	SSL * psttSsl = (SSL *)lpParameter;
+	char szPacket[8192];
 
-#include "SipPlatformDefine.h"
-#include "ServerUtility.h"
-#include "TlsFunction.h"
+	memset( szPacket, 0, sizeof(szPacket) );
 
-bool StartTcpClientThread();
-bool StartTcpSendThread( SSL * psttSsl );
+	while( 1 )
+	{
+		SSLSend( psttSsl, szPacket, sizeof(szPacket) );
+	}
 
-void TestOpensslTcp( const char * pszCertFile );
-void TestOpensslUdp( const char * pszCertFile );
+	return 0;
+}
 
-#endif
+bool StartTcpSendThread( SSL * psttSsl )
+{
+	return StartThread( "TcpSendThread", TcpSendThread, psttSsl );
+}
