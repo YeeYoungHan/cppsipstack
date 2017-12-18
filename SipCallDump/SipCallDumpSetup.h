@@ -19,6 +19,9 @@
 #ifndef _SIP_CALL_DUMP_SETUP_H_
 #define _SIP_CALL_DUMP_SETUP_H_
 
+#define DEFAULT_PACKET_SNAP_LEN					2048
+#define DEFAULT_PACKET_READ_TIMEOUT			200
+
 #include "XmlElement.h"
 
 class CSipCallDumpSetup
@@ -31,6 +34,10 @@ public:
 	bool Read( );
 
 	bool IsChange();
+
+	// 패킷 덤프 설정
+	int		m_iPacketSnapLen;								// pcap_open 의 2번째 인자값
+	int		m_iPacketReadTimeout;						// pcap_open 의 4번째 인자값
 
 private:
 	bool Read( CXmlElement & clsXml );

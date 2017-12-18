@@ -23,7 +23,7 @@
 
 CSipCallDumpSetup gclsSetup;
 
-CSipCallDumpSetup::CSipCallDumpSetup()
+CSipCallDumpSetup::CSipCallDumpSetup() : m_iPacketSnapLen(DEFAULT_PACKET_SNAP_LEN), m_iPacketReadTimeout(DEFAULT_PACKET_READ_TIMEOUT)
 {
 }
 
@@ -43,6 +43,16 @@ bool CSipCallDumpSetup::Read( const char * pszFileName )
 	CXmlElement clsXml, * pclsElement;
 
 	if( clsXml.ParseFile( pszFileName ) == false ) return false;
+
+	pclsElement = clsXml.SelectElement( "PacketDump" );
+	if( pclsElement == NULL )
+	{
+		printf( "Setup PacketDump is not defined\n" );
+		return false;
+	}
+
+	pclsElement->SelectElementData( "PacketSnapLen", m_iPacketSnapLen );
+	pclsElement->SelectElementData( "PacketReadTimeout", m_iPacketReadTimeout );
 
 	Read( clsXml );
 
@@ -88,7 +98,7 @@ bool CSipCallDumpSetup::Read( CXmlElement & clsXml )
 		int iLogLevel = 0, iLogMaxSize = 0;
 		std::string strLogFolder;
 
-		pclsElement->SelectElementData( "Folder", strLogFolder );
+		pclsElement->SelectElementTrimData( "Folder", strLogFolder );
 		if( strLogFolder.empty() )
 		{
 			printf( "Setup Log > Folder is not defined\n" );
