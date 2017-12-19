@@ -24,6 +24,10 @@
 
 #include "XmlElement.h"
 
+/**
+ * @ingroup SipCallDump
+ * @brief 설정 파일을 읽어서 저장하는 클래스
+ */
 class CSipCallDumpSetup
 {
 public:

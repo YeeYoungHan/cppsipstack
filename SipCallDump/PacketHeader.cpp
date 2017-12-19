@@ -101,11 +101,24 @@ int GetIpHeaderLength( Ip4Header * psttIp4Header )
 	return 0;
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief network order IP 주소를 문자열 IP 주소에 저장한다.
+ * @param iIp			IP 주소
+ * @param pszIp		[out] IP 주소 저장 변수
+ * @param iIpSize pszIp 변수의 크기
+ */
 void GetIpString( uint32_t iIp, char * pszIp, int iIpSize )
 {
 	snprintf( pszIp, iIpSize, "%d.%d.%d.%d", iIp & 0xFF, ( iIp >> 8 ) & 0xFF, ( iIp >> 16 ) & 0xFF, ( iIp >> 24 ) & 0xFF );
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief TCP 헤더 길이를 리턴한다.
+ * @param psttTcpHeader TCP 헤더
+ * @returns TCP 헤더 길이를 리턴한다.
+ */
 int GetTcpHeaderLength( TcpHeader * psttTcpHeader )
 {
 	return ( ( psttTcpHeader->hlen >> 4 ) & 0x0F ) * 4;
