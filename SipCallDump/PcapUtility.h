@@ -16,21 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _SIP_CALL_DUMP_H_
-#define _SIP_CALL_DUMP_H_
+#ifndef _PCAP_UTILITY_H_
+#define _PCAP_UTILITY_H_
 
-// MS 윈도우 서비스 선언
-#define SERVICE_NAME								"SipCallDump"		// 서비스 이름
-#define SERVICE_DISPLAY_NAME				"SipCallDump"
-#define SERVICE_DESCRIPTION_STRING	"SipCallDump - made by Yee Young Han"
-#define SERVER_VERSION							"0.01"
+#include "pcap.h"
 
-#define CONFIG_FILENAME						"SipCallDump.xml"
-
-#include "SipCallDumpSetup.h"
-#include "Log.h"
-
-// PacketDumpThread.cpp
-bool StartPacketDumpThread( );
+bool GetDeviceName( const char * pszDeviceDesscription, char * pszDeviceName, int iDeviceNameSize );
+void PrintDeviceName();
 
 #endif

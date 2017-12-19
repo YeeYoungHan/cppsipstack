@@ -19,6 +19,10 @@
 #include "SipCallDump.h"
 #include "ServerService.h"
 #include "ServerUtility.h"
+#include "PcapUtility.h"
+#include "SipCallMap.h"
+#include "RtpMap.h"
+#include "MemoryDebug.h"
 
 /**
  * @ingroup SipCallDump
@@ -43,13 +47,41 @@ int ServiceMain( )
 	SetCoreDumpEnable();
 	ServerSignal();
 
+	int iSecond = 0;
+	
+	StartPacketDumpThread();
+
 	while( gbStop == false )
 	{
+		++iSecond;
+
+		if( iSecond == 60 )
+		{
+			STRING_LIST clsSipCallIdList;
+			STRING_LIST::iterator itSL;
+
+			gclsRtpMap.SelectTimeout( clsSipCallIdList );
+
+			for( itSL = clsSipCallIdList.begin(); itSL != clsSipCallIdList.end(); ++itSL )
+			{
+				gclsCallMap.Delete( itSL->c_str() );
+			}
+
+			iSecond = 0;
+		}
+
 		if( gclsSetup.IsChange() )
 		{
 			gclsSetup.Read();
 		}
+
+		sleep(1);
 	}
+
+	// PacketDumpThread 가 종료할 때까지 대기한다.
+	sleep(1);
+
+	gclsCallMap.DeleteAll();
 
 	CLog::Print( LOG_SYSTEM, "SipCallDump is terminated" );
 	CLog::Release();
@@ -74,6 +106,15 @@ int main( int argc, char * argv[] )
 	clsService.m_strConfigFileName = CONFIG_FILENAME;
 	clsService.m_strVersion = SERVER_VERSION;
 	clsService.SetBuildDate( __DATE__, __TIME__ );
+
+	if( argc == 2 )
+	{
+		if( !strcmp( argv[1], "-l" ) )
+		{
+			PrintDeviceName();
+			return 0;
+		}
+	}
 
 	ServerMain( argc, argv, clsService, ServiceMain );
 

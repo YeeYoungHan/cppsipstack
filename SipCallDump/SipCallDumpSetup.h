@@ -36,8 +36,13 @@ public:
 	bool IsChange();
 
 	// 패킷 덤프 설정
-	int		m_iPacketSnapLen;								// pcap_open 의 2번째 인자값
-	int		m_iPacketReadTimeout;						// pcap_open 의 4번째 인자값
+	std::string	m_strPacketDevice;	// pcap_open 의 1번째 인자값 - 패킷 캡처 디바이스 이름
+	int		m_iPacketSnapLen;					// pcap_open 의 2번째 인자값
+	int		m_iPacketReadTimeout;			// pcap_open 의 4번째 인자값
+	std::string m_strPacketFolder;	// pcap 파일을 저장할 폴더 full path
+
+	// RTP
+	int		m_iRtpRecvTimeout;				// RTP 수신 timeout 시간 - 여기에 지정된 시간동안 RTP 가 수신되지 않았다면 통화 종료 처리한다.
 
 private:
 	bool Read( CXmlElement & clsXml );

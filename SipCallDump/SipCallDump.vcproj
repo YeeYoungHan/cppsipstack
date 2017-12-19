@@ -204,6 +204,42 @@
 				RelativePath=".\PacketDumpThread.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\PacketHeader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PacketHeader.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PcapUtility.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PcapUtility.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="자료구조"
+			>
+			<File
+				RelativePath=".\RtpMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RtpMap.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipCallMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipCallMap.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

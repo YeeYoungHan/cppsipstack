@@ -23,7 +23,7 @@
 
 CSipCallDumpSetup gclsSetup;
 
-CSipCallDumpSetup::CSipCallDumpSetup() : m_iPacketSnapLen(DEFAULT_PACKET_SNAP_LEN), m_iPacketReadTimeout(DEFAULT_PACKET_READ_TIMEOUT)
+CSipCallDumpSetup::CSipCallDumpSetup() : m_iPacketSnapLen(DEFAULT_PACKET_SNAP_LEN), m_iPacketReadTimeout(DEFAULT_PACKET_READ_TIMEOUT), m_iRtpRecvTimeout(30)
 {
 }
 
@@ -50,6 +50,23 @@ bool CSipCallDumpSetup::Read( const char * pszFileName )
 		printf( "Setup PacketDump is not defined\n" );
 		return false;
 	}
+
+	pclsElement->SelectElementTrimData( "Device", m_strPacketDevice );
+	pclsElement->SelectElementTrimData( "Folder", m_strPacketFolder );
+
+	if( m_strPacketDevice.empty() )
+	{
+		printf( "Setup PacketDump > Device is not defined\n" );
+		return false;
+	}
+
+	if( m_strPacketFolder.empty() )
+	{
+		printf( "Setup PacketDump > Folder is not defined\n" );
+		return false;
+	}
+
+	CDirectory::Create( m_strPacketFolder.c_str() );
 
 	pclsElement->SelectElementData( "PacketSnapLen", m_iPacketSnapLen );
 	pclsElement->SelectElementData( "PacketReadTimeout", m_iPacketReadTimeout );
@@ -90,6 +107,13 @@ bool CSipCallDumpSetup::Read( )
 bool CSipCallDumpSetup::Read( CXmlElement & clsXml )
 {
 	CXmlElement * pclsElement;
+
+	// RTP
+	pclsElement = clsXml.SelectElement( "Rtp" );
+	if( pclsElement )
+	{
+		pclsElement->SelectElementData( "RecvTimeout", m_iRtpRecvTimeout );
+	}
 
 	// ·Î±×
 	pclsElement = clsXml.SelectElement( "Log" );
