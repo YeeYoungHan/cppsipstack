@@ -36,6 +36,15 @@ CRtpMap::~CRtpMap()
 {
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief RTP 패킷을 저장한다.
+ * @param psttHeader		패킷 캡처한 헤더
+ * @param pszData				패킷 캡처한 패킷
+ * @param psttIpHeader	IP 헤더
+ * @param psttUdpHeader UDP 헤더
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CRtpMap::Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, UdpHeader * psttUdpHeader )
 {
 	RTP_MAP::iterator itMap;
@@ -62,6 +71,14 @@ bool CRtpMap::Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, I
 	return bRes;
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief RTP 세션 정보를 저장한다.
+ * @param pszIp			RTP IP 주소
+ * @param iPort			RTP 포트 번호
+ * @param pszCallId SIP Call-ID
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CRtpMap::Insert( const char * pszIp, int iPort, const char * pszCallId )
 {
 	RTP_MAP::iterator itMap;
@@ -87,6 +104,13 @@ bool CRtpMap::Insert( const char * pszIp, int iPort, const char * pszCallId )
 	return bRes;
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief RTP 세션 정보를 삭제한다.
+ * @param pszIp			RTP IP 주소
+ * @param iPort			RTP 포트 번호
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CRtpMap::Delete( const char * pszIp, int iPort )
 {
 	RTP_MAP::iterator itMap;
@@ -107,6 +131,11 @@ bool CRtpMap::Delete( const char * pszIp, int iPort )
 	return bRes;
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief timeout 된 RTP 세션 관련 SIP Call-ID 리스트를 가져온다.
+ * @param clsCallIdList [out] timeout 된 RTP 세션 관련 SIP Call-ID 리스트
+ */
 void CRtpMap::SelectTimeout( STRING_LIST & clsCallIdList )
 {
 	RTP_MAP::iterator itMap;

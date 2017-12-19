@@ -27,6 +27,12 @@
 #include "RtpMap.h"
 #include "MemoryDebug.h"
 
+/**
+ * @ingroup SipCallDump
+ * @brief 패킷 덤프 쓰레드
+ * @param lpParameter 
+ * @returns 0 을 리턴한다.
+ */
 THREAD_API PacketDumpThread( LPVOID lpParameter )
 {
 	pcap_t	* psttPcap = NULL;
@@ -105,6 +111,11 @@ FUNC_END:
 	return 0;
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief 패킷 덤프 쓰레드를 시작한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool StartPacketDumpThread( )
 {
 	return StartThread( "PacketDumpThread", PacketDumpThread, NULL );

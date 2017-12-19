@@ -26,6 +26,10 @@
 #include "PacketHeader.h"
 #include "StringUtility.h"
 
+/**
+ * @ingroup SipCallDump
+ * @brief RTP 세션 정보 저장 클래스
+ */
 class CRtpInfo
 {
 public:
@@ -38,6 +42,10 @@ public:
 // key = IP:Port
 typedef std::map< std::string, CRtpInfo > RTP_MAP;
 
+/**
+ * @ingroup SipCallDump
+ * @brief RTP 세션 정보 저장 자료구조
+ */
 class CRtpMap
 {
 public:

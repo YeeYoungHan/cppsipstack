@@ -57,6 +57,7 @@ int ServiceMain( )
 
 		if( iSecond == 60 )
 		{
+			// timeout 된 RTP 세션이 존재하면 해당 통화 정보를 삭제한다.
 			STRING_LIST clsSipCallIdList;
 			STRING_LIST::iterator itSL;
 

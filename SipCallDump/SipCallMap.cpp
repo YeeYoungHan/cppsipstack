@@ -61,6 +61,13 @@ static void SetRtpInfo( CSdpMessage * pclsSdp, CSipRtpInfo & clsRtpInfo )
 	}
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief SIP 메시지에서 SDP 메시지를 가져온다.
+ * @param clsMessage	SIP 메시지
+ * @param clsSdp			[out] SDP 메시지
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 static bool GetSdp( CSipMessage & clsMessage, CSdpMessage & clsSdp )
 {
 	if( clsMessage.m_iContentLength > 0 )
@@ -89,6 +96,16 @@ CSipCallMap::~CSipCallMap()
 {
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief SIP 패킷을 저장한다.
+ * @param psttPcap		패킷 캡처 중인 pcap 구조체의 포인터
+ * @param psttHeader	패킷 캡처한 헤더
+ * @param pszData			패킷 캡처한 패킷
+ * @param pszUdpBody	UDP body
+ * @param iUdpBodyLen UDP body 길이
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipCallMap::Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const	u_char * pszData, const char * pszUdpBody, int iUdpBodyLen )
 {
 	CSipMessage clsMessage;
@@ -144,6 +161,14 @@ bool CSipCallMap::Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, co
 	return true;
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief RTP 패킷을 저장한다.
+ * @param pszCallId		SIP Call-ID
+ * @param psttHeader	패킷 캡처한 헤더
+ * @param pszData			패킷 캡처한 패킷
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipCallMap::Insert( const char * pszCallId, struct pcap_pkthdr * psttHeader, const u_char * pszData )
 {
 	SIP_CALL_MAP::iterator itMap;
@@ -161,6 +186,12 @@ bool CSipCallMap::Insert( const char * pszCallId, struct pcap_pkthdr * psttHeade
 	return bRes;
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief 통화 정보를 삭제한다.
+ * @param pszCallId SIP Call-ID
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipCallMap::Delete( const char * pszCallId )
 {
 	SIP_CALL_MAP::iterator itMap;
@@ -178,6 +209,10 @@ bool CSipCallMap::Delete( const char * pszCallId )
 	return bRes;
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief 모든 통화 정보를 삭제한다.
+ */
 void CSipCallMap::DeleteAll( )
 {
 	SIP_CALL_MAP::iterator itMap, itNext;
@@ -193,6 +228,16 @@ void CSipCallMap::DeleteAll( )
 	m_clsMutex.release();
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief SIP INVITE 요청 메시지 정보를 저장한다.
+ * @param psttPcap		패킷 캡처 중인 pcap 구조체의 포인터
+ * @param psttHeader	패킷 캡처한 헤더
+ * @param pszData			패킷 캡처한 패킷
+ * @param pclsMessage SIP 메시지
+ * @param pclsSdp			SDP 메시지
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipCallMap::InsertInvite( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, CSipMessage * pclsMessage, CSdpMessage * pclsSdp )
 {
 	SIP_CALL_MAP::iterator itMap;
@@ -252,6 +297,15 @@ bool CSipCallMap::InsertInvite( pcap_t * psttPcap, struct pcap_pkthdr * psttHead
 	return bRes;
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief SIP INVITE 응답 메시지 정보를 저장한다.
+ * @param psttHeader	패킷 캡처한 헤더
+ * @param pszData			패킷 캡처한 패킷
+ * @param pclsMessage SIP 메시지
+ * @param pclsSdp			SDP 메시지
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipCallMap::InsertInviteResponse( struct pcap_pkthdr * psttHeader, const u_char * pszData, CSipMessage * pclsMessage, CSdpMessage * pclsSdp )
 {
 	SIP_CALL_MAP::iterator itMap;
@@ -288,6 +342,14 @@ bool CSipCallMap::InsertInviteResponse( struct pcap_pkthdr * psttHeader, const u
 	return bRes;
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief INVITE 요청/응답을 제외한 SIP 패킷을 저장한다.
+ * @param psttHeader	패킷 캡처한 헤더
+ * @param pszData			패킷 캡처한 패킷
+ * @param pclsMessage SIP 메시지
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CSipCallMap::Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, CSipMessage * pclsMessage )
 {
 	SIP_CALL_MAP::iterator itMap;
@@ -346,6 +408,11 @@ bool CSipCallMap::Insert( struct pcap_pkthdr * psttHeader, const u_char * pszDat
 	return bRes;
 }
 
+/**
+ * @ingroup SipCallDump
+ * @brief 자료구조에서 삭제한다.
+ * @param itMap 삭제 대상 iterator
+ */
 void CSipCallMap::Erase( SIP_CALL_MAP::iterator & itMap )
 {
 	gclsRtpMap.Delete( itMap->second.m_clsFromRtp.m_strIp.c_str(), itMap->second.m_clsFromRtp.m_iPort );

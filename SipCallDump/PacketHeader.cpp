@@ -140,6 +140,9 @@ bool IsSipPacket( char * pszUdpBody, int iUdpBodyLen )
 	if( !strncmp( pszUdpBody, "INVITE ", 7 ) || 
 			!strncmp( pszUdpBody, "CANCEL ", 7 ) ||
 			!strncmp( pszUdpBody, "BYE ", 4 ) ||
+			!strncmp( pszUdpBody, "ACK ", 4 ) ||
+			!strncmp( pszUdpBody, "REFER ", 6 ) ||
+			!strncmp( pszUdpBody, "NOTIFY ", 7 ) ||
 			!strncmp( pszUdpBody, "SIP/2.0", 7 ) )
 	{
 		return true;

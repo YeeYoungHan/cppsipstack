@@ -25,6 +25,10 @@
 #include <map>
 #include <pcap.h>
 
+/**
+ * @ingroup SipCallDump
+ * @brief SDP 에 저장된 RTP 세션 정보 저장 클래스
+ */
 class CSipRtpInfo
 {
 public:
@@ -34,6 +38,10 @@ public:
 	uint16_t		m_iPort;
 };
 
+/**
+ * @ingroup SipCallDump
+ * @brief SIP 통화 세션 정보를 저장 클래스
+ */
 class CSipCallInfo
 {
 public:
@@ -52,6 +60,10 @@ public:
 // key = SIP Call-ID
 typedef std::map< std::string, CSipCallInfo > SIP_CALL_MAP;
 
+/**
+ * @ingroup SipCallDump
+ * @brief SIP 통화 세션 정보를 저장하는 자료구조
+ */
 class CSipCallMap
 {
 public:
