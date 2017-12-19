@@ -128,11 +128,12 @@ bool CSipCallMap::Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, co
 
 			if( GetSdp( clsMessage, clsSdp ) == false )
 			{
-				CLog::Print( LOG_ERROR, "%s INVITE no SDP", __FUNCTION__ );
-				return false;
+				Insert( psttHeader, pszData, &clsMessage );
 			}
-
-			InsertInviteResponse( psttHeader, pszData, &clsMessage, &clsSdp );
+			else
+			{
+				InsertInviteResponse( psttHeader, pszData, &clsMessage, &clsSdp );
+			}
 		}
 		else
 		{
@@ -268,6 +269,11 @@ bool CSipCallMap::InsertInviteResponse( struct pcap_pkthdr * psttHeader, const u
 	if( itMap != m_clsMap.end() )
 	{
 		time( &itMap->second.m_iStartTime );
+
+		if( itMap->second.m_clsToRtp.m_iPort )
+		{
+			gclsRtpMap.Delete( itMap->second.m_clsToRtp.m_strIp.c_str(), itMap->second.m_clsToRtp.m_iPort );
+		}
 
 		SetRtpInfo( pclsSdp, itMap->second.m_clsToRtp );
 
