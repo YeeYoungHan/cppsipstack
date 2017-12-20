@@ -60,6 +60,9 @@ C++ SIP stack 프로젝트
    - C++ SIP stack 을 이용하여 간단하게 SIP 서버를 개발할 수 있다는 것을 보여주기 위한 예제 프로그램이오니 
      C++ SIP stack 의 사용법이 궁금하신 분은 소스 코드를 꼭 읽어 보세요.
 
+ * SipCallDump
+   - 패킷 덤프하여서 통화별로 SIP 및 RTP 패킷을 하나의 파일에 저장하는 서비스 프로그램입니다.
+
  * SipClient 
    - C++ SIP stack 을 테스트하기 위한 SIP 클라이언트 프로그램
    - C++ SIP stack 으로 SIP 클라이언트를 개발하시려면 본 소스 코드를 참고하세요.
