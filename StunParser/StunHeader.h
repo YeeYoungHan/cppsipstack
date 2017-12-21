@@ -37,6 +37,8 @@ public:
 	uint16_t		m_sMessageType;
 	uint16_t		m_sMessageLength;
 	std::string	m_strTransactionId;
+
+	static uint8_t	m_arrCookie[4];
 };
 
 #endif

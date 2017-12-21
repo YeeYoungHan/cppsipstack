@@ -18,6 +18,9 @@
 
 #include "StunHeader.h"
 #include "StunDecode.h"
+#include "StunEncode.h"
+
+uint8_t CStunHeader::m_arrCookie[4] = { 0x21, 0x12, 0xa4, 0x42 };
 
 CStunHeader::CStunHeader() : m_sMessageType(0), m_sMessageLength(0)
 {
@@ -43,9 +46,15 @@ int CStunHeader::Parse( const char * pszText, int iTextLen )
 
 int CStunHeader::ToString( char * pszText, int iTextSize )
 {
-	int iLen = 0;
+	CStunEncode clsEncode;
 
-	return iLen;
+	if( clsEncode.SetPacket( pszText, iTextSize ) == false ) return -1;
+	if( clsEncode.Encode( m_sMessageType ) == false ) return -1;
+	if( clsEncode.Encode( m_sMessageLength ) == false ) return -1;
+	if( clsEncode.Encode( 4, (char *)m_arrCookie, 4 ) == false ) return -1;
+	if( clsEncode.Encode( 12, m_strTransactionId ) == false ) return -1;
+
+	return clsEncode.GetPos();
 }
 
 void CStunHeader::Clear()

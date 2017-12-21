@@ -18,7 +18,7 @@
 
 #include "StunEncode.h"
 
-CStunEncode::CStunEncode()
+CStunEncode::CStunEncode() : m_pszText(NULL), m_iTextSize(0), m_iPos(0)
 {
 }
 
@@ -26,3 +26,43 @@ CStunEncode::~CStunEncode()
 {
 }
 
+bool CStunEncode::SetPacket( char * pszText, int iTextSize )
+{
+	m_pszText = pszText;
+	m_iTextSize = iTextSize;
+	m_iPos = 0;
+
+	return true;
+}
+
+int CStunEncode::GetPos( )
+{
+	return m_iPos;
+}
+
+bool CStunEncode::Encode( uint16_t sInput )
+{
+	if( m_iTextSize < ( m_iPos + 2 ) ) return false;
+
+	uint16_t sTemp = htons( sInput );
+
+	memcpy( m_pszText + m_iPos, &sTemp, 2 );
+	m_iPos += 2;
+
+	return true;
+}
+
+bool CStunEncode::Encode( int iLen, const char * pszInput, int iInputLen )
+{
+	if( m_iTextSize < ( m_iPos + iLen ) ) return false;
+
+	memcpy( m_pszText + m_iPos, pszInput, iLen );
+	m_iPos += iLen;
+
+	return true;
+}
+
+bool CStunEncode::Encode( int iLen, std::string & strInput )
+{
+	return Encode( iLen, strInput.c_str(), strInput.length() );
+}

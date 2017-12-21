@@ -18,6 +18,7 @@
 
 #include "StunAttribute.h"
 #include "StunDecode.h"
+#include "StunEncode.h"
 
 CStunAttribute::CStunAttribute() : m_sType(0), m_sLength(0)
 {

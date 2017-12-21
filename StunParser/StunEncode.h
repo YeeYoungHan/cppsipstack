@@ -19,11 +19,26 @@
 #ifndef _STUN_ENCODE_H_
 #define _STUN_ENCODE_H_
 
+#include "SipPlatformDefine.h"
+#include <string>
+
 class CStunEncode
 {
 public:
 	CStunEncode();
 	~CStunEncode();
+
+	bool SetPacket( char * pszText, int iTextSize );
+	int GetPos( );
+
+	bool Encode( uint16_t sInput );
+	bool Encode( int iLen, const char * pszInput, int iInputLen );
+	bool Encode( int iLen, std::string & strInput );
+
+private:
+	char * m_pszText;
+	int		m_iTextSize;
+	int		m_iPos;
 };
 
 #endif
