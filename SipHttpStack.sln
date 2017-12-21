@@ -57,6 +57,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XmlParser", "XmlParser\XmlP
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SdpParser", "SdpParser\SdpParser.vcproj", "{37B903A3-633B-4F2C-9146-AA7D49C92B95}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StunParser", "StunParser\StunParser.vcproj", "{27A9FD46-5A87-460F-B5F9-74BC43AB61CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -137,6 +139,12 @@ Global
 		{37B903A3-633B-4F2C-9146-AA7D49C92B95}.Release|Win32.Build.0 = Release|Win32
 		{37B903A3-633B-4F2C-9146-AA7D49C92B95}.Release|x64.ActiveCfg = Release|x64
 		{37B903A3-633B-4F2C-9146-AA7D49C92B95}.Release|x64.Build.0 = Release|x64
+		{27A9FD46-5A87-460F-B5F9-74BC43AB61CA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{27A9FD46-5A87-460F-B5F9-74BC43AB61CA}.Debug|Win32.Build.0 = Debug|Win32
+		{27A9FD46-5A87-460F-B5F9-74BC43AB61CA}.Debug|x64.ActiveCfg = Debug|Win32
+		{27A9FD46-5A87-460F-B5F9-74BC43AB61CA}.Release|Win32.ActiveCfg = Release|Win32
+		{27A9FD46-5A87-460F-B5F9-74BC43AB61CA}.Release|Win32.Build.0 = Release|Win32
+		{27A9FD46-5A87-460F-B5F9-74BC43AB61CA}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

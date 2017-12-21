@@ -302,6 +302,22 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 			iPacketLen = sizeof(szPacket);
 			UdpRecv( hUdpSocket, szPacket, &iPacketLen, szIp, sizeof(szIp), &iPort );
 
+			if( iPacketLen >= 20 && szPacket[0] == 0x00 && szPacket[1] == 0x01 )
+			{
+				// Binding Request -> Binding Success Response
+				szPacket[0] = 0x01;
+
+				int iPos = 20;
+
+				szPacket[iPos++] = 0x00;
+				szPacket[iPos++] = 0x20;
+				szPacket[iPos++] = 0x00;
+				szPacket[iPos++] = 0x08;
+				szPacket[iPos++] = 0x00;
+				szPacket[iPos++] = 0x01;
+
+			}
+
 			return true;
 #endif
 
