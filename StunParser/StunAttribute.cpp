@@ -17,6 +17,7 @@
  */
 
 #include "StunAttribute.h"
+#include "StunDecode.h"
 
 CStunAttribute::CStunAttribute() : m_sType(0), m_sLength(0)
 {
@@ -28,9 +29,23 @@ CStunAttribute::~CStunAttribute()
 
 int CStunAttribute::Parse( const char * pszText, int iTextLen )
 {
-	int iPos = 0;
+	CStunDecode clsDecode;
 
-	return iPos;
+	if( clsDecode.SetPacket( pszText, iTextLen ) == false ) return -1;
+	if( clsDecode.Decode( m_sType ) == false ) return -1;
+	if( clsDecode.Decode( m_sLength ) == false ) return -1;
+	if( clsDecode.Decode( m_sLength, m_strValue ) == false ) return -1;
+
+	uint16_t sTemp = m_sLength % 4;
+	if( sTemp )
+	{
+		std::string strTemp;
+
+		sTemp = 4 - sTemp;
+		if( clsDecode.Decode( sTemp, strTemp ) == false ) return -1;
+	}
+
+	return clsDecode.GetPos();
 }
 
 int CStunAttribute::ToString( char * pszText, int iTextSize )

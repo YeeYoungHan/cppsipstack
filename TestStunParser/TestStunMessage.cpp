@@ -16,41 +16,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "StunHeader.h"
-#include "StunDecode.h"
+#include "TestStunParser.h"
 
-CStunHeader::CStunHeader() : m_sMessageType(0), m_sMessageLength(0)
+bool TestStunMessage()
 {
-}
+	CStunMessage clsMessage;
+	std::string strPacket;
 
-CStunHeader::~CStunHeader()
-{
-}
+	HexToString( "000100542112a4428e24a0e78f0a741a2ae42777000600096c4d52623a6c4d526b000000002400046efffaff802a0008000000000044d73a80540001330000008070000400000003000800140f2da18f9c1c439cd217ee85dfd8e15f25bfb283802800041e370fad", strPacket );
 
-int CStunHeader::Parse( const char * pszText, int iTextLen )
-{
-	CStunDecode clsDecode;
-	std::string strTemp;
+	if( clsMessage.Parse( strPacket.c_str(), strPacket.length() ) == -1 ) return false;
 
-	if( clsDecode.SetPacket( pszText, iTextLen ) == false ) return -1;
-	if( clsDecode.Decode( m_sMessageType ) == false ) return -1;
-	if( clsDecode.Decode( m_sMessageLength ) == false ) return -1;
-	if( clsDecode.Decode( 4, strTemp ) == false ) return -1;
-	if( clsDecode.Decode( 12, m_strTransactionId ) == false ) return -1;
-
-	return clsDecode.GetPos();
-}
-
-int CStunHeader::ToString( char * pszText, int iTextSize )
-{
-	int iLen = 0;
-
-	return iLen;
-}
-
-void CStunHeader::Clear()
-{
-	m_sMessageType = 0;
-	m_sMessageLength = 0;
-	m_strTransactionId.clear();
+	return true;
 }

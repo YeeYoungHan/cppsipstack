@@ -16,41 +16,48 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "StunHeader.h"
 #include "StunDecode.h"
 
-CStunHeader::CStunHeader() : m_sMessageType(0), m_sMessageLength(0)
+CStunDecode::CStunDecode() : m_pszText(NULL), m_iTextLen(0), m_iPos(0)
 {
 }
 
-CStunHeader::~CStunHeader()
+CStunDecode::~CStunDecode()
 {
 }
 
-int CStunHeader::Parse( const char * pszText, int iTextLen )
+bool CStunDecode::SetPacket( const char * pszText, int iTextLen )
 {
-	CStunDecode clsDecode;
-	std::string strTemp;
+	m_pszText = pszText;
+	m_iTextLen = iTextLen;
+	m_iPos = 0;
 
-	if( clsDecode.SetPacket( pszText, iTextLen ) == false ) return -1;
-	if( clsDecode.Decode( m_sMessageType ) == false ) return -1;
-	if( clsDecode.Decode( m_sMessageLength ) == false ) return -1;
-	if( clsDecode.Decode( 4, strTemp ) == false ) return -1;
-	if( clsDecode.Decode( 12, m_strTransactionId ) == false ) return -1;
-
-	return clsDecode.GetPos();
+	return true;
 }
 
-int CStunHeader::ToString( char * pszText, int iTextSize )
+int CStunDecode::GetPos( )
 {
-	int iLen = 0;
-
-	return iLen;
+	return m_iPos;
 }
 
-void CStunHeader::Clear()
+bool CStunDecode::Decode( uint16_t & sOutput )
 {
-	m_sMessageType = 0;
-	m_sMessageLength = 0;
-	m_strTransactionId.clear();
+	if( m_iTextLen < ( m_iPos + 2 ) ) return false;
+
+	memcpy( &sOutput, m_pszText + m_iPos, 2 );
+	sOutput = ntohs( sOutput );
+	m_iPos += 2;
+
+	return true;
+}
+
+bool CStunDecode::Decode( int iLen, std::string & strOutput )
+{
+	if( m_iTextLen < ( m_iPos + iLen ) ) return false;
+
+	strOutput.clear();
+	strOutput.append( m_pszText + m_iPos, iLen );
+	m_iPos += iLen;
+
+	return true;
 }

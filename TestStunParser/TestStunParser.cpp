@@ -16,41 +16,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "StunHeader.h"
-#include "StunDecode.h"
+#include "TestStunParser.h"
 
-CStunHeader::CStunHeader() : m_sMessageType(0), m_sMessageLength(0)
+int main( int argc, char * argv[] )
 {
-}
+	TestStunMessage();
 
-CStunHeader::~CStunHeader()
-{
-}
-
-int CStunHeader::Parse( const char * pszText, int iTextLen )
-{
-	CStunDecode clsDecode;
-	std::string strTemp;
-
-	if( clsDecode.SetPacket( pszText, iTextLen ) == false ) return -1;
-	if( clsDecode.Decode( m_sMessageType ) == false ) return -1;
-	if( clsDecode.Decode( m_sMessageLength ) == false ) return -1;
-	if( clsDecode.Decode( 4, strTemp ) == false ) return -1;
-	if( clsDecode.Decode( 12, m_strTransactionId ) == false ) return -1;
-
-	return clsDecode.GetPos();
-}
-
-int CStunHeader::ToString( char * pszText, int iTextSize )
-{
-	int iLen = 0;
-
-	return iLen;
-}
-
-void CStunHeader::Clear()
-{
-	m_sMessageType = 0;
-	m_sMessageLength = 0;
-	m_strTransactionId.clear();
+	return 0;
 }

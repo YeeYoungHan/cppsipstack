@@ -16,41 +16,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "StunHeader.h"
-#include "StunDecode.h"
+#ifndef _STUN_DECODE_H_
+#define _STUN_DECODE_H_
 
-CStunHeader::CStunHeader() : m_sMessageType(0), m_sMessageLength(0)
+#include "SipPlatformDefine.h"
+#include <string>
+
+class CStunDecode
 {
-}
+public:
+	CStunDecode();
+	~CStunDecode();
 
-CStunHeader::~CStunHeader()
-{
-}
+	bool SetPacket( const char * pszText, int iTextLen );
+	int GetPos( );
 
-int CStunHeader::Parse( const char * pszText, int iTextLen )
-{
-	CStunDecode clsDecode;
-	std::string strTemp;
+	bool Decode( uint16_t & sOutput );
+	bool Decode( int iLen, std::string & strOutput );
 
-	if( clsDecode.SetPacket( pszText, iTextLen ) == false ) return -1;
-	if( clsDecode.Decode( m_sMessageType ) == false ) return -1;
-	if( clsDecode.Decode( m_sMessageLength ) == false ) return -1;
-	if( clsDecode.Decode( 4, strTemp ) == false ) return -1;
-	if( clsDecode.Decode( 12, m_strTransactionId ) == false ) return -1;
+private:
+	const char * m_pszText;
+	int		m_iTextLen;
+	int		m_iPos;
+};
 
-	return clsDecode.GetPos();
-}
-
-int CStunHeader::ToString( char * pszText, int iTextSize )
-{
-	int iLen = 0;
-
-	return iLen;
-}
-
-void CStunHeader::Clear()
-{
-	m_sMessageType = 0;
-	m_sMessageLength = 0;
-	m_strTransactionId.clear();
-}
+#endif
