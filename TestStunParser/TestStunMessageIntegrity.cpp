@@ -21,12 +21,12 @@
 #include "SipMd5.h"
 #include <openssl/hmac.h>
 
-bool TestStunMessageIntegrity( )
+static bool TestIntegrity( const char * pszPassWord )
 {
 	const char * pszPacket = "000100342112a4428e24a0e78f0a741a2ae42777000600096c4d52623a6c4d526b000000002400046efffaff802a0008000000000044d73a80540001330000008070000400000003";
 	const char * pszMI = "0f2da18f9c1c439cd217ee85dfd8e15f25bfb283";
 	
-	std::string strPacket;
+	std::string strPacket, strDigest;
 
 	HexToString( pszPacket, strPacket );
 	
@@ -36,16 +36,114 @@ bool TestStunMessageIntegrity( )
 
 	memset( szDigest, 0, sizeof(szDigest) );
 
-	char szPassWord[1024], szMd5[16];
+	char szMd5[16];
 
-	snprintf( szPassWord, sizeof(szPassWord), "%s::%s", "lMRk", "nFNRfT4UabEOKa00ivn64MtQ" );
-
-	SipMd5Byte( szPassWord, (unsigned char *)szMd5 );
+	SipMd5Byte( pszPassWord, (unsigned char *)szMd5 );
 
 	HMAC_CTX_init( &sttCtx );
 	HMAC_Init_ex( &sttCtx, szMd5, 16, EVP_sha1(), NULL );
 	HMAC_Update( &sttCtx, (unsigned char *)strPacket.c_str(), strPacket.length() );
 	HMAC_Final( &sttCtx, szDigest, &iDigestLen );
+
+	/*
+	//const char * pszPw = "nFNRfT4UabEOKa00ivn64MtQ";
+	const char * pszPw = "FNPRfT4qUaVOKa0ivkn64mMY";
+
+	SipMd5Byte( szPassWord, (unsigned char *)szMd5 );
+
+	HMAC_CTX_init( &sttCtx );
+	HMAC_Init_ex( &sttCtx, pszPw, strlen(pszPw), EVP_sha1(), NULL );
+	HMAC_Update( &sttCtx, (unsigned char *)strPacket.c_str(), strPacket.length() );
+	HMAC_Final( &sttCtx, szDigest, &iDigestLen );
+	*/
+
+	StringToHex( (char *)szDigest, iDigestLen, strDigest );
+
+	if( !strcmp( strDigest.c_str(), pszMI ) )
+	{
+		printf( "success\n" );
+		return true;
+	}
+
+	return false;
+}
+
+static bool TestIntegrity2( const char * pszPassWord )
+{
+	const char * pszPacket = "000100342112a4428e24a0e78f0a741a2ae42777000600096c4d52623a6c4d526b000000002400046efffaff802a0008000000000044d73a80540001330000008070000400000003";
+	const char * pszMI = "0f2da18f9c1c439cd217ee85dfd8e15f25bfb283";
+	
+	std::string strPacket, strDigest;
+
+	HexToString( pszPacket, strPacket );
+	
+	HMAC_CTX		sttCtx;
+	uint8_t			szDigest[EVP_MAX_MD_SIZE];
+	uint32_t		iDigestLen;
+
+	memset( szDigest, 0, sizeof(szDigest) );
+
+	HMAC_CTX_init( &sttCtx );
+	HMAC_Init_ex( &sttCtx, pszPassWord, strlen(pszPassWord), EVP_sha1(), NULL );
+	HMAC_Update( &sttCtx, (unsigned char *)strPacket.c_str(), strPacket.length() );
+	HMAC_Final( &sttCtx, szDigest, &iDigestLen );
+
+	StringToHex( (char *)szDigest, iDigestLen, strDigest );
+
+	if( !strcmp( strDigest.c_str(), pszMI ) )
+	{
+		printf( "success\n" );
+		return true;
+	}
+
+	return false;
+}
+
+bool TestStunMessageIntegrity( )
+{
+	char szPassWord[1024];
+
+	snprintf( szPassWord, sizeof(szPassWord), "%s::%s", "lMRk", "nFNRfT4UabEOKa00ivn64MtQ" );
+	TestIntegrity( szPassWord );
+
+	snprintf( szPassWord, sizeof(szPassWord), "%s:%s:%s", "lMRk", "lMRb", "nFNRfT4UabEOKa00ivn64MtQ" );
+	TestIntegrity( szPassWord );
+
+	snprintf( szPassWord, sizeof(szPassWord), "%s:%s:%s", "lMRb", "lMRk", "nFNRfT4UabEOKa00ivn64MtQ" );
+	TestIntegrity( szPassWord );
+
+	snprintf( szPassWord, sizeof(szPassWord), "%s::%s", "lMRb", "nFNRfT4UabEOKa00ivn64MtQ" );
+	TestIntegrity( szPassWord );
+
+	snprintf( szPassWord, sizeof(szPassWord), "%s::%s", "lMRk:lMRb", "nFNRfT4UabEOKa00ivn64MtQ" );
+	TestIntegrity( szPassWord );
+
+	snprintf( szPassWord, sizeof(szPassWord), "%s::%s", "lMRb:lMRk", "nFNRfT4UabEOKa00ivn64MtQ" );
+	TestIntegrity( szPassWord );
+
+	snprintf( szPassWord, sizeof(szPassWord), "%s::%s", "lMRb", "FNPRfT4qUaVOKa0ivkn64mMY" );
+	TestIntegrity( szPassWord );
+
+	snprintf( szPassWord, sizeof(szPassWord), "%s:%s:%s", "lMRk", "lMRb", "FNPRfT4qUaVOKa0ivkn64mMY" );
+	TestIntegrity( szPassWord );
+
+	snprintf( szPassWord, sizeof(szPassWord), "%s:%s:%s", "lMRb", "lMRk", "FNPRfT4qUaVOKa0ivkn64mMY" );
+	TestIntegrity( szPassWord );
+
+	snprintf( szPassWord, sizeof(szPassWord), "%s::%s", "lMRb", "FNPRfT4qUaVOKa0ivkn64mMY" );
+	TestIntegrity( szPassWord );
+
+	snprintf( szPassWord, sizeof(szPassWord), "%s::%s", "lMRk:lMRb", "FNPRfT4qUaVOKa0ivkn64mMY" );
+	TestIntegrity( szPassWord );
+
+	snprintf( szPassWord, sizeof(szPassWord), "%s::%s", "lMRb:lMRk", "FNPRfT4qUaVOKa0ivkn64mMY" );
+	TestIntegrity( szPassWord );
+
+	TestIntegrity2( "nFNRfT4UabEOKa00ivn64MtQ" );
+	TestIntegrity2( "FNPRfT4qUaVOKa0ivkn64mMY" );
+
+	// https://gist.github.com/roxlu/6ae94d42591e2ae563d9
+	// 
 
 	return true;
 }

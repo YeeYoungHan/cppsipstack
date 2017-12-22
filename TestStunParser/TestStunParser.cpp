@@ -20,7 +20,8 @@
 
 int main( int argc, char * argv[] )
 {
-	TestStunMessage();
+	TestStunMessageIntegrity();
+	//TestStunMessage();
 
 	return 0;
 }
