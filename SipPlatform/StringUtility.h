@@ -50,6 +50,7 @@ uint64_t GetUInt64( const char * pszText );
 int GetInt( const char * pszText, int iTextLen );
 
 bool HexToString( const char * pszInput, std::string & strOutput );
+void StringToHex( const char * pszInput, int iInputLen, std::string & strOutput );
 bool IsPrintString( const char * pszText, int iTextLen );
 
 #endif

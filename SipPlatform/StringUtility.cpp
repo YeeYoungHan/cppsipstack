@@ -407,9 +407,9 @@ int GetInt( const char * pszText, int iTextLen )
 
 /**
  * @ingroup SipPlatform
- * @brief HEX 만 저장된 문자열을 숫자로 변환한 문자열을 생성한다.
+ * @brief HEX 만 저장된 문자열을 숫자로 변환한 문자열로 변환한다.
  * @param pszInput	HEX 만 저장된 문자열
- * @param strOutput 숫자로 변환된 문자열 저장용 변수
+ * @param strOutput [out] 숫자로 변환된 문자열
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool HexToString( const char * pszInput, std::string & strOutput )
@@ -437,6 +437,26 @@ bool HexToString( const char * pszInput, std::string & strOutput )
 	}
 
 	return true;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 숫자가 저장된 문자열을 HEX 만 저장된 문자열로 변환한다.
+ * @param pszInput	숫자가 저장된 문자열
+ * @param iInputLen	pszInput 변수의 길이
+ * @param strOutput [out] HEX 만 저장된 문자열
+ */
+void StringToHex( const char * pszInput, int iInputLen, std::string & strOutput )
+{
+	char szHex[3];
+
+	strOutput.clear();
+
+	for( int i = 0; i < iInputLen; ++i )
+	{
+		snprintf( szHex, sizeof(szHex), "%02x", (uint8_t)pszInput[i] );
+		strOutput.append( szHex );
+	}
 }
 
 /**
