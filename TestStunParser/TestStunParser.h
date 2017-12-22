@@ -24,5 +24,6 @@
 #include "StringUtility.h"
 
 bool TestStunMessage();
+bool TestStunMessageIntegrity( );
 
 #endif

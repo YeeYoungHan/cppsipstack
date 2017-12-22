@@ -22,6 +22,10 @@
 #include "SipPlatformDefine.h"
 #include <string>
 
+/**
+ * @ingroup StunParser
+ * @brief STUN 애트리뷰트 저장 클래스
+ */
 class CStunAttribute
 {
 public:

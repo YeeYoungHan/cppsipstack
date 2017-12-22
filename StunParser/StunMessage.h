@@ -25,6 +25,11 @@
 
 typedef std::list< CStunAttribute > STUN_ATTRIBUTE_LIST;
 
+/**
+ * @ingroup StunParser
+ * @brief STUN 패킷 저장 클래스
+ *				본 클래스에는 STUN 헤더와 STUN 애트리뷰트 리스트가 포함되어 있다.
+ */
 class CStunMessage
 {
 public:
@@ -37,6 +42,9 @@ public:
 
 	CStunHeader					m_clsHeader;
 	STUN_ATTRIBUTE_LIST m_clsAttributeList;
+
+private:
+	static bool m_bInitOpenssl;
 };
 
 #endif

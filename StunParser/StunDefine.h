@@ -16,33 +16,32 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _STUN_HEADER_H_
-#define _STUN_HEADER_H_
+#ifndef _STUN_DEFINE_H_
+#define _STUN_DEFINE_H_
 
-#include "SipPlatformDefine.h"
-#include <string>
+// STUN 메시지 타입
+#define STUN_MT_REQUEST						0x0000
+#define STUN_MT_RESPONSE_SUCCESS	0x0100
+#define STUN_MT_RESPONSE_ERROR		0x0110
+#define STUN_MT_INDICATION				0x0010
 
-#define STUN_HEADER_SIZE	20
+#define STUN_MT_BINDING						0x0001
 
-/**
- * @ingroup StunParser
- * @brief STUN 헤더 저장 클래스
- */
-class CStunHeader
-{
-public:
-	CStunHeader();
-	~CStunHeader();
+// IP family
+#define STUN_FAMILY_IPV4			0x01
+#define STUN_FAMILY_IPV6			0x02
 
-	int Parse( const char * pszText, int iTextLen );
-	int ToString( char * pszText, int iTextSize );
-	void Clear();
+// transport
+#define STUN_TRANSPORT_UDP		17
+#define STUN_TRANSPORT_TCP		6
 
-	uint16_t		m_sMessageType;
-	uint16_t		m_sMessageLength;
-	std::string	m_strTransactionId;
+// attribute
+#define STUN_AT_MAPPED_ADDRESS				0x0001
+#define STUN_AT_USERNAME							0x0006
+#define STUN_AT_MESSAGE_INTEGRITY			0x0008
 
-	static uint8_t	m_arrCookie[4];
-};
+#define STUN_AT_XOR_MAPPED_ADDRESS		0x0020
+
+#define STUN_AT_FINGER_PRINT					0x8028
 
 #endif

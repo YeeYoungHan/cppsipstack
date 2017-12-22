@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipPlatform"
+				AdditionalIncludeDirectories="../SipPlatform;../openssl/window/32bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -105,7 +105,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipPlatform"
+				AdditionalIncludeDirectories="../SipPlatform;../openssl/window/32bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -154,6 +154,10 @@
 			</File>
 			<File
 				RelativePath=".\StunDecode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StunDefine.h"
 				>
 			</File>
 			<File

@@ -22,6 +22,11 @@
 #include "SipPlatformDefine.h"
 #include <string>
 
+/**
+ * @ingroup StunParser
+ * @brief STUN 패킷 디코딩 클래스
+ *				STUN 패킷에서 숫자, 문자열 등을 파싱한다.
+ */
 class CStunDecode
 {
 public:

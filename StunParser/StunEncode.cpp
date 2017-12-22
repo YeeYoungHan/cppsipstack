@@ -52,17 +52,26 @@ bool CStunEncode::Encode( uint16_t sInput )
 	return true;
 }
 
-bool CStunEncode::Encode( int iLen, const char * pszInput, int iInputLen )
+bool CStunEncode::Encode( const char * pszInput, int iInputLen, int iOutputLen )
 {
-	if( m_iTextSize < ( m_iPos + iLen ) ) return false;
+	if( iOutputLen == 0 ) iOutputLen = iInputLen;
 
-	memcpy( m_pszText + m_iPos, pszInput, iLen );
-	m_iPos += iLen;
+	if( m_iTextSize < ( m_iPos + iOutputLen ) ) return false;
+
+	memcpy( m_pszText + m_iPos, pszInput, iInputLen );
+	m_iPos += iInputLen;
+
+	int iTemp = iOutputLen - iInputLen;
+
+	for( int i = 0; i < iTemp; ++i )
+	{
+		m_pszText[m_iPos++] = 0;
+	}
 
 	return true;
 }
 
-bool CStunEncode::Encode( int iLen, std::string & strInput )
+bool CStunEncode::Encode( std::string & strInput, int iOutputLen )
 {
-	return Encode( iLen, strInput.c_str(), strInput.length() );
+	return Encode( strInput.c_str(), strInput.length(), iOutputLen );
 }

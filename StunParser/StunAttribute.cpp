@@ -51,9 +51,26 @@ int CStunAttribute::Parse( const char * pszText, int iTextLen )
 
 int CStunAttribute::ToString( char * pszText, int iTextSize )
 {
-	int iLen = 0;
+	CStunEncode clsEncode;
+	int iValueLen;
 
-	return iLen;
+	m_sLength = m_strValue.length();
+	uint16_t sTemp = m_sLength % 4;
+	if( sTemp )
+	{
+		iValueLen = m_sLength + 4 - sTemp;
+	}
+	else
+	{
+		iValueLen = m_sLength;
+	}
+
+	if( clsEncode.SetPacket( pszText, iTextSize ) == false ) return -1;
+	if( clsEncode.Encode( m_sType ) == false ) return -1;
+	if( clsEncode.Encode( m_sLength ) == false ) return -1;
+	if( clsEncode.Encode( m_strValue, iValueLen ) == false ) return -1;
+
+	return clsEncode.GetPos();
 }
 
 void CStunAttribute::Clear()

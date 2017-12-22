@@ -21,11 +21,28 @@
 bool TestStunMessage()
 {
 	CStunMessage clsMessage;
-	std::string strPacket;
+	std::string strPacket, strOutput;
+	char szPacket[1500];
+	int iPacketLen;
 
-	HexToString( "000100542112a4428e24a0e78f0a741a2ae42777000600096c4d52623a6c4d526b000000002400046efffaff802a0008000000000044d73a80540001330000008070000400000003000800140f2da18f9c1c439cd217ee85dfd8e15f25bfb283802800041e370fad", strPacket );
+	memset( szPacket, 0, sizeof(szPacket) );
+	const char * pszInput = "000100542112a4428e24a0e78f0a741a2ae42777000600096c4d52623a6c4d526b000000002400046efffaff802a0008000000000044d73a80540001330000008070000400000003000800140f2da18f9c1c439cd217ee85dfd8e15f25bfb283802800041e370fad";
+
+	HexToString( pszInput, strPacket );
 
 	if( clsMessage.Parse( strPacket.c_str(), strPacket.length() ) == -1 ) return false;
+
+	iPacketLen = clsMessage.ToString( szPacket, sizeof(szPacket) );
+	if( iPacketLen == -1 ) return false;
+
+	StringToHex( szPacket, iPacketLen, strOutput );
+
+	if( strcmp( pszInput, strOutput.c_str() ) )
+	{
+		printf( "encode error\n" );
+		printf( "input [%s]\n", pszInput );
+		printf( "output[%s]\n", strOutput.c_str() );
+	}
 
 	return true;
 }

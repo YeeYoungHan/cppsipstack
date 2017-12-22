@@ -51,8 +51,8 @@ int CStunHeader::ToString( char * pszText, int iTextSize )
 	if( clsEncode.SetPacket( pszText, iTextSize ) == false ) return -1;
 	if( clsEncode.Encode( m_sMessageType ) == false ) return -1;
 	if( clsEncode.Encode( m_sMessageLength ) == false ) return -1;
-	if( clsEncode.Encode( 4, (char *)m_arrCookie, 4 ) == false ) return -1;
-	if( clsEncode.Encode( 12, m_strTransactionId ) == false ) return -1;
+	if( clsEncode.Encode( (char *)m_arrCookie, 4 ) == false ) return -1;
+	if( clsEncode.Encode( m_strTransactionId, 12 ) == false ) return -1;
 
 	return clsEncode.GetPos();
 }

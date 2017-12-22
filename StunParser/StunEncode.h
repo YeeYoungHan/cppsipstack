@@ -22,6 +22,11 @@
 #include "SipPlatformDefine.h"
 #include <string>
 
+/**
+ * @ingroup StunParser
+ * @brief STUN 패킷 인코딩 클래스
+ *				숫자, 문자열 등을 STUN 패킷에 저장한다.
+ */
 class CStunEncode
 {
 public:
@@ -32,8 +37,8 @@ public:
 	int GetPos( );
 
 	bool Encode( uint16_t sInput );
-	bool Encode( int iLen, const char * pszInput, int iInputLen );
-	bool Encode( int iLen, std::string & strInput );
+	bool Encode( const char * pszInput, int iInputLen, int iOutputLen = 0 );
+	bool Encode( std::string & strInput, int iOutputLen = 0 );
 
 private:
 	char * m_pszText;
