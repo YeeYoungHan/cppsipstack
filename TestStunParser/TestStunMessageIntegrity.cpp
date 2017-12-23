@@ -25,6 +25,8 @@ bool TestStunMessageIntegrity( )
 {
 	const char * pszPacket = "0001004C2112a4428e24a0e78f0a741a2ae42777000600096c4d52623a6c4d526b000000002400046efffaff802a0008000000000044d73a80540001330000008070000400000003";
 	const char * pszMI = "0f2da18f9c1c439cd217ee85dfd8e15f25bfb283";
+
+	// STUN 수신자에서 전송한 ice-pwd 를 설정한다.
 	const char * pszPassWord = "FNPRfT4qUaVOKa0ivkn64mMY";
 	
 	std::string strPacket, strDigest;

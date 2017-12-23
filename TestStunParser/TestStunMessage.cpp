@@ -32,6 +32,7 @@ bool TestStunMessage()
 
 	if( clsMessage.Parse( strPacket.c_str(), strPacket.length() ) == -1 ) return false;
 
+	// STUN 수신자에서 전송한 ice-pwd 를 설정한다.
 	clsMessage.m_strPassword = "FNPRfT4qUaVOKa0ivkn64mMY";
 	iPacketLen = clsMessage.ToString( szPacket, sizeof(szPacket) );
 	if( iPacketLen == -1 ) return false;
