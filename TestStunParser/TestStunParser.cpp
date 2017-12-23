@@ -21,7 +21,7 @@
 int main( int argc, char * argv[] )
 {
 	TestStunMessageIntegrity();
-	//TestStunMessage();
+	TestStunMessage();
 
 	return 0;
 }

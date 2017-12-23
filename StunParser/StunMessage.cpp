@@ -18,8 +18,8 @@
 
 #include "StunMessage.h"
 #include "StunDefine.h"
-#include "SipMd5.h"
 #include <openssl/hmac.h>
+#include "MemoryDebug.h"
 
 bool CStunMessage::m_bInitOpenssl = false;
 
@@ -76,7 +76,7 @@ int CStunMessage::ToString( char * pszText, int iTextSize )
 		}
 		else if( itSAL->m_sType == STUN_AT_MESSAGE_INTEGRITY )
 		{
-			m_clsHeader.m_sMessageLength = iLen - STUN_HEADER_SIZE;
+			m_clsHeader.m_sMessageLength = iLen - STUN_HEADER_SIZE + 24;
 			m_clsHeader.ToString( pszText, iTextSize );
 
 			HMAC_CTX		sttCtx;
@@ -85,14 +85,9 @@ int CStunMessage::ToString( char * pszText, int iTextSize )
 
 			memset( szDigest, 0, sizeof(szDigest) );
 
-			char szPassWord[1024], szMd5[16];
-
-			snprintf( szPassWord, sizeof(szPassWord), "%s::%s", "lMRk", "nFNRfT4UabEOKa00ivn64MtQ" );
-
-			SipMd5Byte( szPassWord, (unsigned char *)szMd5 );
-
 			HMAC_CTX_init( &sttCtx );
-			HMAC_Init_ex( &sttCtx, szMd5, 16, EVP_sha1(), NULL );
+			const char * pszPw = "FNPRfT4qUaVOKa0ivkn64mMY";
+			HMAC_Init_ex( &sttCtx, pszPw, strlen(pszPw), EVP_sha1(), NULL );
 			HMAC_Update( &sttCtx, (unsigned char *)pszText, iLen );
 			HMAC_Final( &sttCtx, szDigest, &iDigestLen );
 
