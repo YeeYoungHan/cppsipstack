@@ -86,8 +86,7 @@ int CStunMessage::ToString( char * pszText, int iTextSize )
 			memset( szDigest, 0, sizeof(szDigest) );
 
 			HMAC_CTX_init( &sttCtx );
-			const char * pszPw = "FNPRfT4qUaVOKa0ivkn64mMY";
-			HMAC_Init_ex( &sttCtx, pszPw, strlen(pszPw), EVP_sha1(), NULL );
+			HMAC_Init_ex( &sttCtx, m_strPassword.c_str(), m_strPassword.length(), EVP_sha1(), NULL );
 			HMAC_Update( &sttCtx, (unsigned char *)pszText, iLen );
 			HMAC_Final( &sttCtx, szDigest, &iDigestLen );
 

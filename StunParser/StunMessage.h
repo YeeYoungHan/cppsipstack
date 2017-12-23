@@ -42,6 +42,7 @@ public:
 
 	CStunHeader					m_clsHeader;
 	STUN_ATTRIBUTE_LIST m_clsAttributeList;
+	std::string					m_strPassword;
 
 private:
 	static bool m_bInitOpenssl;

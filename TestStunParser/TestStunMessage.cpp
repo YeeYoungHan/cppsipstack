@@ -32,6 +32,7 @@ bool TestStunMessage()
 
 	if( clsMessage.Parse( strPacket.c_str(), strPacket.length() ) == -1 ) return false;
 
+	clsMessage.m_strPassword = "FNPRfT4qUaVOKa0ivkn64mMY";
 	iPacketLen = clsMessage.ToString( szPacket, sizeof(szPacket) );
 	if( iPacketLen == -1 ) return false;
 
