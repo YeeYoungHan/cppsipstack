@@ -45,7 +45,8 @@ public:
 	std::string					m_strPassword;
 
 private:
-	static bool m_bInitOpenssl;
+	static bool			m_bInit;
+	static uint32_t m_arrCrc32[256];
 };
 
 #endif
