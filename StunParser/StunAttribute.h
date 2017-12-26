@@ -37,6 +37,7 @@ public:
 	void Clear();
 
 	bool GetIpPort( std::string & strIp, uint16_t & sPort );
+	bool SetXorMappedAddress( const char * pszIp, uint16_t sPort );
 
 	uint16_t		m_sType;
 	uint16_t		m_sLength;

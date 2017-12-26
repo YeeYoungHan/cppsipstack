@@ -68,7 +68,30 @@ static bool TestStunXorMappedAddress( const char * pszInput, const char * pszInp
 	}
 
 	return true;
+}
 
+static bool TestStunXorMappedAddressSetGet( const char * pszInputIp, uint16_t sInputPort )
+{
+	CStunAttribute clsAttr;
+	std::string strIp;
+	uint16_t sPort;
+
+	clsAttr.SetXorMappedAddress( pszInputIp, sInputPort );
+	clsAttr.GetIpPort( strIp, sPort );
+
+	if( strcmp( strIp.c_str(), pszInputIp ) )
+	{
+		printf( "%s ip(%s) != input ip(%s)\n", __FUNCTION__, strIp.c_str(), pszInputIp );
+		return false;
+	}
+
+	if( sPort != sInputPort )
+	{
+		printf( "%s port(%d) != input port(%d)\n", __FUNCTION__, sPort, sInputPort );
+		return false;
+	}
+
+	return true;
 }
 
 bool TestStunXorMappedAddress( )
@@ -78,6 +101,8 @@ bool TestStunXorMappedAddress( )
 	
 	if( TestStunXorMappedAddress( "010100342112a442cec325aeb2bb95978bb3615600200008000167dee1baa45d807000040000000300080014494fd190005dbecaa1dc9c169e97cca06a3bbc30802800049befef2b"
 				, "192.168.0.31", 18124 ) == false ) return false;
+
+	if( TestStunXorMappedAddressSetGet( "192.168.0.1", 1234 ) == false ) return false;
 
 	return true;
 }

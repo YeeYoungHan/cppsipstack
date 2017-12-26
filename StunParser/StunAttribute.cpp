@@ -25,8 +25,6 @@
 #include "StunDefine.h"
 #include "MemoryDebug.h"
 
-#define WINXP
-
 CStunAttribute::CStunAttribute() : m_sType(0), m_sLength(0)
 {
 }
@@ -126,4 +124,36 @@ bool CStunAttribute::GetIpPort( std::string & strIp, uint16_t & sPort )
 	}
 
 	return false;
+}
+
+bool CStunAttribute::SetXorMappedAddress( const char * pszIp, uint16_t sPort )
+{
+	m_sType = STUN_AT_XOR_MAPPED_ADDRESS;
+	m_sLength = 8;
+
+	uint8_t szValue[8];
+
+	szValue[0] = 0;
+	szValue[1] = STUN_FAMILY_IPV4;
+
+	uint16_t sMod = ((uint16_t)CStunHeader::m_arrCookie[0] << 8 ) & 0xFF00 | ((uint16_t)CStunHeader::m_arrCookie[1] & 0x00FF );
+	sPort ^= sMod;
+	sPort = htons( sPort );
+	memcpy( szValue + 2, &sPort, 2 );
+
+#ifdef WINXP
+	*((uint32_t*)(szValue + 4)) = inet_addr( pszIp );
+#else
+	inet_pton( AF_INET, pszIp, szValue+4 );
+#endif
+
+	for( int i = 0; i < 4; ++i )
+	{
+		szValue[4+i] ^= CStunHeader::m_arrCookie[i];
+	}
+
+	m_strValue.clear();
+	m_strValue.append( (char *)szValue, 8 );
+
+	return true;
 }
