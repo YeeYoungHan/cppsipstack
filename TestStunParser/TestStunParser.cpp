@@ -20,6 +20,7 @@
 
 static bool Test( )
 {
+	if( TestStunXorMappedAddress() == false ) return false;
 	if( TestStunMessageIntegrity() == false ) return false;
 	if( TestStunMessage() == false ) return false;
 

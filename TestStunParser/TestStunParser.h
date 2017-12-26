@@ -21,9 +21,11 @@
 
 #include <stdio.h>
 #include "StunMessage.h"
+#include "StunDefine.h"
 #include "StringUtility.h"
 
 bool TestStunMessage();
 bool TestStunMessageIntegrity( );
+bool TestStunXorMappedAddress( );
 
 #endif

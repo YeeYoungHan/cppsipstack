@@ -192,6 +192,10 @@
 				RelativePath=".\TestStunParser.h"
 				>
 			</File>
+			<File
+				RelativePath=".\TestStunXorMappedAddress.cpp"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

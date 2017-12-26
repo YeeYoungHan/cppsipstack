@@ -36,11 +36,19 @@ static bool TestStunMessage( const char * pszInput, const char * pszPw )
 
 	HexToString( pszInput, strPacket );
 
-	if( clsMessage.Parse( strPacket.c_str(), strPacket.length() ) == -1 ) return false;
+	if( clsMessage.Parse( strPacket.c_str(), strPacket.length() ) == -1 ) 
+	{
+		printf( "%s clsMessage.Parse(%s) error\n", __FUNCTION__, pszInput );
+		return false;
+	}
 
 	clsMessage.m_strPassword = pszPw;
 	iPacketLen = clsMessage.ToString( szPacket, sizeof(szPacket) );
-	if( iPacketLen == -1 ) return false;
+	if( iPacketLen == -1 ) 
+	{
+		printf( "%s clsMessage.ToString(%s) error\n", __FUNCTION__, pszInput );
+		return false;
+	}
 
 	StringToHex( szPacket, iPacketLen, strOutput );
 

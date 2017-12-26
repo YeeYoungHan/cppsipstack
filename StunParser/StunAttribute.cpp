@@ -16,9 +16,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipPlatformDefine.h"
+#include "SipUdp.h"
 #include "StunAttribute.h"
 #include "StunDecode.h"
 #include "StunEncode.h"
+#include "StunHeader.h"
+#include "StunDefine.h"
+#include "MemoryDebug.h"
+
+#define WINXP
 
 CStunAttribute::CStunAttribute() : m_sType(0), m_sLength(0)
 {
@@ -78,4 +85,45 @@ void CStunAttribute::Clear()
 	m_sType = 0;
 	m_sLength = 0;
 	m_strValue.clear();
+}
+
+bool CStunAttribute::GetIpPort( std::string & strIp, uint16_t & sPort )
+{
+	if( m_sType == STUN_AT_XOR_MAPPED_ADDRESS )
+	{
+		if( m_strValue.length() < 8 ) return false;
+
+		const char * pszValue = m_strValue.c_str();
+		
+		memcpy( &sPort, pszValue + 2, 2 );
+		sPort = ntohs( sPort );
+
+		uint16_t sMod = ((uint16_t)CStunHeader::m_arrCookie[0] << 8 ) & 0xFF00 | ((uint16_t)CStunHeader::m_arrCookie[1] & 0x00FF );
+		sPort ^= sMod;
+
+		if( pszValue[1] == STUN_FAMILY_IPV4 )
+		{
+			uint8_t arrIp[4];
+			char szIp[21];
+
+			memcpy( arrIp, pszValue + 4, 4 );
+
+			for( int i = 0; i < 4; ++i )
+			{
+				arrIp[i] ^= CStunHeader::m_arrCookie[i];
+			}
+
+#ifdef WINXP
+			snprintf( szIp, sizeof(szIp), "%s", inet_ntoa( *((struct in_addr *)&arrIp)) );
+#else
+			inet_ntop( AF_INET, &arrIp, szIp, sizeof(szIp) );
+#endif
+
+			strIp = szIp;
+		}
+
+		return true;
+	}
+
+	return false;
 }

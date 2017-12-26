@@ -18,7 +18,6 @@
 
 #include "SipPlatformDefine.h"
 #include "TestStunParser.h"
-#include "SipMd5.h"
 #include <openssl/hmac.h>
 
 bool TestStunMessageIntegrity( )

@@ -36,6 +36,8 @@ public:
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
 
+	bool GetIpPort( std::string & strIp, uint16_t & sPort );
+
 	uint16_t		m_sType;
 	uint16_t		m_sLength;
 	std::string	m_strValue;
