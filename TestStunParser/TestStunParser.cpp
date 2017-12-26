@@ -18,10 +18,20 @@
 
 #include "TestStunParser.h"
 
+static bool Test( )
+{
+	if( TestStunMessageIntegrity() == false ) return false;
+	if( TestStunMessage() == false ) return false;
+
+	return true;
+}
+
 int main( int argc, char * argv[] )
 {
-	TestStunMessageIntegrity();
-	TestStunMessage();
+	if( Test() == false )
+	{
+		printf( "ERROR!!!\n" );
+	}
 
 	return 0;
 }
