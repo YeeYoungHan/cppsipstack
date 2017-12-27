@@ -89,7 +89,12 @@ function StartSession()
           	
           	if( iStatusCode > 200 )
           	{
+          		stopPeer();
           		btnInvite.disabled = false;
+          	}
+          	else if( iStatusCode == 180 )
+          	{
+          		setAnswer( arrData[3] );
           	}
           }
 					break;

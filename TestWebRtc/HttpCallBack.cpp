@@ -24,6 +24,8 @@
 #include "UserMap.h"
 #include "CallMap.h"
 #include "SipCallBack.h"
+#include "RtpThread.h"
+#include "StunMessage.h"
 #include "MemoryDebug.h"
 
 CHttpStack gclsHttpStack;
@@ -277,45 +279,55 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 				return true;
 			}
 
+			CRtpThreadArg * pclsRtpArg = new CRtpThreadArg();
+			if( pclsRtpArg == NULL )
+			{
+				Send( pszClientIp, iClientPort, "res|invite|500" );
+				return true;
+			}
+
+			if( pclsRtpArg->CreateSocket() == false )
+			{
+				delete pclsRtpArg;
+				Send( pszClientIp, iClientPort, "res|invite|500" );
+				return true;
+			}
+
 #ifdef _DEBUG
 			char szSdp[8192], szPacket[1024], szIp[21];
-			int iLocalPort = 10000;
+			const char * pszIcePwd = "FNPRfT4qUaVOKa0ivkn64mMY";
 			unsigned short iPort;
 			int iPacketLen;
-
-			Socket hUdpSocket = UdpListen( iLocalPort, NULL );
+			CStunMessage clsStunRequest;
 
 			snprintf( szSdp, sizeof(szSdp), "v=0\r\n"
-				"o=- 4532014611503881976 0 IN IP4 127.0.0.1\r\n"
+				"o=- 4532014611503881976 0 IN IP4 %s\r\n"
 				"s=-\r\n"
 				"t=0 0\r\n"
 				"m=audio %d RTP/AVP 0\r\n"
-				"c=IN IP4 192.168.0.32\r\n"
+				"c=IN IP4 %s\r\n"
 				"a=rtpmap:0 PCMU/8000\r\n"
 				"a=sendrecv\r\n"
 				"a=ice-ufrag:lMRb\r\n"
-				"a=ice-pwd:FNPRfT4qUaVOKa0ivkn64mMY\r\n"
+				"a=ice-pwd:%s\r\n"
 				"a=fingerprint:sha-256 0D:F6:43:E7:2D:94:11:47:47:84:A4:E4:AF:42:34:A4:B1:B9:58:AB:A9:BF:82:37:7A:73:C4:04:F0:62:7C:36\r\n"
-				"a=candidate:1 1 udp 2130706431 %s %d typ host\r\n", iLocalPort, gstrLocalIp.c_str(), iLocalPort );
-			Send( pszClientIp, iClientPort, "res|invite|200|%s", szSdp );
+				"a=candidate:1 1 udp 2130706431 %s %d typ host\r\n"
+				, gstrLocalIp.c_str(), pclsRtpArg->m_iWebRtcUdpPort, gstrLocalIp.c_str(), pszIcePwd, gstrLocalIp.c_str(), pclsRtpArg->m_iWebRtcUdpPort );
+			Send( pszClientIp, iClientPort, "res|invite|180|%s", szSdp );
 
 			iPacketLen = sizeof(szPacket);
-			UdpRecv( hUdpSocket, szPacket, &iPacketLen, szIp, sizeof(szIp), &iPort );
+			UdpRecv( pclsRtpArg->m_hWebRtcUdp, szPacket, &iPacketLen, szIp, sizeof(szIp), &iPort );
 
 			if( iPacketLen >= 20 && szPacket[0] == 0x00 && szPacket[1] == 0x01 )
 			{
-				// Binding Request -> Binding Success Response
-				szPacket[0] = 0x01;
+				if( clsStunRequest.Parse( szPacket, iPacketLen ) == -1 )
+				{
+					delete pclsRtpArg;
+					Send( pszClientIp, iClientPort, "res|invite|500" );
+					return true;
+				}
 
-				int iPos = 20;
-
-				szPacket[iPos++] = 0x00;
-				szPacket[iPos++] = 0x20;
-				szPacket[iPos++] = 0x00;
-				szPacket[iPos++] = 0x08;
-				szPacket[iPos++] = 0x00;
-				szPacket[iPos++] = 0x01;
-
+				// QQQ: STUN 응답 메시지 생성 및 전송
 			}
 
 			return true;
