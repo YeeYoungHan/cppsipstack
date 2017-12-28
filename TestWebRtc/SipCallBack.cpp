@@ -59,13 +59,6 @@ void CSipCallBack::EventIncomingCall( const char * pszCallId, const char * pszFr
 
 void CSipCallBack::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
 {
-	CCallInfo clsCallInfo;
-	CUserInfo clsUserInfo;
-
-	if( gclsCallMap.Select( pszCallId, clsCallInfo ) && gclsUserMap.Select( clsCallInfo.m_strUserId.c_str(), clsUserInfo ) )
-	{
-		gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|180" );
-	}
 }
 
 void CSipCallBack::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
@@ -75,11 +68,7 @@ void CSipCallBack::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp
 
 	if( gclsCallMap.Select( pszCallId, clsCallInfo ) && gclsUserMap.Select( clsCallInfo.m_strUserId.c_str(), clsUserInfo ) )
 	{
-		std::string strSdp;
-
-		MakeSdp( pclsRtp, strSdp );
-
-		gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|200|%s", strSdp.c_str() );
+		gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|200" );
 	}
 }
 
@@ -98,6 +87,13 @@ void CSipCallBack::EventCallEnd( const char * pszCallId, int iSipStatus )
 		{
 			gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|%d", iSipStatus );
 		}
+
+		if( clsUserInfo.m_pclsRtpArg )
+		{
+			clsUserInfo.m_pclsRtpArg->m_bStop = true;
+		}
+
+		gclsCallMap.Delete( pszCallId );
 	}
 }
 

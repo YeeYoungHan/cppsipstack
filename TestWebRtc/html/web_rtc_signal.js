@@ -76,8 +76,6 @@ function StartSession()
 				case "invite":
 					if( arrData[2] == '200' )
 					{
-						setAnswer( arrData[3] );
-	
 	          btnInvite.disabled = true;
 	          btnAccept.disabled = true;
 	          btnDecline.disabled = true;

@@ -25,81 +25,25 @@
 #include "UserMap.h"
 #include "CallMap.h"
 
-static int giUdpPort = 10000;
-
-bool CreateUdpSocket( Socket & hSocket, int & iPort )
-{
-	int iStartPort = giUdpPort;
-
-	while( giUdpPort < 65535 )
-	{
-		hSocket = UdpListen( giUdpPort, NULL );
-		if( hSocket != INVALID_SOCKET ) 
-		{
-			iPort = giUdpPort;
-			giUdpPort += 2;
-			return true;
-		}
-		giUdpPort += 2;
-	}
-
-	for( giUdpPort = 10000; giUdpPort < iStartPort; giUdpPort += 2 )
-	{
-		hSocket = UdpListen( giUdpPort, NULL );
-		if( hSocket != INVALID_SOCKET )
-		{
-			iPort = giUdpPort;
-			giUdpPort += 2;
-			return true;
-		}
-	}
-
-	return false;
-}
-
-bool CRtpThreadArg::CreateSocket()
-{
-	if( CreateUdpSocket( m_hWebRtcUdp, m_iWebRtcUdpPort ) && CreateUdpSocket( m_hPbxUdp, m_iPbxUdpPort ) )
-	{
-		return true;
-	}
-
-	Close();
-
-	return false;
-}
-
-void CRtpThreadArg::Close()
-{
-	if( m_hWebRtcUdp != INVALID_SOCKET )
-	{
-		closesocket( m_hWebRtcUdp );
-		m_hWebRtcUdp = INVALID_SOCKET;
-	}
-
-	if( m_hPbxUdp != INVALID_SOCKET )
-	{
-		closesocket( m_hPbxUdp );
-		m_hPbxUdp = INVALID_SOCKET;
-	}
-
-	m_iWebRtcUdpPort = 0;
-	m_iPbxUdpPort = 0;
-}
+#include "RtpThreadArg.hpp"
 
 THREAD_API RtpThread( LPVOID lpParameter )
 {
 	CRtpThreadArg * pclsArg = (CRtpThreadArg *)lpParameter;
 	CUserInfo clsUserInfo;
 
-	char szSdp[8192], szPacket[1024], szIp[21];
+	char szSdp[8192], szPacket[1024], szWebRTCIp[21], szPbxIp[21];
 	const char * pszIcePwd = "FNPRfT4qUaVOKa0ivkn64mMY";
-	unsigned short iPort;
-	int iPacketLen;
+	unsigned short iWebRTCPort = 0, iPbxPort = 0;
+	int iPacketLen, n;
 	CStunMessage clsStunRequest;
 	std::string strCallId;
 	CSipCallRtp clsRtp;
 	CSipCallRoute clsRoute;
+	pollfd sttPoll[2];
+
+	szWebRTCIp[0] = '\0';
+	szPbxIp[0] = '\0';
 
 	if( gclsUserMap.Select( pclsArg->m_strUserId.c_str(), clsUserInfo ) == false )
 	{
@@ -110,7 +54,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 		"o=- 4532014611503881976 0 IN IP4 %s\r\n"
 		"s=-\r\n"
 		"t=0 0\r\n"
-		"m=audio %d UDP/TLS/RTP/SAVPF 0\r\n"
+		"m=audio %d RTP/AVP 0\r\n"
 		"c=IN IP4 %s\r\n"
 		"a=rtpmap:0 PCMU/8000\r\n"
 		"a=sendrecv\r\n"
@@ -122,7 +66,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 	gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|180|%s", szSdp );
 
 	iPacketLen = sizeof(szPacket);
-	UdpRecv( pclsArg->m_hWebRtcUdp, szPacket, &iPacketLen, szIp, sizeof(szIp), &iPort );
+	UdpRecv( pclsArg->m_hWebRtcUdp, szPacket, &iPacketLen, szWebRTCIp, sizeof(szWebRTCIp), &iWebRTCPort );
 
 	if( iPacketLen >= 20 && szPacket[0] == 0x00 && szPacket[1] == 0x01 )
 	{
@@ -132,10 +76,29 @@ THREAD_API RtpThread( LPVOID lpParameter )
 			goto FUNC_END;
 		}
 
-		// QQQ: STUN 응답 메시지 생성 및 전송
+		// STUN 응답 메시지 생성 및 전송
+		CStunMessage * pclsStunResponse = clsStunRequest.CreateResponse( true );
+		if( pclsStunResponse == NULL )
+		{
+			gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|500" );
+			goto FUNC_END;
+		}
+
+		pclsStunResponse->m_strPassword = pszIcePwd;
+		pclsStunResponse->AddXorMappedAddress( szWebRTCIp, iWebRTCPort );
+		pclsStunResponse->AddMessageIntegrity();
+		pclsStunResponse->AddFingerPrint();
+		iPacketLen = pclsStunResponse->ToString( szPacket, sizeof(szPacket) );
+		delete pclsStunResponse;
+
+		UdpSend( pclsArg->m_hWebRtcUdp, szPacket, iPacketLen, szWebRTCIp, iWebRTCPort );
 	}
 
 	// QQQ: DTLS 설정
+
+	clsRtp.m_iCodec = 0;
+	clsRtp.m_iPort = pclsArg->m_iPbxUdpPort;
+	clsRtp.m_strIp = gstrLocalIp;
 
 	clsRoute.m_strDestIp = clsUserInfo.m_strSipServerIp;
 	clsRoute.m_iDestPort = 5060;
@@ -153,9 +116,30 @@ THREAD_API RtpThread( LPVOID lpParameter )
 		goto FUNC_END;
 	}
 
+	TcpSetPollIn( sttPoll[0], pclsArg->m_hWebRtcUdp );
+	TcpSetPollIn( sttPoll[1], pclsArg->m_hPbxUdp );
+
 	while( pclsArg->m_bStop == false )
 	{
+		n = poll( sttPoll, 2, 1000 );
+		if( n <= 0 ) continue;
 		
+		if( sttPoll[0].revents & POLLIN )
+		{
+			iPacketLen = sizeof(szPacket);
+			UdpRecv( pclsArg->m_hWebRtcUdp, szPacket, &iPacketLen, szWebRTCIp, sizeof(szWebRTCIp), &iWebRTCPort );
+			if( iPbxPort > 0 )
+			{
+				UdpSend( pclsArg->m_hPbxUdp, szPacket, iPacketLen, szPbxIp, iPbxPort );
+			}
+		}
+
+		if( sttPoll[1].revents & POLLIN )
+		{
+			iPacketLen = sizeof(szPacket);
+			UdpRecv( pclsArg->m_hPbxUdp, szPacket, &iPacketLen, szPbxIp, sizeof(szPbxIp), &iPbxPort );
+			UdpSend( pclsArg->m_hPbxUdp, szPacket, iPacketLen, szWebRTCIp, iWebRTCPort );
+		}
 	}
 
 FUNC_END:

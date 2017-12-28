@@ -24,8 +24,8 @@
 class CRtpThreadArg
 {
 public:
-	CRtpThreadArg() : m_hWebRtcUdp(INVALID_SOCKET), m_hPbxUdp(INVALID_SOCKET), m_iWebRtcUdpPort(0), m_iPbxUdpPort(0), m_bStop(false)
-	{}
+	CRtpThreadArg();
+	~CRtpThreadArg();
 
 	bool CreateSocket();
 	void Close();

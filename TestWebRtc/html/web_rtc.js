@@ -8,7 +8,7 @@ var pc;
 var pc_config = null;
 
 //
-var pc_constraints = { 'optional': [{'DtlsSrtpKeyAgreement': true} ]};
+var pc_constraints = { 'optional': [{'DtlsSrtpKeyAgreement': false} ]};
 var sdpConstraints = {};
 
 var localVideo = document.getElementById("localVideo");

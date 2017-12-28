@@ -237,9 +237,6 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 		}
 		else
 		{
-#ifdef _DEBUG
-			Send( pszClientIp, iClientPort, "res|register|200" );
-#else
 			CSipServerInfo clsServerInfo;
 
 			clsServerInfo.m_strUserId = clsList[2];
@@ -251,7 +248,6 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 				gclsUserMap.Delete( clsList[2].c_str() );
 				Send( pszClientIp, iClientPort, "res|register|500" );
 			}
-#endif
 		}
 	}
 	else if( !strcmp( pszCommand, "invite" ) )
@@ -306,6 +302,30 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 	}
 	else if( !strcmp( pszCommand, "bye" ) )
 	{
+		std::string strUserId;
+		CUserInfo clsUserInfo;
+
+		if( gclsUserMap.SelectUserId( pszClientIp, iClientPort, strUserId ) == false || gclsUserMap.Select( strUserId.c_str(), clsUserInfo ) == false )
+		{
+			Send( pszClientIp, iClientPort, "res|invite|403" );
+			return true;
+		}
+
+		SIP_CALL_ID_LIST clsCallIdList;
+		SIP_CALL_ID_LIST::iterator itCIL;
+
+		gclsCallMap.DeleteUserId( strUserId.c_str(), clsCallIdList );
+
+		for( itCIL = clsCallIdList.begin(); itCIL != clsCallIdList.end(); ++itCIL )
+		{
+			gclsSipStack.StopCall( itCIL->c_str() );
+		}
+
+		if( clsUserInfo.m_pclsRtpArg )
+		{
+			clsUserInfo.m_pclsRtpArg->m_bStop = true;
+			gclsUserMap.Update( strUserId.c_str(), clsUserInfo.m_pclsRtpArg, true );
+		}
 	}
 
 	return true;

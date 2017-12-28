@@ -240,6 +240,10 @@
 				RelativePath=".\RtpThread.h"
 				>
 			</File>
+			<File
+				RelativePath=".\RtpThreadArg.hpp"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

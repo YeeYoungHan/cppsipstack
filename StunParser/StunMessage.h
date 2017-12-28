@@ -40,6 +40,12 @@ public:
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
 
+	CStunMessage * CreateResponse( bool bSuccess );
+
+	bool AddXorMappedAddress( const char * pszIp, uint16_t sPort );
+	bool AddMessageIntegrity( );
+	bool AddFingerPrint( );
+
 	CStunHeader					m_clsHeader;
 	STUN_ATTRIBUTE_LIST m_clsAttributeList;
 	std::string					m_strPassword;

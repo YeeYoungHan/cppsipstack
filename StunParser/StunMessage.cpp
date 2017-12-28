@@ -60,6 +60,13 @@ CStunMessage::~CStunMessage()
 {
 }
 
+/**
+ * @ingroup StunParser
+ * @brief STUN 패킷을 파싱하여 내부 변수에 저장한다.
+ * @param pszText		STUN 패킷
+ * @param iTextLen	STUN 패킷 길이
+ * @returns 성공하면 파싱한 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CStunMessage::Parse( const char * pszText, int iTextLen )
 {
 	int iPos = 0, n;
@@ -85,6 +92,13 @@ int CStunMessage::Parse( const char * pszText, int iTextLen )
 	return iPos;
 }
 
+/**
+ * @ingroup StunParser
+ * @brief 내부 변수에 저장된 값으로 STUN 패킷을 생성한다.
+ * @param pszText		[out] STUN 패킷
+ * @param iTextSize	[in] STUN 패킷 크기
+ * @returns 성공하면 STUN 패킷을 길이를 리턴하고 그렇지 않으면 -1 를 리턴한다.
+ */
 int CStunMessage::ToString( char * pszText, int iTextSize )
 {
 	int iLen = 0, n;
@@ -114,6 +128,7 @@ int CStunMessage::ToString( char * pszText, int iTextSize )
 			HMAC_Update( &sttCtx, (unsigned char *)pszText, iLen );
 			HMAC_Final( &sttCtx, szDigest, &iDigestLen );
 
+			itSAL->m_sLength = iDigestLen;
 			itSAL->m_strValue.clear();
 			itSAL->m_strValue.append( (char *)szDigest, iDigestLen );
 		}
@@ -150,7 +165,72 @@ int CStunMessage::ToString( char * pszText, int iTextSize )
 	return iLen;
 }
 
+/**
+ * @ingroup StunParser
+ * @brief 내부 변수를 초기화시킨다.
+ */
 void CStunMessage::Clear()
 {
+	m_clsHeader.Clear();
 	m_clsAttributeList.clear();
+	m_strPassword.clear();
+}
+
+/**
+ * @ingroup StunParser
+ * @brief 응답 STUN 메시지를 생성한다.
+ * @param bSuccess 성공 응답이면 true 를 입력하고 실패 응답이면 false 를 입력한다.
+ * @returns 성공하면 STUN 응답 메세지의 포인터를 리턴하고 실패하면 NULL 을 리턴한다.
+ */
+CStunMessage * CStunMessage::CreateResponse( bool bSuccess )
+{
+	CStunMessage * pclsResponse = new CStunMessage();
+	if( pclsResponse == NULL ) return NULL;
+
+	pclsResponse->m_clsHeader = m_clsHeader;
+	pclsResponse->m_clsHeader.m_sMessageLength = 0;
+
+	if( bSuccess )
+	{
+		pclsResponse->m_clsHeader.m_sMessageType |= STUN_MT_RESPONSE_SUCCESS;
+	}
+	else
+	{
+		pclsResponse->m_clsHeader.m_sMessageType |= STUN_MT_RESPONSE_ERROR;
+	}
+
+	return pclsResponse;
+}
+
+bool CStunMessage::AddXorMappedAddress( const char * pszIp, uint16_t sPort )
+{
+	CStunAttribute clsAttr;
+
+	clsAttr.SetXorMappedAddress( pszIp, sPort );
+
+	m_clsAttributeList.push_back( clsAttr );
+
+	return true;
+}
+
+bool CStunMessage::AddMessageIntegrity( )
+{
+	CStunAttribute clsAttr;
+
+	clsAttr.m_sType = STUN_AT_MESSAGE_INTEGRITY;
+
+	m_clsAttributeList.push_back( clsAttr );
+
+	return true;
+}
+
+bool CStunMessage::AddFingerPrint( )
+{
+	CStunAttribute clsAttr;
+
+	clsAttr.m_sType = STUN_AT_FINGER_PRINT;
+
+	m_clsAttributeList.push_back( clsAttr );
+
+	return true;
 }
