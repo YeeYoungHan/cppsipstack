@@ -21,6 +21,10 @@
 
 CUserMap gclsUserMap;
 
+CUserInfo::CUserInfo() : m_iPort(0), m_pclsRtpArg(NULL)
+{
+}
+
 CUserMap::CUserMap()
 {
 }
@@ -73,6 +77,67 @@ bool CUserMap::Insert( const char * pszUserId, const char * pszPassWord, const c
 	return bRes;
 }
 
+bool CUserMap::Update( const char * pszUserId, CRtpThreadArg * pclsRtpArg, bool bSetNull )
+{
+	bool bRes = false;
+	USER_MAP::iterator itMap;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszUserId );
+	if( itMap != m_clsMap.end() )
+	{
+		if( bSetNull )
+		{
+			if( itMap->second.m_pclsRtpArg == pclsRtpArg )
+			{
+				itMap->second.m_pclsRtpArg = NULL;
+			}
+		}
+		else
+		{
+			itMap->second.m_pclsRtpArg = pclsRtpArg;
+		}
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+/**
+ * @ingroup TestWebRtc
+ * @brief 사용자 아이디로 사용자 정보를 삭제한다.
+ * @param pszUserId 사용자 아이디
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CUserMap::Delete( const char * pszUserId )
+{
+	bool bRes = false;
+	std::string strKey;
+	USER_MAP::iterator itMap;
+	USER_KEY_MAP::iterator itKeyMap;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszUserId );
+	if( itMap != m_clsMap.end() )
+	{
+		GetKey( itMap->second.m_strIp.c_str(), itMap->second.m_iPort, strKey );
+
+		itKeyMap = m_clsKeyMap.find( strKey );
+		if( itKeyMap != m_clsKeyMap.end() )
+		{
+			m_clsKeyMap.erase( itKeyMap );
+		}
+
+		m_clsMap.erase( itMap );
+
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
 /**
  * @ingroup TestWebRtc
  * @brief 사용자 정보를 검색한다.
@@ -119,40 +184,6 @@ bool CUserMap::SelectUserId( const char * pszIp, int iPort, std::string & strUse
 	if( itKeyMap != m_clsKeyMap.end() )
 	{
 		strUserId = itKeyMap->second;
-		bRes = true;
-	}
-	m_clsMutex.release();
-
-	return bRes;
-}
-
-/**
- * @ingroup TestWebRtc
- * @brief 사용자 아이디로 사용자 정보를 삭제한다.
- * @param pszUserId 사용자 아이디
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CUserMap::Delete( const char * pszUserId )
-{
-	bool bRes = false;
-	std::string strKey;
-	USER_MAP::iterator itMap;
-	USER_KEY_MAP::iterator itKeyMap;
-
-	m_clsMutex.acquire();
-	itMap = m_clsMap.find( pszUserId );
-	if( itMap != m_clsMap.end() )
-	{
-		GetKey( itMap->second.m_strIp.c_str(), itMap->second.m_iPort, strKey );
-
-		itKeyMap = m_clsKeyMap.find( strKey );
-		if( itKeyMap != m_clsKeyMap.end() )
-		{
-			m_clsKeyMap.erase( itKeyMap );
-		}
-
-		m_clsMap.erase( itMap );
-
 		bRes = true;
 	}
 	m_clsMutex.release();

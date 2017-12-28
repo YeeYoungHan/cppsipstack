@@ -19,6 +19,7 @@
 #ifndef _USER_MAP_H_
 #define _USER_MAP_H_
 
+#include "RtpThread.h"
 #include "SipMutex.h"
 #include <string>
 #include <map>
@@ -30,11 +31,15 @@
 class CUserInfo
 {
 public:
+	CUserInfo();
+
 	std::string	m_strPassWord;
 	std::string	m_strSipServerIp;
 
 	std::string m_strIp;
 	int					m_iPort;
+
+	CRtpThreadArg * m_pclsRtpArg;
 };
 
 // key = user id
@@ -54,11 +59,11 @@ public:
 	~CUserMap();
 
 	bool Insert( const char * pszUserId, const char * pszPassWord, const char * pszSipServerIp, const char * pszIp, int iPort );
+	bool Update( const char * pszUserId, CRtpThreadArg * pclsRtpArg, bool bSetNull );
+	bool Delete( const char * pszUserId );
 	
 	bool Select( const char * pszUserId, CUserInfo & clsUserInfo );
 	bool SelectUserId( const char * pszIp, int iPort, std::string & strUserId );
-
-	bool Delete( const char * pszUserId );
 
 private:
 	USER_MAP			m_clsMap;

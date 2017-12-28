@@ -25,7 +25,6 @@
 #include "CallMap.h"
 #include "SipCallBack.h"
 #include "RtpThread.h"
-#include "StunMessage.h"
 #include "MemoryDebug.h"
 
 CHttpStack gclsHttpStack;
@@ -267,11 +266,7 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 
 			const char * pszToId = clsList[2].c_str();
 			const char * pszSdp = clsList[3].c_str();
-
-			std::string strUserId, strCallId;
 			CUserInfo clsUserInfo;
-			CSipCallRtp clsRtp;
-			CSipCallRoute clsRoute;
 
 			if( gclsUserMap.SelectUserId( pszClientIp, iClientPort, strUserId ) == false || gclsUserMap.Select( strUserId.c_str(), clsUserInfo ) == false )
 			{
@@ -286,96 +281,17 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 				return true;
 			}
 
-			if( pclsRtpArg->CreateSocket() == false )
+			pclsRtpArg->m_strUserId = strUserId;
+			pclsRtpArg->m_strToId = pszToId;
+
+			if( pclsRtpArg->CreateSocket() == false || 
+					gclsUserMap.Update( strUserId.c_str(), pclsRtpArg, false ) == false ||
+					StartRtpThread( pclsRtpArg ) == false )
 			{
 				delete pclsRtpArg;
 				Send( pszClientIp, iClientPort, "res|invite|500" );
 				return true;
 			}
-
-#ifdef _DEBUG
-			char szSdp[8192], szPacket[1024], szIp[21];
-			const char * pszIcePwd = "FNPRfT4qUaVOKa0ivkn64mMY";
-			unsigned short iPort;
-			int iPacketLen;
-			CStunMessage clsStunRequest;
-
-			snprintf( szSdp, sizeof(szSdp), "v=0\r\n"
-				"o=- 4532014611503881976 0 IN IP4 %s\r\n"
-				"s=-\r\n"
-				"t=0 0\r\n"
-				"m=audio %d RTP/AVP 0\r\n"
-				"c=IN IP4 %s\r\n"
-				"a=rtpmap:0 PCMU/8000\r\n"
-				"a=sendrecv\r\n"
-				"a=ice-ufrag:lMRb\r\n"
-				"a=ice-pwd:%s\r\n"
-				"a=fingerprint:sha-256 0D:F6:43:E7:2D:94:11:47:47:84:A4:E4:AF:42:34:A4:B1:B9:58:AB:A9:BF:82:37:7A:73:C4:04:F0:62:7C:36\r\n"
-				"a=candidate:1 1 udp 2130706431 %s %d typ host\r\n"
-				, gstrLocalIp.c_str(), pclsRtpArg->m_iWebRtcUdpPort, gstrLocalIp.c_str(), pszIcePwd, gstrLocalIp.c_str(), pclsRtpArg->m_iWebRtcUdpPort );
-			Send( pszClientIp, iClientPort, "res|invite|180|%s", szSdp );
-
-			iPacketLen = sizeof(szPacket);
-			UdpRecv( pclsRtpArg->m_hWebRtcUdp, szPacket, &iPacketLen, szIp, sizeof(szIp), &iPort );
-
-			if( iPacketLen >= 20 && szPacket[0] == 0x00 && szPacket[1] == 0x01 )
-			{
-				if( clsStunRequest.Parse( szPacket, iPacketLen ) == -1 )
-				{
-					delete pclsRtpArg;
-					Send( pszClientIp, iClientPort, "res|invite|500" );
-					return true;
-				}
-
-				// QQQ: STUN 응답 메시지 생성 및 전송
-			}
-
-			return true;
-#endif
-
-			if( GetLocalRtp( pszSdp, clsRtp ) == false )
-			{
-				Send( pszClientIp, iClientPort, "res|invite|500" );
-				return true;
-			}
-
-			clsRoute.m_strDestIp = clsUserInfo.m_strSipServerIp;
-			clsRoute.m_iDestPort = 5060;
-
-			if( gclsSipStack.StartCall( strUserId.c_str(), pszToId, &clsRtp, &clsRoute, strCallId ) == false )
-			{
-				Send( pszClientIp, iClientPort, "res|invite|500" );
-				return true;
-			}
-
-			if( gclsCallMap.Insert( strCallId.c_str(), strUserId.c_str() ) == false )
-			{
-				gclsSipStack.StopCall( strCallId.c_str() );
-				Send( pszClientIp, iClientPort, "res|invite|500" );
-				return true;
-			}
-
-			/*
-			else if( gclsUserMap.Select( pszToId, clsToUser ) == false )
-			{
-				Send( pszClientIp, iClientPort, "res|invite|404" );
-			}
-			else if( gclsCallMap.Insert( strUserId.c_str(), pszToId ) == false )
-			{
-				Send( pszClientIp, iClientPort, "res|invite|500" );
-			}
-			else
-			{
-				if( Send( clsToUser.m_strIp.c_str(), clsToUser.m_iPort, "req|invite|%s|%s", strUserId.c_str(), pszSdp ) == false )
-				{
-					Send( pszClientIp, iClientPort, "res|invite|500" );
-				}
-				else
-				{
-					Send( pszClientIp, iClientPort, "res|invite|180" );
-				}
-			}
-			*/
 		}
 		else
 		{

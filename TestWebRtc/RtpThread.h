@@ -24,7 +24,7 @@
 class CRtpThreadArg
 {
 public:
-	CRtpThreadArg() : m_hWebRtcUdp(INVALID_SOCKET), m_hPbxUdp(INVALID_SOCKET), m_iWebRtcUdpPort(0), m_iPbxUdpPort(0)
+	CRtpThreadArg() : m_hWebRtcUdp(INVALID_SOCKET), m_hPbxUdp(INVALID_SOCKET), m_iWebRtcUdpPort(0), m_iPbxUdpPort(0), m_bStop(false)
 	{}
 
 	bool CreateSocket();
@@ -35,6 +35,13 @@ public:
 
 	int			m_iWebRtcUdpPort;
 	int			m_iPbxUdpPort;
+
+	bool		m_bStop;
+
+	std::string	m_strUserId;
+	std::string m_strToId;
 };
+
+bool StartRtpThread( CRtpThreadArg * pclsArg );
 
 #endif

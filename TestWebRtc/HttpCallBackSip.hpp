@@ -18,9 +18,6 @@
 
 #include "SdpMessage.h"
 
-extern std::string gstrLocalIp;
-extern std::string gstrLocalIpPrefix;
-
 bool GetLocalRtp( const char * pszSdp, CSipCallRtp & clsRtp )
 {
 	CSdpMessage clsSdp;

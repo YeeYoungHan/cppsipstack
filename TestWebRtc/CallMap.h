@@ -24,9 +24,14 @@
 #include <map>
 #include "SipMutex.h"
 
+/**
+ * @ingroup TestWebRtc
+ * @brief 통화 정보 저장 클래스
+ */
 class CCallInfo
 {
 public:
+	// WebRTC 사용자 아이디
 	std::string m_strUserId;
 };
 

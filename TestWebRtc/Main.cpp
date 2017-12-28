@@ -22,9 +22,6 @@
 #include "Log.h"
 #include "MemoryDebug.h"
 
-std::string gstrLocalIp;
-std::string gstrLocalIpPrefix;
-
 int main( int argc, char * argv[] )
 {
 	if( argc != 3 )
