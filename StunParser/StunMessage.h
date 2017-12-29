@@ -42,9 +42,12 @@ public:
 
 	CStunMessage * CreateResponse( bool bSuccess );
 
+	bool AddUserName( const char * pszUserName );
 	bool AddXorMappedAddress( const char * pszIp, uint16_t sPort );
 	bool AddMessageIntegrity( );
 	bool AddFingerPrint( );
+
+	bool AddInt( uint16_t sType, uint32_t iValue );
 
 	CStunHeader					m_clsHeader;
 	STUN_ATTRIBUTE_LIST m_clsAttributeList;

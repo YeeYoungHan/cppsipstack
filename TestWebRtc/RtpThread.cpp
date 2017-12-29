@@ -19,6 +19,7 @@
 #include "SipPlatformDefine.h"
 #include "ServerUtility.h"
 #include "StunMessage.h"
+#include "SdpMessage.h"
 #include "SipCallBack.h"
 #include "HttpCallBack.h"
 #include "RtpThread.h"
@@ -26,6 +27,37 @@
 #include "CallMap.h"
 
 #include "RtpThreadArg.hpp"
+
+bool GetIceUserPwd( const char * pszSdp, std::string & strIceUser, std::string & strIcePwd )
+{
+	CSdpMessage clsSdp;
+	SDP_MEDIA_LIST::iterator itML;
+	SDP_ATTRIBUTE_LIST::iterator itAL;
+	bool bFound = false;
+
+	if( clsSdp.Parse( pszSdp, strlen(pszSdp) ) == -1 ) return false;
+
+	for( itML = clsSdp.m_clsMediaList.begin(); itML != clsSdp.m_clsMediaList.end(); ++itML )
+	{
+		if( !strcmp( itML->m_strMedia.c_str(), "audio" ) )
+		{
+			for( itAL = itML->m_clsAttributeList.begin(); itAL != itML->m_clsAttributeList.end(); ++itAL )
+			{
+				if( !strcmp( itAL->m_strName.c_str(), "ice-ufrag" ) )
+				{
+					strIceUser = itAL->m_strValue;
+				}
+				else if( !strcmp( itAL->m_strName.c_str(), "ice-pwd" ) )
+				{
+					strIcePwd = itAL->m_strValue;
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
 
 THREAD_API RtpThread( LPVOID lpParameter )
 {
@@ -37,7 +69,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 	unsigned short iWebRTCPort = 0, iPbxPort = 0;
 	int iPacketLen, n;
 	CStunMessage clsStunRequest;
-	std::string strCallId;
+	std::string strCallId, strIceUser, strIcePwd;
 	CSipCallRtp clsRtp;
 	CSipCallRoute clsRoute;
 	pollfd sttPoll[2];
@@ -49,6 +81,9 @@ THREAD_API RtpThread( LPVOID lpParameter )
 	{
 		goto FUNC_END;
 	}
+
+	GetIceUserPwd( pclsArg->m_strSdp.c_str(), strIceUser, strIcePwd );
+	strIceUser.append( ":lMRb" );
 
 	snprintf( szSdp, sizeof(szSdp), "v=0\r\n"
 		"o=- 4532014611503881976 0 IN IP4 %s\r\n"
@@ -67,34 +102,6 @@ THREAD_API RtpThread( LPVOID lpParameter )
 
 	iPacketLen = sizeof(szPacket);
 	UdpRecv( pclsArg->m_hWebRtcUdp, szPacket, &iPacketLen, szWebRTCIp, sizeof(szWebRTCIp), &iWebRTCPort );
-
-	if( iPacketLen >= 20 && szPacket[0] == 0x00 && szPacket[1] == 0x01 )
-	{
-		if( clsStunRequest.Parse( szPacket, iPacketLen ) == -1 )
-		{
-			gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|500" );
-			goto FUNC_END;
-		}
-
-		// STUN 응답 메시지 생성 및 전송
-		CStunMessage * pclsStunResponse = clsStunRequest.CreateResponse( true );
-		if( pclsStunResponse == NULL )
-		{
-			gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|500" );
-			goto FUNC_END;
-		}
-
-		pclsStunResponse->m_strPassword = pszIcePwd;
-		pclsStunResponse->AddXorMappedAddress( szWebRTCIp, iWebRTCPort );
-		pclsStunResponse->AddMessageIntegrity();
-		pclsStunResponse->AddFingerPrint();
-		iPacketLen = pclsStunResponse->ToString( szPacket, sizeof(szPacket) );
-		delete pclsStunResponse;
-
-		UdpSend( pclsArg->m_hWebRtcUdp, szPacket, iPacketLen, szWebRTCIp, iWebRTCPort );
-	}
-
-	// QQQ: DTLS 설정
 
 	clsRtp.m_iCodec = 0;
 	clsRtp.m_iPort = pclsArg->m_iPbxUdpPort;
@@ -128,9 +135,48 @@ THREAD_API RtpThread( LPVOID lpParameter )
 		{
 			iPacketLen = sizeof(szPacket);
 			UdpRecv( pclsArg->m_hWebRtcUdp, szPacket, &iPacketLen, szWebRTCIp, sizeof(szWebRTCIp), &iWebRTCPort );
-			if( iPbxPort > 0 )
+
+			if( (uint8_t)szPacket[0] == 0x80 || (uint8_t)szPacket[0] == 0x81 )
 			{
-				UdpSend( pclsArg->m_hPbxUdp, szPacket, iPacketLen, szPbxIp, iPbxPort );
+				if( iPbxPort > 0 )
+				{
+					UdpSend( pclsArg->m_hPbxUdp, szPacket, iPacketLen, szPbxIp, iPbxPort );
+				}
+			}
+			else if( iPacketLen >= 20 && szPacket[0] == 0x00 && szPacket[1] == 0x01 )
+			{
+				if( clsStunRequest.Parse( szPacket, iPacketLen ) == -1 )
+				{
+					continue;
+				}
+
+				// STUN 응답 메시지 생성 및 전송
+				CStunMessage * pclsStunResponse = clsStunRequest.CreateResponse( true );
+				if( pclsStunResponse == NULL )
+				{
+					continue;
+				}
+
+				pclsStunResponse->m_strPassword = pszIcePwd;
+				pclsStunResponse->AddXorMappedAddress( szWebRTCIp, iWebRTCPort );
+				//pclsStunResponse->AddInt( 0x8070, 3 );
+				pclsStunResponse->AddMessageIntegrity();
+				pclsStunResponse->AddFingerPrint();
+				iPacketLen = pclsStunResponse->ToString( szPacket, sizeof(szPacket) );
+				delete pclsStunResponse;
+
+				UdpSend( pclsArg->m_hWebRtcUdp, szPacket, iPacketLen, szWebRTCIp, iWebRTCPort );
+
+				// STUN 응답 메시지 생성 및 전송
+				clsStunRequest.m_clsAttributeList.clear();
+				clsStunRequest.m_strPassword = strIcePwd;
+				clsStunRequest.AddUserName( strIceUser.c_str() );
+				clsStunRequest.AddMessageIntegrity();
+				clsStunRequest.AddFingerPrint();
+
+				iPacketLen = clsStunRequest.ToString( szPacket, sizeof(szPacket) );
+
+				UdpSend( pclsArg->m_hWebRtcUdp, szPacket, iPacketLen, szWebRTCIp, iWebRTCPort );
 			}
 		}
 

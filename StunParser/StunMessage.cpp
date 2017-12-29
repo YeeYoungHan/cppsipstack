@@ -202,6 +202,19 @@ CStunMessage * CStunMessage::CreateResponse( bool bSuccess )
 	return pclsResponse;
 }
 
+bool CStunMessage::AddUserName( const char * pszUserName )
+{
+	CStunAttribute clsAttr;
+
+	clsAttr.m_sType = STUN_AT_USERNAME;
+	clsAttr.m_strValue = pszUserName;
+	clsAttr.m_sLength = clsAttr.m_strValue.length();
+
+	m_clsAttributeList.push_back( clsAttr );
+
+	return true;
+}
+
 bool CStunMessage::AddXorMappedAddress( const char * pszIp, uint16_t sPort )
 {
 	CStunAttribute clsAttr;
@@ -229,6 +242,23 @@ bool CStunMessage::AddFingerPrint( )
 	CStunAttribute clsAttr;
 
 	clsAttr.m_sType = STUN_AT_FINGER_PRINT;
+
+	m_clsAttributeList.push_back( clsAttr );
+
+	return true;
+}
+
+bool CStunMessage::AddInt( uint16_t sType, uint32_t iValue )
+{
+	CStunAttribute clsAttr;
+	char szValue[4];
+
+	clsAttr.m_sType = sType;
+	clsAttr.m_sLength = 4;
+
+	iValue = htonl( iValue );
+	memcpy( szValue, &iValue, 4 );
+	clsAttr.m_strValue.append( szValue, 4 );
 
 	m_clsAttributeList.push_back( clsAttr );
 

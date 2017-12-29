@@ -1,6 +1,6 @@
 <Setup>
 	<Sip>
-		<LocalIp>192.168.184.1</LocalIp>
+		<LocalIp>192.168.0.32</LocalIp>
 		<UdpPort>5060</UdpPort>
 		<UdpThreadCount>1</UdpThreadCount>
 		<TcpPort>5060</TcpPort>

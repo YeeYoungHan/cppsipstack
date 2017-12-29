@@ -279,6 +279,7 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 
 			pclsRtpArg->m_strUserId = strUserId;
 			pclsRtpArg->m_strToId = pszToId;
+			pclsRtpArg->m_strSdp = pszSdp;
 
 			if( pclsRtpArg->CreateSocket() == false || 
 					gclsUserMap.Update( strUserId.c_str(), pclsRtpArg, false ) == false ||

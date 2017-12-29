@@ -40,6 +40,7 @@ public:
 
 	std::string	m_strUserId;
 	std::string m_strToId;
+	std::string m_strSdp;
 };
 
 bool StartRtpThread( CRtpThreadArg * pclsArg );
