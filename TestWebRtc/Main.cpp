@@ -20,6 +20,7 @@
 #include "SipCallBack.h"
 #include "Directory.h"
 #include "Log.h"
+#include "RtpThread.h"
 #include "MemoryDebug.h"
 
 int main( int argc, char * argv[] )
@@ -43,6 +44,8 @@ int main( int argc, char * argv[] )
 	CLog::SetLevel( LOG_INFO | LOG_DEBUG | LOG_NETWORK );
 #endif
 #endif
+
+	InitDtls();
 
 	// HTTP 수신 포트 번호를 설정한다.
 	clsHttpSetup.m_iListenPort = 8080;

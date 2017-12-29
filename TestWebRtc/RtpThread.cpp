@@ -59,6 +59,22 @@ bool GetIceUserPwd( const char * pszSdp, std::string & strIceUser, std::string &
 	return false;
 }
 
+static SSL_CTX	* gpsttClientCtx = NULL;
+static const SSL_METHOD * gpsttClientMeth;
+
+void InitDtls()
+{
+	SSLStart();
+
+	gpsttClientMeth = DTLS_client_method();
+	if( (gpsttClientCtx = SSL_CTX_new( gpsttClientMeth )) == NULL )
+	{
+		printf( "SSL_CTX_new error - client" );
+	}
+
+	SSL_CTX_set_cipher_list(gpsttClientCtx, "eNULL:!MD5");
+}
+
 THREAD_API RtpThread( LPVOID lpParameter )
 {
 	CRtpThreadArg * pclsArg = (CRtpThreadArg *)lpParameter;
@@ -167,7 +183,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 
 				UdpSend( pclsArg->m_hWebRtcUdp, szPacket, iPacketLen, szWebRTCIp, iWebRTCPort );
 
-				// STUN 응답 메시지 생성 및 전송
+				// STUN 요청 메시지 생성 및 전송
 				clsStunRequest.m_clsAttributeList.clear();
 				clsStunRequest.m_strPassword = strIcePwd;
 				clsStunRequest.AddUserName( strIceUser.c_str() );
@@ -177,6 +193,38 @@ THREAD_API RtpThread( LPVOID lpParameter )
 				iPacketLen = clsStunRequest.ToString( szPacket, sizeof(szPacket) );
 
 				UdpSend( pclsArg->m_hWebRtcUdp, szPacket, iPacketLen, szWebRTCIp, iWebRTCPort );
+			}
+			else if( iPacketLen >= 20 && szPacket[0] == 0x01 && szPacket[1] == 0x01 )
+			{
+				// DTLS 연결
+				SSL * psttSsl;
+				struct	sockaddr_in	addr;
+
+				addr.sin_family = AF_INET;
+				addr.sin_port   = htons(iWebRTCPort);
+
+				inet_pton( AF_INET, szWebRTCIp, &addr.sin_addr.s_addr );
+				if( connect( pclsArg->m_hWebRtcUdp, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR )
+				{
+					printf( "connect error\n" );
+				}
+				else if( (psttSsl = SSL_new(gpsttClientCtx)) == NULL )
+				{
+					printf( "ssl_new error\n" );
+				}
+				else
+				{
+					SSL_set_fd( psttSsl, (int)pclsArg->m_hWebRtcUdp );
+
+					if( SSL_connect( psttSsl ) == -1 )
+					{
+						printf( "SSL_connect error\n" );
+					}
+					else
+					{
+						iPacketLen = SSLRecv( psttSsl, szPacket, sizeof(szPacket) );
+					}
+				}
 			}
 		}
 

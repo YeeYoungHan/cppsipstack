@@ -79,7 +79,7 @@ static unsigned long SSLIdFunction( )
  * @brief SSL 라이브러리를 multi-thread 기반으로 시작한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-static bool SSLStart( )
+bool SSLStart( )
 {
 	if( garrMutex )
 	{
@@ -101,6 +101,9 @@ static bool SSLStart( )
 		CLog::Print( LOG_ERROR, "SSL_init_library error" );
 		return false;
 	}
+
+	SSL_load_error_strings();
+	SSLeay_add_ssl_algorithms();
 
 	return true;
 }
@@ -149,9 +152,6 @@ bool SSLServerStart( const char * szCertFile, const char * szCaCertFile )
 
 	if( SSLStart() == false ) return false;
 
-	SSL_load_error_strings();
-	SSLeay_add_ssl_algorithms();
-
 	gpsttServerMeth = TLSv1_server_method();
 	if( (gpsttServerCtx = SSL_CTX_new( gpsttServerMeth )) == NULL )
 	{
@@ -185,7 +185,7 @@ bool SSLServerStart( const char * szCertFile, const char * szCaCertFile )
 		return false;
 	}
 
-	if( strlen( szCaCertFile ) > 0 )
+	if( szCaCertFile && strlen( szCaCertFile ) > 0 )
 	{
 		if( SSL_CTX_load_verify_locations( gpsttServerCtx, szCaCertFile, NULL ) == 0 )
 		{

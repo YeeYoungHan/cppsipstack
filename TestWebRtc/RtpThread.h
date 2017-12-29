@@ -43,6 +43,7 @@ public:
 	std::string m_strSdp;
 };
 
+void InitDtls();
 bool StartRtpThread( CRtpThreadArg * pclsArg );
 
 #endif
