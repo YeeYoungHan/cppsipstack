@@ -73,8 +73,16 @@ void InitDtls()
 	}
 
 	//SSL_CTX_set_cipher_list( gpsttClientCtx, "eNULL:!MD5" );
-	SSL_CTX_set_cipher_list( gpsttClientCtx, "ECDHE-ECDSA-AES256-GCM-SHA384" );
+	//SSL_CTX_set_cipher_list( gpsttClientCtx, "ECDHE-ECDSA-AES256-GCM-SHA384" );
+	SSL_CTX_set_cipher_list( gpsttClientCtx, "ECDHE-RSA-AES256-GCM-SHA384" );
 	//SSL_CTX_set_cipher_list( gpsttClientCtx, "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH" );
+
+	EC_KEY * psttEcKey = EC_KEY_new_by_curve_name( NID_X9_62_prime256v1 );
+	if( psttEcKey )
+	{
+		SSL_CTX_set_tmp_ecdh( gpsttClientCtx, psttEcKey );
+		EC_KEY_free( psttEcKey );
+	}	
 }
 
 THREAD_API RtpThread( LPVOID lpParameter )
