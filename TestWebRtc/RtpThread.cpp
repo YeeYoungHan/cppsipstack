@@ -208,6 +208,13 @@ THREAD_API RtpThread( LPVOID lpParameter )
 					}
 					else
 					{
+						// QQQ: SRTP 를 위한 key 를 어떻게 전송하고 수신하는가?
+						std::string strKey;
+
+						SrtpCreate128Key( strKey );
+
+						SSLSend( psttSsl, strKey.c_str(), strKey.length() );
+
 						iPacketLen = SSLRecv( psttSsl, szPacket, sizeof(szPacket) );
 
 						printf( "packet len(%d)\n", iPacketLen );
