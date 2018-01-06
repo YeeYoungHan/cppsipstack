@@ -27,6 +27,7 @@
 #include "CallMap.h"
 
 #include "RtpThreadArg.hpp"
+#include "RtpThreadDtls.hpp"
 
 bool GetIceUserPwd( const char * pszSdp, std::string & strIceUser, std::string & strIcePwd )
 {
@@ -57,22 +58,6 @@ bool GetIceUserPwd( const char * pszSdp, std::string & strIceUser, std::string &
 	}
 
 	return false;
-}
-
-static SSL_CTX	* gpsttClientCtx = NULL;
-static const SSL_METHOD * gpsttClientMeth;
-
-void InitDtls()
-{
-	SSLStart();
-
-	gpsttClientMeth = DTLSv1_2_method();
-	if( (gpsttClientCtx = SSL_CTX_new( gpsttClientMeth )) == NULL )
-	{
-		printf( "SSL_CTX_new error - client" );
-	}
-
-	SSL_CTX_set_cipher_list( gpsttClientCtx, "ECDHE-RSA-AES256-GCM-SHA384" );
 }
 
 THREAD_API RtpThread( LPVOID lpParameter )
@@ -111,9 +96,9 @@ THREAD_API RtpThread( LPVOID lpParameter )
 		"a=sendrecv\r\n"
 		"a=ice-ufrag:lMRb\r\n"
 		"a=ice-pwd:%s\r\n"
-		"a=fingerprint:sha-256 0D:F6:43:E7:2D:94:11:47:47:84:A4:E4:AF:42:34:A4:B1:B9:58:AB:A9:BF:82:37:7A:73:C4:04:F0:62:7C:36\r\n"
+		"a=fingerprint:sha-256 %s\r\n"
 		"a=candidate:1 1 udp 2130706431 %s %d typ host\r\n"
-		, gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort, gstrLocalIp.c_str(), pszIcePwd, gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort );
+		, gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort, gstrLocalIp.c_str(), pszIcePwd, gclsKeyCert.m_strFingerPrint.c_str(), gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort );
 	gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|180|%s", szSdp );
 
 	iPacketLen = sizeof(szPacket);
@@ -224,6 +209,8 @@ THREAD_API RtpThread( LPVOID lpParameter )
 					else
 					{
 						iPacketLen = SSLRecv( psttSsl, szPacket, sizeof(szPacket) );
+
+						printf( "packet len(%d)\n", iPacketLen );
 					}
 				}
 			}
