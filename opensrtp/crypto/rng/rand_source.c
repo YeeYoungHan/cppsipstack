@@ -120,7 +120,15 @@ rand_source_get_octet_string(void *dest, uint32_t len) {
           }
   
       *dst++ = val;
-	  len--;
+
+			if( len >= 4 )
+			{
+				len -= 4;
+			}
+			else
+			{
+				break;
+			}
   }
 #else
   /* Generic C-library (rand()) version */

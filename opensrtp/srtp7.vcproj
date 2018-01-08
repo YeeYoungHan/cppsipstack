@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				InlineFunctionExpansion="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;.\include;.\crypto\include"
+				AdditionalIncludeDirectories=".\;.\include;.\crypto\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;DEBUG"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="0"
@@ -106,7 +106,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;.\include;.\crypto\include"
+				AdditionalIncludeDirectories=".\;.\include;.\crypto\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="0"
