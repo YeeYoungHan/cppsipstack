@@ -1,102 +1,148 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="9.00"
 	Name="libSRTP"
 	ProjectGUID="{7E1E1308-F82E-4DD3-B25C-CD12756A1DD9}"
-	Keyword="Win32Proj">
+	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
-			ConfigurationType="1"
-			CharacterSet="2">
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				InlineFunctionExpansion="0"
-				AdditionalIncludeDirectories="C:\dev\foo\srtp;&quot;$(SolutionDir)&quot;;.\include;.\crypto\include;&quot;..\..\OpenSSL\openssl-0.9.7i\inc32&quot;;&quot;C:Library\OpenSSL\openssl-0.9.8\inc32&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;.\include;.\crypto\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;DEBUG"
-				ExceptionHandling="FALSE"
+				ExceptionHandling="0"
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
+				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
-				CompileAs="1"/>
+				CompileAs="1"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="Ws2_32.lib libeay32.lib ssleay32.lib"
-				AdditionalLibraryDirectories="&quot;Library\OpenSSL\openssl-0.9.8\libs&quot;"
-				GenerateDebugInformation="TRUE"/>
+				Name="VCResourceCompilerTool"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCLibrarianTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="4"
-			CharacterSet="2">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.\include&quot;;&quot;.\crypto\include&quot;;&quot;..\..\OpenSSL\openssl-0.9.7i\inc32&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;.\include;.\crypto\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				ObjectFile="$(IntDir)/"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="3"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
-				Name="VCLibrarianTool"/>
+				Name="VCResourceCompilerTool"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCLibrarianTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -105,191 +151,249 @@
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			>
 			<File
-				RelativePath=".\test\getopt.c">
+				RelativePath=".\srtp\srtp.c"
+				>
 			</File>
 			<File
-				RelativePath=".\srtp\srtp.c">
-			</File>
-			<File
-				RelativePath=".\test\srtp_driver.c">
+				RelativePath=".\test\srtp_driver.c"
+				>
 			</File>
 			<Filter
-				Name="Kernel">
+				Name="Kernel"
+				>
 				<File
-					RelativePath=".\crypto\kernel\alloc.c">
+					RelativePath=".\crypto\kernel\alloc.c"
+					>
 				</File>
 				<File
-					RelativePath=".\crypto\kernel\crypto_kernel.c">
+					RelativePath=".\crypto\kernel\crypto_kernel.c"
+					>
 				</File>
 				<File
-					RelativePath=".\crypto\rng\ctr_prng.c">
+					RelativePath=".\crypto\rng\ctr_prng.c"
+					>
 				</File>
 				<File
-					RelativePath=".\crypto\kernel\err.c">
+					RelativePath=".\crypto\kernel\err.c"
+					>
 				</File>
 				<File
-					RelativePath=".\crypto\kernel\key.c">
+					RelativePath=".\crypto\kernel\key.c"
+					>
 				</File>
 				<File
-					RelativePath=".\crypto\rng\prng.c">
+					RelativePath=".\crypto\rng\prng.c"
+					>
 				</File>
 				<File
-					RelativePath=".\crypto\rng\rand_source.c">
-				</File>
-			</Filter>
-			<Filter
-				Name="Ciphers">
-				<File
-					RelativePath=".\crypto\cipher\aes.c">
-				</File>
-				<File
-					RelativePath=".\crypto\cipher\aes_cbc.c">
-				</File>
-				<File
-					RelativePath=".\crypto\cipher\aes_icm.c">
-				</File>
-				<File
-					RelativePath=".\crypto\cipher\cipher.c">
-				</File>
-				<File
-					RelativePath=".\crypto\cipher\null_cipher.c">
+					RelativePath=".\crypto\rng\rand_source.c"
+					>
 				</File>
 			</Filter>
 			<Filter
-				Name="Hashes">
+				Name="Ciphers"
+				>
 				<File
-					RelativePath=".\crypto\hash\auth.c">
+					RelativePath=".\crypto\cipher\aes.c"
+					>
 				</File>
 				<File
-					RelativePath=".\crypto\hash\hmac.c">
+					RelativePath=".\crypto\cipher\aes_cbc.c"
+					>
 				</File>
 				<File
-					RelativePath=".\crypto\hash\null_auth.c">
+					RelativePath=".\crypto\cipher\aes_icm.c"
+					>
 				</File>
 				<File
-					RelativePath=".\crypto\hash\sha1.c">
-				</File>
-			</Filter>
-			<Filter
-				Name="Replay">
-				<File
-					RelativePath=".\crypto\replay\rdb.c">
+					RelativePath=".\crypto\cipher\cipher.c"
+					>
 				</File>
 				<File
-					RelativePath=".\crypto\replay\rdbx.c">
-				</File>
-				<File
-					RelativePath=".\crypto\replay\ut_sim.c">
+					RelativePath=".\crypto\cipher\null_cipher.c"
+					>
 				</File>
 			</Filter>
 			<Filter
-				Name="Math">
+				Name="Hashes"
+				>
 				<File
-					RelativePath=".\crypto\math\datatypes.c">
+					RelativePath=".\crypto\hash\auth.c"
+					>
 				</File>
 				<File
-					RelativePath=".\crypto\math\stat.c">
+					RelativePath=".\crypto\hash\hmac.c"
+					>
+				</File>
+				<File
+					RelativePath=".\crypto\hash\null_auth.c"
+					>
+				</File>
+				<File
+					RelativePath=".\crypto\hash\sha1.c"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Replay"
+				>
+				<File
+					RelativePath=".\crypto\replay\rdb.c"
+					>
+				</File>
+				<File
+					RelativePath=".\crypto\replay\rdbx.c"
+					>
+				</File>
+				<File
+					RelativePath=".\crypto\replay\ut_sim.c"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Math"
+				>
+				<File
+					RelativePath=".\crypto\math\datatypes.c"
+					>
+				</File>
+				<File
+					RelativePath=".\crypto\math\stat.c"
+					>
 				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
 			<File
-				RelativePath=".\crypto\include\aes.h">
+				RelativePath=".\crypto\include\aes.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\aes_cbc.h">
+				RelativePath=".\crypto\include\aes_cbc.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\aes_icm.h">
+				RelativePath=".\crypto\include\aes_icm.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\alloc.h">
+				RelativePath=".\crypto\include\alloc.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\auth.h">
+				RelativePath=".\crypto\include\auth.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\cipher.h">
+				RelativePath=".\crypto\include\cipher.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\config.h">
+				RelativePath=".\crypto\include\config.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\crypto.h">
+				RelativePath=".\crypto\include\crypto.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\crypto_kernel.h">
+				RelativePath=".\crypto\include\crypto_kernel.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\crypto_math.h">
+				RelativePath=".\crypto\include\crypto_math.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\crypto_types.h">
+				RelativePath=".\crypto\include\crypto_types.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\cryptoalg.h">
+				RelativePath=".\crypto\include\cryptoalg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\datatypes.h">
+				RelativePath=".\crypto\include\datatypes.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\err.h">
+				RelativePath=".\crypto\include\err.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\gf2_8.h">
+				RelativePath=".\crypto\include\gf2_8.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\hmac.h">
+				RelativePath=".\crypto\include\hmac.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\integers.h">
+				RelativePath=".\crypto\include\integers.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\kernel_compat.h">
+				RelativePath=".\crypto\include\kernel_compat.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\key.h">
+				RelativePath=".\crypto\include\key.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\null_auth.h">
+				RelativePath=".\crypto\include\null_auth.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\null_cipher.h">
+				RelativePath=".\crypto\include\null_cipher.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\prng.h">
+				RelativePath=".\crypto\include\prng.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\rand_source.h">
+				RelativePath=".\crypto\include\rand_source.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\rdb.h">
+				RelativePath=".\crypto\include\rdb.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\rdbx.h">
+				RelativePath=".\crypto\include\rdbx.h"
+				>
 			</File>
 			<File
-				RelativePath=".\include\rtp.h">
+				RelativePath=".\include\rtp.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\sha1.h">
+				RelativePath=".\crypto\include\sha1.h"
+				>
 			</File>
 			<File
-				RelativePath=".\include\srtp.h">
+				RelativePath=".\include\srtp.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\stat.h">
+				RelativePath=".\crypto\include\stat.h"
+				>
 			</File>
 			<File
-				RelativePath=".\include\ut_sim.h">
+				RelativePath=".\include\ut_sim.h"
+				>
 			</File>
 			<File
-				RelativePath=".\crypto\include\xfm.h">
+				RelativePath=".\crypto\include\xfm.h"
+				>
 			</File>
 		</Filter>
 	</Files>
