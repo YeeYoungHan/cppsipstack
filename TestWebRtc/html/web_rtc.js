@@ -47,6 +47,11 @@ function Log(strLog)
   //console.log(strLog);
 }
 
+function ClearLog()
+{
+	lyLog.innerHTML = "";
+}
+
 function InitButton()
 {
 	btnRegister.disabled = false;
