@@ -31,8 +31,14 @@
 class CCallInfo
 {
 public:
+	CCallInfo();
+
 	// WebRTC 사용자 아이디
 	std::string m_strUserId;
+
+	std::string	m_strPbxRtpIp;
+
+	int					m_iPbxRtpPort;
 };
 
 // key = SIP Call-ID
@@ -49,6 +55,7 @@ public:
 	~CCallMap();
 
 	bool Insert( const char * pszCallId, const char * pszUserId );
+	bool Update( const char * pszCallId, const char * pszPbxRtpIp, int iPbxRtpPort );
 
 	bool Select( const char * pszCallId, CCallInfo & clsCallInfo );
 

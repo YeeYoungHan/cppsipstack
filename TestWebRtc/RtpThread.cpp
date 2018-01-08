@@ -75,6 +75,8 @@ THREAD_API RtpThread( LPVOID lpParameter )
 	CSipCallRtp clsRtp;
 	CSipCallRoute clsRoute;
 	pollfd sttPoll[2];
+	srtp_t psttSrtpTx = NULL, psttSrtpRx = NULL;
+	bool bDtls = false;
 
 	szWebRTCIp[0] = '\0';
 	szPbxIp[0] = '\0';
@@ -138,14 +140,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 			iPacketLen = sizeof(szPacket);
 			UdpRecv( pclsArg->m_hWebRtcUdp, szPacket, &iPacketLen, szWebRTCIp, sizeof(szWebRTCIp), &iWebRTCPort );
 
-			if( (uint8_t)szPacket[0] == 0x80 || (uint8_t)szPacket[0] == 0x81 )
-			{
-				if( iPbxPort > 0 )
-				{
-					UdpSend( pclsArg->m_hPbxUdp, szPacket, iPacketLen, szPbxIp, iPbxPort );
-				}
-			}
-			else if( iPacketLen >= 20 && szPacket[0] == 0x00 && szPacket[1] == 0x01 )
+			if( iPacketLen >= 20 && szPacket[0] == 0x00 && szPacket[1] == 0x01 )
 			{
 				if( clsStunRequest.Parse( szPacket, iPacketLen ) == -1 )
 				{
@@ -182,43 +177,79 @@ THREAD_API RtpThread( LPVOID lpParameter )
 			}
 			else if( iPacketLen >= 20 && szPacket[0] == 0x01 && szPacket[1] == 0x01 )
 			{
-				// DTLS 연결
-				SSL * psttSsl;
-				struct	sockaddr_in	addr;
-
-				addr.sin_family = AF_INET;
-				addr.sin_port   = htons(iWebRTCPort);
-
-				inet_pton( AF_INET, szWebRTCIp, &addr.sin_addr.s_addr );
-				if( connect( pclsArg->m_hWebRtcUdp, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR )
+				if( bDtls == false )
 				{
-					printf( "connect error\n" );
-				}
-				else if( (psttSsl = SSL_new(gpsttClientCtx)) == NULL )
-				{
-					printf( "ssl_new error\n" );
-				}
-				else
-				{
-					SSL_set_fd( psttSsl, (int)pclsArg->m_hWebRtcUdp );
-					SSL_set_tlsext_use_srtp( psttSsl, "SRTP_AES128_CM_SHA1_80" );
+					// DTLS 연결
+					SSL * psttSsl;
+					struct	sockaddr_in	addr;
 
-					if( SSL_connect( psttSsl ) == -1 )
+					addr.sin_family = AF_INET;
+					addr.sin_port   = htons(iWebRTCPort);
+
+					inet_pton( AF_INET, szWebRTCIp, &addr.sin_addr.s_addr );
+					if( connect( pclsArg->m_hWebRtcUdp, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR )
 					{
-						printf( "SSL_connect error\n" );
+						printf( "connect error\n" );
+					}
+					else if( (psttSsl = SSL_new(gpsttClientCtx)) == NULL )
+					{
+						printf( "ssl_new error\n" );
 					}
 					else
 					{
-						uint8_t szMaterial[60];
-						uint8_t * pszLocalKey, * pszLocalSalt, * pszRemoteKey, * pszRemoteSalt;
+						SSL_set_fd( psttSsl, (int)pclsArg->m_hWebRtcUdp );
+						SSL_set_tlsext_use_srtp( psttSsl, "SRTP_AES128_CM_SHA1_80" );
 
-						SSL_export_keying_material( psttSsl, szMaterial, sizeof(szMaterial), "EXTRACTOR-dtls_srtp", 19, NULL, 0, 0 );
+						if( SSL_connect( psttSsl ) == -1 )
+						{
+							printf( "SSL_connect error\n" );
+						}
+						else
+						{
+							uint8_t szMaterial[60];
+							uint8_t * pszLocalKey, * pszLocalSalt, * pszRemoteKey, * pszRemoteSalt;
 
-						pszLocalKey = szMaterial;
-						pszRemoteKey = pszLocalKey + 16;
-						pszLocalSalt = pszRemoteKey + 16;
-						pszRemoteSalt = pszLocalSalt + 14;
+							SSL_export_keying_material( psttSsl, szMaterial, sizeof(szMaterial), "EXTRACTOR-dtls_srtp", 19, NULL, 0, 0 );
+
+							pszLocalKey = szMaterial;
+							pszRemoteKey = pszLocalKey + 16;
+							pszLocalSalt = pszRemoteKey + 16;
+							pszRemoteSalt = pszLocalSalt + 14;
+
+							SrtpCreate( &psttSrtpTx, pszLocalKey, pszLocalSalt, false );
+							SrtpCreate( &psttSrtpRx, pszRemoteKey, pszRemoteSalt, true );
+
+							SSL_free( psttSsl );
+						}
 					}
+
+					bDtls = true;
+				}
+			}
+			else
+			{
+				if( iPbxPort == 0 )
+				{
+					CCallInfo clsCallInfo;
+
+					if( gclsCallMap.Select( strCallId.c_str(), clsCallInfo ) )
+					{
+						if( clsCallInfo.m_iPbxRtpPort > 0 )
+						{
+							snprintf( szPbxIp, sizeof(szPbxIp), "%s", clsCallInfo.m_strPbxRtpIp.c_str() );
+							iPbxPort = clsCallInfo.m_iPbxRtpPort;
+						}
+					}
+				}
+
+				if( iPbxPort > 0 )
+				{
+					if( psttSrtpRx )
+					{
+						srtp_unprotect( psttSrtpRx, szPacket, &iPacketLen );
+					}
+
+					UdpSend( pclsArg->m_hPbxUdp, szPacket, iPacketLen, szPbxIp, iPbxPort );
 				}
 			}
 		}
@@ -227,11 +258,20 @@ THREAD_API RtpThread( LPVOID lpParameter )
 		{
 			iPacketLen = sizeof(szPacket);
 			UdpRecv( pclsArg->m_hPbxUdp, szPacket, &iPacketLen, szPbxIp, sizeof(szPbxIp), &iPbxPort );
+
+			if( psttSrtpTx )
+			{
+				srtp_protect( psttSrtpTx, szPacket, &iPacketLen );
+			}
+
 			UdpSend( pclsArg->m_hWebRtcUdp, szPacket, iPacketLen, szWebRTCIp, iWebRTCPort );
 		}
 	}
 
 FUNC_END:
+	if( psttSrtpTx ) srtp_dealloc( psttSrtpTx );
+	if( psttSrtpRx ) srtp_dealloc( psttSrtpRx );
+
 	gclsUserMap.Update( pclsArg->m_strUserId.c_str(), pclsArg, true );
 	delete pclsArg;
 

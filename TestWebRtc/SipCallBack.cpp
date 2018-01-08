@@ -68,6 +68,7 @@ void CSipCallBack::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp
 
 	if( gclsCallMap.Select( pszCallId, clsCallInfo ) && gclsUserMap.Select( clsCallInfo.m_strUserId.c_str(), clsUserInfo ) )
 	{
+		gclsCallMap.Update( pszCallId, pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort );
 		gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|200" );
 	}
 }

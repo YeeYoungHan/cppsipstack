@@ -20,6 +20,10 @@
 
 CCallMap gclsCallMap;
 
+CCallInfo::CCallInfo() : m_iPbxRtpPort(0)
+{
+}
+
 CCallMap::CCallMap()
 {
 }
@@ -42,6 +46,24 @@ bool CCallMap::Insert( const char * pszCallId, const char * pszUserId )
 		clsInfo.m_strUserId = pszUserId;
 
 		m_clsMap.insert( CALL_MAP::value_type( pszCallId, clsInfo ) );
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+bool CCallMap::Update( const char * pszCallId, const char * pszPbxRtpIp, int iPbxRtpPort )
+{
+	CALL_MAP::iterator itMap;
+	bool bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		itMap->second.m_strPbxRtpIp = pszPbxRtpIp;
+		itMap->second.m_iPbxRtpPort = iPbxRtpPort;
 		bRes = true;
 	}
 	m_clsMutex.release();

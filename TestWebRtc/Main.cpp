@@ -45,6 +45,7 @@ int main( int argc, char * argv[] )
 #endif
 #endif
 
+	InitNetwork();
 	InitDtls();
 
 	// HTTP 수신 포트 번호를 설정한다.

@@ -163,3 +163,38 @@ void InitDtls()
 
 	srtp_init();
 }
+
+bool SrtpCreate( srtp_t * psttSrtp, uint8_t * pszKey, uint8_t * pszSalt, bool bInbound )
+{
+	srtp_policy_t sttPolicy;
+	err_status_t	eError;
+	uint8_t szKey[30];
+
+	memcpy( szKey, pszKey, 16 );
+	memcpy( szKey + 16, pszSalt, 14 );
+
+	crypto_policy_set_aes_cm_128_hmac_sha1_80( &sttPolicy.rtp );
+  crypto_policy_set_aes_cm_128_hmac_sha1_80( &sttPolicy.rtcp );
+
+	if( bInbound )
+	{
+		sttPolicy.ssrc.type = ssrc_any_inbound;
+	}
+	else
+	{
+		sttPolicy.ssrc.type = ssrc_any_outbound;
+	}
+
+	sttPolicy.key = szKey;
+	sttPolicy.ssrc.value = 0;
+	sttPolicy.next = NULL;
+
+	eError = srtp_create( psttSrtp, &sttPolicy );
+	if( eError != err_status_ok )
+	{
+		CLog::Print( LOG_ERROR, "%s srtp_create error(%d)", __FUNCTION__, eError );
+		return false;
+	}
+
+	return true;
+}
