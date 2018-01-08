@@ -25,6 +25,7 @@
 #include "RtpThread.h"
 #include "UserMap.h"
 #include "CallMap.h"
+#include "srtp.h"
 
 #include "RtpThreadArg.hpp"
 #include "RtpThreadDtls.hpp"
@@ -208,16 +209,15 @@ THREAD_API RtpThread( LPVOID lpParameter )
 					}
 					else
 					{
-						// QQQ: SRTP 를 위한 key 를 어떻게 전송하고 수신하는가?
-						std::string strKey;
+						uint8_t szMaterial[60];
+						uint8_t * pszLocalKey, * pszLocalSalt, * pszRemoteKey, * pszRemoteSalt;
 
-						SrtpCreate128Key( strKey );
+						SSL_export_keying_material( psttSsl, szMaterial, sizeof(szMaterial), "EXTRACTOR-dtls_srtp", 19, NULL, 0, 0 );
 
-						SSLSend( psttSsl, strKey.c_str(), strKey.length() );
-
-						iPacketLen = SSLRecv( psttSsl, szPacket, sizeof(szPacket) );
-
-						printf( "packet len(%d)\n", iPacketLen );
+						pszLocalKey = szMaterial;
+						pszRemoteKey = pszLocalKey + 16;
+						pszLocalSalt = pszRemoteKey + 16;
+						pszRemoteSalt = pszLocalSalt + 14;
 					}
 				}
 			}
@@ -227,7 +227,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 		{
 			iPacketLen = sizeof(szPacket);
 			UdpRecv( pclsArg->m_hPbxUdp, szPacket, &iPacketLen, szPbxIp, sizeof(szPbxIp), &iPbxPort );
-			UdpSend( pclsArg->m_hPbxUdp, szPacket, iPacketLen, szWebRTCIp, iWebRTCPort );
+			UdpSend( pclsArg->m_hWebRtcUdp, szPacket, iPacketLen, szWebRTCIp, iWebRTCPort );
 		}
 	}
 

@@ -16,8 +16,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "Base64.h"
-
 static SSL_CTX	* gpsttClientCtx = NULL;
 static const SSL_METHOD * gpsttClientMeth;
 
@@ -112,6 +110,7 @@ void InitDtls()
 	if( (gpsttClientCtx = SSL_CTX_new( gpsttClientMeth )) == NULL )
 	{
 		printf( "SSL_CTX_new error - client" );
+		return;
 	}
 
 	SSL_CTX_set_cipher_list( gpsttClientCtx, "ECDHE-RSA-AES256-GCM-SHA384" );
@@ -161,24 +160,6 @@ void InitDtls()
 	}
 
 	gclsKeyCert.m_strFingerPrint = szFingerPrint;
-}
 
-bool SrtpCreate128Key( std::string & strKey )
-{
-	int		arrInt[6];
-	char	szInput[101], szOutput[101];
-	
-	for( int i = 0; i < 6; ++i )
-	{
-		arrInt[i] = rand() % 100000;
-	}
-
-	int iInputLen = snprintf( szInput, sizeof(szInput), "%05d%05d%05d%05d%05d%05d"
-				, arrInt[0], arrInt[1], arrInt[2], arrInt[3], arrInt[4], arrInt[5] );
-
-	if( Base64Encode( szInput, iInputLen, szOutput, sizeof(szOutput) ) == -1 ) return false;
-
-	strKey = szOutput;
-
-	return true;
+	srtp_init();
 }
