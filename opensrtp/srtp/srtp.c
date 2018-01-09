@@ -1102,6 +1102,11 @@ srtp_init() {
   return err_status_ok;
 }
 
+void srtp_final()
+{
+	crypto_kernel_shutdown();
+}
+
 /* 
  * The following code is under consideration for removal.  See
  * SRTP_MAX_TRAILER_LEN 
