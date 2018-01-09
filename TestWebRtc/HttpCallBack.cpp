@@ -353,10 +353,9 @@ bool CHttpCallBack::Send( const char * pszClientIp, int iClientPort, const char 
 	if( gclsHttpStack.SendWebSocketPacket( pszClientIp, iClientPort, szBuf, iBufLen ) )
 	{
 		printf( "WebSocket[%s:%d] send[%s]\n", pszClientIp, iClientPort, szBuf );
+		CLog::Print( LOG_NETWORK, "WebSocket[%s:%d] send[%s]", pszClientIp, iClientPort, szBuf );
 		return true;
 	}
-
-	CLog::Print( LOG_NETWORK, "WebSocket[%s:%d] send[%s]", pszClientIp, iClientPort, szBuf );
 
 	return false;
 }

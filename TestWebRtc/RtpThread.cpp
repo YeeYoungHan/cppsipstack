@@ -94,7 +94,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 		"o=- 4532014611503881976 0 IN IP4 %s\r\n"
 		"s=-\r\n"
 		"t=0 0\r\n"
-		"m=audio %d RTP/AVP 0\r\n"
+		"m=audio %d UDP/TLS/RTP/SAVPF 0\r\n"
 		"c=IN IP4 %s\r\n"
 		"a=rtpmap:0 PCMU/8000\r\n"
 		"a=sendrecv\r\n"
