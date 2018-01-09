@@ -26,6 +26,7 @@
 #include "UserMap.h"
 #include "CallMap.h"
 #include "srtp.h"
+#include "MemoryDebug.h"
 
 #include "RtpThreadArg.hpp"
 #include "RtpThreadDtls.hpp"
@@ -156,7 +157,6 @@ THREAD_API RtpThread( LPVOID lpParameter )
 
 				pclsStunResponse->m_strPassword = pszIcePwd;
 				pclsStunResponse->AddXorMappedAddress( szWebRTCIp, iWebRTCPort );
-				//pclsStunResponse->AddInt( 0x8070, 3 );
 				pclsStunResponse->AddMessageIntegrity();
 				pclsStunResponse->AddFingerPrint();
 				iPacketLen = pclsStunResponse->ToString( szPacket, sizeof(szPacket) );

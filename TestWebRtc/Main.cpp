@@ -99,8 +99,10 @@ int main( int argc, char * argv[] )
 		sleep(1);
 	}
 
+	FinalDtls();
 	gclsHttpStack.Stop();
 	gclsSipStack.Stop();
+	SSLFinal();
 
 	// 모든 쓰레드가 종료될 때까지 대기한다.
 	sleep(2);

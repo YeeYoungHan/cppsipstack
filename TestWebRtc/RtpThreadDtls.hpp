@@ -19,20 +19,35 @@
 static SSL_CTX	* gpsttClientCtx = NULL;
 static const SSL_METHOD * gpsttClientMeth;
 
-class CRASKeyCert
+class CRSAKeyCert
 {
 public:
-	CRASKeyCert() : m_psttKey(NULL), m_psttCert(NULL)
+	CRSAKeyCert() : m_psttKey(NULL), m_psttCert(NULL)
 	{}
+
+	void Clear()
+	{
+		if( m_psttKey )
+		{
+			EVP_PKEY_free( m_psttKey );
+			m_psttKey = NULL;
+		}
+
+		if( m_psttCert )
+		{
+			X509_free( m_psttCert );
+			m_psttCert = NULL;
+		}
+	}
 
 	EVP_PKEY		* m_psttKey;
 	X509				* m_psttCert;
 	std::string	m_strFingerPrint;
 };
 
-static CRASKeyCert gclsKeyCert;
+static CRSAKeyCert gclsKeyCert;
 
-bool CreateRSA( CRASKeyCert & clsKeyCert )
+bool CreateRSA( CRSAKeyCert & clsKeyCert )
 {
 	BIGNUM * psttBigNum = BN_new();
 	if( psttBigNum == NULL )
@@ -162,6 +177,19 @@ void InitDtls()
 	gclsKeyCert.m_strFingerPrint = szFingerPrint;
 
 	srtp_init();
+}
+
+void FinalDtls()
+{
+	if( gpsttClientCtx )
+	{
+		SSL_CTX_free( gpsttClientCtx );
+		gpsttClientCtx = NULL;
+	}
+
+	gclsKeyCert.Clear();
+
+	srtp_final();
 }
 
 bool SrtpCreate( srtp_t * psttSrtp, uint8_t * pszKey, uint8_t * pszSalt, bool bInbound )

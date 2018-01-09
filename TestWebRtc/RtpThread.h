@@ -44,6 +44,8 @@ public:
 };
 
 void InitDtls();
+void FinalDtls();
+
 bool StartRtpThread( CRtpThreadArg * pclsArg );
 
 #endif
