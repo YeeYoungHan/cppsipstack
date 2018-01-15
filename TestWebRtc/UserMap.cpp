@@ -36,7 +36,7 @@ CUserMap::~CUserMap()
 /**
  * @ingroup TestWebRtc
  * @brief 사용자 정보를 저장한다.
- * @param pszUserId 사용자 아이디
+ * @param pszUserId				사용자 아이디
  * @param pszPassWord			SIP 서버 로그인 비밀번호
  * @param pszSipServerIp	SIP 서버 IP 주소
  * @param pszIp			WebSocket 클라이언트 IP 주소
@@ -77,6 +77,14 @@ bool CUserMap::Insert( const char * pszUserId, const char * pszPassWord, const c
 	return bRes;
 }
 
+/**
+ * @ingroup TestWebRtc
+ * @brief 사용자 RTP 세션 정보를 수정한다.
+ * @param pszUserId		사용자 아이디
+ * @param pclsRtpArg	RTP 쓰레드 정보 저장 객체
+ * @param bSetNull		RTP 세션 정보를 NULL 로 설정할 것인가?
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
 bool CUserMap::Update( const char * pszUserId, CRtpThreadArg * pclsRtpArg, bool bSetNull )
 {
 	bool bRes = false;

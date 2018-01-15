@@ -24,7 +24,7 @@
 
 /**
  * @ingroup TestWebRtc
- * @brief HTTP 요청 및 WebSocket callback 클래스
+ * @brief HTTP 및 WebSocket callback 클래스
  */
 class CHttpCallBack : public IHttpStackCallBack
 {

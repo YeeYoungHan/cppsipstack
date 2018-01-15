@@ -21,6 +21,10 @@
 
 #include "SipUdp.h"
 
+/**
+ * @ingroup TestWebRtc
+ * @brief RTP 쓰레드 정보 저장 클래스
+ */
 class CRtpThreadArg
 {
 public:

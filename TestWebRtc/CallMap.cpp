@@ -32,6 +32,13 @@ CCallMap::~CCallMap()
 {
 }
 
+/**
+ * @ingroup TestWebRtc
+ * @brief 통화 정보를 저장한다.
+ * @param pszCallId SIP Call-ID
+ * @param pszUserId 사용자 아이디
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CCallMap::Insert( const char * pszCallId, const char * pszUserId )
 {
 	CALL_MAP::iterator itMap;
@@ -53,6 +60,14 @@ bool CCallMap::Insert( const char * pszCallId, const char * pszUserId )
 	return bRes;
 }
 
+/**
+ * @ingroup TestWebRtc
+ * @brief 통화에 대한 PBX RTP 정보를 저장한다.
+ * @param pszCallId		SIP Call-ID
+ * @param pszPbxRtpIp PBX RTP IP 주소
+ * @param iPbxRtpPort PBX RTP 포트 번호
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CCallMap::Update( const char * pszCallId, const char * pszPbxRtpIp, int iPbxRtpPort )
 {
 	CALL_MAP::iterator itMap;
@@ -71,6 +86,13 @@ bool CCallMap::Update( const char * pszCallId, const char * pszPbxRtpIp, int iPb
 	return bRes;
 }
 
+/**
+ * @ingroup TestWebRtc
+ * @brief 통화 정보를 검색한다.
+ * @param pszCallId		SIP Call-ID
+ * @param clsCallInfo [out] 통화 정보 저장 객체
+ * @returns 통화 정보가 검색되면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CCallMap::Select( const char * pszCallId, CCallInfo & clsCallInfo )
 {
 	CALL_MAP::iterator itMap;
@@ -88,6 +110,12 @@ bool CCallMap::Select( const char * pszCallId, CCallInfo & clsCallInfo )
 	return bRes;
 }
 
+/**
+ * @ingroup TestWebRtc
+ * @brief 통화 정보를 삭제한다.
+ * @param pszCallId SIP Call-ID
+ * @returns 통화 정보를 삭제에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CCallMap::Delete( const char * pszCallId )
 {
 	CALL_MAP::iterator itMap;
@@ -105,6 +133,13 @@ bool CCallMap::Delete( const char * pszCallId )
 	return bRes;
 }
 
+/**
+ * @ingroup TestWebRtc
+ * @brief 사용자 아이디와 연결된 통화 정보를 모두 삭제한다.
+ * @param pszUserId			사용자 아이디
+ * @param clsCallIdList 사용자 아이디와 연결된 통화에 대한 SIP Call-ID 저장 리스트
+ * @returns 사용자 아이디와 연결된 통화 정보가 존재하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CCallMap::DeleteUserId( const char * pszUserId, SIP_CALL_ID_LIST & clsCallIdList )
 {
 	CALL_MAP::iterator itMap, itNext;

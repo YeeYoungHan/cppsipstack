@@ -18,6 +18,13 @@
 
 static int giUdpPort = 10000;
 
+/**
+ * @ingroup TestWebRtc
+ * @brief UDP 소켓을 생성한다.
+ * @param hSocket [out] UDP 소켓
+ * @param iPort		[out] UDP 포트 번호
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CreateUdpSocket( Socket & hSocket, int & iPort )
 {
 	int iStartPort = giUdpPort;
@@ -57,6 +64,11 @@ CRtpThreadArg::~CRtpThreadArg()
 	Close();
 }
 
+/**
+ * @ingroup TestWebRtc
+ * @brief PBX RTP 및 WebRTC RTP 연동을 위한 UDP 소켓을 생성한다.
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CRtpThreadArg::CreateSocket()
 {
 	if( CreateUdpSocket( m_hWebRtcUdp, m_iWebRtcUdpPort ) && CreateUdpSocket( m_hPbxUdp, m_iPbxUdpPort ) )
@@ -69,6 +81,10 @@ bool CRtpThreadArg::CreateSocket()
 	return false;
 }
 
+/**
+ * @ingroup TestWebRtc
+ * @brief UDP 소켓을 close 한다.
+ */
 void CRtpThreadArg::Close()
 {
 	if( m_hWebRtcUdp != INVALID_SOCKET )

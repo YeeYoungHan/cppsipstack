@@ -31,6 +31,14 @@
 #include "RtpThreadArg.hpp"
 #include "RtpThreadDtls.hpp"
 
+/**
+ * @ingroup TestWebRtc
+ * @brief SDP 에서 ICE 사용자 아이디 및 ICE 비밀번호를 가져온다.
+ * @param pszSdp			SDP
+ * @param strIceUser	ICE 사용자 아이디
+ * @param strIcePwd		ICE 비밀번호
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool GetIceUserPwd( const char * pszSdp, std::string & strIceUser, std::string & strIcePwd )
 {
 	CSdpMessage clsSdp;
@@ -61,6 +69,12 @@ bool GetIceUserPwd( const char * pszSdp, std::string & strIceUser, std::string &
 	return false;
 }
 
+/**
+ * @ingroup TestWebRtc
+ * @brief RTP 전송/수신 쓰레드
+ * @param lpParameter 
+ * @returns 0 을 리턴한다.
+ */
 THREAD_API RtpThread( LPVOID lpParameter )
 {
 	CRtpThreadArg * pclsArg = (CRtpThreadArg *)lpParameter;
@@ -285,6 +299,12 @@ FUNC_END:
 	return 0;
 }
 
+/**
+ * @ingroup TestWebRtc
+ * @brief RTP 쓰레드를 시작한다.
+ * @param pclsArg RTP 쓰레드 정보 저장 객체
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool StartRtpThread( CRtpThreadArg * pclsArg )
 {
 	return StartThread( "RtpThread", RtpThread, pclsArg );

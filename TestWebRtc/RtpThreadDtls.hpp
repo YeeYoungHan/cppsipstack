@@ -19,6 +19,10 @@
 static SSL_CTX	* gpsttClientCtx = NULL;
 static const SSL_METHOD * gpsttClientMeth;
 
+/**
+ * @ingroup TestWebRtc
+ * @brief RSA 키와 인증서 저장 클래스
+ */
 class CRSAKeyCert
 {
 public:
@@ -47,6 +51,12 @@ public:
 
 static CRSAKeyCert gclsKeyCert;
 
+/**
+ * @ingroup TestWebRtc
+ * @brief RSA 키와 인증서를 생성한다.
+ * @param clsKeyCert [out] RSA 키와 인증서 저장 객체
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CreateRSA( CRSAKeyCert & clsKeyCert )
 {
 	BIGNUM * psttBigNum = BN_new();
@@ -117,6 +127,10 @@ bool CreateRSA( CRSAKeyCert & clsKeyCert )
 	return false;
 }
 
+/**
+ * @ingroup TestWebRtc
+ * @brief DTLS 사용을 위한 초기화 과정을 수행한다.
+ */
 void InitDtls()
 {
 	SSLStart();
@@ -179,6 +193,10 @@ void InitDtls()
 	srtp_init();
 }
 
+/**
+ * @ingroup TestWebRtc
+ * @brief DTLS 를 위한 메모리를 해제한다.
+ */
 void FinalDtls()
 {
 	if( gpsttClientCtx )
@@ -192,6 +210,15 @@ void FinalDtls()
 	srtp_final();
 }
 
+/**
+ * @ingroup TestWebRtc
+ * @brief SRTP 를 생성한다.
+ * @param psttSrtp	[out] SRTP 포인터
+ * @param pszKey		key
+ * @param pszSalt		salt
+ * @param bInbound	inbound RTP 패킷이면 true 를 입력하고 그렇지 않으면 false 를 리턴한다.
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool SrtpCreate( srtp_t * psttSrtp, uint8_t * pszKey, uint8_t * pszSalt, bool bInbound )
 {
 	srtp_policy_t sttPolicy;

@@ -21,6 +21,10 @@
 
 #include "SipUserAgent.h"
 
+/**
+ * @ingroup TestWebRtc
+ * @brief SIP callback Å¬·¡½º
+ */
 class CSipCallBack : public ISipUserAgentCallBack
 {
 public:
