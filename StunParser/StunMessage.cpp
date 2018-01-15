@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipUdp.h"
 #include "StunMessage.h"
 #include "StunDefine.h"
 #include <openssl/hmac.h>
