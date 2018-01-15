@@ -76,7 +76,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 	CSipCallRoute clsRoute;
 	pollfd sttPoll[2];
 	srtp_t psttSrtpTx = NULL, psttSrtpRx = NULL;
-	bool bDtls = false;
+	bool bDtls = false, bSendRtpToWebRTC = false;
 
 	szWebRTCIp[0] = '\0';
 	szPbxIp[0] = '\0';
@@ -250,6 +250,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 					}
 
 					UdpSend( pclsArg->m_hPbxUdp, szPacket, iPacketLen, szPbxIp, iPbxPort );
+					bSendRtpToWebRTC = true;
 				}
 			}
 		}
@@ -259,15 +260,18 @@ THREAD_API RtpThread( LPVOID lpParameter )
 			iPacketLen = sizeof(szPacket);
 			UdpRecv( pclsArg->m_hPbxUdp, szPacket, &iPacketLen, szPbxIp, sizeof(szPbxIp), &iPbxPort );
 
-			int32_t iSsrc = htonl( 100 );
-			memcpy( szPacket + 8, &iSsrc, 4 );
-
-			if( psttSrtpTx )
+			if( bSendRtpToWebRTC )
 			{
-				srtp_protect( psttSrtpTx, szPacket, &iPacketLen );
-			}
+				int32_t iSsrc = htonl( 100 );
+				memcpy( szPacket + 8, &iSsrc, 4 );
 
-			UdpSend( pclsArg->m_hWebRtcUdp, szPacket, iPacketLen, szWebRTCIp, iWebRTCPort );
+				if( psttSrtpTx )
+				{
+					srtp_protect( psttSrtpTx, szPacket, &iPacketLen );
+				}
+
+				UdpSend( pclsArg->m_hWebRtcUdp, szPacket, iPacketLen, szWebRTCIp, iWebRTCPort );
+			}
 		}
 	}
 
