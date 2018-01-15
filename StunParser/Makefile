@@ -18,7 +18,7 @@ LIB_OBJ=StunAttribute.o \
 	StunDecode.o StunEncode.o \
 	StunHeader.o StunMessage.o
 
-libhttpparser.a: $(LIB_OBJ)
+libstunparser.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)
 
 clean:
