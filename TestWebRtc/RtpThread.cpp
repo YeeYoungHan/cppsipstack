@@ -102,7 +102,8 @@ THREAD_API RtpThread( LPVOID lpParameter )
 		"a=ice-pwd:%s\r\n"
 		"a=fingerprint:sha-256 %s\r\n"
 		"a=candidate:1 1 udp 2130706431 %s %d typ host\r\n"
-		"a=ssrc:100 msid:1234 1234\r\n"		, gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort, gstrLocalIp.c_str(), pszIcePwd, gclsKeyCert.m_strFingerPrint.c_str(), gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort );
+		"a=ssrc:100 msid:1234 1234\r\n"
+		, gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort, gstrLocalIp.c_str(), pszIcePwd, gclsKeyCert.m_strFingerPrint.c_str(), gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort );
 	gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|180|%s", szSdp );
 
 	iPacketLen = sizeof(szPacket);
