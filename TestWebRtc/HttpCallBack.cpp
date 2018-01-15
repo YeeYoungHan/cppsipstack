@@ -297,8 +297,6 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 				printf( "invite response arg is not correct\n" );
 				return false;
 			}
-
-			int iStatus = atoi( clsList[2].c_str() );
 		}
 	}
 	else if( !strcmp( pszCommand, "bye" ) )

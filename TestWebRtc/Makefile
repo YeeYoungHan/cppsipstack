@@ -22,7 +22,9 @@ LIB=-L../HttpStack -lhttpstack \
 	-L../StunParser -lstunparser \
 	-L../SipPlatform -lsipplatform \
 	-L../opensrtp/linux/64bit/lib -lsrtp \
-	-L../openssl/linux/64bit/lib -lssl -lcrypto -lpthread
+	-L../openssl/linux/64bit/lib -lssl \
+	-L../openssl/linux/64bit/lib -lcrypto \
+	-lpthread
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp

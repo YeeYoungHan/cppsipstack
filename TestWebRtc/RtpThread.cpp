@@ -36,7 +36,6 @@ bool GetIceUserPwd( const char * pszSdp, std::string & strIceUser, std::string &
 	CSdpMessage clsSdp;
 	SDP_MEDIA_LIST::iterator itML;
 	SDP_ATTRIBUTE_LIST::iterator itAL;
-	bool bFound = false;
 
 	if( clsSdp.Parse( pszSdp, strlen(pszSdp) ) == -1 ) return false;
 

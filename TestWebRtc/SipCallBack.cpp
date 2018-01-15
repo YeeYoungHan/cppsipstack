@@ -97,35 +97,3 @@ void CSipCallBack::EventCallEnd( const char * pszCallId, int iSipStatus )
 		gclsCallMap.Delete( pszCallId );
 	}
 }
-
-bool CSipCallBack::MakeSdp( CSipCallRtp * pclsRtp, std::string & strSdp )
-{
-	char	szSdp[4096];
-	int		iLen = 0;
-	const char * pszAddrType = "IP4";
-
-	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "v=0\r\n"
-					"o=CSS 4 2 IN IP4 %s\r\n"
-					"s=CSS\r\n", pszAddrType, pclsRtp->m_strIp.c_str() );
-
-	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "c=IN %s %s\r\n", pszAddrType, pclsRtp->m_strIp.c_str() );
-	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "t=0 0\r\n" );
-
-	switch( pclsRtp->m_iCodec )
-	{
-	case 0:
-		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 0\r\n", pclsRtp->m_iPort );
-		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:0 PCMU/8000\r\n" );
-		break;
-	case 8:
-		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP 8\r\n", pclsRtp->m_iPort );
-		iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=rtpmap:8 PCMA/8000\r\n" );
-		break;
-	}
-
-	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "a=sendrecv\r\n" );
-
-	strSdp = szSdp;
-	
-	return true;
-}

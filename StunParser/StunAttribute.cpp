@@ -96,7 +96,7 @@ bool CStunAttribute::GetIpPort( std::string & strIp, uint16_t & sPort )
 		memcpy( &sPort, pszValue + 2, 2 );
 		sPort = ntohs( sPort );
 
-		uint16_t sMod = ((uint16_t)CStunHeader::m_arrCookie[0] << 8 ) & 0xFF00 | ((uint16_t)CStunHeader::m_arrCookie[1] & 0x00FF );
+		uint16_t sMod = (((uint16_t)CStunHeader::m_arrCookie[0] << 8 ) & 0xFF00) | ((uint16_t)CStunHeader::m_arrCookie[1] & 0x00FF );
 		sPort ^= sMod;
 
 		if( pszValue[1] == STUN_FAMILY_IPV4 )
