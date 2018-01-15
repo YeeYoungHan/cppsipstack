@@ -22,6 +22,7 @@ all:
 	cd TcpStack && make
 	cd HttpParser && make
 	cd HttpStack && make
+	cd StunParser && make
 	cd TestWebRtc && make
 
 clean:
@@ -42,6 +43,7 @@ clean:
 	cd TcpStack && make clean
 	cd HttpParser && make clean
 	cd HttpStack && make clean
+	cd StunParser && make clean
 	cd TestWebRtc && make clean
 
 install:
