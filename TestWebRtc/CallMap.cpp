@@ -112,6 +112,31 @@ bool CCallMap::Select( const char * pszCallId, CCallInfo & clsCallInfo )
 
 /**
  * @ingroup TestWebRtc
+ * @brief 사용자 아이디가 통화중인지 검사한다.
+ * @param pszUserId 사용자 아이디
+ * @returns 사용자 아이디가 통화중이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CCallMap::SelectUserId( const char * pszUserId )
+{
+	CALL_MAP::iterator itMap, itNext;
+	bool bRes = false;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		if( !strcmp( pszUserId, itMap->second.m_strUserId.c_str() ) )
+		{
+			bRes = true;
+			break;
+		}
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+/**
+ * @ingroup TestWebRtc
  * @brief 통화 정보를 삭제한다.
  * @param pszCallId SIP Call-ID
  * @returns 통화 정보를 삭제에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.

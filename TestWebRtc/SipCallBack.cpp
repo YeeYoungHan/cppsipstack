@@ -54,7 +54,62 @@ void CSipCallBack::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 
 void CSipCallBack::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
 {
+	CUserInfo clsUserInfo;
 
+	if( gclsUserMap.Select( pszTo, clsUserInfo ) )
+	{
+		if( gclsCallMap.SelectUserId( pszTo ) )
+		{
+			gclsSipStack.StopCall( pszCallId, SIP_BUSY_HERE );
+		}
+		else
+		{
+			CRtpThreadArg * pclsRtpArg = new CRtpThreadArg();
+			if( pclsRtpArg == NULL )
+			{
+				gclsSipStack.StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
+			}
+			else
+			{
+				pclsRtpArg->m_strUserId = pszTo;
+				pclsRtpArg->m_strToId = pszFrom;
+				pclsRtpArg->m_strCallId = pszCallId;
+
+				if( pclsRtpArg->CreateSocket() == false )
+				{
+					gclsSipStack.StopCall( pszCallId, SIP_INTERNAL_SERVER_ERROR );
+				}
+				else
+				{
+					char szSdp[8192];
+
+					snprintf( szSdp, sizeof(szSdp), "v=0\r\n"
+						"o=- 4532014611503881976 0 IN IP4 %s\r\n"
+						"s=-\r\n"
+						"t=0 0\r\n"
+						"m=audio %d UDP/TLS/RTP/SAVPF 0\r\n"
+						"c=IN IP4 %s\r\n"
+						"a=rtpmap:0 PCMU/8000\r\n"
+						"a=sendrecv\r\n"
+						"a=ice-ufrag:lMRb\r\n"
+						"a=ice-pwd:%s\r\n"
+						"a=fingerprint:sha-256 %s\r\n"
+						"a=candidate:1 1 udp 2130706431 %s %d typ host\r\n"
+						"a=ssrc:100 msid:1234 1234\r\n"
+						, gstrLocalIp.c_str(), pclsRtpArg->m_iWebRtcUdpPort, gstrLocalIp.c_str(), pclsRtpArg->m_strIcePwd.c_str(), gclsKeyCert.m_strFingerPrint.c_str(), gstrLocalIp.c_str(), pclsRtpArg->m_iWebRtcUdpPort );
+					if( gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "req|invite|%s|%s", pszFrom, szSdp ) )
+					{
+						gclsUserMap.Update( pszTo, pclsRtpArg, false );
+						gclsCallMap.Insert( pszCallId, pszTo );
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		gclsSipStack.StopCall( pszCallId, SIP_NOT_FOUND );
+	}
 }
 
 void CSipCallBack::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )

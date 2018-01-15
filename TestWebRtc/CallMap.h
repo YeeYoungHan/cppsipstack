@@ -58,6 +58,7 @@ public:
 	bool Update( const char * pszCallId, const char * pszPbxRtpIp, int iPbxRtpPort );
 
 	bool Select( const char * pszCallId, CCallInfo & clsCallInfo );
+	bool SelectUserId( const char * pszUserId );
 
 	bool Delete( const char * pszCallId );
 	bool DeleteUserId( const char * pszUserId, SIP_CALL_ID_LIST & clsCallIdList );

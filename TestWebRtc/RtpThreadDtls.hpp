@@ -19,37 +19,7 @@
 static SSL_CTX	* gpsttClientCtx = NULL;
 static const SSL_METHOD * gpsttClientMeth;
 
-/**
- * @ingroup TestWebRtc
- * @brief RSA 키와 인증서 저장 클래스
- */
-class CRSAKeyCert
-{
-public:
-	CRSAKeyCert() : m_psttKey(NULL), m_psttCert(NULL)
-	{}
-
-	void Clear()
-	{
-		if( m_psttKey )
-		{
-			EVP_PKEY_free( m_psttKey );
-			m_psttKey = NULL;
-		}
-
-		if( m_psttCert )
-		{
-			X509_free( m_psttCert );
-			m_psttCert = NULL;
-		}
-	}
-
-	EVP_PKEY		* m_psttKey;
-	X509				* m_psttCert;
-	std::string	m_strFingerPrint;
-};
-
-static CRSAKeyCert gclsKeyCert;
+CRSAKeyCert gclsKeyCert;
 
 /**
  * @ingroup TestWebRtc

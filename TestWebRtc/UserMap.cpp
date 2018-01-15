@@ -99,13 +99,14 @@ bool CUserMap::Update( const char * pszUserId, CRtpThreadArg * pclsRtpArg, bool 
 			if( itMap->second.m_pclsRtpArg == pclsRtpArg )
 			{
 				itMap->second.m_pclsRtpArg = NULL;
+				bRes = true;
 			}
 		}
 		else
 		{
 			itMap->second.m_pclsRtpArg = pclsRtpArg;
+			bRes = true;
 		}
-		bRes = true;
 	}
 	m_clsMutex.release();
 

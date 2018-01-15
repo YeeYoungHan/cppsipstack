@@ -20,6 +20,7 @@
 #define _RTP_THREAD_H_
 
 #include "SipUdp.h"
+#include "SipCallBack.h"
 
 /**
  * @ingroup TestWebRtc
@@ -41,15 +42,51 @@ public:
 	int			m_iPbxUdpPort;
 
 	bool		m_bStop;
+	bool		m_bStartCall;
 
 	std::string	m_strUserId;
 	std::string m_strToId;
 	std::string m_strSdp;
+
+	std::string m_strIcePwd;
+	std::string m_strCallId;
+};
+
+/**
+ * @ingroup TestWebRtc
+ * @brief RSA 키와 인증서 저장 클래스
+ */
+class CRSAKeyCert
+{
+public:
+	CRSAKeyCert() : m_psttKey(NULL), m_psttCert(NULL)
+	{}
+
+	void Clear()
+	{
+		if( m_psttKey )
+		{
+			EVP_PKEY_free( m_psttKey );
+			m_psttKey = NULL;
+		}
+
+		if( m_psttCert )
+		{
+			X509_free( m_psttCert );
+			m_psttCert = NULL;
+		}
+	}
+
+	EVP_PKEY		* m_psttKey;
+	X509				* m_psttCert;
+	std::string	m_strFingerPrint;
 };
 
 void InitDtls();
 void FinalDtls();
 
 bool StartRtpThread( CRtpThreadArg * pclsArg );
+
+extern CRSAKeyCert gclsKeyCert;
 
 #endif

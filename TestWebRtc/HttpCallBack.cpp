@@ -181,15 +181,7 @@ void CHttpCallBack::WebSocketClosed( const char * pszClientIp, int iClientPort )
 			gclsUserMap.Delete( strUserId.c_str() );
 		}
 
-		SIP_CALL_ID_LIST clsCallIdList;
-		SIP_CALL_ID_LIST::iterator itCIL;
-
-		gclsCallMap.DeleteUserId( strUserId.c_str(), clsCallIdList );
-
-		for( itCIL = clsCallIdList.begin(); itCIL != clsCallIdList.end(); ++itCIL )
-		{
-			gclsSipStack.StopCall( itCIL->c_str() );
-		}
+		StopCallUserId( strUserId.c_str() );
 	}
 }
 
@@ -280,6 +272,7 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 			pclsRtpArg->m_strUserId = strUserId;
 			pclsRtpArg->m_strToId = pszToId;
 			pclsRtpArg->m_strSdp = pszSdp;
+			pclsRtpArg->m_bStartCall = true;
 
 			if( pclsRtpArg->CreateSocket() == false || 
 					gclsUserMap.Update( strUserId.c_str(), pclsRtpArg, false ) == false ||
@@ -297,6 +290,36 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 				printf( "invite response arg is not correct\n" );
 				return false;
 			}
+
+			CUserInfo clsUserInfo;
+
+			if( gclsUserMap.SelectUserId( pszClientIp, iClientPort, strUserId ) == false || gclsUserMap.Select( strUserId.c_str(), clsUserInfo ) == false || clsUserInfo.m_pclsRtpArg == NULL )
+			{
+				return true;
+			}
+
+			int iStatus = atoi( clsList[2].c_str() );
+			clsUserInfo.m_pclsRtpArg->m_strSdp = clsList[3];
+
+			if( iStatus == SIP_OK && iCount >= 4 && StartRtpThread( clsUserInfo.m_pclsRtpArg ) )
+			{
+				CSipCallRtp clsRtp;
+
+				clsRtp.m_iCodec = 0;
+				clsRtp.m_iPort = clsUserInfo.m_pclsRtpArg->m_iPbxUdpPort;
+				clsRtp.m_strIp = gstrLocalIp;
+
+				gclsSipStack.AcceptCall( clsUserInfo.m_pclsRtpArg->m_strCallId.c_str(), &clsRtp );
+			}
+			else
+			{
+				if( gclsUserMap.Update( strUserId.c_str(), clsUserInfo.m_pclsRtpArg, true ) )
+				{
+					delete clsUserInfo.m_pclsRtpArg;
+				}
+
+				StopCallUserId( strUserId.c_str() );
+			}
 		}
 	}
 	else if( !strcmp( pszCommand, "bye" ) )
@@ -310,15 +333,7 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 			return true;
 		}
 
-		SIP_CALL_ID_LIST clsCallIdList;
-		SIP_CALL_ID_LIST::iterator itCIL;
-
-		gclsCallMap.DeleteUserId( strUserId.c_str(), clsCallIdList );
-
-		for( itCIL = clsCallIdList.begin(); itCIL != clsCallIdList.end(); ++itCIL )
-		{
-			gclsSipStack.StopCall( itCIL->c_str() );
-		}
+		StopCallUserId( strUserId.c_str() );
 
 		if( clsUserInfo.m_pclsRtpArg )
 		{
@@ -356,4 +371,22 @@ bool CHttpCallBack::Send( const char * pszClientIp, int iClientPort, const char 
 	}
 
 	return false;
+}
+
+/**
+ * @ingroup TestWebRtc
+ * @brief 사용자 아이디와 연결된 모든 통화를 종료시킨다.
+ * @param pszUserId 사용자 아이디
+ */
+void CHttpCallBack::StopCallUserId( const char * pszUserId )
+{
+	SIP_CALL_ID_LIST clsCallIdList;
+	SIP_CALL_ID_LIST::iterator itCIL;
+
+	gclsCallMap.DeleteUserId( pszUserId, clsCallIdList );
+
+	for( itCIL = clsCallIdList.begin(); itCIL != clsCallIdList.end(); ++itCIL )
+	{
+		gclsSipStack.StopCall( itCIL->c_str() );
+	}
 }

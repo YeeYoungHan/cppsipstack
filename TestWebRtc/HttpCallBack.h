@@ -42,6 +42,9 @@ public:
 
 	std::string m_strDocumentRoot;
 	bool m_bStop;
+
+private:
+	void StopCallUserId( const char * pszUserId );
 };
 
 extern CHttpStack			gclsHttpStack;

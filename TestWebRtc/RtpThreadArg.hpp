@@ -55,7 +55,7 @@ bool CreateUdpSocket( Socket & hSocket, int & iPort )
 	return false;
 }
 
-CRtpThreadArg::CRtpThreadArg() : m_hWebRtcUdp(INVALID_SOCKET), m_hPbxUdp(INVALID_SOCKET), m_iWebRtcUdpPort(0), m_iPbxUdpPort(0), m_bStop(false)
+CRtpThreadArg::CRtpThreadArg() : m_hWebRtcUdp(INVALID_SOCKET), m_hPbxUdp(INVALID_SOCKET), m_iWebRtcUdpPort(0), m_iPbxUdpPort(0), m_bStop(false), m_bStartCall(false)
 {
 }
 
@@ -73,6 +73,7 @@ bool CRtpThreadArg::CreateSocket()
 {
 	if( CreateUdpSocket( m_hWebRtcUdp, m_iWebRtcUdpPort ) && CreateUdpSocket( m_hPbxUdp, m_iPbxUdpPort ) )
 	{
+		m_strIcePwd = "FNPRfT4qUaVOKa0ivkn64mMY";
 		return true;
 	}
 
