@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipUdp.h"
 #include "StunEncode.h"
 
 CStunEncode::CStunEncode() : m_pszText(NULL), m_iTextSize(0), m_iPos(0)
