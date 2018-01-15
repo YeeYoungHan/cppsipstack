@@ -26,7 +26,7 @@ LIB=-L../HttpStack -lhttpstack \
 
 all: TestWebRtc.exe
 
-SRV_OBJ=Main.o \
+SRV_OBJ=Main.o RtpThread.o \
 	HttpCallBack.o \
 	SipCallBack.o \
 	UserMap.o CallMap.o
