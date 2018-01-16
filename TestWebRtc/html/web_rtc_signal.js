@@ -134,19 +134,19 @@ function StartSession()
   }
 }
 
-function Send(data)
+function Send( data )
 {
 	ws.send(data);
 	Log( "Send[" + data + "]" );
 }
 
-function Invite(strSdp)
+function Invite( strSdp )
 {
 	Send( "req|invite|" + gstrToId + "|" + strSdp );
 }
 
 /** 전화 수신한다. */
-function Accept(strSdp)
+function Accept( strSdp )
 {
 	Send( "res|invite|200|" + strSdp );
 }

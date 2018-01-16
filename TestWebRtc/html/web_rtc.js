@@ -27,7 +27,7 @@ var iLogRowCount = 0;
 InitButton();
 startLocal();
 
-function Log(strLog)
+function Log( strLog )
 {
   var clsDate = new Date();
   var strTime = "[" + clsDate.getHours() + ":" + clsDate.getMinutes() + ":" + clsDate.getSeconds() + "] ";
@@ -61,11 +61,11 @@ function InitButton()
 	btnBye.disabled = true;
 }
 
-function handleLocalMedia(stream)
+function handleLocalMedia( stream )
 {
   if (window.URL)
   {
-    localVideo.src = URL.createObjectURL(stream);
+    localVideo.src = URL.createObjectURL( stream );
   }
   else
   {
@@ -77,7 +77,7 @@ function handleLocalMedia(stream)
   localVideo.muted = true;
 }
 
-function handleUserMediaError(error)
+function handleUserMediaError( error )
 {
   Log("#### handleUserMediaError ####");
   Log("error(" + error.name + ")");
@@ -113,8 +113,8 @@ function createOffer()
     RTCIceCandidate = mozRTCIceCandidate;
   }
 
-  pc = new RTCPeerConnection(pc_config, pc_constraints);
-  pc.addStream(localStream);
+  pc = new RTCPeerConnection( pc_config, pc_constraints );
+  pc.addStream( localStream );
   pc.onicecandidate = setIceCandidateOffer;
   pc.onaddstream = handleRemoteStreamAdded;
   pc.onremovestream = handleRemoteStreamRemoved;
@@ -122,7 +122,7 @@ function createOffer()
   pc.createOffer( setLocalOffer, onSignalingError, sdpConstraints );
 }
 
-function createAnswer(strSdp)
+function createAnswer( strSdp )
 {
   Log("#### createAnswer sdp(" + strSdp + ")");
 
@@ -139,8 +139,8 @@ function createAnswer(strSdp)
     RTCIceCandidate = mozRTCIceCandidate;
   }
 
-  pc = new RTCPeerConnection(pc_config, pc_constraints);
-  pc.addStream(localStream);
+  pc = new RTCPeerConnection( pc_config, pc_constraints );
+  pc.addStream( localStream );
   pc.onicecandidate = setIceCandidateAnswer;
   pc.onaddstream = handleRemoteStreamAdded;
   pc.onremovestream = handleRemoteStreamRemoved;
@@ -149,17 +149,17 @@ function createAnswer(strSdp)
   sd.sdp = strSdp;
   sd.type = "offer";
 
-  pc.setRemoteDescription(sd);
-  pc.createAnswer(setLocalAnswer, onSignalingError, sdpConstraints);
+  pc.setRemoteDescription( sd );
+  pc.createAnswer( setLocalAnswer, onSignalingError, sdpConstraints );
 }
 
-function handleRemoteStreamAdded(event)
+function handleRemoteStreamAdded( event )
 {
   Log("#### handleRemoteStreamAdded ####" );
 
-  if (window.URL)
+  if( window.URL )
   {
-    remoteVideo.src = URL.createObjectURL(event.stream);
+    remoteVideo.src = URL.createObjectURL( event.stream );
   }
   else
   {
@@ -169,12 +169,12 @@ function handleRemoteStreamAdded(event)
   remoteStream = event.stream;
 }
 
-function handleRemoteStreamRemoved(event)
+function handleRemoteStreamRemoved( event )
 {
   Log( "#### handleRemoteStreamRemoved ####" );
 }
 
-function setIceCandidateOffer(event)
+function setIceCandidateOffer( event )
 {
   if( event.candidate == null )
   {
@@ -189,14 +189,14 @@ function setIceCandidateOffer(event)
   }
 }
 
-function setIceCandidateAnswer(event)
+function setIceCandidateAnswer( event )
 {
   if( event.candidate == null )
   {
     Log( "setIceCandidateAnswer(null)" );
     //Log( "local sdp(" + pc.localDescription.sdp + ")" );
 
-    Accept(pc.localDescription.sdp);
+    Accept( pc.localDescription.sdp );
   }
   else
   {
@@ -204,29 +204,30 @@ function setIceCandidateAnswer(event)
   }
 }
 
-function setLocalOffer(sessionDescription)
+function setLocalOffer( sessionDescription )
 {
-  pc.setLocalDescription(sessionDescription);
+  pc.setLocalDescription( sessionDescription );
 
   Log("createOffer result sdp(" + sessionDescription.sdp + ") type(" + sessionDescription.type + ")" );
 
   // IceCandidate 를 가져오기 전에 호출된다. IceCandidate callback 호출에서 Invite 메소드를 호출한다.
 }
 
-function setLocalAnswer(sessionDescription) {
-  pc.setLocalDescription(sessionDescription);
+function setLocalAnswer( sessionDescription )
+{
+  pc.setLocalDescription( sessionDescription );
 
   Log("createAnswer result sdp(" + sessionDescription.sdp + ") type(" + sessionDescription.type + ")" );
 
   // IceCandidate 를 가져오기 전에 호출된다. IceCandidate callback 호출에서 Accept 메소드를 호출한다.
 }
 
-function onSignalingError(error)
+function onSignalingError( error )
 {
   Log('Failed to create signaling message : ' + error.name);
 }
 
-function setAnswer(strSdp)
+function setAnswer( strSdp )
 {
   var sd = new RTCSessionDescription();
   sd.sdp = strSdp;
