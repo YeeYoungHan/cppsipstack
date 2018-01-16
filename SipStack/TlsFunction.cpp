@@ -237,6 +237,8 @@ bool SSLServerStop( )
  */
 void SSLFinal()
 {
+	SSLStop();
+
 	ERR_free_strings();
 
 #ifdef USE_TLS_FREE

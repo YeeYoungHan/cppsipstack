@@ -30,6 +30,7 @@
 #include "openssl/err.h"
 
 bool SSLStart( );
+
 bool SSLServerStart( const char * szCertFile, const char * szCaCertFile );
 bool SSLServerStop( );
 void SSLFinal();
