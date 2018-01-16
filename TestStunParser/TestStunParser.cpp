@@ -17,6 +17,7 @@
  */
 
 #include "TestStunParser.h"
+#include "openssl/evp.h"
 
 static bool Test( )
 {
@@ -29,10 +30,16 @@ static bool Test( )
 
 int main( int argc, char * argv[] )
 {
+#ifdef WIN32
+	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF );
+#endif
+
 	if( Test() == false )
 	{
 		printf( "ERROR!!!\n" );
 	}
+
+	EVP_cleanup();
 
 	return 0;
 }

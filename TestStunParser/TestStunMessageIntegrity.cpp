@@ -42,6 +42,7 @@ bool TestStunMessageIntegrity( )
 	HMAC_Init_ex( &sttCtx, pszPassWord, strlen(pszPassWord), EVP_sha1(), NULL );
 	HMAC_Update( &sttCtx, (unsigned char *)strPacket.c_str(), strPacket.length() );
 	HMAC_Final( &sttCtx, szDigest, &iDigestLen );
+	HMAC_CTX_cleanup( &sttCtx );
 
 	StringToHex( (char *)szDigest, iDigestLen, strDigest );
 

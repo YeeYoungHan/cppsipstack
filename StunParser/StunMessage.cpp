@@ -32,7 +32,7 @@ CStunMessage::CStunMessage()
 {
 	if( m_bInit == false )
 	{
-		OpenSSL_add_all_digests();
+		EVP_add_digest( EVP_sha1() );
 
 		for( int i = 0; i < 256; ++i )
 		{ 
@@ -128,6 +128,7 @@ int CStunMessage::ToString( char * pszText, int iTextSize )
 			HMAC_Init_ex( &sttCtx, m_strPassword.c_str(), m_strPassword.length(), EVP_sha1(), NULL );
 			HMAC_Update( &sttCtx, (unsigned char *)pszText, iLen );
 			HMAC_Final( &sttCtx, szDigest, &iDigestLen );
+			HMAC_CTX_cleanup( &sttCtx );
 
 			itSAL->m_sLength = iDigestLen;
 			itSAL->m_strValue.clear();
