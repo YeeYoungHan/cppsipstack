@@ -59,6 +59,7 @@ public:
 
 	bool Select( const char * pszCallId, CCallInfo & clsCallInfo );
 	bool SelectUserId( const char * pszUserId );
+	bool SelectUserId( const char * pszUserId, std::string & strCallId );
 
 	bool Delete( const char * pszCallId );
 	bool DeleteUserId( const char * pszUserId, SIP_CALL_ID_LIST & clsCallIdList );

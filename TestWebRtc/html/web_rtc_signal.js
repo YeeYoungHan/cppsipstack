@@ -103,11 +103,12 @@ function StartSession()
 				{
 				case "invite":
 					gstrToId = arrData[2];
-					gstrSdp = arrData[3];
+					//gstrSdp = arrData[3];
           var txtPeerId = document.getElementById('peer_id');
           txtPeerId.value = gstrToId;
 
-          Log("Invite event peer(" + gstrToId + ") sdp(" + arrData[3]+ ")" );
+          //Log("Invite event peer(" + gstrToId + ") sdp(" + arrData[3]+ ")" );
+          Log("Invite event peer(" + gstrToId + ")" );
           //createAnswer( clsData.sdp );
 
           btnInvite.disabled = true;
@@ -168,7 +169,7 @@ function SendInvite()
   btnBye.disabled = true;
 
   gstrToId = strPeerId;
-  createOffer();
+  createOffer( true );
 
   //Invite( "o=" + strPeerId );
 }
@@ -180,7 +181,8 @@ function SendAccept()
   btnDecline.disabled = true;
   btnBye.disabled = false;
 
-  createAnswer(gstrSdp);
+	createOffer( false );
+  //createAnswer(gstrSdp);
   //Accept( "o=accept" );
 }
 

@@ -262,6 +262,12 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 				return true;
 			}
 
+			if( gclsCallMap.SelectUserId( strUserId.c_str() ) )
+			{
+				Send( pszClientIp, iClientPort, "res|invite|409" );
+				return true;
+			}
+
 			CRtpThreadArg * pclsRtpArg = new CRtpThreadArg();
 			if( pclsRtpArg == NULL )
 			{
@@ -293,31 +299,39 @@ bool CHttpCallBack::WebSocketData( const char * pszClientIp, int iClientPort, st
 
 			CUserInfo clsUserInfo;
 
-			if( gclsUserMap.SelectUserId( pszClientIp, iClientPort, strUserId ) == false || gclsUserMap.Select( strUserId.c_str(), clsUserInfo ) == false || clsUserInfo.m_pclsRtpArg == NULL )
+			if( gclsUserMap.SelectUserId( pszClientIp, iClientPort, strUserId ) == false || gclsUserMap.Select( strUserId.c_str(), clsUserInfo ) == false )
 			{
 				return true;
 			}
 
 			int iStatus = atoi( clsList[2].c_str() );
-			clsUserInfo.m_pclsRtpArg->m_strSdp = clsList[3];
 
-			if( iStatus == SIP_OK && iCount >= 4 && StartRtpThread( clsUserInfo.m_pclsRtpArg ) )
+			if( iStatus == SIP_OK && iCount >= 4 )
 			{
-				CSipCallRtp clsRtp;
+				CRtpThreadArg * pclsRtpArg = new CRtpThreadArg();
+				if( pclsRtpArg == NULL )
+				{
+					Send( pszClientIp, iClientPort, "req|bye" );
+					return true;
+				}
 
-				clsRtp.m_iCodec = 0;
-				clsRtp.m_iPort = clsUserInfo.m_pclsRtpArg->m_iPbxUdpPort;
-				clsRtp.m_strIp = gstrLocalIp;
+				const char * pszSdp = clsList[3].c_str();
 
-				gclsSipStack.AcceptCall( clsUserInfo.m_pclsRtpArg->m_strCallId.c_str(), &clsRtp );
+				pclsRtpArg->m_strUserId = strUserId;
+				pclsRtpArg->m_strSdp = pszSdp;
+				pclsRtpArg->m_bStartCall = false;
+
+				if( pclsRtpArg->CreateSocket() == false || 
+						gclsUserMap.Update( strUserId.c_str(), pclsRtpArg, false ) == false ||
+						StartRtpThread( pclsRtpArg ) == false )
+				{
+					delete pclsRtpArg;
+					Send( pszClientIp, iClientPort, "req|bye" );
+					return true;
+				}
 			}
 			else
 			{
-				if( gclsUserMap.Update( strUserId.c_str(), clsUserInfo.m_pclsRtpArg, true ) )
-				{
-					delete clsUserInfo.m_pclsRtpArg;
-				}
-
 				StopCallUserId( strUserId.c_str() );
 			}
 		}

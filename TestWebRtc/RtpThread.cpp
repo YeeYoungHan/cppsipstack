@@ -98,31 +98,36 @@ THREAD_API RtpThread( LPVOID lpParameter )
 		goto FUNC_END;
 	}
 
+	if( pclsArg->m_bStartCall == false )
+	{
+
+	}
+
 	GetIceUserPwd( pclsArg->m_strSdp.c_str(), strIceUser, strIcePwd );
 	strIceUser.append( ":lMRb" );
 
+	snprintf( szSdp, sizeof(szSdp), "v=0\r\n"
+		"o=- 4532014611503881976 0 IN IP4 %s\r\n"
+		"s=-\r\n"
+		"t=0 0\r\n"
+		"m=audio %d UDP/TLS/RTP/SAVPF 0\r\n"
+		"c=IN IP4 %s\r\n"
+		"a=rtpmap:0 PCMU/8000\r\n"
+		"a=sendrecv\r\n"
+		"a=ice-ufrag:lMRb\r\n"
+		"a=ice-pwd:%s\r\n"
+		"a=fingerprint:sha-256 %s\r\n"
+		"a=candidate:1 1 udp 2130706431 %s %d typ host\r\n"
+		"a=ssrc:100 msid:1234 1234\r\n"
+		, gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort, gstrLocalIp.c_str(), pclsArg->m_strIcePwd.c_str(), gclsKeyCert.m_strFingerPrint.c_str(), gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort );
+	gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|180|%s", szSdp );
+
+	clsRtp.m_iCodec = 0;
+	clsRtp.m_iPort = pclsArg->m_iPbxUdpPort;
+	clsRtp.m_strIp = gstrLocalIp;
+
 	if( pclsArg->m_bStartCall )
 	{
-		snprintf( szSdp, sizeof(szSdp), "v=0\r\n"
-			"o=- 4532014611503881976 0 IN IP4 %s\r\n"
-			"s=-\r\n"
-			"t=0 0\r\n"
-			"m=audio %d UDP/TLS/RTP/SAVPF 0\r\n"
-			"c=IN IP4 %s\r\n"
-			"a=rtpmap:0 PCMU/8000\r\n"
-			"a=sendrecv\r\n"
-			"a=ice-ufrag:lMRb\r\n"
-			"a=ice-pwd:%s\r\n"
-			"a=fingerprint:sha-256 %s\r\n"
-			"a=candidate:1 1 udp 2130706431 %s %d typ host\r\n"
-			"a=ssrc:100 msid:1234 1234\r\n"
-			, gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort, gstrLocalIp.c_str(), pclsArg->m_strIcePwd.c_str(), gclsKeyCert.m_strFingerPrint.c_str(), gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort );
-		gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|180|%s", szSdp );
-
-		clsRtp.m_iCodec = 0;
-		clsRtp.m_iPort = pclsArg->m_iPbxUdpPort;
-		clsRtp.m_strIp = gstrLocalIp;
-
 		clsRoute.m_strDestIp = clsUserInfo.m_strSipServerIp;
 		clsRoute.m_iDestPort = 5060;
 
@@ -138,6 +143,16 @@ THREAD_API RtpThread( LPVOID lpParameter )
 			gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|500" );
 			goto FUNC_END;
 		}
+	}
+	else
+	{
+		if( gclsCallMap.SelectUserId( pclsArg->m_strUserId.c_str(), pclsArg->m_strCallId ) == false )
+		{
+			gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "req|bye" );
+			goto FUNC_END;
+		}
+
+		gclsSipStack.AcceptCall( pclsArg->m_strCallId.c_str(), &clsRtp );
 	}
 
 	TcpSetPollIn( sttPoll[0], pclsArg->m_hWebRtcUdp );

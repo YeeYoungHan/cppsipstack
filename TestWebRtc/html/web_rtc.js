@@ -10,6 +10,7 @@ var pc_config = null;
 //
 var pc_constraints = { 'optional': [{'DtlsSrtpKeyAgreement': true} ]};
 var sdpConstraints = {};
+var bSendInvite = false;
 
 var localVideo = document.getElementById("localVideo");
 var remoteVideo = document.getElementById("remoteVideo");
@@ -96,9 +97,11 @@ function stopPeer()
   remoteVideo.src = null;
 }
 
-function createOffer()
+function createOffer( bInvite )
 {
-  Log( "#### createOffer ####")
+  Log( "#### createOffer(invite=" + bInvite + ") ####" );
+
+	bSendInvite = bInvite;
 
   if( navigator.webkitGetUserMedia )
   {
@@ -120,37 +123,6 @@ function createOffer()
   pc.onremovestream = handleRemoteStreamRemoved;
 
   pc.createOffer( setLocalOffer, onSignalingError, sdpConstraints );
-}
-
-function createAnswer( strSdp )
-{
-  Log("#### createAnswer sdp(" + strSdp + ")");
-
-  if( navigator.webkitGetUserMedia )
-  {
-    // Chrome
-    RTCPeerConnection = webkitRTCPeerConnection;
-  }
-  else if( navigator.mozGetUserMedia )
-  {
-    // Firefox
-    RTCPeerConnection = mozRTCPeerConnection;
-    RTCSessionDescription = mozRTCSessionDescription;
-    RTCIceCandidate = mozRTCIceCandidate;
-  }
-
-  pc = new RTCPeerConnection( pc_config, pc_constraints );
-  pc.addStream( localStream );
-  pc.onicecandidate = setIceCandidateAnswer;
-  pc.onaddstream = handleRemoteStreamAdded;
-  pc.onremovestream = handleRemoteStreamRemoved;
-
-  var sd = new RTCSessionDescription();
-  sd.sdp = strSdp;
-  sd.type = "offer";
-
-  pc.setRemoteDescription( sd );
-  pc.createAnswer( setLocalAnswer, onSignalingError, sdpConstraints );
 }
 
 function handleRemoteStreamAdded( event )
@@ -181,22 +153,14 @@ function setIceCandidateOffer( event )
     Log( "setIceCandidateOffer(null)" );
     //Log( "local sdp(" + pc.localDescription.sdp + ")" );
 
-    Invite( pc.localDescription.sdp );
-  }
-  else
-  {
-    //console.log( "handleIceCandidate(" + event.candidate.candidate + ") sdpMid(" + event.candidate.sdpMid + ")" );
-  }
-}
-
-function setIceCandidateAnswer( event )
-{
-  if( event.candidate == null )
-  {
-    Log( "setIceCandidateAnswer(null)" );
-    //Log( "local sdp(" + pc.localDescription.sdp + ")" );
-
-    Accept( pc.localDescription.sdp );
+		if( bSendInvite )
+		{
+    	Invite( pc.localDescription.sdp );
+    }
+    else
+    {
+    	Accept( pc.localDescription.sdp );
+    }
   }
   else
   {
@@ -213,15 +177,6 @@ function setLocalOffer( sessionDescription )
   // IceCandidate 를 가져오기 전에 호출된다. IceCandidate callback 호출에서 Invite 메소드를 호출한다.
 }
 
-function setLocalAnswer( sessionDescription )
-{
-  pc.setLocalDescription( sessionDescription );
-
-  Log("createAnswer result sdp(" + sessionDescription.sdp + ") type(" + sessionDescription.type + ")" );
-
-  // IceCandidate 를 가져오기 전에 호출된다. IceCandidate callback 호출에서 Accept 메소드를 호출한다.
-}
-
 function onSignalingError( error )
 {
   Log('Failed to create signaling message : ' + error.name);
@@ -233,7 +188,7 @@ function setAnswer( strSdp )
   sd.sdp = strSdp;
   sd.type = "answer";
 
-  pc.setRemoteDescription(sd);
+  pc.setRemoteDescription( sd );
 
   Log('setAnswer remote sdp(' + strSdp + ")" );
 }
