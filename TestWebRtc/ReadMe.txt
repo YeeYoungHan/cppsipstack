@@ -20,8 +20,8 @@ TestWebRtc 프로그램
 
  TestWebRtc.exe 프로그램은 TestWebRtc 폴더의 html 폴더를 document root 로 설정하여 실행하면 됩니다.
 
- # TestHttpStack.exe C:\OpenProject\CppHttpStack\trunk\TestWebRtc\html
+ # TestHttpStack.exe {local ip} C:\OpenProject\CppSipStack\trunk\TestWebRtc\html
 
- 테스트 방법은 http://blog.naver.com/websearch/221142356741 포스트를 참고하세요.
+
 
  

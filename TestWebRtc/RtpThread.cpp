@@ -98,11 +98,6 @@ THREAD_API RtpThread( LPVOID lpParameter )
 		goto FUNC_END;
 	}
 
-	if( pclsArg->m_bStartCall == false )
-	{
-
-	}
-
 	GetIceUserPwd( pclsArg->m_strSdp.c_str(), strIceUser, strIcePwd );
 	strIceUser.append( ":lMRb" );
 
@@ -245,9 +240,9 @@ THREAD_API RtpThread( LPVOID lpParameter )
 
 							SrtpCreate( &psttSrtpTx, pszLocalKey, pszLocalSalt, false );
 							SrtpCreate( &psttSrtpRx, pszRemoteKey, pszRemoteSalt, true );
-
-							SSL_free( psttSsl );
 						}
+
+						SSL_free( psttSsl );
 					}
 
 					bDtls = true;

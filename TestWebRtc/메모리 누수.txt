@@ -8,111 +8,35 @@
 1.2. 테스트 결과
 
 Dumping objects ->
-{8566} normal block at 0x04E5DDF8, 220 bytes long.
- Data: <` X             > 60 9D 58 01 04 DE E5 04 10 00 00 00 00 00 00 00 
-{8562} normal block at 0x04E5EB60, 244 bytes long.
- Data: <T X l         5 > 54 95 58 01 6C EB E5 04 1E 00 00 00 AA 1C 35 EC 
-{8559} normal block at 0x04E5EE60, 13 bytes long.
- Data: <  X l        > F8 9D 58 01 6C EE E5 04 00 00 00 00 CD 
-{207} normal block at 0x04AB6C78, 988 bytes long.
- Data: <)               > 29 00 00 00 FF FF FF FF FF FF FF FF 00 00 00 00 
+{6521} normal block at 0x052ADDF8, 220 bytes long.
+ Data: <` U   *         > 60 AD 55 01 04 DE 2A 05 10 00 00 00 00 00 00 00 
+{6517} normal block at 0x052AEB60, 244 bytes long.
+ Data: <T U l *        ]> 54 A5 55 01 6C EB 2A 05 1E 00 00 00 D6 CB F1 5D 
+{6514} normal block at 0x052AEE60, 13 bytes long.
+ Data: <  U l *      > F8 AD 55 01 6C EE 2A 05 00 00 00 00 CD 
 Object dump complete.
 
-1. 1차 메모리 누수 테스트
+2. 2차 메모리 누수 테스트
 
-1.1. 테스트 조건
+2.1. 테스트 조건
 
  * TestWebRtc 를 실행한 후, WebRTC 기반 통화 연결하고 통화 종료한 경우
 
-1.2. 테스트 결과
+2.2. 테스트 결과
 
 Dumping objects ->
-{10633} normal block at 0x04FF56C8, 100 bytes long.
+{9851} normal block at 0x050E3088, 12 bytes long.
+ Data: < .          > B8 2E 0E 05 00 00 00 00 84 B0 00 00 
+{9850} normal block at 0x050E2EB8, 400 bytes long.
+ Data: <                > 00 00 00 00 94 0D 00 00 00 00 00 00 00 00 00 00 
+{7266} normal block at 0x050CEF18, 220 bytes long.
+ Data: <` [ $           > 60 AD 5B 01 24 EF 0C 05 10 00 00 00 00 00 00 00 
+{7262} normal block at 0x050CEDA0, 244 bytes long.
+ Data: <T [          /  > 54 A5 5B 01 AC ED 0C 05 1E 00 00 00 0A 2F 12 BA 
+{7259} normal block at 0x050CEC38, 13 bytes long.
+ Data: <  [ D        > F8 AD 5B 01 44 EC 0C 05 00 00 00 00 CD 
+{7248} normal block at 0x050CDB20, 64 bytes long.
  Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-{10632} normal block at 0x04FF5628, 100 bytes long.
- Data: <]   J N <D     (> 5D FD FC 1A 4A 91 4E 1F 3C 44 C0 9D 9F F2 FB 28 
-{10631} normal block at 0x04FF5588, 100 bytes long.
- Data: <5 T *   jz   [O > 35 F1 54 88 2A EE 96 80 6A 7A B8 05 09 5B 4F AC 
-{10626} normal block at 0x04FF5900, 100 bytes long.
- Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-{10625} normal block at 0x04FF5860, 100 bytes long.
- Data: <   d |   3   <* > 03 AA E6 64 A1 7C BF 07 86 33 9C 87 90 3C 2A F4 
-{10624} normal block at 0x04FF57C0, 100 bytes long.
- Data: <& Z  n  ;8 "h'(i> 26 83 5A FC F5 6E B6 FA 3B 38 9C 22 68 27 28 69 
-{9784} normal block at 0x04FF52B0, 100 bytes long.
- Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-{9783} normal block at 0x04FF5210, 100 bytes long.
- Data: <]   J N <D     (> 5D FD FC 1A 4A 91 4E 1F 3C 44 C0 9D 9F F2 FB 28 
-{9782} normal block at 0x04FF5170, 100 bytes long.
- Data: <5 T *   jz   [O > 35 F1 54 88 2A EE 96 80 6A 7A B8 05 09 5B 4F AC 
-{9773} normal block at 0x04FF54E8, 100 bytes long.
- Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-{9772} normal block at 0x04FF5448, 100 bytes long.
- Data: <   d |   3   <* > 03 AA E6 64 A1 7C BF 07 86 33 9C 87 90 3C 2A F4 
-{9771} normal block at 0x04FF53A8, 100 bytes long.
- Data: <& Z  n  ;8 "h'(i> 26 83 5A FC F5 6E B6 FA 3B 38 9C 22 68 27 28 69 
-{7701} normal block at 0x04FF2C58, 12 bytes long.
- Data: < *          > 88 2A FF 04 00 00 00 00 88 08 00 00 
-{7700} normal block at 0x04FF2A88, 400 bytes long.
- Data: <                > 00 00 00 00 A8 00 00 00 00 00 00 00 00 00 00 00 
-{7667} normal block at 0x04FF2FB8, 100 bytes long.
- Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-{7666} normal block at 0x04FF2F18, 100 bytes long.
- Data: <]   J N <D     (> 5D FD FC 1A 4A 91 4E 1F 3C 44 C0 9D 9F F2 FB 28 
-{7665} normal block at 0x04FF4680, 100 bytes long.
- Data: <5 T *   jz   [O > 35 F1 54 88 2A EE 96 80 6A 7A B8 05 09 5B 4F AC 
-{7660} normal block at 0x04FF2E78, 100 bytes long.
- Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-{7659} normal block at 0x04FF2DD8, 100 bytes long.
- Data: <   d |   3   <* > 03 AA E6 64 A1 7C BF 07 86 33 9C 87 90 3C 2A F4 
-{7658} normal block at 0x04FF2D38, 100 bytes long.
- Data: <& Z  n  ;8 "h'(i> 26 83 5A FC F5 6E B6 FA 3B 38 9C 22 68 27 28 69 
-{7626} normal block at 0x04FF63A0, 100 bytes long.
- Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-{7625} normal block at 0x04FF4928, 100 bytes long.
- Data: <]   J N <D     (> 5D FD FC 1A 4A 91 4E 1F 3C 44 C0 9D 9F F2 FB 28 
-{7624} normal block at 0x04FF5EF0, 100 bytes long.
- Data: <5 T *   jz   [O > 35 F1 54 88 2A EE 96 80 6A 7A B8 05 09 5B 4F AC 
-{7618} normal block at 0x04FF45E0, 100 bytes long.
- Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-{7617} normal block at 0x04FF4540, 100 bytes long.
- Data: <   d |   3   <* > 03 AA E6 64 A1 7C BF 07 86 33 9C 87 90 3C 2A F4 
-{7616} normal block at 0x04FF4790, 100 bytes long.
- Data: <& Z  n  ;8 "h'(i> 26 83 5A FC F5 6E B6 FA 3B 38 9C 22 68 27 28 69 
-{7542} normal block at 0x04FF50D0, 100 bytes long.
- Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-{7541} normal block at 0x04FF5030, 100 bytes long.
- Data: <]   J N <D     (> 5D FD FC 1A 4A 91 4E 1F 3C 44 C0 9D 9F F2 FB 28 
-{7537} normal block at 0x04FF2798, 100 bytes long.
- Data: <5 T *   jz   [O > 35 F1 54 88 2A EE 96 80 6A 7A B8 05 09 5B 4F AC 
-{7527} normal block at 0x04FF43A8, 100 bytes long.
- Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-{7524} normal block at 0x04FF4A98, 100 bytes long.
- Data: <   d |   3   <* > 03 AA E6 64 A1 7C BF 07 86 33 9C 87 90 3C 2A F4 
-{7523} normal block at 0x04FF49F8, 100 bytes long.
- Data: <& Z  n  ;8 "h'(i> 26 83 5A FC F5 6E B6 FA 3B 38 9C 22 68 27 28 69 
-{7487} normal block at 0x04FF3DF8, 100 bytes long.
- Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-{7486} normal block at 0x04FF3D58, 100 bytes long.
- Data: <]   J N <D     (> 5D FD FC 1A 4A 91 4E 1F 3C 44 C0 9D 9F F2 FB 28 
-{7484} normal block at 0x04FF3C30, 100 bytes long.
- Data: <5 T *   jz   [O > 35 F1 54 88 2A EE 96 80 6A 7A B8 05 09 5B 4F AC 
-{7470} normal block at 0x04FF34F0, 100 bytes long.
- Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-{7469} normal block at 0x04FF3450, 100 bytes long.
- Data: <   d |   3   <* > 03 AA E6 64 A1 7C BF 07 86 33 9C 87 90 3C 2A F4 
-{7465} normal block at 0x04FF3080, 100 bytes long.
- Data: <& Z  n  ;8 "h'(i> 26 83 5A FC F5 6E B6 FA 3B 38 9C 22 68 27 28 69 
-{5821} normal block at 0x04FDD9E0, 220 bytes long.
- Data: <` X             > 60 9D 58 01 EC D9 FD 04 10 00 00 00 00 00 00 00 
-{5817} normal block at 0x04FDEBA8, 244 bytes long.
- Data: <T X         7* <> 54 95 58 01 B4 EB FD 04 1E 00 00 00 37 2A 8F 3C 
-{5814} normal block at 0x04FDF490, 13 bytes long.
- Data: <  X          > F8 9D 58 01 9C F4 FD 04 00 00 00 00 CD 
-{5803} normal block at 0x04FDF030, 64 bytes long.
- Data: <X,              > 58 2C FF 04 00 00 00 00 00 00 00 00 00 00 00 00 
-{5802} normal block at 0x04FDE6A0, 96 bytes long.
- Data: <0     *   *     > 30 F0 FD 04 D0 98 2A 01 90 98 2A 01 08 00 00 00 
-{207} normal block at 0x05236C78, 988 bytes long.
- Data: <)               > 29 00 00 00 FF FF FF FF FF FF FF FF 00 00 00 00 
+{7247} normal block at 0x050CE6A0, 96 bytes long.
+ Data: <      -   -     > 20 DB 0C 05 F0 99 2D 01 B0 99 2D 01 08 00 00 00 
 Object dump complete.
