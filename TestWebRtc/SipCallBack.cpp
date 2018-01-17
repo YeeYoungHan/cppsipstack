@@ -26,7 +26,6 @@ CSipUserAgent gclsSipStack;
 CSipCallBack gclsSipCallBack;
 
 std::string gstrLocalIp;
-std::string gstrLocalIpPrefix;
 
 CSipCallBack::CSipCallBack()
 {

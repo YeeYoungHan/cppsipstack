@@ -224,10 +224,6 @@
 				RelativePath=".\HttpCallBack.h"
 				>
 			</File>
-			<File
-				RelativePath=".\HttpCallBackSip.hpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="RTP"

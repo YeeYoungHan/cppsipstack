@@ -30,8 +30,6 @@
 CHttpStack gclsHttpStack;
 CHttpCallBack	gclsHttpCallBack;
 
-#include "HttpCallBackSip.hpp"
-
 CHttpCallBack::CHttpCallBack() : m_bStop(false)
 {
 }

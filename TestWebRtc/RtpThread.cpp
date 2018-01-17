@@ -213,12 +213,13 @@ THREAD_API RtpThread( LPVOID lpParameter )
 					{
 						printf( "connect error\n" );
 					}
-					else if( (psttSsl = SSL_new(gpsttClientCtx)) == NULL )
+					else if( (psttSsl = SSL_new( gpsttClientCtx ) ) == NULL )
 					{
 						printf( "ssl_new error\n" );
 					}
 					else
 					{
+						// QQQ: 여기서 12, 400 byte 메모리 누수가 발생하는 것 같다.
 						SSL_set_fd( psttSsl, (int)pclsArg->m_hWebRtcUdp );
 						SSL_set_tlsext_use_srtp( psttSsl, "SRTP_AES128_CM_SHA1_80" );
 

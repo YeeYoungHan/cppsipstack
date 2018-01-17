@@ -42,6 +42,5 @@ extern CSipUserAgent gclsSipStack;
 extern CSipCallBack gclsSipCallBack;
 
 extern std::string gstrLocalIp;
-extern std::string gstrLocalIpPrefix;
 
 #endif

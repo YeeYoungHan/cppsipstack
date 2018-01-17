@@ -25,9 +25,9 @@
 
 int main( int argc, char * argv[] )
 {
-	if( argc != 3 )
+	if( argc < 3 )
 	{
-		printf( "[Usage] %s {local ip} {Document root path}\n", argv[0] );
+		printf( "[Usage] %s {local ip} {Document root path} {RSA key/cert pem file}\n", argv[0] );
 		return 0;
 	}
 
@@ -37,6 +37,15 @@ int main( int argc, char * argv[] )
 
 	CTcpStackSetup clsHttpSetup;
 	CSipStackSetup clsSipSetup;
+
+	const char * pszLocalIp = argv[1];
+	const char * pszDocumentRoot = argv[2];
+	const char * pszPemFile = NULL;
+
+	if( argc >= 4 )
+	{
+		pszPemFile = argv[3];
+	}
 
 #ifdef WIN32
 	CLog::SetDirectory( "c:\\temp\\http" );
@@ -57,8 +66,14 @@ int main( int argc, char * argv[] )
 	clsHttpSetup.m_iThreadMaxCount = 0;
 	clsHttpSetup.m_bUseThreadPipe = false;
 
+	if( pszPemFile )
+	{
+		clsHttpSetup.m_bUseTls = true;
+		clsHttpSetup.m_strCertFile = pszPemFile;
+	}
+
 	// HTTP 서버에서 사용할 Document root 폴더를 설정한다.
-	gclsHttpCallBack.m_strDocumentRoot = argv[2];
+	gclsHttpCallBack.m_strDocumentRoot = pszDocumentRoot;
 
 	if( CDirectory::IsDirectory( gclsHttpCallBack.m_strDocumentRoot.c_str() ) == false )
 	{
@@ -74,22 +89,10 @@ int main( int argc, char * argv[] )
 	}
 
 	// 2개 이상의 IP 주소를 가지고 있을 수 있으므로 SIP 통신에 사용할 IP 주소를 실행 인자로 받아들이고 해당 IP 주소와 동일 대역의 IP 주소만 RTP 용으로 사용한다.
-	clsSipSetup.m_strLocalIp = argv[1];
+	clsSipSetup.m_strLocalIp = pszLocalIp;
 	clsSipSetup.m_iLocalUdpPort = 5085;
 	clsSipSetup.m_iLocalTcpPort = 5085;
 	gstrLocalIp = clsSipSetup.m_strLocalIp;
-	gstrLocalIpPrefix = clsSipSetup.m_strLocalIp;
-	const char * pszLocalIp = gstrLocalIpPrefix.c_str();
-	int iLen = gstrLocalIpPrefix.length();
-
-	for( int i = iLen - 1; i >= 0; --i )
-	{
-		if( pszLocalIp[i] == '.' )
-		{
-			gstrLocalIpPrefix.erase( i+1 );
-			break;
-		}
-	}
 
 	if( gclsSipStack.Start( clsSipSetup, &gclsSipCallBack ) == false )
 	{
