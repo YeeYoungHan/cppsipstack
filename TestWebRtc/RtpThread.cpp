@@ -88,7 +88,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 	CSipCallRoute clsRoute;
 	pollfd sttPoll[2];
 	srtp_t psttSrtpTx = NULL, psttSrtpRx = NULL;
-	bool bDtls = false, bSendRtpToWebRTC = false;
+	bool bDtls = false, bSendRtpToWebRTC = false, bChrome = false;
 
 	szWebRTCIp[0] = '\0';
 	szPbxIp[0] = '\0';
@@ -100,6 +100,11 @@ THREAD_API RtpThread( LPVOID lpParameter )
 
 	GetIceUserPwd( pclsArg->m_strSdp.c_str(), strIceUser, strIcePwd );
 	strIceUser.append( ":lMRb" );
+
+	if( strstr( pclsArg->m_strSdp.c_str(), "a=ice-options:trickle" ) )
+	{
+		bChrome = true;
+	}
 
 	snprintf( szSdp, sizeof(szSdp), "v=0\r\n"
 		"o=- 4532014611503881976 0 IN IP4 %s\r\n"
@@ -114,6 +119,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 		"a=fingerprint:sha-256 %s\r\n"
 		"a=candidate:1 1 udp 2130706431 %s %d typ host\r\n"
 		"a=ssrc:100 msid:1234 1234\r\n"
+		"a=rtcp-mux\r\n"
 		, gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort, gstrLocalIp.c_str(), pclsArg->m_strIcePwd.c_str(), gclsKeyCert.m_strFingerPrint.c_str(), gstrLocalIp.c_str(), pclsArg->m_iWebRtcUdpPort );
 	gclsHttpCallBack.Send( clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, "res|invite|180|%s", szSdp );
 
@@ -222,6 +228,12 @@ THREAD_API RtpThread( LPVOID lpParameter )
 						// QQQ: 여기서 12, 400 byte 메모리 누수가 발생하는 것 같다.
 						SSL_set_fd( psttSsl, (int)pclsArg->m_hWebRtcUdp );
 						SSL_set_tlsext_use_srtp( psttSsl, "SRTP_AES128_CM_SHA1_80" );
+
+						if( bChrome == false )
+						{
+							// MS Edge 브라우저와 연동하기 위한 옵션
+							SSL_set_cipher_list( psttSsl, "ECDHE-RSA-AES256-GCM-SHA384" );
+						}
 
 						if( SSL_connect( psttSsl ) == -1 )
 						{

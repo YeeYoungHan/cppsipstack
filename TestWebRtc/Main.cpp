@@ -68,6 +68,7 @@ int main( int argc, char * argv[] )
 
 	if( pszPemFile )
 	{
+		clsHttpSetup.m_iListenPort = 443;
 		clsHttpSetup.m_bUseTls = true;
 		clsHttpSetup.m_strCertFile = pszPemFile;
 	}

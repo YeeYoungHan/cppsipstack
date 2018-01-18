@@ -40,7 +40,14 @@ function StartSession()
   
   if( ws == null )
   {
-  	ws = new WebSocket("ws://" + window.location.hostname + ":8080");
+  	if( window.location.protocol == "https:" )
+  	{
+  		ws = new WebSocket("wss://" + window.location.hostname );
+  	}
+  	else
+  	{
+  		ws = new WebSocket("ws://" + window.location.hostname + ":8080");
+  	}
   	
   	// websocket 서버에 연결되면 연결 메시지를 화면에 출력한다.
 		ws.onopen = function(e){
