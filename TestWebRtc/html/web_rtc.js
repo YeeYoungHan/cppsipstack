@@ -64,7 +64,7 @@ function InitButton()
 
 function handleLocalMedia( stream )
 {
-  if (window.URL)
+  if( window.URL )
   {
     localVideo.src = URL.createObjectURL( stream );
   }
@@ -184,7 +184,7 @@ function onSignalingError( error )
 
 function setAnswer( strSdp )
 {
-  var sd = new RTCSessionDescription();
+  var sd = new RTCSessionDescription( );
   sd.sdp = strSdp;
   sd.type = "answer";
 
