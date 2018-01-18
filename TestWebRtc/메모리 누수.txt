@@ -25,18 +25,26 @@ Object dump complete.
 2.2. 테스트 결과
 
 Dumping objects ->
-{9851} normal block at 0x050E3088, 12 bytes long.
- Data: < .          > B8 2E 0E 05 00 00 00 00 84 B0 00 00 
-{9850} normal block at 0x050E2EB8, 400 bytes long.
- Data: <                > 00 00 00 00 94 0D 00 00 00 00 00 00 00 00 00 00 
-{7266} normal block at 0x050CEF18, 220 bytes long.
- Data: <` [ $           > 60 AD 5B 01 24 EF 0C 05 10 00 00 00 00 00 00 00 
-{7262} normal block at 0x050CEDA0, 244 bytes long.
- Data: <T [          /  > 54 A5 5B 01 AC ED 0C 05 1E 00 00 00 0A 2F 12 BA 
-{7259} normal block at 0x050CEC38, 13 bytes long.
- Data: <  [ D        > F8 AD 5B 01 44 EC 0C 05 00 00 00 00 CD 
-{7248} normal block at 0x050CDB20, 64 bytes long.
- Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-{7247} normal block at 0x050CE6A0, 96 bytes long.
- Data: <      -   -     > 20 DB 0C 05 F0 99 2D 01 B0 99 2D 01 08 00 00 00 
+{12866} normal block at 0x04F6D510, 12 bytes long.
+ Data: <         t  > E0 FB F5 04 00 00 00 00 20 74 01 00 
+{12865} normal block at 0x04F5FBE0, 400 bytes long.
+ Data: <                > 00 00 00 00 A0 1C 00 00 00 00 00 00 00 00 00 00 
+{11094} normal block at 0x04F78800, 12 bytes long.
+ Data: < i          > 90 69 F7 04 10 D5 F6 04 A8 BD 01 00 
+{11093} normal block at 0x04F76990, 400 bytes long.
+ Data: <    H"          > 00 00 00 00 48 22 00 00 00 00 00 00 00 00 00 00 
+{8917} normal block at 0x04F5AA08, 12 bytes long.
+ Data: <8           > 38 A8 F5 04 00 00 00 00 04 1F 01 00 
+{8916} normal block at 0x04F5A838, 400 bytes long.
+ Data: <                > 00 00 00 00 14 16 00 00 00 00 00 00 00 00 00 00 
+{5977} normal block at 0x04F4F2B8, 220 bytes long.
+ Data: <` b             > 60 AD 62 00 C4 F2 F4 04 10 00 00 00 00 00 00 00 
+{5973} normal block at 0x04F4F0F8, 244 bytes long.
+ Data: <T b         S   > 54 A5 62 00 04 F1 F4 04 1E 00 00 00 53 1C D5 CE 
+{5970} normal block at 0x04F4F060, 13 bytes long.
+ Data: <  b l        > F8 AD 62 00 6C F0 F4 04 00 00 00 00 CD 
+{5959} normal block at 0x04F4CD20, 64 bytes long.
+ Data: <                > 00 88 F7 04 00 00 00 00 00 00 00 00 00 00 00 00 
+{5958} normal block at 0x04F4D798, 96 bytes long.
+ Data: <      4   4     > 20 CD F4 04 10 94 34 00 D0 93 34 00 08 00 00 00 
 Object dump complete.
