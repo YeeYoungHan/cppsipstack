@@ -87,6 +87,7 @@ function handleUserMediaError( error )
 function startLocal()
 {
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
   navigator.getUserMedia( { audio:true, video:false }, handleLocalMedia, handleUserMediaError );
 }
 
@@ -108,6 +109,7 @@ function createOffer( bInvite )
     // Chrome
     RTCPeerConnection = webkitRTCPeerConnection;
   }
+  /*
   else if( navigator.mozGetUserMedia )
   {
     // Firefox
@@ -115,6 +117,7 @@ function createOffer( bInvite )
     RTCSessionDescription = mozRTCSessionDescription;
     RTCIceCandidate = mozRTCIceCandidate;
   }
+  */
 
   pc = new RTCPeerConnection( pc_config, pc_constraints );
   pc.addStream( localStream );
@@ -184,9 +187,7 @@ function onSignalingError( error )
 
 function setAnswer( strSdp )
 {
-  var sd = new RTCSessionDescription( );
-  sd.sdp = strSdp;
-  sd.type = "answer";
+  var sd = new RTCSessionDescription( { sdp: strSdp, type:"answer" } );
 
   pc.setRemoteDescription( sd );
 
