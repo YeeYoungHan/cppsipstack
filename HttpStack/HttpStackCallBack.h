@@ -21,6 +21,8 @@
 
 #include "HttpMessage.h"
 
+class CHttpStackSession;
+
 /**
  * @ingroup HttpStack
  * @brief HTTP 서버 callback 인터페이스
@@ -62,9 +64,10 @@ public:
 	 * @param pszClientIp WebSocket 클라이언트 IP 주소
 	 * @param iClientPort WebSocket 클라이언트 포트 번호
 	 * @param strData			WebSocket 클라이언트가 전송한 데이터
+	 * @param pclsSession	HTTP 세션 정보
 	 * @returns WebSocket 클라이언트 연결을 유지하려면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
 	 */
-	virtual bool WebSocketData( const char * pszClientIp, int iClientPort, std::string & strData ) = 0;
+	virtual bool WebSocketData( const char * pszClientIp, int iClientPort, std::string & strData, CHttpStackSession * pclsSession ) = 0;
 };
 
 #endif

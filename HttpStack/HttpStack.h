@@ -36,7 +36,8 @@ public:
 
 	CHttpPacket				m_clsHttpPacket;
 	CWebSocketPacket	m_clsWsPacket;
-	bool m_bWebSocket;
+	bool							m_bWebSocket;
+	std::string				m_strUserAgent;
 };
 
 /**

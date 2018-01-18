@@ -201,7 +201,7 @@ bool CHttpStack::RecvPacket( char * pszPacket, int iPacketLen, CTcpSessionInfo *
 		{
 			if( clsHeader.m_iOpCode == 1 || clsHeader.m_iOpCode == 2 )
 			{
-				if( m_pclsCallBack->WebSocketData( pclsSessionInfo->m_strIp.c_str(), pclsSessionInfo->m_iPort, strData ) == false )
+				if( m_pclsCallBack->WebSocketData( pclsSessionInfo->m_strIp.c_str(), pclsSessionInfo->m_iPort, strData, pclsApp ) == false )
 				{
 					return false;
 				}
@@ -246,6 +246,12 @@ bool CHttpStack::RecvPacket( char * pszPacket, int iPacketLen, CTcpSessionInfo *
 				CHttpMessage clsSend;
 				CHttpHeader * pclsHeader;
 				bool bClose = false;
+
+				pclsHeader = pclsRecv->GetHeader( "User-Agent" );
+				if( pclsHeader && strcmp( pclsApp->m_strUserAgent.c_str(), pclsHeader->m_strValue.c_str() ) )
+				{
+					pclsApp->m_strUserAgent = pclsHeader->m_strValue;
+				}
 
 				pclsHeader = pclsRecv->GetHeader( "Upgrade" );
 				if( pclsHeader && !strcmp( pclsHeader->m_strValue.c_str(), "websocket" ) )

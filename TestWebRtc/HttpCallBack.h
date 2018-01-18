@@ -36,7 +36,7 @@ public:
 
 	virtual void WebSocketConnected( const char * pszClientIp, int iClientPort );
 	virtual void WebSocketClosed( const char * pszClientIp, int iClientPort );
-	virtual bool WebSocketData( const char * pszClientIp, int iClientPort, std::string & strData );
+	virtual bool WebSocketData( const char * pszClientIp, int iClientPort, std::string & strData, CHttpStackSession * pclsSession );
 
 	bool Send( const char * pszClientIp, int iClientPort, const char * fmt, ... );
 

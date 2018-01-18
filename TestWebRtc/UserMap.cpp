@@ -39,11 +39,12 @@ CUserMap::~CUserMap()
  * @param pszUserId				사용자 아이디
  * @param pszPassWord			SIP 서버 로그인 비밀번호
  * @param pszSipServerIp	SIP 서버 IP 주소
- * @param pszIp			WebSocket 클라이언트 IP 주소
- * @param iPort			WebSocket 클라이언트 포트 번호
+ * @param pszIp						WebSocket 클라이언트 IP 주소
+ * @param iPort						WebSocket 클라이언트 포트 번호
+ * @param pszUserAgent		HTTP User-Agent
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CUserMap::Insert( const char * pszUserId, const char * pszPassWord, const char * pszSipServerIp, const char * pszIp, int iPort )
+bool CUserMap::Insert( const char * pszUserId, const char * pszPassWord, const char * pszSipServerIp, const char * pszIp, int iPort, const char * pszUserAgent )
 {
 	bool bRes = false;
 	std::string strKey;
@@ -65,6 +66,7 @@ bool CUserMap::Insert( const char * pszUserId, const char * pszPassWord, const c
 			clsInfo.m_strSipServerIp = pszSipServerIp;
 			clsInfo.m_strIp = pszIp;
 			clsInfo.m_iPort = iPort;
+			clsInfo.m_strUserAgent = pszUserAgent;
 
 			m_clsMap.insert( USER_MAP::value_type( pszUserId, clsInfo ) );
 			m_clsKeyMap.insert( USER_KEY_MAP::value_type( strKey, pszUserId ) );

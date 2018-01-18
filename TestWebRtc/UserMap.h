@@ -39,6 +39,8 @@ public:
 	std::string m_strIp;
 	int					m_iPort;
 
+	std::string m_strUserAgent;
+
 	CRtpThreadArg * m_pclsRtpArg;
 };
 
@@ -58,7 +60,7 @@ public:
 	CUserMap();
 	~CUserMap();
 
-	bool Insert( const char * pszUserId, const char * pszPassWord, const char * pszSipServerIp, const char * pszIp, int iPort );
+	bool Insert( const char * pszUserId, const char * pszPassWord, const char * pszSipServerIp, const char * pszIp, int iPort, const char * pszUserAgent );
 	bool Update( const char * pszUserId, CRtpThreadArg * pclsRtpArg, bool bSetNull );
 	bool Delete( const char * pszUserId );
 	

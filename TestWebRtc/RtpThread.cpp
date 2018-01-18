@@ -88,7 +88,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 	CSipCallRoute clsRoute;
 	pollfd sttPoll[2];
 	srtp_t psttSrtpTx = NULL, psttSrtpRx = NULL;
-	bool bDtls = false, bSendRtpToWebRTC = false, bChrome = false;
+	bool bDtls = false, bSendRtpToWebRTC = false, bEdge = false;
 
 	szWebRTCIp[0] = '\0';
 	szPbxIp[0] = '\0';
@@ -98,13 +98,13 @@ THREAD_API RtpThread( LPVOID lpParameter )
 		goto FUNC_END;
 	}
 
+	if( strstr( clsUserInfo.m_strUserAgent.c_str(), "Edge" ) )
+	{
+		bEdge = true;
+	}
+
 	GetIceUserPwd( pclsArg->m_strSdp.c_str(), strIceUser, strIcePwd );
 	strIceUser.append( ":lMRb" );
-
-	if( strstr( pclsArg->m_strSdp.c_str(), "a=ice-options:trickle" ) )
-	{
-		bChrome = true;
-	}
 
 	snprintf( szSdp, sizeof(szSdp), "v=0\r\n"
 		"o=- 4532014611503881976 0 IN IP4 %s\r\n"
@@ -229,7 +229,7 @@ THREAD_API RtpThread( LPVOID lpParameter )
 						SSL_set_fd( psttSsl, (int)pclsArg->m_hWebRtcUdp );
 						SSL_set_tlsext_use_srtp( psttSsl, "SRTP_AES128_CM_SHA1_80" );
 
-						if( bChrome == false )
+						if( bEdge )
 						{
 							// MS Edge 브라우저와 연동하기 위한 옵션
 							SSL_set_cipher_list( psttSsl, "ECDHE-RSA-AES256-GCM-SHA384" );
