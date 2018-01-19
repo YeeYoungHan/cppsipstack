@@ -80,8 +80,8 @@ function handleLocalMedia( stream )
 
 function handleUserMediaError( error )
 {
-  Log("#### handleUserMediaError ####");
-  Log("error(" + error.name + ")");
+  Log( "#### handleUserMediaError ####" );
+  Log( "error(" + error.name + ")" );
 }
 
 function startLocal()
@@ -130,7 +130,7 @@ function createOffer( bInvite )
 
 function handleRemoteStreamAdded( event )
 {
-  Log("#### handleRemoteStreamAdded ####" );
+  Log( "#### handleRemoteStreamAdded ####" );
 
   if( window.URL )
   {
@@ -175,14 +175,14 @@ function setLocalOffer( sessionDescription )
 {
   pc.setLocalDescription( sessionDescription );
 
-  Log("createOffer result sdp(" + sessionDescription.sdp + ") type(" + sessionDescription.type + ")" );
+  Log( "createOffer result sdp(" + sessionDescription.sdp + ") type(" + sessionDescription.type + ")" );
 
   // IceCandidate 를 가져오기 전에 호출된다. IceCandidate callback 호출에서 Invite 메소드를 호출한다.
 }
 
 function onSignalingError( error )
 {
-  Log('Failed to create signaling message : ' + error.name);
+  Log( "Failed to create signaling message : " + error.name);
 }
 
 function setAnswer( strSdp )
@@ -191,5 +191,5 @@ function setAnswer( strSdp )
 
   pc.setRemoteDescription( sd );
 
-  Log('setAnswer remote sdp(' + strSdp + ")" );
+  Log( "setAnswer remote sdp(" + strSdp + ")" );
 }
