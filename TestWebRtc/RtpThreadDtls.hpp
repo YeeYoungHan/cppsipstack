@@ -112,9 +112,6 @@ void InitDtls()
 		return;
 	}
 
-	//SSL_CTX_set_cipher_list( gpsttClientCtx, "ECDHE-RSA-AES256-GCM-SHA384" );
-	//SSL_CTX_set_cipher_list( gpsttClientCtx, "ECDHE-RSA-AES128-GCM-SHA256" );
-
 	if( CreateRSA( gclsKeyCert ) == false )
 	{
 		printf( "CreateRSA error\n" );
