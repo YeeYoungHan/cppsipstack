@@ -66,7 +66,14 @@ function handleLocalMedia( stream )
 {
   if( window.URL )
   {
-    localVideo.src = URL.createObjectURL( stream );
+  	try
+  	{
+    	localVideo.src = URL.createObjectURL( stream );
+    }
+    catch( exception )
+    {
+    	localVideo.src = stream;
+    }
   }
   else
   {
@@ -134,7 +141,14 @@ function handleRemoteStreamAdded( event )
 
   if( window.URL )
   {
-    remoteVideo.src = URL.createObjectURL( event.stream );
+  	try
+  	{
+    	remoteVideo.src = URL.createObjectURL( event.stream );
+    }
+    catch( exception )
+    {
+    	remoteVideo.src = event.stream;
+    }
   }
   else
   {
