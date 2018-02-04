@@ -69,3 +69,8 @@ bool StartTcpClientThread()
 {
 	return StartThread( "TcpClientThread", TcpClientThread, NULL );
 }
+
+void TcpClient( )
+{
+	TcpClientThread( 0 );
+}

@@ -244,8 +244,6 @@ THREAD_API UdpClientThread( LPVOID lpParameter )
 
 void UdpServer( const char * pszCertFile )
 {
-	InitNetwork();
-
 	if( SSLServerStart( pszCertFile, "" ) == false )
 	{
 		printf( "SSLServerStart() error\n" );

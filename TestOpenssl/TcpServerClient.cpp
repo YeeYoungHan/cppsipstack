@@ -19,10 +19,12 @@
 #include "TestOpenssl.h"
 #include "TimeUtility.h"
 
-void TcpServer( const char * pszCertFile )
+void TcpServerClient( const char * pszCertFile )
 {
 	char szIp[51];
 	int iPort;
+
+	InitNetwork();
 
 	if( SSLServerStart( pszCertFile, "" ) == false )
 	{
@@ -39,6 +41,8 @@ void TcpServer( const char * pszCertFile )
 
 	for( int c = 0; c < giTcpServerConnectCount; ++c )
 	{
+		StartTcpClientThread();
+
 		Socket hConn = TcpAccept( hListen, szIp, sizeof(szIp), &iPort );
 		if( hConn == INVALID_SOCKET )
 		{

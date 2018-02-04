@@ -188,6 +188,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TcpServerClient.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestOpenssl.cpp"
 				>
 			</File>

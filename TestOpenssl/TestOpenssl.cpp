@@ -33,9 +33,22 @@ int main( int argc, char * argv[] )
 		return 0;
 	}
 
-	if( !strcmp( argv[2], "tcp" ) )
+	InitNetwork();
+
+	if( !strcmp( argv[2], "tcpserver" ) )
 	{
 		TcpServer( argv[1] );
+	}
+	else if( !strcmp( argv[2], "tcpclient" ) )
+	{
+		SSLServerStart( argv[1], "" );
+		TcpClient( );
+		SSLServerStop();
+		SSLFinal();
+	}
+	else if( !strcmp( argv[2], "tcp" ) )
+	{
+		TcpServerClient( argv[1] );
 	}
 	else
 	{
