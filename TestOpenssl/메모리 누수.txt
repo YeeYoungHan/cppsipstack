@@ -1,0 +1,31 @@
+openssl 메모리 누수 테스트
+
+1. TLS 클라이언트 1개 연결시
+
+Dumping objects ->
+{5613} normal block at 0x053AC058, 12 bytes long.
+ Data: <@ :     $[  > 40 BE 3A 05 00 00 00 00 24 5B 01 00 
+{5611} normal block at 0x053ABE40, 400 bytes long.
+ Data: <                > 00 00 00 00 B4 1A 00 00 00 00 00 00 00 00 00 00 
+{5590} normal block at 0x053AF980, 64 bytes long.
+ Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+{5589} normal block at 0x053AC780, 96 bytes long.
+ Data: <  :  c   b      > 80 F9 3A 05 20 63 FC 00 D0 62 FC 00 08 00 00 00 
+Object dump complete.
+
+2. TLS 클라이언트 2개 연결시
+
+Dumping objects ->
+{7485} normal block at 0x045D8EC8, 12 bytes long.
+ Data: <  ]         > E0 84 5D 04 00 00 00 00 F4 F3 00 00 
+{7484} normal block at 0x045D84E0, 400 bytes long.
+ Data: <                > 00 00 00 00 C4 12 00 00 00 00 00 00 00 00 00 00 
+{5201} normal block at 0x045AC058, 12 bytes long.
+ Data: <  Z   ]     > 88 BE 5A 04 C8 8E 5D 04 D4 83 00 00 
+{5198} normal block at 0x045ABE88, 400 bytes long.
+ Data: <    $           > 00 00 00 00 24 0A 00 00 00 00 00 00 00 00 00 00 
+{5176} normal block at 0x045AF980, 64 bytes long.
+ Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+{5175} normal block at 0x045AC780, 96 bytes long.
+ Data: <  Z  c6  b6     > 80 F9 5A 04 20 63 36 00 D0 62 36 00 08 00 00 00 
+Object dump complete.

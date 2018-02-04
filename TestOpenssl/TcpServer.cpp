@@ -17,6 +17,7 @@
  */
 
 #include "TestOpenssl.h"
+#include "TimeUtility.h"
 
 void TcpServer( const char * pszCertFile )
 {
@@ -38,44 +39,57 @@ void TcpServer( const char * pszCertFile )
 		return;
 	}
 
-	StartTcpClientThread();
-
-	Socket hConn = TcpAccept( hListen, szIp, sizeof(szIp), &iPort );
-	if( hConn == INVALID_SOCKET )
+	for( int c = 0; c < giTcpServerConnectCount; ++c )
 	{
-		printf( "TcpAccept() error\n" );
-		return;
-	}
+		StartTcpClientThread();
 
-	SSL * psttSsl;
-	char	szPacket[8192];
-	int n, iSize = 0, iCount = 0;
-
-	if( SSLAccept( hConn, &psttSsl, false, 0, 5000 ) == false )
-	{
-		printf( "SSLAccept() error\n" );
-		return;
-	}
-
-	StartTcpSendThread( psttSsl );
-
-	while( 1 )
-	{
-		n = SSLRecv( psttSsl, szPacket, sizeof(szPacket) );
-		if( n <= 0 )
+		Socket hConn = TcpAccept( hListen, szIp, sizeof(szIp), &iPort );
+		if( hConn == INVALID_SOCKET )
 		{
-			printf( "SSLRecv error\n" );
-			break;
+			printf( "TcpAccept() error\n" );
+			return;
 		}
 
-		iSize += n;
-		++iCount;
+		SSL * psttSsl;
+		char	szPacket[8192];
+		int n, iSize = 0, iCount = 0;
 
-		if( iSize >= 1000000000 )
+		if( SSLAccept( hConn, &psttSsl, false, 0, 5000 ) == false )
 		{
-			printf( "%s size(%d) count(%d)\n", __FUNCTION__, iSize, iCount );
-			iSize = 0;
-			iCount = 0;
+			printf( "SSLAccept() error\n" );
+			return;
 		}
+
+		StartTcpSendThread( psttSsl );
+
+		for( int i = 0; i < giTcpServerLoopCount; ++i )
+		{
+			n = SSLRecv( psttSsl, szPacket, sizeof(szPacket) );
+			if( n <= 0 )
+			{
+				printf( "SSLRecv error\n" );
+				break;
+			}
+
+			iSize += n;
+			++iCount;
+
+			if( iSize >= 1000000000 )
+			{
+				printf( "%s size(%d) count(%d)\n", __FUNCTION__, iSize, iCount );
+				iSize = 0;
+				iCount = 0;
+			}
+		}
+
+		SSLClose( psttSsl );
+		closesocket( hConn );
+
+		MiliSleep( 20 );
 	}
+
+	MiliSleep( 100 );
+
+	SSLServerStop();
+	SSLFinal();
 }

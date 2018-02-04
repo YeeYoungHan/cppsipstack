@@ -25,7 +25,7 @@ THREAD_API TcpSendThread( LPVOID lpParameter )
 
 	memset( szPacket, 0, sizeof(szPacket) );
 
-	while( 1 )
+	for( int i = 0; i < giTcpServerLoopCount; ++i )
 	{
 		SSLSend( psttSsl, szPacket, sizeof(szPacket) );
 	}

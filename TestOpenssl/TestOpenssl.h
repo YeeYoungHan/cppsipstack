@@ -25,6 +25,9 @@
 #include "ServerUtility.h"
 #include "TlsFunction.h"
 
+extern int giTcpServerConnectCount;
+extern int giTcpServerLoopCount;
+
 bool StartTcpClientThread();
 bool StartTcpSendThread( SSL * psttSsl );
 
