@@ -15,36 +15,3 @@ Dumping objects ->
 {6514} normal block at 0x052AEE60, 13 bytes long.
  Data: <  U l *      > F8 AD 55 01 6C EE 2A 05 00 00 00 00 CD 
 Object dump complete.
-
-2. 2차 메모리 누수 테스트
-
-2.1. 테스트 조건
-
- * TestWebRtc 를 실행한 후, WebRTC 기반 통화 연결하고 통화 종료한 경우
-
-2.2. 테스트 결과
-
-Dumping objects ->
-{12866} normal block at 0x04F6D510, 12 bytes long.
- Data: <         t  > E0 FB F5 04 00 00 00 00 20 74 01 00 
-{12865} normal block at 0x04F5FBE0, 400 bytes long.
- Data: <                > 00 00 00 00 A0 1C 00 00 00 00 00 00 00 00 00 00 
-{11094} normal block at 0x04F78800, 12 bytes long.
- Data: < i          > 90 69 F7 04 10 D5 F6 04 A8 BD 01 00 
-{11093} normal block at 0x04F76990, 400 bytes long.
- Data: <    H"          > 00 00 00 00 48 22 00 00 00 00 00 00 00 00 00 00 
-{8917} normal block at 0x04F5AA08, 12 bytes long.
- Data: <8           > 38 A8 F5 04 00 00 00 00 04 1F 01 00 
-{8916} normal block at 0x04F5A838, 400 bytes long.
- Data: <                > 00 00 00 00 14 16 00 00 00 00 00 00 00 00 00 00 
-{5977} normal block at 0x04F4F2B8, 220 bytes long.
- Data: <` b             > 60 AD 62 00 C4 F2 F4 04 10 00 00 00 00 00 00 00 
-{5973} normal block at 0x04F4F0F8, 244 bytes long.
- Data: <T b         S   > 54 A5 62 00 04 F1 F4 04 1E 00 00 00 53 1C D5 CE 
-{5970} normal block at 0x04F4F060, 13 bytes long.
- Data: <  b l        > F8 AD 62 00 6C F0 F4 04 00 00 00 00 CD 
-{5959} normal block at 0x04F4CD20, 64 bytes long.
- Data: <                > 00 88 F7 04 00 00 00 00 00 00 00 00 00 00 00 00 
-{5958} normal block at 0x04F4D798, 96 bytes long.
- Data: <      4   4     > 20 CD F4 04 10 94 34 00 D0 93 34 00 08 00 00 00 
-Object dump complete.
