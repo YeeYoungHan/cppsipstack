@@ -134,6 +134,13 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 	CLog::Print( LOG_INFO, "TcpClientThread terminated (%s:%d)", pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
 
 	delete pclsArg;
+
+#ifdef USE_TLS
+	if( pclsArg->m_pclsStack->m_clsSetup.m_bUseTls )
+	{
+		ERR_remove_thread_state( NULL );
+	}
+#endif
 	
 	return 0;
 }

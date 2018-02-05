@@ -154,5 +154,12 @@ THREAD_API TcpNoPipeThread( LPVOID lpParameter )
 
 	CLog::Print( LOG_INFO, "TcpNoPipeThread terminated (index=%d)", clsSessionInfo.m_iThreadIndex );
 
+#ifdef USE_TLS
+	if( pclsStack->m_clsSetup.m_bUseTls )
+	{
+		ERR_remove_thread_state( NULL );
+	}
+#endif
+
 	return 0;
 }

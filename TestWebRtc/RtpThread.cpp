@@ -317,6 +317,8 @@ FUNC_END:
 	gclsUserMap.Update( pclsArg->m_strUserId.c_str(), pclsArg, true );
 	delete pclsArg;
 
+	ERR_remove_thread_state( NULL );
+
 	return 0;
 }
 
