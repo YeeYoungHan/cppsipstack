@@ -29,7 +29,7 @@ int main( int argc, char * argv[] )
 
 	if( argc != 3 )
 	{
-		printf( "[Usage] %s {pem filename} {tcp|udp}\n", argv[0] );
+		printf( "[Usage] %s {pem filename} {tcpserver|tcpclient|tcp|udp}\n", argv[0] );
 		return 0;
 	}
 
@@ -37,21 +37,22 @@ int main( int argc, char * argv[] )
 
 	if( !strcmp( argv[2], "tcpserver" ) )
 	{
+		// TLS 서버를 시작한다.
 		TcpServer( argv[1] );
 	}
 	else if( !strcmp( argv[2], "tcpclient" ) )
 	{
-		SSLServerStart( argv[1], "" );
-		TcpClient( );
-		SSLServerStop();
-		SSLFinal();
+		// TLS 클라이언트를 시작한다.
+		TcpClient( argv[1] );
 	}
 	else if( !strcmp( argv[2], "tcp" ) )
 	{
+		// TLS 서버/클라이언트를 시작한다.
 		TcpServerClient( argv[1] );
 	}
 	else
 	{
+		// DTLS 서버/클라이언트를 시작한다.
 		UdpServer( argv[1] );
 	}
 

@@ -24,8 +24,6 @@ void TcpServerClient( const char * pszCertFile )
 	char szIp[51];
 	int iPort;
 
-	InitNetwork();
-
 	if( SSLServerStart( pszCertFile, "" ) == false )
 	{
 		printf( "SSLServerStart() error\n" );

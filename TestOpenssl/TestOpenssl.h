@@ -32,7 +32,7 @@ bool StartTcpClientThread();
 bool StartTcpSendThread( SSL * psttSsl );
 
 void TcpServer( const char * pszCertFile );
-void TcpClient( );
+void TcpClient( const char * pszCertFile );
 void TcpServerClient( const char * pszCertFile );
 void UdpServer( const char * pszCertFile );
 

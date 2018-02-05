@@ -70,7 +70,10 @@ bool StartTcpClientThread()
 	return StartThread( "TcpClientThread", TcpClientThread, NULL );
 }
 
-void TcpClient( )
+void TcpClient( const char * pszCertFile )
 {
+	SSLServerStart( pszCertFile, "" );
 	TcpClientThread( 0 );
+	SSLServerStop();
+	SSLFinal();
 }

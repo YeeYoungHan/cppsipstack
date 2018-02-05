@@ -166,14 +166,14 @@ bool SSLServerStart( const char * szCertFile, const char * szCaCertFile )
 		return false;
 	}
 
-	if( SSL_CTX_use_certificate_file(gpsttServerCtx, szCertFile, SSL_FILETYPE_PEM) <= 0 )
+	if( SSL_CTX_use_certificate_file( gpsttServerCtx, szCertFile, SSL_FILETYPE_PEM ) <= 0 )
 	{
 		CLog::Print( LOG_ERROR, "SSL_CTX_use_certificate_file error" );
 		SSLPrintError( );
 		return false;
 	}
 
-	if( ( n = SSL_CTX_use_PrivateKey_file(gpsttServerCtx, szCertFile, SSL_FILETYPE_PEM)) <= 0 )
+	if( ( n = SSL_CTX_use_PrivateKey_file( gpsttServerCtx, szCertFile, SSL_FILETYPE_PEM ) ) <= 0 )
 	{
 		CLog::Print( LOG_ERROR, "SSL_CTX_use_PrivateKey_file error(%d)", n );
 		return false;
@@ -262,7 +262,7 @@ bool SSLConnect( Socket iFd, SSL ** ppsttSsl )
 {
 	SSL * psttSsl;
 
-	if( (psttSsl = SSL_new(gpsttClientCtx)) == NULL )
+	if( (psttSsl = SSL_new( gpsttClientCtx )) == NULL )
 	{
 		return false;
 	}
