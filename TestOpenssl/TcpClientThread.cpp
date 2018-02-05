@@ -62,6 +62,8 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 	SSLClose( psttSsl );
 	closesocket( hSocket );
 
+	ERR_remove_thread_state( NULL );
+
 	return 0;
 }
 

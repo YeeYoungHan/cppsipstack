@@ -18,7 +18,7 @@
 
 #include "TestOpenssl.h"
 
-int giTcpServerConnectCount = 1;
+int giTcpServerConnectCount = 2;
 int giTcpServerLoopCount = 1;
 
 int main( int argc, char * argv[] )
