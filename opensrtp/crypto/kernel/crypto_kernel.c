@@ -300,17 +300,19 @@ crypto_kernel_shutdown() {
 err_status_t
 crypto_kernel_load_cipher_type(cipher_type_t *new_ct, cipher_type_id_t id) {
   kernel_cipher_type_t *ctype, *new_ctype;
-  err_status_t status;
+  //err_status_t status;
 
   /* defensive coding */
   if (new_ct == NULL)
     return err_status_bad_param;
 
   /* check cipher type by running self-test */
+	/*
   status = cipher_type_self_test(new_ct);
   if (status) {
     return status;
   }
+	*/
 
   /* walk down list, checking if this type is in the list already  */
   ctype = crypto_kernel.cipher_type_list;

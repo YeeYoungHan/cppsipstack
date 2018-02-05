@@ -1095,9 +1095,11 @@ srtp_init() {
     return status;
 
   /* load srtp debug module into the kernel */
+/*
   status = crypto_kernel_load_debug_module(&mod_srtp);
   if (status)
     return status;
+*/
 
   return err_status_ok;
 }

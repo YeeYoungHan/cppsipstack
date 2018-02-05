@@ -2,6 +2,11 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libSRTP", "srtp7.vcproj", "{7E1E1308-F82E-4DD3-B25C-CD12756A1DD9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSrtp", "TestSrtp\TestSrtp.vcproj", "{D4F21AFA-D2BB-4B91-BFD6-C561D6CF82D8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7E1E1308-F82E-4DD3-B25C-CD12756A1DD9} = {7E1E1308-F82E-4DD3-B25C-CD12756A1DD9}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -12,6 +17,10 @@ Global
 		{7E1E1308-F82E-4DD3-B25C-CD12756A1DD9}.Debug|Win32.Build.0 = Debug|Win32
 		{7E1E1308-F82E-4DD3-B25C-CD12756A1DD9}.Release|Win32.ActiveCfg = Release|Win32
 		{7E1E1308-F82E-4DD3-B25C-CD12756A1DD9}.Release|Win32.Build.0 = Release|Win32
+		{D4F21AFA-D2BB-4B91-BFD6-C561D6CF82D8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D4F21AFA-D2BB-4B91-BFD6-C561D6CF82D8}.Debug|Win32.Build.0 = Debug|Win32
+		{D4F21AFA-D2BB-4B91-BFD6-C561D6CF82D8}.Release|Win32.ActiveCfg = Release|Win32
+		{D4F21AFA-D2BB-4B91-BFD6-C561D6CF82D8}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

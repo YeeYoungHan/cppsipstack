@@ -60,6 +60,13 @@ int main( int argc, char * argv[] )
 	InitNetwork();
 	InitDtls();
 
+
+	FinalDtls();
+	SSLFinal();
+	CLog::Release();
+
+	return 0;
+
 	// HTTP 수신 포트 번호를 설정한다.
 	clsHttpSetup.m_iListenPort = 8080;
 	clsHttpSetup.m_iMaxSocketPerThread = 1;
