@@ -183,6 +183,8 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 	pclsArg->m_pclsSipStack->DecreateTcpThreadCount();
 	delete pclsArg;
 
+	ERR_remove_thread_state( NULL );
+
 	return 0;
 }
 

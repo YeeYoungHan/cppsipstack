@@ -165,6 +165,8 @@ FUNC_END:
 	pclsSipStack->ThreadEnd( iThreadId );
 	pclsSipStack->DecreateTcpThreadCount();
 
+	ERR_remove_thread_state( NULL );
+
 	return 0;
 }
 
