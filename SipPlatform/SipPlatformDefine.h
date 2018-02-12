@@ -21,6 +21,7 @@
 
 #ifdef WIN32
 #define _CRT_SECURE_NO_WARNINGS
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 // Window XP 에서 빌드할 때에는 아래의 주석을 해제하라.
 //#define WINXP
@@ -32,7 +33,12 @@
 #include <crtdbg.h>
 #endif
 
+#define VC2008_VERSION	1500
+
+#if _MSC_VER == VC2008_VERSION
 #define snprintf		_snprintf
+#endif
+
 #define strcasecmp	_stricmp
 #define sleep(x)		Sleep(x*1000)
 
@@ -44,7 +50,10 @@ typedef unsigned char uint8_t;
 typedef __int64 int64_t;
 typedef int int32_t;
 typedef __int16 int16_t;
+
+#if _MSC_VER == VC2008_VERSION
 typedef char int8_t;
+#endif
 
 #define THREAD_API	DWORD WINAPI
 #define atoll(x) _atoi64(x)
