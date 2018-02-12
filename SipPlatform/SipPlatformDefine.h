@@ -35,10 +35,6 @@
 
 #define VC2008_VERSION	1500
 
-#if _MSC_VER == VC2008_VERSION
-#define snprintf		_snprintf
-#endif
-
 #define strcasecmp	_stricmp
 #define sleep(x)		Sleep(x*1000)
 
@@ -53,10 +49,12 @@ typedef __int16 int16_t;
 
 #if _MSC_VER == VC2008_VERSION
 typedef char int8_t;
+
+#define snprintf		_snprintf
+#define atoll(x) _atoi64(x)
 #endif
 
 #define THREAD_API	DWORD WINAPI
-#define atoll(x) _atoi64(x)
 
 #else
 
