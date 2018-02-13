@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="자료구조">
+      <UniqueIdentifier>{ad77e454-cd9f-4b4b-a432-074ee64b3faf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SIP">
+      <UniqueIdentifier>{3323d890-ee9f-4959-83c9-7f0696f811e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모니터링">
+      <UniqueIdentifier>{f0c60f42-c86c-4a80-b952-161c935f41b0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SipLoadBalancer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SipServerSetup.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SipServerMap.cpp">
+      <Filter>자료구조</Filter>
+    </ClCompile>
+    <ClCompile Include="UserMap.cpp">
+      <Filter>자료구조</Filter>
+    </ClCompile>
+    <ClCompile Include="SipServer.cpp">
+      <Filter>SIP</Filter>
+    </ClCompile>
+    <ClCompile Include="Monitor.cpp">
+      <Filter>모니터링</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SipLoadBalancer.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SipLoadBalancerVersion.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SipServerSetup.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SipServerMap.h">
+      <Filter>자료구조</Filter>
+    </ClInclude>
+    <ClInclude Include="UserMap.h">
+      <Filter>자료구조</Filter>
+    </ClInclude>
+    <ClInclude Include="SipServer.h">
+      <Filter>SIP</Filter>
+    </ClInclude>
+    <ClInclude Include="Monitor.h">
+      <Filter>모니터링</Filter>
+    </ClInclude>
+    <ClInclude Include="MonitorDefine.h">
+      <Filter>모니터링</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

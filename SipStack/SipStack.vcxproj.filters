@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Transaction">
+      <UniqueIdentifier>{724f2742-08ae-4f2f-b0c1-f8a12f282cad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TransactionList">
+      <UniqueIdentifier>{bc7aa9f0-939a-4a02-b77b-3e9ab2e12dec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SipStack">
+      <UniqueIdentifier>{ef842020-17e6-40e5-b217-1b3b211f6210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="쓰레드">
+      <UniqueIdentifier>{05e0b847-c131-49d5-898d-8083da4c5225}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TCP">
+      <UniqueIdentifier>{92cfe484-9a2e-4637-8898-583f9eff480e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TLS">
+      <UniqueIdentifier>{614cc1a7-fb79-4dac-9d1d-db9ef904cd88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="모니터링">
+      <UniqueIdentifier>{e416561b-377a-468d-a0e8-2a730bffed61}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SipInviteTransaction.cpp">
+      <Filter>Transaction</Filter>
+    </ClCompile>
+    <ClCompile Include="SipNonInviteTransaction.cpp">
+      <Filter>Transaction</Filter>
+    </ClCompile>
+    <ClCompile Include="SipICTList.cpp">
+      <Filter>TransactionList</Filter>
+    </ClCompile>
+    <ClCompile Include="SipISTList.cpp">
+      <Filter>TransactionList</Filter>
+    </ClCompile>
+    <ClCompile Include="SipNICTList.cpp">
+      <Filter>TransactionList</Filter>
+    </ClCompile>
+    <ClCompile Include="SipNISTList.cpp">
+      <Filter>TransactionList</Filter>
+    </ClCompile>
+    <ClCompile Include="SipTransactionList.cpp">
+      <Filter>TransactionList</Filter>
+    </ClCompile>
+    <ClCompile Include="SipDeleteQueue.cpp">
+      <Filter>SipStack</Filter>
+    </ClCompile>
+    <ClCompile Include="SipQueue.cpp">
+      <Filter>SipStack</Filter>
+    </ClCompile>
+    <ClCompile Include="SipStack.cpp">
+      <Filter>SipStack</Filter>
+    </ClCompile>
+    <ClCompile Include="SipStackSetup.cpp">
+      <Filter>SipStack</Filter>
+    </ClCompile>
+    <ClCompile Include="SipQueueThread.cpp">
+      <Filter>쓰레드</Filter>
+    </ClCompile>
+    <ClCompile Include="SipStackThread.cpp">
+      <Filter>쓰레드</Filter>
+    </ClCompile>
+    <ClCompile Include="SipTcpClientThread.cpp">
+      <Filter>쓰레드</Filter>
+    </ClCompile>
+    <ClCompile Include="SipTcpThread.cpp">
+      <Filter>쓰레드</Filter>
+    </ClCompile>
+    <ClCompile Include="SipTlsClientThread.cpp">
+      <Filter>쓰레드</Filter>
+    </ClCompile>
+    <ClCompile Include="SipTlsThread.cpp">
+      <Filter>쓰레드</Filter>
+    </ClCompile>
+    <ClCompile Include="SipUdpThread.cpp">
+      <Filter>쓰레드</Filter>
+    </ClCompile>
+    <ClCompile Include="SipBuffer.cpp">
+      <Filter>TCP</Filter>
+    </ClCompile>
+    <ClCompile Include="SipTcpMessage.cpp">
+      <Filter>TCP</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpConnectMap.cpp">
+      <Filter>TCP</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpSessionList.cpp">
+      <Filter>TCP</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpSocketMap.cpp">
+      <Filter>TCP</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpThreadList.cpp">
+      <Filter>TCP</Filter>
+    </ClCompile>
+    <ClCompile Include="SipTlsMessage.cpp">
+      <Filter>TLS</Filter>
+    </ClCompile>
+    <ClCompile Include="TlsFunction.cpp">
+      <Filter>TLS</Filter>
+    </ClCompile>
+    <ClCompile Include="MonitorString.cpp">
+      <Filter>모니터링</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SipInviteTransaction.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="SipNonInviteTransaction.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="SipICTList.h">
+      <Filter>TransactionList</Filter>
+    </ClInclude>
+    <ClInclude Include="SipISTList.h">
+      <Filter>TransactionList</Filter>
+    </ClInclude>
+    <ClInclude Include="SipNICTList.h">
+      <Filter>TransactionList</Filter>
+    </ClInclude>
+    <ClInclude Include="SipNISTList.h">
+      <Filter>TransactionList</Filter>
+    </ClInclude>
+    <ClInclude Include="SipTransactionList.h">
+      <Filter>TransactionList</Filter>
+    </ClInclude>
+    <ClInclude Include="SipDeleteQueue.h">
+      <Filter>SipStack</Filter>
+    </ClInclude>
+    <ClInclude Include="SipQueue.h">
+      <Filter>SipStack</Filter>
+    </ClInclude>
+    <ClInclude Include="SipStack.h">
+      <Filter>SipStack</Filter>
+    </ClInclude>
+    <ClInclude Include="SipStackCallBack.h">
+      <Filter>SipStack</Filter>
+    </ClInclude>
+    <ClInclude Include="SipStackCallBack.hpp">
+      <Filter>SipStack</Filter>
+    </ClInclude>
+    <ClInclude Include="SipStackComm.hpp">
+      <Filter>SipStack</Filter>
+    </ClInclude>
+    <ClInclude Include="SipStackDefine.h">
+      <Filter>SipStack</Filter>
+    </ClInclude>
+    <ClInclude Include="SipStackSetup.h">
+      <Filter>SipStack</Filter>
+    </ClInclude>
+    <ClInclude Include="SipStackVersion.h">
+      <Filter>SipStack</Filter>
+    </ClInclude>
+    <ClInclude Include="SipStackThread.h">
+      <Filter>쓰레드</Filter>
+    </ClInclude>
+    <ClInclude Include="SipBuffer.h">
+      <Filter>TCP</Filter>
+    </ClInclude>
+    <ClInclude Include="SipTcpMessage.h">
+      <Filter>TCP</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpConnectMap.h">
+      <Filter>TCP</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpSessionList.h">
+      <Filter>TCP</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpSocketMap.h">
+      <Filter>TCP</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpThreadList.h">
+      <Filter>TCP</Filter>
+    </ClInclude>
+    <ClInclude Include="SipTlsMessage.h">
+      <Filter>TLS</Filter>
+    </ClInclude>
+    <ClInclude Include="TlsFunction.h">
+      <Filter>TLS</Filter>
+    </ClInclude>
+    <ClInclude Include="MonitorString.h">
+      <Filter>모니터링</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

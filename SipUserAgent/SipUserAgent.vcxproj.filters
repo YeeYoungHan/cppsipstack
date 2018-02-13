@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Register">
+      <UniqueIdentifier>{73bc1940-719a-43b7-89c8-df9d9d8345f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialog">
+      <UniqueIdentifier>{c9b13f43-89bc-426a-ae65-db0a01a86498}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UserAgent">
+      <UniqueIdentifier>{b6f21d35-155f-4d80-a19f-fe9da30d5a81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UserAgentSip">
+      <UniqueIdentifier>{4363c0ad-2665-4ce5-99b3-37d45da7e735}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SipRegisterThread.cpp">
+      <Filter>Register</Filter>
+    </ClCompile>
+    <ClCompile Include="SipServerInfo.cpp">
+      <Filter>Register</Filter>
+    </ClCompile>
+    <ClCompile Include="SipCdr.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="SipDialog.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="RtpDirection.cpp">
+      <Filter>UserAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="SipUserAgent.cpp">
+      <Filter>UserAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="SipUserAgentCallBack.cpp">
+      <Filter>UserAgent</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SipRegisterThread.h">
+      <Filter>Register</Filter>
+    </ClInclude>
+    <ClInclude Include="SipServerInfo.h">
+      <Filter>Register</Filter>
+    </ClInclude>
+    <ClInclude Include="SipCdr.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="SipDialog.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="RtpDirection.h">
+      <Filter>UserAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgent.h">
+      <Filter>UserAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentCall.hpp">
+      <Filter>UserAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentCallBack.h">
+      <Filter>UserAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentLogin.hpp">
+      <Filter>UserAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentMonitor.hpp">
+      <Filter>UserAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentPbx.hpp">
+      <Filter>UserAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentSipStack.hpp">
+      <Filter>UserAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentSms.hpp">
+      <Filter>UserAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentVersion.h">
+      <Filter>UserAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentBye.hpp">
+      <Filter>UserAgentSip</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentCancel.hpp">
+      <Filter>UserAgentSip</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentInvite.hpp">
+      <Filter>UserAgentSip</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentMessage.hpp">
+      <Filter>UserAgentSip</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentNotify.hpp">
+      <Filter>UserAgentSip</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentOptions.hpp">
+      <Filter>UserAgentSip</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentPrack.hpp">
+      <Filter>UserAgentSip</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentRefer.hpp">
+      <Filter>UserAgentSip</Filter>
+    </ClInclude>
+    <ClInclude Include="SipUserAgentRegister.hpp">
+      <Filter>UserAgentSip</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

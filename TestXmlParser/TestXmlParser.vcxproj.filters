@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="테스트">
+      <UniqueIdentifier>{d7b403f2-ceab-4917-8180-8df733370c27}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TestXmlParser.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TestXmlAttribute.cpp">
+      <Filter>테스트</Filter>
+    </ClCompile>
+    <ClCompile Include="TestXmlElement.cpp">
+      <Filter>테스트</Filter>
+    </ClCompile>
+    <ClCompile Include="TestXmlInsert.cpp">
+      <Filter>테스트</Filter>
+    </ClCompile>
+    <ClCompile Include="TestXmlParseToString.cpp">
+      <Filter>테스트</Filter>
+    </ClCompile>
+    <ClCompile Include="TestXmlSearch.cpp">
+      <Filter>테스트</Filter>
+    </ClCompile>
+    <ClCompile Include="TestXmlUpdate.cpp">
+      <Filter>테스트</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestXmlParser.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

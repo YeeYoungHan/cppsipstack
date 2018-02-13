@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="자료구조">
+      <UniqueIdentifier>{f4fb850a-05ed-4792-aad1-b8635c6e4634}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SIP">
+      <UniqueIdentifier>{eae87853-31f0-4100-b38d-e6d58b3b7906}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XML">
+      <UniqueIdentifier>{a1878c4e-d33b-45ee-818c-3486bc0352dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="쓰레드">
+      <UniqueIdentifier>{590fbee6-85e2-457a-a661-77f2c78720fe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="KSipServer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Monitor.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CallMap.cpp">
+      <Filter>자료구조</Filter>
+    </ClCompile>
+    <ClCompile Include="NonceMap.cpp">
+      <Filter>자료구조</Filter>
+    </ClCompile>
+    <ClCompile Include="RtpMap.cpp">
+      <Filter>자료구조</Filter>
+    </ClCompile>
+    <ClCompile Include="SipServerMap.cpp">
+      <Filter>자료구조</Filter>
+    </ClCompile>
+    <ClCompile Include="UserMap.cpp">
+      <Filter>자료구조</Filter>
+    </ClCompile>
+    <ClCompile Include="SipServer.cpp">
+      <Filter>SIP</Filter>
+    </ClCompile>
+    <ClCompile Include="SipServerSetup.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="XmlSipServer.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="XmlUser.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="RtpThread.cpp">
+      <Filter>쓰레드</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="KSipServer.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="KSipServerVersion.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Monitor.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CallMap.h">
+      <Filter>자료구조</Filter>
+    </ClInclude>
+    <ClInclude Include="NonceMap.h">
+      <Filter>자료구조</Filter>
+    </ClInclude>
+    <ClInclude Include="RtpMap.h">
+      <Filter>자료구조</Filter>
+    </ClInclude>
+    <ClInclude Include="SipServerMap.h">
+      <Filter>자료구조</Filter>
+    </ClInclude>
+    <ClInclude Include="UserMap.h">
+      <Filter>자료구조</Filter>
+    </ClInclude>
+    <ClInclude Include="SipServer.h">
+      <Filter>SIP</Filter>
+    </ClInclude>
+    <ClInclude Include="SipServerPickUp.hpp">
+      <Filter>SIP</Filter>
+    </ClInclude>
+    <ClInclude Include="SipServerRegister.hpp">
+      <Filter>SIP</Filter>
+    </ClInclude>
+    <ClInclude Include="SipServerSecurity.hpp">
+      <Filter>SIP</Filter>
+    </ClInclude>
+    <ClInclude Include="SipServerUserAgent.hpp">
+      <Filter>SIP</Filter>
+    </ClInclude>
+    <ClInclude Include="SipServerSetup.h">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="XmlSipServer.h">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="XmlUser.h">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="MonitorDefine.h">
+      <Filter>쓰레드</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
