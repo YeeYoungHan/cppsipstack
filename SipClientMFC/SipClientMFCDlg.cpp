@@ -217,6 +217,7 @@ void CSipClientMFCDlg::OnBnClickedStartCall()
 
 void CSipClientMFCDlg::OnBnClickedStopCall()
 {
+	m_clsAudioThread.Stop();
 	m_clsSipUserAgent.StopCall( m_strCallId.c_str() );
 	m_strCallId.clear();
 

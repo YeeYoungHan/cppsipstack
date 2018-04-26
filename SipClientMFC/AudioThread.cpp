@@ -67,7 +67,7 @@ CAudioThread::~CAudioThread()
 
 bool CAudioThread::Start()
 {
-	if( m_bStop == false || m_iPort > 0 )
+	if( m_iPort > 0 )
 	{
 		return false;
 	}
@@ -120,13 +120,13 @@ bool CAudioThread::Stop()
 		m_hSocket = INVALID_SOCKET;
 	}
 
-	m_iPort = 0;
-	m_bStop = false;
-
 	m_clsAudio.Close();
 
 	m_strDestIp.clear();
 	m_iDestPort = 0;
+
+	m_iPort = 0;
+	m_bStop = false;
 
 	return true;
 }
