@@ -22,6 +22,12 @@
 #include "RtpHeader.h"
 #include "G711.h"
 
+/**
+ * @ingroup SipClientMFC
+ * @brief RTP audio 수신 쓰레드
+ * @param lpParameter CAudioThread 객체의 포인터
+ * @returns 0 을 리턴한다.
+ */
 THREAD_API AudioRtpRecvThread( LPVOID lpParameter )
 {
 	CAudioThread * pclsThread = (CAudioThread *)lpParameter;
@@ -65,6 +71,11 @@ CAudioThread::~CAudioThread()
 {
 }
 
+/**
+ * @ingroup SipClientMFC
+ * @brief 오디오 디바이스를 시작하고 오디오 RTP 포트 생성 및 오디오 RTP 수신 쓰레드를 시작한다.
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CAudioThread::Start()
 {
 	if( m_iPort > 0 )
@@ -101,6 +112,11 @@ bool CAudioThread::Start()
 	return true;
 }
 
+/**
+ * @ingroup SipClientMFC
+ * @brief 오디오 RTP 수신 쓰레드를 종료하고 RTP 포트를 해제한 후, 오디오 디바이스를 중지한다.
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CAudioThread::Stop()
 {
 	if( m_bStop ) return true;
@@ -131,6 +147,12 @@ bool CAudioThread::Stop()
 	return true;
 }
 
+/**
+ * @ingroup SipClientMFC
+ * @brief RTP 패킷을 전송할 목적지 정보를 저장한다.
+ * @param pszDestIp 목적지 IP 주소
+ * @param iDestPort 목적지 포트 번호
+ */
 void CAudioThread::SetDestIpPort( const char * pszDestIp, int iDestPort )
 {
 	if( m_bStop || m_iPort == 0 ) return;
@@ -139,6 +161,12 @@ void CAudioThread::SetDestIpPort( const char * pszDestIp, int iDestPort )
 	m_iDestPort = iDestPort;
 }
 
+/**
+ * @ingroup SipClientMFC
+ * @brief PC 마이크에서 녹음된 PCM 음원을 수신 이벤트 callback
+ * @param parrPcm PCM 버퍼
+ * @param iPcmLen PCM 버퍼 크기
+ */
 void CAudioThread::EventInPcm( const int16_t * parrPcm, int iPcmLen )
 {
 	if( m_strDestIp.empty() == false && m_iDestPort > 0 )

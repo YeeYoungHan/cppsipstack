@@ -16,8 +16,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-// RTP 헤더를 저장하는 구조체
-
 #ifndef _RTP_HEADER_H_
 #define _RTP_HEADER_H_
 
@@ -36,81 +34,161 @@ typedef struct _RtpHeader_
   uint32_t	iTimeStamp;   // timestamp
   uint32_t  ssrc;					// synchronization source
 
-  inline uint8_t GetVersion() 
+  /**
+	 * @ingroup SipClientMFC
+	 * @brief RTP 버전 정보를 가져온다.
+	 * @returns RTP 버전 정보를 리턴한다.
+	 */
+	inline uint8_t GetVersion() 
 	{
 		return cFlags >> 6; 
 	}
 
-  inline void SetVersion( uint8_t cVersion )
+  /**
+	 * @ingroup SipClientMFC
+	 * @brief RTP 버전 정보를 저장한다.
+	 * @param cVersion RTP 버전 정보
+	 */
+	inline void SetVersion( uint8_t cVersion )
   {    
 		cFlags = (cVersion << 6) | (cFlags & 0x3F);
   }
 
-  inline uint8_t GetPadding() 
+  /**
+	 * @ingroup SipClientMFC
+	 * @brief Padding 을 리턴한다.
+	 * @returns Padding 을 리턴한다.
+	 */
+	inline uint8_t GetPadding() 
 	{ 
 		return (cFlags >> 5) & 0x1; 
 	}
 
-  inline void SetPadding( uint8_t cPadding ) 
+  /**
+	 * @ingroup SipClientMFC
+	 * @brief Padding 을 저장한다.
+	 * @param cPadding Padding
+	 */
+	inline void SetPadding( uint8_t cPadding ) 
   { 
 		cFlags = (cPadding << 5) | (cFlags & 0xDF);
   }
 
-  inline uint8_t GetExtension() 
+  /**
+	 * @ingroup SipClientMFC
+	 * @brief Extension 를 리턴한다.
+	 * @returns Extension 를 리턴한다.
+	 */
+	inline uint8_t GetExtension() 
 	{ 
 		return (cFlags >> 4) & 0x01;
 	}
     
+	/**
+	 * @ingroup SipClientMFC
+	 * @brief Extension 을 저장한다.
+	 * @param cExt Extension
+	 */
 	inline void SetExtension( uint8_t cExt )
   {
 		cFlags = (cExt << 4) | (cFlags & 0xEF);
   }
 
-  inline uint8_t GetCC() 
+  /**
+	 * @ingroup SipClientMFC
+	 * @brief CSRC count 를 리턴한다.
+	 * @returns CSRC count 를 리턴한다.
+	 */
+	inline uint8_t GetCC() 
 	{ 
 		return cFlags & 0x0F;
 	}
     
+	/**
+	 * @ingroup SipClientMFC
+	 * @brief CSRC count 를 저장한다.
+	 * @param cCC CSRC count
+	 */
 	inline void SetCC( uint8_t cCC )
   {
 		cFlags = cCC | (cFlags & 0xF0);
   }
 
-  inline uint8_t GetMarker() 
+  /**
+	 * @ingroup SipClientMFC
+	 * @brief Marker 를 리턴한다.
+	 * @returns Marker 를 리턴한다.
+	 */
+	inline uint8_t GetMarker() 
 	{ 
 		return cMpt >> 7; 
 	}
 
-  inline void SetMarker( uint8_t cMarker )
+  /**
+	 * @ingroup SipClientMFC
+	 * @brief Marker 를 저장한다.
+	 * @param cMarker Marker
+	 */
+	inline void SetMarker( uint8_t cMarker )
   {
 		cMpt = (cMarker << 7) | (cMpt & 0x7F);
   }
 
-  inline uint8_t GetPT() 
+  /**
+	 * @ingroup SipClientMFC
+	 * @brief Payload type 을 리턴한다.
+	 * @returns Payload type 을 리턴한다.
+	 */
+	inline uint8_t GetPT() 
 	{ 
 		return cMpt & 0x7F;
 	}
     
+	/**
+	 * @ingroup SipClientMFC
+	 * @brief Payload type 을 저장한다.
+	 * @param cPT Payload type
+	 */
 	inline void SetPT( uint8_t cPT )
   {
 		cMpt = cPT | (cMpt & 0x80);
   }
 
+	/**
+	 * @ingroup SipClientMFC
+	 * @brief Sequence number 를 리턴한다.
+	 * @returns Sequence number 를 리턴한다.
+	 */
 	inline uint16_t GetSeq( )
 	{
 		return ntohs(sSeq);
 	}
 
+	/**
+	 * @ingroup SipClientMFC
+	 * @brief Sequence number 를 저장한다.
+	 * @param sSeqIn Sequence number
+	 */
 	void SetSeq( uint16_t sSeqIn )
 	{
 		sSeq = htons(sSeqIn);
 	}
 
+	/**
+	 * @ingroup SipClientMFC
+	 * @brief Timestamp 을 리턴한다.
+	 * @returns Timestamp 을 리턴한다.
+	 */
 	inline uint32_t GetTimeStamp( )
 	{
 		return ntohl(iTimeStamp);
 	}
 
+	/**
+	 * @ingroup SipClientMFC
+	 * @brief Timestamp 을 저장한다.
+	 * @param iTime Timestamp
+	 */
 	void SetTimeStamp( uint32_t iTime )
 	{
 		iTimeStamp = htonl( iTime );

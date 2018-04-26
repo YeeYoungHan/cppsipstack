@@ -300,7 +300,7 @@ unsigned char ulaw2alaw( unsigned char uval )
 }
 
 /**
- * @ingroup RtpApi
+ * @ingroup SipClientMFC
  * @brief PCM 을 Ulaw 로 변환한다.
  * @param pszPCM		PCM 변수
  * @param iPcmLen		PCM 변수 길이 (320)
@@ -323,7 +323,7 @@ int PcmToUlaw( const char * pszPCM, int iPcmLen, char * pszUlaw, int iUlawLen )
 }
 
 /**
- * @ingroup RtpApi
+ * @ingroup SipClientMFC
  * @brief PCM 을 Alaw 로 변환한다.
  * @param pszPcm		PCM 변수
  * @param iPcmLen		PCM 변수 길이 (320)
@@ -346,7 +346,7 @@ int PcmToAlaw( const char * pszPcm, int iPcmLen, char * pszAlaw, int iAlawLen )
 }
 
 /**
- * @ingroup RtpApi
+ * @ingroup SipClientMFC
  * @brief Ulaw 를 PCM 으로 변환한다.
  * @param pszUlaw		Ulaw 변수
  * @param iUlawLen	Ulaw 변수 길이
@@ -368,7 +368,7 @@ int UlawToPcm( const char * pszUlaw, int iUlawLen, char * pszPCM, int iPcmLen )
 }
 
 /**
- * @ingroup RtpApi
+ * @ingroup SipClientMFC
  * @brief Alaw 를 PCM 으로 변환한다.
  * @param pszAlaw		Alaw 변수
  * @param iAlawLen	Alaw 변수 길이

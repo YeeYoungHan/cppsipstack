@@ -56,6 +56,12 @@ static void CALLBACK waveInProc( HWAVEIN hWaveIn, UINT uMsg, DWORD dwInstance, D
 	}
 }
 
+/**
+ * @ingroup SipClientMFC
+ * @brief 오디오 입력/출력을 시작한다.
+ * @param pclsCallBack 오디오 입력 callback 객체의 포인터
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CWinAudio::Open( IWinAudioCallBack * pclsCallBack )
 {
 	if( m_hWaveOut && m_hWaveIn ) return true;
@@ -125,6 +131,11 @@ bool CWinAudio::Open( IWinAudioCallBack * pclsCallBack )
 	return true;
 }
 
+/**
+ * @ingroup SipClientMFC
+ * @brief 오디오 입력/출력을 중지한다.
+ * @returns true 리턴한다.
+ */
 bool CWinAudio::Close( )
 {
 	if( m_hWaveOut )
@@ -143,6 +154,13 @@ bool CWinAudio::Close( )
 	return true;
 }
 
+/**
+ * @ingroup SipClientMFC
+ * @brief 오디오를 출력한다.
+ * @param parrPcm	PCM 버퍼
+ * @param iPcmLen PCM 버퍼 크기
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CWinAudio::OutPcm( const int16_t * parrPcm, int iPcmLen )
 {
 	bool bFound = false;

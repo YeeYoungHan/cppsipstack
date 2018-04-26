@@ -23,6 +23,10 @@
 
 #define PCM_OUT_BUF_COUNT	10
 
+/**
+ * @ingroup SipClientMFC
+ * @brief 오디오 입력 callback 인터페이스
+ */
 class IWinAudioCallBack
 {
 public:
@@ -31,6 +35,10 @@ public:
 	virtual void EventInPcm( const int16_t * parrPcm, int iPcmLen ) = 0;
 };
 
+/**
+ * @ingroup SipClientMFC
+ * @brief 윈도우 오디오 입력/출력 처리 클래스
+ */
 class CWinAudio
 {
 public:

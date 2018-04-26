@@ -22,6 +22,10 @@
 #include "WinAudio.h"
 #include "SipUdp.h"
 
+/**
+ * @ingroup SipClientMFC
+ * @brief RTP 오디오 전송 및 수신 쓰레드
+ */
 class CAudioThread : public IWinAudioCallBack
 {
 public:
