@@ -172,6 +172,7 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 
 void CSipClientMFCDlg::OnBnClickedStopStack()
 {
+	m_clsAudioThread.Stop();
 	m_clsSipUserAgent.Stop();
 
 	m_btnStartStack.EnableWindow( TRUE );
@@ -184,7 +185,13 @@ void CSipClientMFCDlg::OnBnClickedStartCall()
 
 	if( m_strCallNumber.GetLength() <= 0 )
 	{
-		MessageBox( "Please~ insert call number", "Info", MB_OK );
+		MessageBox( "Please~ insert call number", "Info", MB_OK | MB_ICONWARNING );
+		return;
+	}
+
+	if( m_clsAudioThread.Start() == false )
+	{
+		MessageBox( "AudioThread start error", "Error", MB_OK | MB_ICONERROR );
 		return;
 	}
 
@@ -192,7 +199,7 @@ void CSipClientMFCDlg::OnBnClickedStartCall()
 	CSipCallRoute clsRoute;
 
 	clsRtp.m_strIp = m_strLocalIp;
-	clsRtp.m_iPort = 4000;
+	clsRtp.m_iPort = m_clsAudioThread.m_iPort;
 	clsRtp.m_iCodec = 0;
 
 	clsRoute.m_strDestIp = gclsSetup.m_strSipServerIp;
@@ -220,10 +227,16 @@ void CSipClientMFCDlg::OnBnClickedStopCall()
 
 void CSipClientMFCDlg::OnBnClickedAcceptCall()
 {
+	if( m_clsAudioThread.Start() == false )
+	{
+		OnBnClickedStopCall();
+		return;
+	}
+
 	CSipCallRtp clsRtp;
 
 	clsRtp.m_strIp = m_strLocalIp;
-	clsRtp.m_iPort = 4000;	
+	clsRtp.m_iPort = m_clsAudioThread.m_iPort;	
 	clsRtp.m_iCodec = 0;
 
 	if( m_clsSipUserAgent.AcceptCall( m_strCallId.c_str(), &clsRtp ) )
@@ -317,6 +330,8 @@ void CSipClientMFCDlg::EventCallRing( const char * pszCallId, int iSipStatus, CS
  */
 void CSipClientMFCDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
+	m_clsAudioThread.SetDestIpPort( pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort );
+
 	m_btnStartCall.EnableWindow( FALSE );
 	m_btnStopCall.EnableWindow( TRUE );
 	m_btnAcceptCall.EnableWindow( FALSE );
@@ -332,12 +347,14 @@ void CSipClientMFCDlg::EventCallStart( const char * pszCallId, CSipCallRtp * pcl
  */
 void CSipClientMFCDlg::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
+	m_clsAudioThread.Stop();
+
 	m_btnStartCall.EnableWindow( TRUE );
 	m_btnStopCall.EnableWindow( FALSE );
 	m_btnAcceptCall.EnableWindow( FALSE );
 
 	m_strCallId.clear();
-
+	
 	SetLog( "%s (%d)", __FUNCTION__, iSipStatus );
 }
 
@@ -393,6 +410,7 @@ bool CSipClientMFCDlg::EventMessage( const char * pszFrom, const char * pszTo, C
 void CSipClientMFCDlg::OnDestroy()
 {
 	m_clsSipUserAgentMFC.SetWindowHandle( 0 );
+	m_clsAudioThread.Stop();
 	m_clsSipUserAgent.Stop();
 
 	__super::OnDestroy();

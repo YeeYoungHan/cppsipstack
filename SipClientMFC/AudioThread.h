@@ -20,17 +20,29 @@
 #define _AUDIO_THREAD_H_
 
 #include "WinAudio.h"
+#include "SipUdp.h"
 
-class CAudioThread
+class CAudioThread : public IWinAudioCallBack
 {
 public:
 	CAudioThread();
-	~CAudioThread();
+	virtual ~CAudioThread();
 
 	bool Start();
 	bool Stop();
 
-	int		m_iPort;
+	void SetDestIpPort( const char * pszDestIp, int iDestPort );
+
+	virtual void EventInPcm( const int16_t * parrPcm, int iPcmLen );
+
+	int			m_iPort;
+	Socket	m_hSocket;
+
+	std::string	m_strDestIp;
+	int					m_iDestPort;
+
+	uint16_t		m_sSeq;
+	uint32_t		m_iTimeStamp;
 
 	bool	m_bStop;
 	bool	m_bThreadRun;

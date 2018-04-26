@@ -17,9 +17,11 @@
  */
 
 #pragma once
+
 #include "afxwin.h"
 #include "SipUserAgent.h"
 #include "SipUserAgentMFC.h"
+#include "AudioThread.h"
 
 // CSipClientMFCDlg dialog
 class CSipClientMFCDlg : public CDialog, ISipUserAgentCallBack
@@ -41,6 +43,7 @@ protected:
 	CSipUserAgent		 m_clsSipUserAgent;
 	std::string			 m_strLocalIp;
 	std::string			 m_strCallId;
+	CAudioThread		 m_clsAudioThread;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
