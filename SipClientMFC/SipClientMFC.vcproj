@@ -449,6 +449,42 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="¿Àµð¿À"
+			>
+			<File
+				RelativePath=".\AudioThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AudioThread.h"
+				>
+			</File>
+			<File
+				RelativePath=".\G711.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\G711.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WinAudio.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WinAudio.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="RTP"
+			>
+			<File
+				RelativePath=".\RtpHeader.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

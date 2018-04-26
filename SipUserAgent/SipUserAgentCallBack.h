@@ -20,7 +20,7 @@
 #define _SIP_USER_AGENT_CALLBACK_H_
 
 // 응용으로 SDP 미디어 리스트를 전달할 때에 사용된다.
-//#define USE_MEDIA_LIST
+#define USE_MEDIA_LIST
 
 #include "SipStackDefine.h"
 #include "SipServerInfo.h"
