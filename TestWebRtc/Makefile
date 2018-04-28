@@ -10,6 +10,7 @@ INC=-I../HttpStack -I../TcpStack -I../HttpParser \
 	-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser \
 	-I../XmlParser -I../StunParser -I../SipPlatform \
 	-I../opensrtp/linux/64bit/include \
+	-I../openssl/include \
 	-I../openssl/linux/64bit/include
 LIB=-L../HttpStack -lhttpstack \
 	-L../TcpStack -ltcpstack \
