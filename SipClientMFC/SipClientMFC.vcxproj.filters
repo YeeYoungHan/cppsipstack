@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="RTP">
+      <UniqueIdentifier>{4f55c8b1-3e04-4e01-aaeb-dd167e45478c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="오디오">
+      <UniqueIdentifier>{654ab0b5-3de5-40df-ac1f-063ab369fbf7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Setup.cpp">
@@ -29,6 +35,15 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioThread.cpp">
+      <Filter>오디오</Filter>
+    </ClCompile>
+    <ClCompile Include="G711.cpp">
+      <Filter>오디오</Filter>
+    </ClCompile>
+    <ClCompile Include="WinAudio.cpp">
+      <Filter>오디오</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +67,18 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RtpHeader.h">
+      <Filter>RTP</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioThread.h">
+      <Filter>오디오</Filter>
+    </ClInclude>
+    <ClInclude Include="G711.h">
+      <Filter>오디오</Filter>
+    </ClInclude>
+    <ClInclude Include="WinAudio.h">
+      <Filter>오디오</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
