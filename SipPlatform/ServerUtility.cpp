@@ -74,7 +74,10 @@ bool Fork( bool bIsFork )
 	  if( fork() != 0 ) exit(1);
 	  
 	  // 2번째 자식 프로세스 시작 -> 작업 디렉토리를 변경한다.
-	  chdir( "/tmp" );
+	  if( chdir( "/tmp" ) == -1 )
+		{
+			CLog::Print( LOG_ERROR, "chdir(/tmp) error" );
+		}
 	}
 #endif
 
@@ -107,7 +110,10 @@ bool ChangeExecuteUser( const char * pszUserId )
 
 	if( psttPassWord->pw_dir )
 	{
-		chdir( psttPassWord->pw_dir );
+		if( chdir( psttPassWord->pw_dir ) == -1 )
+		{
+			CLog::Print( LOG_ERROR, "chdir(%s) error", psttPassWord->pw_dir );
+		}
 #ifndef __APPLE__
 		prctl(PR_SET_DUMPABLE, 1);
 #endif

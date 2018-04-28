@@ -36,9 +36,9 @@ bool TestDirectoryWin32()
 		}
 	}
 
-	uint64_t iTotalSize;
+	uint64_t iTotalSize = CDirectory::GetSize( "c:\\temp" );
 
-	iTotalSize = CDirectory::GetSize( "c:\\temp" );
+	printf( "total size = " UNSIGNED_LONG_LONG_FORMAT "\n", iTotalSize );
 
 	std::string strFileName;
 
@@ -56,6 +56,8 @@ bool TestDirectoryLinux()
 	uint64_t iTotalSize;	
 
 	iTotalSize = CDirectory::GetSize( "/tmp" );
+
+	printf( "total size = " UNSIGNED_LONG_LONG_FORMAT "\n", iTotalSize );
 
 	std::string strFileName;
 

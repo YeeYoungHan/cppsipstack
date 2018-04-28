@@ -136,7 +136,7 @@ bool CStunAttribute::SetXorMappedAddress( const char * pszIp, uint16_t sPort )
 	szValue[0] = 0;
 	szValue[1] = STUN_FAMILY_IPV4;
 
-	uint16_t sMod = ((uint16_t)CStunHeader::m_arrCookie[0] << 8 ) & 0xFF00 | ((uint16_t)CStunHeader::m_arrCookie[1] & 0x00FF );
+	uint16_t sMod = (((uint16_t)CStunHeader::m_arrCookie[0] << 8 ) & 0xFF00) | ((uint16_t)CStunHeader::m_arrCookie[1] & 0x00FF );
 	sPort ^= sMod;
 	sPort = htons( sPort );
 	memcpy( szValue + 2, &sPort, 2 );
