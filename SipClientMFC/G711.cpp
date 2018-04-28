@@ -30,6 +30,7 @@
  * u-law, A-law and linear PCM conversions.
  */
 
+#include "stdafx.h"
 #include "SipPlatformDefine.h"
 #ifdef WIN32
 #include <windows.h>
