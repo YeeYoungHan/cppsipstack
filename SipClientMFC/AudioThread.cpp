@@ -160,6 +160,10 @@ void CAudioThread::SetDestIpPort( const char * pszDestIp, int iDestPort )
 
 	m_strDestIp = pszDestIp;
 	m_iDestPort = iDestPort;
+
+#ifdef RECORD_RAW
+	m_clsAudio.Record( "c:\\temp\\out.raw", "c:\\temp\\in.raw" );
+#endif
 }
 
 /**

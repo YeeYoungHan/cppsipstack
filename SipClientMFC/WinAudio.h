@@ -20,6 +20,7 @@
 
 #include "SipPlatformDefine.h"
 #include <Mmsystem.h>
+#include <stdio.h>
 
 #define PCM_OUT_BUF_COUNT	10
 
@@ -50,6 +51,9 @@ public:
 
 	bool OutPcm( const int16_t * parrPcm, int iPcmLen );
 
+	bool Record( const char * pszOutFileName, const char * pszInFileName );
+	void WriteInFile( const int16_t * parrPcm, int iPcmLen );
+
 	IWinAudioCallBack * m_pclsCallBack;
 
 private:
@@ -60,4 +64,7 @@ private:
 
 	WAVEHDR		m_sttWaveHdrIn;
 	WAVEHDR		m_arrWaveHdrOut[PCM_OUT_BUF_COUNT];
+
+	FILE			* m_psttOutFile;
+	FILE			* m_psttInFile;
 };

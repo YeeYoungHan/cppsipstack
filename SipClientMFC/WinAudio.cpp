@@ -25,7 +25,7 @@
 
 #define SAMPLE_RATE	8000
 
-CWinAudio::CWinAudio() : m_pclsCallBack(NULL), m_hWaveIn(NULL), m_hWaveOut(NULL)
+CWinAudio::CWinAudio() : m_pclsCallBack(NULL), m_hWaveIn(NULL), m_hWaveOut(NULL), m_psttOutFile(NULL), m_psttInFile(NULL)
 {
 	memset( m_arrPcmIn, 0, sizeof(m_arrPcmIn) );
 	memset( m_arrPcmOut, 0, sizeof(m_arrPcmOut) );
@@ -33,6 +33,7 @@ CWinAudio::CWinAudio() : m_pclsCallBack(NULL), m_hWaveIn(NULL), m_hWaveOut(NULL)
 
 CWinAudio::~CWinAudio()
 {
+	Close();
 }
 
 static void CALLBACK waveInProc( HWAVEIN hWaveIn, UINT uMsg, DWORD dwInstance, DWORD dwParam1, DWORD dwParam2 )
@@ -47,6 +48,7 @@ static void CALLBACK waveInProc( HWAVEIN hWaveIn, UINT uMsg, DWORD dwInstance, D
 			if( pclsAudio && pclsAudio->m_pclsCallBack )
 			{
 				pclsAudio->m_pclsCallBack->EventInPcm( (int16_t *)psttWaveHdr->lpData, 160 );
+				pclsAudio->WriteInFile( (int16_t *)psttWaveHdr->lpData, 160 );
 			}
 
 			waveInPrepareHeader( hWaveIn, psttWaveHdr, sizeof(WAVEHDR) );
@@ -151,6 +153,18 @@ bool CWinAudio::Close( )
 		m_hWaveIn = NULL;
 	}
 
+	if( m_psttOutFile )
+	{
+		fclose( m_psttOutFile );
+		m_psttOutFile = NULL;
+	}
+
+	if( m_psttInFile )
+	{
+		fclose( m_psttInFile );
+		m_psttInFile = NULL;
+	}
+
 	return true;
 }
 
@@ -179,8 +193,54 @@ bool CWinAudio::OutPcm( const int16_t * parrPcm, int iPcmLen )
 
 	if( bFound == false )
 	{
-		printf( "no done\n" );
+		//printf( "no done\n" );
+		return false;
+	}
+	
+	if( m_psttOutFile )
+	{
+		fwrite( parrPcm, sizeof(int16_t), iPcmLen, m_psttOutFile );
 	}
 
 	return true;
+}
+
+/**
+ * @ingroup SipClientMFC
+ * @brief 스피커 출력 및 마이크 입력 PCM 음원을 raw 파일로 저장한다.
+ * @param pszOutFileName	스피커 출력 PCM 음원 저장용 raw 파일 full path
+ * @param pszInFileName		마이크 입력 PCM 음원 저장용 raw 파일 full path
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CWinAudio::Record( const char * pszOutFileName, const char * pszInFileName )
+{
+	m_psttOutFile = fopen( pszOutFileName, "wb" );
+	if( m_psttOutFile == NULL )
+	{
+		return false;
+	}
+	
+	m_psttInFile = fopen( pszInFileName, "wb" );
+	if( m_psttInFile == NULL )
+	{
+		fclose( m_psttOutFile );
+		m_psttOutFile = NULL;
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * @ingroup SipClientMFC
+ * @brief 마이크 입력 PCM 음원을 raw 파일에 저장한다.
+ * @param parrPcm 입력 PCM 음원
+ * @param iPcmLen 입력 PCM 음원 길이
+ */
+void CWinAudio::WriteInFile( const int16_t * parrPcm, int iPcmLen )
+{
+	if( m_psttInFile )
+	{
+		fwrite( parrPcm, sizeof(int16_t), iPcmLen, m_psttInFile );
+	}
 }
