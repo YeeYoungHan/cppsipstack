@@ -18,6 +18,7 @@
 
 #include "SipClient.h"
 #include "Log.h"
+#include "SipUtility.h"
 #include "MemoryDebug.h"
 
 extern std::string	gstrInviteId;
@@ -179,6 +180,49 @@ int main( int argc, char * argv[] )
 			clsUserAgent.m_clsSipStack.GetString( strBuf );
 
 			printf( "%s", strBuf.GetString() );
+		}
+		else if( szCommand[0] == 't' )
+		{
+			// OPTION 메시지 전송 예제
+			CSipMessage * pclsMessage = new CSipMessage();
+			if( pclsMessage )
+			{
+				char	szTag[SIP_TAG_MAX_SIZE], szCallIdName[SIP_CALL_ID_NAME_MAX_SIZE];
+				std::string strCallId;
+
+				SipMakeTag( szTag, sizeof(szTag) );
+				SipMakeCallIdName( szCallIdName, sizeof(szCallIdName) );
+
+				// Call-ID 를 저장한다.
+				strCallId = szCallIdName;
+				strCallId.append( "@" );
+				strCallId.append( clsUserAgent.m_clsSipStack.m_clsSetup.m_strLocalIp );
+
+				pclsMessage->m_clsCallId.Parse( strCallId.c_str(), (int)strCallId.length() );
+
+				pclsMessage->m_eTransport = E_SIP_UDP;
+
+				// SIP method 를 저장한다.
+				pclsMessage->m_strSipMethod = SIP_METHOD_OPTIONS;
+
+				// Request Uri 를 저장한다.
+				pclsMessage->m_clsReqUri.Set( SIP_PROTOCOL, "1000", "192.168.0.1", 5060 );
+
+				// CSeq 를 저장한다.
+				pclsMessage->m_clsCSeq.Set( 1, SIP_METHOD_OPTIONS );
+
+				// From 헤더를 저장한다.
+				pclsMessage->m_clsFrom.m_clsUri.Set( SIP_PROTOCOL, "2000", "192.168.0.200", 5060 );
+				pclsMessage->m_clsFrom.InsertParam( SIP_TAG, szTag );
+
+				// To 헤더를 저장한다.
+				pclsMessage->m_clsTo.m_clsUri.Set( SIP_PROTOCOL, "1000", "192.168.0.1", 5060 );
+
+				// SIP 메시지를 전송할 대상 IP 주소와 포트 번호 및 프로토콜을 저장한다.
+				pclsMessage->AddRoute( "192.168.0.1", 5060, E_SIP_UDP );
+
+				clsUserAgent.m_clsSipStack.SendSipMessage( pclsMessage );
+			}
 		}
 	
 		memset( szCommand, 0, sizeof(szCommand) );
