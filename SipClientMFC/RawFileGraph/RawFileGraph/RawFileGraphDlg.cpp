@@ -70,6 +70,7 @@ CRawFileGraphDlg::CRawFileGraphDlg(CWnd* pParent /*=NULL*/)
 void CRawFileGraphDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_RAW_FILE_GRAPH, m_clsGraph);
 }
 
 BEGIN_MESSAGE_MAP(CRawFileGraphDlg, CDialog)
@@ -111,7 +112,8 @@ BOOL CRawFileGraphDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	// TODO: Add extra initialization here
+	m_clsGraph.AddFile( "c:\\temp\\in.raw", RGB( 255, 0, 0 ) );
+	m_clsGraph.AddFile( "c:\\temp\\out.raw", RGB( 0, 0, 255 ) );
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }

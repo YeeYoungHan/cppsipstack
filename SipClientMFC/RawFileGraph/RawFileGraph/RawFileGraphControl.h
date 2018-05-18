@@ -18,7 +18,23 @@
 
 #pragma once
 
+#include <list>
+
 #define RAW_FILE_GRAPH_CONTROL_CLASSNAME _T("RawFileGraphControl")
+
+class CRawFile
+{
+public:
+	CRawFile() : m_pData(NULL), m_iDataCount(0), m_sMax(0)
+	{}
+
+	COLORREF		m_dwColor;
+	short				* m_pData;
+	int					m_iDataCount;
+	short				m_sMax;
+};
+
+typedef std::list< CRawFile > RAW_FILE_LIST;
 
 class CRawFileGraphControl : public CWnd
 {
@@ -30,8 +46,19 @@ public:
 
 	static BOOL RegisterWindowClass();
 
+	bool AddFile( const char * pszFileName, COLORREF dwColor );
+	void SetMaxAndScroll();
+
+private:
+	RAW_FILE_LIST	m_clsList;
+	short					m_sMax;
+	int						m_iStartPos, m_iEndPos;
+
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnPaint();
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 };
 
 

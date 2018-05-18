@@ -17,6 +17,7 @@
  */
 
 #pragma once
+#include "rawfilegraphcontrol.h"
 
 
 // CRawFileGraphDlg dialog
@@ -43,4 +44,6 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	CRawFileGraphControl m_clsGraph;
 };
