@@ -30,6 +30,14 @@ CRawFileGraphControl::CRawFileGraphControl() : m_sMax(0), m_iStartPos(0), m_iEnd
 
 CRawFileGraphControl::~CRawFileGraphControl()
 {
+	RAW_FILE_LIST::iterator itRF;
+
+	for( itRF = m_clsList.begin(); itRF != m_clsList.end(); ++itRF )
+	{
+		itRF->m_iDataCount = 0;
+		free( itRF->m_pData );
+		itRF->m_pData = NULL;
+	}
 }
 
 BOOL CRawFileGraphControl::RegisterWindowClass()

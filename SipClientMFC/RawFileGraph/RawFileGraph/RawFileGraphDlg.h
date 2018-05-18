@@ -37,6 +37,8 @@ public:
 // Implementation
 protected:
 	HICON m_hIcon;
+	int		m_iMinWidth, m_iMinHeight;
+	RECT	m_sttGraphMargin;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
@@ -46,4 +48,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CRawFileGraphControl m_clsGraph;
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
+protected:
+	virtual void OnOK();
 };

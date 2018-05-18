@@ -78,6 +78,8 @@ BEGIN_MESSAGE_MAP(CRawFileGraphDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
+	ON_WM_SIZE()
+	ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
 
@@ -111,6 +113,20 @@ BOOL CRawFileGraphDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
+
+	RECT sttRect, sttGraphRect;
+
+	GetWindowRect( &sttRect );
+
+	m_iMinWidth = sttRect.right - sttRect.left;
+	m_iMinHeight = sttRect.bottom - sttRect.top;
+
+	m_clsGraph.GetWindowRect( &sttGraphRect );
+
+	m_sttGraphMargin.left = sttGraphRect.left - sttRect.left;
+	m_sttGraphMargin.top = sttGraphRect.top - sttRect.top;
+	m_sttGraphMargin.bottom = sttRect.bottom - sttGraphRect.bottom;
+	m_sttGraphMargin.right = sttRect.right - sttGraphRect.right;
 
 	m_clsGraph.AddFile( "c:\\temp\\in.raw", RGB( 255, 0, 0 ) );
 	m_clsGraph.AddFile( "c:\\temp\\out.raw", RGB( 0, 0, 255 ) );
@@ -167,3 +183,27 @@ HCURSOR CRawFileGraphDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+void CRawFileGraphDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialog::OnSize(nType, cx, cy);
+
+	if( m_clsGraph.GetSafeHwnd() )
+	{
+		m_clsGraph.SetWindowPos( NULL, m_sttGraphMargin.left, m_sttGraphMargin.top, cx - m_sttGraphMargin.left - m_sttGraphMargin.right, cy - m_sttGraphMargin.top - m_sttGraphMargin.bottom, SWP_NOZORDER );
+		m_clsGraph.SetMaxAndScroll();
+	}
+}
+
+
+void CRawFileGraphDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+{
+	lpMMI->ptMinTrackSize.x = m_iMinWidth;
+	lpMMI->ptMinTrackSize.y = m_iMinHeight;
+
+	CDialog::OnGetMinMaxInfo(lpMMI);
+}
+
+void CRawFileGraphDlg::OnOK()
+{
+}
