@@ -188,17 +188,13 @@ int main( int argc, char * argv[] )
 			if( pclsMessage )
 			{
 				char	szTag[SIP_TAG_MAX_SIZE], szCallIdName[SIP_CALL_ID_NAME_MAX_SIZE];
-				std::string strCallId;
 
 				SipMakeTag( szTag, sizeof(szTag) );
 				SipMakeCallIdName( szCallIdName, sizeof(szCallIdName) );
 
 				// Call-ID 를 저장한다.
-				strCallId = szCallIdName;
-				strCallId.append( "@" );
-				strCallId.append( clsUserAgent.m_clsSipStack.m_clsSetup.m_strLocalIp );
-
-				pclsMessage->m_clsCallId.Parse( strCallId.c_str(), (int)strCallId.length() );
+				pclsMessage->m_clsCallId.m_strName = szCallIdName;
+				pclsMessage->m_clsCallId.m_strHost = clsUserAgent.m_clsSipStack.m_clsSetup.m_strLocalIp;
 
 				pclsMessage->m_eTransport = E_SIP_UDP;
 
