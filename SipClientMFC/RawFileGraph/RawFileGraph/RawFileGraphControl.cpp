@@ -162,7 +162,15 @@ void CRawFileGraphControl::SetMaxAndScroll()
 	if( iRange > 0 )
 	{
 		ShowScrollBar( SB_HORZ, TRUE );
+
+		int iMin, iMax, iPos;
+
+		GetScrollRange( SB_HORZ, &iMin, &iMax );
+		iPos = GetScrollPos( SB_HORZ );
+
 		SetScrollRange( SB_HORZ, 0, iRange );
+		iPos = ( iPos * iRange ) / iMax;
+		SetScrollPos( SB_HORZ, iPos );
 	}
 	else
 	{
