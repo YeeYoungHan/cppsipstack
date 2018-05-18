@@ -159,11 +159,6 @@ void CRawFileGraphControl::SetMaxAndScroll()
 
 	int iRange = iCount / sttRect.right;
 
-	if( iCount % sttRect.right > 0 )
-	{
-		++iRange;
-	}
-
 	if( iRange > 0 )
 	{
 		ShowScrollBar( SB_HORZ, TRUE );
@@ -183,6 +178,7 @@ void CRawFileGraphControl::SetMaxAndScroll()
 BEGIN_MESSAGE_MAP(CRawFileGraphControl, CWnd)
 	ON_WM_PAINT()
 	ON_WM_HSCROLL()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 void CRawFileGraphControl::OnPaint()
@@ -271,4 +267,17 @@ void CRawFileGraphControl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrol
 	Invalidate();
 
 	CWnd::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+void CRawFileGraphControl::OnSize(UINT nType, int cx, int cy)
+{
+	CWnd::OnSize(nType, cx, cy);
+
+	RECT sttRect;
+
+	GetClientRect( &sttRect );
+
+	m_iEndPos = m_iStartPos + sttRect.right;
+
+	Invalidate();
 }

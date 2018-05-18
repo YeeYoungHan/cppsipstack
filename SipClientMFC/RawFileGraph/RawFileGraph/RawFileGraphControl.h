@@ -59,6 +59,7 @@ protected:
 public:
 	afx_msg void OnPaint();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 
