@@ -123,10 +123,14 @@ BOOL CRawFileGraphDlg::OnInitDialog()
 
 	m_clsGraph.GetWindowRect( &sttGraphRect );
 
-	m_sttGraphMargin.left = sttGraphRect.left - sttRect.left;
-	m_sttGraphMargin.top = sttGraphRect.top - sttRect.top;
-	m_sttGraphMargin.bottom = sttRect.bottom - sttGraphRect.bottom;
-	m_sttGraphMargin.right = sttRect.right - sttGraphRect.right;
+	int iFrame = GetSystemMetrics(SM_CYFRAME);
+	int iCaption = GetSystemMetrics(SM_CYCAPTION);
+	int iTitleHeight = iFrame + iCaption;
+
+	m_sttGraphMargin.left = sttGraphRect.left - sttRect.left - iFrame;
+	m_sttGraphMargin.top = sttGraphRect.top - sttRect.top - iTitleHeight;
+	m_sttGraphMargin.bottom = sttRect.bottom - sttGraphRect.bottom - iFrame;
+	m_sttGraphMargin.right = sttRect.right - sttGraphRect.right - iFrame;
 
 	m_clsGraph.AddFile( "c:\\temp\\in.raw", RGB( 255, 0, 0 ) );
 	m_clsGraph.AddFile( "c:\\temp\\out.raw", RGB( 0, 0, 255 ) );
@@ -190,7 +194,8 @@ void CRawFileGraphDlg::OnSize(UINT nType, int cx, int cy)
 
 	if( m_clsGraph.GetSafeHwnd() )
 	{
-		m_clsGraph.SetWindowPos( NULL, m_sttGraphMargin.left, m_sttGraphMargin.top, cx - m_sttGraphMargin.left - m_sttGraphMargin.right, cy - m_sttGraphMargin.top - m_sttGraphMargin.bottom, SWP_NOZORDER );
+		m_clsGraph.SetWindowPos( NULL, m_sttGraphMargin.left, m_sttGraphMargin.top
+			, cx - m_sttGraphMargin.left - m_sttGraphMargin.right, cy - m_sttGraphMargin.top - m_sttGraphMargin.bottom, SWP_NOZORDER );
 		m_clsGraph.SetMaxAndScroll();
 	}
 }
