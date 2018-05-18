@@ -196,9 +196,14 @@ void CRawFileGraphControl::OnPaint()
 	GetClientRect( &sttRect );
 
 	RAW_FILE_LIST::iterator itRF;
+	CPen clsLinePen( PS_DOT, 1, RGB(0,0,0) );
 
 	iCenter = sttRect.bottom / 2;
 
+	dc.FillSolidRect( &sttRect, RGB(255,255,255) );
+
+	CPen * pclsPen = dc.SelectObject( &clsLinePen );
+	
 	dc.MoveTo( 0, iCenter );
 	dc.LineTo( sttRect.right, iCenter );
 
@@ -208,7 +213,7 @@ void CRawFileGraphControl::OnPaint()
 	{
 		CPen clsPen( PS_SOLID, 1, itRF->m_dwColor );
 
-		CPen * pclsPen = dc.SelectObject( &clsPen );
+		dc.SelectObject( &clsPen );
 		dc.MoveTo( 0, sttRect.bottom / 2 );
 
 		iX = 0;
@@ -224,12 +229,35 @@ void CRawFileGraphControl::OnPaint()
 				dc.LineTo( iX, iY );
 			}
 
+			if( i % 160 == 0 )
+			{
+				CString strText;
+
+				if( i >= 1000 )
+				{
+					int iHigh = i / 1000;
+					int iLow = i % 1000;
+
+					strText.Format( "%d,%03d ms", iHigh, iLow );
+				}
+				else
+				{
+					strText.Format( "%d ms", i );
+				}
+
+				dc.SelectObject( &clsLinePen );
+				dc.MoveTo( iX, 0 );
+				dc.LineTo( iX, sttRect.bottom );
+				dc.TextOut( iX + 4, sttRect.bottom - 20, strText );
+				dc.SelectObject( &clsPen );
+			}
+
 			dc.MoveTo( iX, iY );
 			++iX;
 		}
-
-		dc.SelectObject( pclsPen );
 	}
+
+	dc.SelectObject( pclsPen );
 }
 
 void CRawFileGraphControl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
