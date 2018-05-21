@@ -28,6 +28,7 @@ bool TestSipMutex();
 bool TestDirectory();
 bool TestStringSort();
 bool TestServerUtility();
+void TestThreadCount();
 bool TestLog();
 bool TestLogMacro();
 bool TestStringUtility();

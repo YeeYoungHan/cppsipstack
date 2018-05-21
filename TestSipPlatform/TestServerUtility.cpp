@@ -51,3 +51,35 @@ bool TestServerUtility()
 
 	return true;
 }
+
+static bool gbEnd = false;
+
+THREAD_API _TestThreadCount( LPVOID lpParameter )
+{
+	while( gbEnd == false )
+	{
+		sleep(1);
+	}
+
+	return 0;
+}
+
+void TestThreadCount()
+{
+	int iCount = 0;
+
+	while( 1 )
+	{
+		if( StartThread( "_TestThreadCount", _TestThreadCount, NULL ) == false )
+		{
+			break;
+		}
+
+		++iCount;
+		printf( "%d\n", iCount );
+	}
+
+	gbEnd = true;
+
+	sleep(3);
+}	

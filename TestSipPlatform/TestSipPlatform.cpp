@@ -46,6 +46,11 @@ int main( int argc, char * argv[] )
 			TestFileUtility();
 			return 0;
 		}
+		else if( !strcmp( argv[1], "-t" ) )
+		{
+			TestThreadCount();
+			return 0;
+		}
 	}
 
 	bool bRes = false;
