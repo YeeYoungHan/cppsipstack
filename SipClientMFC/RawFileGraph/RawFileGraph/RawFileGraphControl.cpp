@@ -240,17 +240,18 @@ void CRawFileGraphControl::OnPaint()
 			if( i % 160 == 0 )
 			{
 				CString strText;
+				int iMs = i / 160 * 20;
 
-				if( i >= 1000 )
+				if( iMs >= 1000 )
 				{
-					int iHigh = i / 1000;
-					int iLow = i % 1000;
+					int iHigh = iMs / 1000;
+					int iLow = iMs % 1000;
 
 					strText.Format( "%d,%03d ms", iHigh, iLow );
 				}
 				else
 				{
-					strText.Format( "%d ms", i );
+					strText.Format( "%d ms", iMs );
 				}
 
 				dc.SelectObject( &clsLinePen );
