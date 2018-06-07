@@ -85,6 +85,9 @@ int main( int argc, char * argv[] )
 	clsServerInfo.m_iPort = iServerPort;
 	//clsServerInfo.m_iNatTimeout = 10;
 
+	// Expires 헤더에 300 을 입력하고 싶으면 아래와 같이 설정하면 된다.
+	// clsServerInfo.m_iLoginTimeout = 300;
+
 	// N개의 IP주소를 사용하는 호스트에서는 SIP 프로토콜로 사용할 IP주소를 직접 입력해 주세요.
 	// Vmware 등을 사용하는 경우 N개의 IP주소가 호스트에 존재합니다.
 	GetLocalIp( clsSetup.m_strLocalIp );
