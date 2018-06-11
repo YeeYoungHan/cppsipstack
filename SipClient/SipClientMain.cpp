@@ -41,6 +41,7 @@ int main( int argc, char * argv[] )
 	char * pszServerIp = argv[1];
 	char * pszUserId = argv[2];
 	char * pszPassWord = argv[3];
+	char * pszDomain = NULL;
 	int iLocalPort = 10000;
 	ESipTransport eTransport = E_SIP_UDP;
 	int iServerPort = SIP_UDP_PORT;
@@ -67,6 +68,11 @@ int main( int argc, char * argv[] )
 		}
 	}
 
+	if( argc >= 7 )
+	{
+		pszDomain = argv[6];
+	}
+
 #ifdef WIN32
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF );
 	CLog::SetDirectory( "c:\\temp\\sipclient" );
@@ -83,7 +89,17 @@ int main( int argc, char * argv[] )
 	clsServerInfo.m_strPassWord = pszPassWord;
 	clsServerInfo.m_eTransport = eTransport;
 	clsServerInfo.m_iPort = iServerPort;
+	clsServerInfo.m_iLoginTimeout = 600;
 	//clsServerInfo.m_iNatTimeout = 10;
+
+	if( pszDomain )
+	{
+		clsServerInfo.m_strDomain = pszDomain;
+	}
+
+	// 삼성 070 서비스 로그인시 User-Agent 헤더에 특수한 문자열이 포함되지 않으면 480 응답이 수신된다.
+	// 아래와 같이 Acrobits 으로 User-Agent 헤더가 시작하면 정상적으로 401 응답을 수신한다.
+	//clsSetup.m_strUserAgent = "Acrobits";
 
 	// Expires 헤더에 300 을 입력하고 싶으면 아래와 같이 설정하면 된다.
 	// clsServerInfo.m_iLoginTimeout = 300;
