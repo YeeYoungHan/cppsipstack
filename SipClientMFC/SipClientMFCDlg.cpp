@@ -310,6 +310,8 @@ void CSipClientMFCDlg::EventIncomingCall( const char * pszCallId, const char * p
 
 	m_strCallId = pszCallId;
 
+	m_clsAudioThread.SetDestIpPort( pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort );
+
 	SetLog( "%s (%s)", __FUNCTION__, pszFrom );
 }
 

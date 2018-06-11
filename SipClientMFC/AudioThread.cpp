@@ -156,8 +156,6 @@ bool CAudioThread::Stop()
  */
 void CAudioThread::SetDestIpPort( const char * pszDestIp, int iDestPort )
 {
-	if( m_bStop || m_iPort == 0 ) return;
-
 	m_strDestIp = pszDestIp;
 	m_iDestPort = iDestPort;
 
