@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser;../SipPlatform;../openssl/window/32bit/include"
+				AdditionalIncludeDirectories="../SipParser;../SipStack;../SdpParser;../SipPlatform;../openssl/include;../openssl/window/32bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
