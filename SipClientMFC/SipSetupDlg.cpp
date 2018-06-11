@@ -32,6 +32,7 @@ CSipSetupDlg::CSipSetupDlg(CWnd* pParent /*=NULL*/)
 	, m_strSipDomain(_T(""))
 	, m_strUserId(_T(""))
 	, m_strPassWord(_T(""))
+	, m_strUserAgent(_T(""))
 {
 
 }
@@ -48,6 +49,7 @@ void CSipSetupDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_SIP_DOMAIN, m_strSipDomain);
 	DDX_Text(pDX, IDC_USER_ID, m_strUserId);
 	DDX_Text(pDX, IDC_PASSWORD, m_strPassWord);
+	DDX_Text(pDX, IDC_SIP_DOMAIN2, m_strUserAgent);
 }
 
 
@@ -64,6 +66,7 @@ BOOL CSipSetupDlg::OnInitDialog()
 	m_strSipDomain = gclsSetup.m_strSipDomain.c_str();
 	m_strUserId = gclsSetup.m_strUserId.c_str();
 	m_strPassWord = gclsSetup.m_strPassWord.c_str();
+	m_strUserAgent = gclsSetup.m_strUserAgent.c_str();
 
 	UpdateData(FALSE);
 
@@ -105,6 +108,7 @@ void CSipSetupDlg::OnBnClickedOk()
 	gclsSetup.m_strSipDomain = m_strSipDomain;
 	gclsSetup.m_strUserId = m_strUserId;
 	gclsSetup.m_strPassWord = m_strPassWord;
+	gclsSetup.m_strUserAgent = m_strUserAgent;
 
 	gclsSetup.Put();
 

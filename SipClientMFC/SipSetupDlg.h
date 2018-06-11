@@ -43,4 +43,5 @@ public:
 	CString m_strSipDomain;
 	CString m_strUserId;
 	CString m_strPassWord;
+	CString m_strUserAgent;
 };

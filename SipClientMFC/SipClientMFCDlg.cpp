@@ -147,6 +147,8 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 
 	m_clsSipUserAgent.InsertRegisterInfo( clsInfo );
 
+	clsSetup.m_strUserAgent = gclsSetup.m_strUserAgent;
+
 	bool bSuccess = false;
 
 	for( int i = 0; i < 100; ++i )

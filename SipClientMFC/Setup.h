@@ -28,6 +28,7 @@
 #define ST_SIP_DOMAIN				"sip_domain"
 #define ST_USER_ID					"user_id"
 #define ST_PASSWORD					"password"
+#define ST_USERAGENT				"user_agent"
 
 typedef std::map< std::string, std::string > SETUP_MAP;
 
@@ -50,6 +51,7 @@ public:
 	std::string m_strSipDomain;
 	std::string m_strUserId;
 	std::string m_strPassWord;
+	std::string m_strUserAgent;
 
 private:
 	bool GetFile();

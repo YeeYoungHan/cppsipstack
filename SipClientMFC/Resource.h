@@ -16,6 +16,7 @@
 #define IDC_EDIT1                       1005
 #define IDC_CALL_NUMBER                 1005
 #define IDC_START_CALL                  1006
+#define IDC_SIP_DOMAIN2                 1006
 #define IDC_STOP_CALL                   1007
 #define IDC_ACCEPT_CALL                 1008
 #define IDC_START_STACK                 1009
