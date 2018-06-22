@@ -7,7 +7,7 @@
 include ../Makefile.mk
 
 INC=-I../SipPlatform
-LIB=-L../SipPlatform -lsipplatform
+LIB=-L../SipPlatform -lsipplatform -lpthread
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
