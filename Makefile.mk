@@ -6,6 +6,10 @@
 
 CC=g++
 CFLAGS=-Wall -O2 -D_REENTRANT -g #-pg
+
+# 32bit or 64bit OS
+SYSTEM_BIT=$(shell getconf LONG_BIT)
+
 OPENSSL_INC=
 OPENSSL_LIB=
 

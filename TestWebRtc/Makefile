@@ -9,9 +9,10 @@ include ../Makefile.mk
 INC=-I../HttpStack -I../TcpStack -I../HttpParser \
 	-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser \
 	-I../XmlParser -I../StunParser -I../SipPlatform \
-	-I../opensrtp/linux/64bit/include \
+	-I../opensrtp/lib/linux/$(SYSTEM_BIT)bit/include \
+	-I../opensrtp/lib/include \
 	-I../openssl/include \
-	-I../openssl/linux/64bit/include
+	-I../openssl/linux/$(SYSTEM_BIT)bit/include
 LIB=-L../HttpStack -lhttpstack \
 	-L../TcpStack -ltcpstack \
 	-L../HttpParser -lhttpparser \
@@ -22,8 +23,8 @@ LIB=-L../HttpStack -lhttpstack \
 	-L../XmlParser -lxmlparser \
 	-L../StunParser -lstunparser \
 	-L../SipPlatform -lsipplatform \
-	-L../opensrtp/linux/64bit/lib -lsrtp \
-	-L../openssl/linux/64bit/lib -lssl -lcrypto -ldl \
+	-L../opensrtp/lib/linux/$(SYSTEM_BIT)bit/lib -lsrtp \
+	-L../openssl/linux/$(SYSTEM_BIT)bit/lib -lssl -lcrypto -ldl \
 	-lpthread
 
 .SUFFIXES: .o .cpp
