@@ -23,6 +23,8 @@
 #ifdef WIN32
 #define TEST_FOLDER "c:\\temp\\sipserver"
 #else
+#include <unistd.h>
+
 #define TEST_FOLDER "/tmp/sipserver"
 #endif
 
