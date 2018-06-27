@@ -29,8 +29,19 @@ int main( int argc, char * argv[] )
 
 	if( argc != 3 )
 	{
-		printf( "[Usage] %s {pem filename} {tcpserver|tcpclient|tcp|udp}\n", argv[0] );
-		return 0;
+		if( argc == 2 )
+		{
+			if( !strcmp( argv[1], "AES256" ) )
+			{
+				AES256();
+				return 0;
+			}
+		}
+		else
+		{
+			printf( "[Usage] %s {pem filename} {tcpserver|tcpclient|tcp|udp}\n", argv[0] );
+			return 0;
+		}
 	}
 
 	InitNetwork();
@@ -50,7 +61,7 @@ int main( int argc, char * argv[] )
 		// TLS 서버/클라이언트를 시작한다.
 		TcpServerClient( argv[1] );
 	}
-	else
+	else if( strcmp( argv[2], "dtls" ) )
 	{
 		// DTLS 서버/클라이언트를 시작한다.
 		UdpServer( argv[1] );

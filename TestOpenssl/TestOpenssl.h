@@ -36,4 +36,6 @@ void TcpClient( const char * pszCertFile );
 void TcpServerClient( const char * pszCertFile );
 void UdpServer( const char * pszCertFile );
 
+void AES256( );
+
 #endif
