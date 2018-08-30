@@ -30,20 +30,20 @@ const char * SipGetTransport( ESipTransport eTransport )
 {
 	if( eTransport == E_SIP_UDP )
 	{
-		return "UDP";
+		return S_SIP_UDP;
 	}
 	
 	if( eTransport == E_SIP_TCP )
 	{
-		return "TCP";
+		return S_SIP_TCP;
 	}
 	
 	if( eTransport == E_SIP_TLS )
 	{
-		return "TLS";
+		return S_SIP_TLS;
 	}
 
-	return "UDP";
+	return S_SIP_UDP;
 }
 
 /**

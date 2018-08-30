@@ -17,6 +17,7 @@
  */
 
 #pragma once
+#include "afxwin.h"
 
 // CSipSetupDlg 대화 상자입니다.
 
@@ -44,4 +45,5 @@ public:
 	CString m_strUserId;
 	CString m_strPassWord;
 	CString m_strUserAgent;
+	CComboBox m_clsProtocol;
 };

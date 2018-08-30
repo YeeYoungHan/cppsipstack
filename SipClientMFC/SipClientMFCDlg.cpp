@@ -145,6 +145,17 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 	clsInfo.m_strUserId = gclsSetup.m_strUserId;
 	clsInfo.m_strPassWord = gclsSetup.m_strPassWord;
 
+	const char * pszProtocol = gclsSetup.m_strProtocol.c_str();
+
+	if( !strcmp( pszProtocol, S_SIP_TCP ) )
+	{
+		clsInfo.m_eTransport = E_SIP_TCP;
+	}
+	else
+	{
+		clsInfo.m_eTransport = E_SIP_UDP;
+	}
+
 	m_clsSipUserAgent.InsertRegisterInfo( clsInfo );
 
 	clsSetup.m_strUserAgent = gclsSetup.m_strUserAgent;
@@ -154,6 +165,11 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 	for( int i = 0; i < 100; ++i )
 	{
 		clsSetup.m_iLocalUdpPort = i + 10000;
+
+		if( clsInfo.m_eTransport == E_SIP_TCP )
+		{
+			clsSetup.m_iLocalTcpPort = clsSetup.m_iLocalUdpPort;
+		}
 
 		if( m_clsSipUserAgent.Start( clsSetup, &m_clsSipUserAgentMFC ) )
 		{

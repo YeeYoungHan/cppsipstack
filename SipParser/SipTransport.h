@@ -26,6 +26,10 @@ enum ESipTransport
 	E_SIP_TLS
 };
 
+#define S_SIP_UDP		"UDP"
+#define S_SIP_TCP		"TCP"	
+#define S_SIP_TLS		"TLS"
+
 const char * SipGetTransport( ESipTransport eTransport );
 const char * SipGetProtocol( ESipTransport eTransport );
 

@@ -22,6 +22,8 @@
 #define IDC_START_STACK                 1009
 #define IDC_STOP_STACK                  1010
 #define IDC_LOG                         1011
+#define IDC_COMBO1                      1012
+#define IDC_PROTOCOL                    1012
 
 // Next default values for new objects
 // 
@@ -29,7 +31,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        129
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1012
+#define _APS_NEXT_CONTROL_VALUE         1013
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

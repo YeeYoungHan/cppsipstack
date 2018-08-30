@@ -20,6 +20,7 @@
 #include "SipClientMFC.h"
 #include "SipSetupDlg.h"
 #include "Setup.h"
+#include "SipTransport.h"
 
 // CSipSetupDlg 대화 상자입니다.
 
@@ -50,6 +51,7 @@ void CSipSetupDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_USER_ID, m_strUserId);
 	DDX_Text(pDX, IDC_PASSWORD, m_strPassWord);
 	DDX_Text(pDX, IDC_SIP_DOMAIN2, m_strUserAgent);
+	DDX_Control(pDX, IDC_PROTOCOL, m_clsProtocol);
 }
 
 
@@ -67,6 +69,20 @@ BOOL CSipSetupDlg::OnInitDialog()
 	m_strUserId = gclsSetup.m_strUserId.c_str();
 	m_strPassWord = gclsSetup.m_strPassWord.c_str();
 	m_strUserAgent = gclsSetup.m_strUserAgent.c_str();
+
+	m_clsProtocol.AddString( S_SIP_UDP );
+	m_clsProtocol.AddString( S_SIP_TCP );
+
+	const char * pszProtocol = gclsSetup.m_strProtocol.c_str();
+
+	if( !strcmp( pszProtocol, S_SIP_TCP ) )
+	{
+		m_clsProtocol.SetCurSel(1);
+	}
+	else
+	{
+		m_clsProtocol.SetCurSel(0);
+	}
 
 	UpdateData(FALSE);
 
@@ -109,6 +125,14 @@ void CSipSetupDlg::OnBnClickedOk()
 	gclsSetup.m_strUserId = m_strUserId;
 	gclsSetup.m_strPassWord = m_strPassWord;
 	gclsSetup.m_strUserAgent = m_strUserAgent;
+
+	int iSel = m_clsProtocol.GetCurSel();
+	
+	switch( iSel )
+	{
+	case 0: gclsSetup.m_strProtocol = S_SIP_UDP; break;
+	case 1: gclsSetup.m_strProtocol = S_SIP_TCP; break;
+	}
 
 	gclsSetup.Put();
 
