@@ -18,6 +18,7 @@
 
 #include "SipParserDefine.h"
 #include "SipChallenge.h"
+#include "StringUtility.h"
 #include "MemoryDebug.h"
 
 CSipChallenge::CSipChallenge()
@@ -162,31 +163,6 @@ void CSipChallenge::Clear()
 	m_strStale.clear();
 	m_strAlgorithm.clear();
 	m_strQop.clear();
-}
-
-/**
- * @ingroup SipParser
- * @brief 입력된 문자열에서 " 를 제거한 출력 문자열을 저장한다.
- * @param strInput	입력 문자열
- * @param strOutput 출력 문자열
- */
-void CSipChallenge::DeQuoteString( std::string & strInput, std::string & strOutput )
-{
-	int iLen = (int)strInput.length();
-
-	strOutput.clear();
-
-	if( iLen > 0 )
-	{
-		if( strInput.at( 0 ) != '"' || strInput.at( iLen - 1 ) != '"' )
-		{
-			strOutput = strInput;
-		}
-		else
-		{
-			strOutput.append( strInput, 1, iLen - 2 );
-		}
-	}
 }
 
 /**

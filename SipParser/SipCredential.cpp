@@ -19,6 +19,7 @@
 #include "SipParserDefine.h"
 #include "SipCredential.h"
 #include "SipChallenge.h"
+#include "StringUtility.h"
 #include "MemoryDebug.h"
 
 CSipCredential::CSipCredential()
@@ -78,23 +79,23 @@ int CSipCredential::Parse( const char * pszText, int iTextLen )
 
 		if( !strcmp( pszName, "username" ) )
 		{
-			CSipChallenge::DeQuoteString( itList->m_strValue, m_strUserName );
+			DeQuoteString( itList->m_strValue, m_strUserName );
 		}
 		else if( !strcmp( pszName, "realm" ) )
 		{
-			CSipChallenge::DeQuoteString( itList->m_strValue, m_strRealm );
+			DeQuoteString( itList->m_strValue, m_strRealm );
 		}
 		else if( !strcmp( pszName, "nonce" ) )
 		{
-			CSipChallenge::DeQuoteString( itList->m_strValue, m_strNonce );
+			DeQuoteString( itList->m_strValue, m_strNonce );
 		}
 		else if( !strcmp( pszName, "uri" ) )
 		{
-			CSipChallenge::DeQuoteString( itList->m_strValue, m_strUri );
+			DeQuoteString( itList->m_strValue, m_strUri );
 		}
 		else if( !strcmp( pszName, "response" ) )
 		{
-			CSipChallenge::DeQuoteString( itList->m_strValue, m_strResponse );
+			DeQuoteString( itList->m_strValue, m_strResponse );
 		}
 		else if( !strcmp( pszName, "algorithm" ) )
 		{
@@ -102,11 +103,11 @@ int CSipCredential::Parse( const char * pszText, int iTextLen )
 		}
 		else if( !strcmp( pszName, "cnonce" ) )
 		{
-			CSipChallenge::DeQuoteString( itList->m_strValue, m_strCnonce );
+			DeQuoteString( itList->m_strValue, m_strCnonce );
 		}
 		else if( !strcmp( pszName, "opaque" ) )
 		{
-			CSipChallenge::DeQuoteString( itList->m_strValue, m_strOpaque );
+			DeQuoteString( itList->m_strValue, m_strOpaque );
 		}
 		else if( !strcmp( pszName, "qop" ) )
 		{

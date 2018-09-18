@@ -62,7 +62,6 @@ public:
 	int ToString( char * pszText, int iTextSize );
 	void Clear();
 
-	static void DeQuoteString( std::string & strInput, std::string & strOutput );
 	static bool SetString( char * pszText, int & iTextPos, int iTextSize, const char * pszName, std::string & strValue );
 	static bool SetQuoteString( char * pszText, int & iTextPos, int iTextSize, const char * pszName, std::string & strValue );
 };
