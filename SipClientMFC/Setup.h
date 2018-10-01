@@ -30,6 +30,7 @@
 #define ST_PASSWORD					"password"
 #define ST_USERAGENT				"user_agent"
 #define ST_PROTOCOL					"protocol"
+#define ST_LOCAL_IP					"local_ip"
 
 typedef std::map< std::string, std::string > SETUP_MAP;
 
@@ -54,6 +55,7 @@ public:
 	std::string m_strPassWord;
 	std::string m_strUserAgent;
 	std::string m_strProtocol;
+	std::string m_strLocalIp;
 
 private:
 	bool GetFile();

@@ -136,7 +136,15 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 	CSipStackSetup clsSetup;
 	CSipServerInfo clsInfo;
 
-	GetLocalIp( clsSetup.m_strLocalIp );
+	if( gclsSetup.m_strLocalIp.empty() )
+	{
+		GetLocalIp( clsSetup.m_strLocalIp );
+	}
+	else
+	{
+		clsSetup.m_strLocalIp = gclsSetup.m_strLocalIp;
+	}
+
 	m_strLocalIp = clsSetup.m_strLocalIp;
 	
 	clsInfo.m_strIp = gclsSetup.m_strSipServerIp;

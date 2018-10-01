@@ -46,4 +46,5 @@ public:
 	CString m_strPassWord;
 	CString m_strUserAgent;
 	CComboBox m_clsProtocol;
+	CString m_strLocalIp;
 };

@@ -40,6 +40,7 @@ bool CSetup::Get()
 	GetString( ST_PASSWORD, m_strPassWord );
 	GetString( ST_USERAGENT, m_strUserAgent );
 	GetString( ST_PROTOCOL, m_strProtocol );
+	GetString( ST_LOCAL_IP, m_strLocalIp );
 
 	m_clsMap.clear();
 
@@ -55,6 +56,7 @@ bool CSetup::Put()
 	PutString( ST_PASSWORD, m_strPassWord.c_str() );
 	PutString( ST_USERAGENT, m_strUserAgent.c_str() );
 	PutString( ST_PROTOCOL, m_strProtocol.c_str() );
+	PutString( ST_LOCAL_IP, m_strLocalIp.c_str() );
 
 	bool bRes = PutFile();
 

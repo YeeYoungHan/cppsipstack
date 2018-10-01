@@ -34,6 +34,7 @@ CSipSetupDlg::CSipSetupDlg(CWnd* pParent /*=NULL*/)
 	, m_strUserId(_T(""))
 	, m_strPassWord(_T(""))
 	, m_strUserAgent(_T(""))
+	, m_strLocalIp(_T(""))
 {
 
 }
@@ -52,6 +53,7 @@ void CSipSetupDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_PASSWORD, m_strPassWord);
 	DDX_Text(pDX, IDC_SIP_DOMAIN2, m_strUserAgent);
 	DDX_Control(pDX, IDC_PROTOCOL, m_clsProtocol);
+	DDX_Text(pDX, IDC_LOCAL_IP, m_strLocalIp);
 }
 
 
@@ -83,6 +85,8 @@ BOOL CSipSetupDlg::OnInitDialog()
 	{
 		m_clsProtocol.SetCurSel(0);
 	}
+
+	m_strLocalIp = gclsSetup.m_strLocalIp.c_str();
 
 	UpdateData(FALSE);
 
@@ -133,6 +137,8 @@ void CSipSetupDlg::OnBnClickedOk()
 	case 0: gclsSetup.m_strProtocol = S_SIP_UDP; break;
 	case 1: gclsSetup.m_strProtocol = S_SIP_TCP; break;
 	}
+
+	gclsSetup.m_strLocalIp = m_strLocalIp;
 
 	gclsSetup.Put();
 
