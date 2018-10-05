@@ -95,6 +95,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AES256.cpp" />
     <ClCompile Include="TcpClientThread.cpp" />
     <ClCompile Include="TcpSendThread.cpp" />
     <ClCompile Include="TcpServer.cpp" />
