@@ -432,7 +432,10 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 	{
 		if( pclsMessage->m_clsViaList.size() == 0 )
 		{
-			pclsMessage->AddVia( m_clsSetup.m_strLocalIp.c_str(), m_clsSetup.GetLocalPort( pclsMessage->m_eTransport ) );
+			int iPort = m_clsSetup.GetLocalPort( pclsMessage->m_eTransport );
+
+			if( iPort == 0 ) iPort = 5060;
+			pclsMessage->AddVia( m_clsSetup.m_strLocalIp.c_str(), iPort );
 		}
 	}
 

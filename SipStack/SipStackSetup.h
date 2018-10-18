@@ -92,6 +92,8 @@ public:
 
 	/** Stateful SIP stack ¿Œ∞°? */
 	bool				m_bStateful;
+
+	bool				m_bTlsClient;
 };
 
 #endif

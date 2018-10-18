@@ -36,7 +36,7 @@ CSipStackSetup::CSipStackSetup() : m_iLocalUdpPort(SIP_UDP_PORT), m_iUdpThreadCo
 	, m_iTcpRecvTimeout(SIP_TCP_RECV_TIMEOUT), m_iTcpConnectTimeout(SIP_TCP_CONNECT_TIMEOUT)
 	, m_iTlsAcceptTimeout(SIP_TLS_ACCEPT_TIMEOUT), m_bUseSipCompactForm(false), m_iStackExecutePeriod(20)
 	, m_iTimerD(32000), m_iTimerJ(32000), m_bIpv6(false)
-	, m_bStateful(true)
+	, m_bStateful(true), m_bTlsClient(false)
 {
 }
 

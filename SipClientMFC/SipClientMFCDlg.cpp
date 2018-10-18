@@ -162,6 +162,7 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 	else if( !strcmp( pszProtocol, S_SIP_TLS ) )
 	{
 		clsInfo.m_eTransport = E_SIP_TLS;
+		clsSetup.m_bTlsClient = true;
 	}
 	else
 	{
@@ -234,6 +235,17 @@ void CSipClientMFCDlg::OnBnClickedStartCall()
 
 	clsRoute.m_strDestIp = gclsSetup.m_strSipServerIp;
 	clsRoute.m_iDestPort = gclsSetup.m_iSipServerPort;
+
+	const char * pszProtocol = gclsSetup.m_strProtocol.c_str();
+
+	if( !strcmp( pszProtocol, S_SIP_TCP ) )
+	{
+		clsRoute.m_eTransport = E_SIP_TCP;
+	}
+	else if( !strcmp( pszProtocol, S_SIP_TLS ) )
+	{
+		clsRoute.m_eTransport = E_SIP_TLS;
+	}
 
 	if( m_clsSipUserAgent.StartCall( gclsSetup.m_strUserId.c_str(), m_strCallNumber, &clsRtp, &clsRoute, m_strCallId ) == false )
 	{

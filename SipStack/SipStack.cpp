@@ -146,6 +146,21 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 			return false;
 		}
 	}
+	else if( m_clsSetup.m_bTlsClient )
+	{
+		if( SSLClientStart( ) == false )
+		{
+			_Stop();
+			return false;
+		}
+
+		m_clsTlsThreadList.SetMaxSocketPerThread( m_clsSetup.m_iTcpMaxSocketPerThread );
+		if( m_clsTlsThreadList.Init( m_clsSetup.m_iTcpThreadCount, m_clsSetup.m_iTcpThreadCount, SipTlsThread, this ) == false )
+		{
+			_Stop();
+			return false;
+		}
+	}
 #endif
 
 	if( m_clsSetup.m_iLocalUdpPort > 0 )

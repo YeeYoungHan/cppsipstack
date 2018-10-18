@@ -33,6 +33,10 @@ bool SSLStart( );
 
 bool SSLServerStart( const char * szCertFile, const char * szCaCertFile );
 bool SSLServerStop( );
+
+bool SSLClientStart( );
+bool SSLClientStop( );
+
 void SSLFinal();
 
 bool SSLConnect( Socket iFd, SSL ** ppsttSsl );

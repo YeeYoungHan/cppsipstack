@@ -233,6 +233,50 @@ bool SSLServerStop( )
 
 /**
  * @ingroup SipStack
+ * @brief SSL 클라이언트 라이브러리를 시작한다.
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool SSLClientStart( )
+{
+	if( SSLStart() == false ) return false;
+
+	gpsttClientMeth = TLSv1_client_method();
+	if( (gpsttClientCtx = SSL_CTX_new( gpsttClientMeth )) == NULL )
+	{
+		CLog::Print( LOG_ERROR, "SSL_CTX_new error - client" );
+		return false;
+	}
+
+	gbStartSslServer = true;
+
+	return true;
+}
+
+/**
+ * @ingroup SipStack
+ * @brief SSL 클라이언트 라이브러리를 종료한다.
+ * @returns true 를 리턴한다.
+ */
+bool SSLClientStop( )
+{
+	if( gbStartSslServer )
+	{
+		SSLStop();
+
+		if( gpsttClientCtx )
+		{
+			SSL_CTX_free( gpsttClientCtx );
+			gpsttClientCtx = NULL;
+		}
+
+		gbStartSslServer = false;
+	}
+
+	return true;
+}
+
+/**
+ * @ingroup SipStack
  * @brief 프로세스가 종료될 때에 최종적으로 실행하여서 openssl 메모리 누수를 출력하지 않는다. 
  */
 void SSLFinal()
