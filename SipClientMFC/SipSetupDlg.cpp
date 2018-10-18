@@ -74,12 +74,17 @@ BOOL CSipSetupDlg::OnInitDialog()
 
 	m_clsProtocol.AddString( S_SIP_UDP );
 	m_clsProtocol.AddString( S_SIP_TCP );
+	m_clsProtocol.AddString( S_SIP_TLS );
 
 	const char * pszProtocol = gclsSetup.m_strProtocol.c_str();
 
 	if( !strcmp( pszProtocol, S_SIP_TCP ) )
 	{
 		m_clsProtocol.SetCurSel(1);
+	}
+	else if( !strcmp( pszProtocol, S_SIP_TLS ) )
+	{
+		m_clsProtocol.SetCurSel(2);
 	}
 	else
 	{
@@ -136,6 +141,7 @@ void CSipSetupDlg::OnBnClickedOk()
 	{
 	case 0: gclsSetup.m_strProtocol = S_SIP_UDP; break;
 	case 1: gclsSetup.m_strProtocol = S_SIP_TCP; break;
+	case 2: gclsSetup.m_strProtocol = S_SIP_TLS; break;
 	}
 
 	gclsSetup.m_strLocalIp = m_strLocalIp;

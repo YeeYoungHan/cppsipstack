@@ -159,6 +159,10 @@ void CSipClientMFCDlg::OnBnClickedStartStack()
 	{
 		clsInfo.m_eTransport = E_SIP_TCP;
 	}
+	else if( !strcmp( pszProtocol, S_SIP_TLS ) )
+	{
+		clsInfo.m_eTransport = E_SIP_TLS;
+	}
 	else
 	{
 		clsInfo.m_eTransport = E_SIP_UDP;
