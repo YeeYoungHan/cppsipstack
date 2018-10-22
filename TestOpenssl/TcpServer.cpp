@@ -67,6 +67,8 @@ void TcpServer( const char * pszCertFile )
 				break;
 			}
 
+			SSL_renegotiate(psttSsl);
+
 			iSize += n;
 			++iCount;
 

@@ -29,8 +29,6 @@ THREAD_API TcpSendThread( LPVOID lpParameter )
 	{
 		SSLSend( psttSsl, szPacket, sizeof(szPacket) );
 		Sleep( giTcpSendPeriod );
-
-		SSL_renegotiate(psttSsl);
 	}
 
 	return 0;

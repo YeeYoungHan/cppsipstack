@@ -20,7 +20,7 @@
 
 int giTcpServerConnectCount = 1;
 int giTcpServerLoopCount = 1000;
-int giTcpSendPeriod = 60000;
+int giTcpSendPeriod = 10000;
 char * gpszServerIp = "127.0.0.1";
 
 int main( int argc, char * argv[] )
