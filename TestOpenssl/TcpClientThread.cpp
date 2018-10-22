@@ -48,6 +48,8 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 			break;
 		}
 
+		SSL_renegotiate(psttSsl);
+
 		iSize += n;
 		++iCount;
 
