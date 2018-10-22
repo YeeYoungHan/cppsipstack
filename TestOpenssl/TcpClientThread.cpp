@@ -20,7 +20,7 @@
 
 THREAD_API TcpClientThread( LPVOID lpParameter )
 {
-	Socket hSocket = TcpConnect( "127.0.0.1", 3333 );
+	Socket hSocket = TcpConnect( gpszServerIp, 3333 );
 	if( hSocket == INVALID_SOCKET )
 	{
 		printf( "TcpConnect() error\n" );

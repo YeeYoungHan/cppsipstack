@@ -18,8 +18,10 @@
 
 #include "TestOpenssl.h"
 
-int giTcpServerConnectCount = 2;
-int giTcpServerLoopCount = 1;
+int giTcpServerConnectCount = 1;
+int giTcpServerLoopCount = 1000;
+int giTcpSendPeriod = 60000;
+char * gpszServerIp = "127.0.0.1";
 
 int main( int argc, char * argv[] )
 {
@@ -27,24 +29,26 @@ int main( int argc, char * argv[] )
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF );
 #endif
 
-	if( argc != 3 )
+	if( argc == 2 )
 	{
-		if( argc == 2 )
+		if( !strcmp( argv[1], "AES256" ) )
 		{
-			if( !strcmp( argv[1], "AES256" ) )
-			{
-				AES256();
-				return 0;
-			}
-		}
-		else
-		{
-			printf( "[Usage] %s {pem filename} {tcpserver|tcpclient|tcp|udp}\n", argv[0] );
+			AES256();
 			return 0;
 		}
 	}
+	else if( argc == 1 )
+	{
+		printf( "[Usage] %s {pem filename} {tcpserver|tcpclient|tcp|udp} {server ip}\n", argv[0] );
+		return 0;
+	}
 
 	InitNetwork();
+
+	if( argc >= 4 )
+	{
+		gpszServerIp = argv[3];
+	}
 
 	if( !strcmp( argv[2], "tcpserver" ) )
 	{

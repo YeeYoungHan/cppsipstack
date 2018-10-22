@@ -27,6 +27,8 @@
 
 extern int giTcpServerConnectCount;
 extern int giTcpServerLoopCount;
+extern int giTcpSendPeriod;
+extern char * gpszServerIp;
 
 bool StartTcpClientThread();
 bool StartTcpSendThread( SSL * psttSsl );
