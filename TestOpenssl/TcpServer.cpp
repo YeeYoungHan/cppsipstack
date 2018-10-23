@@ -80,6 +80,31 @@ void TcpServer( const char * pszCertFile )
 				}
 			}
 
+			if( gbTcpServerRenegotiate )
+			{
+				if( SSL_renegotiate(psttSsl) <= 0 )
+				{
+					printf( "SSL_renegotiate error\n" );
+					break;
+				}
+
+				if( SSL_do_handshake(psttSsl) <= 0 )
+				{
+					printf( "SSL_do_handshake error\n" );
+					break;
+				}
+
+				psttSsl->state = SSL_ST_ACCEPT;
+
+				if( SSL_do_handshake(psttSsl) <= 0 )
+				{
+					printf( "SSL_do_handshake error\n" );
+					break;
+				}
+
+				gbTcpServerRenegotiate = false;
+			}
+
 			iErrorCount = 0;
 			iSize += n;
 			++iCount;

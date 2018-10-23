@@ -30,6 +30,7 @@ extern int giTcpServerLoopCount;
 extern int giTcpSendPeriod;
 extern char * gpszServerIp;
 extern bool gbTcpClientRenegotiate;
+extern bool gbTcpServerRenegotiate;
 
 bool StartTcpClientThread();
 bool StartTcpSendThread( SSL * psttSsl );
