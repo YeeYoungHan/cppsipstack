@@ -71,6 +71,8 @@ void TcpServer( const char * pszCertFile )
 					{
 						break;
 					}
+
+					continue;
 				}
 				else
 				{
