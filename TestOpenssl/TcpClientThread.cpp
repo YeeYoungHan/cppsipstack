@@ -61,6 +61,9 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 				printf( "SSL_do_handshake error\n" );
 				break;
 			}
+
+			// 2번째 SSL_do_handshake() 호출시 에러가 발생하여서 일단 1번만 SSL_renegotiate() 호출하도록 수정함
+			gbTcpClientRenegotiate = false;
 		}
 
 		iSize += n;
