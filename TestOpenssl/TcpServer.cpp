@@ -63,7 +63,7 @@ void TcpServer( const char * pszCertFile )
 			n = SSLRecv( psttSsl, szPacket, sizeof(szPacket) );
 			if( n <= 0 )
 			{
-				printf( "SSLRecv error\n" );
+				printf( "SSLRecv error(%d)\n", n );
 				if( gbTcpClientRenegotiate )
 				{
 					++iErrorCount;
