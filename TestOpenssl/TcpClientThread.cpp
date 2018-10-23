@@ -29,7 +29,7 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 
 	SSL * psttSsl;
 	char	szPacket[8192];
-	int n, iSize = 0, iCount = 0;
+	int n, iSize = 0, iCount = 0, iErrorCount = 0;
 
 	if( SSLConnect( hSocket, &psttSsl ) == false )
 	{
@@ -45,7 +45,22 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 		if( n <= 0 )
 		{
 			printf( "SSLRecv error\n" );
-			break;
+			if( gbTcpServerRenegotiate )
+			{
+				++iErrorCount;
+				if( iErrorCount == 2 )
+				{
+					break;
+				}
+				else
+				{
+					continue;
+				}
+			}
+			else
+			{
+				break;
+			}
 		}
 
 		if( gbTcpClientRenegotiate )
@@ -66,6 +81,7 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 			gbTcpClientRenegotiate = false;
 		}
 
+		iErrorCount = 0;
 		iSize += n;
 		++iCount;
 

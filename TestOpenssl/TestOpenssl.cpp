@@ -22,8 +22,8 @@ int giTcpServerConnectCount = 1;
 int giTcpServerLoopCount = 1000;
 int giTcpSendPeriod = 10000;
 char * gpszServerIp = "127.0.0.1";
-bool gbTcpClientRenegotiate = false;
-bool gbTcpServerRenegotiate = true;
+bool gbTcpClientRenegotiate = true;
+bool gbTcpServerRenegotiate = false;
 
 int main( int argc, char * argv[] )
 {
