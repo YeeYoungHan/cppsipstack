@@ -48,7 +48,7 @@ void TcpServer( const char * pszCertFile )
 
 		SSL * psttSsl;
 		char	szPacket[8192];
-		int n, iSize = 0, iCount = 0;
+		int n, iSize = 0, iCount = 0, iErrorCount = 0;
 
 		if( SSLAccept( hConn, &psttSsl, false, 0, 0 ) == false )
 		{
@@ -64,9 +64,21 @@ void TcpServer( const char * pszCertFile )
 			if( n <= 0 )
 			{
 				printf( "SSLRecv error\n" );
-				break;
+				if( gbTcpClientRenegotiate )
+				{
+					++iErrorCount;
+					if( iErrorCount == 2 )
+					{
+						break;
+					}
+				}
+				else
+				{
+					break;
+				}
 			}
 
+			iErrorCount = 0;
 			iSize += n;
 			++iCount;
 

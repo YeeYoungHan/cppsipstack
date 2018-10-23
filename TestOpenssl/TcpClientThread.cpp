@@ -48,7 +48,20 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 			break;
 		}
 
-		SSL_renegotiate(psttSsl);
+		if( gbTcpClientRenegotiate )
+		{
+			if( SSL_renegotiate(psttSsl) <= 0 )
+			{
+				printf( "SSL_renegotiate error\n" );
+				break;
+			}
+
+			if( SSL_do_handshake(psttSsl) <= 0 )
+			{
+				printf( "SSL_do_handshake error\n" );
+				break;
+			}
+		}
 
 		iSize += n;
 		++iCount;
