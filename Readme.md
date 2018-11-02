@@ -1,135 +1,139 @@
-# C++ SIP stack ÇÁ·ÎÁ§Æ®
-C++ STL ±â¹ÝÀ¸·Î SIP stack À» °³¹ßÇÏ´Â ÇÁ·ÎÁ§Æ®ÀÔ´Ï´Ù.
+# C++ SIP stack í”„ë¡œì íŠ¸
+C++ STL ê¸°ë°˜ìœ¼ë¡œ SIP stack ì„ ê°œë°œí•˜ëŠ” í”„ë¡œì íŠ¸ìž…ë‹ˆë‹¤.
 
-### °³¿ä
-º» ÇÁ·ÎÁ§Æ®ÀÇ ¸ñÇ¥´Â ´ÙÀ½°ú °°½À´Ï´Ù.
+### ê°œìš”
+ë³¸ í”„ë¡œì íŠ¸ì˜ ëª©í‘œëŠ” ë‹¤ìŒê³¼ ê°™ìŠµë‹ˆë‹¤.
 
-* C++ STL ±â¹Ý SIP stack °³¹ß
-* C++ SIP stack ±â¹Ý IP-PBX °³¹ß
-* C++ SIP stack ±â¹Ý ·Îµå¹ë·±¼­ °³¹ß
-* C++ SIP stack ±â¹Ý SIP ¼­¹ö ¼º´É ÃøÁ¤ ÇÁ·Î±×·¥ °³¹ß
-* C++ SIP stack ±â¹Ý SIP ¼­¹ö Å×½ºÆ® ÇÁ·Î±×·¥ °³¹ß
-* C++ SIP stack ±â¹Ý MFC ÀÀ¿ë ÇÁ·Î±×·¥ °³¹ß
-* C++ SIP stack ±â¹Ý java SIP stack °³¹ß
+* C++ STL ê¸°ë°˜ SIP stack ê°œë°œ
+* C++ SIP stack ê¸°ë°˜ IP-PBX ê°œë°œ
+* C++ SIP stack ê¸°ë°˜ ë¡œë“œë°¸ëŸ°ì„œ ê°œë°œ
+* C++ SIP stack ê¸°ë°˜ SIP ì„œë²„ ì„±ëŠ¥ ì¸¡ì • í”„ë¡œê·¸ëž¨ ê°œë°œ
+* C++ SIP stack ê¸°ë°˜ SIP ì„œë²„ í…ŒìŠ¤íŠ¸ í”„ë¡œê·¸ëž¨ ê°œë°œ
+* C++ SIP stack ê¸°ë°˜ MFC ì‘ìš© í”„ë¡œê·¸ëž¨ ê°œë°œ
+* C++ SIP stack ê¸°ë°˜ java SIP stack ê°œë°œ
 
-### °³¹ßÀÚ Á¤º¸
-º» ÇÁ·ÎÁ§Æ®¸¦ ÁøÇàÇÏ´Â °³¹ßÀÚ Á¤º¸´Â ´ÙÀ½°ú °°½À´Ï´Ù.
+### ê°œë°œìž ì •ë³´
+ë³¸ í”„ë¡œì íŠ¸ë¥¼ ì§„í–‰í•˜ëŠ” ê°œë°œìž ì •ë³´ëŠ” ë‹¤ìŒê³¼ ê°™ìŠµë‹ˆë‹¤.
 
-* ÀÌ¸ÞÀÏ: websearch@naver.com
-* ºí·Î±×: http://blog.naver.com/websearch
+* ì´ë©”ì¼: websearch@naver.com
+* ë¸”ë¡œê·¸: http://blog.naver.com/websearch
 
-À§ÀÇ ºí·Î±×ÀÇ "¿µÇÑ ¿ÀÇÂ¼Ò½º -> SIP stack" Ä«Å×°í¸®¿¡ C++ SIP stack ¾ÆÅ°ÅØÃ³, »ç¿ë¹ý ¹× Q&A µîÀÌ ±â¼úµÇ¾î ÀÖ½À´Ï´Ù.
+ìœ„ì˜ ë¸”ë¡œê·¸ì˜ "ì˜í•œ ì˜¤í”ˆì†ŒìŠ¤ -> SIP stack" ì¹´í…Œê³ ë¦¬ì— C++ SIP stack ì•„í‚¤í…ì²˜, ì‚¬ìš©ë²• ë° Q&A ë“±ì´ ê¸°ìˆ ë˜ì–´ ìžˆìŠµë‹ˆë‹¤.
 
-### ¶óÀÌ¼±½º
+### ë¼ì´ì„ ìŠ¤
 
-* º» ÇÁ·ÎÁ§Æ®ÀÇ ¶óÀÌ¼±½º´Â GPLv3 ÀÔ´Ï´Ù.
-* º» ÇÁ·ÎÁ§Æ®¿¡ ´ëÇÑ »ó¿ë ¶óÀÌ¼±½º ¹ß±ÞÀ» ¿øÇÏ½Ã¸é °³¹ßÀÚ Á¤º¸ÀÇ ÀÌ¸ÞÀÏ ÁÖ¼Ò·Î ¿¬¶ôÇØ ÁÖ¼¼¿ä.
+* ë³¸ í”„ë¡œì íŠ¸ì˜ ë¼ì´ì„ ìŠ¤ëŠ” GPLv3 ìž…ë‹ˆë‹¤.
+* ë³¸ í”„ë¡œì íŠ¸ì— ëŒ€í•œ ìƒìš© ë¼ì´ì„ ìŠ¤ ë°œê¸‰ì„ ì›í•˜ì‹œë©´ ê°œë°œìž ì •ë³´ì˜ ì´ë©”ì¼ ì£¼ì†Œë¡œ ì—°ë½í•´ ì£¼ì„¸ìš”.
 
-### Æú´õ ¼³¸í
-º» ÇÁ·ÎÁ§Æ®¿¡ Æ÷ÇÔµÈ Æú´õ¿¡ ´ëÇÑ ¼³¸íÀº ´ÙÀ½°ú °°½À´Ï´Ù.
+### í´ë” ì„¤ëª…
+ë³¸ í”„ë¡œì íŠ¸ì— í¬í•¨ëœ í´ë”ì— ëŒ€í•œ ì„¤ëª…ì€ ë‹¤ìŒê³¼ ê°™ìŠµë‹ˆë‹¤.
 
 * AndroidCppSipStack
-  * ¾Èµå·ÎÀÌµå NDK ºôµå¸¦ À§ÇÑ sip stack static library ºôµå¿ë
+  * ì•ˆë“œë¡œì´ë“œ NDK ë¹Œë“œë¥¼ ìœ„í•œ sip stack static library ë¹Œë“œìš©
 
 * AndroidSipStack
-  * ¾Èµå·ÎÀÌµå¿ë sip stack °³¹ß ÇÁ·ÎÁ§Æ®
+  * ì•ˆë“œë¡œì´ë“œìš© sip stack ê°œë°œ í”„ë¡œì íŠ¸
 
 * doc
-  * C++ SIP stack »ç¿ë¹ý ¹× C++ SIP stack ±â¹ÝÀ¸·Î °³¹ßµÈ ÇÁ·Î±×·¥ »ç¿ë¹ýÀ» ±â¼úÇÑ ¹®¼­°¡ ÀúÀåµÇ¾î ÀÖ´Ù.
+  * C++ SIP stack ì‚¬ìš©ë²• ë° C++ SIP stack ê¸°ë°˜ìœ¼ë¡œ ê°œë°œëœ í”„ë¡œê·¸ëž¨ ì‚¬ìš©ë²•ì„ ê¸°ìˆ í•œ ë¬¸ì„œê°€ ì €ìž¥ë˜ì–´ ìžˆë‹¤.
 
 * FindNoLiceseFile
-  * Æú´õ¿¡¼­ ¶óÀÌ¼±½º ¹®±¸°¡ Æ÷ÇÔµÇÁö ¾ÊÀº ¼Ò½º ÄÚµå¸¦ °Ë»öÇÏ´Â ÇÁ·Î±×·¥
+  * í´ë”ì—ì„œ ë¼ì´ì„ ìŠ¤ ë¬¸êµ¬ê°€ í¬í•¨ë˜ì§€ ì•Šì€ ì†ŒìŠ¤ ì½”ë“œë¥¼ ê²€ìƒ‰í•˜ëŠ” í”„ë¡œê·¸ëž¨
 
 * FindThreadUnSafe
-  * thread unsafe ÇÔ¼ö¸¦ »ç¿ëÇÏ´Â ¼Ò½º ÄÚµå¸¦ °Ë»öÇÏ´Â ÇÁ·Î±×·¥
+  * thread unsafe í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•˜ëŠ” ì†ŒìŠ¤ ì½”ë“œë¥¼ ê²€ìƒ‰í•˜ëŠ” í”„ë¡œê·¸ëž¨
 
 * KSipServer
-  * ÇÑ±¹Çü SIP ¼­¹ö ÇÁ·Î±×·¥
+  * í•œêµ­í˜• SIP ì„œë²„ í”„ë¡œê·¸ëž¨
 
 * openssl
-  * MS À©µµ¿ì¿ë openssl ¶óÀÌºê·¯¸®
+  * MS ìœˆë„ìš°ìš© openssl ë¼ì´ë¸ŒëŸ¬ë¦¬
 
 * Publish
-  * MS À©µµ¿ì¿¡¼­ ½ÇÇà °¡´ÉÇÑ ½ÇÇà ÆÄÀÏ ¹èÆ÷ Æú´õ
+  * MS ìœˆë„ìš°ì—ì„œ ì‹¤í–‰ ê°€ëŠ¥í•œ ì‹¤í–‰ íŒŒì¼ ë°°í¬ í´ë”
 
 * SdpParser
-  * SDP ¸Þ½ÃÁö ÆÄ¼­/»ý¼º ¶óÀÌºê·¯¸®
+  * SDP ë©”ì‹œì§€ íŒŒì„œ/ìƒì„± ë¼ì´ë¸ŒëŸ¬ë¦¬
 
 * ServerMonitor
-  * ¼­¹ö ÀÚ·á±¸Á¶ ¸ð´ÏÅÍ¸µ ÇÁ·Î±×·¥
+  * ì„œë²„ ìžë£Œêµ¬ì¡° ëª¨ë‹ˆí„°ë§ í”„ë¡œê·¸ëž¨
 
 * ServerPlatform
-  * ¼­ºñ½º ¼­¹ö¿¡ °øÅëÀûÀ¸·Î »ç¿ëµÇ´Â ¶óÀÌºê·¯¸®
+  * ì„œë¹„ìŠ¤ ì„œë²„ì— ê³µí†µì ìœ¼ë¡œ ì‚¬ìš©ë˜ëŠ” ë¼ì´ë¸ŒëŸ¬ë¦¬
 
 * SimpleSipServer
-  * C++ SIP stack À» ÀÌ¿ëÇÏ¿©¼­ ÃÊ°£´Ü SIP ¼­¹ö ÇÁ·Î±×·¥À» °³¹ßÇÑ °ÍÀÔ´Ï´Ù.
-  * C++ SIP stack À» ÀÌ¿ëÇÏ¿© °£´ÜÇÏ°Ô SIP ¼­¹ö¸¦ °³¹ßÇÒ ¼ö ÀÖ´Ù´Â °ÍÀ» º¸¿©ÁÖ±â À§ÇÑ ¿¹Á¦ ÇÁ·Î±×·¥ÀÌ¿À´Ï C++ SIP stack ÀÇ »ç¿ë¹ýÀÌ ±Ã±ÝÇÏ½Å ºÐÀº ¼Ò½º ÄÚµå¸¦ ²À ÀÐ¾î º¸¼¼¿ä.
+  * C++ SIP stack ì„ ì´ìš©í•˜ì—¬ì„œ ì´ˆê°„ë‹¨ SIP ì„œë²„ í”„ë¡œê·¸ëž¨ì„ ê°œë°œí•œ ê²ƒìž…ë‹ˆë‹¤.
+  * C++ SIP stack ì„ ì´ìš©í•˜ì—¬ ê°„ë‹¨í•˜ê²Œ SIP ì„œë²„ë¥¼ ê°œë°œí•  ìˆ˜ ìžˆë‹¤ëŠ” ê²ƒì„ ë³´ì—¬ì£¼ê¸° ìœ„í•œ ì˜ˆì œ í”„ë¡œê·¸ëž¨ì´ì˜¤ë‹ˆ C++ SIP stack ì˜ ì‚¬ìš©ë²•ì´ ê¶ê¸ˆí•˜ì‹  ë¶„ì€ ì†ŒìŠ¤ ì½”ë“œë¥¼ ê¼­ ì½ì–´ ë³´ì„¸ìš”.
 
 * SipCallDump
-  * ÆÐÅ¶ ´ýÇÁÇÏ¿©¼­ ÅëÈ­º°·Î SIP ¹× RTP ÆÐÅ¶À» ÇÏ³ªÀÇ ÆÄÀÏ¿¡ ÀúÀåÇÏ´Â ¼­ºñ½º ÇÁ·Î±×·¥ÀÔ´Ï´Ù.
+  * íŒ¨í‚· ë¤í”„í•˜ì—¬ì„œ í†µí™”ë³„ë¡œ SIP ë° RTP íŒ¨í‚·ì„ í•˜ë‚˜ì˜ íŒŒì¼ì— ì €ìž¥í•˜ëŠ” ì„œë¹„ìŠ¤ í”„ë¡œê·¸ëž¨ìž…ë‹ˆë‹¤.
 
 * SipClient 
-  * C++ SIP stack À» Å×½ºÆ®ÇÏ±â À§ÇÑ SIP Å¬¶óÀÌ¾ðÆ® ÇÁ·Î±×·¥
-  * C++ SIP stack À¸·Î SIP Å¬¶óÀÌ¾ðÆ®¸¦ °³¹ßÇÏ½Ã·Á¸é º» ¼Ò½º ÄÚµå¸¦ Âü°íÇÏ¼¼¿ä.
+  * C++ SIP stack ì„ í…ŒìŠ¤íŠ¸í•˜ê¸° ìœ„í•œ SIP í´ë¼ì´ì–¸íŠ¸ í”„ë¡œê·¸ëž¨
+  * C++ SIP stack ìœ¼ë¡œ SIP í´ë¼ì´ì–¸íŠ¸ë¥¼ ê°œë°œí•˜ì‹œë ¤ë©´ ë³¸ ì†ŒìŠ¤ ì½”ë“œë¥¼ ì°¸ê³ í•˜ì„¸ìš”.
 
 * SipClientMFC
-  * C++ SIP stack À» Å×½ºÆ®ÇÏ±â À§ÇÑ MFC ±â¹Ý SIP Å¬¶óÀÌ¾ðÆ® ÇÁ·Î±×·¥
-  * MFC ±â¹ÝÀ¸·Î SIP Å¬¶óÀÌ¾ðÆ®¸¦ °³¹ßÇÏ½Ã·Á¸é º» ¼Ò½º ÄÚµå¸¦ Âü°íÇÏ¼¼¿ä.
+  * C++ SIP stack ì„ í…ŒìŠ¤íŠ¸í•˜ê¸° ìœ„í•œ MFC ê¸°ë°˜ SIP í´ë¼ì´ì–¸íŠ¸ í”„ë¡œê·¸ëž¨
+  * MFC ê¸°ë°˜ìœ¼ë¡œ SIP í´ë¼ì´ì–¸íŠ¸ë¥¼ ê°œë°œí•˜ì‹œë ¤ë©´ ë³¸ ì†ŒìŠ¤ ì½”ë“œë¥¼ ì°¸ê³ í•˜ì„¸ìš”.
 
 * SipLoadBalancer
-  * SIP ·Îµå¹ë·±¼­ ÇÁ·Î±×·¥
+  * SIP ë¡œë“œë°¸ëŸ°ì„œ í”„ë¡œê·¸ëž¨
 
 * SipParser
-  * SIP ¸Þ½ÃÁö ÆÄ¼­/»ý¼º ¶óÀÌºê·¯¸®
+  * SIP ë©”ì‹œì§€ íŒŒì„œ/ìƒì„± ë¼ì´ë¸ŒëŸ¬ë¦¬
 
 * SipPlatform
-  * C++ SIP stack ¿¡¼­ »ç¿ëµÇ´Â OS µ¶¸³ÀûÀÎ À¯Æ¿¸®Æ¼ ¶óÀÌºê·¯¸®
+  * C++ SIP stack ì—ì„œ ì‚¬ìš©ë˜ëŠ” OS ë…ë¦½ì ì¸ ìœ í‹¸ë¦¬í‹° ë¼ì´ë¸ŒëŸ¬ë¦¬
 
 * SipSpeed
-  * MS À©µµ¿ì¿ë SIP ¼­¹ö ¼º´É ÃøÁ¤ ÇÁ·Î±×·¥
+  * MS ìœˆë„ìš°ìš© SIP ì„œë²„ ì„±ëŠ¥ ì¸¡ì • í”„ë¡œê·¸ëž¨
 
 * SipSpeedLinux
-  * MS À©µµ¿ì/¸®´ª½º¿ë SIP ¼­¹ö ¼º´É ÃøÁ¤ ÇÁ·Î±×·¥
+  * MS ìœˆë„ìš°/ë¦¬ëˆ…ìŠ¤ìš© SIP ì„œë²„ ì„±ëŠ¥ ì¸¡ì • í”„ë¡œê·¸ëž¨
 
 * SipStack
-  * SIP stack ¶óÀÌºê·¯¸®
+  * SIP stack ë¼ì´ë¸ŒëŸ¬ë¦¬
 
 * SipTest
-  * SIP ¼­¹ö ±â´É Å×½ºÆ® ÇÁ·Î±×·¥
+  * SIP ì„œë²„ ê¸°ëŠ¥ í…ŒìŠ¤íŠ¸ í”„ë¡œê·¸ëž¨
 
 * SipUserAgent
-  * SIP ·Î±×ÀÎ / ÅëÈ­ °ü¸® ¶óÀÌºê·¯¸®
+  * SIP ë¡œê·¸ì¸ / í†µí™” ê´€ë¦¬ ë¼ì´ë¸ŒëŸ¬ë¦¬
 
 * SipUserAgentMFC
-  * SipUserAgent callback À» MFC ¿ëÀ¸·Î »ç¿ëÇÒ ¼ö ÀÖ´Â ¶óÀÌºê·¯¸®
+  * SipUserAgent callback ì„ MFC ìš©ìœ¼ë¡œ ì‚¬ìš©í•  ìˆ˜ ìžˆëŠ” ë¼ì´ë¸ŒëŸ¬ë¦¬
 
 * XmlParser
-  * XML ¹®ÀÚ¿­À» ÆÄ¼­/»ý¼º ¶óÀÌºê·¯¸®
+  * XML ë¬¸ìžì—´ì„ íŒŒì„œ/ìƒì„± ë¼ì´ë¸ŒëŸ¬ë¦¬
 
 * TestSipParser
-  * SipParser ¶óÀÌºê·¯¸® Å×½ºÆ® ÇÁ·Î±×·¥
+  * SipParser ë¼ì´ë¸ŒëŸ¬ë¦¬ í…ŒìŠ¤íŠ¸ í”„ë¡œê·¸ëž¨
 
 * TestSipServer
-  * SimpleSipServer ¼Ò½º ÄÚµå¸¦ °¡Á®¿Í¼­ Å×½ºÆ®¿ëÀ¸·Î »ç¿ëÇÒ IP-PBX ¸¦ °³¹ßÇÔ.
-  * Å×½ºÆ®¿ëÀÌ¹Ç·Î Å¬¶óÀÌ¾ðÆ® ·Î±×ÀÎ Á¤º¸¸¦ ÆÄÀÏ·Î ÀúÀåÇÏ¿´´Ù°¡ ½ÇÇàµÉ ¶§ ÀÐ¾î ¿À´Â ±â´ÉÀÌ Á¸ÀçÇÔ.
-  * ¿µ»ó µð¹ÙÀÌ½º ¿¬µ¿ Å×½ºÆ®¿ëÀ¸·Î °³¹ßµÊ.
+  * SimpleSipServer ì†ŒìŠ¤ ì½”ë“œë¥¼ ê°€ì ¸ì™€ì„œ í…ŒìŠ¤íŠ¸ìš©ìœ¼ë¡œ ì‚¬ìš©í•  IP-PBX ë¥¼ ê°œë°œí•¨.
+  * í…ŒìŠ¤íŠ¸ìš©ì´ë¯€ë¡œ í´ë¼ì´ì–¸íŠ¸ ë¡œê·¸ì¸ ì •ë³´ë¥¼ íŒŒì¼ë¡œ ì €ìž¥í•˜ì˜€ë‹¤ê°€ ì‹¤í–‰ë  ë•Œ ì½ì–´ ì˜¤ëŠ” ê¸°ëŠ¥ì´ ì¡´ìž¬í•¨.
+  * ì˜ìƒ ë””ë°”ì´ìŠ¤ ì—°ë™ í…ŒìŠ¤íŠ¸ìš©ìœ¼ë¡œ ê°œë°œë¨.
 
-### ÄÄÆÄÀÏ ¹æ¹ý
-º» ÇÁ·ÎÁ§Æ®ÀÇ ÄÄÆÄÀÏ ¹æ¹ýÀº ´ÙÀ½°ú °°½À´Ï´Ù.
+### ì»´íŒŒì¼ ë°©ë²•
+ë³¸ í”„ë¡œì íŠ¸ì˜ ì»´íŒŒì¼ ë°©ë²•ì€ ë‹¤ìŒê³¼ ê°™ìŠµë‹ˆë‹¤.
 
 * VC++ 2008
-  * SipStack.sln ´õºíÅ¬¸¯ÇÑ ÈÄ, ºôµåÇÑ´Ù.
-  * Visual Studio 2008 ¹öÀü 9.0.30729.1 SP ¿¡¼­ ºôµåÇÒ °ÍÀ» ±ÇÀåÇÕ´Ï´Ù.
+  * SipStack.sln ë”ë¸”í´ë¦­í•œ í›„, ë¹Œë“œí•œë‹¤.
+  * Visual Studio 2008 ë²„ì „ 9.0.30729.1 SP ì—ì„œ ë¹Œë“œí•  ê²ƒì„ ê¶Œìž¥í•©ë‹ˆë‹¤.
 
-* ¸®´ª½º / OSX
-  * make ¸¦ ½ÇÇàÇÑ´Ù.
+* ë¦¬ëˆ…ìŠ¤ / OSX
+  * make ë¥¼ ì‹¤í–‰í•œë‹¤.
 
-### TLS ¾øÀÌ ºôµåÇÏ°í ½ÍÀº °æ¿ì
-SipStack/SipStackDefine.h ¿¡¼­ ¾Æ·¡ÀÇ ¼Ò½º ÄÚµå¸¦ ÁÖ¼® Ã³¸®ÇÑ ÈÄ, ÄÄÆÄÀÏÇÕ´Ï´Ù.
+### TLS ì—†ì´ ë¹Œë“œí•˜ê³  ì‹¶ì€ ê²½ìš°
+SipStack/SipStackDefine.h ì—ì„œ ì•„ëž˜ì˜ ì†ŒìŠ¤ ì½”ë“œë¥¼ ì£¼ì„ ì²˜ë¦¬í•œ í›„, ì»´íŒŒì¼í•©ë‹ˆë‹¤.
 
+```
  #define USE_TLS
+```
 
-### À½¼º ÄÚµ¦¸¸ »ç¿ëÇÏ°í ½ÍÀº °æ¿ì
-KSipServer ¿¡¼­ ÁöÁ¤µÈ À½¼º ÄÚµ¦¸¸ »ç¿ëÇÏ°í ½Í°í À½¼º Åë½Å¸¸ ÇÒ °æ¿ì¿¡´Â ¾Æ·¡ÀÇ SipUserAgent/SipUserAgentCallBack.h ¿¡¼­ ¾Æ·¡ÀÇ ¼Ò½º ÄÚµå¸¦ ÁÖ¼® Ã³¸®ÇÑ ÈÄ, ÄÄÆÄÀÏÇÕ´Ï´Ù.
+### ìŒì„± ì½”ë±ë§Œ ì‚¬ìš©í•˜ê³  ì‹¶ì€ ê²½ìš°
+KSipServer ì—ì„œ ì§€ì •ëœ ìŒì„± ì½”ë±ë§Œ ì‚¬ìš©í•˜ê³  ì‹¶ê³  ìŒì„± í†µì‹ ë§Œ í•  ê²½ìš°ì—ëŠ” ì•„ëž˜ì˜ SipUserAgent/SipUserAgentCallBack.h ì—ì„œ ì•„ëž˜ì˜ ì†ŒìŠ¤ ì½”ë“œë¥¼ ì£¼ì„ ì²˜ë¦¬í•œ í›„, ì»´íŒŒì¼í•©ë‹ˆë‹¤.
 
+```
  #define USE_MEDIA_LIST
+```
