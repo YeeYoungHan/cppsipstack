@@ -2,7 +2,7 @@
 C++ STL 기반으로 SIP stack 을 개발하는 프로젝트입니다.
 
 ### 개요
-본 프로젝트의 목표는 다음과 같다.
+본 프로젝트의 목표는 다음과 같습니다.
 
 * C++ STL 기반 SIP stack 개발
 * C++ SIP stack 기반 IP-PBX 개발
@@ -12,14 +12,22 @@ C++ STL 기반으로 SIP stack 을 개발하는 프로젝트입니다.
 * C++ SIP stack 기반 MFC 응용 프로그램 개발
 * C++ SIP stack 기반 java SIP stack 개발
 
-본 프로젝트의 라이선스는 GPLv3 이다.
-본 프로젝트를 진행하는 개발자 정보는 다음과 같다. 본 프로젝트에 대한 상용 라이선스 발급을 원하시면 아래의 이메일 주소로 연락해 주세요. 아래의 블로그의 "영한 오픈소스 -> SIP stack" 카테고리에 C++ SIP stack 아키텍처, 사용법 및 Q&A 등이 기술되어 있습니다.
+### 개발자 정보
+본 프로젝트를 진행하는 개발자 정보는 다음과 같습니다.
 
 * 이메일: websearch@naver.com
 * 블로그: http://blog.naver.com/websearch
 
+위의 블로그의 "영한 오픈소스 -> SIP stack" 카테고리에 C++ SIP stack 아키텍처, 사용법 및 Q&A 등이 기술되어 있습니다.
+
+### 라이선스
+
+본 프로젝트의 라이선스는 GPLv3 입니다.
+본 프로젝트에 대한 상용 라이선스 발급을 원하시면 개발자 정보의 이메일 주소로 연락해 주세요.
+
+
 ### 폴더 설명
-본 프로젝트에 포함된 폴더에 대한 설명은 다음과 같다.
+본 프로젝트에 포함된 폴더에 대한 설명은 다음과 같습니다.
 
 * AndroidCppSipStack
   * 안드로이드 NDK 빌드를 위한 sip stack static library 빌드용
@@ -108,6 +116,7 @@ C++ STL 기반으로 SIP stack 을 개발하는 프로젝트입니다.
   * 영상 디바이스 연동 테스트용으로 개발됨.
 
 ### 컴파일 방법
+본 프로젝트의 컴파일 방법은 다음과 같습니다.
 
 * VC++ 2008
   * SipStack.sln 더블클릭한 후, 빌드한다.
@@ -117,11 +126,11 @@ C++ STL 기반으로 SIP stack 을 개발하는 프로젝트입니다.
   * make 를 실행한다.
 
 ### TLS 없이 빌드하고 싶은 경우
-SipStack/SipStackDefine.h 에서 아래의 소스 코드를 주석 처리한 후, 컴파일한다.
+SipStack/SipStackDefine.h 에서 아래의 소스 코드를 주석 처리한 후, 컴파일합니다.
 
  #define USE_TLS
 
 ### 음성 코덱만 사용하고 싶은 경우
-KSipServer 에서 지정된 음성 코덱만 사용하고 싶고 음성 통신만 할 경우에는 아래의 SipUserAgent/SipUserAgentCallBack.h 에서 아래의 소스 코드를 주석 처리한 후, 컴파일한다.
+KSipServer 에서 지정된 음성 코덱만 사용하고 싶고 음성 통신만 할 경우에는 아래의 SipUserAgent/SipUserAgentCallBack.h 에서 아래의 소스 코드를 주석 처리한 후, 컴파일합다.
 
  #define USE_MEDIA_LIST
