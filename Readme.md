@@ -22,9 +22,8 @@ C++ STL 기반으로 SIP stack 을 개발하는 프로젝트입니다.
 
 ### 라이선스
 
-본 프로젝트의 라이선스는 GPLv3 입니다.
-본 프로젝트에 대한 상용 라이선스 발급을 원하시면 개발자 정보의 이메일 주소로 연락해 주세요.
-
+* 본 프로젝트의 라이선스는 GPLv3 입니다.
+* 본 프로젝트에 대한 상용 라이선스 발급을 원하시면 개발자 정보의 이메일 주소로 연락해 주세요.
 
 ### 폴더 설명
 본 프로젝트에 포함된 폴더에 대한 설명은 다음과 같습니다.
@@ -131,6 +130,6 @@ SipStack/SipStackDefine.h 에서 아래의 소스 코드를 주석 처리한 후, 컴파일합니다.
  #define USE_TLS
 
 ### 음성 코덱만 사용하고 싶은 경우
-KSipServer 에서 지정된 음성 코덱만 사용하고 싶고 음성 통신만 할 경우에는 아래의 SipUserAgent/SipUserAgentCallBack.h 에서 아래의 소스 코드를 주석 처리한 후, 컴파일합다.
+KSipServer 에서 지정된 음성 코덱만 사용하고 싶고 음성 통신만 할 경우에는 아래의 SipUserAgent/SipUserAgentCallBack.h 에서 아래의 소스 코드를 주석 처리한 후, 컴파일합니다.
 
  #define USE_MEDIA_LIST
