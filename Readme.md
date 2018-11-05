@@ -141,4 +141,34 @@ KSipServer 에서 지정된 음성 코덱만 사용하고 싶고 음성 통신�
 ### C++ SIP stack 관련 포스트 리스트
 
 * https://blog.naver.com/websearch/221380224274 : SipClientMFC 프로그램에 TLS 통신 기능 추가 완료
-
+* https://blog.naver.com/websearch/221377762416 : KSipServer 성능 측정 결과 - 다섯번째 이야기 : 3,100cps 달성
+* https://blog.naver.com/websearch/221369022139 : SipClientMFC 프로그램에 로컬 IP 주소 설정하는 기능 추가 완료
+* https://blog.naver.com/websearch/221348970565 : SipClientMFC 프로그램에 TCP 기반 SIP 통신 기능 추가함
+* https://blog.naver.com/websearch/221338166564 : KSipServer 가 RTP relay 하지 않도록 설정하는 방법
+* https://blog.naver.com/websearch/221335748185 : 패킷 덤프에는 SIP 메시지가 수신되는데 KSipServer 로그에는 수신된 SIP 메시지가 존재하지 않는 경우 해결 방법
+* https://blog.naver.com/websearch/221296662438 : C++ SIP stack 으로 삼성 070 서비스에 로그인하는 방법
+* https://blog.naver.com/websearch/221293416636 : C++ SIP stack 에서 SIP REGISTER 메시지의 Expires 헤더 수정하는 방법
+* https://blog.naver.com/websearch/221278878737 : C++ SIP stack 으로 SIP OPTIONS 메시지 전송하는 방법
+* https://blog.naver.com/websearch/221262559100 : C++ SIP stack 프로젝트의 SipClientMFC 에 음성 통신 기능 1차 추가 완료
+* https://blog.naver.com/websearch/221262145495 : C++ SIP stack 에서 UDP SIP 메시지 수신 및 callback 호출 구조
+* https://blog.naver.com/websearch/221258225658 : VC++ 에서 KSipServer 를 디버그 모드로 실행하는 방법
+* https://blog.naver.com/websearch/221227582931 : 영상 통화 가능하게 KSipServer 빌드하는 방법
+* https://blog.naver.com/websearch/221207632038 : VisualStudio 2017 에서 C++ SIP stack 빌드하는 방법
+* https://blog.naver.com/websearch/221201705562 : C++ SIP stack 기반 WebRTC gateway 와 Safari 음성 통신 개발 완료
+* https://blog.naver.com/websearch/221187986809 : C++ SIP stack 기반 WebRTC gateway 와 Edge, Chrome, Firefox, Opera, Andriod 와 음성 통신 개발 완료
+* https://blog.naver.com/websearch/221185607478 : C++ SIP stack 기반으로 WebRTC gateway 샘플 프로그램과 LG CM 연동 및 핸드폰 연동 테스트 완료
+* https://blog.naver.com/websearch/221182435607 : C++ SIP stack 과 C++ HTTP stack 프로젝트에 포함된 TestWebRtc 프로그램 비교
+* https://blog.naver.com/websearch/221166795719 : SIP 통화별 패킷 덤프 파일을 생성하는 프로그램 1차 개발 완료
+* https://blog.naver.com/websearch/221032868433 : 초간단 윈도우용 SIP 서버 설치 방법
+* https://blog.naver.com/websearch/220977772119 : C++ SIP stack 의 장점
+* https://blog.naver.com/websearch/220884720374 : C++ SIP stack 컴파일시 "미리 컴파일된 헤더 파일을 열 수 없습니다" 오류 해결 방법
+* https://blog.naver.com/websearch/220474064444 : SIP 클라이언트의 REGISTER, INVITE 테스트 방법
+* https://blog.naver.com/websearch/220474061522 : AndroidSipStack 빌드 오류 해결 방법
+* https://blog.naver.com/websearch/220418608046 : SipUserAgentMFC 기반 프로젝트 빌드 오류 해결 방법
+* https://blog.naver.com/websearch/220250563240 : C++ SIP stack 사용법
+* https://blog.naver.com/websearch/220071411915 : C++ SIP stack 으로 통화 호출하는 방법
+* https://blog.naver.com/websearch/220071177716 : C++ SIP stack 으로 IP-PBX 에 로그인하는 방법
+* https://blog.naver.com/websearch/220063359790 : C++ SIP stack 으로 SIP 클라이언트 프로그램 개발 가이드
+* https://blog.naver.com/websearch/220016067688 : C++ SIP stack 구조
+* https://blog.naver.com/websearch/70178105983 : MFC 환경에서 C++ SIP stack 사용 방법
+* https://blog.naver.com/websearch/70143429814 : 간단한 C++ SIP stack 사용 방법
