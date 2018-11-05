@@ -137,3 +137,8 @@ KSipServer 에서 지정된 음성 코덱만 사용하고 싶고 음성 통신�
 ```
  #define USE_MEDIA_LIST
 ```
+
+### C++ SIP stack 관련 포스트 리스트
+
+* https://blog.naver.com/websearch/221380224274 : SipClientMFC 프로그램에 TLS 통신 기능 추가 완료
+
