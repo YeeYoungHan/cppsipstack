@@ -1,23 +1,23 @@
-### °³¿ä
-* ¾Èµå·ÎÀÌµå¿¡¼­ »ç¿ëÇÒ ¼ö ÀÖ´Â SIP stack NDK ¶óÀÌºê·¯¸®¸¦ À§ÇÑ static library ¸¦ ºôµåÇÑ´Ù.
+### ê°œìš”
+* ì•ˆë“œë¡œì´ë“œì—ì„œ ì‚¬ìš©í•  ìˆ˜ ìžˆëŠ” SIP stack NDK ë¼ì´ë¸ŒëŸ¬ë¦¬ë¥¼ ìœ„í•œ static library ë¥¼ ë¹Œë“œí•œë‹¤.
 
-### ¶óÀÌ¼±½º
-* º» ÇÁ·ÎÁ§Æ®ÀÇ ¶óÀÌ¼±½º´Â GPLv3 ÀÌ´Ù.
+### ë¼ì´ì„ ìŠ¤
+* ë³¸ í”„ë¡œì íŠ¸ì˜ ë¼ì´ì„ ìŠ¤ëŠ” GPLv3 ì´ë‹¤.
 
-### °³¹ßÀÚ Á¤º¸
-º» ÇÁ·ÎÁ§Æ®¸¦ ÁøÇàÇÏ´Â °³¹ßÀÚ Á¤º¸´Â ´ÙÀ½°ú °°´Ù. º» ÇÁ·ÎÁ§Æ®¿¡ ´ëÇÑ »ó¿ë ¶óÀÌ¼±½º ¹ß±ÞÀ» ¿øÇÏ½Ã¸é ¾Æ·¡ÀÇ ÀÌ¸ÞÀÏ ÁÖ¼Ò·Î ¿¬¶ôÇØ ÁÖ¼¼¿ä.
+### ê°œë°œìž ì •ë³´
+ë³¸ í”„ë¡œì íŠ¸ë¥¼ ì§„í–‰í•˜ëŠ” ê°œë°œìž ì •ë³´ëŠ” ë‹¤ìŒê³¼ ê°™ë‹¤. ë³¸ í”„ë¡œì íŠ¸ì— ëŒ€í•œ ìƒìš© ë¼ì´ì„ ìŠ¤ ë°œê¸‰ì„ ì›í•˜ì‹œë©´ ì•„ëž˜ì˜ ì´ë©”ì¼ ì£¼ì†Œë¡œ ì—°ë½í•´ ì£¼ì„¸ìš”.
 
- ÀÌ¸ÞÀÏ: websearch@naver.com
- ºí·Î±×: http://blog.naver.com/websearch
+* ì´ë©”ì¼: websearch@naver.com
+* ë¸”ë¡œê·¸: http://blog.naver.com/websearch
 
-### AndroidCppSipStack NDK ÄÄÆÄÀÏ ¹æ¹ý
+### AndroidCppSipStack NDK ì»´íŒŒì¼ ë°©ë²•
 
-* cygwin ÀÇ ¾Æ·¡ÀÇ Æú´õ¿¡ android-ndk-r8d ¸¦ ¼³Ä¡ÇÑ´Ù.
+* cygwin ì˜ ì•„ëž˜ì˜ í´ë”ì— android-ndk-r8d ë¥¼ ì„¤ì¹˜í•œë‹¤.
 ```
 /android-ndk-r8d
 ```
 
-* jni Æú´õ¿¡¼­ ¾Æ·¡¿Í °°ÀÌ ÄÄÆÄÀÏÇÑ´Ù.
+* jni í´ë”ì—ì„œ ì•„ëž˜ì™€ ê°™ì´ ì»´íŒŒì¼í•œë‹¤.
 ```
 # ./make.sh
 ```
