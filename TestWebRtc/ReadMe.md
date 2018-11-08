@@ -20,4 +20,11 @@ TestWebRtc.exe 프로그램은 TestWebRtc 폴더의 html 폴더를 document root
 # TestHttpStack.exe {local ip} C:\OpenProject\CppSipStack\trunk\TestWebRtc\html
 ```
 
+### 관련 포스트
+
+* https://blog.naver.com/websearch/221201705562 : C++ SIP stack 기반 WebRTC gateway 와 Safari 음성 통신 개발 완료
+* https://blog.naver.com/websearch/221187986809 : C++ SIP stack 기반 WebRTC gateway 와 Edge, Chrome, Firefox, Opera, Andriod 와 음성 통신 개발 완료
+* https://blog.naver.com/websearch/221185607478 : C++ SIP stack 기반으로 WebRTC gateway 샘플 프로그램과 LG CM 연동 및 핸드폰 연동 테스트 완료
+* https://blog.naver.com/websearch/221182435607 : C++ SIP stack 과 C++ HTTP stack 프로젝트에 포함된 TestWebRtc 프로그램 비교
+
  

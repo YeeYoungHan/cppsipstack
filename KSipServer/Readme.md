@@ -42,4 +42,13 @@ KSipServer 0.06 버전의 주요 기능은 다음과 같습니다.
   * IP-PBX 와 연동하여서 전화 통화 연결 기능 
 
 * 모니터링 기능 
-  * 내부 자료구조에 대한 모니터링 기능 ( KSipServerMonitor.exe 로 모니터링 할 수 있음 ) 
+  * 내부 자료구조에 대한 모니터링 기능 ( KSipServerMonitor.exe 로 모니터링 할 수 있음 )
+
+### 관련 포스트
+
+* https://blog.naver.com/websearch/221377762416 : KSipServer 성능 측정 결과 - 다섯번째 이야기 : 3,100cps 달성
+* https://blog.naver.com/websearch/221338166564 : KSipServer 가 RTP relay 하지 않도록 설정하는 방법
+* https://blog.naver.com/websearch/221335748185 : 패킷 덤프에는 SIP 메시지가 수신되는데 KSipServer 로그에는 수신된 SIP 메시지가 존재하지 않는 경우 해결 방법
+* https://blog.naver.com/websearch/221258225658 : VC++ 에서 KSipServer 를 디버그 모드로 실행하는 방법
+* https://blog.naver.com/websearch/221227582931 : 영상 통화 가능하게 KSipServer 빌드하는 방법
+

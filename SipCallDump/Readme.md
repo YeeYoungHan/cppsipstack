@@ -39,3 +39,8 @@ dos> SipCallDump.exe SipCallDump.xml
 ```
 dos> SipCallDump.exe -i
 ```
+
+### 관련 포스트
+
+* https://blog.naver.com/websearch/221166795719 : SIP 통화별 패킷 덤프 파일을 생성하는 프로그램 1차 개발 완료
+

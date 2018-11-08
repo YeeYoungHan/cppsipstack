@@ -21,3 +21,12 @@
 ### 라이선스
 
 * 본 프로젝트의 라이선스는 GPLv3 이고 기업용 라이선스는 websearch@naver.com 으로 문의해 주세요.
+
+### 관련 포스트
+
+* https://blog.naver.com/websearch/221380224274 : SipClientMFC 프로그램에 TLS 통신 기능 추가 완료
+* https://blog.naver.com/websearch/221369022139 : SipClientMFC 프로그램에 로컬 IP 주소 설정하는 기능 추가 완료
+* https://blog.naver.com/websearch/221348970565 : SipClientMFC 프로그램에 TCP 기반 SIP 통신 기능 추가함
+* https://blog.naver.com/websearch/221262559100 : C++ SIP stack 프로젝트의 SipClientMFC 에 음성 통신 기능 1차 추가 완료
+* https://blog.naver.com/websearch/70178105983 : MFC 환경에서 C++ SIP stack 사용 방법
+* https://blog.naver.com/websearch/220418608046 : SipUserAgentMFC 기반 프로젝트 빌드 오류 해결 방법

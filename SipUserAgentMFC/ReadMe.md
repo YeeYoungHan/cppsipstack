@@ -18,3 +18,7 @@
 ### 라이선스
 
 * 본 프로젝트의 라이선스는 GPLv3 이고 기업용 라이선스는 websearch@naver.com 으로 문의해 주세요.
+
+### 관련 포스트
+
+* https://blog.naver.com/websearch/220418608046 : SipUserAgentMFC 기반 프로젝트 빌드 오류 해결 방법
