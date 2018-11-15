@@ -96,7 +96,4 @@
       <Filter>리소스 파일</Filter>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
 </Project>

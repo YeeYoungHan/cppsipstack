@@ -122,7 +122,4 @@
       <Filter>유틸리티</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
 </Project>

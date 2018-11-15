@@ -180,9 +180,6 @@
     <ClInclude Include="SipVia.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\SipPlatform\SipPlatform.vcxproj">
       <Project>{59766094-16e8-4602-9621-6c1e5ed9af5f}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

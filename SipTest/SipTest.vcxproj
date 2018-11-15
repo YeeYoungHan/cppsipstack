@@ -253,9 +253,6 @@
     <None Include="res\SipTest.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\SdpParser\SdpParser.vcxproj">
       <Project>{37b903a3-633b-4f2c-9146-aa7d49c92b95}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

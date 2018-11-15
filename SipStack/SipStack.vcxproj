@@ -204,9 +204,6 @@
     <ClInclude Include="TlsFunction.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\SipParser\SipParser.vcxproj">
       <Project>{11e19ca3-f409-41e3-bd62-e1cea134b7db}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

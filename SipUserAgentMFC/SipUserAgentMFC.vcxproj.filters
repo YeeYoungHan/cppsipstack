@@ -31,7 +31,4 @@
       <Filter>SIP</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
 </Project>

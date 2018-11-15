@@ -186,7 +186,4 @@
       <Filter>모니터링</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
 </Project>
