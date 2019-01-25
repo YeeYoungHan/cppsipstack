@@ -19,9 +19,12 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.26"
+#define SIP_USER_AGENT_VERSION "0.27"
 
 /* 버전 정보
+
+= 버전 0.27 ( 2019년 1월 25일 ) =
+ * INVITE 200 OK 응답의 Contact 으로 ACK req uri 를 생성한다.
 
 = 버전 0.26 ( 2015년 9월 16일 ) =
  * SIP REGISTER transaction 이 종료되기 전에 새로운 SIP REGISTER 메시지가 전송되지 않는 기능을 추가함

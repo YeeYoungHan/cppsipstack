@@ -308,6 +308,9 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 
 					itContact->m_clsUri.ToString( szUri, sizeof(szUri) );
 					itMap->second.m_strContactUri = szUri;
+
+					if( pclsAck ) delete pclsAck;
+					pclsAck = itMap->second.CreateAck();
 				}
 
 				if( itMap->second.m_sttStartTime.tv_sec == 0 )
