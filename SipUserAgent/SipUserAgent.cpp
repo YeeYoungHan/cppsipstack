@@ -296,11 +296,27 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 		{
 			if( pclsMessage->m_iStatusCode != SIP_CONNECT_ERROR )
 			{
-				pclsAck = itMap->second.CreateAck();
+				pclsAck = itMap->second.CreateAck( pclsMessage->m_iStatusCode );
 			}
 
 			if( pclsMessage->m_iStatusCode >= SIP_OK && pclsMessage->m_iStatusCode < SIP_MULTIPLE_CHOICES )
 			{
+				bool bCreateAck = false;
+
+				if( pclsMessage->m_clsRecordRouteList.size() > 0 )
+				{
+					SIP_FROM_LIST::reverse_iterator itRL;
+
+					itMap->second.m_clsRouteList.clear();
+
+					for( itRL = pclsMessage->m_clsRecordRouteList.rbegin(); itRL != pclsMessage->m_clsRecordRouteList.rend(); ++itRL )
+					{
+						itMap->second.m_clsRouteList.push_back( *itRL );
+					}
+
+					bCreateAck = true;
+				}
+
 				SIP_FROM_LIST::iterator	itContact = pclsMessage->m_clsContactList.begin();
 				if( itContact != pclsMessage->m_clsContactList.end() )
 				{
@@ -308,9 +324,13 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 
 					itContact->m_clsUri.ToString( szUri, sizeof(szUri) );
 					itMap->second.m_strContactUri = szUri;
+					bCreateAck = true;	
+				}
 
+				if( bCreateAck )
+				{
 					if( pclsAck ) delete pclsAck;
-					pclsAck = itMap->second.CreateAck();
+					pclsAck = itMap->second.CreateAck( pclsMessage->m_iStatusCode );
 				}
 
 				if( itMap->second.m_sttStartTime.tv_sec == 0 )

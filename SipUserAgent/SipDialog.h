@@ -132,7 +132,7 @@ public:
 	bool m_bSendCall;
 
 	CSipMessage * CreateInvite( );
-	CSipMessage * CreateAck( );
+	CSipMessage * CreateAck( int iStatusCode );
 	CSipMessage * CreateCancel( );
 	CSipMessage * CreateBye( );
 	CSipMessage * CreateNotify( );

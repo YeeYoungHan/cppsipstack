@@ -77,14 +77,18 @@ CSipMessage * CSipDialog::CreateInvite( )
 /**
  * @ingroup SipUserAgent
  * @brief ACK 메시지를 생성한다.
+ * @param iStatusCode SIP INVITE 응답 코드
  * @returns 성공하면 ACK 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
  */
-CSipMessage * CSipDialog::CreateAck( )
+CSipMessage * CSipDialog::CreateAck( int iStatusCode )
 {
 	CSipMessage * pclsMessage = CreateMessage( SIP_METHOD_ACK );
 	if( pclsMessage == NULL ) return NULL;
 
-	pclsMessage->AddVia( m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.GetLocalPort( m_eTransport ), m_strViaBranch.c_str(), m_eTransport );
+	if( iStatusCode / 100 != 2 )
+	{
+		pclsMessage->AddVia( m_pclsSipStack->m_clsSetup.m_strLocalIp.c_str(), m_pclsSipStack->m_clsSetup.GetLocalPort( m_eTransport ), m_strViaBranch.c_str(), m_eTransport );
+	}
 
 	return pclsMessage;
 }

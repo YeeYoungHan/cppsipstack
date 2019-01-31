@@ -19,9 +19,13 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.27"
+#define SIP_USER_AGENT_VERSION "0.28"
 
 /* 버전 정보
+
+= 버전 0.28 ( 2019년 1월 31일 ) =
+ * 2XX 응답에 대한 ACK Via branch 를 새로 생성한다.
+ * 2XX 응답에 대한 RecordRoute 헤더 정보를 Dialog 에 저장한다.
 
 = 버전 0.27 ( 2019년 1월 25일 ) =
  * INVITE 200 OK 응답의 Contact 으로 ACK req uri 를 생성한다.
