@@ -66,6 +66,7 @@ public:
 	void Final();
 
 	void DeleteAllTransaction();
+	void GetICTMap( INVITE_TRANSACTION_MAP & clsMap );
 
 	// SipStackCallBack.hpp
 	bool AddCallBack( ISipStackCallBack * pclsCallBack );

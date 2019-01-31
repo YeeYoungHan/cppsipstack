@@ -334,6 +334,16 @@ void CSipStack::DeleteAllTransaction()
 
 /**
  * @ingroup SipStack
+ * @brief ICT transcation map 을 가져온다.
+ * @param clsMap [out] transcation map 저장 변수
+ */
+void CSipStack::GetICTMap( INVITE_TRANSACTION_MAP & clsMap )
+{
+	m_clsICT.GetTransactionMap( clsMap );
+}
+
+/**
+ * @ingroup SipStack
  * @brief UDP SIP 메시지 수신 쓰레드에 종료 SIP 메시지를 전송하고 SIP stack 쓰레드에 종료 이벤트를 설정한 후, 모든 쓰레드가 종료할 때까지 대기한 후,
  *				소켓 핸들을 종료시킨다.
  * @returns true 를 리턴한다.

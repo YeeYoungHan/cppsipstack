@@ -298,3 +298,15 @@ void CSipICTList::SetTimerD( int iMiliSecond )
 {
 	m_iTimerD = iMiliSecond;
 }
+
+/**
+ * @ingroup SipStack
+ * @brief transcation map 을 가져온다.
+ * @param clsMap [out] transcation map 을 저장할 변수
+ */
+void CSipICTList::GetTransactionMap( INVITE_TRANSACTION_MAP & clsMap )
+{
+	m_clsMutex.acquire();
+	clsMap = m_clsMap;
+	m_clsMutex.release();
+}

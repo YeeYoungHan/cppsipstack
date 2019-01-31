@@ -39,6 +39,7 @@ public:
 	virtual void GetString( CMonitorString & strBuf );
 
 	void SetTimerD( int iMiliSecond );
+	void GetTransactionMap( INVITE_TRANSACTION_MAP & clsMap );
 
 private:
 	INVITE_TRANSACTION_MAP	m_clsMap;
