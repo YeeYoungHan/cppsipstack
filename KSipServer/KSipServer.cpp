@@ -53,6 +53,7 @@ int ServiceMain( )
 
 	CLog::SetDirectory( gclsSetup.m_strLogFolder.c_str() );
 	CLog::Print( LOG_SYSTEM, "KSipServer is started ( version-%s %s %s )", KSIP_SERVER_VERSION, __DATE__, __TIME__ );
+	CLog::Print( LOG_DEBUG, "KSipServer[%s]", CDirectory::GetProgramDirectory() );
 
 	if( gclsSetup.m_strCdrFolder.empty() == false )
 	{

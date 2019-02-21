@@ -341,15 +341,25 @@ char * CDirectory::GetProgramDirectory( )
 	if( strlen(szDir) == 0 )
 	{
 #ifdef WIN32
-		int		i;
 		HMODULE	hThis;
 
 		hThis = GetModuleHandle( NULL );
 
 		GetModuleFileName( hThis, szDir, sizeof(szDir));
-		for( i = (int)strlen( szDir) - 1; i >= 0; i-- )
+		for( int i = (int)strlen( szDir) - 1; i >= 0; i-- )
 		{
 			if( szDir[i] == '\\' ) 
+			{
+				szDir[i] = '\0';
+				break;
+			}
+		}
+#else
+		readlink( "/proc/self/exe", szDir, sizeof(szDir) );
+
+		for( int i = (int)strlen( szDir) - 1; i >= 0; i-- )
+		{
+			if( szDir[i] == '/' ) 
 			{
 				szDir[i] = '\0';
 				break;
