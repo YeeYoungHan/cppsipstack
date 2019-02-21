@@ -355,14 +355,15 @@ char * CDirectory::GetProgramDirectory( )
 			}
 		}
 #else
-		readlink( "/proc/self/exe", szDir, sizeof(szDir) );
-
-		for( int i = (int)strlen( szDir) - 1; i >= 0; i-- )
+		if( readlink( "/proc/self/exe", szDir, sizeof(szDir) ) != -1 )
 		{
-			if( szDir[i] == '/' ) 
+			for( int i = (int)strlen( szDir) - 1; i >= 0; i-- )
 			{
-				szDir[i] = '\0';
-				break;
+				if( szDir[i] == '/' ) 
+				{
+					szDir[i] = '\0';
+					break;
+				}
 			}
 		}
 #endif
