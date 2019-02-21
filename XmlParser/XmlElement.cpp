@@ -135,7 +135,7 @@ int CXmlElement::Parse( const char * pszText, int iTextLen )
 				cType = XML_ELEMENT_CDATA;
 				iStartPos = iPos + 9;
 			}
-			else if( iPos + 1 < iTextLen && pszText[iPos+1] == '?' )
+			else if( iPos + 1 < iTextLen && ( pszText[iPos+1] == '?' || pszText[iPos+1] == '!' ) )
 			{
 				cTypeOld = cType;
 				cType = XML_ELEMENT_DECLARATION;
