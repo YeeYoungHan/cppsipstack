@@ -66,6 +66,20 @@ void CMonitorString::AddCol( const std::string & strIp, int iPort )
 
 /**
  * @ingroup SipStack
+ * @brief 컬럼 문자열에 IP 주소와 포트 번호를 저장한다.
+ * @param iIp		IP 주소
+ * @param iPort 포트 번호
+ */
+void CMonitorString::AddCol( uint32_t iIp, uint16_t iPort )
+{
+	char	szTemp[25];
+
+	snprintf( szTemp, sizeof(szTemp), "%d.%d.%d.%d:%d", (iIp)&0xFF, (iIp>>8)&0xFF, (iIp>>16)&0xFF, (iIp>>24)&0xFF, ntohs(iPort) );
+	AddCol( szTemp );
+}
+
+/**
+ * @ingroup SipStack
  * @brief 컬럼 문자열에 숫자를 저장한다.
  * @param iValue 숫자
  */
@@ -74,6 +88,19 @@ void CMonitorString::AddCol( int iValue )
 	char	szValue[21];
 
 	snprintf( szValue, sizeof(szValue), "%d", iValue );
+	AddCol( szValue );
+}
+
+/**
+ * @ingroup SipStack
+ * @brief 컬럼 문자열에 숫자를 저장한다.
+ * @param iValue 숫자
+ */
+void CMonitorString::AddCol( uint32_t iValue )
+{
+	char	szValue[21];
+
+	snprintf( szValue, sizeof(szValue), "%u", iValue );
 	AddCol( szValue );
 }
 
@@ -88,6 +115,16 @@ void CMonitorString::AddCol( time_t iTime )
 
 	GetDateTimeString( iTime, szTime, sizeof(szTime) );
 	AddCol( szTime );
+}
+
+/**
+ * @ingroup SipStack
+ * @brief 컬럼 문자열에 true/false 를 저장한다.
+ * @param bValue true/false
+ */
+void CMonitorString::AddCol( bool bValue )
+{
+	AddCol( bValue ? "true" : "false" );
 }
 
 /**
@@ -127,6 +164,20 @@ void CMonitorString::AddRow( const std::string & strIp, int iPort )
 
 /**
  * @ingroup SipStack
+ * @brief 줄의 마지막 문자열에 IP 주소와 포트 번호를 저장한다.
+ * @param iIp		IP 주소
+ * @param iPort 포트 번호
+ */
+void CMonitorString::AddRow( uint32_t iIp, uint16_t iPort )
+{
+	char	szTemp[25];
+
+	snprintf( szTemp, sizeof(szTemp), "%d.%d.%d.%d:%d", (iIp)&0xFF, (iIp>>8)&0xFF, (iIp>>16)&0xFF, (iIp>>24)&0xFF, ntohs(iPort) );
+	AddRow( szTemp );
+}
+
+/**
+ * @ingroup SipStack
  * @brief 줄의 마지막 문자열에 숫자를 저장한다.
  * @param iValue 숫자
  */
@@ -135,6 +186,19 @@ void CMonitorString::AddRow( int iValue )
 	char	szValue[21];
 
 	snprintf( szValue, sizeof(szValue), "%d", iValue );
+	AddRow( szValue );
+}
+
+/**
+ * @ingroup SipStack
+ * @brief 줄의 마지막 문자열에 숫자를 저장한다.
+ * @param iValue 숫자
+ */
+void CMonitorString::AddRow( uint32_t iValue )
+{
+	char	szValue[21];
+
+	snprintf( szValue, sizeof(szValue), "%u", iValue );
 	AddRow( szValue );
 }
 
@@ -149,6 +213,16 @@ void CMonitorString::AddRow( time_t iTime )
 
 	GetDateTimeString( iTime, szTime, sizeof(szTime) );
 	AddRow( szTime );
+}
+
+/**
+ * @ingroup SipStack
+ * @brief 줄의 마지막  문자열에 true/false 를 저장한다.
+ * @param bValue true/false
+ */
+void CMonitorString::AddRow( bool bValue )
+{
+	AddRow( bValue ? "true" : "false" );
 }
 
 /**

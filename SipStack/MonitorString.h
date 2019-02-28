@@ -34,14 +34,20 @@ public:
 	void AddCol( const char * pszValue );
 	void AddCol( const std::string & strValue );
 	void AddCol( const std::string & strIp, int iPort );
+	void AddCol( uint32_t iIp, uint16_t iPort );
 	void AddCol( int iValue );
+	void AddCol( uint32_t iValue );
 	void AddCol( time_t iTime );
+	void AddCol( bool bValue );
 
 	void AddRow( const char * pszValue );
 	void AddRow( const std::string & strValue );
 	void AddRow( const std::string & strIp, int iPort );
+	void AddRow( uint32_t iIp, uint16_t iPort );
 	void AddRow( int iValue );
+	void AddRow( uint32_t iValue );
 	void AddRow( time_t iTime );
+	void AddRow( bool bValue );
 
 	void Clear( );
 
