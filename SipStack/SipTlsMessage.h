@@ -25,7 +25,7 @@
 
 #ifdef USE_TLS
 
-bool SipTlsSend( Socket hSocket, SSL * psttSsl, const char * pszIp, int iPort, CSipMessage * pclsMessage );
+bool SipTlsSend( Socket hSocket, SSL * psttSsl, const char * pszIp, int iPort, CSipMessage * pclsMessage, int iLocalTlsPort );
 
 #endif
 

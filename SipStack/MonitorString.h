@@ -19,6 +19,7 @@
 #ifndef _MONITOR_STRING_H_
 #define _MONITOR_STRING_H_
 
+#include "SipPlatformDefine.h"
 #include <string>
 
 /**

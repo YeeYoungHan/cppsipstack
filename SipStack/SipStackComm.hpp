@@ -349,7 +349,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 
 		if( m_clsTcpSocketMap.Select( pszIp, iPort, hSocket ) )
 		{
-			SipTcpSend( hSocket, pszIp, iPort, pclsMessage );
+			SipTcpSend( hSocket, pszIp, iPort, pclsMessage, m_clsSetup.m_bUseContactListenPort ? m_clsSetup.m_iLocalTcpPort : 0 );
 		}
 		else
 		{
@@ -359,7 +359,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 	else if( eTransport == E_SIP_TLS )
 	{
 #ifdef USE_TLS
-		if( m_clsTlsSocketMap.SendTls( pszIp, iPort, pclsMessage ) )
+		if( m_clsTlsSocketMap.SendTls( pszIp, iPort, pclsMessage, m_clsSetup.m_bUseContactListenPort ? m_clsSetup.m_iLocalTlsPort : 0 ) )
 		{
 			bRes = true;
 		}

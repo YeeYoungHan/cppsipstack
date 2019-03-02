@@ -51,7 +51,7 @@ THREAD_API SipTcpClientThread( LPVOID lpParameter )
 	Socket hSocket = TcpConnect( pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipStack->m_clsSetup.m_iTcpConnectTimeout );
 	if( hSocket != INVALID_SOCKET )
 	{
-		if( SipTcpSend( hSocket, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage ) )
+		if( SipTcpSend( hSocket, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage, pclsArg->m_pclsSipStack->m_clsSetup.m_bUseContactListenPort ? pclsArg->m_pclsSipStack->m_clsSetup.m_iLocalTcpPort : 0 ) )
 		{
 			SIP_MESSAGE_LIST clsSipMessageList;
 
@@ -61,7 +61,7 @@ THREAD_API SipTcpClientThread( LPVOID lpParameter )
 
 				for( itList = clsSipMessageList.begin(); itList != clsSipMessageList.end(); ++itList )
 				{
-					SipTcpSend( hSocket, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, *itList );
+					SipTcpSend( hSocket, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, *itList, pclsArg->m_pclsSipStack->m_clsSetup.m_bUseContactListenPort ? pclsArg->m_pclsSipStack->m_clsSetup.m_iLocalTcpPort : 0 );
 					--(*itList)->m_iUseCount;
 
 					if( pclsArg->m_pclsSipStack->m_clsSetup.m_bStateful == false && (*itList)->m_iUseCount == 0 )

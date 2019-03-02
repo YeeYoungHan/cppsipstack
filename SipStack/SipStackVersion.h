@@ -19,9 +19,12 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.29"
+#define SIP_STACK_VERSION "0.30"
 
 /* 버전 정보
+
+= 버전 0.30 ( 2019년 3월 2일 ) =
+ * SIP 요청 메시지를 전송할 때에 SIP 요청 메시지의 Via 헤더에 로컬 TCP/TLS 포트 번호를 입력할 수 있는 옵션을 추가함
 
 = 버전 0.29 ( 2017년 3월 17일 ) =
  * ICT 에서 SIP 응답을 계속 수신하여도 Ring timeout 시간은 한 번만 설정된다.

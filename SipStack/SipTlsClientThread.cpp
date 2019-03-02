@@ -61,7 +61,7 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 		{
 			CLog::Print( LOG_DEBUG, "%s(%s:%d) SSL connected", __FUNCTION__, pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
 
-			if( SipTlsSend( hSocket, psttSsl, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage ) )
+			if( SipTlsSend( hSocket, psttSsl, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, pclsArg->m_pclsSipMessage, pclsArg->m_pclsSipStack->m_clsSetup.m_bUseContactListenPort ? pclsArg->m_pclsSipStack->m_clsSetup.m_iLocalTlsPort : 0 ) )
 			{
 				SIP_MESSAGE_LIST clsSipMessageList;
 				bool bError = false;
@@ -74,7 +74,7 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 					{
 						if( bError == false )
 						{
-							if( SipTlsSend( hSocket, psttSsl, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, *itList ) == false )
+							if( SipTlsSend( hSocket, psttSsl, pclsArg->m_strIp.c_str(), pclsArg->m_iPort, *itList, pclsArg->m_pclsSipStack->m_clsSetup.m_bUseContactListenPort ? pclsArg->m_pclsSipStack->m_clsSetup.m_iLocalTlsPort : 0 ) == false )
 							{
 								bError = true;
 							}

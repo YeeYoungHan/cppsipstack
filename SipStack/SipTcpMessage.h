@@ -22,6 +22,6 @@
 #include "SipTcp.h"
 #include "SipMessage.h"
 
-bool SipTcpSend( Socket hSocket, const char * pszIp, int iPort, CSipMessage * pclsMessage );
+bool SipTcpSend( Socket hSocket, const char * pszIp, int iPort, CSipMessage * pclsMessage, int iLocalTcpPort );
 
 #endif

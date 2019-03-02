@@ -27,6 +27,7 @@
  * SendDtmf 메소드를 추가함
  * IsHold, IsConnected 메소드를 추가함
  * Delete 메소드를 public 으로 수정함
+ * SIP REGISTER 메시지를 전송할 때에 Contact 헤더에 로컬 TCP/TLS 포트 번호를 저장하는 기능을 추가함
 
 = 버전 0.28 ( 2019년 1월 31일 ) =
  * 2XX 응답에 대한 ACK Via branch 를 새로 생성한다.

@@ -26,33 +26,48 @@
  * @param pszIp		목적지 IP 주소
  * @param iPort		목적지 포트 번호
  * @param pclsMessage SIP 메시지
+ * @param iLocalTcpPort	로컬 TCP 포트 번호. 로컬 TCP listen port 번호로 Contact 을 사용하는 경우에 입력한다.
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool SipTcpSend( Socket hSocket, const char * pszIp, int iPort, CSipMessage * pclsMessage )
+bool SipTcpSend( Socket hSocket, const char * pszIp, int iPort, CSipMessage * pclsMessage, int iLocalTcpPort )
 {
 	std::string	strTcpIp;
 	int iTcpPort;
 	bool bRes = false;
 
-	if( GetLocalIpPort( hSocket, strTcpIp, iTcpPort ) == false )
+	if( iLocalTcpPort > 0 )
 	{
-		CLog::Print( LOG_ERROR, "GetLocalIpPort(%d) error(%d)", hSocket, GetError() );
-		return false;	
+		if( pclsMessage->IsRequest() )
+		{
+			// LG IP-PBX 에 REGISTER 한 후, INVITE 를 수신하기 위해서는 listen port 를 사용해야 되어서 수정함.
+			if( pclsMessage->SetTopViaTransPort( E_SIP_TCP, iLocalTcpPort ) )
+			{
+				pclsMessage->MakePacket();
+			}
+		}
 	}
 	else
 	{
-		bool bVia = false, bContact = false;
-		
-		if( pclsMessage->IsRequest() )
+		if( GetLocalIpPort( hSocket, strTcpIp, iTcpPort ) == false )
 		{
-			bVia = pclsMessage->SetTopViaIpPort( strTcpIp.c_str(), iTcpPort, E_SIP_TCP );
+			CLog::Print( LOG_ERROR, "GetLocalIpPort(%d) error(%d)", hSocket, GetError() );
+			return false;	
 		}
-
-		bContact = pclsMessage->SetTopContactIpPort( strTcpIp.c_str(), iTcpPort, E_SIP_TCP );
-
-		if( bVia || bContact )
+		else
 		{
-			pclsMessage->MakePacket();
+			bool bVia = false, bContact = false;
+			
+			if( pclsMessage->IsRequest() )
+			{
+				bVia = pclsMessage->SetTopViaIpPort( strTcpIp.c_str(), iTcpPort, E_SIP_TCP );
+			}
+
+			bContact = pclsMessage->SetTopContactIpPort( strTcpIp.c_str(), iTcpPort, E_SIP_TCP );
+
+			if( bVia || bContact )
+			{
+				pclsMessage->MakePacket();
+			}
 		}
 	}
 

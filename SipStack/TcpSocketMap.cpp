@@ -110,7 +110,7 @@ bool CTcpSocketMap::Select( const char * pszIp, int iPort, Socket & hSocket )
  * @param iLocalPort	로컬 포트 번호
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CTcpSocketMap::SendTls( const char * pszIp, int iPort, CSipMessage * pclsMessage )
+bool CTcpSocketMap::SendTls( const char * pszIp, int iPort, CSipMessage * pclsMessage, int iLocalTlsPort )
 {
 	bool	bRes = false;
 	std::string	strKey;
@@ -122,7 +122,7 @@ bool CTcpSocketMap::SendTls( const char * pszIp, int iPort, CSipMessage * pclsMe
 	it = m_clsMap.find( strKey );
 	if( it != m_clsMap.end() )
 	{
-		if( SipTlsSend( it->second.m_hSocket, it->second.m_psttSsl, pszIp, iPort, pclsMessage ) == false )
+		if( SipTlsSend( it->second.m_hSocket, it->second.m_psttSsl, pszIp, iPort, pclsMessage, iLocalTlsPort ) == false )
 		{
 			CLog::Print( LOG_DEBUG, "%s(%s,%d) TLS deleted", __FUNCTION__, pszIp, iPort );
 			m_clsMap.erase( it );			

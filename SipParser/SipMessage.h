@@ -163,7 +163,7 @@ public:
 
 	bool GetTopViaIpPort( std::string & strIp, int & iPort );
 	bool SetTopViaIpPort( const char * pszIp, int iPort, ESipTransport eTransport );
-	bool SetTopViaTransPort( ESipTransport eTransport );
+	bool SetTopViaTransPort( ESipTransport eTransport, int iPort );
 
 	bool SetTopContactIpPort( const char * pszIp, int iPort, ESipTransport eTransport );
 

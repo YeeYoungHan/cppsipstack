@@ -93,7 +93,11 @@ public:
 	/** Stateful SIP stack 인가? */
 	bool				m_bStateful;
 
+	/** TLS 클라이언트만 사용하는가? SIP 클라이언트에서 TLS 서버는 사용하지 않고 TLS 클라이언트만 사용하는 경우 true 로 설정한다. */
 	bool				m_bTlsClient;
+
+	/** SIP 요청 메시지를 전송할 때에 Contact 헤더에 수신 포트 번호를 사용한다. */
+	bool				m_bUseContactListenPort;
 };
 
 #endif
