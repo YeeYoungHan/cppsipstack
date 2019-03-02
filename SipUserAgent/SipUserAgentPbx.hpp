@@ -334,6 +334,56 @@ bool CSipUserAgent::Is100rel( const char * pszCallId )
 
 /**
  * @ingroup SipUserAgent
+ * @brief hold 인지 검사한다.
+ * @param pszCallId SIP Call-ID
+ * @returns hold 이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipUserAgent::IsHold( const char * pszCallId )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bHold = false;
+
+	m_clsDialogMutex.acquire();
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
+	{
+		if( itMap->second.m_eLocalDirection != E_RTP_SEND_RECV )
+		{
+			bHold = true;
+		}
+	}
+	m_clsDialogMutex.release();
+
+	return bHold;
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief 통화 연결되었는지 검사한다.
+ * @param pszCallId SIP Call-ID
+ * @returns 통화 연결되었으면 true 로 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipUserAgent::IsConnected( const char * pszCallId )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bConnected = false;
+
+	m_clsDialogMutex.acquire();
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
+	{
+		if( itMap->second.m_sttStartTime.tv_sec > 0 )
+		{
+			bConnected = true;
+		}
+	}
+	m_clsDialogMutex.release();
+
+	return bConnected;
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief ReINVITE 메시지를 전송한다.
  * @param pszCallId SIP Call-ID
  * @param pclsRtp		local RTP 정보 저장 객체
@@ -404,6 +454,43 @@ bool CSipUserAgent::SendNotify( const char * pszCallId, int iSipCode )
 
 		pclsRequest->m_iContentLength = snprintf( szBuf, sizeof(szBuf), "SIP/2.0 %d %s", iSipCode, GetReasonPhrase( iSipCode ) );
 		pclsRequest->m_strBody = szBuf;
+
+		m_clsSipStack.SendSipMessage( pclsRequest );
+	}
+
+	return bRes;
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief INFO 메시지로 DTMF 를 전송한다.
+ * @param pszCallId SIP Call-ID
+ * @param cDtmf			DTMF 문자. '0' ~ '9' 및 '*', '#'
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::SendDtmf( const char * pszCallId, char cDtmf )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	CSipMessage * pclsRequest = NULL;
+	bool	bRes = false;
+
+	m_clsDialogMutex.acquire();
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
+	{
+		pclsRequest = itMap->second.CreateInfo();
+		bRes = true;
+	}
+	m_clsDialogMutex.release();
+
+	if( pclsRequest )
+	{
+		char szBody[51];
+
+		pclsRequest->m_iContentLength = snprintf( szBody, sizeof(szBody), "Signal=%c\r\nDuration=160", cDtmf );
+		pclsRequest->m_strBody = szBody;
+
+		pclsRequest->m_clsContentType.Set( "application", "dtmf-relay" );
 
 		m_clsSipStack.SendSipMessage( pclsRequest );
 	}

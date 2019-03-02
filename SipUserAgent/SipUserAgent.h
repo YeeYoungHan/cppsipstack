@@ -94,6 +94,7 @@ public:
 
 	bool CreateCall( const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp, CSipCallRoute * pclsRoute, std::string & strCallId, CSipMessage ** ppclsInvite );
 	bool StartCall( const char * pszCallId, CSipMessage * pclsInvite );
+	bool Delete( const char * pszCallId );
 
 	bool TransferCallBlind( const char * pszCallId, const char * pszTo );
 	bool TransferCall( const char * pszCallId, const char * pszToCallId );
@@ -116,9 +117,12 @@ public:
 	int GetRSeq( const char * pszCallId );
 	void SetRSeq( const char * pszCallId, int iRSeq );
 	bool Is100rel( const char * pszCallId );
+	bool IsHold( const char * pszCallId );
+	bool IsConnected( const char * pszCallId );
 
 	bool SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool SendNotify( const char * pszCallId, int iSipCode );
+	bool SendDtmf( const char * pszCallId, char cDtmf );
 
 	// SipUserAgentMonitor.hpp
 	void GetDialogString( CMonitorString & strBuf );
@@ -166,7 +170,6 @@ private:
 
 	bool SendInvite( CSipDialog & clsDialog );
 	bool SetCallEnd( const char * pszCallId );
-	bool Delete( const char * pszCallId );
 	void Delete( SIP_DIALOG_MAP::iterator & itMap );
 
 	bool SetInviteResponse( std::string & strCallId, CSipMessage * pclsMessage, CSipCallRtp * pclsRtp, bool & bReInvite );

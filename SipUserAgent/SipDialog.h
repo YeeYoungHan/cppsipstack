@@ -138,6 +138,7 @@ public:
 	CSipMessage * CreateNotify( );
 	CSipMessage * CreateRefer( );
 	CSipMessage * CreatePrack( );
+	CSipMessage * CreateInfo( );
 
 	bool AddSdp( CSipMessage * pclsMessage );
 	

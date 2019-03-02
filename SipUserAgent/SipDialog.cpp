@@ -170,6 +170,19 @@ CSipMessage * CSipDialog::CreatePrack( )
 
 /**
  * @ingroup SipUserAgent
+ * @brief INFO 메시지를 생성한다.
+ * @returns 성공하면 PRACK 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
+CSipMessage * CSipDialog::CreateInfo( )
+{
+	CSipMessage * pclsMessage = CreateMessage( SIP_METHOD_INFO );
+	if( pclsMessage == NULL ) return NULL;
+
+	return pclsMessage;
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief SIP 메시지에 SDP 메시지를 추가한다.
  * @param pclsMessage SDP 메시지를 추가할 SIP 메시지 객체
  * @returns true 를 리턴한다.

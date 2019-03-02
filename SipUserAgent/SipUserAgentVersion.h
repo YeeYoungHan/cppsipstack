@@ -19,9 +19,14 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.28"
+#define SIP_USER_AGENT_VERSION "0.29"
 
 /* 버전 정보
+
+= 버전 0.29 ( 2019년 3월 2일 ) =
+ * SendDtmf 메소드를 추가함
+ * IsHold, IsConnected 메소드를 추가함
+ * Delete 메소드를 public 으로 수정함
 
 = 버전 0.28 ( 2019년 1월 31일 ) =
  * 2XX 응답에 대한 ACK Via branch 를 새로 생성한다.
