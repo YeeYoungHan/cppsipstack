@@ -1127,7 +1127,7 @@ bool CSipMessage::SetTopViaTransPort( ESipTransport eTransport, int iPort )
 
 	const char * pszTransport = SipGetTransport( eTransport );
 
-	if( !strcmp( itViaList->m_strTransport.c_str(), pszTransport ) ) return false;
+	if( !strcmp( itViaList->m_strTransport.c_str(), pszTransport ) && itViaList->m_iPort == iPort ) return false;
 
 	itViaList->m_strTransport = pszTransport;
 	itViaList->m_iPort = iPort;
