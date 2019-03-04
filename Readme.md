@@ -140,6 +140,7 @@ KSipServer 에서 지정된 음성 코덱만 사용하고 싶고 음성 통신�
 
 ### C++ SIP stack 관련 포스트 리스트
 
+* https://blog.naver.com/websearch/221479988167 : CSipStackSetup.m_iTcpCallBackThreadCount 설정 소개
 * https://blog.naver.com/websearch/221479972346 : CSipStackSetup.m_bUseContactListenPort 설정 소개
 * https://blog.naver.com/websearch/221380224274 : SipClientMFC 프로그램에 TLS 통신 기능 추가 완료
 * https://blog.naver.com/websearch/221377762416 : KSipServer 성능 측정 결과 - 다섯번째 이야기 : 3,100cps 달성

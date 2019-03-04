@@ -122,6 +122,9 @@ int main( int argc, char * argv[] )
 		clsSetup.m_strCertFile = "C:\\OpenProject\\CppSipStack\\trunk\\SipClient\\SipServer.pem";
 	}
 
+	// Via 헤더 및 Contact 헤더에 로컬 수신 포트 번호를 설정하고 싶으면 아래와 같이 설정하면 된다.
+	// clsSetup.m_bUseContactListenPort = true;
+
 	// UDP 수신 쓰레드의 기본 개수는 1개이다. 이를 수정하려면 CSipStackSetup.m_iUdpThreadCount 를 수정하면 된다.
 
 	clsUserAgent.InsertRegisterInfo( clsServerInfo );

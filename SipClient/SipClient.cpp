@@ -18,6 +18,7 @@
 
 #include "SipClient.h"
 #include <time.h>
+#include "Log.h"
 #include "MemoryDebug.h"
 
 std::string	gstrInviteId;
@@ -30,6 +31,7 @@ std::string	gstrInviteId;
  */
 void CSipClient::EventRegister( CSipServerInfo * pclsInfo, int iStatus )
 {
+	CLog::Print( LOG_DEBUG, "%s(%d)", __FUNCTION__, iStatus );
 	printf( "EventRegister(%s) : %d\n", pclsInfo->m_strUserId.c_str(), iStatus );
 }
 
