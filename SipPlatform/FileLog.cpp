@@ -221,7 +221,7 @@ OPEN_FILE:
 		int iWrite;
 
 #ifdef WIN32
-		iWrite = fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%u] %s\n"
+		iWrite = fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%u] %s\r\n"
 			, sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec, sttTime.tv_usec, szHeader, GetCurrentThreadId(), szBuf );
 #else
 		iWrite = fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%lu] %s\n"
