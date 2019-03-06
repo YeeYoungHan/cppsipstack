@@ -194,7 +194,7 @@ OPEN_FILE:
 			m_iLogSize = (int)iFileSize;
 		}
 		
-		m_sttFd = fopen( szFileName, "a" );
+		m_sttFd = fopen( szFileName, "ab" );
 		if( m_sttFd == NULL )
 		{
 			printf( "log file(%s) open error\n", szFileName );
