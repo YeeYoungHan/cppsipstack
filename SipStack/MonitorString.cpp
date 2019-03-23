@@ -17,6 +17,7 @@
  */
 
 #include "SipStackDefine.h"
+#include "SipUdp.h"
 #include "MonitorString.h"
 #include "TimeString.h"
 #include "MemoryDebug.h"
