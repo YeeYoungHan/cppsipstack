@@ -23,6 +23,9 @@
 #include <string.h>
 #include <stdio.h>
 
+#define INT64_MAX	9223372036854775807
+#define INT32_MAX	2147483647
+
 bool TestXmlAttribute();
 bool TestXmlInsert();
 bool TestXmlParseToString();

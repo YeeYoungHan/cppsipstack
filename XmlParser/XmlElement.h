@@ -65,6 +65,7 @@ public:
 	bool WriteFile( const char * pszFileName, bool bUseTab );
 
 	const char * SelectAttribute( const char * pszName );
+	const char * SelectAttributeTrim( const char * pszName );
 	bool SelectAttribute( const char * pszName, std::string & strValue );
 	bool SelectAttributeTrim( const char * pszName, std::string & strValue );
 	bool SelectAttribute( const char * pszName, int & iValue );
@@ -76,6 +77,8 @@ public:
 	CXmlElement * SelectElement( const int iIndex );
 	bool SelectElementList( const char * pszName, XML_ELEMENT_LIST & clsList );
 
+	const char * GetElementData( const char * pszName, const int iIndex = 0 );
+	const char * GetElementDataTrim( const char * pszName, const int iIndex = 0 );
 	bool SelectElementData( const char * pszName, std::string & strData, const int iIndex = 0 );
 	bool SelectElementTrimData( const char * pszName, std::string & strData, const int iIndex = 0 );
 	bool SelectElementData( const char * pszName, int & iData, const int iIndex = 0 );

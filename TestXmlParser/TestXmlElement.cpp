@@ -150,9 +150,92 @@ static bool TestXmlGetElementData()
 	return true;
 }
 
+static bool TestXmlGetElementDataIntMax()
+{
+	char szXml[1024];
+
+	snprintf( szXml, sizeof(szXml), "<Setup>\n"
+		"<Int64>" LONG_LONG_FORMAT "</Int64>\n"
+		"<Int32>%d</Int32>\n"
+		"</Setup>"
+		, INT64_MAX, INT32_MAX );
+
+	CXmlElement	clsXml;
+	int32_t i32;
+	int64_t i64;
+
+	if( clsXml.Parse( szXml, (int)strlen(szXml) ) == -1 )
+	{
+		printf( "xml(%s) parser error\n", szXml );
+		return false;
+	}
+
+	if( clsXml.SelectElementData( "Int32", i32 ) == false )
+	{
+		printf( "Int32 is not found in xml(%s) \n", szXml );
+		return false;
+	}
+
+	if( i32 != INT32_MAX )
+	{
+		printf( "i32(%d) != %d\n", i32, INT32_MAX );
+		return false;
+	}
+
+	if( clsXml.SelectElementData( "Int64", i64 ) == false )
+	{
+		printf( "Int64 is not found in xml(%s) \n", szXml );
+		return false;
+	}
+
+	if( i64 != INT64_MAX )
+	{
+		printf( "i64(" LONG_LONG_FORMAT ") != " LONG_LONG_FORMAT "\n", i64, INT64_MAX );
+		return false;
+	}
+
+	return true;
+}
+
+static bool TestXmlGetElementDataDouble()
+{
+	char szXml[1024];
+	double dbInput = 123456789.1234;
+	double dbValue;
+
+	snprintf( szXml, sizeof(szXml), "<Setup>\n"
+		"<Double>%f</Double>\n"
+		"</Setup>"
+		, dbInput );
+
+	CXmlElement	clsXml;
+
+	if( clsXml.Parse( szXml, (int)strlen(szXml) ) == -1 )
+	{
+		printf( "xml(%s) parser error\n", szXml );
+		return false;
+	}
+
+	if( clsXml.SelectElementData( "Double", dbValue ) == false )
+	{
+		printf( "Double is not found\n" );
+		return false;
+	}
+
+	if( dbValue != dbInput )
+	{
+		printf( "Double(%f) != %f\n", dbValue, dbInput );
+		return false;
+	}
+
+	return true;
+}
+
 bool TestXmlElement()
 {
 	if( TestXmlGetElementData() == false ) return false;
+	if( TestXmlGetElementDataIntMax() == false ) return false;
+	if( TestXmlGetElementDataDouble() == false ) return false;
 
 	return true;
 }

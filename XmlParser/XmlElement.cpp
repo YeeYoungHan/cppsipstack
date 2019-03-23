@@ -476,6 +476,26 @@ const char * CXmlElement::SelectAttribute( const char * pszName )
 
 /**
  * @ingroup XmlParser
+ * @brief 애트리뷰트에 해당하는 값을 검색한다. 값의 앞, 뒤 공백을 제거한 문자열의 포인터를 리턴한다.
+ * @param pszName 애트리뷰트 이름
+ * @returns 성공하면 애트리뷰트의 값을 리턴하고 그렇지 않으면 NULL 을 리턴한다.
+ */
+const char * CXmlElement::SelectAttributeTrim( const char * pszName )
+{
+	XML_ATTRIBUTE_MAP::iterator	itAM;
+
+	itAM = m_clsAttributeMap.find( pszName );
+	if( itAM != m_clsAttributeMap.end() )
+	{
+		TrimString( itAM->second );
+		return itAM->second.c_str();
+	}
+
+	return NULL;
+}
+
+/**
+ * @ingroup XmlParser
  * @brief 애트리뷰트에 해당하는 값을 검색한다.
  * @param pszName		애트리뷰트 이름
  * @param strValue	애트리뷰트 값
@@ -530,15 +550,12 @@ bool CXmlElement::SelectAttributeTrim( const char * pszName, std::string & strVa
  */
 bool CXmlElement::SelectAttribute( const char * pszName, int & iValue )
 {
-	XML_ATTRIBUTE_MAP::iterator	itAM;
-
 	iValue = 0;
 
-	itAM = m_clsAttributeMap.find( pszName );
-	if( itAM != m_clsAttributeMap.end() )
+	const char * pszValue = SelectAttributeTrim( pszName );
+	if( pszValue )
 	{
-		TrimString( itAM->second );
-		iValue = atoi( itAM->second.c_str() );
+		iValue = atoi( pszValue );
 		return true;
 	}
 
@@ -554,15 +571,12 @@ bool CXmlElement::SelectAttribute( const char * pszName, int & iValue )
  */
 bool CXmlElement::SelectAttribute( const char * pszName, int64_t & iValue )
 {
-	XML_ATTRIBUTE_MAP::iterator	itAM;
-
 	iValue = 0;
 
-	itAM = m_clsAttributeMap.find( pszName );
-	if( itAM != m_clsAttributeMap.end() )
+	const char * pszValue = SelectAttributeTrim( pszName );
+	if( pszValue )
 	{
-		TrimString( itAM->second );
-		iValue = atoll( itAM->second.c_str() );
+		iValue = atoll( pszValue );
 		return true;
 	}
 
@@ -578,16 +592,12 @@ bool CXmlElement::SelectAttribute( const char * pszName, int64_t & iValue )
  */
 bool CXmlElement::SelectAttribute( const char * pszName, bool & bValue )
 {
-	XML_ATTRIBUTE_MAP::iterator	itAM;
-
 	bValue = false;
 
-	itAM = m_clsAttributeMap.find( pszName );
-	if( itAM != m_clsAttributeMap.end() )
+	const char * pszValue = SelectAttributeTrim( pszName );
+	if( pszValue )
 	{
-		TrimString( itAM->second );
-		bValue = GetBoolean( itAM->second.c_str() );
-
+		bValue = GetBoolean( pszValue );
 		return true;
 	}
 
@@ -603,16 +613,12 @@ bool CXmlElement::SelectAttribute( const char * pszName, bool & bValue )
  */
 bool CXmlElement::SelectAttribute( const char * pszName, double & dbValue )
 {
-	XML_ATTRIBUTE_MAP::iterator	itAM;
-
 	dbValue = 0.0;
 
-	itAM = m_clsAttributeMap.find( pszName );
-	if( itAM != m_clsAttributeMap.end() )
+	const char * pszValue = SelectAttributeTrim( pszName );
+	if( pszValue )
 	{
-		TrimString( itAM->second );
-		dbValue = atof( itAM->second.c_str() );
-
+		dbValue = atof( pszValue );
 		return true;
 	}
 
@@ -703,6 +709,43 @@ bool CXmlElement::SelectElementList( const char * pszName, XML_ELEMENT_LIST & cl
 
 /**
  * @ingroup XmlParser
+ * @brief 하위 Element 의 값 문자열의 포인터를 리턴한다.
+ * @param pszName 하위 Element 이름
+ * @param iIndex	하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @returns 하위 Element 이름이 존재하면 해당 Element 의 값 문자열의 포인터를 리턴하고 그렇지 않으면 NULL 을 리턴한다. 
+ */
+const char * CXmlElement::GetElementData( const char * pszName, const int iIndex )
+{
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
+	if( pclsElement )
+	{
+		return pclsElement->m_strData.c_str();
+	}
+
+	return NULL;
+}
+
+/**
+ * @ingroup XmlParser
+ * @brief 하위 Element 의 값 문자열의 포인터를 리턴한다.
+ * @param pszName 하위 Element 이름
+ * @param iIndex	하위 Element 인덱스. 0 을 입력하면 첫번째 검색된 하위 Element 를 리턴하고 1 을 입력하면 두번째 검색된 하위 Element 를 리턴한다.
+ * @returns 하위 Element 이름이 존재하면 해당 Element 의 값 문자열의 포인터를 리턴하고 그렇지 않으면 NULL 을 리턴한다. 
+ */
+const char * CXmlElement::GetElementDataTrim( const char * pszName, const int iIndex )
+{
+	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
+	if( pclsElement )
+	{
+		TrimString( pclsElement->m_strData );
+		return pclsElement->m_strData.c_str();
+	}
+
+	return NULL;
+}
+
+/**
+ * @ingroup XmlParser
  * @brief 하위 Element 를 검색하여서 내용을 저장한다.
  * @param pszName		하위 Element 이름
  * @param strData		하위 Elemnet 의 내용을 저장할 변수
@@ -756,12 +799,12 @@ bool CXmlElement::SelectElementTrimData( const char * pszName, std::string & str
  */
 bool CXmlElement::SelectElementData( const char * pszName, int & iData, const int iIndex )
 {
-	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
-	if( pclsElement )
-	{
-		TrimString( pclsElement->m_strData );
-		iData = atoi( pclsElement->m_strData.c_str() );
+	iData = 0;
 
+	const char * pszValue = GetElementDataTrim( pszName, iIndex );
+	if( pszValue )
+	{
+		iData = atoi( pszValue );
 		return true;
 	}
 
@@ -778,12 +821,12 @@ bool CXmlElement::SelectElementData( const char * pszName, int & iData, const in
  */
 bool CXmlElement::SelectElementData( const char * pszName, int64_t & iData, const int iIndex )
 {
-	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
-	if( pclsElement )
-	{
-		TrimString( pclsElement->m_strData );
-		iData = atoll( pclsElement->m_strData.c_str() );
+	iData = 0;
 
+	const char * pszValue = GetElementDataTrim( pszName, iIndex );
+	if( pszValue )
+	{
+		iData = atoll( pszValue );
 		return true;
 	}
 
@@ -802,12 +845,10 @@ bool CXmlElement::SelectElementData( const char * pszName, bool & bData, const i
 {
 	bData = false;
 
-	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
-	if( pclsElement )
+	const char * pszValue = GetElementDataTrim( pszName, iIndex );
+	if( pszValue )
 	{
-		TrimString( pclsElement->m_strData );
-		bData = GetBoolean( pclsElement->m_strData.c_str() );
-
+		bData = GetBoolean( pszValue );
 		return true;
 	}
 
@@ -824,12 +865,12 @@ bool CXmlElement::SelectElementData( const char * pszName, bool & bData, const i
  */
 bool CXmlElement::SelectElementData( const char * pszName, double & dbData, const int iIndex )
 {
-	CXmlElement * pclsElement = SelectElement( pszName, iIndex );
-	if( pclsElement )
-	{
-		TrimString( pclsElement->m_strData );
-		dbData = atof( pclsElement->m_strData.c_str() );
+	dbData = 0.0;
 
+	const char * pszValue = GetElementDataTrim( pszName, iIndex );
+	if( pszValue )
+	{
+		dbData = atof( pszValue );
 		return true;
 	}
 

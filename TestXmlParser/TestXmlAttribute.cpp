@@ -20,17 +20,25 @@
 
 static bool TestXmlGetElementAttribute()
 {
-	const char * pszXml = "<Setup>\n"
-	" <Log>\n"
-  "  <Level Debug=\"true\" />\n"
-	" </Log>\n"
-	"</Setup>\n";
+	char szXml[1024];
+	double dbInput = 123456789.1234;
+
+	snprintf( szXml, sizeof(szXml), "<Setup>\n"
+		" <Log>\n"
+		"  <Level Debug=\"true\" Int64=\"" LONG_LONG_FORMAT "\" Int32=\"%d\" Double=\"%f\" />\n"
+		" </Log>\n"
+		"</Setup>\n"
+		, INT64_MAX, INT32_MAX, dbInput );
+
 	CXmlElement	clsXml, * pclsElement, * pclsClient;
 	bool bDebug;
+	int32_t i32;
+	int64_t i64;
+	double dbValue;
 
-	if( clsXml.Parse( pszXml, (int)strlen(pszXml) ) == -1 )
+	if( clsXml.Parse( szXml, (int)strlen(szXml) ) == -1 )
 	{
-		printf( "xml(%s) parser error\n", pszXml );
+		printf( "xml(%s) parser error\n", szXml );
 		return false;
 	}
 
@@ -57,6 +65,42 @@ static bool TestXmlGetElementAttribute()
 	if( bDebug == false )
 	{
 		printf( "bDebug is not correct\n" );
+		return false;
+	}
+
+	if( pclsClient->SelectAttribute( "Int64", i64 ) == false )
+	{
+		printf( "Int64 is not found\n" );
+		return false;
+	}
+
+	if( i64 != INT64_MAX )
+	{
+		printf( "i64(" LONG_LONG_FORMAT ") != " LONG_LONG_FORMAT "\n", i64, INT64_MAX );
+		return false;
+	}
+
+	if( pclsClient->SelectAttribute( "Int32", i32 ) == false )
+	{
+		printf( "Int32 is not found\n" );
+		return false;
+	}
+
+	if( i32 != INT32_MAX )
+	{
+		printf( "i32(%d) != %d\n", i32, INT32_MAX );
+		return false;
+	}
+
+	if( pclsClient->SelectAttribute( "Double", dbValue ) == false )
+	{
+		printf( "Double is not found\n" );
+		return false;
+	}
+
+	if( dbValue != dbInput )
+	{
+		printf( "Double(%f) != %f\n", dbValue, dbInput );
 		return false;
 	}
 
