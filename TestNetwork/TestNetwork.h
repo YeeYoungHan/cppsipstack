@@ -4,6 +4,7 @@
 #include "SipPlatformDefine.h"
 #include "SipTcp.h"
 #include "ServerUtility.h"
+#include "Log.h"
 
 bool TestTcpSendBlocking( );
 
