@@ -47,6 +47,8 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 
 			if( n <= 0 ) break;
 		}
+
+		closesocket( hConn );
 	}
 
 	pclsArg->m_bRun = false;
@@ -77,6 +79,8 @@ bool TestTcpSendBlocking( )
 	{
 		sleep(1);
 	}
+
+	closesocket( hConn );
 
 	delete pclsArg;
 
