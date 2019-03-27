@@ -56,6 +56,8 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 					break;
 				}
 
+				++iCount;
+
 				CLog::Print( LOG_DEBUG, "before send" );
 				n = send( hConn, szBuf, sizeof(szBuf), 0 );
 				CLog::Print( LOG_DEBUG, "after send n(%d) count(%d)", n, iCount );
