@@ -425,7 +425,7 @@ void TcpSetPollIn( struct pollfd & sttPollFd, Socket hSocket )
  */
 int poll( struct pollfd *fds, unsigned int nfds, int timeout )
 {
-	FD_SET	rset;
+	fd_set	rset;
 	unsigned int		i;
 	int		n, iCount = 0;
 	struct timeval	sttTimeout;

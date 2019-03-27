@@ -27,7 +27,7 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 		if( gbUseSelect )
 		{
 			struct timeval sttTime;
-			FD_SET	wset;
+			fd_set	wset;
 			bool		bSendReady = false;
 
 			while( 1 )
