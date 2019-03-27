@@ -42,7 +42,7 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 					sttTime.tv_sec = 1;
 					sttTime.tv_usec = 0;
 
-					n = select( 1, NULL, &wset, NULL, &sttTime );
+					n = select( hConn + 1, NULL, &wset, NULL, &sttTime );
 					if( n > 0 && FD_ISSET( hConn, &wset ) )
 					{
 						bSendReady = true;
