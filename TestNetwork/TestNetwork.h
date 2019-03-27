@@ -6,6 +6,10 @@
 #include "ServerUtility.h"
 #include "Log.h"
 
+#ifndef WIN32
+#include <sys/select.h>
+#endif
+
 bool TestTcpSendBlocking( );
 
 #endif
