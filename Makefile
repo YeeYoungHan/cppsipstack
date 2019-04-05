@@ -24,6 +24,7 @@ all:
 	cd HttpStack && make
 	cd StunParser && make
 	cd TestWebRtc && make
+	cd EchoSipServer && make
 
 clean:
 	cd SipPlatform && make clean
@@ -45,6 +46,7 @@ clean:
 	cd HttpStack && make clean
 	cd StunParser && make clean
 	cd TestWebRtc && make clean
+	cd EchoSipServer && make clean
 
 install:
 
