@@ -355,7 +355,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SipUserAgentPbx.hpp"
+				RelativePath=".\SipUserAgentSend.hpp"
 				>
 			</File>
 			<File
@@ -364,6 +364,10 @@
 			</File>
 			<File
 				RelativePath=".\SipUserAgentSms.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUserAgentUtil.hpp"
 				>
 			</File>
 			<File

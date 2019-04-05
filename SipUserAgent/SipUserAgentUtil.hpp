@@ -18,88 +18,6 @@
 
 /**
  * @ingroup SipUserAgent
- * @brief SIP 통화 요청 INVITE 메시지를 검색한다.
- * @param pszCallId SIP Call-ID
- * @returns 성공하면 SIP 통화 요청 INVITE 메시지를 리턴하고 실패하면 NULL 를 리턴한다.
- */
-CSipMessage * CSipUserAgent::DeleteIncomingCall( const char * pszCallId )
-{
-	SIP_DIALOG_MAP::iterator		itMap;
-	CSipMessage * pclsMessage = NULL;
-
-	m_clsDialogMutex.acquire();
-	itMap = m_clsDialogMap.find( pszCallId );
-	if( itMap != m_clsDialogMap.end() )
-	{
-		if( itMap->second.m_sttStartTime.tv_sec == 0 )
-		{
-			if( itMap->second.m_pclsInvite )
-			{
-				pclsMessage = itMap->second.m_pclsInvite;
-				itMap->second.m_pclsInvite = NULL;
-				Delete( itMap );
-			}
-		}
-	}
-	m_clsDialogMutex.release();
-
-	return pclsMessage;
-}
-
-/**
- * @ingroup SipUserAgent
- * @brief SIP 통화 요청에 대한 Ring / Session Progress 응답 메시지를 전송한다. IP-PBX 에서 Ring / Session Progress 메시지를 전달할 때에 사용된다.
- * @param pszCallId		SIP Call-ID
- * @param iSipStatus	SIP 응답 코드
- * @param pclsRtp			local RTP 정보 저장 객체
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipUserAgent::RingCall( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
-{
-	SIP_DIALOG_MAP::iterator		itMap;
-	CSipMessage * pclsMessage = NULL;
-	bool	bRes = false;
-
-	m_clsDialogMutex.acquire();
-	itMap = m_clsDialogMap.find( pszCallId );
-	if( itMap != m_clsDialogMap.end() )
-	{
-		if( itMap->second.m_sttStartTime.tv_sec == 0 && itMap->second.m_pclsInvite )
-		{
-			pclsMessage = itMap->second.m_pclsInvite->CreateResponse( iSipStatus );
-
-			if( pclsRtp )
-			{
-				itMap->second.SetLocalRtp( pclsRtp );
-				itMap->second.AddSdp( pclsMessage );
-			}
-
-			if( itMap->second.m_iRSeq != -1 )
-			{
-				pclsMessage->AddHeader( "Allow", "PRACK, INVITE, ACK, BYE, CANCEL, REFER, NOTIFY, MESSAGE" );
-				pclsMessage->AddHeader( "Require", "100rel" );
-
-				char szRSeq[21];
-
-				snprintf( szRSeq, sizeof(szRSeq), "%d", itMap->second.m_iRSeq );
-				pclsMessage->AddHeader( "RSeq", szRSeq );
-			}
-
-			bRes = true;
-		}
-	}
-	m_clsDialogMutex.release();
-
-	if( pclsMessage )
-	{
-		m_clsSipStack.SendSipMessage( pclsMessage );
-	}
-
-	return bRes;
-}
-
-/**
- * @ingroup SipUserAgent
  * @brief SIP Call-ID 로 통화를 검색한 후, 검색된 결과로 peer RTP 정보를 저장한다.
  * @param pszCallId SIP Call-ID
  * @param pclsRtp		peer RTP 정보를 저장할 객체
@@ -224,41 +142,6 @@ bool CSipUserAgent::GetCdr( const char * pszCallId, CSipCdr * pclsCdr )
 }
 
 /**
- * @brief 통화가 연결 요청 중인지 확인한다.
- * @param pszCallId SIP Call-ID
- * @param pszTo			SIP TO 아이디
- * @returns 통화가 연결되었으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
- */
-bool CSipUserAgent::IsRingCall( const char * pszCallId, const char * pszTo )
-{
-	SIP_DIALOG_MAP::iterator		itMap;
-	bool	bRes = false;
-
-	m_clsDialogMutex.acquire();
-	itMap = m_clsDialogMap.find( pszCallId );
-	if( itMap != m_clsDialogMap.end() )
-	{
-		if( itMap->second.IsConnected() == false )
-		{
-			if( pszTo )
-			{
-				if( !strcmp( pszTo, itMap->second.m_strToId.c_str() ) )
-				{
-					bRes = true;
-				}
-			}
-			else
-			{
-				bRes = true;
-			}
-		}
-	}
-	m_clsDialogMutex.release();
-
-	return bRes;
-}
-
-/**
  * @ingroup SipUserAgent
  * @brief SIP INVITE 메시지를 수신한 경우, 해당 SIP INVITE 메시지에서 헤더 이름을 검색하여서 이에 대한 값을 리턴한다.
  *				모든 헤더를 검색하는 것은 아니고 CSipMessage 의 m_clsHeaderList 에 저장된 헤더만 검색한다.
@@ -330,6 +213,41 @@ void CSipUserAgent::SetRSeq( const char * pszCallId, int iRSeq )
 		itMap->second.m_iRSeq = iRSeq;
 	}
 	m_clsDialogMutex.release();
+}
+
+/**
+ * @brief 통화가 연결 요청 중인지 확인한다.
+ * @param pszCallId SIP Call-ID
+ * @param pszTo			SIP TO 아이디
+ * @returns 통화가 연결되었으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipUserAgent::IsRingCall( const char * pszCallId, const char * pszTo )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+
+	m_clsDialogMutex.acquire();
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
+	{
+		if( itMap->second.IsConnected() == false )
+		{
+			if( pszTo )
+			{
+				if( !strcmp( pszTo, itMap->second.m_strToId.c_str() ) )
+				{
+					bRes = true;
+				}
+			}
+			else
+			{
+				bRes = true;
+			}
+		}
+	}
+	m_clsDialogMutex.release();
+
+	return bRes;
 }
 
 /**
@@ -410,116 +328,30 @@ bool CSipUserAgent::IsConnected( const char * pszCallId )
 
 /**
  * @ingroup SipUserAgent
- * @brief ReINVITE 메시지를 전송한다.
+ * @brief SIP 통화 요청 INVITE 메시지를 검색한다.
  * @param pszCallId SIP Call-ID
- * @param pclsRtp		local RTP 정보 저장 객체
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ * @returns 성공하면 SIP 통화 요청 INVITE 메시지를 리턴하고 실패하면 NULL 를 리턴한다.
  */
-bool CSipUserAgent::SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp )
+CSipMessage * CSipUserAgent::DeleteIncomingCall( const char * pszCallId )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
-	CSipMessage * pclsRequest = NULL;
-	bool	bRes = false;
+	CSipMessage * pclsMessage = NULL;
 
 	m_clsDialogMutex.acquire();
 	itMap = m_clsDialogMap.find( pszCallId );
 	if( itMap != m_clsDialogMap.end() )
 	{
-		itMap->second.SetLocalRtp( pclsRtp );
-		pclsRequest = itMap->second.CreateInvite();
-		bRes = true;
-	}
-	m_clsDialogMutex.release();
-
-	if( pclsRequest )
-	{
-		m_clsSipStack.SendSipMessage( pclsRequest );
-	}
-
-	return bRes;
-}
-
-/**
- * @ingroup SipUserAgent
- * @brief Blind Transfer 에서 사용되는 NOTIFY 메시지를 전송한다.
- * @param pszCallId SIP Call-ID
- * @param iSipCode	INVITE 응답 메시지의 SIP status code
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipUserAgent::SendNotify( const char * pszCallId, int iSipCode )
-{
-	SIP_DIALOG_MAP::iterator		itMap;
-	CSipMessage * pclsRequest = NULL;
-	bool	bRes = false;
-
-	m_clsDialogMutex.acquire();
-	itMap = m_clsDialogMap.find( pszCallId );
-	if( itMap != m_clsDialogMap.end() )
-	{
-		pclsRequest = itMap->second.CreateNotify();
-		bRes = true;
-	}
-	m_clsDialogMutex.release();
-
-	if( pclsRequest )
-	{
-		char	szBuf[255];
-
-		pclsRequest->m_clsContentType.Set( "message", "sipfrag" );
-		pclsRequest->m_clsContentType.InsertParam( "version", "2.0" );
-		pclsRequest->AddHeader( "Event", "refer" );
-
-		if( iSipCode >= 200 )
+		if( itMap->second.m_sttStartTime.tv_sec == 0 )
 		{
-			pclsRequest->AddHeader( "Subscription-State",  "terminated" );
+			if( itMap->second.m_pclsInvite )
+			{
+				pclsMessage = itMap->second.m_pclsInvite;
+				itMap->second.m_pclsInvite = NULL;
+				Delete( itMap );
+			}
 		}
-		else
-		{
-			pclsRequest->AddHeader( "Subscription-State",  "active" );
-		}
-
-		pclsRequest->m_iContentLength = snprintf( szBuf, sizeof(szBuf), "SIP/2.0 %d %s", iSipCode, GetReasonPhrase( iSipCode ) );
-		pclsRequest->m_strBody = szBuf;
-
-		m_clsSipStack.SendSipMessage( pclsRequest );
-	}
-
-	return bRes;
-}
-
-/**
- * @ingroup SipUserAgent
- * @brief INFO 메시지로 DTMF 를 전송한다.
- * @param pszCallId SIP Call-ID
- * @param cDtmf			DTMF 문자. '0' ~ '9' 및 '*', '#'
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipUserAgent::SendDtmf( const char * pszCallId, char cDtmf )
-{
-	SIP_DIALOG_MAP::iterator		itMap;
-	CSipMessage * pclsRequest = NULL;
-	bool	bRes = false;
-
-	m_clsDialogMutex.acquire();
-	itMap = m_clsDialogMap.find( pszCallId );
-	if( itMap != m_clsDialogMap.end() )
-	{
-		pclsRequest = itMap->second.CreateInfo();
-		bRes = true;
 	}
 	m_clsDialogMutex.release();
 
-	if( pclsRequest )
-	{
-		char szBody[51];
-
-		pclsRequest->m_iContentLength = snprintf( szBody, sizeof(szBody), "Signal=%c\r\nDuration=160", cDtmf );
-		pclsRequest->m_strBody = szBody;
-
-		pclsRequest->m_clsContentType.Set( "application", "dtmf-relay" );
-
-		m_clsSipStack.SendSipMessage( pclsRequest );
-	}
-
-	return bRes;
+	return pclsMessage;
 }

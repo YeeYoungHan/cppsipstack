@@ -207,7 +207,58 @@ bool CSipUserAgent::RingCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 	}
 
 	return bRes;
+}
 
+/**
+ * @ingroup SipUserAgent
+ * @brief SIP 통화 요청에 대한 Ring / Session Progress 응답 메시지를 전송한다. IP-PBX 에서 Ring / Session Progress 메시지를 전달할 때에 사용된다.
+ * @param pszCallId		SIP Call-ID
+ * @param iSipStatus	SIP 응답 코드
+ * @param pclsRtp			local RTP 정보 저장 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::RingCall( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	CSipMessage * pclsMessage = NULL;
+	bool	bRes = false;
+
+	m_clsDialogMutex.acquire();
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
+	{
+		if( itMap->second.m_sttStartTime.tv_sec == 0 && itMap->second.m_pclsInvite )
+		{
+			pclsMessage = itMap->second.m_pclsInvite->CreateResponse( iSipStatus );
+
+			if( pclsRtp )
+			{
+				itMap->second.SetLocalRtp( pclsRtp );
+				itMap->second.AddSdp( pclsMessage );
+			}
+
+			if( itMap->second.m_iRSeq != -1 )
+			{
+				pclsMessage->AddHeader( "Allow", "PRACK, INVITE, ACK, BYE, CANCEL, REFER, NOTIFY, MESSAGE" );
+				pclsMessage->AddHeader( "Require", "100rel" );
+
+				char szRSeq[21];
+
+				snprintf( szRSeq, sizeof(szRSeq), "%d", itMap->second.m_iRSeq );
+				pclsMessage->AddHeader( "RSeq", szRSeq );
+			}
+
+			bRes = true;
+		}
+	}
+	m_clsDialogMutex.release();
+
+	if( pclsMessage )
+	{
+		m_clsSipStack.SendSipMessage( pclsMessage );
+	}
+
+	return bRes;
 }
 
 /**
@@ -313,50 +364,6 @@ bool CSipUserAgent::ResumeCall( const char * pszCallId )
 	if( pclsRequest )
 	{
 		m_clsSipStack.SendSipMessage( pclsRequest );
-	}
-
-	return bRes;
-}
-
-/**
- * @ingroup SipUserAgent
- * @brief SIP PRACK 메시지를 전송한다.
- * @param pszCallId SIP Call-ID
- * @param pclsRtp		local RTP 정보 저장 객체
- * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
- */
-bool CSipUserAgent::SendPrack( const char * pszCallId, CSipCallRtp * pclsRtp )
-{
-	SIP_DIALOG_MAP::iterator		itMap;
-	bool	bRes = false;
-	CSipMessage * pclsMessage = NULL;
-
-	m_clsDialogMutex.acquire();
-	itMap = m_clsDialogMap.find( pszCallId );
-	if( itMap != m_clsDialogMap.end() )
-	{
-		// 통화 연결되지 않고 발신한 경우에만 PRACK 메시지를 생성한다.
-		if( itMap->second.m_sttStartTime.tv_sec == 0 && itMap->second.m_pclsInvite == NULL )
-		{
-			pclsMessage = itMap->second.CreatePrack();
-			if( pclsMessage )
-			{
-				itMap->second.SetLocalRtp( pclsRtp );
-				
-				if( pclsRtp )
-				{
-					itMap->second.AddSdp( pclsMessage );
-				}
-
-				bRes = true;
-			}
-		}
-	}
-	m_clsDialogMutex.release();
-
-	if( pclsMessage )
-	{
-		m_clsSipStack.SendSipMessage( pclsMessage );
 	}
 
 	return bRes;

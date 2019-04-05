@@ -83,10 +83,11 @@ public:
 	bool StopCall( const char * pszCallId, int iSipCode = 0 );
 	bool StopCall( const char * pszCallId, const char * pszForward );
 	bool RingCall( const char * pszCallId, CSipCallRtp * pclsRtp );
+	bool RingCall( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
 	bool AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp );
+
 	bool HoldCall( const char * pszCallId, ERtpDirection eDirection = E_RTP_SEND );
 	bool ResumeCall( const char * pszCallId );
-	bool SendPrack( const char * pszCallId, CSipCallRtp * pclsRtp );
 
 	int GetCallCount( );
 	void GetCallIdList( SIP_CALL_ID_LIST & clsList );
@@ -101,29 +102,30 @@ public:
 
 	// SipStackAgentSms.hpp
 	bool SendSms( const char * pszFrom, const char * pszTo, const char * pszText, CSipCallRoute * pclsRoute );
-	
-	// SipUserAgentPbx.hpp : IP-PBX 에서 사용되는 통화 관련 메소드
-	CSipMessage * DeleteIncomingCall( const char * pszCallId );
-	bool RingCall( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp );
 
+	// SipUserAgentSend.hpp
+	bool SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
+	bool SendNotify( const char * pszCallId, int iSipCode );
+	bool SendDtmf( const char * pszCallId, char cDtmf );
+	bool SendPrack( const char * pszCallId, CSipCallRtp * pclsRtp );
+
+	// SipUserAgentUtil.hpp
 	bool GetRemoteCallRtp( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool GetToId( const char * pszCallId, std::string & strToId );
 	bool GetFromId( const char * pszCallId, std::string & strFromId );
 	bool GetContact( const char * pszCallId, CSipCallRoute * pclsRoute );
 	bool GetCdr( const char * pszCallId, CSipCdr * pclsCdr );
+	bool GetInviteHeaderValue( const char * pszCallId, const char * pszHeaderName, std::string & strValue );
+	int GetRSeq( const char * pszCallId );
+
+	void SetRSeq( const char * pszCallId, int iRSeq );
 
 	bool IsRingCall( const char * pszCallId, const char * pszTo );
-	bool GetInviteHeaderValue( const char * pszCallId, const char * pszHeaderName, std::string & strValue );
-
-	int GetRSeq( const char * pszCallId );
-	void SetRSeq( const char * pszCallId, int iRSeq );
 	bool Is100rel( const char * pszCallId );
 	bool IsHold( const char * pszCallId );
 	bool IsConnected( const char * pszCallId );
 
-	bool SendReInvite( const char * pszCallId, CSipCallRtp * pclsRtp );
-	bool SendNotify( const char * pszCallId, int iSipCode );
-	bool SendDtmf( const char * pszCallId, char cDtmf );
+	CSipMessage * DeleteIncomingCall( const char * pszCallId );
 
 	// SipUserAgentMonitor.hpp
 	void GetDialogString( CMonitorString & strBuf );
