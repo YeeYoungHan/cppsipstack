@@ -175,6 +175,32 @@ bool CSipUserAgent::GetFromId( const char * pszCallId, std::string & strFromId )
 
 /**
  * @ingroup SipUserAgent
+ * @brief SIP Call-ID 로 통화를 검색한 후, 검색된 결과로 전화 상대방의 Contact 정보를 CSipCallRoute 객체에 저장한다.
+ * @param pszCallId SIP Call-ID
+ * @param pclsRoute 전화 상대방의 Contact 정보를 저장할 객체
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipUserAgent::GetContact( const char * pszCallId, CSipCallRoute * pclsRoute )
+{
+	SIP_DIALOG_MAP::iterator		itMap;
+	bool	bRes = false;
+
+	m_clsDialogMutex.acquire();
+	itMap = m_clsDialogMap.find( pszCallId );
+	if( itMap != m_clsDialogMap.end() )
+	{
+		pclsRoute->m_strDestIp = itMap->second.m_strContactIp;
+		pclsRoute->m_iDestPort = itMap->second.m_iContactPort;
+		pclsRoute->m_eTransport = itMap->second.m_eTransport;
+		bRes = true;
+	}
+	m_clsDialogMutex.release();
+
+	return bRes;
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief SIP Call-ID 로 통화를 검색한 후, 검색된 결과의 CDR 정보를 저장한다.
  * @param pszCallId SIP Call-ID
  * @param pclsCdr		CDR 정보 저장 객체

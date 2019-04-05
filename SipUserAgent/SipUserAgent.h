@@ -109,6 +109,7 @@ public:
 	bool GetRemoteCallRtp( const char * pszCallId, CSipCallRtp * pclsRtp );
 	bool GetToId( const char * pszCallId, std::string & strToId );
 	bool GetFromId( const char * pszCallId, std::string & strFromId );
+	bool GetContact( const char * pszCallId, CSipCallRoute * pclsRoute );
 	bool GetCdr( const char * pszCallId, CSipCdr * pclsCdr );
 
 	bool IsRingCall( const char * pszCallId, const char * pszTo );
