@@ -1,0 +1,15 @@
+<Setup>
+	<Sip>
+		<LocalIp>192.168.0.32</LocalIp>
+		<UdpPort>5060</UdpPort>
+		<UdpThreadCount>1</UdpThreadCount>
+		<TcpPort>5060</TcpPort>
+		<TcpThreadCount>2</TcpThreadCount>
+		<TcpRecvTimeout>600</TcpRecvTimeout>
+	</Sip>
+	<Log>
+		<Folder>c:\temp\echoserver</Folder>
+		<Level Debug="true" Info="true" Network="true" Sql="true" />
+		<MaxSize>10000000</MaxSize>
+	</Log>
+</Setup>

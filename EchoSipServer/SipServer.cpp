@@ -19,6 +19,7 @@
 #include "SipServer.h"
 #include "EchoSipServerSetup.h"
 #include "Log.h"
+#include "CallMap.h"
 #include "MemoryDebug.h"
 
 CSipServer gclsSipServer;
@@ -56,7 +57,33 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 
 void CSipServer::EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp )
 {
+	CSipCallRoute clsRoute;
+	std::string strCallId;
+	CSipMessage * pclsMessage;
 
+	if( gclsUserAgent.GetContact( pszCallId, &clsRoute ) == false )
+	{
+		CLog::Print( LOG_ERROR, "%s gclsUserAgent.GetContact(%s) error", __FUNCTION__, pszCallId );
+		gclsUserAgent.StopCall( pszCallId );
+		return;
+	}
+
+	if( gclsUserAgent.CreateCall( pszFrom, pszTo, pclsRtp, &clsRoute, strCallId, &pclsMessage ) == false )
+	{
+		CLog::Print( LOG_ERROR, "%s gclsUserAgent.CreateCall() error", __FUNCTION__ );
+		gclsUserAgent.StopCall( pszCallId );
+		return;
+	}
+
+	gclsCallMap.Insert( pszCallId, strCallId.c_str() );
+
+	if( gclsUserAgent.StartCall( strCallId.c_str(), pclsMessage ) == false )
+	{
+		CLog::Print( LOG_ERROR, "%s gclsUserAgent.StartCall() error", __FUNCTION__ );
+		gclsUserAgent.StopCall( pszCallId );
+		gclsCallMap.Delete( pszCallId );
+		return;
+	}
 }
 
 void CSipServer::EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp )
@@ -66,10 +93,34 @@ void CSipServer::EventCallRing( const char * pszCallId, int iSipStatus, CSipCall
 
 void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 {
+	std::string strCallId2;
 
+	if( gclsCallMap.Select( pszCallId, strCallId2 ) == false )
+	{
+		CLog::Print( LOG_ERROR, "%s gclsCallMap.Select(%s) error", __FUNCTION__, pszCallId );
+		gclsUserAgent.StopCall( pszCallId );
+		return;
+	}
+
+	if( gclsUserAgent.AcceptCall( strCallId2.c_str(), pclsRtp ) == false )
+	{
+		CLog::Print( LOG_ERROR, "%s gclsUserAgent.AcceptCall(%s) error", __FUNCTION__, strCallId2.c_str() );
+		gclsUserAgent.StopCall( pszCallId );
+		gclsCallMap.Delete( pszCallId );
+		return;
+	}
 }
 
 void CSipServer::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
+	std::string strCallId2;
 
+	if( gclsCallMap.Select( pszCallId, strCallId2 ) == false )
+	{
+		CLog::Print( LOG_ERROR, "%s gclsCallMap.Select(%s) error", __FUNCTION__, pszCallId );
+		return;
+	}
+
+	gclsUserAgent.StopCall( strCallId2.c_str(), iSipStatus );
+	gclsCallMap.Delete( pszCallId );
 }

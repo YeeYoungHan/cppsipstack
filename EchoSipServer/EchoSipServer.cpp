@@ -48,7 +48,6 @@ int ServiceMain( )
 
 	CLog::SetDirectory( gclsSetup.m_strLogFolder.c_str() );
 	CLog::Print( LOG_SYSTEM, "EchoSipServer is started ( version-%s %s %s )", ECHO_SIP_SERVER_VERSION, __DATE__, __TIME__ );
-	CLog::Print( LOG_DEBUG, "EchoSipServer[%s]", CDirectory::GetProgramDirectory() );
 
 	CSipStackSetup clsSetup;
 
