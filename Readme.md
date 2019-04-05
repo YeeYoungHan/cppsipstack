@@ -34,6 +34,9 @@ C++ STL 기반으로 SIP stack 을 개발하는 프로젝트입니다.
 * AndroidSipStack
   * 안드로이드용 sip stack 개발 프로젝트
 
+* EchoSipServer
+  * 통화 발신 및 수신을 모두 수행하는 SIP 서비스 테스트용 프로그
+
 * doc
   * C++ SIP stack 사용법 및 C++ SIP stack 기반으로 개발된 프로그램 사용법을 기술한 문서가 저장되어 있다.
 
