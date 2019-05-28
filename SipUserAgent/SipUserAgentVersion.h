@@ -19,9 +19,14 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.29"
+#define SIP_USER_AGENT_VERSION "0.30"
 
 /* 버전 정보
+
+= 버전 0.30 ( 2019년 5월 28일 ) =
+ * qop 가 auth-int 인 경우 response 계산 오류를 수정함
+ * WWW-Authenticate 의 qop 에 auth,auth-int 가 저장된 경우에 정상적으로 동작하도록 수정함.
+ * WWW-Authenticate 헤더에 존재하는 opaque 를 Authorization 헤더에 저장해 준다.
 
 = 버전 0.29 ( 2019년 3월 2일 ) =
  * SendDtmf 메소드를 추가함

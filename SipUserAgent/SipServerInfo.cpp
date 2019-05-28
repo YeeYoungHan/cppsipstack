@@ -20,6 +20,7 @@
 #include "SipServerInfo.h"
 #include "SipUtility.h"
 #include "SipMd5.h"
+#include "StringUtility.h"
 #include "MemoryDebug.h"
 
 /**
@@ -192,15 +193,36 @@ bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, CSipMessage * pclsRespo
 	clsCredential.m_strRealm = itAT->m_strRealm;
 	clsCredential.m_strNonce = itAT->m_strNonce;
 	clsCredential.m_strAlgorithm = itAT->m_strAlgorithm;
+	clsCredential.m_strOpaque = itAT->m_strOpaque;
 
 	clsCredential.m_strUri = "sip:";
 	clsCredential.m_strUri.append( m_strDomain );
 
 	char	szA1[1024], szA2[1024], szMd5[33], szResponse[1024];
+	const char * pszQop = itAT->m_strQop.c_str();
 
-	if( itAT->m_strQop.empty() == false && ( !strcmp( itAT->m_strQop.c_str(), "auth" ) || !strcmp( itAT->m_strQop.c_str(), "auth-int" ) ) )
+	if( itAT->m_strQop.empty() == false && !strncmp( pszQop, "auth", 4 ) )
 	{
-		clsCredential.m_strQop = itAT->m_strQop;
+		STRING_LIST clsQopList;
+
+		// qop="auth,auth-int" 로 입력되었을 때에 첫번째 항목을 선택한다.
+		if( strstr( pszQop, "," ) )
+		{
+			SplitString( pszQop, clsQopList, ',' );
+			
+			STRING_LIST::iterator itSL;
+
+			for( itSL = clsQopList.begin(); itSL != clsQopList.end(); ++itSL )
+			{
+				clsCredential.m_strQop = *itSL;
+				break;
+			}
+		}
+		else
+		{
+			clsCredential.m_strQop = itAT->m_strQop;
+		}
+
 		clsCredential.m_strNonceCount = "00000001";
 		clsCredential.m_strCnonce = "1";
 
@@ -208,7 +230,17 @@ bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, CSipMessage * pclsRespo
 		SipMd5String( szA1, szMd5 );
 		snprintf( szA1, sizeof(szA1), "%s", szMd5 );
 		
-		snprintf( szA2, sizeof(szA2), "%s:%s", pclsRequest->m_strSipMethod.c_str(), clsCredential.m_strUri.c_str() );
+		// http://qnimate.com/understanding-http-authentication-in-depth/
+		if( !strcmp( clsCredential.m_strQop.c_str(), "auth-int" ) )
+		{
+			SipMd5String( pclsRequest->m_strBody.c_str(), szMd5 );
+			snprintf( szA2, sizeof(szA2), "%s:%s:%s", pclsRequest->m_strSipMethod.c_str(), clsCredential.m_strUri.c_str(), szMd5 );
+		}
+		else
+		{
+			snprintf( szA2, sizeof(szA2), "%s:%s", pclsRequest->m_strSipMethod.c_str(), clsCredential.m_strUri.c_str() );
+		}
+
 		SipMd5String( szA2, szMd5 );
 		snprintf( szA2, sizeof(szA2), "%s", szMd5 );
 		
