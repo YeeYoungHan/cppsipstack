@@ -119,16 +119,13 @@ bool CSipUserAgent::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
  */
 bool CSipUserAgent::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
 {
-	if( pclsMessage->IsMethod( SIP_METHOD_ACK ) )
-	{
-		std::string	strCallId;
+	std::string	strCallId;
 
-		pclsMessage->GetCallId( strCallId );
+	pclsMessage->GetCallId( strCallId );
 
-		if( m_pclsCallBack ) m_pclsCallBack->EventCallEnd( strCallId.c_str(), SIP_GONE );
+	if( m_pclsCallBack ) m_pclsCallBack->EventCallEnd( strCallId.c_str(), SIP_GONE );
 
-		Delete( strCallId.c_str() );
-	}
+	Delete( strCallId.c_str() );
 
 	return false;
 }
