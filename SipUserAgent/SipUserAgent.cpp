@@ -268,7 +268,7 @@ void CSipUserAgent::Delete( SIP_DIALOG_MAP::iterator & itMap )
 bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pclsMessage, CSipCallRtp * pclsRtp, bool & bReInvite )
 {
 	SIP_DIALOG_MAP::iterator		itMap;
-	bool	bFound = false;
+	bool	bFound = false, bStopCall = false;
 	CSipMessage *pclsAck = NULL, *pclsInvite = NULL;
 
 	bReInvite = false;
@@ -342,6 +342,11 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 				{
 					bReInvite = true;
 				}
+
+				if( itMap->second.m_sttCancelTime.tv_sec > 0 )
+				{
+					bStopCall = true;
+				}
 			}
 			else if( pclsMessage->m_iStatusCode == SIP_UNAUTHORIZED || pclsMessage->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
 			{
@@ -412,6 +417,13 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 		m_clsSipStack.SendSipMessage( pclsInvite );
 
 		// 인증 정보를 포함한 INVITE 메시지를 전송한 경우, 응용으로 callback 호출하지 않는다.
+		return false;
+	}
+
+	if( bStopCall )
+	{
+		// CANCEL 전송 후, INVITE 200 OK 수신하였으면 BYE 를 전송한다.
+		StopCall( strCallId.c_str() );
 		return false;
 	}
 

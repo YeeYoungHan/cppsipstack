@@ -19,9 +19,12 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.31"
+#define SIP_USER_AGENT_VERSION "0.32"
 
 /* 버전 정보
+
+= 버전 0.32 ( 2019년 6월 19일 ) =
+ * CANCEL 전송후, INVITE 200 OK 를 수신하면 BYE 를 전송한다.
 
 = 버전 0.31 ( 2019년 6월 17일 ) =
  * 수신한 INVITE 에 대한 200 OK 를 전송한 후, ACK 를 수신하지 못 한 경우에 응용으로 통화 종료 이벤트가 호출되지 않는 오류를 수정함.
