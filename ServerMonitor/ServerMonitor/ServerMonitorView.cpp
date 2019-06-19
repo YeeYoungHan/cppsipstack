@@ -36,6 +36,7 @@ IMPLEMENT_DYNCREATE(CServerMonitorView, CListView)
 
 BEGIN_MESSAGE_MAP(CServerMonitorView, CListView)
 	ON_WM_DESTROY()
+	ON_NOTIFY_REFLECT(NM_DBLCLK, &CServerMonitorView::OnNMDblclk)
 END_MESSAGE_MAP()
 
 // CServerMonitorView »ý¼º/¼Ò¸ê
@@ -133,4 +134,35 @@ void CServerMonitorView::OnDestroy()
 	}
 
 	CListView::OnDestroy();
+}
+
+void CServerMonitorView::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	
+	if( pNMItemActivate && pNMItemActivate->iItem >= 0 )
+	{
+		int iIndex = pNMItemActivate->iItem;
+		CListCtrl & clsListCtrl = GetListCtrl();
+
+		CString strKey = clsListCtrl.GetItemText( iIndex, 0 );
+
+		if( OpenClipboard( ) )
+		{
+			HGLOBAL hGlobal = GlobalAlloc( GHND | GMEM_SHARE, (strKey.GetLength() + 1) );
+			if( hGlobal )
+			{
+				PTSTR pGlobal = (char*)GlobalLock(hGlobal); 
+
+				lstrcpy( pGlobal, strKey ); 
+				GlobalUnlock( hGlobal );
+				EmptyClipboard();
+				SetClipboardData(CF_TEXT, hGlobal);
+			}
+
+			CloseClipboard();
+		}
+	}
+	
+	*pResult = 0;
 }
