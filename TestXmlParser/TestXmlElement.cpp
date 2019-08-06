@@ -134,6 +134,33 @@ static bool TestXmlGetElementData()
 		return false;
 	}
 
+	// get child element
+	CXmlElement * pclsChild = pclsElement->SelectElement( 0 );
+	if( pclsChild == NULL )
+	{
+		printf( "get 1'st child element error\n" );
+		return false;
+	}
+
+	if( strcmp( pclsChild->GetName(), "LocalIp" ) )
+	{
+		printf( "get 1'st child element name error\n" );
+		return false;
+	}
+
+	pclsChild = pclsElement->SelectElement( 1 );
+	if( pclsChild == NULL )
+	{
+		printf( "get 2'st child element error\n" );
+		return false;
+	}
+
+	if( strcmp( pclsChild->GetName(), "LocalPort" ) )
+	{
+		printf( "get 2'st child element name error\n" );
+		return false;
+	}
+
 	pclsElement->UpdateElementData( "LocalIp", "192.168.0.100" );
 	pclsElement->UpdateElementData( "LocalPort", 5061 );
 	pclsElement->UpdateElementData( "UseRtp", false, 0 );
