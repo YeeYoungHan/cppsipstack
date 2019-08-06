@@ -68,9 +68,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib libSRTP.lib"
+				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib libSRTP.lib nafxcwd.lib LIBCMTD.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../openssl/window/32bit/lib;../opensrtp/lib/window/32bit/lib-debug"
+				IgnoreDefaultLibraryNames="nafxcwd.lib;LIBCMTD.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -151,9 +152,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib libSRTP.lib"
+				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib libSRTP.lib nafxcw.lib LIBCMT.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../openssl/window/32bit/lib;../opensrtp/lib/window/32bit/lib"
+				IgnoreDefaultLibraryNames="nafxcw.lib;LIBCMT.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
