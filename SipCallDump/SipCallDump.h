@@ -30,6 +30,8 @@
 #include "SipCallDumpSetup.h"
 #include "Log.h"
 
+extern std::string gstrPcapFileName;
+
 // PacketDumpThread.cpp
 bool StartPacketDumpThread( );
 

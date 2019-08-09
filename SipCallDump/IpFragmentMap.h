@@ -91,6 +91,7 @@ public:
 	bool Delete( Ip4Header * psttIp4Header, CIpPacket * pclsPacket );
 
 	void DeleteTimeout();
+	void DeleteAll();
 
 private:
 	void GetKey( Ip4Header * psttIp4Header, std::string & strKey );

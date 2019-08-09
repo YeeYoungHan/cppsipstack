@@ -93,11 +93,11 @@ bool CIpFragmentInfo::Insert( Ip4Header * psttIp4Header, char * pszIpBody, int i
 		m_bRecvFragmentEnd = true;
 	}
 
-	pclsData->m_sFragmentOffset = sFlags & 0x1FFF;
+	pclsData->m_sFragmentOffset = ( sFlags & 0x1FFF ) * 8;
 
 	if( pclsData->m_sFragmentOffset == 0 )
 	{
-		memcpy( &m_sttIpHeader, psttIp4Header, sizeof(m_sttIpHeader) );
+		memcpy( &m_sttIpHeader, psttIp4Header, 20 );
 	}
 
 	if( m_clsList.empty() )
@@ -183,8 +183,8 @@ bool CIpFragmentInfo::GetPacket( CIpPacket * pclsPacket )
 		return false;
 	}
 
-	memcpy( pclsPacket->m_pszPacket, &m_sttIpHeader, sizeof(m_sttIpHeader) );
-	pclsPacket->m_iPacketLen = sizeof(m_sttIpHeader);
+	memcpy( pclsPacket->m_pszPacket, &m_sttIpHeader, 20 );
+	pclsPacket->m_iPacketLen = 20;
 
 	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
 	{
@@ -238,6 +238,7 @@ bool CIpFragmentMap::Insert( Ip4Header * psttIp4Header, char * pszIpBody, int iI
 		else
 		{
 			pclsInfo->Insert( psttIp4Header, pszIpBody, iIpBodyLen, bEnd );
+			m_clsMap.insert( IP_FRAGMENT_MAP::value_type( strKey, pclsInfo ) );
 		}
 	}
 	else
@@ -277,6 +278,7 @@ bool CIpFragmentMap::Delete( Ip4Header * psttIp4Header, CIpPacket * pclsPacket )
 			bRes = true;
 		}
 
+		delete itMap->second;
 		m_clsMap.erase( itMap );
 	}
 	m_clsMutex.release();
@@ -317,13 +319,30 @@ LOOP_START:
 
 /**
  * @ingroup SipCallDump
+ * @brief 모든 fragment 패킷들을 삭제한다.
+ */
+void CIpFragmentMap::DeleteAll()
+{
+	IP_FRAGMENT_MAP::iterator itMap, itNext;
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		delete itMap->second;
+	}
+	m_clsMap.clear();
+	m_clsMutex.release();
+}
+
+/**
+ * @ingroup SipCallDump
  * @brief 키를 생성한다.
  * @param psttIp4Header IPv4 헤더
  * @param strKey				키 저장 변수
  */
 void CIpFragmentMap::GetKey( Ip4Header * psttIp4Header, std::string & strKey )
 {
-	char	szKey[22];
+	char	szKey[32];
 
 	snprintf( szKey, sizeof(szKey), "%X_%X_%X", psttIp4Header->saddr, psttIp4Header->daddr, psttIp4Header->identification );
 	strKey = szKey;

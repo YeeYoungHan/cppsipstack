@@ -17,6 +17,7 @@
  */
 
 #include "SipPlatformDefine.h"
+#include "SipCallDump.h"
 #include "SipCallDumpSetup.h"
 #include "ServerService.h"
 #include "ServerUtility.h"
@@ -47,15 +48,26 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 	UdpHeader		* psttUdpHeader;	// UDP Header
 
 	bool bEnd;
+	bool bPcapFile = false;
 	
 	CLog::Print( LOG_INFO, "%s is started", __FUNCTION__ );
 
-	psttPcap = pcap_open_live( gclsSetup.m_strPacketDevice.c_str(), gclsSetup.m_iPacketSnapLen, 1, gclsSetup.m_iPacketReadTimeout, szErrBuf );
+	if( gstrPcapFileName.empty() == false )
+	{
+		CLog::Print( LOG_DEBUG, "pcap_open_offline(%s)", gstrPcapFileName.c_str() );
+		psttPcap = pcap_open_offline( gstrPcapFileName.c_str(), szErrBuf );
+		bPcapFile = true;
+	}
+	else
+	{
+		psttPcap = pcap_open_live( gclsSetup.m_strPacketDevice.c_str(), gclsSetup.m_iPacketSnapLen, 1, gclsSetup.m_iPacketReadTimeout, szErrBuf );
+	}
+
 	if( psttPcap == NULL )
-  {
+	{
 		CLog::Print( LOG_ERROR, "pcap_open_live(%s) error(%d)", gclsSetup.m_strPacketDevice.c_str(), errno );
-    goto FUNC_END;
-  }
+		goto FUNC_END;
+	}
 
 	while( gbStop == false )
 	{
@@ -112,8 +124,8 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 						continue;
 					}
 
-					pszUdpBody = (char *)( clsPacket.m_pszPacket + sizeof(Ip4Header) + 8 );
-					iUdpBodyLen = clsPacket.m_iPacketLen - ( sizeof(Ip4Header) + 8 );
+					pszUdpBody = (char *)( clsPacket.m_pszPacket + 20 + 8 );
+					iUdpBodyLen = clsPacket.m_iPacketLen - ( 20 + 8 );
 
 					if( IsSipPacket( pszUdpBody, iUdpBodyLen ) )
 					{
@@ -126,6 +138,8 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 						{
 							memcpy( pszNewData, pszData, iIpPos );
 							memcpy( pszNewData + iIpPos, clsPacket.m_pszPacket, clsPacket.m_iPacketLen );
+							psttHeader->caplen = iIpPos + clsPacket.m_iPacketLen;
+							psttHeader->len = psttHeader->caplen;
 							gclsCallMap.Insert( psttPcap, psttHeader, pszNewData, pszUdpBody, iUdpBodyLen );
 							free( pszNewData );
 						}
@@ -136,6 +150,11 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 					gclsCallMap.Insert( psttPcap, psttHeader, pszData, pszUdpBody, iUdpBodyLen );
 				}
 			}
+		}
+		else if( bPcapFile )
+		{
+			gbStop = true;
+			break;
 		}
 	}
 

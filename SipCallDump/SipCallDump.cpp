@@ -25,6 +25,8 @@
 #include "IpFragmentMap.h"
 #include "MemoryDebug.h"
 
+std::string gstrPcapFileName;
+
 /**
  * @ingroup SipCallDump
  * @brief SIP 통화별 패킷 덤프하는 서비스
@@ -86,6 +88,7 @@ int ServiceMain( )
 	sleep(1);
 
 	gclsCallMap.DeleteAll();
+	gclsIpFragmentMap.DeleteAll();
 
 	CLog::Print( LOG_SYSTEM, "SipCallDump is terminated" );
 	CLog::Release();
@@ -118,6 +121,10 @@ int main( int argc, char * argv[] )
 			PrintDeviceName();
 			return 0;
 		}
+	}
+	else if( argc == 3 )
+	{
+		gstrPcapFileName = argv[2];
 	}
 
 	ServerMain( argc, argv, clsService, ServiceMain );
