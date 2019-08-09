@@ -225,6 +225,14 @@
 			Name="자료구조"
 			>
 			<File
+				RelativePath=".\IpFragmentMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\IpFragmentMap.h"
+				>
+			</File>
+			<File
 				RelativePath=".\RtpMap.cpp"
 				>
 			</File>

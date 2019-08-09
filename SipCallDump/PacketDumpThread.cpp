@@ -25,6 +25,7 @@
 #include "PacketHeader.h"
 #include "SipCallMap.h"
 #include "RtpMap.h"
+#include "IpFragmentMap.h"
 #include "MemoryDebug.h"
 
 /**
@@ -44,6 +45,8 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 
 	Ip4Header		* psttIp4Header;	// IPv4 Header
 	UdpHeader		* psttUdpHeader;	// UDP Header
+
+	bool bEnd;
 	
 	CLog::Print( LOG_INFO, "%s is started", __FUNCTION__ );
 
@@ -85,10 +88,8 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 			// UDP 만 검사한다.
 			if( IsUdpPacket( psttIp4Header ) == false ) continue;
 
-			// QQQ: fragment 처리 기능 추가할 것
-
-			psttUdpHeader = ( UdpHeader * )( pszData + iIpPos + iIpHeaderLen );
-			pszUdpBody = ( char * )( pszData + iIpPos + iIpHeaderLen + 8 );
+			psttUdpHeader = (UdpHeader *)( pszData + iIpPos + iIpHeaderLen );
+			pszUdpBody = (char *)( pszData + iIpPos + iIpHeaderLen + 8 );
 			iUdpBodyLen = psttHeader->caplen - ( iIpPos + iIpHeaderLen + 8 );
 			if( iUdpBodyLen <= MIN_UDP_BODY_SIZE ) continue;
 
@@ -96,9 +97,44 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 			{
 				gclsRtpMap.Insert( psttHeader, pszData, psttIp4Header, psttUdpHeader );
 			}
-			else if( IsSipPacket( pszUdpBody, iUdpBodyLen ) )
+			else
 			{
-				gclsCallMap.Insert( psttPcap, psttHeader, pszData, pszUdpBody, iUdpBodyLen );
+				// fragment 처리
+				if( gclsIpFragmentMap.Insert( psttIp4Header, (char *)pszData + iIpPos + iIpHeaderLen, psttHeader->caplen - ( iIpPos + iIpHeaderLen ), bEnd ) )
+				{
+					if( bEnd == false ) continue;
+
+					CIpPacket clsPacket;
+
+					if( gclsIpFragmentMap.Delete( psttIp4Header, &clsPacket ) == false ) 
+					{
+						CLog::Print( LOG_ERROR, "%s gclsIpFragmentMap.Delete() error", __FUNCTION__ );
+						continue;
+					}
+
+					pszUdpBody = (char *)( clsPacket.m_pszPacket + sizeof(Ip4Header) + 8 );
+					iUdpBodyLen = clsPacket.m_iPacketLen - ( sizeof(Ip4Header) + 8 );
+
+					if( IsSipPacket( pszUdpBody, iUdpBodyLen ) )
+					{
+						u_char * pszNewData = (u_char *)malloc( iIpPos + clsPacket.m_iPacketLen );
+						if( pszNewData == NULL )
+						{
+							CLog::Print( LOG_ERROR, "%s new data malloc error", __FUNCTION__ );
+						}
+						else
+						{
+							memcpy( pszNewData, pszData, iIpPos );
+							memcpy( pszNewData + iIpPos, clsPacket.m_pszPacket, clsPacket.m_iPacketLen );
+							gclsCallMap.Insert( psttPcap, psttHeader, pszNewData, pszUdpBody, iUdpBodyLen );
+							free( pszNewData );
+						}
+					}
+				}
+				else if( IsSipPacket( pszUdpBody, iUdpBodyLen ) )
+				{
+					gclsCallMap.Insert( psttPcap, psttHeader, pszData, pszUdpBody, iUdpBodyLen );
+				}
 			}
 		}
 	}

@@ -16,7 +16,8 @@
 ### 실행 방법
 
 * MS 윈도우에서는 winpcap 이 설치되어 있어야 한다.
-  * wireshark 를 설치하면 winpcap 도 자동으로 설치된다.
+  * WireShark 인스톨시 winpcap 이 인스톨될 수도 있다.
+  * winpcap 이 설치되저 있지 않으면 https://www.winpcap.org 에서 winpcap 을 다운로드 받아서 설치한다.
 
 * 설정 파일을 수정한다.
   * SipCallDump.xml 파일에서 Device 를 자신에 환경에 적합하게 수정한다.
