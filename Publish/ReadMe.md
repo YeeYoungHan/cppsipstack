@@ -15,14 +15,14 @@
 
 ### 프로그램 설명
 
-* KSipServer.exe
+* KSipServer.zip
   * MS 윈도우용 KSipServer 프로그램
 
 * ServerMonitor.zip
   * 서버 자료구조 모니터링 프로그램
 
-* SipCallDump.exe
+* SipCallDump.zip
   * SIP 패킷 덤프 프로그램
 
-* SipSpeed.exe
+* SipSpeed.zip
   * SIP 서버 성능 테스트 프로그
