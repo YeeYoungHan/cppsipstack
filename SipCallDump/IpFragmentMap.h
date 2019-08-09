@@ -65,6 +65,7 @@ class CIpFragmentInfo
 {
 public:
 	CIpFragmentInfo();
+	~CIpFragmentInfo();
 
 	bool Insert( Ip4Header * psttIp4Header, char * pszIpBody, int iIpBodyLen, bool & bEnd );
 	bool GetPacket( CIpPacket * pclsPacket );

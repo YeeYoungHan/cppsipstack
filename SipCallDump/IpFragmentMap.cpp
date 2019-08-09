@@ -53,6 +53,18 @@ CIpFragmentInfo::CIpFragmentInfo() : m_iTime(NULL), m_bRecvFragmentEnd(false)
 {
 }
 
+CIpFragmentInfo::~CIpFragmentInfo()
+{
+	IP_FRAGMENT_DATA_LIST::iterator itList;
+
+	for( itList = m_clsList.begin(); itList != m_clsList.end(); ++itList )
+	{
+		delete (*itList);
+	}
+
+	m_clsList.clear();
+}
+
 /**
  * @ingroup SipCallDump
  * @brief fragment 된 패킷을 저장한다.
