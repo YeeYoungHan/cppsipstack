@@ -156,6 +156,11 @@ bool IsSipPacket( char * pszUdpBody, int iUdpBodyLen )
 			!strncmp( pszUdpBody, "ACK ", 4 ) ||
 			!strncmp( pszUdpBody, "REFER ", 6 ) ||
 			!strncmp( pszUdpBody, "NOTIFY ", 7 ) ||
+			!strncmp( pszUdpBody, "PRACK ", 6 ) ||
+			!strncmp( pszUdpBody, "INFO ", 5 ) ||
+			!strncmp( pszUdpBody, "MESSAGE ", 8 ) ||
+			!strncmp( pszUdpBody, "OPTIONS ", 8 ) ||
+			!strncmp( pszUdpBody, "SUBSCRIBE ", 10 ) ||
 			!strncmp( pszUdpBody, "SIP/2.0", 7 ) )
 	{
 		return true;
