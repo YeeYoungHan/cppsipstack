@@ -78,7 +78,25 @@ void TestSipMutexDeadInsert()
 {
 	CTestMutex clsMutex;
 
+	/* 리눅스에서 CTestMutex 객체의 내용은 다음과 같다.
+(gdb) p clsMutex
+$2 = {m_clsMutex = {m_sttMutex = {__data = {__lock = 1, __count = 0,
+        __owner = 4230464, __nusers = 0, __kind = 0, __spins = 0, __list = {
+          __prev = 0x401c3b, __next = 0x7fffffffe5f8}},
+      __size = "\001\000\000\000\000\000\000\000@\215@", '\000' <repeats 13 times>, ";\034@\000\000\000\000\000\370\345\377\377\377\177\000", __align = 1}}}
+	*/
+
 	clsMap.insert( TEST_MUTEX_MAP::value_type( 1, clsMutex ) );
+
+	/* 리눅스에서 std::map 에 저장된 CSipMutex 는 아래와 같이 정상적이지 않은 값들이 저장되어 있는 것을 확인할 수 있다.
+(gdb) p clsMap
+$5 = std::map with 1 elements = {
+  [1] = {m_clsMutex = {m_sttMutex = {__data = {__lock = 0, __count = 0,
+          __owner = 0, __nusers = 0, __kind = 0, __spins = 0, __list = {
+            __prev = 0x0, __next = 0x0}}, __size = '\000' <repeats 39 times>,
+        __align = 0}}}
+}
+	*/
 }
 
 void TestSipMutexDeadSelect()
@@ -93,6 +111,10 @@ void TestSipMutexDeadSelect()
 	}
 }
 
+/**
+ * @ingroup TestSipPlatform
+ * @brief CSipMutex 변수를 std::map 또는 std::list 등과 같은 자료구조의 값으로 저장할 때의 문제점 분석을 위한 테스트 함수
+ */
 void TestSipMutexDead()
 {
 	TestSipMutexDeadInsert();
