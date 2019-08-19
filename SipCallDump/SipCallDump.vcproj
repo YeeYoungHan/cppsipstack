@@ -184,6 +184,10 @@
 				RelativePath=".\SipCallDump.h"
 				>
 			</File>
+			<File
+				RelativePath=".\SipCallDumpVersion.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="설정파일"

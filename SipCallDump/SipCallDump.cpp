@@ -17,6 +17,7 @@
  */
 
 #include "SipCallDump.h"
+#include "SipCallDumpVersion.h"
 #include "ServerService.h"
 #include "ServerUtility.h"
 #include "PcapUtility.h"
