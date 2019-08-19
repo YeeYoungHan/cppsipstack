@@ -130,5 +130,15 @@ int main( int argc, char * argv[] )
 
 	ServerMain( argc, argv, clsService, ServiceMain );
 
+	if( argc == 2 )
+	{
+		if( !strcmp( argv[1], "-h" ) || !strcmp( argv[1], "-v" ) )
+		{
+#ifdef WIN32
+			printf( "        %s -l : list all network device\n", argv[0] );
+#endif			
+		}
+	}
+
 	return 0;
 }
