@@ -273,7 +273,7 @@ bool CSipCallMap::InsertInvite( pcap_t * psttPcap, struct pcap_pkthdr * psttHead
 		CDirectory::AppendName( strFileName, szTemp );
 		CDirectory::Create( strFileName.c_str() );
 		
-		snprintf( szTemp, sizeof(szTemp), "%04d%02d%02d_", sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec );
+		snprintf( szTemp, sizeof(szTemp), "%02d%02d%02d_", sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec );
 		CDirectory::AppendName( strFileName, szTemp );
 		strFileName.append( strCallId );
 		strFileName.append( ".pcap" );
