@@ -292,6 +292,13 @@ bool CSipCallMap::InsertInvite( pcap_t * psttPcap, struct pcap_pkthdr * psttHead
 		}
 		bRes = true;
 	}
+	else
+	{
+		// ReINVITE 도 저장한다.
+		pcap_dump( (u_char *)itMap->second.m_psttPcap, psttHeader, pszData );
+
+		bRes = true;
+	}
 	m_clsMutex.release();
 
 	return bRes;
@@ -322,17 +329,22 @@ bool CSipCallMap::InsertInviteResponse( struct pcap_pkthdr * psttHeader, const u
 	itMap = m_clsMap.find( strCallId );
 	if( itMap != m_clsMap.end() )
 	{
-		time( &itMap->second.m_iStartTime );
-
-		if( itMap->second.m_clsToRtp.m_iPort )
+		if( itMap->second.m_iStartTime == 0 )
 		{
-			gclsRtpMap.Delete( itMap->second.m_clsToRtp.m_strIp.c_str(), itMap->second.m_clsToRtp.m_iPort );
+			// ReINVITE 응답을 처리하지 않는다.
+			time( &itMap->second.m_iStartTime );
+
+			if( itMap->second.m_clsToRtp.m_iPort )
+			{
+				gclsRtpMap.Delete( itMap->second.m_clsToRtp.m_strIp.c_str(), itMap->second.m_clsToRtp.m_iPort );
+			}
+
+			SetRtpInfo( pclsSdp, itMap->second.m_clsToRtp );
+
+			gclsRtpMap.Insert( itMap->second.m_clsFromRtp.m_strIp.c_str(), itMap->second.m_clsFromRtp.m_iPort, strCallId.c_str() );
+			gclsRtpMap.Insert( itMap->second.m_clsToRtp.m_strIp.c_str(), itMap->second.m_clsToRtp.m_iPort, strCallId.c_str() );
 		}
 
-		SetRtpInfo( pclsSdp, itMap->second.m_clsToRtp );
-
-		gclsRtpMap.Insert( itMap->second.m_clsFromRtp.m_strIp.c_str(), itMap->second.m_clsFromRtp.m_iPort, strCallId.c_str() );
-		gclsRtpMap.Insert( itMap->second.m_clsToRtp.m_strIp.c_str(), itMap->second.m_clsToRtp.m_iPort, strCallId.c_str() );
 		pcap_dump( (u_char *)itMap->second.m_psttPcap, psttHeader, pszData );
 
 		bRes = true;

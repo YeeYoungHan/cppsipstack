@@ -19,12 +19,16 @@
 #ifndef _SIP_CALL_DUMP_VERSION_H_
 #define _SIP_CALL_DUMP_VERSION_H_
 
-#define SERVER_VERSION							"0.01"
+#define SERVER_VERSION							"0.02"
 
 /* 버전 설명
 
-= 버전 0.01 =
- * 최초 버전
+= 버전 0.02 ( 2019년 8월 20일 ) =
+ * ReINVITE 패킷도 패킷 덤프 파일에 저장한다.
+ * ReINVITE 응답은 무시하고 패킷 덤프 파일에만 저장한다.
+
+= 버전 0.01 ( 2019년 8월 9일 ) =
+ * UDP 패킷이 fragment 된 경우, fragment 된 IP 패킷을 merge 하는 기능 추가함
 
 */
 
