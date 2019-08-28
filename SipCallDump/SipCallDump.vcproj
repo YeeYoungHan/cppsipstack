@@ -205,7 +205,15 @@
 			Name="ÆÐÅ¶´ýÇÁ"
 			>
 			<File
+				RelativePath=".\PacketDump.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PacketDumpThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PacketDumpUdp.cpp"
 				>
 			</File>
 			<File

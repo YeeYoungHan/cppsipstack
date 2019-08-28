@@ -22,11 +22,7 @@
 #include "ServerService.h"
 #include "ServerUtility.h"
 #include "Log.h"
-#include "pcap.h"
-#include "PacketHeader.h"
-#include "SipCallMap.h"
-#include "RtpMap.h"
-#include "IpFragmentMap.h"
+#include "PacketDump.h"
 #include "MemoryDebug.h"
 
 /**
@@ -41,13 +37,10 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 	char		szErrBuf[PCAP_ERRBUF_SIZE];
 	struct pcap_pkthdr * psttHeader;
 	const		u_char * pszData;
-	int			n, iIpHeaderLen, iUdpBodyLen, iIpPos;
-	char		* pszUdpBody;
+	int			n, iIpHeaderLen, iIpPos;
 
 	Ip4Header		* psttIp4Header;	// IPv4 Header
-	UdpHeader		* psttUdpHeader;	// UDP Header
 
-	bool bEnd;
 	bool bPcapFile = false;
 	
 	CLog::Print( LOG_INFO, "%s is started", __FUNCTION__ );
@@ -97,58 +90,12 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 			iIpHeaderLen = GetIpHeaderLength( psttIp4Header );
 			if( iIpHeaderLen == 0 ) continue;
 
-			// UDP 만 검사한다.
-			if( IsUdpPacket( psttIp4Header ) == false ) continue;
-
-			psttUdpHeader = (UdpHeader *)( pszData + iIpPos + iIpHeaderLen );
-			pszUdpBody = (char *)( pszData + iIpPos + iIpHeaderLen + 8 );
-			iUdpBodyLen = psttHeader->caplen - ( iIpPos + iIpHeaderLen + 8 );
-			if( iUdpBodyLen <= MIN_UDP_BODY_SIZE ) continue;
-
-			if( IsRtpPacket( pszUdpBody, iUdpBodyLen ) )
+			if( IsUdpPacket( psttIp4Header ) )
 			{
-				gclsRtpMap.Insert( psttHeader, pszData, psttIp4Header, psttUdpHeader );
+				PacketDumpUdp( psttPcap, psttHeader, pszData, psttIp4Header, iIpPos, iIpHeaderLen );
 			}
-			else
+			else if( IsTcpPacket( psttIp4Header ) )
 			{
-				// fragment 처리
-				if( gclsIpFragmentMap.Insert( psttIp4Header, (char *)pszData + iIpPos + iIpHeaderLen, psttHeader->caplen - ( iIpPos + iIpHeaderLen ), bEnd ) )
-				{
-					if( bEnd == false ) continue;
-
-					CIpPacket clsPacket;
-
-					if( gclsIpFragmentMap.Delete( psttIp4Header, &clsPacket ) == false ) 
-					{
-						CLog::Print( LOG_ERROR, "%s gclsIpFragmentMap.Delete() error", __FUNCTION__ );
-						continue;
-					}
-
-					pszUdpBody = (char *)( clsPacket.m_pszPacket + 20 + 8 );
-					iUdpBodyLen = clsPacket.m_iPacketLen - ( 20 + 8 );
-
-					if( IsSipPacket( pszUdpBody, iUdpBodyLen ) )
-					{
-						u_char * pszNewData = (u_char *)malloc( iIpPos + clsPacket.m_iPacketLen );
-						if( pszNewData == NULL )
-						{
-							CLog::Print( LOG_ERROR, "%s new data malloc error", __FUNCTION__ );
-						}
-						else
-						{
-							memcpy( pszNewData, pszData, iIpPos );
-							memcpy( pszNewData + iIpPos, clsPacket.m_pszPacket, clsPacket.m_iPacketLen );
-							psttHeader->caplen = iIpPos + clsPacket.m_iPacketLen;
-							psttHeader->len = psttHeader->caplen;
-							gclsCallMap.Insert( psttPcap, psttHeader, pszNewData, pszUdpBody, iUdpBodyLen );
-							free( pszNewData );
-						}
-					}
-				}
-				else if( IsSipPacket( pszUdpBody, iUdpBodyLen ) )
-				{
-					gclsCallMap.Insert( psttPcap, psttHeader, pszData, pszUdpBody, iUdpBodyLen );
-				}
 			}
 		}
 		else if( bPcapFile )

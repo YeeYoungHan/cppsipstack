@@ -24,6 +24,7 @@
 #include "SipCallMap.h"
 #include "RtpMap.h"
 #include "IpFragmentMap.h"
+#include "PacketDump.h"
 #include "MemoryDebug.h"
 
 std::string gstrPcapFileName;
