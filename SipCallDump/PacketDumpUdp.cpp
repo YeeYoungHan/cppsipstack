@@ -61,8 +61,11 @@ void PacketDumpUdp( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_
 				return;
 			}
 
-			pszUdpBody = (char *)( clsPacket.m_pszPacket + 20 + 8 );
-			iUdpBodyLen = clsPacket.m_iPacketLen - ( 20 + 8 );
+			Ip4Header * psttIp4Header = (Ip4Header *)( clsPacket.m_pszPacket );
+			int iIpHeaderLen = GetIpHeaderLength( psttIp4Header );
+
+			pszUdpBody = (char *)( clsPacket.m_pszPacket + iIpHeaderLen + 8 );
+			iUdpBodyLen = clsPacket.m_iPacketLen - ( iIpHeaderLen + 8 );
 
 			if( IsSipPacket( pszUdpBody, iUdpBodyLen ) )
 			{

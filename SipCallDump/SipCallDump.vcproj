@@ -209,6 +209,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PacketDumpTcp.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PacketDumpThread.cpp"
 				>
 			</File>

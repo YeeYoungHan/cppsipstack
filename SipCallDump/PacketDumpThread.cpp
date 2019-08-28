@@ -82,7 +82,7 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 				continue;
 			}
 
-			psttIp4Header = ( Ip4Header * )( pszData + iIpPos );
+			psttIp4Header = (Ip4Header *)( pszData + iIpPos );
 
 			// IPv4 만 검사한다.
 			if( ( psttIp4Header->ver_ihl & 0xF0 ) != 0x40 ) continue;
@@ -96,6 +96,7 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 			}
 			else if( IsTcpPacket( psttIp4Header ) )
 			{
+				PacketDumpTcp( psttPcap, psttHeader, pszData, psttIp4Header, iIpPos, iIpHeaderLen );
 			}
 		}
 		else if( bPcapFile )

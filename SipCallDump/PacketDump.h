@@ -22,10 +22,13 @@
 #include "pcap.h"
 #include "PacketHeader.h"
 
+// PacketDumpThread.cpp
+bool StartPacketDumpThread( );
+
 // PacketDumpUdp.cpp
 void PacketDumpUdp( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIp4Header, int iIpPos, int iIpHeaderLen );
 
-// PacketDumpThread.cpp
-bool StartPacketDumpThread( );
+// PacketDumpTcp.cpp
+void PacketDumpTcp( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIp4Header, int iIpPos, int iIpHeaderLen );
 
 #endif
