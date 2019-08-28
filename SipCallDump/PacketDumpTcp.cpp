@@ -21,6 +21,7 @@
 #include "SipCallMap.h"
 #include "RtpMap.h"
 #include "IpFragmentMap.h"
+#include "SipCallDumpSetup.h"
 #include "MemoryDebug.h"
 
 /**
@@ -45,6 +46,12 @@ void PacketDumpTcp( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_
 	{
 		return;
 	}
+
+	uint16_t sSrcPort = ntohs( psttTcpHeader->sport );
+	uint16_t sDstPort = ntohs( psttTcpHeader->dport );
+
+	// 설정 파일에 설정된 SIP 포트 번호가 아니면 무시한다.
+	if( gclsSetup.IsTcpSipPort( sSrcPort ) == false && gclsSetup.IsTcpSipPort( sDstPort ) == false ) return;
 
 	int iTcpHeaderLen = GetTcpHeaderLength( psttTcpHeader );
 	char * pszTcpBody = (char *)( pszData + iIpPos + iIpHeaderLen + iTcpHeaderLen );

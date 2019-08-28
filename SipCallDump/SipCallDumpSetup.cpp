@@ -115,6 +115,36 @@ bool CSipCallDumpSetup::Read( CXmlElement & clsXml )
 		pclsElement->SelectElementData( "RecvTimeout", m_iRtpRecvTimeout );
 	}
 
+	// TCP
+	m_clsMutex.acquire();
+	m_clsTcpPortMap.clear();
+
+	pclsElement = clsXml.SelectElement( "Tcp" );
+	if( pclsElement )
+	{
+		CXmlElement * pclsTcpPortList = pclsElement->SelectElement( "TcpPortList" );
+		if( pclsTcpPortList )
+		{
+			XML_ELEMENT_LIST clsTcpPortList;
+			XML_ELEMENT_LIST::iterator itTP;
+			PORT_MAP::iterator itPM;
+
+			pclsTcpPortList->SelectElementList( "TcpPort", clsTcpPortList );
+
+			for( itTP = clsTcpPortList.begin(); itTP != clsTcpPortList.end(); ++itTP )
+			{
+				int iPort = atoi( itTP->GetData() );
+
+				itPM = m_clsTcpPortMap.find( iPort );
+				if( itPM == m_clsTcpPortMap.end() )
+				{
+					m_clsTcpPortMap.insert( PORT_MAP::value_type( iPort, iPort ) );
+				}
+			}
+		}
+	}
+	m_clsMutex.release();
+
 	// 로그
 	pclsElement = clsXml.SelectElement( "Log" );
 	if( pclsElement )
@@ -173,6 +203,28 @@ bool CSipCallDumpSetup::IsChange()
 	}
 
 	return false;
+}
+
+/**
+ * @ingroup SipCallDump
+ * @brief TCP 에서 사용하는 SIP 포트 번호인지 검사한다.
+ * @param iPort	포트 번호
+ * @returns TCP 에서 사용하는 SIP 포트 번호이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipCallDumpSetup::IsTcpSipPort( int iPort )
+{
+	PORT_MAP::iterator itPM;
+	bool bRes = false;
+
+	m_clsMutex.acquire();
+	itPM = m_clsTcpPortMap.find( iPort );
+	if( itPM != m_clsTcpPortMap.end() )
+	{
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
 }
 
 /**

@@ -23,6 +23,10 @@
 #define DEFAULT_PACKET_READ_TIMEOUT			200
 
 #include "XmlElement.h"
+#include "SipMutex.h"
+#include <map>
+
+typedef std::map< int, int > PORT_MAP;
 
 /**
  * @ingroup SipCallDump
@@ -38,6 +42,7 @@ public:
 	bool Read( );
 
 	bool IsChange();
+	bool IsTcpSipPort( int iPort );
 
 	// 패킷 덤프 설정
 	std::string	m_strPacketDevice;	// pcap_open 의 1번째 인자값 - 패킷 캡처 디바이스 이름
@@ -55,6 +60,11 @@ private:
 	std::string	m_strFileName;	// 설정 파일 이름
 	time_t			m_iFileTime;		// 설정 파일 저장 시간
 	int					m_iFileSize;		// 설정 파일 크기
+
+	// TCP
+	PORT_MAP	m_clsTcpPortMap;
+	
+	CSipMutex	m_clsMutex;
 };
 
 extern CSipCallDumpSetup gclsSetup;

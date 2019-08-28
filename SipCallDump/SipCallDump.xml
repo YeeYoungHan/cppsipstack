@@ -8,6 +8,11 @@
 	<Rtp>
 		<RecvTimeout>30</RecvTimeout>
 	</Rtp>
+	<Tcp>
+		<TcpPortList>
+			<TcpPort>5060</TcpPort>
+		</TcpPortList>
+	</Tcp>
 	<Log>
 		<Folder>c:\temp\sipcalldump</Folder>
 		<Level Debug="true" Info="true" Network="true" />

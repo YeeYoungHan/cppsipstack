@@ -264,6 +264,14 @@
 				RelativePath=".\SipCallMap.h"
 				>
 			</File>
+			<File
+				RelativePath=".\TcpMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TcpMap.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
