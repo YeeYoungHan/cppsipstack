@@ -18,6 +18,21 @@
 
 #include "TcpMap.h"
 
+CTcpMap gclsTcpMap;
+
+CTcpPacket::CTcpPacket() : m_pszData(NULL), m_iSeq(0), m_iBodyPos(0), m_iBodyLen(0)
+{
+}
+
+CTcpPacket::~CTcpPacket()
+{
+	if( m_pszData )
+	{
+		free( m_pszData );
+		m_pszData = NULL;
+	}
+}
+
 CTcpMap::CTcpMap()
 {
 }
@@ -26,7 +41,29 @@ CTcpMap::~CTcpMap()
 {
 }
 
-bool CTcpMap::Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader )
+bool CTcpMap::Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen )
+{
+	TCP_MAP::iterator itMap;
+	std::string strKey;
+
+	GetKey( psttIpHeader, psttTcpHeader, strKey );
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( strKey );
+	if( itMap == m_clsMap.end() )
+	{
+		// Insert
+	}
+	else
+	{
+		// Update
+	}
+	m_clsMutex.release();
+
+	return true;
+}
+
+bool CTcpMap::Update( struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen )
 {
 
 	return true;

@@ -21,9 +21,34 @@
 
 #include "SipPlatformDefine.h"
 #include <string>
+#include <list>
 #include <map>
 #include "SipMutex.h"
 #include "PacketHeader.h"
+#include "pcap.h"
+
+class CTcpPacket
+{
+public:
+	CTcpPacket();
+	~CTcpPacket();
+
+	struct pcap_pkthdr m_sttHeader;
+	u_char  * m_pszData;
+	uint32_t	m_iSeq;
+	int				m_iBodyPos;
+	int				m_iBodyLen;
+};
+
+typedef std::list< CTcpPacket * > TCP_LIST;
+
+class CTcpInfo
+{
+public:
+	TCP_LIST m_clsTcpList;
+};
+
+typedef std::map< std::string, CTcpInfo > TCP_MAP;
 
 class CTcpMap
 {
@@ -31,12 +56,16 @@ public:
 	CTcpMap();
 	~CTcpMap();
 
-	bool Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader );
+	bool Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen );
+	bool Update( struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen );
 
 private:
 	void GetKey( Ip4Header * psttIp4Header, TcpHeader * psttTcpHeader, std::string & strKey );
 
-
+	TCP_MAP		m_clsMap;
+	CSipMutex	m_clsMutex;
 };
+
+extern CTcpMap gclsTcpMap;
 
 #endif

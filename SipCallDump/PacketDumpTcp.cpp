@@ -20,6 +20,7 @@
 #include "Log.h"
 #include "SipCallMap.h"
 #include "RtpMap.h"
+#include "TcpMap.h"
 #include "IpFragmentMap.h"
 #include "SipCallDumpSetup.h"
 #include "MemoryDebug.h"
@@ -54,29 +55,21 @@ void PacketDumpTcp( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_
 	if( gclsSetup.IsTcpSipPort( sSrcPort ) == false && gclsSetup.IsTcpSipPort( sDstPort ) == false ) return;
 
 	int iTcpHeaderLen = GetTcpHeaderLength( psttTcpHeader );
-	char * pszTcpBody = (char *)( pszData + iIpPos + iIpHeaderLen + iTcpHeaderLen );
-	int iTcpBodyLen = psttHeader->caplen - ( iIpPos + iIpHeaderLen + iTcpHeaderLen );
+	int iTcpBodyPos = iIpPos + iIpHeaderLen + iTcpHeaderLen;
+	char * pszTcpBody = (char *)( pszData + iTcpBodyPos );
+	int iTcpBodyLen = psttHeader->caplen - iTcpBodyPos;
+
+	// TCP body len 이 0 이면 무시한다.
 	if( iTcpBodyLen <= 0 ) return;
 
-	bool bEnd;
+	// IP fragment 된 TCP packet 은 현재 버전에서는 무시한다.
 
-	// fragment 처리
-	if( gclsIpFragmentMap.Insert( psttIp4Header, (char *)pszData + iIpPos + iIpHeaderLen, psttHeader->caplen - ( iIpPos + iIpHeaderLen ), bEnd ) )
+	if( IsSipPacket( pszTcpBody, iTcpBodyLen ) )
 	{
-		if( bEnd == false ) return;
-
-		CIpPacket clsPacket;
-
-		if( gclsIpFragmentMap.Delete( psttIp4Header, &clsPacket ) == false ) 
-		{
-			CLog::Print( LOG_ERROR, "%s gclsIpFragmentMap.Delete() error", __FUNCTION__ );
-			return;
-		}
-
-		// QQQ: TCP 패킷 큐에 저장한다.
+		gclsTcpMap.Insert( psttHeader, pszData, psttIp4Header, psttTcpHeader, iTcpBodyPos, iTcpBodyLen );
 	}
 	else
 	{
-		// QQQ: TCP 패킷 큐에 저장한다.
+		gclsTcpMap.Update( psttHeader, pszData, psttIp4Header, psttTcpHeader, iTcpBodyPos, iTcpBodyLen );
 	}
 }
