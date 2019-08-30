@@ -23,6 +23,7 @@
 #include "PcapUtility.h"
 #include "SipCallMap.h"
 #include "RtpMap.h"
+#include "TcpMap.h"
 #include "IpFragmentMap.h"
 #include "PacketDump.h"
 #include "MemoryDebug.h"
@@ -74,6 +75,7 @@ int ServiceMain( )
 			}
 
 			gclsIpFragmentMap.DeleteTimeout();
+			gclsTcpMap.DeleteTimeout();
 
 			iSecond = 0;
 		}

@@ -47,10 +47,15 @@ typedef std::list< CTcpPacket * > TCP_LIST;
 class CTcpInfo
 {
 public:
-	bool Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen );
+	CTcpInfo();
+
+	bool Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen );
+	void DeleteAll( );
+
+	time_t	 m_iTime;
 
 private:
-	void CheckSip( );
+	void CheckSip( pcap_t * psttPcap );
 
 	TCP_LIST m_clsTcpList;
 };
@@ -65,6 +70,8 @@ public:
 
 	bool Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen );
 	bool Update( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen );
+
+	void DeleteTimeout( );
 
 private:
 	void GetKey( Ip4Header * psttIp4Header, TcpHeader * psttTcpHeader, std::string & strKey );

@@ -60,8 +60,14 @@ CTcpPacket * CTcpPacket::Create( struct pcap_pkthdr * psttHeader, const u_char *
 	return pclsPacket;
 }
 
-bool CTcpInfo::Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen )
+CTcpInfo::CTcpInfo() : m_iTime(0)
 {
+}
+
+bool CTcpInfo::Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen )
+{
+	time( &m_iTime );
+
 	uint32_t iSeq = ntohl( psttTcpHeader->seqnum );
 
 	if( m_clsTcpList.empty() == false )
@@ -84,7 +90,7 @@ bool CTcpInfo::Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, 
 				}
 
 				m_clsTcpList.insert( itTL, pclsPacket );
-				CheckSip();
+				CheckSip( psttPcap );
 
 				return true;
 			}
@@ -98,12 +104,24 @@ bool CTcpInfo::Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, 
 	}
 
 	m_clsTcpList.push_back( pclsPacket );
-	CheckSip();
+	CheckSip( psttPcap );
 
 	return true;
 }
 
-void CTcpInfo::CheckSip( )
+void CTcpInfo::DeleteAll( )
+{
+	TCP_LIST::iterator itTL;
+
+	for( itTL = m_clsTcpList.begin(); itTL != m_clsTcpList.end(); ++itTL )
+	{
+		delete (*itTL);
+	}
+
+	m_clsTcpList.clear();
+}
+
+void CTcpInfo::CheckSip( pcap_t * psttPcap )
 {
 	TCP_LIST::iterator itTL;
 	std::string strData;
@@ -160,7 +178,39 @@ void CTcpInfo::CheckSip( )
 					}
 				}
 
-				// QQQ: IP 헤더를 수정한다.
+				// pcap packet 헤더를 수정한다.
+				sttHeader.caplen = iPacketLen;
+				sttHeader.len = iPacketLen;
+
+				// IP 헤더를 수정한다.
+				int iIpPos = 14;
+
+				if( pszPacket[12] == 0x81 )
+				{
+					iIpPos = 18;		// VLAN
+				}
+
+				Ip4Header * psttIp4Header = (Ip4Header *)( pszPacket + iIpPos );
+				psttIp4Header->tlen = htons( iPacketLen - iIpPos );
+
+				gclsCallMap.Insert( psttPcap, &sttHeader, pszPacket, &clsMessage );
+
+				free( pszPacket );
+			}
+
+			TCP_LIST::iterator itNext;
+			int iDelCount = 0;
+
+			for( itTL = m_clsTcpList.begin(); itTL != m_clsTcpList.end(); )
+			{
+				itNext = itTL;
+				++itNext;
+				delete (*itTL);
+				m_clsTcpList.erase( itTL );
+				++iDelCount;
+
+				if( iDelCount == iCount ) break;
+				itTL = itNext;
 			}
 		}
 	}
@@ -212,12 +262,12 @@ bool CTcpMap::Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const 
 		itMap = m_clsMap.find( strKey );
 		if( itMap != m_clsMap.end() )
 		{
-			bRes = itMap->second.Insert( psttHeader, pszData, psttTcpHeader, iBodyPos, iBodyLen );
+			bRes = itMap->second.Insert( psttPcap, psttHeader, pszData, psttTcpHeader, iBodyPos, iBodyLen );
 		}
 	}
 	else
 	{
-		bRes = itMap->second.Insert( psttHeader, pszData, psttTcpHeader, iBodyPos, iBodyLen );
+		bRes = itMap->second.Insert( psttPcap, psttHeader, pszData, psttTcpHeader, iBodyPos, iBodyLen );
 	}
 	m_clsMutex.release();
 
@@ -236,11 +286,37 @@ bool CTcpMap::Update( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const 
 	itMap = m_clsMap.find( strKey );
 	if( itMap != m_clsMap.end() )
 	{
-		bRes = itMap->second.Insert( psttHeader, pszData, psttTcpHeader, iBodyPos, iBodyLen );
+		bRes = itMap->second.Insert( psttPcap, psttHeader, pszData, psttTcpHeader, iBodyPos, iBodyLen );
 	}
 	m_clsMutex.release();
 
 	return bRes;
+}
+
+void CTcpMap::DeleteTimeout( )
+{
+	TCP_MAP::iterator itMap, itNext;
+	time_t iTime;
+
+	time( &iTime );
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+LOOP_START:
+		if( ( iTime - itMap->second.m_iTime ) >= 300 )
+		{
+			itNext = itMap;
+			++itNext;
+			itMap->second.DeleteAll();
+			m_clsMap.erase( itMap );
+
+			if( itNext == m_clsMap.end() ) break;
+			itMap = itNext;
+			goto LOOP_START;
+		}
+	}
+	m_clsMutex.release();
 }
 
 void CTcpMap::GetKey( Ip4Header * psttIp4Header, TcpHeader * psttTcpHeader, std::string & strKey )
