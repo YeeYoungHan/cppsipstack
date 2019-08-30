@@ -118,43 +118,57 @@ bool CSipCallMap::Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, co
 		return false;
 	}
 
-	if( clsMessage.IsRequest() )
+	return Insert( psttPcap, psttHeader, pszData, &clsMessage );
+}
+
+/**
+ * @ingroup SipCallDump
+ * @brief SIP 패킷을 저장한다.
+ * @param psttPcap		패킷 캡처 중인 pcap 구조체의 포인터
+ * @param psttHeader	패킷 캡처한 헤더
+ * @param pszData			패킷 캡처한 패킷
+ * @param pclsMessage	SIP 메시지 객체의 포인터
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipCallMap::Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, CSipMessage * pclsMessage )
+{
+	if( pclsMessage->IsRequest() )
 	{
-		if( clsMessage.IsMethod( "INVITE" ) )
+		if( pclsMessage->IsMethod( "INVITE" ) )
 		{
 			CSdpMessage clsSdp;
 
-			if( GetSdp( clsMessage, clsSdp ) == false )
+			if( GetSdp( *pclsMessage, clsSdp ) == false )
 			{
 				CLog::Print( LOG_ERROR, "%s INVITE no SDP", __FUNCTION__ );
 				return false;
 			}
 
-			InsertInvite( psttPcap, psttHeader, pszData, &clsMessage, &clsSdp );
+			InsertInvite( psttPcap, psttHeader, pszData, pclsMessage, &clsSdp );
 		}
 		else
 		{
-			Insert( psttHeader, pszData, &clsMessage );
+			Insert( psttHeader, pszData, pclsMessage );
 		}
 	}
 	else
 	{
-		if( clsMessage.IsMethod( "INVITE" ) )
+		if( pclsMessage->IsMethod( "INVITE" ) )
 		{
 			CSdpMessage clsSdp;
 
-			if( GetSdp( clsMessage, clsSdp ) == false )
+			if( GetSdp( *pclsMessage, clsSdp ) == false )
 			{
-				Insert( psttHeader, pszData, &clsMessage );
+				Insert( psttHeader, pszData, pclsMessage );
 			}
 			else
 			{
-				InsertInviteResponse( psttHeader, pszData, &clsMessage, &clsSdp );
+				InsertInviteResponse( psttHeader, pszData, pclsMessage, &clsSdp );
 			}
 		}
 		else
 		{
-			Insert( psttHeader, pszData, &clsMessage );
+			Insert( psttHeader, pszData, pclsMessage );
 		}
 	}
 

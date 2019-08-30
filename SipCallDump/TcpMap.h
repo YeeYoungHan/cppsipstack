@@ -33,6 +33,8 @@ public:
 	CTcpPacket();
 	~CTcpPacket();
 
+	static CTcpPacket * Create( struct pcap_pkthdr * psttHeader, const u_char * pszData, uint32_t iSeq, int iBodyPos, int iBodyLen );
+
 	struct pcap_pkthdr m_sttHeader;
 	u_char  * m_pszData;
 	uint32_t	m_iSeq;
@@ -45,6 +47,11 @@ typedef std::list< CTcpPacket * > TCP_LIST;
 class CTcpInfo
 {
 public:
+	bool Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen );
+
+private:
+	void CheckSip( );
+
 	TCP_LIST m_clsTcpList;
 };
 
@@ -56,8 +63,8 @@ public:
 	CTcpMap();
 	~CTcpMap();
 
-	bool Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen );
-	bool Update( struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen );
+	bool Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen );
+	bool Update( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen );
 
 private:
 	void GetKey( Ip4Header * psttIp4Header, TcpHeader * psttTcpHeader, std::string & strKey );

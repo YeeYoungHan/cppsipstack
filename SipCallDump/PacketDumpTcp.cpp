@@ -66,10 +66,10 @@ void PacketDumpTcp( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_
 
 	if( IsSipPacket( pszTcpBody, iTcpBodyLen ) )
 	{
-		gclsTcpMap.Insert( psttHeader, pszData, psttIp4Header, psttTcpHeader, iTcpBodyPos, iTcpBodyLen );
+		gclsTcpMap.Insert( psttPcap, psttHeader, pszData, psttIp4Header, psttTcpHeader, iTcpBodyPos, iTcpBodyLen );
 	}
 	else
 	{
-		gclsTcpMap.Update( psttHeader, pszData, psttIp4Header, psttTcpHeader, iTcpBodyPos, iTcpBodyLen );
+		gclsTcpMap.Update( psttPcap, psttHeader, pszData, psttIp4Header, psttTcpHeader, iTcpBodyPos, iTcpBodyLen );
 	}
 }

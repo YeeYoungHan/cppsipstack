@@ -71,6 +71,7 @@ public:
 	~CSipCallMap();
 
 	bool Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, const char * pszUdpBody, int iUdpBodyLen );
+	bool Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, CSipMessage * pclsMessage );
 	bool Insert( const char * pszCallId, struct pcap_pkthdr * psttHeader, const u_char * pszData );
 	bool Delete( const char * pszCallId );
 	void DeleteAll( );

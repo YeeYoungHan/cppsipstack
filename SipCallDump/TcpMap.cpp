@@ -17,6 +17,9 @@
  */
 
 #include "TcpMap.h"
+#include "SipCallMap.h"
+#include "SipMessage.h"
+#include "MemoryDebug.h"
 
 CTcpMap gclsTcpMap;
 
@@ -33,6 +36,136 @@ CTcpPacket::~CTcpPacket()
 	}
 }
 
+CTcpPacket * CTcpPacket::Create( struct pcap_pkthdr * psttHeader, const u_char * pszData, uint32_t iSeq, int iBodyPos, int iBodyLen )
+{
+	CTcpPacket * pclsPacket = new CTcpPacket();
+	if( pclsPacket == NULL )
+	{
+		return NULL;
+	}
+
+	pclsPacket->m_pszData = (u_char *)malloc( psttHeader->caplen );
+	if( pclsPacket->m_pszData == NULL )
+	{
+		delete pclsPacket;
+		return NULL;
+	}
+
+	memcpy( &pclsPacket->m_sttHeader, psttHeader, sizeof(pclsPacket->m_sttHeader) );
+	memcpy( pclsPacket->m_pszData, pszData, psttHeader->caplen );
+	pclsPacket->m_iBodyPos = iBodyPos;
+	pclsPacket->m_iBodyLen = iBodyLen;
+	pclsPacket->m_iSeq = iSeq;
+
+	return pclsPacket;
+}
+
+bool CTcpInfo::Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen )
+{
+	uint32_t iSeq = ntohl( psttTcpHeader->seqnum );
+
+	if( m_clsTcpList.empty() == false )
+	{
+		TCP_LIST::iterator itTL;
+
+		for( itTL = m_clsTcpList.begin(); itTL != m_clsTcpList.end(); ++itTL )
+		{
+			if( (*itTL)->m_iSeq == iSeq )
+			{
+				// 동일한 SEQ 는 저장하지 않는다.
+				return true;
+			}
+			else if( (*itTL)->m_iSeq > iSeq )
+			{
+				CTcpPacket * pclsPacket = CTcpPacket::Create( psttHeader, pszData, iSeq, iBodyPos, iBodyLen );
+				if( pclsPacket == NULL )
+				{
+					return false;
+				}
+
+				m_clsTcpList.insert( itTL, pclsPacket );
+				CheckSip();
+
+				return true;
+			}
+		}
+	}
+
+	CTcpPacket * pclsPacket = CTcpPacket::Create( psttHeader, pszData, iSeq, iBodyPos, iBodyLen );
+	if( pclsPacket == NULL )
+	{
+		return false;
+	}
+
+	m_clsTcpList.push_back( pclsPacket );
+	CheckSip();
+
+	return true;
+}
+
+void CTcpInfo::CheckSip( )
+{
+	TCP_LIST::iterator itTL;
+	std::string strData;
+	uint32_t iNextSeq = 0;
+	int iCount = 0, iPacketLen = 0;
+
+	for( itTL = m_clsTcpList.begin(); itTL != m_clsTcpList.end(); ++itTL )
+	{
+		if( itTL == m_clsTcpList.begin() )
+		{
+			iNextSeq = (*itTL)->m_iSeq + (*itTL)->m_iBodyLen;
+			strData.append( (char *)(*itTL)->m_pszData + (*itTL)->m_iBodyPos, (*itTL)->m_iBodyLen );
+			iPacketLen = (*itTL)->m_iBodyPos + (*itTL)->m_iBodyLen;
+			++iCount;
+		}
+		else if( (*itTL)->m_iSeq == iNextSeq )
+		{
+			iNextSeq = (*itTL)->m_iSeq + (*itTL)->m_iBodyLen;
+			strData.append( (char *)(*itTL)->m_pszData + (*itTL)->m_iBodyPos, (*itTL)->m_iBodyLen );
+			iPacketLen += (*itTL)->m_iBodyLen;
+			++iCount;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	if( strData.empty() == false )
+	{
+		CSipMessage clsMessage;
+
+		if( clsMessage.Parse( strData.c_str(), strData.length() ) > 0 )
+		{
+			// N 개의 TCP 패킷을 하나의 패킷으로 저장한다.
+			u_char * pszPacket = (u_char *)malloc( iPacketLen );
+			if( pszPacket )
+			{
+				struct pcap_pkthdr sttHeader;
+				int iPacketPos = 0;
+
+				for( itTL = m_clsTcpList.begin(); itTL != m_clsTcpList.end(); ++itTL )
+				{
+					if( itTL == m_clsTcpList.begin() )
+					{
+						memcpy( &sttHeader, &(*itTL)->m_sttHeader, sizeof(sttHeader) );
+						memcpy( pszPacket, (*itTL)->m_pszData, (*itTL)->m_iBodyPos + (*itTL)->m_iBodyLen );
+						iPacketPos = (*itTL)->m_iBodyPos + (*itTL)->m_iBodyLen;
+					}
+					else
+					{
+						memcpy( pszPacket + iPacketPos, (*itTL)->m_pszData + (*itTL)->m_iBodyPos, (*itTL)->m_iBodyLen );
+						iPacketPos += (*itTL)->m_iBodyLen;
+					}
+				}
+
+				// QQQ: IP 헤더를 수정한다.
+			}
+		}
+	}
+}
+
 CTcpMap::CTcpMap()
 {
 }
@@ -41,32 +174,73 @@ CTcpMap::~CTcpMap()
 {
 }
 
-bool CTcpMap::Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen )
+bool CTcpMap::Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen )
 {
 	TCP_MAP::iterator itMap;
 	std::string strKey;
+	bool bRes = false;
+	bool bFound = false;
 
 	GetKey( psttIpHeader, psttTcpHeader, strKey );
 
 	m_clsMutex.acquire();
 	itMap = m_clsMap.find( strKey );
-	if( itMap == m_clsMap.end() )
+	if( itMap != m_clsMap.end() )
 	{
-		// Insert
-	}
-	else
-	{
-		// Update
+		bFound = true;
 	}
 	m_clsMutex.release();
 
-	return true;
+	if( bFound == false )
+	{
+		CSipMessage clsMessage;
+
+		// 하나의 TCP 패킷에 SIP 메시지가 모두 존재하면 자료구조에 저장하지 않고 CallMap 에 저장한다.
+		if( clsMessage.Parse( (const char *)(pszData + iBodyPos), iBodyLen ) > 0 )
+		{
+			return gclsCallMap.Insert( psttPcap, psttHeader, pszData, &clsMessage );
+		}
+	}
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( strKey );
+	if( itMap == m_clsMap.end() )
+	{
+		CTcpInfo clsInfo;
+
+		m_clsMap.insert( TCP_MAP::value_type( strKey, clsInfo ) );
+		itMap = m_clsMap.find( strKey );
+		if( itMap != m_clsMap.end() )
+		{
+			bRes = itMap->second.Insert( psttHeader, pszData, psttTcpHeader, iBodyPos, iBodyLen );
+		}
+	}
+	else
+	{
+		bRes = itMap->second.Insert( psttHeader, pszData, psttTcpHeader, iBodyPos, iBodyLen );
+	}
+	m_clsMutex.release();
+
+	return bRes;
 }
 
-bool CTcpMap::Update( struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen )
+bool CTcpMap::Update( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, const u_char * pszData, Ip4Header * psttIpHeader, TcpHeader * psttTcpHeader, int iBodyPos, int iBodyLen )
 {
+	TCP_MAP::iterator itMap;
+	std::string strKey;
+	bool bRes = false;
 
-	return true;
+	GetKey( psttIpHeader, psttTcpHeader, strKey );
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( strKey );
+	if( itMap != m_clsMap.end() )
+	{
+		bRes = itMap->second.Insert( psttHeader, pszData, psttTcpHeader, iBodyPos, iBodyLen );
+	}
+	m_clsMutex.release();
+
+	return bRes;
 }
 
 void CTcpMap::GetKey( Ip4Header * psttIp4Header, TcpHeader * psttTcpHeader, std::string & strKey )
