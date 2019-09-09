@@ -175,7 +175,7 @@ BEGIN
             VALUE "FileDescription", "SIP speed test tool ( http://blog.naver.com/websearch.do )"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "SipSpeed.exe"
-            VALUE "LegalCopyright", "(c) Yee Young Han.  All rights reserved."
+            VALUE "LegalCopyright", "Yee Young Han.  All rights reserved."
             VALUE "OriginalFilename", "SipSpeed.exe"
             VALUE "ProductName", "SipSpeed"
             VALUE "ProductVersion", "1.0.0.1"

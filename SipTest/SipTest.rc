@@ -174,7 +174,7 @@ BEGIN
             VALUE "FileDescription", "SIP server test tool ( http://blog.naver.com/websearch.do )"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "SipTest.exe"
-            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "LegalCopyright", "Yee Young Han.  All rights reserved."
             VALUE "OriginalFilename", "SipTest.exe"
             VALUE "ProductName", "SipTest"
             VALUE "ProductVersion", "1.0.0.1"

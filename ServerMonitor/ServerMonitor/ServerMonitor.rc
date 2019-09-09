@@ -371,7 +371,7 @@ BEGIN
             VALUE "FileDescription", "ServerMonitor"
             VALUE "FileVersion", "1.0.0.2"
             VALUE "InternalName", "ServerMonitor.exe"
-            VALUE "LegalCopyright", "OpenSource C++ SIP stack (https://github.com/YeeYoungHan/cppsipstack)  All rights reserved."
+            VALUE "LegalCopyright", "Yee Young Han.  All rights reserved."
             VALUE "OriginalFilename", "ServerMonitor.exe"
             VALUE "ProductName", "ServerMonitor.exe"
             VALUE "ProductVersion", "1.0.0.2"

@@ -204,7 +204,7 @@ BEGIN
             VALUE "FileDescription", "SIP client ( http://blog.naver.com/websearch.do )"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "SipClientMFC.exe"
-            VALUE "LegalCopyright", "websearch@naver.com.  All rights reserved."
+            VALUE "LegalCopyright", "Yee Young Han.  All rights reserved."
             VALUE "OriginalFilename", "SipClientMFC.exe"
             VALUE "ProductName", "SipClientMFC"
             VALUE "ProductVersion", "1.0.0.1"
