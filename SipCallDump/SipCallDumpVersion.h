@@ -19,9 +19,12 @@
 #ifndef _SIP_CALL_DUMP_VERSION_H_
 #define _SIP_CALL_DUMP_VERSION_H_
 
-#define SERVER_VERSION							"0.02"
+#define SERVER_VERSION							"0.03"
 
 /* 버전 설명
+
+= 버전 0.03 ( 2019년 9월 9일 ) =
+ * 에러가 발생하였지만 기존에 수신된 패킷들이 있다면 pcap 을 다시 시작한다.
 
 = 버전 0.02 ( 2019년 8월 20일 ) =
  * ReINVITE 패킷도 패킷 덤프 파일에 저장한다.

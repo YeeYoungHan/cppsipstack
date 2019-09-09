@@ -42,6 +42,8 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 	Ip4Header		* psttIp4Header;	// IPv4 Header
 
 	bool bPcapFile = false;
+	bool bRestartPcap = false;
+	uint32_t	iPacketCount = 0;
 	
 	CLog::Print( LOG_INFO, "%s is started", __FUNCTION__ );
 
@@ -53,6 +55,7 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 	}
 	else
 	{
+START_PCAP:
 		psttPcap = pcap_open_live( gclsSetup.m_strPacketDevice.c_str(), gclsSetup.m_iPacketSnapLen, 1, gclsSetup.m_iPacketReadTimeout, szErrBuf );
 	}
 
@@ -62,11 +65,14 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 		goto FUNC_END;
 	}
 
+	CLog::Print( LOG_DEBUG, "pcap_open_live(%s) success", gclsSetup.m_strPacketDevice.c_str() );
+
 	while( gbStop == false )
 	{
 		n = pcap_next_ex( psttPcap, &psttHeader, &pszData );
 		if( n > 0 )
 		{
+			++iPacketCount;
 			if( psttHeader->caplen < MIN_PACKET_SIZE ) continue;
 
 			if( pszData[12] == 0x81 )
@@ -99,15 +105,36 @@ THREAD_API PacketDumpThread( LPVOID lpParameter )
 				PacketDumpTcp( psttPcap, psttHeader, pszData, psttIp4Header, iIpPos, iIpHeaderLen );
 			}
 		}
-		else if( bPcapFile )
+		else
 		{
-			gbStop = true;
-			break;
+			if( bPcapFile )
+			{
+				gbStop = true;
+				break;
+			}
+			
+			if( n == -1 )
+			{
+				if( iPacketCount > 0 )
+				{
+					// 에러가 발생하였지만 기존에 수신된 패킷들이 있다면 pcap 을 다시 시작한다.
+					bRestartPcap = true;
+					iPacketCount = 0;
+				}
+
+				break;
+			}
 		}
 	}
 
 FUNC_END:
 	if( psttPcap ) pcap_close( psttPcap );
+
+	if( bRestartPcap )
+	{
+		bRestartPcap = false;
+		goto START_PCAP;
+	}
 
 	CLog::Print( LOG_INFO, "%s is stoped", __FUNCTION__ );
 
