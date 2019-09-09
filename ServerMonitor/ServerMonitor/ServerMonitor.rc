@@ -367,14 +367,14 @@ BEGIN
     BEGIN
         BLOCK "041203b5"
         BEGIN
-            VALUE "CompanyName", "TODO: <회사 이름>"
-            VALUE "FileDescription", "TODO: <파일 설명>"
-            VALUE "FileVersion", "1.0.0.1"
+            VALUE "CompanyName", "OpenSource C++ SIP stack (https://github.com/YeeYoungHan/cppsipstack)"
+            VALUE "FileDescription", "ServerMonitor"
+            VALUE "FileVersion", "1.0.0.2"
             VALUE "InternalName", "ServerMonitor.exe"
-            VALUE "LegalCopyright", "TODO: (c) <회사 이름>.  All rights reserved."
+            VALUE "LegalCopyright", "OpenSource C++ SIP stack (https://github.com/YeeYoungHan/cppsipstack)  All rights reserved."
             VALUE "OriginalFilename", "ServerMonitor.exe"
-            VALUE "ProductName", "TODO: <제품 이름>"
-            VALUE "ProductVersion", "1.0.0.1"
+            VALUE "ProductName", "ServerMonitor.exe"
+            VALUE "ProductVersion", "1.0.0.2"
         END
     END
     BLOCK "VarFileInfo"
