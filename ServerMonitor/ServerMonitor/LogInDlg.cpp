@@ -94,7 +94,26 @@ void CLogInDlg::OnBnClickedOk()
 		CString	strIp;
 
 		m_clsIpList.GetWindowText( strIp );
-		m_clsIpList.AddString( strIp );
+
+		int iCount = m_clsIpList.GetCount();
+		CString	strText;
+		bool bFound = false;
+
+		for( int i = 0; i < iCount; ++i )
+		{
+			m_clsIpList.GetLBText( i, strText );
+
+			if( strText == strIp )
+			{
+				bFound = true;
+				break;
+			}
+		}
+
+		if( bFound == false )
+		{
+			m_clsIpList.AddString( strIp );
+		}
 
 		m_strIp = strIp;
 	}

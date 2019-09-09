@@ -85,7 +85,7 @@ bool CSetup::GetFile()
 
 bool CSetup::PutFile()
 {
-	FILE	* fd = fopen( SETUP_FILENAME, "w" );
+	FILE	* fd = fopen( SETUP_FILENAME, "wb" );
 	if( fd == NULL ) return false;
 
 	SETUP_MAP::iterator	it;
