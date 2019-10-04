@@ -264,6 +264,61 @@ bool CDirectory::List( const char * pszDirName, FILE_LIST & clsFileList )
 
 /**
  * @ingroup SipPlatform
+ * @brief 폴더에 존재하는 모든 파일/폴더 리스트를 가져온다.
+ * @param pszDirName	폴더 경로
+ * @param FetchFile		1개의 파일마다 실행되는 함수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CDirectory::List( const char * pszDirName, bool (*FetchFile)( const char * pszFileName ) )
+{
+#ifdef WIN32
+	WIN32_FIND_DATA	sttFindData;
+	HANDLE			hFind;
+	BOOL				bNext = TRUE;
+	std::string	strPath = pszDirName;
+
+	strPath.append( "\\*.*" );
+
+	hFind = FindFirstFile( strPath.c_str(), &sttFindData );
+	if( hFind == INVALID_HANDLE_VALUE )
+	{
+		CLog::Print( LOG_ERROR, "FindFirstFile(%s) error(%d)", pszDirName, GetLastError() );
+		return false;
+	}
+
+	for( ; bNext == TRUE; bNext = FindNextFile( hFind, &sttFindData ) )
+	{
+		if( !strcmp( sttFindData.cFileName, "." ) || !strcmp( sttFindData.cFileName, ".." ) ) continue;
+		if( FetchFile( sttFindData.cFileName ) == false ) break;
+	}
+
+	FindClose( hFind );
+#else
+	DIR						* psttDir;
+	struct dirent	* psttDirent, sttDirent;
+	int	n;
+
+	psttDir = opendir( pszDirName );
+	if( psttDir == NULL )
+	{
+		CLog::Print( LOG_ERROR, "opendir(%s) error(%d)", pszDirName, errno );
+		return false;
+	}
+
+	for( n = readdir_r( psttDir, &sttDirent, &psttDirent ); psttDirent && n == 0; n = readdir_r( psttDir, &sttDirent, &psttDirent ) )
+	{
+		if( !strcmp( psttDirent->d_name, "." ) || !strcmp( psttDirent->d_name, ".." ) ) continue;
+		if( FetchFile( psttDirent->d_name ) == false ) break;
+	}
+
+	closedir( psttDir );
+#endif
+
+	return true;
+}
+
+/**
+ * @ingroup SipPlatform
  * @brief 폴더에 존재하는 모든 파일 리스트를 가져온다.
  * @param pszDirName	폴더 경로
  * @param clsFileList 파일 리스트를 저장할 변수
@@ -321,6 +376,69 @@ bool CDirectory::FileList( const char * pszDirName, FILE_LIST & clsFileList )
 		if( S_ISDIR( sttStat.st_mode ) ) continue;
 
 		clsFileList.push_back( psttDirent->d_name );
+	}
+
+	closedir( psttDir );
+#endif
+
+	return true;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 폴더에 존재하는 모든 폴더 리스트를 가져온다.
+ * @param pszDirName	폴더 경로
+ * @param clsFileList 폴더 리스트를 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CDirectory::DirectoryList( const char * pszDirName, FILE_LIST & clsFileList )
+{
+	clsFileList.clear();
+
+#ifdef WIN32
+	WIN32_FIND_DATA	sttFindData;
+	HANDLE			hFind;
+	BOOL				bNext = TRUE;
+	std::string	strPath = pszDirName;
+
+	strPath.append( "\\*.*" );
+
+	hFind = FindFirstFile( strPath.c_str(), &sttFindData );
+	if( hFind == INVALID_HANDLE_VALUE )
+	{
+		CLog::Print( LOG_ERROR, "FindFirstFile(%s) error(%d)", pszDirName, GetLastError() );
+		return false;
+	}
+
+	for( ; bNext == TRUE; bNext = FindNextFile( hFind, &sttFindData ) )
+	{
+		if( !strcmp( sttFindData.cFileName, "." ) || !strcmp( sttFindData.cFileName, ".." ) ) continue;
+		if( sttFindData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY )
+		{
+			clsFileList.push_back( sttFindData.cFileName );
+		}
+	}
+
+	FindClose( hFind );
+#else
+	DIR						* psttDir;
+	struct dirent	* psttDirent, sttDirent;
+	int		n;
+
+	psttDir = opendir( pszDirName );
+	if( psttDir == NULL )
+	{
+		CLog::Print( LOG_ERROR, "opendir(%s) error(%d)", pszDirName, errno );
+		return false;
+	}
+
+	for( n = readdir_r( psttDir, &sttDirent, &psttDirent ); psttDirent && n == 0; n = readdir_r( psttDir, &sttDirent, &psttDirent ) )
+	{
+		if( !strcmp( psttDirent->d_name, "." ) || !strcmp( psttDirent->d_name, ".." ) ) continue;
+		if( psttDirent->d_type == DT_DIR )
+		{
+			clsFileList.push_back( psttDirent->d_name );
+		}
 	}
 
 	closedir( psttDir );

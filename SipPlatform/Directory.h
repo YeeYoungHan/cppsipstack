@@ -47,7 +47,9 @@ public:
 	static int IsDirectoryCheck( const char * szDirName );
 	static void AppendName( std::string & strFileName, const char * pszAppend );
 	static bool List( const char * pszDirName, FILE_LIST & clsFileList );
+	static bool List( const char * pszDirName, bool (*FetchFile)( const char * pszFileName ) );
 	static bool FileList( const char * pszDirName, FILE_LIST & clsFileList );
+	static bool DirectoryList( const char * pszDirName, FILE_LIST & clsFileList );
 	static char * GetProgramDirectory( );
 	static int64_t GetSize( const char * pszDirName );
 	static void DeleteAllFile( const char * pszDirName );
