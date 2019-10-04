@@ -449,6 +449,67 @@ bool CDirectory::DirectoryList( const char * pszDirName, FILE_LIST & clsFileList
 
 /**
  * @ingroup SipPlatform
+ * @brief 폴더가 비어 있는지 확인한다.
+ * @param pszDirName 폴더 경로
+ * @returns 폴더가 비어 있으면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CDirectory::IsEmpty( const char * pszDirName )
+{
+	bool bEmpty = true;
+
+#ifdef WIN32
+	WIN32_FIND_DATA	sttFindData;
+	HANDLE			hFind;
+	BOOL				bNext = TRUE;
+	std::string	strPath = pszDirName;
+
+	strPath.append( "\\*.*" );
+
+	hFind = FindFirstFile( strPath.c_str(), &sttFindData );
+	if( hFind == INVALID_HANDLE_VALUE )
+	{
+		CLog::Print( LOG_ERROR, "FindFirstFile(%s) error(%d)", pszDirName, GetLastError() );
+		return false;
+	}
+
+	for( ; bNext == TRUE; bNext = FindNextFile( hFind, &sttFindData ) )
+	{
+		if( !strcmp( sttFindData.cFileName, "." ) || !strcmp( sttFindData.cFileName, ".." ) ) continue;
+		
+		bEmpty = false;
+		break;
+	}
+
+	FindClose( hFind );
+#else
+	DIR						* psttDir;
+	struct dirent	* psttDirent, sttDirent;
+	int		n;
+
+	psttDir = opendir( pszDirName );
+	if( psttDir == NULL )
+	{
+		CLog::Print( LOG_ERROR, "opendir(%s) error(%d)", pszDirName, errno );
+		return false;
+	}
+
+	for( n = readdir_r( psttDir, &sttDirent, &psttDirent ); psttDirent && n == 0; n = readdir_r( psttDir, &sttDirent, &psttDirent ) )
+	{
+		if( !strcmp( psttDirent->d_name, "." ) || !strcmp( psttDirent->d_name, ".." ) ) continue;
+		
+		bEmpty = false;
+
+		break;
+	}
+
+	closedir( psttDir );
+#endif
+
+	return bEmpty;
+}
+
+/**
+ * @ingroup SipPlatform
  * @brief 프로그램을 시작한 폴더를 가져온다.
  * @returns 프로그램을 시작한 폴더 경로를 리턴한다.
  */
