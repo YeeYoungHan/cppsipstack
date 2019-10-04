@@ -301,6 +301,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SafeCount.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ServerUtility.cpp"
 				>
 			</File>
@@ -368,6 +372,10 @@
 			</File>
 			<File
 				RelativePath=".\Random.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SafeCount.h"
 				>
 			</File>
 			<File
