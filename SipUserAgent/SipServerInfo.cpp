@@ -195,6 +195,9 @@ bool CSipServerInfo::SetChallenge( CSipMessage * pclsResponse )
 		itAT = pclsResponse->m_clsWwwAuthenticateList.begin();
 	}
 
+	if( itAT->m_strQop.empty() ) return false;
+	if( strncmp( itAT->m_strQop.c_str(), "auth", 4 ) ) return false;
+	
 	m_clsChallenge = *itAT;
 	m_iChallengeStatusCode = pclsResponse->m_iStatusCode;
 
