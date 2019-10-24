@@ -96,8 +96,11 @@ public:
 	/** TLS 클라이언트만 사용하는가? SIP 클라이언트에서 TLS 서버는 사용하지 않고 TLS 클라이언트만 사용하는 경우 true 로 설정한다. */
 	bool				m_bTlsClient;
 
-	/** SIP 요청 메시지를 전송할 때에 Contact 헤더에 수신 포트 번호를 사용한다. */
+	/** SIP 요청 메시지를 전송할 때에 Contact 헤더에 수신 포트 번호를 사용하는 경우 true 로 설정한다. */
 	bool				m_bUseContactListenPort;
+
+	/** SIP REGISTER 를 전송한 후, 수신한 401 응답의 Authenticate 를 저장하여서 다음 주기의 SIP REGISTER 메시지를 생성할 때에 사용하는 경우 true 로 설정한다. */
+	bool				m_bUseRegisterSession;
 };
 
 #endif

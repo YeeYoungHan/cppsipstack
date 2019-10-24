@@ -19,9 +19,12 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.23"
+#define KSIP_SERVER_VERSION	"0.24"
 
 /* 버전 정보 
+
+= 버전 0.24 ( 2010년 10월 24일 ) =
+ * UseRegisterSession 설정 기능 추가함
 
 = 버전 0.23 ( 2017년 1월 3일 ) =
  * EventCallStart 에서 SIP Call-ID 를 자료구조에서 찾을 수 없으면 BYE 를 전송한다.

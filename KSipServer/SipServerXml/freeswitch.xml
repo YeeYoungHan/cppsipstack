@@ -1,11 +1,11 @@
 <SipServer>
-	<Use>false</Use>
-	<Ip>192.168.184.128</Ip>
+	<Use>true</Use>
+	<Ip>192.168.150.131</Ip>
 	<Port>5060</Port>
-	<Domain>192.168.184.128</Domain>
+	<Domain>192.168.150.131</Domain>
 	<UserId>1010</UserId>
 	<PassWord>1234</PassWord>
-	<LoginTimeout>300</LoginTimeout>
+	<LoginTimeout>30</LoginTimeout>
 	<RoutePrefixList>
 	  <RoutePrefix DeletePrefix="true">0</RoutePrefix>
 	</RoutePrefixList>

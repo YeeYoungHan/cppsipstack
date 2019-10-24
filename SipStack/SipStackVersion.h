@@ -19,9 +19,12 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.30"
+#define SIP_STACK_VERSION "0.31"
 
 /* 버전 정보
+
+= 버전 0.31 ( 2010년 10월 24일 ) =
+ * m_bUseRegisterSession 설정 기능을 추가함
 
 = 버전 0.30 ( 2019년 3월 2일 ) =
  * SIP 요청 메시지를 전송할 때에 SIP 요청 메시지의 Via 헤더에 로컬 TCP/TLS 포트 번호를 입력할 수 있는 옵션을 추가함

@@ -94,6 +94,8 @@ int ServiceMain( )
 	clsSetup.m_iTimerJ = gclsSetup.m_iTimerJ;
 	clsSetup.m_bIpv6 = gclsSetup.m_bIpv6;
 
+	clsSetup.m_bUseRegisterSession = gclsSetup.m_bUseRegisterSession;
+
 	Fork( gbFork );
 	SetCoreDumpEnable();
 	ServerSignal();

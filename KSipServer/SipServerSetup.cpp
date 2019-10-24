@@ -65,6 +65,7 @@ CSipServerSetup::CSipServerSetup() : m_iUdpPort(5060), m_iUdpThreadCount(10)
 	, m_iMinRegisterTimeout(300)
 	, m_bUseRtpRelay(false), m_iBeginRtpPort(10000), m_iEndRtpPort(60000)
 	, m_iSendOptionsPeriod(0)
+	, m_bUseRegisterSession(false)
 	, m_iLogLevel(0), m_iLogMaxSize(20000000)
 	, m_iMonitorPort(6000)
 	, m_iFileSize(0)
@@ -114,6 +115,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "TimerD", m_iTimerD );
 	pclsElement->SelectElementData( "TimerJ", m_iTimerJ );
 	pclsElement->SelectElementData( "Ipv6", m_bIpv6 );
+	pclsElement->SelectElementData( "UseRegisterSession", m_bUseRegisterSession );
 
 	// ·Î±×
 	pclsElement = clsXml.SelectElement( "Log" );

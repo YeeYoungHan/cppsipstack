@@ -19,9 +19,12 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.32"
+#define SIP_USER_AGENT_VERSION "0.33"
 
 /* 버전 정보
+
+= 버전 0.33 ( 2010년 10월 24일 ) =
+ * m_bUseRegisterSession 설정 기능을 추가함
 
 = 버전 0.32 ( 2019년 6월 19일 ) =
  * CANCEL 전송후, INVITE 200 OK 를 수신하면 BYE 를 전송한다.

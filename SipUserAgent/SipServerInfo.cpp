@@ -96,6 +96,9 @@ void CSipServerInfo::ClearLogin()
 	m_iSendTime = 0;
 	m_iResponseTime = 0;
 	m_clsCallId.Clear();
+	m_clsChallenge.Clear();
+	m_iChallengeStatusCode = 0;
+	m_iNonceCount = 1;
 }
 
 /**
@@ -159,10 +162,43 @@ CSipMessage * CSipServerInfo::CreateRegister( CSipStack * pclsSipStack, CSipMess
 		}
 		*/
 	}
+	else if( m_clsChallenge.m_strAlgorithm.empty() == false )
+	{
+		++m_iNonceCount;
+		m_bAuth = AddAuth( pclsRequest, &m_clsChallenge, m_iChallengeStatusCode, m_iNonceCount );
+	}
 
 	pclsRequest->m_eTransport = m_eTransport;
 
 	return pclsRequest;
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief SIP REGISTER 요청에 대한 응답 메시지에서 Chanllenge 를 저장한다.
+ * @param pclsResponse SIP REGISTER 요청에 대한 응답 메시지
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipServerInfo::SetChallenge( CSipMessage * pclsResponse )
+{
+	SIP_CHALLENGE_LIST::const_iterator itAT;
+	CSipCredential clsCredential;
+
+	if( pclsResponse->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
+	{
+		if( pclsResponse->m_clsProxyAuthenticateList.size() == 0 ) return false;
+		itAT = pclsResponse->m_clsProxyAuthenticateList.begin();
+	}
+	else
+	{
+		if( pclsResponse->m_clsWwwAuthenticateList.size() == 0 ) return false;
+		itAT = pclsResponse->m_clsWwwAuthenticateList.begin();
+	}
+
+	m_clsChallenge = *itAT;
+	m_iChallengeStatusCode = pclsResponse->m_iStatusCode;
+
+	return true;
 }
 
 /**
@@ -188,24 +224,49 @@ bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, CSipMessage * pclsRespo
 		itAT = pclsResponse->m_clsWwwAuthenticateList.begin();
 	}
 
-	clsCredential.m_strType = itAT->m_strType;
-	clsCredential.m_strUserName = m_strUserId;
-	clsCredential.m_strRealm = itAT->m_strRealm;
-	clsCredential.m_strNonce = itAT->m_strNonce;
-	clsCredential.m_strAlgorithm = itAT->m_strAlgorithm;
-	clsCredential.m_strOpaque = itAT->m_strOpaque;
+	return AddAuth( pclsRequest, &(*itAT), pclsResponse->m_iStatusCode, 1 );
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief SIP 요청 메시지에 인증 정보를 추가한다.
+ * @param pclsRequest		SIP 요청 메시지
+ * @param pclsChallenge SIP 응답 메시지에 저장된 Challenge 정보 저장 객체
+ * @param iStatusCode		SIP 응답 메시지의 Status Code
+ * @param iNonceCount		nonce count
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, const CSipChallenge * pclsChallenge, int iStatusCode, int iNonceCount )
+{
+	CSipCredential clsCredential;
+
+	clsCredential.m_strType = pclsChallenge->m_strType;
+
+	if( m_strAuthId.empty() )
+	{
+		clsCredential.m_strUserName = m_strUserId;
+	}
+	else
+	{
+		clsCredential.m_strUserName = m_strAuthId;
+	}
+
+	clsCredential.m_strRealm = pclsChallenge->m_strRealm;
+	clsCredential.m_strNonce = pclsChallenge->m_strNonce;
+	clsCredential.m_strAlgorithm = pclsChallenge->m_strAlgorithm;
+	clsCredential.m_strOpaque = pclsChallenge->m_strOpaque;
 
 	clsCredential.m_strUri = "sip:";
 	clsCredential.m_strUri.append( m_strDomain );
 
 	char	szA1[1024], szA2[1024], szMd5[33], szResponse[1024];
-	const char * pszQop = itAT->m_strQop.c_str();
+	const char * pszQop = pclsChallenge->m_strQop.c_str();
 
-	if( itAT->m_strQop.empty() == false && !strncmp( pszQop, "auth", 4 ) )
+	if( pclsChallenge->m_strQop.empty() == false && !strncmp( pszQop, "auth", 4 ) )
 	{
 		STRING_LIST clsQopList;
 
-		// qop="auth,auth-int" 로 입력되었을 때에 첫번째 항목을 선택한다.
+		// qop="auth,auth-int" 로 입력되었을 때에 마지막 항목을 선택한다.
 		if( strstr( pszQop, "," ) )
 		{
 			SplitString( pszQop, clsQopList, ',' );
@@ -215,15 +276,17 @@ bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, CSipMessage * pclsRespo
 			for( itSL = clsQopList.begin(); itSL != clsQopList.end(); ++itSL )
 			{
 				clsCredential.m_strQop = *itSL;
-				break;
 			}
 		}
 		else
 		{
-			clsCredential.m_strQop = itAT->m_strQop;
+			clsCredential.m_strQop = pclsChallenge->m_strQop;
 		}
 
-		clsCredential.m_strNonceCount = "00000001";
+		char szNonceCount[9];
+
+		snprintf( szNonceCount, sizeof(szNonceCount), "%08d", iNonceCount );
+		clsCredential.m_strNonceCount = szNonceCount;
 		clsCredential.m_strCnonce = "1";
 
 		snprintf( szA1, sizeof(szA1), "%s:%s:%s", clsCredential.m_strUserName.c_str(), clsCredential.m_strRealm.c_str(), m_strPassWord.c_str() );
@@ -267,7 +330,7 @@ bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, CSipMessage * pclsRespo
 		clsCredential.m_strResponse = szMd5;
 	}
 
-	if( pclsResponse->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
+	if( iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
 	{
 		pclsRequest->m_clsProxyAuthorizationList.push_front( clsCredential );
 	}

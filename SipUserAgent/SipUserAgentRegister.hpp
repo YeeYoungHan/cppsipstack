@@ -71,6 +71,11 @@ bool CSipUserAgent::RecvRegisterResponse( int iThreadId, CSipMessage * pclsMessa
 				}
 				else
 				{
+					if( m_clsSipStack.m_clsSetup.m_bUseRegisterSession )
+					{
+						itSL->SetChallenge( pclsMessage );
+					}
+
 					CSipMessage * pclsRequest = itSL->CreateRegister( &m_clsSipStack, pclsMessage );
 					m_clsSipStack.SendSipMessage( pclsRequest );
 				}

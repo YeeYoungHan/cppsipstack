@@ -49,6 +49,9 @@ public:
 	/** 로그인 아이디 */
 	std::string		m_strUserId;
 
+	/** 인증 아이디 */
+	std::string		m_strAuthId;
+
 	/** 로그인 비밀번호 */
 	std::string		m_strPassWord;
 
@@ -69,11 +72,17 @@ public:
 	CSipCallId		m_clsCallId;
 	int						m_iSeqNo;
 	bool					m_bAuth;
+	CSipChallenge	m_clsChallenge;
+	int						m_iChallengeStatusCode;
+	int						m_iNonceCount;
 	
 	bool					m_bDelete;
 
 	CSipMessage * CreateRegister( CSipStack * pclsSipStack, CSipMessage * pclsResponse );
+
+	bool SetChallenge( CSipMessage * pclsResponse );
 	bool AddAuth( CSipMessage * pclsRequest, CSipMessage * pclsResponse );
+	bool AddAuth( CSipMessage * pclsRequest, const CSipChallenge * pclsChallenge, int iStatusCode, int iNonceCount );
 };
 
 typedef std::list< CSipServerInfo > SIP_SERVER_INFO_LIST;
