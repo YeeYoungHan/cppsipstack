@@ -1,5 +1,5 @@
 <SipServer>
-	<Use>true</Use>
+	<Use>false</Use>
 	<Ip>192.168.150.131</Ip>
 	<Port>5060</Port>
 	<Domain>192.168.150.131</Domain>
