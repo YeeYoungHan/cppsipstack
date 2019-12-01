@@ -22,6 +22,11 @@
 #include <string>
 #include "MemoryDebug.h"
 
+#ifndef WIN32
+#include <execinfo.h>
+#include <sys/types.h>
+#endif
+
 bool gbStop = false;
 
 /**
@@ -57,6 +62,27 @@ void LastMethod( int sig )
 
 	CLog::Print( LOG_ERROR, "signal%s%s(%d) is received. terminated", strlen(szText) > 0 ? "-" : "", szText, sig );
 
+#ifndef WIN32
+	if( sig == SIGSEGV )
+	{
+		void * arrData[50];
+		int iSize = backtrace( arrData, 50 );
+
+		char ** ppszText = backtrace_symbols( arrData, iSize );
+		if( ppszText )
+		{
+			for( int i = 0; i < iSize; ++i )
+			{
+				CLog::Print( LOG_ERROR, "(%d) %s", i, ppszText[i] );
+			}
+		}
+
+		signal( sig, SIG_DFL ); 
+    kill( getpid(), sig );
+		return;
+	}
+#endif
+
 	gbStop = true;
 }
 
@@ -70,6 +96,7 @@ void ServerSignal()
 	signal( SIGTERM, LastMethod );
 	signal( SIGABRT, LastMethod );
 #ifndef WIN32
+	signal( SIGSEGV, LastMethod );
 	signal( SIGKILL, LastMethod );
 	signal( SIGQUIT, LastMethod );
 	signal( SIGPIPE, SIG_IGN );
