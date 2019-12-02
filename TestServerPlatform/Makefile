@@ -11,14 +11,14 @@ LIB=-L../ServerPlatform -lserverplatform -L../SipPlatform -lsipplatform -lpthrea
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
-	$(CC) -rdynamic $(CFLAGS) -c $< $(INC)
+	$(CC) $(CFLAGS) -c $< $(INC)
 
 all: TestServerPlatform.exe
 
 SRV_OBJ=TestServerPlatform.o TestServerSignal.o
 
 TestServerPlatform.exe: $(SRV_OBJ)
-	$(CC) $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)
+	$(CC) -rdynamic $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)
 
 clean:
 	rm -f *.exe
