@@ -8,6 +8,7 @@ include ../Makefile.mk
 
 INC=-I../ServerPlatform -I../SipStack -I../SipPlatform
 LIB=-L../ServerPlatform -lserverplatform -L../SipPlatform -lsipplatform -lpthread
+CFLAGS=-rdynamic $(CFLAGS)
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp

@@ -3,7 +3,7 @@
 
 void ErrorFunction()
 {
-	char * pszTemp;
+	char * pszTemp = NULL;
 
 	snprintf( pszTemp, 1024, "ABCDEFGHIJKLMNOPQRSTU" );
 }
