@@ -1,10 +1,11 @@
+#include "TestServerPlatform.h"
 #include "ServerService.h"
 
 void ErrorFunction()
 {
-	int n = 0;
+	char * pszTemp;
 
-	printf( "%d", 100 / n );
+	snprintf( pszTemp, 1024, "ABCDEFGHIJKLMNOPQRSTU" );
 }
 
 bool TestServerSignal()
