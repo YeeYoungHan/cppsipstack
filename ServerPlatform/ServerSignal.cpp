@@ -75,6 +75,8 @@ void LastMethod( int sig )
 			{
 				CLog::Print( LOG_ERROR, "(%d) %s", i, ppszText[i] );
 			}
+
+			free( ppszText );
 		}
 
 		signal( sig, SIG_DFL ); 
