@@ -25,6 +25,7 @@
 #ifndef WIN32
 #include <execinfo.h>
 #include <sys/types.h>
+#include <stdlib.h>
 #endif
 
 bool gbStop = false;
