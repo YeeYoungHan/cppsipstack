@@ -281,6 +281,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DeadLockDetectMutex.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Directory.cpp"
 				>
 			</File>
@@ -348,6 +352,10 @@
 			>
 			<File
 				RelativePath=".\Base64.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DeadLockDetectMutex.h"
 				>
 			</File>
 			<File

@@ -18,7 +18,7 @@
 
 #include "SipPlatformDefine.h"
 #include "ServerUtility.h"
-#include "SipMutex.h"
+#include "DeadLockDetectMutex.h"
 #include <map>
 
 #define TEST_COUNT 10
@@ -115,8 +115,18 @@ void TestSipMutexDeadSelect()
  * @ingroup TestSipPlatform
  * @brief CSipMutex 변수를 std::map 또는 std::list 등과 같은 자료구조의 값으로 저장할 때의 문제점 분석을 위한 테스트 함수
  */
-void TestSipMutexDead()
+void TestSipMutexList()
 {
 	TestSipMutexDeadInsert();
 	TestSipMutexDeadSelect();
+}
+
+void TestSipMutexDeadLock()
+{
+	CDeadLockDetectMutex clsMutex;
+
+	clsMutex.acquire();
+	clsMutex.acquire();
+	clsMutex.release();
+	clsMutex.release();
 }

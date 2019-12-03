@@ -31,14 +31,19 @@ int main( int argc, char * argv[] )
 {
 	if( argc == 3 )
 	{
-		if( !strcmp( argv[1], "-d" ) )
+		if( !strcmp( argv[1], "-dm" ) )
+		{
+			TestSipMutexDeadLock();
+			return 0;
+		}
+		else if( !strcmp( argv[1], "-d" ) )
 		{
 			CDirectory::Delete( argv[2] );
 			return 0;
 		}
 		else if( !strcmp( argv[1], "-m" ) )
 		{
-			TestSipMutexDead();
+			TestSipMutexList();
 			return 0;
 		}
 		else if( !strcmp( argv[1], "-f" ) )

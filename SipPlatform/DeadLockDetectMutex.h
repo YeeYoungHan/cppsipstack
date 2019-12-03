@@ -16,27 +16,34 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _TEST_SIP_PLATFORM_H_
-#define _TEST_SIP_PLATFORM_H_
+#ifndef _DEAD_LOCK_DETECT_MUTEX_H_
+#define _DEAD_LOCK_DETECT_MUTEX_H_
 
-/**
- * @defgroup TestSipPlatform TestSipPlatform
- * SipPlatform 라이브러리 기능을 테스트한다.
- */
+#include "SipMutex.h"
+#include <list>
 
-bool TestSipMutex();
-void TestSipMutexList();
-void TestSipMutexDeadLock();
-bool TestDirectory();
-bool TestStringSort();
-bool TestServerUtility();
-void TestThreadCount();
-bool TestLog();
-bool TestLogMacro();
-bool TestStringUtility();
-bool TestRandom();
-bool TestFileUtility();
+#ifdef WIN32
+#define THREAD_ID_TYPE DWORD
+#else
+#define THREAD_ID_TYPE pthread_t
+#define GetCurrentThreadId pthread_self
+#endif
 
-#define Check(x)	if( !(x) ){ printf( "%s %d error\n", __FILE__, __LINE__ ); return false; }
+typedef std::list< THREAD_ID_TYPE > THREAD_ID_LIST;
+
+class CDeadLockDetectMutex
+{
+public:
+	CDeadLockDetectMutex();
+	~CDeadLockDetectMutex();
+
+	bool acquire();
+	bool release();
+
+private:
+	CSipMutex m_clsMutex;
+	CSipMutex m_clsPrivateMutex;
+	THREAD_ID_LIST m_clsThreadIdList;
+};
 
 #endif
