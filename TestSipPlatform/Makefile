@@ -20,7 +20,7 @@ SRV_OBJ=TestSipPlatform.o TestSipMutex.o TestDirectory.o TestStringSort.o \
 	TestFileUtility.o
 
 TestSipPlatform.exe: $(SRV_OBJ)
-	$(CC) $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)
+	$(CC) -rdynamic $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)
 
 clean:
 	rm -f *.exe
