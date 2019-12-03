@@ -32,6 +32,10 @@
 
 typedef std::list< THREAD_ID_TYPE > THREAD_ID_LIST;
 
+/**
+ * @ingroup SipPlatform
+ * @brief Dead lock 발생시 에러 로그를 출력하는 클래스
+ */
 class CDeadLockDetectMutex
 {
 public:

@@ -76,6 +76,11 @@ CDeadLockDetectMutex::~CDeadLockDetectMutex()
 	}
 }
 
+/**
+ * @ingroup SipPlatform
+ * @brief mutex lock 한다.
+ * @returns mutex lock 에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CDeadLockDetectMutex::acquire()
 {
 	THREAD_ID_LIST::iterator itTL;
@@ -140,6 +145,11 @@ bool CDeadLockDetectMutex::acquire()
 	return m_clsMutex.acquire();
 }
 
+/**
+ * @ingroup SipPlatform
+ * @brief mutex unlock 한다.
+ * @returns mutex unlock 에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CDeadLockDetectMutex::release()
 {
 	THREAD_ID_LIST::reverse_iterator itTL;
