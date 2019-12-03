@@ -26,7 +26,9 @@
 
 bool TestSipMutex();
 void TestSipMutexList();
-void TestSipMutexDeadLock();
+void TestSipMutexDeadLockSingleThread();
+void TestSipMutexDeadLockMultiThread();
+void TestSipMutexNoDeadLockMultiThread();
 bool TestDirectory();
 bool TestStringSort();
 bool TestServerUtility();

@@ -121,7 +121,11 @@ void TestSipMutexList()
 	TestSipMutexDeadSelect();
 }
 
-void TestSipMutexDeadLock()
+/**
+ * @ingroup TestSipPlatform
+ * @brief single thread 에서 하나의 mutex 를 두 번 lock 하여서 dead lock 하는지 검사한다.
+ */
+void TestSipMutexDeadLockSingleThread()
 {
 	CDeadLockDetectMutex clsMutex;
 
@@ -129,4 +133,56 @@ void TestSipMutexDeadLock()
 	clsMutex.acquire();
 	clsMutex.release();
 	clsMutex.release();
+}
+
+static CDeadLockDetectMutex gclsFirstMutex, gclsSecondMutex;
+
+static THREAD_API DeadLockThread( LPVOID lpParameter )
+{
+	gclsFirstMutex.acquire();
+	sleep(1);
+	gclsSecondMutex.acquire();
+	gclsSecondMutex.release();
+	gclsFirstMutex.release();
+
+	return 0;
+}
+
+void TestSipMutexDeadLockMultiThread()
+{
+	StartThread( "DeadLockThread", DeadLockThread, NULL );
+
+	gclsSecondMutex.acquire();
+	sleep(1);
+	gclsFirstMutex.acquire();
+	gclsFirstMutex.release();
+	gclsSecondMutex.release();
+}
+
+static THREAD_API NoDeadLockThread( LPVOID lpParameter )
+{
+	gclsFirstMutex.acquire();
+	sleep(1);
+	gclsFirstMutex.release();
+
+	gclsSecondMutex.acquire();
+	sleep(1);
+	gclsSecondMutex.release();
+
+	return 0;
+}
+
+void TestSipMutexNoDeadLockMultiThread()
+{
+	StartThread( "NoDeadLockThread", DeadLockThread, NULL );
+
+	gclsSecondMutex.acquire();
+	sleep(1);
+	gclsSecondMutex.release();
+
+	gclsFirstMutex.acquire();
+	sleep(1);
+	gclsFirstMutex.release();
+
+	sleep(1);
 }

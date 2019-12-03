@@ -21,6 +21,7 @@
 
 #include "SipMutex.h"
 #include <list>
+#include <map>
 
 #ifdef WIN32
 #define THREAD_ID_TYPE DWORD
@@ -42,7 +43,7 @@ public:
 
 private:
 	CSipMutex m_clsMutex;
-	CSipMutex m_clsPrivateMutex;
+	CSipMutex m_clsListMutex;
 	THREAD_ID_LIST m_clsThreadIdList;
 };
 

@@ -29,16 +29,24 @@
  */
 int main( int argc, char * argv[] )
 {
-	if( argc == 3 )
+	if( argc == 2 )
 	{
-		if( !strcmp( argv[1], "-dm" ) )
+		if( !strcmp( argv[1], "-dls" ) )
 		{
-			TestSipMutexDeadLock();
+			// 1개의 쓰레드에서 dead lock 검사
+			TestSipMutexDeadLockSingleThread();
 			return 0;
 		}
-		else if( !strcmp( argv[1], "-d" ) )
+		else if( !strcmp( argv[1], "-dlm" ) )
 		{
-			CDirectory::Delete( argv[2] );
+			// dead lock 이 존재하는 2개의 쓰레드 실행
+			TestSipMutexDeadLockMultiThread();
+			return 0;
+		}
+		else if( !strcmp( argv[1], "-nm" ) )
+		{
+			// dead lock 이 없는 2개의 쓰레드 실행
+			TestSipMutexNoDeadLockMultiThread();
 			return 0;
 		}
 		else if( !strcmp( argv[1], "-m" ) )
@@ -54,6 +62,14 @@ int main( int argc, char * argv[] )
 		else if( !strcmp( argv[1], "-t" ) )
 		{
 			TestThreadCount();
+			return 0;
+		}
+	}
+	else if( argc == 3 )
+	{
+		if( !strcmp( argv[1], "-d" ) )
+		{
+			CDirectory::Delete( argv[2] );
 			return 0;
 		}
 	}
