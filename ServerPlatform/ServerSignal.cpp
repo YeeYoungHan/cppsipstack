@@ -23,7 +23,6 @@
 #include "MemoryDebug.h"
 
 #ifndef WIN32
-#include <execinfo.h>
 #include <sys/types.h>
 #include <stdlib.h>
 #endif
@@ -66,19 +65,7 @@ void LastMethod( int sig )
 #ifndef WIN32
 	if( sig == SIGSEGV )
 	{
-		void * arrData[50];
-		int iSize = backtrace( arrData, 50 );
-
-		char ** ppszText = backtrace_symbols( arrData, iSize );
-		if( ppszText )
-		{
-			for( int i = 0; i < iSize; ++i )
-			{
-				CLog::Print( LOG_ERROR, "(%d) %s", i, ppszText[i] );
-			}
-
-			free( ppszText );
-		}
+		CLog::PrintCallStack( LOG_ERROR );
 
 		signal( sig, SIG_DFL ); 
     kill( getpid(), sig );

@@ -107,6 +107,7 @@ public:
 	static void DeleteOldFile( );
 
 	static void SortFileList( FILE_LIST & clsFileList );
+	static void PrintCallStack( EnumLogLevel iLevel );
 };
 
 #endif

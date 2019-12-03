@@ -26,6 +26,7 @@
 #ifdef WIN32
 #include <time.h>
 #else
+#include <execinfo.h>
 #include <sys/time.h>
 #include <unistd.h>
 #endif
@@ -470,4 +471,30 @@ void CLog::DeleteOldFile( )
 void CLog::SortFileList( FILE_LIST & clsFileList )
 {
 	clsFileList.sort( LogFileCompare );
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 리눅스에서 현재 call stack 을 로그 파일에 출력한다.
+ * @param iLevel [in] 로그 레벨
+ */
+void CLog::PrintCallStack( EnumLogLevel iLevel )
+{
+#ifdef WIN32
+
+#else
+	void * arrData[50];
+	int iSize = backtrace( arrData, 50 );
+
+	char ** ppszText = backtrace_symbols( arrData, iSize );
+	if( ppszText )
+	{
+		for( int i = 0; i < iSize; ++i )
+		{
+			CLog::Print( iLevel, "(%d) %s", i, ppszText[i] );
+		}
+
+		free( ppszText );
+	}
+#endif
 }
