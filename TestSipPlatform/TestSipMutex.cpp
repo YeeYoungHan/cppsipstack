@@ -148,6 +148,10 @@ static THREAD_API DeadLockThread( LPVOID lpParameter )
 	return 0;
 }
 
+/**
+ * @ingroup TestSipPlatform
+ * @brief dead lock 되는 2개의 쓰레드 mutex lock 테스트
+ */
 void TestSipMutexDeadLockMultiThread()
 {
 	StartThread( "DeadLockThread", DeadLockThread, NULL );
@@ -172,6 +176,10 @@ static THREAD_API NoDeadLockThread( LPVOID lpParameter )
 	return 0;
 }
 
+/**
+ * @ingroup TestSipPlatform
+ * @brief dead lock 되지 않는 2개의 쓰레드 mutex lock 테스트
+ */
 void TestSipMutexNoDeadLockMultiThread()
 {
 	StartThread( "NoDeadLockThread", DeadLockThread, NULL );
