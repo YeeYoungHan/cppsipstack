@@ -69,7 +69,7 @@ private:
 	std::string           m_strIp;
 	int                   m_iPort;
 
-	void SetItemText( const char * pszBuf, CMonitorCommand & clsCommand, int & iPos, int & i, int iRow, int iColumn );
+	void SetItemText( const char * pszBuf, CMonitorCommand & clsCommand, int & iPos, int & i, int iRow, int iColumn, bool & bDeleteRow );
 	void ParseRecvData( const char * pszBuf, CMonitorCommand & clsCommand );
 };
 

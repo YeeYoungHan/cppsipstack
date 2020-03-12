@@ -404,9 +404,9 @@ static void CommaSepString( std::string & strText )
  * @param iRow				리스트 뷰의 row
  * @param iColumn			리스트 뷰의 column
  */
-void CTcpSocket::SetItemText( const char * pszBuf, CMonitorCommand & clsCommand, int & iPos, int & i, int iRow, int iColumn )
+void CTcpSocket::SetItemText( const char * pszBuf, CMonitorCommand & clsCommand, int & iPos, int & i, int iRow, int iColumn, bool & bDeleteRow )
 {
-	std::string strText;
+	std::string strText, strSearch;
 
 	strText.append( pszBuf + iPos, i - iPos );
 	iPos = i + 1;
@@ -414,7 +414,33 @@ void CTcpSocket::SetItemText( const char * pszBuf, CMonitorCommand & clsCommand,
 	EMonitorAttributeType eType = clsCommand.m_clsEntry.GetType( iColumn );
 	if( eType == E_MAT_COMMA_SEP )
 	{
+		// 100000 -> 100,000 으로 수정한다.
 		CommaSepString( strText );
+	}
+
+	if( clsCommand.m_clsEntry.GetShowIfEqual( iColumn, strSearch ) )
+	{
+		if( strstr( strText.c_str(), strSearch.c_str() ) == NULL )
+		{
+			if( iColumn != 0 )
+			{
+				clsCommand.m_pclsListCtrl->DeleteItem( iRow );
+				bDeleteRow = true;
+				return;
+			}
+		}
+	}
+	else if( clsCommand.m_clsEntry.GetShowIfNotEqual( iColumn, strSearch ) )
+	{
+		if( strstr( strText.c_str(), strSearch.c_str() ) )
+		{
+			if( iColumn != 0 )
+			{
+				clsCommand.m_pclsListCtrl->DeleteItem( iRow );
+				bDeleteRow = true;
+				return;
+			}
+		}
 	}
 
 	if( iColumn == 0 )
@@ -452,6 +478,7 @@ void CTcpSocket::SetItemText( const char * pszBuf, CMonitorCommand & clsCommand,
 void CTcpSocket::ParseRecvData( const char * pszBuf, CMonitorCommand & clsCommand )
 {
 	int	iPos = 0, iRow = 0, iColumn = 0;
+	bool bDeleteRow = false;
 
 	USES_CONVERSION;
 
@@ -459,14 +486,28 @@ void CTcpSocket::ParseRecvData( const char * pszBuf, CMonitorCommand & clsComman
 	{
 		if( !strncmp( pszBuf + i, MR_ROW_SEP, 1 ) )
 		{
-			SetItemText( pszBuf, clsCommand, iPos, i, iRow, iColumn );
+			if( bDeleteRow == false )
+			{
+				SetItemText( pszBuf, clsCommand, iPos, i, iRow, iColumn, bDeleteRow );
+			}
 
 			iColumn = 0;
-			++iRow;
+
+			if( bDeleteRow == false )
+			{
+				++iRow;
+			}
+			else
+			{
+				bDeleteRow = false;
+			}
 		}
 		else if( !strncmp( pszBuf + i, MR_COL_SEP, 1 ) )
 		{
-			SetItemText( pszBuf, clsCommand, iPos, i, iRow, iColumn );
+			if( bDeleteRow == false )
+			{
+				SetItemText( pszBuf, clsCommand, iPos, i, iRow, iColumn, bDeleteRow );
+			}
 
 			++iColumn;
 		}

@@ -134,12 +134,16 @@ bool CMonitorSetup::Read( const char * pszFileName )
 
 			clsAttr.m_strName = strName;
 
+			// 숫자 등을 3자리 단위로 , 를 추가하여서 보여주는 애트리뷰트 검사
 			if( !strcmp( strType.c_str(), "comma" ) )
 			{
 				clsAttr.m_eType = E_MAT_COMMA_SEP;
 			}
 
+			// 지정된 문자열이 포함된 경우만 해당 ROW 를 보여주는 기능
 			itAttribute->SelectAttribute( "showIfEqual", clsAttr.m_strShowIfEqual );
+
+			// 지정된 문자열이 포함되지 않은 경우만 해당 ROW 를 보여주는 기능
 			itAttribute->SelectAttribute( "showIfNotEqual", clsAttr.m_strShowIfNotEqual );
 
 			clsEntry.m_lstAttribute.push_back( clsAttr );
