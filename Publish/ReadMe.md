@@ -24,5 +24,8 @@
 * SipCallDump.zip
   * SIP 패킷 덤프 프로그램
 
+* SipCallDumpAnalysis.zip
+  * 패킷 덤프 파일을 읽어서 SIP 기반 통화에 대한 RTP 세션 정보를 출력하는 프로그
+
 * SipSpeed.zip
   * SIP 서버 성능 테스트 프로그
