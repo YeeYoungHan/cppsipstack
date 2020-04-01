@@ -24,7 +24,7 @@
 
 CRtpMap gclsRtpMap;
 
-CRtpInfo::CRtpInfo() : m_iRecvTime(0)
+CRtpInfo::CRtpInfo() : m_iRecvTime(0), m_iRtpCount(0)
 {
 }
 
@@ -58,6 +58,7 @@ bool CRtpMap::Insert( struct pcap_pkthdr * psttHeader, const u_char * pszData, I
 	if( itMap != m_clsMap.end() )
 	{
 		time( &itMap->second.m_iRecvTime );
+		++itMap->second.m_iRtpCount;
 		strCallId = itMap->second.m_strCallId;
 		bRes = true;
 	}
@@ -124,6 +125,26 @@ bool CRtpMap::Delete( const char * pszIp, int iPort )
 	if( itMap != m_clsMap.end() )
 	{
 		m_clsMap.erase( itMap );
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+bool CRtpMap::Select( const char * pszIp, int iPort, CRtpInfo & clsInfo )
+{
+	RTP_MAP::iterator itMap;
+	std::string strKey;
+	bool bRes = false;
+
+	GetKey( pszIp, iPort, strKey );
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( strKey );
+	if( itMap != m_clsMap.end() )
+	{
+		clsInfo = itMap->second;
 		bRes = true;
 	}
 	m_clsMutex.release();

@@ -37,6 +37,7 @@ public:
 
 	std::string m_strCallId;
 	time_t			m_iRecvTime;
+	uint64_t		m_iRtpCount;
 };
 
 // key = IP:Port
@@ -56,6 +57,7 @@ public:
 
 	bool Insert( const char * pszIp, int iPort, const char * pszCallId );
 	bool Delete( const char * pszIp, int iPort );
+	bool Select( const char * pszIp, int iPort, CRtpInfo & clsInfo );
 
 	void SelectTimeout( STRING_LIST & clsCallIdList );
 

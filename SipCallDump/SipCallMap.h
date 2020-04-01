@@ -34,6 +34,13 @@ class CSipRtpInfo
 public:
 	CSipRtpInfo();
 
+	bool Equal( CSipRtpInfo & clsInfo )
+	{
+		if( !strcmp( m_strIp.c_str(), clsInfo.m_strIp.c_str() ) && m_iPort == clsInfo.m_iPort ) return true;
+
+		return false;
+	}
+
 	std::string	m_strIp;
 	uint16_t		m_iPort;
 };
@@ -46,6 +53,10 @@ class CSipCallInfo
 {
 public:
 	CSipCallInfo();
+
+	std::string m_strFromId;
+	std::string m_strToId;
+	std::string	m_strLog;
 
 	CSipRtpInfo	m_clsFromRtp;
 	CSipRtpInfo	m_clsToRtp;
