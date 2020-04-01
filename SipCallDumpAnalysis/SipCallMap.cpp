@@ -142,7 +142,12 @@ bool CSipCallMap::Insert( pcap_t * psttPcap, struct pcap_pkthdr * psttHeader, co
 
 			if( GetSdp( *pclsMessage, clsSdp ) == false )
 			{
-				//CLog::Print( LOG_ERROR, "%s INVITE no SDP", __FUNCTION__ );
+				/*
+				std::string strCallId;
+
+				pclsMessage->m_clsCallId.ToString( strCallId );
+				CLog::Print( LOG_ERROR, "%s INVITE no SDP callid(%s)", __FUNCTION__, strCallId.c_str() );
+				*/
 				return false;
 			}
 

@@ -33,4 +33,5 @@ callid[0620e8e7-a3b9-4ae1-8720@test.kr] from[1234] to[0000]
 
 ### 관련 포스트
 
+* https://blog.naver.com/websearch/221885139592 : 패킷 덤프 파일을 읽어서 SIP 통화에 대한 RTP 세션 정보를 출력하는 프로그램 1차 개발 완료
 
