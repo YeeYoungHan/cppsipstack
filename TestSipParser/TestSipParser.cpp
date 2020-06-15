@@ -38,6 +38,7 @@ bool TestSipReason();
 bool TestSipCallId();
 void TestSpeed( int iLoopCount );
 void TestTransactionSpeed( int iLoopCount );
+bool TestFile( const char * pszFileName );
 
 /**
  * @ingroup TestSipParser
@@ -63,6 +64,14 @@ int main( int argc, char * argv[] )
 			int iLoopCount = atoi( argv[2] );
 
 			TestTransactionSpeed( iLoopCount );
+
+			return 0;
+		}
+		else if( !strcmp( argv[1], "file" ) )
+		{
+			const char * pszFileName = argv[2];
+
+			TestFile( pszFileName );
 
 			return 0;
 		}

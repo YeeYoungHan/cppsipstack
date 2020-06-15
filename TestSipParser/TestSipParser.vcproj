@@ -337,6 +337,10 @@
 			Name="Å×½ºÆ®"
 			>
 			<File
+				RelativePath=".\TestFile.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestInt.cpp"
 				>
 			</File>
