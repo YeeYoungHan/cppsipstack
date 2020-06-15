@@ -182,6 +182,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestServerPlatform", "TestS
 		{59766094-16E8-4602-9621-6C1E5ED9AF5F} = {59766094-16E8-4602-9621-6C1E5ED9AF5F}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSipStack", "TestSipStack\TestSipStack.vcproj", "{E7CE4F2C-EBFE-4C7C-82F2-0AE2CFE9C8BE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A74D7687-3A0C-46C8-AC3D-304A68C7C635} = {A74D7687-3A0C-46C8-AC3D-304A68C7C635}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -388,6 +393,12 @@ Global
 		{C7C5B9E6-6374-41B7-A3A3-39F51905AF2C}.Release|Win32.ActiveCfg = Release|Win32
 		{C7C5B9E6-6374-41B7-A3A3-39F51905AF2C}.Release|Win32.Build.0 = Release|Win32
 		{C7C5B9E6-6374-41B7-A3A3-39F51905AF2C}.Release|x64.ActiveCfg = Release|Win32
+		{E7CE4F2C-EBFE-4C7C-82F2-0AE2CFE9C8BE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E7CE4F2C-EBFE-4C7C-82F2-0AE2CFE9C8BE}.Debug|Win32.Build.0 = Debug|Win32
+		{E7CE4F2C-EBFE-4C7C-82F2-0AE2CFE9C8BE}.Debug|x64.ActiveCfg = Debug|Win32
+		{E7CE4F2C-EBFE-4C7C-82F2-0AE2CFE9C8BE}.Release|Win32.ActiveCfg = Release|Win32
+		{E7CE4F2C-EBFE-4C7C-82F2-0AE2CFE9C8BE}.Release|Win32.Build.0 = Release|Win32
+		{E7CE4F2C-EBFE-4C7C-82F2-0AE2CFE9C8BE}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
