@@ -45,6 +45,7 @@ bool TestFile( const char * pszFileName )
 	fclose( fd );
 
 	CSipBuffer clsSipBuf;
+	CSipMessage clsMessage;
 	char * pszBuf;
 
 	for( int j = 0; j < 1000; ++j )
@@ -60,6 +61,8 @@ bool TestFile( const char * pszFileName )
 
 		while( clsSipBuf.GetSipMessage( &pszBuf, &iLen ) )
 		{
+			clsMessage.Parse( pszBuf, iLen );
+
 			clsSipBuf.ShiftBuf( iLen );
 		}
 	}
