@@ -147,6 +147,9 @@ C++ STL 기반으로 SIP stack 을 개발하는 프로젝트입니다.
   * SipStack.sln 더블클릭한 후, 빌드한다.
   * Visual Studio 2008 버전 9.0.30729.1 SP 에서 빌드할 것을 권장합니다.
 
+* VC++ 2017
+  * SipStack-vs2017.sln 더블클릭한 후, 빌드한다.
+
 * 리눅스 / OSX
   * make 를 실행한다.
 
