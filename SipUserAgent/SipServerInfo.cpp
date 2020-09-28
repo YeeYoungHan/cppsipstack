@@ -182,7 +182,6 @@ CSipMessage * CSipServerInfo::CreateRegister( CSipStack * pclsSipStack, CSipMess
 bool CSipServerInfo::SetChallenge( CSipMessage * pclsResponse )
 {
 	SIP_CHALLENGE_LIST::const_iterator itAT;
-	CSipCredential clsCredential;
 
 	if( pclsResponse->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
 	{
@@ -214,7 +213,6 @@ bool CSipServerInfo::SetChallenge( CSipMessage * pclsResponse )
 bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, CSipMessage * pclsResponse )
 {
 	SIP_CHALLENGE_LIST::const_iterator itAT;
-	CSipCredential clsCredential;
 
 	if( pclsResponse->m_iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
 	{
