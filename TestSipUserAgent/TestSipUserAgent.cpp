@@ -1,11 +1,21 @@
 #include "TestSipUserAgent.h"
+#include "Log.h"
 
 int main( int argc, char * argv[] )
 {
+	CLog::SetLevel( LOG_NETWORK | LOG_DEBUG );
+
 	CSipUserAgent clsUserAgent;
 	CSipStackSetup clsSetup;
+	CSipServerInfo clsServerInfo;
 
 	GetLocalIp( clsSetup.m_strLocalIp );
+
+	clsServerInfo.m_strUserId = "1000";
+	clsServerInfo.m_strPassWord = "1234";
+	clsServerInfo.m_strIp = "192.168.150.10";
+
+	clsUserAgent.InsertRegisterInfo( clsServerInfo );
 
 	if( clsUserAgent.Start( clsSetup, NULL ) == false )
 	{
@@ -13,6 +23,7 @@ int main( int argc, char * argv[] )
 		return 0;
 	}
 
+	/*
 	CSipCallRtp clsRtp;
 	CSipCallRoute clsRoute;
 	std::string strCallId;
@@ -51,6 +62,12 @@ int main( int argc, char * argv[] )
 	UdpSend( hSocket, szPacket, strlen(szPacket), clsSetup.m_strLocalIp.c_str(), clsSetup.m_iLocalUdpPort );
 
 	sleep(10);
+	*/
+
+	while( 1 )
+	{
+		sleep(1);
+	}
 
 	return 0;
 }
