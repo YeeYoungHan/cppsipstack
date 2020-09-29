@@ -147,11 +147,20 @@ DELETE_TRANSACTION:
 						CSipMessage * pclsResponse = itMap->second->m_pclsRequest->CreateResponse( SIP_REQUEST_TIME_OUT );
 						if( pclsResponse )
 						{
-							// SipUserAgent 에서 REGISTER 메시지에 대한 timeout 된 경우, 정상적으로 처리되기 위해서 m_strClientIp 를 저장한다.
-							if( itMap->second->m_pclsRequest->m_clsRouteList.empty() == false )
+							// 408 응답에 대한 SIP REGISTER 를 응용에서 정상적으로 처리하기 위한 기능
+							if( itMap->second->m_pclsRequest->m_strClientIp.empty() )
 							{
-								pclsResponse->m_strClientIp = itMap->second->m_pclsRequest->m_clsRouteList.begin()->m_clsUri.m_strHost;
+								SIP_FROM_LIST::iterator itList = itMap->second->m_pclsRequest->m_clsRouteList.begin();
+								if( itList != itMap->second->m_pclsRequest->m_clsRouteList.end() )
+								{
+									pclsResponse->m_strClientIp = itList->m_clsUri.m_strHost;
+								}
 							}
+							else
+							{
+								pclsResponse->m_strClientIp = itMap->second->m_pclsRequest->m_strClientIp;
+							}
+
 							clsResponseList.push_back( pclsResponse );
 						}
 					}
