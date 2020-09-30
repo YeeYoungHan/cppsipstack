@@ -25,7 +25,7 @@
  * @ingroup SdpParser
  * @brief »ý¼ºÀÚ
  */
-CSdpConnection::CSdpConnection() : m_MulticastTtl(-1), m_MulticastNum(-1)
+CSdpConnection::CSdpConnection() : m_iMulticastTtl(-1), m_iMulticastNum(-1)
 {
 }
 
@@ -85,13 +85,13 @@ int CSdpConnection::ToString( char * pszText, int iTextSize )
 
 	iLen = snprintf( pszText, iTextSize, "%s %s %s", m_strNetType.c_str(), m_strAddrType.c_str(), m_strAddr.c_str() );
 
-	if( m_MulticastTtl >= 0 )
+	if( m_iMulticastTtl >= 0 )
 	{
-		iLen += snprintf( pszText + iLen, iTextSize - iLen, "/%d", m_MulticastTtl );
+		iLen += snprintf( pszText + iLen, iTextSize - iLen, "/%d", m_iMulticastTtl );
 
-		if( m_MulticastNum >= 0 )
+		if( m_iMulticastNum >= 0 )
 		{
-			iLen += snprintf( pszText + iLen, iTextSize - iLen, "/%d", m_MulticastNum );
+			iLen += snprintf( pszText + iLen, iTextSize - iLen, "/%d", m_iMulticastNum );
 		}
 	}
 
@@ -107,8 +107,8 @@ void CSdpConnection::Clear()
 	m_strNetType.clear();
 	m_strAddrType.clear();
 	m_strAddr.clear();
-	m_MulticastTtl = -1;
-	m_MulticastNum = -1;
+	m_iMulticastTtl = -1;
+	m_iMulticastNum = -1;
 }
 
 /**
@@ -141,7 +141,7 @@ void CSdpConnection::SetData( const char * pszData, int iLen, int iType )
 			std::string	strTemp;
 
 			strTemp.append( pszData, iLen );
-			m_MulticastTtl = atoi( strTemp.c_str() );
+			m_iMulticastTtl = atoi( strTemp.c_str() );
 		}
 		break;
 	case 4:
@@ -149,7 +149,7 @@ void CSdpConnection::SetData( const char * pszData, int iLen, int iType )
 			std::string	strTemp;
 
 			strTemp.append( pszData, iLen );
-			m_MulticastNum = atoi( strTemp.c_str() );
+			m_iMulticastNum = atoi( strTemp.c_str() );
 		}
 		break;
 	}

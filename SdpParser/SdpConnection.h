@@ -34,8 +34,8 @@ public:
 	std::string	m_strNetType;
 	std::string	m_strAddrType;
 	std::string	m_strAddr;
-	int					m_MulticastTtl;
-	int					m_MulticastNum;
+	int					m_iMulticastTtl;
+	int					m_iMulticastNum;
 
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );
