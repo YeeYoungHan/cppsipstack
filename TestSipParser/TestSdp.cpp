@@ -289,6 +289,33 @@ bool TestSdp()
 		"m=video 51372 RTP/AVP 99\r\n"
 		"a=rtpmap:99 h263-1998/90000\r\n" ) == false ) return false;
 
+	// number of ports Å×½ºÆ®
+	if( Test( 
+		"v=0\r\n"
+		"o=jdoe 2890844526 2890842807 IN IP4 10.47.16.5\r\n"
+		"s=SDP Seminar\r\n"
+		"i=A Seminar on the session description protocol\r\n"
+		"u=http://www.example.com/seminars/sdp.pdf\r\n"
+		"e=j.doe@example.com (Jane Doe)\r\n"
+		"c=IN IP4 224.2.17.12/127\r\n"
+		"t=2873397496 2873404696\r\n"
+		"a=recvonly\r\n"
+		"m=audio 49170/2 RTP/AVP 0\r\n"
+		"m=video 51372/3 RTP/AVP 99\r\n"
+		"a=rtpmap:99 h263-1998/90000\r\n",
+		"v=0\r\n"
+		"o=jdoe 2890844526 2890842807 IN IP4 10.47.16.5\r\n"
+		"s=SDP Seminar\r\n"
+		"i=A Seminar on the session description protocol\r\n"
+		"u=http://www.example.com/seminars/sdp.pdf\r\n"
+		"e=j.doe@example.com (Jane Doe)\r\n"
+		"c=IN IP4 224.2.17.12/127\r\n"
+		"t=2873397496 2873404696\r\n"
+		"a=recvonly\r\n"
+		"m=audio 49170/2 RTP/AVP 0\r\n"
+		"m=video 51372/3 RTP/AVP 99\r\n"
+		"a=rtpmap:99 h263-1998/90000\r\n" ) == false ) return false;
+
 	if( Test( 
 		"v=0\r\n"
 		"o=jdoe 2890844526 2890842807 IN IP4 10.47.16.5\r\n"
