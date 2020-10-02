@@ -481,6 +481,7 @@ void CSdpMedia::SetData( const char * pszData, int iLen, int iType )
 
 				strTemp.clear();
 				strTemp.append( pszData + i + 1, iLen - ( i + 1 ) );
+				m_iNumOfPort = atoi( strTemp.c_str() );
 				break;
 			}
 		}
