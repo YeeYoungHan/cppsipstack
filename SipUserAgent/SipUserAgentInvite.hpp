@@ -32,7 +32,11 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	CSipMessage * pclsResponse = NULL;
 	SIP_DIALOG_MAP::iterator itMap;
 
-	pclsMessage->GetCallId( strCallId );
+	if( pclsMessage->GetCallId( strCallId ) == false )
+	{
+		m_clsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_BAD_REQUEST ) );
+		return true;
+	}
 
 	if( GetSipCallRtp( pclsMessage, clsRtp ) == false )
 	{

@@ -31,6 +31,7 @@ bool CSipUserAgent::RecvNotifyRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	if( pclsMessage->GetCallId( strCallId ) == false )
 	{
+		m_clsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_BAD_REQUEST ) );
 		return true;
 	}
 
@@ -74,5 +75,7 @@ bool CSipUserAgent::RecvNotifyRequest( int iThreadId, CSipMessage * pclsMessage 
 		return true;
 	}
 
-	return false;
+	m_clsSipStack.SendSipMessage( pclsMessage->CreateResponse( SIP_NOT_FOUND ) );
+
+	return true;
 }
