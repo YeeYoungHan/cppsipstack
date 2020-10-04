@@ -30,7 +30,7 @@
  * @ingroup EchoSipServer
  * @brief 통화 수신시 해당 통화를 전달해 주는 서비스
  */
-class CSipServer : public ISipUserAgentCallBack
+class CSipServer : public ISipUserAgentCallBack, ISipStackCallBack
 {
 public:
 	CSipServer();
@@ -46,7 +46,10 @@ public:
 	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp );
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus );
 
-private:
+	// ISipStackCallBack
+	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
+	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );
+	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage );
 };
 
 extern CSipServer gclsSipServer;

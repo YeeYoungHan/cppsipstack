@@ -19,6 +19,16 @@
 #ifndef _ECHO_SIP_SERVER_VERSION_H_
 #define _ECHO_SIP_SERVER_VERSION_H_
 
-#define ECHO_SIP_SERVER_VERSION	"0.01"
+#define ECHO_SIP_SERVER_VERSION	"0.02"
+
+/* 버전 정보
+
+= 버전 0.02 =
+ * SIP REGISTER 요청에 대한 200 OK 응답을 전송한다.
+
+= 버전 0.01 =
+ * 최초 버전
+
+*/
 
 #endif

@@ -43,6 +43,8 @@ bool CSipServer::Start( CSipStackSetup & clsSetup )
 {
 	if( gclsUserAgent.Start( clsSetup, this, NULL ) == false ) return false;
 
+	gclsUserAgent.m_clsSipStack.AddCallBack( this );
+
 	return true;
 }
 
@@ -123,4 +125,29 @@ void CSipServer::EventCallEnd( const char * pszCallId, int iSipStatus )
 
 	gclsUserAgent.StopCall( strCallId2.c_str(), iSipStatus );
 	gclsCallMap.Delete( pszCallId );
+}
+
+bool CSipServer::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
+{
+	if( pclsMessage->IsMethod( SIP_METHOD_REGISTER ) )
+	{
+		CSipMessage * pclsResponse = pclsMessage->CreateResponse( SIP_OK );
+		if( pclsResponse )
+		{
+			gclsUserAgent.m_clsSipStack.SendSipMessage( pclsResponse );
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool CSipServer::RecvResponse( int iThreadId, CSipMessage * pclsMessage )
+{
+	return false;
+}
+
+bool CSipServer::SendTimeout( int iThreadId, CSipMessage * pclsMessage )
+{
+	return false;
 }
