@@ -210,7 +210,7 @@ bool CSipServerMap::SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXm
  * @brief IP-PBX 에서 수신한 전화 요청과 매핑되는 KSipServer 아이디를 검색한다.
  * @parma pszIp	IP-PBX IP 주소
  * @param pszTo IP-PBX 에서 전송한 SIP 메시지의 TO 아이디
- * @param strTo KSipSerfver 아이디
+ * @param strTo KSipServer 아이디
  * @returns 검색에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
 bool CSipServerMap::SelectIncomingRoute( const char * pszIp, const char * pszTo, std::string & strTo )
@@ -233,7 +233,7 @@ bool CSipServerMap::SelectIncomingRoute( const char * pszIp, const char * pszTo,
 			{
 				if( !strcmp( itList->m_strToId.c_str(), pszTo ) )
 				{
-					strTo = itList->m_strToId;
+					strTo = itList->m_strDestId;
 					bRes = true;
 					break;
 				}
