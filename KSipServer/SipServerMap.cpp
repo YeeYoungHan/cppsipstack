@@ -196,6 +196,8 @@ bool CSipServerMap::SelectRoutePrefix( const char * pszTo, CXmlSipServer & clsXm
 					break;
 				}
 			}
+
+			if( bRes ) break;
 		}
 	}
 	m_clsMutex.release();
@@ -236,6 +238,8 @@ bool CSipServerMap::SelectIncomingRoute( const char * pszIp, const char * pszTo,
 					break;
 				}
 			}
+
+			if( bRes ) break;
 		}
 	}
 	m_clsMutex.release();
