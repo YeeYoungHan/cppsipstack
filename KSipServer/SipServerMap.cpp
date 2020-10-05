@@ -42,26 +42,21 @@ CSipServerMap::~CSipServerMap()
 bool CSipServerMap::Load( )
 {
 	bool	bRes = false;
+	SIP_SERVER_MAP::iterator	itMap;
 
-	ReSetFlag( );
+	// 추가/수정/변화없음이 아닌 IP-PBX 정보를 삭제 대상으로 저장한다.
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+		itMap->second.m_iFlag = FLAG_DELETE;
+	}
+	m_clsMutex.release();
 
 	if( gclsSetup.m_strSipServerXmlFolder.length() > 0 )
 	{
 		CLog::Print( LOG_DEBUG, "SipServerMap Load" );
 		bRes = ReadDir( gclsSetup.m_strSipServerXmlFolder.c_str() );
 	}
-
-	SIP_SERVER_MAP::iterator	itMap;
-
-	m_clsMutex.acquire();
-	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
-	{
-		if( itMap->second.m_iFlag == FLAG_NULL )
-		{
-			itMap->second.m_iFlag = FLAG_DELETE;
-		}
-	}
-	m_clsMutex.release();
 
 	return bRes;
 }
@@ -273,21 +268,6 @@ void CSipServerMap::GetKey( const char * pszIp, const char * pszUserId, std::str
 	strKey = pszIp;
 	strKey.append( "_" );
 	strKey.append( pszUserId );
-}
-
-/**
- * @brief 모든 SIP 서버 정보 상태값을 초기화시킨다.
- */
-void CSipServerMap::ReSetFlag( )
-{
-	SIP_SERVER_MAP::iterator	itMap;
-
-	m_clsMutex.acquire();
-	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
-	{
-		itMap->second.m_iFlag = FLAG_NULL;
-	}
-	m_clsMutex.release();
 }
 
 /**

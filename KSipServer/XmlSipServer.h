@@ -22,7 +22,6 @@
 #include <string>
 #include "SipServerInfo.h"
 
-#define FLAG_NULL				0x00
 #define FLAG_INSERT			0x01
 #define FLAG_UPDATE			0x02
 #define FLAG_DELETE			0x04

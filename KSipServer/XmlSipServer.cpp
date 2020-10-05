@@ -31,7 +31,7 @@ bool CIncomingRoute::IsEmpty()
 	return false;
 }
 
-CXmlSipServer::CXmlSipServer() : m_iFlag(FLAG_NULL)
+CXmlSipServer::CXmlSipServer() : m_iFlag(FLAG_DELETE)
 {
 }
 

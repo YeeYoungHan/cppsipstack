@@ -56,7 +56,6 @@ private:
 	bool ReadDir( const char * pszDirName );
 	void GetKey( CXmlSipServer & clsXmlSipServer, std::string & strKey );
 	void GetKey( const char * pszIp, const char * pszUserId, std::string & strKey );
-	void ReSetFlag( );
 };
 
 extern CSipServerMap gclsSipServerMap;
