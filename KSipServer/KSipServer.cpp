@@ -150,7 +150,7 @@ int ServiceMain( )
 
 	for( int i = 0; i < 20; ++i )
 	{
-		if( gclsCallMap.GetCount() == 0 && gclsTransCallMap.GetCount() == 0 )
+		if( gclsUserAgent.GetCallCount() == 0 )
 		{
 			break;
 		}
