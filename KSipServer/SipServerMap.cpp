@@ -313,8 +313,6 @@ bool CSipServerMap::Insert( CXmlSipServer & clsXmlSipServer )
 	}
 	else
 	{
-		itMap->second = clsXmlSipServer;
-
 		if( strcmp( itMap->second.m_strDomain.c_str(), clsXmlSipServer.m_strDomain.c_str() ) ||
 				strcmp( itMap->second.m_strPassWord.c_str(), clsXmlSipServer.m_strPassWord.c_str() ) ||
 				itMap->second.m_iPort != clsXmlSipServer.m_iPort )
@@ -325,6 +323,8 @@ bool CSipServerMap::Insert( CXmlSipServer & clsXmlSipServer )
 		{
 			itMap->second.m_iFlag = FLAG_NO_CHANGE;
 		}
+
+		itMap->second = clsXmlSipServer;
 	}
 	m_clsMutex.release();
 
