@@ -53,7 +53,7 @@ public:
 	CNonceMap();
 
 	bool GetNewValue( char * pszNonce, int iNonceSize );
-	bool Select( const char * pszNonce, bool bIsRemove = true );
+	bool Select( const char * pszNonce, bool bDelete = true );
 	void DeleteTimeout( int iSecond );
 	int GetCount();
 

@@ -25,6 +25,7 @@
 #include <time.h>
 #include "NonceMap.h"
 #include "SipMd5.h"
+#include "TimeUtility.h"
 #include "MemoryDebug.h"
 
 CNonceMap	gclsNonceMap;
@@ -44,28 +45,20 @@ CNonceMap::CNonceMap()
 bool CNonceMap::GetNewValue( char * pszNonce, int iNonceSize )
 {
 	char	szNonce[60], szMd5[33];
-	int		i;
+	bool bFound = false;
 	
 	if( iNonceSize < 33 ) return false;
 
-#ifdef WIN32
-	DWORD	iTime;
-
-	iTime = GetTickCount();
-#else
 	struct timeval	sttTime;
 
 	gettimeofday( &sttTime, NULL );
-#endif
-	for( i = 0; ; ++i )
+
+	for( int i = 0; ; ++i )
 	{
-#ifdef WIN32
-		snprintf( szNonce, sizeof(szNonce), "%d::%u::%s", i, iTime, PRIVATE_KEY );
-#else
 		snprintf( szNonce, sizeof(szNonce), "%d::%u.%06u::%s", i
 			, (unsigned int)sttTime.tv_sec
 			, (unsigned int)sttTime.tv_usec, PRIVATE_KEY );
-#endif
+
 		SipMd5String( szNonce, szMd5 );
 		snprintf( szNonce, sizeof(szNonce), "%s", szMd5 );
 	
@@ -77,10 +70,11 @@ bool CNonceMap::GetNewValue( char * pszNonce, int iNonceSize )
 
 			time(&clsNonceInfo.m_iTime);
 			m_clsMap.insert( NONCE_MAP::value_type( szNonce, clsNonceInfo ) );
-			m_clsMutex.release();
-			break;
+			bFound = true;
 		}
 		m_clsMutex.release();
+
+		if( bFound ) break;
 	}
 	
 	snprintf( pszNonce, iNonceSize, "%s", szNonce );
@@ -92,23 +86,23 @@ bool CNonceMap::GetNewValue( char * pszNonce, int iNonceSize )
  * @ingroup KSipServer
  * @brief nonce 값이 존재하는지 검색한다.
  * @param pszNonce	nonce 문자열
- * @param bIsRemove 검색된 nonce 를 자료구조에서 삭제하면 true 를 입력하고 그렇지 않으면 false 를 입력한다.
+ * @param bDelete		검색된 nonce 를 자료구조에서 삭제하면 true 를 입력하고 그렇지 않으면 false 를 입력한다.
  * @returns nonce 값이 검색되면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
  */
-bool CNonceMap::Select( const char * pszNonce, bool bIsRemove )
+bool CNonceMap::Select( const char * pszNonce, bool bDelete )
 {
-	bool	bIsFound = false;
+	bool	bFound = false;
 	
 	m_clsMutex.acquire();
 	NONCE_MAP::iterator it = m_clsMap.find( pszNonce );
 	if( it != m_clsMap.end() )
 	{
-		bIsFound = true;
-		if( bIsRemove ) m_clsMap.erase( it );
+		bFound = true;
+		if( bDelete ) m_clsMap.erase( it );
 	}
 	m_clsMutex.release();
 	
-	return bIsFound;
+	return bFound;
 }
 
 /**
