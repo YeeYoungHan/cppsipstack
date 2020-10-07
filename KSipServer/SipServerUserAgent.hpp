@@ -16,6 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+/**
+ * @ingroup KSipServer
+ * @brief SIP 메시지에 포함된 인증 정보가 유효한지 검사한다.
+ * @param pclsMessage SIP 메시지
+ * @returns SIP 메시지에 포함된 인증 정보가 유효하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
 bool CSipServer::CheckAuthrization( CSipMessage * pclsMessage )
 {
 	SIP_CREDENTIAL_LIST::iterator	itCL = pclsMessage->m_clsAuthorizationList.begin();
@@ -40,6 +46,8 @@ bool CSipServer::CheckAuthrization( CSipMessage * pclsMessage )
 	default:
 		break;
 	}
+
+	gclsUserMap.Insert( pclsMessage, NULL, &clsXmlUser );
 
 	return true;
 }
@@ -108,6 +116,12 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 		if( CheckAuthrization( pclsMessage ) == false )
 		{
 			CLog::Print( LOG_DEBUG, "EventIncomingRequestAuth no UserInfo and CheckAuthrization() return false" );
+			return false;
+		}
+
+		if( gclsUserMap.Select( pclsMessage->m_clsFrom.m_clsUri.m_strUser.c_str(), clsUserInfo ) == false )
+		{
+			CLog::Print( LOG_DEBUG, "EventIncomingRequestAuth no UserInfo and CheckAuthrization() return true and no UserInfo" );
 			return false;
 		}
 	}

@@ -65,7 +65,7 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact, CXmlUs
 	if( pclsMessage->GetTopViaIpPort( clsInfo.m_strIp, clsInfo.m_iPort ) == false ) return false;
 	clsInfo.m_iLoginTimeout = pclsMessage->GetExpires();
 
-	if( clsInfo.m_iLoginTimeout == 0 )
+	if( clsInfo.m_iLoginTimeout == 0 && pclsMessage->IsMethod( "REGISTER" ) )
 	{
 		return false;
 	}
