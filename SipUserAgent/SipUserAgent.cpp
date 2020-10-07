@@ -133,6 +133,10 @@ bool CSipUserAgent::Stop( )
 
 	DeleteRegisterInfoAll( );
 
+	m_clsDialogMutex.acquire();
+	m_clsDialogMap.clear();
+	m_clsDialogMutex.release();
+
 	m_bStart = false;
 
 	return true;
