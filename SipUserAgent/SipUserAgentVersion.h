@@ -25,6 +25,7 @@
 
 = 버전 0.34 ( 2020년 10월 7일 ) =
  * SipUserAgent 종료할 때에 Dialog 자료구조를 초기화시킨다.
+ * 통화 Hold, Resume 가 정상적으로 동작하도록 수정함
 
 = 버전 0.33 ( 2010년 10월 24일 ) =
  * m_bUseRegisterSession 설정 기능을 추가함

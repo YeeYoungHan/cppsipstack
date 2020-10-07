@@ -29,6 +29,7 @@
 CSipDialog::CSipDialog( CSipStack * pclsSipStack ) : m_iSeq(0), m_iNextSeq(0), m_iContactPort(-1), m_eTransport(E_SIP_UDP)
 	, m_iLocalRtpPort(-1), m_eLocalDirection(E_RTP_SEND_RECV), m_iRemoteRtpPort(-1), m_eRemoteDirection(E_RTP_SEND_RECV), m_iCodec(-1), m_iRSeq(-1), m_b100rel(false)
 	, m_pclsInvite(NULL), m_pclsSipStack( pclsSipStack )
+	, m_iSessionVersion(0)
 	, m_bSendCall(true)
 {
 	memset( &m_sttInviteTime, 0, sizeof(m_sttInviteTime) );
@@ -198,9 +199,11 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 		pszAddrType = "IP6";
 	}
 
+	++m_iSessionVersion;
+
 	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "v=0\r\n"
-					"o=CSS 4 2 IN %s %s\r\n"
-					"s=CSS\r\n", pszAddrType, m_strLocalRtpIp.c_str() );
+					"o=CSS 4 %d IN %s %s\r\n"
+					"s=CSS\r\n", m_iSessionVersion, pszAddrType, m_strLocalRtpIp.c_str() );
 
 	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "c=IN %s %s\r\n", pszAddrType, m_strLocalRtpIp.c_str() );
 	iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "t=0 0\r\n" );

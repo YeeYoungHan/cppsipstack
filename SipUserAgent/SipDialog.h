@@ -128,6 +128,9 @@ public:
 
 	CSipStack		* m_pclsSipStack;
 
+	/** SDP session version */
+	int	m_iSessionVersion;
+
 	/** 발신 전화인가? */
 	bool m_bSendCall;
 
