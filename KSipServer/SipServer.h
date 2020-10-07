@@ -38,6 +38,8 @@ public:
 
 	bool Start( CSipStackSetup & clsSetup );
 
+	bool CheckAuthrization( CSipMessage * pclsMessage );
+
 	// ISipStackCallBack
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage );
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage );

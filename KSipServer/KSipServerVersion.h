@@ -19,9 +19,12 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.24"
+#define KSIP_SERVER_VERSION	"0.25"
 
 /* 버전 정보 
+
+= 버전 0.25 ( 2020년 10월 7일 ) =
+ * SIP 클라이언트의 IP/Port 가 변경된 경우, 인증 정보가 정확한지 확인한다.
 
 = 버전 0.24 ( 2010년 10월 24일 ) =
  * UseRegisterSession 설정 기능 추가함

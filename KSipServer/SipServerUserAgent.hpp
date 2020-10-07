@@ -16,6 +16,34 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+bool CSipServer::CheckAuthrization( CSipMessage * pclsMessage )
+{
+	SIP_CREDENTIAL_LIST::iterator	itCL = pclsMessage->m_clsAuthorizationList.begin();
+
+	if( itCL == pclsMessage->m_clsAuthorizationList.end() )
+	{
+		SendUnAuthorizedResponse( pclsMessage );
+		return false;
+	}
+
+	CXmlUser clsXmlUser;
+
+	ECheckAuthResult eRes = CheckAuthorization( &(*itCL), pclsMessage->m_strSipMethod.c_str(), clsXmlUser );
+	switch( eRes )
+	{
+	case E_AUTH_NONCE_NOT_FOUND:
+		SendUnAuthorizedResponse( pclsMessage );
+		return false;
+	case E_AUTH_ERROR:
+		SendResponse( pclsMessage, SIP_FORBIDDEN );
+		return false;
+	default:
+		break;
+	}
+
+	return true;
+}
+
 /**
  * @ingroup KSipServer
  * @brief SIP REGISTER 응답 메시지 수신 이벤트 핸들러
@@ -77,38 +105,20 @@ bool CSipServer::EventIncomingRequestAuth( CSipMessage * pclsMessage )
 			return true;
 		}
 
-		SIP_CREDENTIAL_LIST::iterator	itCL = pclsMessage->m_clsAuthorizationList.begin();
-
-		if( itCL == pclsMessage->m_clsAuthorizationList.end() )
+		if( CheckAuthrization( pclsMessage ) == false )
 		{
-			SendUnAuthorizedResponse( pclsMessage );
+			CLog::Print( LOG_DEBUG, "EventIncomingRequestAuth no UserInfo and CheckAuthrization() return false" );
 			return false;
-		}
-
-		CXmlUser clsXmlUser;
-
-		ECheckAuthResult eRes = CheckAuthorization( &(*itCL), pclsMessage->m_strSipMethod.c_str(), clsXmlUser );
-		switch( eRes )
-		{
-		case E_AUTH_NONCE_NOT_FOUND:
-			SendUnAuthorizedResponse( pclsMessage );
-			return false;
-		case E_AUTH_ERROR:
-			SendResponse( pclsMessage, SIP_FORBIDDEN );
-			return false;
-		default:
-			break;
 		}
 	}
 
 	if( strcmp( clsUserInfo.m_strIp.c_str(), strIp.c_str() ) || clsUserInfo.m_iPort != iPort )
 	{
-		SIP_CREDENTIAL_LIST::iterator	itCL = pclsMessage->m_clsAuthorizationList.begin();
+		CLog::Print( LOG_DEBUG, "EventIncomingRequestAuth current(%s:%d) != recv(%s:%d)", clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, strIp.c_str(), iPort );
 
-		if( itCL == pclsMessage->m_clsAuthorizationList.end() )
+		if( CheckAuthrization( pclsMessage ) == false )
 		{
-			CLog::Print( LOG_DEBUG, "EventIncomingRequestAuth current(%s:%d) != recv(%s:%d)", clsUserInfo.m_strIp.c_str(), clsUserInfo.m_iPort, strIp.c_str(), iPort );
-			SendUnAuthorizedResponse( pclsMessage );
+			CLog::Print( LOG_DEBUG, "EventIncomingRequestAuth CheckAuthrization() return false" );
 			return false;
 		}
 
