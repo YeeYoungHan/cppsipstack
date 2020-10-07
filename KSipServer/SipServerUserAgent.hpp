@@ -329,10 +329,13 @@ void CSipServer::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 			pclsRtp->SetIpPort( gclsSetup.m_strLocalIp.c_str(), clsCallInfo.m_iPeerRtpPort, SOCKET_COUNT_PER_MEDIA );
 		}
 
-		// QQQ: INVITE 200 OK 응답에서 SDP 가 존재하지 않으면 ReINVITE 메시지를 전송하는 버그가 있다.
-		if( gclsUserAgent.AcceptCall( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp ) == false )
+		if( gclsUserAgent.IsConnected( clsCallInfo.m_strPeerCallId.c_str() ) )
 		{
 			gclsUserAgent.SendReInvite( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp );
+		}
+		else
+		{
+			gclsUserAgent.AcceptCall( clsCallInfo.m_strPeerCallId.c_str(), pclsRtp );
 		}
 	}
 	else if( gclsTransCallMap.Select( pszCallId, clsCallInfo ) )
