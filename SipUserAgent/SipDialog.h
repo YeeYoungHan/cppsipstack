@@ -154,6 +154,8 @@ public:
 	void GetCdr( CSipCdr * pclsCdr );
 	bool IsConnected( );
 
+	static bool IsUseCodec( int iCodec );
+
 private:
 	CSipMessage * CreateMessage( const char * pszSipMethod );
 };

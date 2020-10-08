@@ -225,26 +225,12 @@ bool CSipDialog::AddSdp( CSipMessage * pclsMessage )
 		if( pclsMessage->IsRequest() && m_clsCodecList.empty() == false )
 		{
 			CODEC_LIST::iterator	itList;
-			bool bFound;
 
 			iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, "m=audio %d RTP/AVP", m_iLocalRtpPort );
 
 			for( itList = m_clsCodecList.begin(); itList != m_clsCodecList.end(); ++itList )
 			{
-				bFound = false;
-
-				switch( *itList )
-				{
-				case 0:
-				case 3:
-				case 4:
-				case 8:
-				case 18:
-					bFound = true;
-					break;
-				}
-
-				if( bFound )
+				if( IsUseCodec( *itList ) )
 				{
 					iLen += snprintf( szSdp + iLen, sizeof(szSdp)-iLen, " %d", *itList );
 				}
@@ -439,6 +425,67 @@ bool CSipDialog::SelectRemoteRtp( CSipCallRtp * pclsRtp )
 
 /**
  * @ingroup SipUserAgent
+ * @brief CDR 정보 객체에 데이터를 저장한다.
+ * @param pclsCdr CDR 정보 객체
+ */
+void CSipDialog::GetCdr( CSipCdr * pclsCdr )
+{
+	if( m_bSendCall )
+	{
+		pclsCdr->m_strFromId = m_strFromId;
+		pclsCdr->m_strToId = m_strToId;
+	}
+	else
+	{
+		// CSipDialog 의 From, To 는 SipUserAgent 가 SIP 요청 메시지를 전송하는 입장에서 저장되어 있으므로 CDR 을 위해서는 반대로 저장해 준다.
+		pclsCdr->m_strFromId = m_strToId;
+		pclsCdr->m_strToId = m_strFromId;
+	}
+
+	pclsCdr->m_strCallId = m_strCallId;
+	pclsCdr->m_sttInviteTime = m_sttInviteTime;
+	pclsCdr->m_sttStartTime = m_sttStartTime;
+	pclsCdr->m_sttEndTime = m_sttEndTime;
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief 통화 연결된 Dialog 인가?
+ * @returns 통화 연결된 Dialog 이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipDialog::IsConnected( )
+{
+	if( m_sttStartTime.tv_sec != 0 && m_sttEndTime.tv_sec == 0 ) return true;
+
+	return false;
+}
+
+/**
+ * @ingroup SipUserAgent
+ * @brief Dialog 에서 사용하는 코덱인지 검사한다.
+ * @param iCodec 코덱 payload type
+ * @returns Dialog 에서 사용하는 코덱이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipDialog::IsUseCodec( int iCodec )
+{
+	bool bFound = false;
+
+	switch( iCodec )
+	{
+	case 0:
+	case 3:
+	case 4:
+	case 8:
+	case 18:
+		bFound = true;
+		break;
+	}
+
+	return bFound;
+}
+
+/**
+ * @ingroup SipUserAgent
  * @brief SIP 요청 메시지를 생성한다.
  * @param pszSipMethod SIP 메소드
  * @returns 성공하면 SIP 요청 메시지를 리턴하고 그렇지 않으면 NULL 을 리턴한다.
@@ -541,41 +588,4 @@ CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 	}
 
 	return pclsMessage;
-}
-
-/**
- * @ingroup SipUserAgent
- * @brief CDR 정보 객체에 데이터를 저장한다.
- * @param pclsCdr CDR 정보 객체
- */
-void CSipDialog::GetCdr( CSipCdr * pclsCdr )
-{
-	if( m_bSendCall )
-	{
-		pclsCdr->m_strFromId = m_strFromId;
-		pclsCdr->m_strToId = m_strToId;
-	}
-	else
-	{
-		// CSipDialog 의 From, To 는 SipUserAgent 가 SIP 요청 메시지를 전송하는 입장에서 저장되어 있으므로 CDR 을 위해서는 반대로 저장해 준다.
-		pclsCdr->m_strFromId = m_strToId;
-		pclsCdr->m_strToId = m_strFromId;
-	}
-
-	pclsCdr->m_strCallId = m_strCallId;
-	pclsCdr->m_sttInviteTime = m_sttInviteTime;
-	pclsCdr->m_sttStartTime = m_sttStartTime;
-	pclsCdr->m_sttEndTime = m_sttEndTime;
-}
-
-/**
- * @ingroup SipUserAgent
- * @brief 통화 연결된 Dialog 인가?
- * @returns 통화 연결된 Dialog 이면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
- */
-bool CSipDialog::IsConnected( )
-{
-	if( m_sttStartTime.tv_sec != 0 && m_sttEndTime.tv_sec == 0 ) return true;
-
-	return false;
 }

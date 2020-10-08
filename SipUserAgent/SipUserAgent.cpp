@@ -477,17 +477,18 @@ bool CSipUserAgent::GetSipCallRtp( CSipMessage * pclsMessage, CSipCallRtp & clsR
 		for( itFmt = itMedia->m_clsFmtList.begin(); itFmt != itMedia->m_clsFmtList.end(); ++itFmt )
 		{
 			iCodec = atoi( itFmt->c_str() );
-			if( clsRtp.m_iCodec == -1 )
-			{
-				clsRtp.m_iCodec = iCodec;
-			}
-			else if( iCodec == 0 )
+			if( CSipDialog::IsUseCodec( iCodec ) == false ) continue;
+
+			if( clsRtp.m_iCodec == -1 || iCodec == 0 )
 			{
 				// PCMU 가 존재하면 PCMU 를 무조건 선택한다.
 				clsRtp.m_iCodec = iCodec;
+				clsRtp.m_clsCodecList.push_front( iCodec );
 			}
-
-			clsRtp.m_clsCodecList.push_back( iCodec );
+			else
+			{
+				clsRtp.m_clsCodecList.push_back( iCodec );
+			}
 		}
 
 		clsRtp.m_eDirection = E_RTP_SEND_RECV;
