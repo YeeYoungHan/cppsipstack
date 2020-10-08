@@ -138,6 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Base64.cpp" />
+    <ClCompile Include="DeadLockDetectMutex.cpp" />
     <ClCompile Include="Directory.cpp" />
     <ClCompile Include="FileLog.cpp" />
     <ClCompile Include="FileUtility.cpp" />
@@ -155,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base64.h" />
+    <ClInclude Include="DeadLockDetectMutex.h" />
     <ClInclude Include="Directory.h" />
     <ClInclude Include="FileLog.h" />
     <ClInclude Include="FileUtility.h" />
