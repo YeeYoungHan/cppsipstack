@@ -131,6 +131,8 @@ bool CSipServer::SendResponse( CSipMessage * pclsMessage, int iStatusCode )
  */
 void CSipServer::SaveCdr( const char * pszCallId, int iSipStatus )
 {
+	if( gclsSetup.m_strCdrFolder.empty() ) return;
+
 	CSipCdr	clsCdr;
 
 	if( gclsUserAgent.GetCdr( pszCallId, &clsCdr ) )
