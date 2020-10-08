@@ -52,5 +52,8 @@
     <ClCompile Include="TestTransactionSpeed.cpp">
       <Filter>테스트</Filter>
     </ClCompile>
+    <ClCompile Include="TestFile.cpp">
+      <Filter>테스트</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
