@@ -22,6 +22,7 @@
 CSetup gclsSetup;
 
 CSetup::CSetup() : m_iSipServerPort(5060), m_bUseTwoMedia(false)
+	, m_bCallEstablishedTest(true), m_bCallCancelTest(true), m_bCallDeclineTest(true), m_bCallBlindTransferTest(true), m_bCallScreenedTransferTest(true)
 {
 }
 
