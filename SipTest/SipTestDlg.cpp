@@ -45,6 +45,11 @@ CSipTestDlg::CSipTestDlg(CWnd* pParent /*=NULL*/)
 	, m_bUse2Media(FALSE)
 	, m_strCalleeId2(_T(""))
 	, m_strCalleePassWord2(_T(""))
+	, m_bCallEstablishedTest(TRUE)
+	, m_bCallCancelTest(TRUE)
+	, m_bCallDeclineTest(TRUE)
+	, m_bCallBlindTransferTest(TRUE)
+	, m_bCallScreenedTransferTest(TRUE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -71,6 +76,11 @@ void CSipTestDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_USE_TWO_MEDIA, m_chkUse2Media);
 	DDX_Text(pDX, IDC_CALLEE_ID2, m_strCalleeId2);
 	DDX_Text(pDX, IDC_CALLEE_PW2, m_strCalleePassWord2);
+	DDX_Check(pDX, IDC_CALL_ESTABLISHED_TEST, m_bCallEstablishedTest);
+	DDX_Check(pDX, IDC_CALL_CANCEL_TEST, m_bCallCancelTest);
+	DDX_Check(pDX, IDC_CALL_DECLINE_TEST, m_bCallDeclineTest);
+	DDX_Check(pDX, IDC_CALL_BLIND_TRANSER_TEST, m_bCallBlindTransferTest);
+	DDX_Check(pDX, IDC_CALL_SCREENED_TRANSER_TEST, m_bCallScreenedTransferTest);
 }
 
 BEGIN_MESSAGE_MAP(CSipTestDlg, CDialog)
@@ -133,6 +143,11 @@ BOOL CSipTestDlg::OnInitDialog()
 	m_strCalleePassWord = gclsSetup.m_strCalleePassWord.c_str();
 	m_strCalleeId2 = gclsSetup.m_strCalleeId2.c_str();
 	m_strCalleePassWord2 = gclsSetup.m_strCalleePassWord2.c_str();
+	m_bCallEstablishedTest = gclsSetup.m_bCallEstablishedTest;
+	m_bCallCancelTest = gclsSetup.m_bCallCancelTest;
+	m_bCallDeclineTest = gclsSetup.m_bCallDeclineTest;
+	m_bCallBlindTransferTest = gclsSetup.m_bCallBlindTransferTest;
+	m_bCallScreenedTransferTest = gclsSetup.m_bCallScreenedTransferTest;
 
 	UpdateData(FALSE);
 
@@ -141,7 +156,7 @@ BOOL CSipTestDlg::OnInitDialog()
 	m_btnStopTest.EnableWindow( FALSE );
 
 #ifndef USE_MEDIA_LIST
-	m_chkUse2Media.EnableWindow( FALSE );
+	m_chkUse2Media.EnableWindow( gclsSetup.m_bUseTwoMedia ? TRUE : FALSE );
 #endif
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -343,6 +358,12 @@ void CSipTestDlg::OnBnClickedStartTest()
 {
 	UpdateData(TRUE);
 
+	gclsSetup.m_bCallEstablishedTest = ( m_bCallEstablishedTest ? true : false );
+	gclsSetup.m_bCallCancelTest = ( m_bCallCancelTest ? true : false );
+	gclsSetup.m_bCallDeclineTest = ( m_bCallDeclineTest ? true : false );
+	gclsSetup.m_bCallBlindTransferTest = ( m_bCallBlindTransferTest ? true : false );
+	gclsSetup.m_bCallScreenedTransferTest = ( m_bCallScreenedTransferTest ? true : false );
+
 #ifndef USE_MEDIA_LIST
 	if( m_bUse2Media )
 	{
@@ -355,8 +376,9 @@ void CSipTestDlg::OnBnClickedStartTest()
 
 #ifdef USE_MEDIA_LIST
 	gclsSetup.m_bUseTwoMedia = ( m_bUse2Media ? true : false );
-	gclsSetup.Put();
 #endif
+
+	gclsSetup.Put();
 
 	UpdateData(FALSE);
 

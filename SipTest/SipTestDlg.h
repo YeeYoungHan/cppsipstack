@@ -100,4 +100,9 @@ public:
 	CButton m_chkUse2Media;
 	CString m_strCalleeId2;
 	CString m_strCalleePassWord2;
+	BOOL m_bCallEstablishedTest;
+	BOOL m_bCallCancelTest;
+	BOOL m_bCallDeclineTest;
+	BOOL m_bCallBlindTransferTest;
+	BOOL m_bCallScreenedTransferTest;
 };

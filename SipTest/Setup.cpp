@@ -51,6 +51,12 @@ bool CSetup::Get()
 	m_bUseTwoMedia = GetBool( ST_USE_TWO_MEDIA, false );
 #endif
 
+	m_bCallEstablishedTest = GetBool( ST_CALL_ESTABLISHED_TEST, true );
+	m_bCallCancelTest = GetBool( ST_CALL_CANCEL_TEST, true );
+	m_bCallDeclineTest = GetBool( ST_CALL_DECLINE_TEST, true );
+	m_bCallBlindTransferTest = GetBool( ST_CALL_BLIND_TRANSFER_TEST, true );
+	m_bCallScreenedTransferTest = GetBool( ST_CALL_SCREENED_TRANSFER_TEST, true );
+
 	m_clsMap.clear();
 
 	return true;
@@ -72,6 +78,11 @@ bool CSetup::Put()
 	PutString( ST_CALLEE2_ID, m_strCalleeId2.c_str() );
 	PutString( ST_CALLEE2_PW, m_strCalleePassWord2.c_str() );
 	PutBool( ST_USE_TWO_MEDIA, m_bUseTwoMedia );
+	PutBool( ST_CALL_ESTABLISHED_TEST, m_bCallEstablishedTest );
+	PutBool( ST_CALL_CANCEL_TEST, m_bCallCancelTest );
+	PutBool( ST_CALL_DECLINE_TEST, m_bCallDeclineTest );
+	PutBool( ST_CALL_BLIND_TRANSFER_TEST, m_bCallBlindTransferTest );
+	PutBool( ST_CALL_SCREENED_TRANSFER_TEST, m_bCallScreenedTransferTest );
 
 	bool bRes = PutFile();
 

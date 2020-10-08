@@ -31,6 +31,12 @@
 #define IDC_PERCENT                     1015
 #define IDC_CLEAR_LOG                   1016
 #define IDC_CALLEE_PW2                  1017
+#define IDC_CALL_ESTABLISHED_TEST       1018
+#define IDC_CALL_CANCEL_TEST            1019
+#define IDC_CALL_DECLINE_TEST           1020
+#define IDC_CALL_BLIND_TRANSER_TEST     1021
+#define IDC_CALL_BLIND_TRANSER_TEST2    1022
+#define IDC_CALL_SCREENED_TRANSER_TEST  1022
 
 // Next default values for new objects
 // 

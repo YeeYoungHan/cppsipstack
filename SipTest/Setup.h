@@ -33,6 +33,11 @@
 #define ST_CALLEE2_ID				"callee_id2"
 #define ST_CALLEE2_PW				"callee_pw2"
 #define ST_USE_TWO_MEDIA		"use_2_media"
+#define ST_CALL_ESTABLISHED_TEST				"call_established_test"
+#define ST_CALL_CANCEL_TEST							"call_cancel_test"
+#define ST_CALL_DECLINE_TEST						"call_decline_test"
+#define ST_CALL_BLIND_TRANSFER_TEST			"call_blind_transfer_test"
+#define ST_CALL_SCREENED_TRANSFER_TEST	"call_screened_transfer_test"
 
 typedef std::map< std::string, std::string > SETUP_MAP;
 
@@ -59,6 +64,11 @@ public:
 	std::string m_strCalleeId2;
 	std::string m_strCalleePassWord2;
 	bool				m_bUseTwoMedia;
+	bool				m_bCallEstablishedTest;
+	bool				m_bCallCancelTest;
+	bool				m_bCallDeclineTest;
+	bool				m_bCallBlindTransferTest;
+	bool				m_bCallScreenedTransferTest;
 
 private:
 	bool GetFile();
