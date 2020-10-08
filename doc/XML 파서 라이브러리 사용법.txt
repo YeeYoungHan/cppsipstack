@@ -1,6 +1,4 @@
-본 포스트는 아래의 사이트에서 다운로드받거나 C++ SIP stack 에 포함된 XML 파서 라이브러리를 이용하여서 XML 문자열의 값을 가져오는 방법을 기술합니다. 
-
-http://dev.naver.com/projects/sipstack/download/note/5051
+본 포스트는 C++ SIP stack 에 포함된 XML 파서 라이브러리를 이용하여서 XML 문자열의 값을 가져오는 방법을 기술합니다. 
 
 1. XML element 의 내용을 가져오는 예제
 

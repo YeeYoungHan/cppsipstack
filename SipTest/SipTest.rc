@@ -101,7 +101,7 @@ BEGIN
     LTEXT           "",IDC_VERSION,97,14,45,8,SS_NOPREFIX
     LTEXT           "http://blog.naver.com/websearch",IDC_BLOG,61,45,110,8,SS_NOTIFY
     LTEXT           "Blog:",IDC_STATIC,15,45,17,8
-    LTEXT           "http://dev.naver.com/projects/sipstack",IDC_HOMEPAGE,61,57,128,8,SS_NOTIFY
+    LTEXT           "https://github.com/YeeYoungHan/cppsipstack",IDC_HOMEPAGE,61,57,148,8,SS_NOTIFY
     LTEXT           "Homepage:",IDC_STATIC,15,57,38,8
 END
 
@@ -170,7 +170,7 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "C++ SIP stack ( http://dev.naver.com/projects/sipstack )"
+            VALUE "CompanyName", "C++ SIP stack ( https://github.com/YeeYoungHan/cppsipstack )"
             VALUE "FileDescription", "SIP server test tool ( http://blog.naver.com/websearch.do )"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "SipTest.exe"

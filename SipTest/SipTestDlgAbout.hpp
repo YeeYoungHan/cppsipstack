@@ -81,5 +81,5 @@ void CAboutDlg::OnStnClickedBlog()
 
 void CAboutDlg::OnStnClickedHomePage()
 {
-	ShowWebBrowser( "http://dev.naver.com/projects/sipstack" );
+	ShowWebBrowser( "https://github.com/YeeYoungHan/cppsipstack" );
 }
