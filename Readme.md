@@ -64,6 +64,7 @@ C++ STL 기반으로 SIP stack 을 개발하는 프로젝트입니다.
 
 * Publish
   * MS 윈도우에서 실행 가능한 실행 파일 배포 폴더
+  * SIP Stack API doxygen 문서
 
 * SdpParser
   * SDP 메시지 파서/생성 라이브러리
@@ -169,6 +170,9 @@ KSipServer 에서 지정된 음성 코덱만 사용하고 싶고 음성 통신�
 
 ### C++ SIP stack 관련 포스트 리스트
 
+* https://blog.naver.com/websearch/70147577937 : KSipServer 설정 파일 설명
+* https://blog.naver.com/websearch/70148992602 : KSipServer 사용자 XML 파일 설명
+* https://blog.naver.com/websearch/70149037102 : KSipServer 외부 IP-PBX XML 파일 설명
 * https://blog.naver.com/websearch/221687115345 : SIP REGISTER 에 대한 401 응답을 1번만 수신하는 기능 개발 완료
 * https://blog.naver.com/websearch/221621020855 : CSipMutex 를 std::map 등의 자료구조의 값으로 저장하면 비정상종료될 수 있는 것 같습니다.
 * https://blog.naver.com/websearch/221610999793 : SipCallDump 프로그램에 fragment 된 IP 패킷을 merge 하는 기능 추가 완료

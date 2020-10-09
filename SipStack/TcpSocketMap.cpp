@@ -104,10 +104,10 @@ bool CTcpSocketMap::Select( const char * pszIp, int iPort, Socket & hSocket )
 /**
  * @ingroup SipStack
  * @brief TLS 메시지를 전송한다.
- * @param pszIp		클라이언트 IP 주소
- * @param iPort		클라이언트 포트 번호
- * @param pclsMessage SIP 메시지
- * @param iLocalPort	로컬 포트 번호
+ * @param pszIp					클라이언트 IP 주소
+ * @param iPort					클라이언트 포트 번호
+ * @param pclsMessage		SIP 메시지
+ * @param iLocalTlsPort	로컬 포트 번호
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool CTcpSocketMap::SendTls( const char * pszIp, int iPort, CSipMessage * pclsMessage, int iLocalTlsPort )
@@ -140,8 +140,8 @@ bool CTcpSocketMap::SendTls( const char * pszIp, int iPort, CSipMessage * pclsMe
 /**
  * @ingroup SipStack
  * @brief TLS 메시지를 전송한다.
- * @param pszIp		클라이언트 IP 주소
- * @param iPort		클라이언트 포트 번호
+ * @param pszIp				클라이언트 IP 주소
+ * @param iPort				클라이언트 포트 번호
  * @param pszMessage	 SIP 메시지
  * @param iMessageSize SIP 메시지 길이
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.

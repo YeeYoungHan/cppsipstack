@@ -193,10 +193,10 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 /**
  * @ingroup SipStack
  * @brief TCP 프로토콜로 SIP 메시지 수신 및 SIP 수신 이벤트를 처리하는 Thread Pool 을 시작한다.
- * @param pclsSipStack	SIP stack 포인터
- * @param pszIp					SIP 메시지를 전송할 IP 주소
- * @param iPort					SIP 메시지를 전송할 포트 번호
- * @param pszSipMessage	전송할 SIP 메시지
+ * @param pclsSipStack		SIP stack 포인터
+ * @param pszIp						SIP 메시지를 전송할 IP 주소
+ * @param iPort						SIP 메시지를 전송할 포트 번호
+ * @param pclsSipMessage	전송할 SIP 메시지
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool StartSipTlsClientThread( CSipStack * pclsSipStack, const char * pszIp, int iPort, CSipMessage * pclsSipMessage )

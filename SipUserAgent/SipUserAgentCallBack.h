@@ -129,6 +129,7 @@ public:
 	/**
    * @ingroup SipUserAgent
 	 * @brief SIP ReINVITE 수신 이벤트 핸들러
+	 * @param pszCallId				SIP Call-ID
 	 * @param pclsRemoteRtp		상대방 RTP 정보 저장 객체
 	 * @param pclsLocalRtp		내 RTP 정보 저장 객체
 	 */
