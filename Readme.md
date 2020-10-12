@@ -25,6 +25,11 @@ C++ STL 기반으로 SIP stack 을 개발하는 프로젝트입니다.
 * 본 프로젝트의 라이선스는 GPLv3 입니다.
 * 본 프로젝트에 대한 상용 라이선스 발급을 원하시면 websearch@naver.com 로 연락해 주세요.
 
+### API 문서
+C++ SIP stack API 문서는 아래의 홈페이지에서 확인하실 수 있습니다.
+
+* https://yeeyounghan.github.io/doc/CppSipStack/html/index.html
+
 ### 폴더 설명
 본 프로젝트에 포함된 폴더에 대한 설명은 다음과 같습니다.
 
@@ -64,7 +69,6 @@ C++ STL 기반으로 SIP stack 을 개발하는 프로젝트입니다.
 
 * Publish
   * MS 윈도우에서 실행 가능한 실행 파일 배포 폴더
-  * SIP Stack API doxygen 문서
 
 * SdpParser
   * SDP 메시지 파서/생성 라이브러리
