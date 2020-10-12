@@ -28,6 +28,10 @@
 
 typedef std::map< CDeadLockDetectMutex *, int > MUTEX_POINTER_MAP;
 
+/**
+ * @ingroup SipPlatform
+ * @brief 뮤텍스의 포인터를 저장하는 클래스
+ */
 class CMutexPointerMap
 {
 public:
