@@ -28,7 +28,7 @@ C++ STL 기반으로 SIP stack 을 개발하는 프로젝트입니다.
 ### API 문서
 C++ SIP stack API 문서는 아래의 홈페이지에서 확인하실 수 있습니다.
 
-* https://yeeyounghan.github.io/doc/CppSipStack/html/index.html
+* https://yeeyounghan.github.io/cppsipstackdoc/html/index.html
 
 ### 폴더 설명
 본 프로젝트에 포함된 폴더에 대한 설명은 다음과 같습니다.
