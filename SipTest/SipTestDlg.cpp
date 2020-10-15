@@ -229,6 +229,9 @@ LRESULT CSipTestDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
 	case WM_TEST_MSG:
 		SetLog( "%s", lParam );
 		break;
+	case WM_TEST_PERCENT:
+		SetPercent( lParam );
+		break;
 	}
 
 	return 0;
@@ -320,7 +323,7 @@ void CSipTestDlg::OnBnClickedStartSipStack()
 
 	if( bSuccess == false )
 	{
-		MessageBox( "sip stack start error", "Error", MB_OK );
+		MessageBox( "sip stack start error", "Error", MB_OK | MB_ICONERROR );
 		return;
 	}
 
@@ -338,7 +341,7 @@ void CSipTestDlg::OnBnClickedStopSipStack()
 
 	if( gclsSipUserAgent.Stop() == false )
 	{
-		MessageBox( "sip stack stop error", "Error", MB_OK );
+		MessageBox( "sip stack stop error", "Error", MB_OK | MB_ICONERROR );
 		return;
 	}
 
@@ -357,6 +360,12 @@ void CSipTestDlg::OnBnClickedStopSipStack()
 void CSipTestDlg::OnBnClickedStartTest()
 {
 	UpdateData(TRUE);
+
+	if( m_bCallEstablishedTest == FALSE && m_bCallCancelTest == FALSE && m_bCallDeclineTest == FALSE && m_bCallBlindTransferTest == FALSE && m_bCallScreenedTransferTest == FALSE )
+	{
+		MessageBox( "The test item does not exist.", "Error", MB_OK | MB_ICONERROR );
+		return;
+	}
 
 	gclsSetup.m_bCallEstablishedTest = ( m_bCallEstablishedTest ? true : false );
 	gclsSetup.m_bCallCancelTest = ( m_bCallCancelTest ? true : false );

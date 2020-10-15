@@ -46,6 +46,17 @@ void SendLog( const char * fmt, ... )
 	SendMessage( ghWnd, SIP_TEST_ID, WM_TEST_MSG, (LPARAM)szBuf );
 }
 
+void SendPercent( int iTestCount )
+{
+	int iTotalTestCount = gclsSetup.GetTestCount();
+
+	if( iTotalTestCount > 0 )
+	{
+		int iPercent = iTestCount * 100 / iTotalTestCount;
+		SendMessage( ghWnd, SIP_TEST_ID, WM_TEST_PERCENT, (LPARAM)iPercent );
+	}
+}
+
 /**
  * @ingroup SipTest
  * @brief 모든 통화가 종료될 때까지 대기한다.
@@ -109,8 +120,10 @@ THREAD_API SipTestThread( LPVOID lpParameter )
 	CSipCallRoute clsRoute;
 	std::string strCallId;
 	int iMiliSecond;
+	int iTestCount = 0;
 
 	gbTestThreadRun = true;
+	SendPercent( 0 );
 
 	if( gclsTestInfo.CreateRtp() == false ) 
 	{
@@ -155,6 +168,8 @@ THREAD_API SipTestThread( LPVOID lpParameter )
 		}
 
 		SendLog( "Call Established Test : OK" );
+		++iTestCount;
+		SendPercent( iTestCount );
 	}
 
 	if( gclsSetup.m_bCallCancelTest )
@@ -171,6 +186,9 @@ THREAD_API SipTestThread( LPVOID lpParameter )
 		{
 			SendLog( "Call Cancel Test : ERROR" );
 		}
+
+		++iTestCount;
+		SendPercent( iTestCount );
 	}
 
 	if( gclsSetup.m_bCallDeclineTest )
@@ -187,6 +205,9 @@ THREAD_API SipTestThread( LPVOID lpParameter )
 		{
 			SendLog( "Call Decline Test : ERROR" );
 		}
+
+		++iTestCount;
+		SendPercent( iTestCount );
 	}
 
 	if( gclsSetup.m_strCalleeId2.empty() == false )
@@ -239,6 +260,9 @@ THREAD_API SipTestThread( LPVOID lpParameter )
 			WaitUntilAllCallStop();
 
 			SendLog( "Call Blind Transfer Test : OK" );
+
+			++iTestCount;
+			SendPercent( iTestCount );
 		}
 
 		if( gclsSetup.m_bCallScreenedTransferTest )
@@ -302,6 +326,9 @@ THREAD_API SipTestThread( LPVOID lpParameter )
 			WaitUntilAllCallStop();
 
 			SendLog( "Call Screened Transfer Test : OK" );
+
+			++iTestCount;
+			SendPercent( iTestCount );
 		}
 	}
 

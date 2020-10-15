@@ -63,6 +63,7 @@
 #define SIP_TEST_ID	WM_USER+0x300
 #define WM_TEST_END	0x01
 #define WM_TEST_MSG	0x02
+#define WM_TEST_PERCENT	0x03
 
 // stdafx.cpp
 #include "SipUserAgent.h"

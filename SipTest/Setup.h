@@ -53,6 +53,7 @@ public:
 
 	bool Get();
 	bool Put();
+	int GetTestCount();
 
 	std::string m_strSipServerIp;
 	int         m_iSipServerPort;

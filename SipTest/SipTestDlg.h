@@ -70,7 +70,7 @@ public:
 
 	bool CheckInput( CString & strInput, const char * pszName );
 	void SetLog( const char * fmt, ... );
-	void SetPercent( );
+	void SetPercent( int iPercent );
 
 	// SipTestDlg.cpp
 	CString m_strSipServerIp;

@@ -72,11 +72,10 @@ void CSipTestDlg::SetLog( const char * fmt, ... )
 
 /**
  * @brief 테스트 진행 상태를 보여준다.
+ * @param iPercent 퍼센트
  */
-void CSipTestDlg::SetPercent( )
+void CSipTestDlg::SetPercent( int iPercent )
 {
-	int iPercent = 0;
-
 	m_clsProgress.SetPos( iPercent );
 
 	m_strPercent.Format( "%d %%", iPercent );

@@ -93,6 +93,24 @@ bool CSetup::Put()
 }
 
 /**
+ * @ingroup SipTest
+ * @brief 테스트 항목 개수를 리턴한다.
+ * @returns 테스트 항목 개수를 리턴한다.
+ */
+int CSetup::GetTestCount()
+{
+	int iTestCount = 0;
+
+	if( m_bCallEstablishedTest ) ++iTestCount;
+	if( m_bCallCancelTest ) ++iTestCount;
+	if( m_bCallDeclineTest ) ++iTestCount;
+	if( m_bCallBlindTransferTest ) ++iTestCount;
+	if( m_bCallScreenedTransferTest ) ++iTestCount;
+
+	return iTestCount;
+}
+
+/**
  * @brief 설정 파일을 읽어서 키/값 자료구조에 저장한다.
  * @return 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
