@@ -392,6 +392,7 @@ LRESULT CSipSpeedDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
 		m_btnStopTest.EnableWindow( FALSE );
 
 		gclsSipUserAgent.m_clsSipStack.DeleteCallBack( this );
+		gclsSipUserAgent.m_clsSipStack.DeleteAllTransaction();
 	}
 
 	return 0;
