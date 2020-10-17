@@ -56,6 +56,10 @@
 
 #ifdef USE_HASH_MAP
 
+#include <unordered_map>
+#define MAP std::unordered_map
+
+/*
 #ifdef WIN32
 
 #include <hash_map>
@@ -79,6 +83,7 @@ namespace __gnu_cxx
 }
 
 #endif
+*/
 
 #else
 
