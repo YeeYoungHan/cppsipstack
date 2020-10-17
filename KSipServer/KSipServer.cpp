@@ -126,6 +126,7 @@ int ServiceMain( )
 			gclsNonceMap.DeleteTimeout( 10 );
 			gclsUserMap.DeleteTimeout( 10 );
 			gclsUserMap.SendOptions( );
+			gclsXmlUserMap.DeleteTimeout( 10 );
 		}
 
 		if( iSecond % 60 == 0 )

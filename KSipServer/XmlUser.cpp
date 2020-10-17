@@ -22,7 +22,10 @@
 #include "XmlElement.h"
 #include "SipServerSetup.h"
 #include "Directory.h"
+#include "TimeUtility.h"
 #include "MemoryDebug.h"
+
+CXmlUserMap gclsXmlUserMap;
 
 CXmlUser::CXmlUser() : m_bDnd(false)
 {
@@ -101,6 +104,67 @@ bool CXmlUser::IsCallForward()
 	return true;
 }
 
+void CXmlUserMap::Insert( CXmlUser & clsXmlUser )
+{
+	XML_USER_MAP::iterator itMap;
+
+	time( &clsXmlUser.m_iReadTime );
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( clsXmlUser.m_strId );
+	if( itMap == m_clsMap.end() )
+	{
+		m_clsMap.insert( XML_USER_MAP::value_type( clsXmlUser.m_strId, clsXmlUser ) );
+	}
+	else
+	{
+		itMap->second = clsXmlUser;
+	}
+	m_clsMutex.release();
+}
+
+bool CXmlUserMap::Select( const char * pszUserId, CXmlUser & clsXmlUser )
+{
+	XML_USER_MAP::iterator itMap;
+	bool bRes = false;
+
+	m_clsMutex.acquire();
+	itMap = m_clsMap.find( pszUserId );
+	if( itMap != m_clsMap.end() )
+	{
+		clsXmlUser = itMap->second;
+		bRes = true;
+	}
+	m_clsMutex.release();
+
+	return bRes;
+}
+
+void CXmlUserMap::DeleteTimeout( int iTimeout )
+{
+	XML_USER_MAP::iterator itMap, itNext;
+	time_t iTime;
+
+	time( &iTime );
+
+	m_clsMutex.acquire();
+	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+	{
+LOOP_START:
+		if( (iTime - itMap->second.m_iReadTime) >= iTimeout )
+		{
+			itNext = itMap;
+			++itNext;
+			m_clsMap.erase( itMap );
+
+			if( itNext == m_clsMap.end() ) break;
+			itMap = itNext;
+			goto LOOP_START;
+		}
+	}
+	m_clsMutex.release();
+}
+
 /**
  * @ingroup KSipServer
  * @brief SIP 사용자 정보를 XML 파일 또는 MySQL 에서 읽어서 저장한다.
@@ -109,11 +173,22 @@ bool CXmlUser::IsCallForward()
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
 bool SelectUser( const char * pszUserId, CXmlUser & clsUser )
-{	
+{
+	if( gclsXmlUserMap.Select( pszUserId, clsUser ) )
+	{
+		return true;
+	}
+
 	std::string	strFileName = gclsSetup.m_strUserXmlFolder;
 
 	CDirectory::AppendName( strFileName, pszUserId );
 	strFileName.append( ".xml" );
 
-	return clsUser.Parse( strFileName.c_str() );
+	if( clsUser.Parse( strFileName.c_str() ) )
+	{
+		gclsXmlUserMap.Insert( clsUser );
+		return true;
+	}
+
+	return false;
 }

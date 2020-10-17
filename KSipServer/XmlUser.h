@@ -20,6 +20,8 @@
 #define _XML_USER_H_
 
 #include <string>
+#include <map>
+#include "SipMutex.h"
 
 /**
  * @ingroup KSipServer
@@ -46,12 +48,31 @@ public:
 	/** 그룹 아이디 */
 	std::string	m_strGroupId;
 
+	/** 파일에서 읽은 시간 */
+	time_t	m_iReadTime;
+
 	bool Parse( const char * pszFileName );
 	void Clear();
 
 	bool IsDnd();
 	bool IsCallForward();
 };
+
+typedef std::map< std::string, CXmlUser > XML_USER_MAP;
+
+class CXmlUserMap
+{
+public:
+	void Insert( CXmlUser & clsXmlUser );
+	bool Select( const char * pszUserId, CXmlUser & clsXmlUser );
+	void DeleteTimeout( int iTimeout );
+
+private:
+	XML_USER_MAP m_clsMap;
+	CSipMutex m_clsMutex;
+};
+
+extern CXmlUserMap gclsXmlUserMap;
 
 bool SelectUser( const char * pszUserId, CXmlUser & clsUser );
 
