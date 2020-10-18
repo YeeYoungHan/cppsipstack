@@ -194,6 +194,7 @@
   <ItemGroup>
     <ClInclude Include="CallMap.h" />
     <ClInclude Include="KSipServer.h" />
+    <ClInclude Include="KSipServerDefine.h" />
     <ClInclude Include="KSipServerVersion.h" />
     <ClInclude Include="Monitor.h" />
     <ClInclude Include="MonitorDefine.h" />

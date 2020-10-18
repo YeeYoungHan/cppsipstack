@@ -108,5 +108,8 @@
     <ClInclude Include="MonitorDefine.h">
       <Filter>쓰레드</Filter>
     </ClInclude>
+    <ClInclude Include="KSipServerDefine.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
