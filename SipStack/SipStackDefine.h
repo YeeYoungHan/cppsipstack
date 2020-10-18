@@ -22,8 +22,7 @@
 // TLS 기능 없이 SIP stack 을 빌드하고 싶으면 아래의 선언을 주석 처리하세요.
 #define USE_TLS
 
-// MAP 대신 HASH MAP 을 사용할 경우 아래의 선언을 사용하세요.
-// HASH MAP 을 사용하면 iterator 에서 MAP 보다 많은 연산을 하는 것으로 추정됩니다.
+// transaction list 에 map 을 사용하고 싶으면 아래의 선언을 주석 처리하세요. 아래의 선언을 주석 처리하지 않으면 unordered_map 을 사용합니다.
 //#define USE_HASH_MAP
 
 #ifdef USE_TLS
@@ -57,33 +56,12 @@
 #ifdef USE_HASH_MAP
 
 #include <unordered_map>
-#define MAP std::unordered_map
 
-/*
-#ifdef WIN32
-
-#include <hash_map>
-#define MAP stdext::hash_map
-
+#if _MSC_VER == VC2008_VERSION
+#define MAP std::tr1::unordered_map
 #else
-
-#include <ext/hash_map>
-#define MAP __gnu_cxx::hash_map
-
-namespace __gnu_cxx
-{
-	template<>
-  struct hash< std::string > 
-	{
-    size_t operator( )( std::string const & s ) const
-		{
-      return __stl_hash_string( s.c_str( ) );
-    }
-  };
-}
-
+#define MAP std::unordered_map
 #endif
-*/
 
 #else
 
