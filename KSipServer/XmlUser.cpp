@@ -25,7 +25,9 @@
 #include "TimeUtility.h"
 #include "MemoryDebug.h"
 
+#ifdef USE_XML_USER_MAP
 CXmlUserMap gclsXmlUserMap;
+#endif
 
 CXmlUser::CXmlUser() : m_bDnd(false)
 {
@@ -104,6 +106,8 @@ bool CXmlUser::IsCallForward()
 	return true;
 }
 
+#ifdef USE_XML_USER_MAP
+
 void CXmlUserMap::Insert( CXmlUser & clsXmlUser )
 {
 	XML_USER_MAP::iterator itMap;
@@ -165,6 +169,8 @@ LOOP_START:
 	m_clsMutex.release();
 }
 
+#endif
+
 /**
  * @ingroup KSipServer
  * @brief SIP 사용자 정보를 XML 파일 또는 MySQL 에서 읽어서 저장한다.
@@ -174,10 +180,12 @@ LOOP_START:
  */
 bool SelectUser( const char * pszUserId, CXmlUser & clsUser )
 {
+#ifdef USE_XML_USER_MAP
 	if( gclsXmlUserMap.Select( pszUserId, clsUser ) )
 	{
 		return true;
 	}
+#endif
 
 	std::string	strFileName = gclsSetup.m_strUserXmlFolder;
 
@@ -186,7 +194,10 @@ bool SelectUser( const char * pszUserId, CXmlUser & clsUser )
 
 	if( clsUser.Parse( strFileName.c_str() ) )
 	{
+#ifdef USE_XML_USER_MAP
 		gclsXmlUserMap.Insert( clsUser );
+#endif
+
 		return true;
 	}
 

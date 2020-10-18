@@ -133,9 +133,10 @@ bool CSipServerSetup::Read( const char * pszFileName )
 
 	// CDR
 	pclsElement = clsXml.SelectElement( "Cdr" );
-	if( pclsElement == NULL ) return false;
-
-	pclsElement->SelectElementData( "Folder", m_strCdrFolder );
+	if( pclsElement )
+	{
+		pclsElement->SelectElementData( "Folder", m_strCdrFolder );
+	}
 
 	// 모니터링
 	pclsElement = clsXml.SelectElement( "Monitor" );

@@ -341,6 +341,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\KSipServerDefine.h"
+				>
+			</File>
+			<File
 				RelativePath=".\KSipServerVersion.h"
 				>
 			</File>

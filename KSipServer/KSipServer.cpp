@@ -17,6 +17,7 @@
  */
 
 #include "KSipServer.h"
+#include "KSipServerDefine.h"
 #include "SipServer.h"
 #include "SipServerSetup.h"
 #include "Log.h"
@@ -126,7 +127,10 @@ int ServiceMain( )
 			gclsNonceMap.DeleteTimeout( 10 );
 			gclsUserMap.DeleteTimeout( 10 );
 			gclsUserMap.SendOptions( );
+
+#ifdef USE_XML_USER_MAP
 			gclsXmlUserMap.DeleteTimeout( 10 );
+#endif
 		}
 
 		if( iSecond % 60 == 0 )

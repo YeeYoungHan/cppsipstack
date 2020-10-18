@@ -22,6 +22,7 @@
 #include <string>
 #include <map>
 #include "SipMutex.h"
+#include "KSipServerDefine.h"
 
 /**
  * @ingroup KSipServer
@@ -58,6 +59,8 @@ public:
 	bool IsCallForward();
 };
 
+#ifdef USE_XML_USER_MAP
+
 typedef std::map< std::string, CXmlUser > XML_USER_MAP;
 
 class CXmlUserMap
@@ -73,6 +76,8 @@ private:
 };
 
 extern CXmlUserMap gclsXmlUserMap;
+
+#endif
 
 bool SelectUser( const char * pszUserId, CXmlUser & clsUser );
 
