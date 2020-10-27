@@ -57,7 +57,7 @@
 
 #include <unordered_map>
 
-#if _MSC_VER == VC2008_VERSION
+#if defined(WIN32) && _MSC_VER == VC2008_VERSION
 #define MAP std::tr1::unordered_map
 #else
 #define MAP std::unordered_map
