@@ -62,9 +62,16 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 		{
 			if( pclsMessage->IsMethod( SIP_METHOD_ACK ) )
 			{
-				for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+				INVITE_CALL_ID_MAP::iterator itCIM;
+				std::string strCallId;
+
+				pclsMessage->GetCallIdSeq( strCallId );
+
+				itCIM = m_clsCallIdMap.find( strCallId );
+				if( itCIM != m_clsCallIdMap.end() )
 				{
-					if( itMap->second->m_pclsRequest->IsEqualCallIdSeq( pclsMessage ) )
+					itMap = m_clsMap.find( itCIM->second );
+					if( itMap != m_clsMap.end() )
 					{
 						// 2014년4월3일 이전 버전에서는 SIP Call-ID 만 비교하였지만 아래의 ACK 가 NULL 인지 구분하는 기능 때문에 정상적으로 동작하였음.
 						// 만약 아래의 기능이 없었다면 2개의 ReINVITE 에 대한 ACK 를 수신하였을 때에 첫번째 ReINVITE 에만 ACK 를 2번 저장하여서
@@ -76,6 +83,7 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 								// INVITE 에 대한 응답 메시지가 401 인 ACK 메시지를 수신하면 Transaction 을 바로 삭제한다.
 								delete itMap->second;
 								m_clsMap.erase( itMap );
+								m_clsCallIdMap.erase( itCIM );
 							}
 							else
 							{
@@ -83,8 +91,6 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 								gettimeofday( &itMap->second->m_sttStopTime, NULL );
 								bRes = true;
 							}
-
-							break;
 						}
 					}
 				}
@@ -107,6 +113,17 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 						itMap->second->m_pclsResponse = psttResponse;
 						m_pclsSipStack->Send( psttResponse );
 					}
+
+					INVITE_CALL_ID_MAP::iterator itCIM;
+					std::string strCallId;
+
+					pclsMessage->GetCallIdSeq( strCallId );
+
+					itCIM = m_clsCallIdMap.find( strCallId );
+					if( itCIM == m_clsCallIdMap.end() )
+					{
+						m_clsCallIdMap.insert( INVITE_CALL_ID_MAP::value_type( strCallId, strKey ) );
+					}
 				}
 			}
 		}
@@ -118,7 +135,17 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 				{
 					// INVITE 에 대한 응답 메시지가 401 인 ACK 메시지를 수신하면 Transaction 을 바로 삭제한다.
 					delete itMap->second;
-					m_clsMap.erase( itMap );	
+					m_clsMap.erase( itMap );
+
+					INVITE_CALL_ID_MAP::iterator itCIM;
+					std::string strCallId;
+
+					pclsMessage->GetCallIdSeq( strCallId );
+					itCIM = m_clsCallIdMap.find( strCallId );
+					if( itCIM != m_clsCallIdMap.end() )
+					{
+						m_clsCallIdMap.erase( itCIM );
+					}
 				}
 				else if( itMap->second->m_pclsAck == NULL )
 				{
@@ -179,7 +206,9 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 void CSipISTList::Execute( struct timeval * psttTime )
 {
 	INVITE_TRANSACTION_MAP::iterator	itMap, itNext;
+	INVITE_CALL_ID_MAP::iterator	itCIM;
 	SIP_MESSAGE_LIST	clsResponseList;
+	std::string strCallId;
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
@@ -192,8 +221,16 @@ LOOP_START:
 				itNext = itMap;
 				++itNext;
 
+				itMap->second->m_pclsRequest->GetCallId( strCallId );
+
 				delete itMap->second;
 				m_clsMap.erase( itMap );
+
+				itCIM = m_clsCallIdMap.find( strCallId );
+				if( itCIM != m_clsCallIdMap.end() )
+				{
+					m_clsCallIdMap.erase( itCIM );
+				}
 
 				if( itNext == m_clsMap.end() ) break;
 				itMap = itNext;
@@ -247,6 +284,7 @@ void CSipISTList::DeleteAll( )
 	}
 
 	m_clsMap.clear();
+	m_clsCallIdMap.clear();
 	m_clsMutex.release();
 }
 

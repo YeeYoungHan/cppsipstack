@@ -40,6 +40,7 @@ public:
 
 private:
 	INVITE_TRANSACTION_MAP	m_clsMap;
+	INVITE_CALL_ID_MAP			m_clsCallIdMap;
 };
 
 #endif
