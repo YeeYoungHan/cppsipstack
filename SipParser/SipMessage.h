@@ -153,6 +153,7 @@ public:
 	bool Is100rel( );
 
 	bool GetCallId( std::string & strCallId );
+	bool GetCallIdSeq( std::string & strCallId );
 
 	bool AddIpPortToTopVia( const char * pszIp, int iPort, ESipTransport eTransport = E_SIP_UDP );
 	bool AddVia( const char * pszIp, int iPort, const char * pszBranch = NULL, ESipTransport eTransport = E_SIP_UDP );

@@ -803,6 +803,24 @@ bool CSipMessage::GetCallId( std::string & strCallId )
 
 /**
  * @ingroup SipParser
+ * @brief Call-ID + CSeq digit 문자열을 가져온다.
+ * @param strCallId Call-ID + CSeq digit 문자열을 저장할 변수
+ * @returns 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
+ */
+bool CSipMessage::GetCallIdSeq( std::string & strCallId )
+{
+	if( GetCallId( strCallId ) == false ) return false;
+
+	char szDigit[12];
+
+	snprintf( szDigit, sizeof(szDigit), " %d", m_clsCSeq.m_iDigit );
+	strCallId.append( szDigit );
+
+	return true;
+}
+
+/**
+ * @ingroup SipParser
  * @brief Top Via 헤더에 발신 IP 주소와 포트 번호를 추가한다.
  * @param pszIp SIP 메시지 발신 IP 주소
  * @param iPort SIP 메시지 발신 포트 번호
