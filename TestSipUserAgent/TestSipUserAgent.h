@@ -3,4 +3,6 @@
 
 #include "SipUserAgent.h"
 
+void TestStartCallSpeed( int argc, char * argv[] );
+
 #endif

@@ -184,6 +184,10 @@
 				RelativePath=".\TestSipUserAgent.h"
 				>
 			</File>
+			<File
+				RelativePath=".\TestStartCallSpeed.cpp"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
