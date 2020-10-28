@@ -294,7 +294,9 @@ void CSipStack::GetString( CMonitorString & strBuf )
 	strBuf.AddCol( m_clsNICT.GetSize() );
 	strBuf.AddCol( m_clsIST.GetSize() );
 	strBuf.AddCol( m_clsNIST.GetSize() );
-	strBuf.AddRow( gclsSipDeleteQueue.GetSize() );
+	strBuf.AddCol( gclsSipDeleteQueue.GetSize() );
+	strBuf.AddCol( m_clsICT.GetCallIdCount() );
+	strBuf.AddRow( m_clsIST.GetCallIdCount() );
 }
 
 /**

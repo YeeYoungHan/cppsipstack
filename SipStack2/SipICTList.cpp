@@ -301,8 +301,8 @@ int CSipICTList::GetSize( )
 
 /**
  * @ingroup SipStack
- * @brief ICT 에 저장된 SIP Call-ID 들을 문자열에 저장한다.
- * @param strBuf SIP Call-ID 들을 저장할 변수
+ * @brief ICT 에 저장된 KEY 들을 문자열에 저장한다.
+ * @param strBuf KEY 들을 저장할 변수
  */
 void CSipICTList::GetString( CMonitorString & strBuf )
 {
@@ -338,4 +338,20 @@ void CSipICTList::GetTransactionMap( INVITE_TRANSACTION_MAP & clsMap )
 	m_clsMutex.acquire();
 	clsMap = m_clsMap;
 	m_clsMutex.release();
+}
+
+/**
+ * @ingroup SipStack2
+ * @brief SIP Call-ID 자료구조에 저장된 개수를 리턴한다.
+ * @returns SIP Call-ID 자료구조에 저장된 개수를 리턴한다.
+ */
+int CSipICTList::GetCallIdCount( )
+{
+	int iCount = 0;
+
+	m_clsMutex.acquire();
+	iCount = (int)m_clsCallIdMap.size();
+	m_clsMutex.release();
+
+	return iCount;
 }

@@ -221,7 +221,7 @@ LOOP_START:
 				itNext = itMap;
 				++itNext;
 
-				itMap->second->m_pclsRequest->GetCallId( strCallId );
+				itMap->second->m_pclsRequest->GetCallIdSeq( strCallId );
 
 				delete itMap->second;
 				m_clsMap.erase( itMap );
@@ -321,4 +321,20 @@ void CSipISTList::GetString( CMonitorString & strBuf )
 		strBuf.AddRow( itMap->first );
 	}
 	m_clsMutex.release();
+}
+
+/**
+ * @ingroup SipStack2
+ * @brief SIP Call-ID 자료구조에 저장된 개수를 리턴한다.
+ * @returns SIP Call-ID 자료구조에 저장된 개수를 리턴한다.
+ */
+int CSipISTList::GetCallIdCount( )
+{
+	int iCount = 0;
+
+	m_clsMutex.acquire();
+	iCount = (int)m_clsCallIdMap.size();
+	m_clsMutex.release();
+
+	return iCount;
 }
