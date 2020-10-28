@@ -139,6 +139,7 @@
 				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../openssl/window/32bit/lib"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
