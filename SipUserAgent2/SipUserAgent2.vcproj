@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipParser;../SipStack2;../SdpParser;../SipPlatform;../openssl/include;../openssl/window/32bit/include"
+				AdditionalIncludeDirectories="../SipParser2;../SipStack2;../SdpParser;../SipPlatform;../openssl/include;../openssl/window/32bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -105,7 +105,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipParser;../SipStack2;../SdpParser;../SipPlatform;../openssl/include;../openssl/window/32bit/include"
+				AdditionalIncludeDirectories="../SipParser2;../SipStack2;../SdpParser;../SipPlatform;../openssl/include;../openssl/window/32bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"

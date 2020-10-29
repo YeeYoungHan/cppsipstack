@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="KSipServer2"
-	ProjectGUID="{90F0FDB8-58A7-4518-A737-3A2A0AD6372C}"
-	RootNamespace="KSipServer2"
+	Name="SipParser2"
+	ProjectGUID="{0A63F0F1-91C9-4C0A-BB8B-152ADB770769}"
+	RootNamespace="SipParser2"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -20,7 +20,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			CharacterSet="2"
 			>
 			<Tool
@@ -41,8 +41,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser2;../SipStack2;../SdpParser;../SipUserAgent2;../XmlParser;../ServerPlatform;../openssl/include;../openssl/window/32bit/include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="../SipPlatform"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -60,19 +60,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="../openssl/window/32bit/lib-debug"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -84,9 +75,6 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -94,7 +82,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -117,8 +105,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser2;../SipStack2;../SdpParser;../SipUserAgent2;../XmlParser;../ServerPlatform;../openssl/include;../openssl/window/32bit/include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="../SipPlatform"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -135,22 +123,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories="../openssl/window/32bit/lib"
-				IgnoreDefaultLibraryNames=""
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -160,9 +136,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -178,139 +151,153 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\KSipServer\KSipServer.cpp"
+				RelativePath=".\SipAcceptData.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\KSipServer.h"
+				RelativePath=".\SipCallId.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\KSipServerDefine.h"
+				RelativePath=".\SipChallenge.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\KSipServerVersion.h"
+				RelativePath=".\SipContentType.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\Monitor.cpp"
+				RelativePath=".\SipCredential.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\Monitor.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="SIP"
-			>
-			<File
-				RelativePath="..\KSipServer\SipServer.cpp"
+				RelativePath=".\SipCSeq.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServer.h"
+				RelativePath=".\SipFrom.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServerPickUp.hpp"
+				RelativePath=".\SipHeader.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServerRegister.hpp"
+				RelativePath=".\SipMessage.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServerSecurity.hpp"
+				RelativePath=".\SipParameter.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServerUserAgent.hpp"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="XML"
-			>
-			<File
-				RelativePath="..\KSipServer\SipServerSetup.cpp"
+				RelativePath=".\SipParameterList.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServerSetup.h"
+				RelativePath=".\SipReason.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\XmlSipServer.cpp"
+				RelativePath=".\SipStatusCode.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\XmlSipServer.h"
+				RelativePath=".\SipTransport.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\XmlUser.cpp"
+				RelativePath=".\SipUri.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\XmlUser.h"
+				RelativePath=".\SipVia.cpp"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="쓰레드"
+			Name="헤더 파일"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\KSipServer\MonitorDefine.h"
+				RelativePath=".\SipAcceptData.h"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\RtpThread.cpp"
+				RelativePath=".\SipCallId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipChallenge.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipContentType.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipCredential.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipCSeq.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipFrom.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipHeader.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipMessage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipParameter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipParameterList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipParserDefine.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipReason.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipStatusCode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipTransport.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipUri.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SipVia.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="자료구조"
+			Name="유틸리티"
 			>
 			<File
-				RelativePath="..\KSipServer\CallMap.cpp"
+				RelativePath=".\SipUtility.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\CallMap.h"
-				>
-			</File>
-			<File
-				RelativePath="..\KSipServer\NonceMap.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\KSipServer\NonceMap.h"
-				>
-			</File>
-			<File
-				RelativePath="..\KSipServer\RtpMap.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\KSipServer\RtpMap.h"
-				>
-			</File>
-			<File
-				RelativePath="..\KSipServer\SipServerMap.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\KSipServer\SipServerMap.h"
-				>
-			</File>
-			<File
-				RelativePath="..\KSipServer\UserMap.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\KSipServer\UserMap.h"
+				RelativePath=".\SipUtility.h"
 				>
 			</File>
 		</Filter>
