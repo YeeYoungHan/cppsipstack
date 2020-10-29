@@ -195,6 +195,7 @@ bool CSdpAttribute::GetEncodingName( std::string & strName )
 	return false;
 }
 
+#if 0
 /**
  * @ingroup SdpParser
  * @brief SDP attribute 의 value 를 파싱하여서 clsParamList 객체에 저장한다.
@@ -227,3 +228,4 @@ bool CSdpAttribute::GetParameterList( CSipParameterList & clsParamList )
 
 	return false;
 }
+#endif

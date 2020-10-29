@@ -21,7 +21,10 @@
 
 #include <string>
 #include <list>
+
+#if 0
 #include "SipParameterList.h"
+#endif
 
 /**
  * @ingroup SdpParser
@@ -47,7 +50,10 @@ public:
 
 	int GetPayLoadType();
 	bool GetEncodingName( std::string & strName );
+
+#if 0
 	bool GetParameterList( CSipParameterList & clsParamList );
+#endif
 };
 
 typedef std::list< CSdpAttribute > SDP_ATTRIBUTE_LIST;
