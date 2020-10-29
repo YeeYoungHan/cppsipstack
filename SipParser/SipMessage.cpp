@@ -248,7 +248,7 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 #ifdef USE_ACCEPT_HEADER
 		else if( iNameLen == 15 )
 		{
-			else if( !strcasecmp( pszName, "Accept-Encoding" ) )
+			if( !strcasecmp( pszName, "Accept-Encoding" ) )
 			{
 				if( ParseSipAcceptData( m_clsAcceptEncodingList, pszValue, iValueLen ) == -1 ) return -1;
 			}
