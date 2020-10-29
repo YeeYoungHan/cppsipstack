@@ -699,6 +699,14 @@ void CSipMessage::Clear()
 	                 
 	m_strUserAgent.clear();  
 	m_strBody.clear();
+	m_strPacket.clear();
+
+	m_eTransport = E_SIP_UDP;
+	m_strClientIp.clear();
+	m_iClientPort = -1;
+
+	m_bUseCompact = false;
+	m_iUseCount = 0;
 }
 
 /**
