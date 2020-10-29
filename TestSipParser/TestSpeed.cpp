@@ -61,5 +61,8 @@ void TestSpeed( int iLoopCount )
 	int iTime = (int)(iEndTime - iStartTime);
 
 	printf( "test time = %d ms\n", iTime );
-	printf( "parse time = %.2f pps\n", (double)iLoopCount * 1000 / iTime );
+	if( iTime > 0 )
+	{
+		printf( "parse time = %.2f pps\n", (double)iLoopCount * 1000 / iTime );
+	}
 }

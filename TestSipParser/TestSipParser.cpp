@@ -26,6 +26,8 @@
  */
 
 bool TestSipUri();
+void TestSipUriSpeed( int iLoopCount );
+
 bool TestSipFrom();
 bool TestSipVia();
 bool TestSipMessage();
@@ -72,6 +74,14 @@ int main( int argc, char * argv[] )
 			const char * pszFileName = argv[2];
 
 			TestFile( pszFileName );
+
+			return 0;
+		}
+		else if( !strcmp( argv[1], "sipuri" ) )
+		{
+			int iLoopCount = atoi( argv[2] );
+
+			TestSipUriSpeed( iLoopCount );
 
 			return 0;
 		}

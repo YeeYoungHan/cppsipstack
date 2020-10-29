@@ -17,6 +17,7 @@
  */
 
 #include "SipUri.h"
+#include "TimeUtility.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -84,4 +85,36 @@ bool TestSipUri()
 	if( Test( "tel:1212@[5f05:2000:80ad:5800:58:800:2023:1d71]" ) == false ) return false;
 
 	return true;
+}
+
+void TestSipUriSpeed( int iLoopCount )
+{
+	const char * pszText = "sip:1000@192.168.0.1:5060";
+	int iTextLen = strlen(pszText);
+	int iPos;
+	uint64_t iStartTime, iEndTime;
+
+	iStartTime = GetCurrentMiliSecond();
+
+	for( int i = 0; i < iLoopCount; ++i )
+	{
+		CSipUri clsUri;
+
+		iPos = clsUri.Parse( pszText, iTextLen );
+		if( iPos == -1 )
+		{
+			printf( "CSipUri.Parse error\n" );
+			break;
+		}
+	}
+
+	iEndTime = GetCurrentMiliSecond();
+
+	int iTime = (int)(iEndTime - iStartTime);
+
+	printf( "test time = %d ms\n", iTime );
+	if( iTime > 0 )
+	{
+		printf( "parse time = %.2f pps\n", (double)iLoopCount * 1000 / iTime );
+	}
 }
