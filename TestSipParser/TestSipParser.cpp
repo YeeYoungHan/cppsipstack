@@ -16,9 +16,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipPlatformDefine.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "MemoryDebug.h"
 
 /**
  * @defgroup TestSipParser TestSipParser
@@ -51,6 +53,10 @@ bool TestFile( const char * pszFileName );
  */
 int main( int argc, char * argv[] )
 {
+#ifdef WIN32
+	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF );
+#endif
+
 	if( argc == 3 )
 	{
 		if( !strcmp( argv[1], "speed" ) )
