@@ -19,7 +19,7 @@
 #ifndef _SIP_URI_H_
 #define _SIP_URI_H_
 
-#include "SipParameter.h"
+#include "SipParameterList.h"
 
 /**
  * @ingroup SipParser
@@ -44,10 +44,10 @@ public:
 	int					m_iPort;
 
 	/** SIP URI parameter 리스트 */
-	SIP_PARAMETER_LIST m_clsUriParamList;
+	CSipParameterList m_clsUriParamList;
 
 	/** Header 리스트. ? 이후에 저장된 parameter 리스트 */
-	SIP_PARAMETER_LIST m_clsHeaderList;
+	CSipParameterList m_clsHeaderList;
 
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );

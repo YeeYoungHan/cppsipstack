@@ -113,6 +113,7 @@ void CSipParameter::Clear()
 	m_strValue.clear();
 }
 
+#if 0
 /**
  * @ingroup SipParser
  * @brief parameter 리스트 문자열을 파싱하여서 parameter 리스트 객체에 저장한다.
@@ -250,3 +251,5 @@ int MakeSipParameterString( SIP_PARAMETER_LIST & clsList, char * pszText, int iT
 
 	return iLen;
 }
+
+#endif

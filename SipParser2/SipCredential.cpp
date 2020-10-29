@@ -57,7 +57,7 @@ int CSipCredential::Parse( const char * pszText, int iTextLen )
 	if( m_strType.empty() ) return -1;
 	iCurPos = iPos;
 
-	SIP_PARAMETER_LIST	clsList;
+	CSipParameterList clsParamList;
 	SIP_PARAMETER_LIST::iterator	itList;
 	
 	while( iCurPos < iTextLen )
@@ -68,12 +68,12 @@ int CSipCredential::Parse( const char * pszText, int iTextLen )
 			continue;
 		}
 
-		iPos = ParseSipParameter( clsList, pszText + iCurPos, iTextLen - iCurPos );
+		iPos = clsParamList.ParamParse( pszText + iCurPos, iTextLen - iCurPos );
 		if( iPos == -1 ) return -1;
 		iCurPos += iPos;
 	}
 
-	for( itList = clsList.begin(); itList != clsList.end(); ++itList )
+	for( itList = clsParamList.m_clsParamList.begin(); itList != clsParamList.m_clsParamList.end(); ++itList )
 	{
 		const char * pszName = itList->m_strName.c_str();
 
@@ -119,7 +119,7 @@ int CSipCredential::Parse( const char * pszText, int iTextLen )
 		}
 		else
 		{
-			m_clsParamList.push_back( *itList );
+			m_clsParamList.InsertParam( itList->m_strName.c_str(), itList->m_strValue.c_str() );
 		}
 	}
 
@@ -157,7 +157,7 @@ int CSipCredential::ToString( char * pszText, int iTextSize )
 
 	SIP_PARAMETER_LIST::iterator	itList;
 
-	for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
+	for( itList = m_clsParamList.m_clsParamList.begin(); itList != m_clsParamList.m_clsParamList.end(); ++itList )
 	{
 		if( CSipChallenge::SetString( pszData, iPos, iTextSize, itList->m_strName.c_str(), itList->m_strValue ) == false ) return -1;
 	}

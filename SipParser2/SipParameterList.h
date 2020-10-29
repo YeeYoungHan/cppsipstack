@@ -21,6 +21,9 @@
 
 #include "SipParameter.h"
 
+/** parameter 리스트 */
+typedef std::list< CSipParameter > SIP_PARAMETER_LIST;
+
 /**
  * @ingroup SipParser
  * @brief SIP parameter 리스트 저장 클래스
@@ -33,7 +36,7 @@ public:
 
 	int HeaderListParamParse( const char * pszText, int iTextLen );
 	int ParamParse( const char * pszText, int iTextLen );
-	int ParamToString( char * pszText, int iTextSize );
+	int ParamToString( char * pszText, int iTextSize, char cSep = ';' );
 
 	bool InsertParam( const char * pszName, const char * pszValue );
 	bool UpdateParam( const char * pszName, const char * pszValue );

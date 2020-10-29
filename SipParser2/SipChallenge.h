@@ -19,7 +19,7 @@
 #ifndef _SIP_CHALLENGE_H_
 #define _SIP_CHALLENGE_H_
 
-#include "SipParameter.h"
+#include "SipParameterList.h"
 
 /**
  * @ingroup SipParser
@@ -56,7 +56,7 @@ public:
 	std::string	m_strQop;
 
 	/** parameter ¸®½ºÆ® */
-	SIP_PARAMETER_LIST m_clsParamList;
+	CSipParameterList m_clsParamList;
 
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );

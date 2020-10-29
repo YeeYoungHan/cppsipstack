@@ -69,7 +69,7 @@ int CSipUri::Parse( const char * pszText, int iTextLen )
 			continue;
 		}
 
-		iPos = ParseSipParameter( m_clsUriParamList, pszText + iCurPos, iTextLen - iCurPos );
+		iPos = m_clsUriParamList.ParamParse( pszText + iCurPos, iTextLen - iCurPos );
 		if( iPos == -1 ) return -1;
 		iCurPos += iPos;
 	}
@@ -82,7 +82,7 @@ int CSipUri::Parse( const char * pszText, int iTextLen )
 			continue;
 		}
 
-		iPos = ParseSipParameter( m_clsHeaderList, pszText + iCurPos, iTextLen - iCurPos );
+		iPos = m_clsHeaderList.ParamParse( pszText + iCurPos, iTextLen - iCurPos );
 		if( iPos == -1 ) return -1;
 		iCurPos += iPos;
 	}
@@ -118,26 +118,14 @@ int CSipUri::ToString( char * pszText, int iTextSize )
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, ":%d", m_iPort );
 	}
 
-	iPos = MakeSipParameterString( m_clsUriParamList, pszText + iLen, iTextSize - iLen );
+	iPos = m_clsUriParamList.ParamToString( pszText + iLen, iTextSize - iLen );
 	if( iPos == -1 ) return -1;
 	iLen += iPos;
 
-	SIP_PARAMETER_LIST::iterator	itList;
-
-	for( itList = m_clsHeaderList.begin(); itList != m_clsHeaderList.end(); ++itList )
+	if( m_clsHeaderList.m_clsParamList.empty() == false )
 	{
-		if( iLen >= iTextSize ) return -1;
-
-		if( itList == m_clsHeaderList.begin() )
-		{
-			pszText[iLen++] = '?';
-		}
-		else
-		{
-			pszText[iLen++] = '&';
-		}
-
-		iPos = itList->ToString( pszText + iLen, iTextSize - iLen );
+		pszText[iLen++] = '?';
+		iPos = m_clsHeaderList.ParamToString( pszText + iLen, iTextSize - iLen );
 		if( iPos == -1 ) return -1;
 		iLen += iPos;
 	}
@@ -155,8 +143,8 @@ void CSipUri::Clear()
 	m_strUser.clear();
 	m_strHost.clear();
 	m_iPort = 0;
-	m_clsUriParamList.clear();
-	m_clsHeaderList.clear();
+	m_clsUriParamList.ClearParam();
+	m_clsHeaderList.ClearParam();
 }
 
 /**
@@ -179,7 +167,7 @@ bool CSipUri::Empty()
  */
 void CSipUri::InsertParam( const char * pszName, const char * pszValue )
 {
-	InsertSipParameter( m_clsUriParamList, pszName, pszValue );
+	m_clsUriParamList.InsertParam( pszName, pszValue );
 }
 
 /**
@@ -191,11 +179,11 @@ void CSipUri::InsertTransport( ESipTransport eTransport )
 {
 	if( eTransport == E_SIP_TCP )
 	{
-		InsertSipParameter( m_clsUriParamList, SIP_TRANSPORT, SIP_TRANSPORT_TCP );
+		m_clsUriParamList.InsertParam( SIP_TRANSPORT, SIP_TRANSPORT_TCP );
 	}
 	else if( eTransport == E_SIP_TLS )
 	{
-		InsertSipParameter( m_clsUriParamList, SIP_TRANSPORT, SIP_TRANSPORT_TLS );
+		m_clsUriParamList.InsertParam( SIP_TRANSPORT, SIP_TRANSPORT_TLS );
 	}
 }
 
@@ -213,7 +201,7 @@ ESipTransport CSipUri::SelectTransport( )
 		return E_SIP_TLS;
 	}
 
-	if( SearchSipParameter( m_clsUriParamList, SIP_TRANSPORT, strValue ) )
+	if( m_clsUriParamList.SelectParam( SIP_TRANSPORT, strValue ) )
 	{
 		const char * pszValue = strValue.c_str();
 

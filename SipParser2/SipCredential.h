@@ -19,7 +19,7 @@
 #ifndef _SIP_CREDENTIAL_H_
 #define _SIP_CREDENTIAL_H_
 
-#include "SipParameter.h"
+#include "SipParameterList.h"
 
 /**
  * @ingroup SipParser
@@ -65,7 +65,7 @@ public:
 	std::string	m_strNonceCount;
 
 	/** parameter ¸®½ºÆ® */
-	SIP_PARAMETER_LIST m_clsParamList;
+	CSipParameterList m_clsParamList;
 
 	int Parse( const char * pszText, int iTextLen );
 	int ToString( char * pszText, int iTextSize );

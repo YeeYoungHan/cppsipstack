@@ -83,9 +83,10 @@ int CSipParameterList::ParamParse( const char * pszText, int iTextLen )
  * @brief parameter 리스트 객체를 parameter 리스트 문자열로 제작한다.
  * @param pszText		parameter 리스트 문자열을 저장할 변수
  * @param iTextSize parameter 리스트 문자열의 크기
+ * @param cSep			parameter 간의 구분 문자
  * @returns parameter 리스트 문자열의 길이를 리턴한다.
  */
-int CSipParameterList::ParamToString( char * pszText, int iTextSize )
+int CSipParameterList::ParamToString( char * pszText, int iTextSize, char cSep )
 {
 	SIP_PARAMETER_LIST::iterator	itList;
 	int iLen = 0, iPos;
@@ -93,7 +94,7 @@ int CSipParameterList::ParamToString( char * pszText, int iTextSize )
 	for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
 	{
 		if( iLen >= iTextSize ) return -1;
-		pszText[iLen++] = ';';
+		pszText[iLen++] = cSep;
 		iPos = itList->ToString( pszText + iLen, iTextSize - iLen );
 		if( iPos == -1 ) return -1;
 		iLen += iPos;
