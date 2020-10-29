@@ -36,7 +36,7 @@ public:
 
 	int HeaderListParamParse( const char * pszText, int iTextLen );
 	int ParamParse( const char * pszText, int iTextLen );
-	int ParamToString( char * pszText, int iTextSize, char cSep = ';' );
+	int ParamToString( char * pszText, int iTextSize, char cBeginSep = ';', char cSep = ';' );
 
 	bool InsertParam( const char * pszName, const char * pszValue );
 	bool UpdateParam( const char * pszName, const char * pszValue );

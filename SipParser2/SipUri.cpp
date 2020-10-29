@@ -124,8 +124,7 @@ int CSipUri::ToString( char * pszText, int iTextSize )
 
 	if( m_clsHeaderList.m_clsParamList.empty() == false )
 	{
-		pszText[iLen++] = '?';
-		iPos = m_clsHeaderList.ParamToString( pszText + iLen, iTextSize - iLen );
+		iPos = m_clsHeaderList.ParamToString( pszText + iLen, iTextSize - iLen, '?', '&' );
 		if( iPos == -1 ) return -1;
 		iLen += iPos;
 	}
