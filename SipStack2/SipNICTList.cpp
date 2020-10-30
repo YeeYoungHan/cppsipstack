@@ -153,7 +153,7 @@ DELETE_TRANSACTION:
 								SIP_FROM_LIST::iterator itList = itMap->second->m_pclsRequest->m_clsRouteList.begin();
 								if( itList != itMap->second->m_pclsRequest->m_clsRouteList.end() )
 								{
-									pclsResponse->m_strClientIp = itList->m_clsUri.m_strHost;
+									pclsResponse->m_strClientIp = (*itList)->m_clsUri.m_strHost;
 								}
 							}
 							else

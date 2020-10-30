@@ -267,9 +267,9 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 		}
 		else
 		{
-			pszIp = itList->m_clsUri.m_strHost.c_str();
-			iPort = itList->m_clsUri.m_iPort;
-			eTransport = itList->m_clsUri.SelectTransport();
+			pszIp = (*itList)->m_clsUri.m_strHost.c_str();
+			iPort = (*itList)->m_clsUri.m_iPort;
+			eTransport = (*itList)->m_clsUri.SelectTransport();
 		}
 
 		pclsMessage->m_eTransport = eTransport;
@@ -281,23 +281,23 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 
 		const char * pszTemp;
 
-		pszTemp = SearchSipParameter( itViaList->m_clsParamList, SIP_RPORT );
+		pszTemp = (*itViaList)->SelectParamValue( SIP_RPORT );
 		if( pszTemp )
 		{
 			iPort = atoi( pszTemp );
 		}
 		else
 		{
-			iPort = itViaList->m_iPort;
+			iPort = (*itViaList)->m_iPort;
 		}
 
-		pszIp = SearchSipParameter( itViaList->m_clsParamList, SIP_RECEIVED );
+		pszIp = (*itViaList)->SelectParamValue( SIP_RECEIVED );
 		if( pszIp == NULL )
 		{
-			pszIp = itViaList->m_strHost.c_str();
+			pszIp = (*itViaList)->m_strHost.c_str();
 		}
 
-		pszTemp = SearchSipParameter( itViaList->m_clsParamList, SIP_TRANSPORT );
+		pszTemp = (*itViaList)->SelectParamValue( SIP_TRANSPORT );
 		if( pszTemp )
 		{
 			if( !strcasecmp( pszTemp, SIP_TRANSPORT_TCP ) )
@@ -311,7 +311,7 @@ bool CSipStack::Send( CSipMessage * pclsMessage, bool bCheckMessage )
 		}
 		else
 		{
-			const char * pszTransport = itViaList->m_strTransport.c_str();
+			const char * pszTransport = (*itViaList)->m_strTransport.c_str();
 
 			if( !strcasecmp( pszTransport, SIP_TRANSPORT_TCP ) )
 			{
@@ -457,7 +457,7 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 			}
 			else
 			{
-				eTransport = itList->m_clsUri.SelectTransport();
+				eTransport = (*itList)->m_clsUri.SelectTransport();
 			}
 		}
 		else
@@ -467,10 +467,10 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 			{
 				const char * pszTemp;
 
-				pszTemp = SearchSipParameter( itViaList->m_clsParamList, SIP_TRANSPORT );
+				pszTemp = (*itViaList)->SelectParamValue( SIP_TRANSPORT );
 				if( pszTemp == NULL )
 				{
-					pszTemp = itViaList->m_strTransport.c_str();
+					pszTemp = (*itViaList)->m_strTransport.c_str();
 				}
 
 				if( pszTemp )
@@ -487,37 +487,39 @@ void CSipStack::CheckSipMessage( CSipMessage * pclsMessage )
 			}
 		}
 
-		CSipFrom clsContact;
-
-		clsContact.m_clsUri.m_strProtocol = SipGetProtocol( eTransport );
-
-		if( pclsMessage->IsRequest() )
+		CSipFrom * pclsContact = new CSipFrom();
+		if( pclsContact )
 		{
-			clsContact.m_clsUri.m_strUser = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
-		}
-		else
-		{
-			clsContact.m_clsUri.m_strUser = pclsMessage->m_clsTo.m_clsUri.m_strUser;
-		}
+			pclsContact->m_clsUri.m_strProtocol = SipGetProtocol( eTransport );
 
-		clsContact.m_clsUri.m_strHost = m_clsSetup.m_strLocalIp;
-	
-		if( eTransport == E_SIP_UDP )
-		{
-			clsContact.m_clsUri.m_iPort = m_clsSetup.m_iLocalUdpPort;
-		}
-		else if( eTransport == E_SIP_TCP )
-		{
-			clsContact.m_clsUri.m_iPort = m_clsSetup.m_iLocalTcpPort;
-		}
-		else if( eTransport == E_SIP_TLS )
-		{
-			clsContact.m_clsUri.m_iPort = m_clsSetup.m_iLocalTlsPort;
-		}
+			if( pclsMessage->IsRequest() )
+			{
+				pclsContact->m_clsUri.m_strUser = pclsMessage->m_clsFrom.m_clsUri.m_strUser;
+			}
+			else
+			{
+				pclsContact->m_clsUri.m_strUser = pclsMessage->m_clsTo.m_clsUri.m_strUser;
+			}
 
-		clsContact.m_clsUri.InsertTransport( eTransport );
+			pclsContact->m_clsUri.m_strHost = m_clsSetup.m_strLocalIp;
+		
+			if( eTransport == E_SIP_UDP )
+			{
+				pclsContact->m_clsUri.m_iPort = m_clsSetup.m_iLocalUdpPort;
+			}
+			else if( eTransport == E_SIP_TCP )
+			{
+				pclsContact->m_clsUri.m_iPort = m_clsSetup.m_iLocalTcpPort;
+			}
+			else if( eTransport == E_SIP_TLS )
+			{
+				pclsContact->m_clsUri.m_iPort = m_clsSetup.m_iLocalTlsPort;
+			}
 
-		pclsMessage->m_clsContactList.push_back( clsContact );
+			pclsContact->m_clsUri.InsertTransport( eTransport );
+
+			pclsMessage->m_clsContactList.push_back( pclsContact );
+		}
 	}
 
 	if( m_clsSetup.m_strUserAgent.empty() )

@@ -74,39 +74,39 @@ int CSipChallenge::Parse( const char * pszText, int iTextLen )
 
 	for( itList = clsParamList.m_clsParamList.begin(); itList != clsParamList.m_clsParamList.end(); ++itList )
 	{
-		const char * pszName = itList->m_strName.c_str();
+		const char * pszName = (*itList)->m_strName.c_str();
 
 		if( !strcmp( pszName, "realm" ) )
 		{
-			DeQuoteString( itList->m_strValue, m_strRealm );
+			DeQuoteString( (*itList)->m_strValue, m_strRealm );
 		}
 		else if( !strcmp( pszName, "domain" ) )
 		{
-			DeQuoteString( itList->m_strValue, m_strDomain );
+			DeQuoteString( (*itList)->m_strValue, m_strDomain );
 		}
 		else if( !strcmp( pszName, "nonce" ) )
 		{
-			DeQuoteString( itList->m_strValue, m_strNonce );
+			DeQuoteString( (*itList)->m_strValue, m_strNonce );
 		}
 		else if( !strcmp( pszName, "opaque" ) )
 		{
-			DeQuoteString( itList->m_strValue, m_strOpaque );
+			DeQuoteString( (*itList)->m_strValue, m_strOpaque );
 		}
 		else if( !strcmp( pszName, "stale" ) )
 		{
-			m_strStale = itList->m_strValue;
+			m_strStale = (*itList)->m_strValue;
 		}
 		else if( !strcmp( pszName, "algorithm" ) )
 		{
-			m_strAlgorithm = itList->m_strValue;
+			m_strAlgorithm = (*itList)->m_strValue;
 		}
 		else if( !strcmp( pszName, "qop" ) )
 		{
-			DeQuoteString( itList->m_strValue, m_strQop );
+			DeQuoteString( (*itList)->m_strValue, m_strQop );
 		}
 		else
 		{
-			m_clsParamList.InsertParam( itList->m_strName.c_str(), itList->m_strValue.c_str() );
+			m_clsParamList.InsertParam( pszName, (*itList)->m_strValue.c_str() );
 		}
 	}
 
@@ -143,7 +143,7 @@ int CSipChallenge::ToString( char * pszText, int iTextSize )
 
 	for( itList = m_clsParamList.m_clsParamList.begin(); itList != m_clsParamList.m_clsParamList.end(); ++itList )
 	{
-		if( SetString( pszData, iPos, iTextSize, itList->m_strName.c_str(), itList->m_strValue ) == false ) return -1;
+		if( SetString( pszData, iPos, iTextSize, (*itList)->m_strName.c_str(), (*itList)->m_strValue ) == false ) return -1;
 	}
 
 	return iLen + iPos;
@@ -236,11 +236,15 @@ bool CSipChallenge::SetQuoteString( char * pszText, int & iTextPos, int iTextSiz
 int ParseSipChallenge( SIP_CHALLENGE_LIST & clsList, const char * pszText, int iTextLen )
 {
 	int iPos;
-	CSipChallenge	clsChallenge;
+	CSipChallenge * pclsChallenge = new CSipChallenge();
 
-	iPos = clsChallenge.Parse( pszText, iTextLen );
-	if( iPos == -1 ) return -1;
+	iPos = pclsChallenge->Parse( pszText, iTextLen );
+	if( iPos == -1 )
+	{
+		delete pclsChallenge;
+		return -1;
+	}
 
-	clsList.push_back( clsChallenge );
+	clsList.push_back( pclsChallenge );
 	return iPos;
 }

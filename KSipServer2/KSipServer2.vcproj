@@ -178,27 +178,27 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\KSipServer\KSipServer.cpp"
+				RelativePath=".\KSipServer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\KSipServer.h"
+				RelativePath=".\KSipServer.h"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\KSipServerDefine.h"
+				RelativePath=".\KSipServerDefine.h"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\KSipServerVersion.h"
+				RelativePath=".\KSipServerVersion.h"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\Monitor.cpp"
+				RelativePath=".\Monitor.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\Monitor.h"
+				RelativePath=".\Monitor.h"
 				>
 			</File>
 		</Filter>
@@ -206,27 +206,27 @@
 			Name="SIP"
 			>
 			<File
-				RelativePath="..\KSipServer\SipServer.cpp"
+				RelativePath=".\SipServer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServer.h"
+				RelativePath=".\SipServer.h"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServerPickUp.hpp"
+				RelativePath=".\SipServerPickUp.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServerRegister.hpp"
+				RelativePath=".\SipServerRegister.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServerSecurity.hpp"
+				RelativePath=".\SipServerSecurity.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServerUserAgent.hpp"
+				RelativePath=".\SipServerUserAgent.hpp"
 				>
 			</File>
 		</Filter>
@@ -234,27 +234,27 @@
 			Name="XML"
 			>
 			<File
-				RelativePath="..\KSipServer\SipServerSetup.cpp"
+				RelativePath=".\SipServerSetup.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServerSetup.h"
+				RelativePath=".\SipServerSetup.h"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\XmlSipServer.cpp"
+				RelativePath=".\XmlSipServer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\XmlSipServer.h"
+				RelativePath=".\XmlSipServer.h"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\XmlUser.cpp"
+				RelativePath=".\XmlUser.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\XmlUser.h"
+				RelativePath=".\XmlUser.h"
 				>
 			</File>
 		</Filter>
@@ -262,11 +262,11 @@
 			Name="쓰레드"
 			>
 			<File
-				RelativePath="..\KSipServer\MonitorDefine.h"
+				RelativePath=".\MonitorDefine.h"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\RtpThread.cpp"
+				RelativePath=".\RtpThread.cpp"
 				>
 			</File>
 		</Filter>
@@ -274,43 +274,43 @@
 			Name="자료구조"
 			>
 			<File
-				RelativePath="..\KSipServer\CallMap.cpp"
+				RelativePath=".\CallMap.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\CallMap.h"
+				RelativePath=".\CallMap.h"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\NonceMap.cpp"
+				RelativePath=".\NonceMap.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\NonceMap.h"
+				RelativePath=".\NonceMap.h"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\RtpMap.cpp"
+				RelativePath=".\RtpMap.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\RtpMap.h"
+				RelativePath=".\RtpMap.h"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServerMap.cpp"
+				RelativePath=".\SipServerMap.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\SipServerMap.h"
+				RelativePath=".\SipServerMap.h"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\UserMap.cpp"
+				RelativePath=".\UserMap.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\KSipServer\UserMap.h"
+				RelativePath=".\UserMap.h"
 				>
 			</File>
 		</Filter>

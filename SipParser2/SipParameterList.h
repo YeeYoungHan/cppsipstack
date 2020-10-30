@@ -22,7 +22,7 @@
 #include "SipParameter.h"
 
 /** parameter ¸®½ºÆ® */
-typedef std::list< CSipParameter > SIP_PARAMETER_LIST;
+typedef std::list< CSipParameter * > SIP_PARAMETER_LIST;
 
 /**
  * @ingroup SipParser
@@ -45,6 +45,8 @@ public:
 	const char * SelectParamValue( const char * pszName );
 
 	void ClearParam();
+
+	CSipParameterList & operator=( CSipParameterList & clsOld );
 
 	SIP_PARAMETER_LIST m_clsParamList;
 };

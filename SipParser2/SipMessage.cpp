@@ -31,6 +31,7 @@ CSipMessage::CSipMessage() : m_iStatusCode(-1), m_iContentLength(0), m_iExpires(
 
 CSipMessage::~CSipMessage()
 {
+	Clear();
 }
 
 /**
@@ -248,7 +249,7 @@ int CSipMessage::Parse( const char * pszText, int iTextLen )
 #ifdef USE_ACCEPT_HEADER
 		else if( iNameLen == 15 )
 		{
-			else if( !strcasecmp( pszName, "Accept-Encoding" ) )
+			if( !strcasecmp( pszName, "Accept-Encoding" ) )
 			{
 				if( ParseSipAcceptData( m_clsAcceptEncodingList, pszValue, iValueLen ) == -1 ) return -1;
 			}
@@ -441,7 +442,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 	for( SIP_VIA_LIST::iterator itList = m_clsViaList.begin(); itList != m_clsViaList.end(); ++itList )
 	{
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, ( m_bUseCompact ? "v: " : "Via: " ) );
-		n = itList->ToString( pszText + iLen, iTextSize - iLen );
+		n = (*itList)->ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
@@ -450,7 +451,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 	for( SIP_FROM_LIST::iterator itList = m_clsRecordRouteList.begin(); itList != m_clsRecordRouteList.end(); ++itList )
 	{
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Record-Route: " );
-		n = itList->ToString( pszText + iLen, iTextSize - iLen );
+		n = (*itList)->ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
@@ -459,7 +460,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 	for( SIP_FROM_LIST::iterator itList = m_clsRouteList.begin(); itList != m_clsRouteList.end(); ++itList )
 	{
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Route: " );
-		n = itList->ToString( pszText + iLen, iTextSize - iLen );
+		n = (*itList)->ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
@@ -509,7 +510,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 	for( SIP_FROM_LIST::iterator itList = m_clsContactList.begin(); itList != m_clsContactList.end(); ++itList )
 	{
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, ( m_bUseCompact ? "m: " : "Contact: " ) );
-		n = itList->ToString( pszText + iLen, iTextSize - iLen );
+		n = (*itList)->ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
@@ -518,7 +519,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 	for( SIP_CREDENTIAL_LIST::iterator itList = m_clsAuthorizationList.begin(); itList != m_clsAuthorizationList.end(); ++itList )
 	{
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Authorization: " );
-		n = itList->ToString( pszText + iLen, iTextSize - iLen );
+		n = (*itList)->ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
@@ -527,7 +528,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 	for( SIP_CHALLENGE_LIST::iterator itList = m_clsWwwAuthenticateList.begin(); itList != m_clsWwwAuthenticateList.end(); ++itList )
 	{
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "WWW-Authenticate: " );
-		n = itList->ToString( pszText + iLen, iTextSize - iLen );
+		n = (*itList)->ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
@@ -536,7 +537,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 	for( SIP_CREDENTIAL_LIST::iterator itList = m_clsProxyAuthorizationList.begin(); itList != m_clsProxyAuthorizationList.end(); ++itList )
 	{
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Proxy-Authorization: " );
-		n = itList->ToString( pszText + iLen, iTextSize - iLen );
+		n = (*itList)->ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
@@ -545,7 +546,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 	for( SIP_CHALLENGE_LIST::iterator itList = m_clsProxyAuthenticateList.begin(); itList != m_clsProxyAuthenticateList.end(); ++itList )
 	{
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "Proxy-Authenticate: " );
-		n = itList->ToString( pszText + iLen, iTextSize - iLen );
+		n = (*itList)->ToString( pszText + iLen, iTextSize - iLen );
 		if( n == -1 ) return -1;
 		iLen += n;
 		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\r\n" );
@@ -572,7 +573,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 			{
 				iLen += snprintf( pszText + iLen, iTextSize - iLen, ", " );
 			}
-			n = itList->ToString( pszText + iLen, iTextSize - iLen );
+			n = (*itList)->ToString( pszText + iLen, iTextSize - iLen );
 			if( n == -1 ) return -1;
 			iLen += n;
 		}
@@ -588,7 +589,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 			{
 				iLen += snprintf( pszText + iLen, iTextSize - iLen, ", " );
 			}
-			n = itList->ToString( pszText + iLen, iTextSize - iLen );
+			n = (*itList)->ToString( pszText + iLen, iTextSize - iLen );
 			if( n == -1 ) return -1;
 			iLen += n;
 		}
@@ -604,7 +605,7 @@ int CSipMessage::ToString( char * pszText, int iTextSize )
 			{
 				iLen += snprintf( pszText + iLen, iTextSize - iLen, ", " );
 			}
-			n = itList->ToString( pszText + iLen, iTextSize - iLen );
+			n = (*itList)->ToString( pszText + iLen, iTextSize - iLen );
 			if( n == -1 ) return -1;
 			iLen += n;
 		}
@@ -669,23 +670,23 @@ void CSipMessage::Clear()
 	m_clsFrom.Clear();
 	m_clsTo.Clear();
 
-	m_clsViaList.clear();        
-	m_clsContactList.clear();    
-	m_clsRecordRouteList.clear();
-	m_clsRouteList.clear();      
+	ClearList<SIP_VIA_LIST>( m_clsViaList );
+	ClearList<SIP_FROM_LIST>( m_clsContactList );
+	ClearList<SIP_FROM_LIST>( m_clsRecordRouteList );
+	ClearList<SIP_FROM_LIST>( m_clsRouteList ); 
 
 #ifdef USE_ACCEPT_HEADER
-	m_clsAcceptList.clear();            
+	ClearList<SIP_CONTENT_TYPE_LIST>( m_clsAcceptList );
                             
-	m_clsAcceptEncodingList.clear();    
-	m_clsAcceptLanguageList.clear();    
+	ClearList<SIP_ACCEPT_DATA_LIST>( m_clsAcceptEncodingList );
+	ClearList<SIP_ACCEPT_DATA_LIST>( m_clsAcceptLanguageList );
 #endif
 
-	m_clsAuthorizationList.clear();     
-	m_clsWwwAuthenticateList.clear();   
+	ClearList<SIP_CREDENTIAL_LIST>( m_clsAuthorizationList );
+	ClearList<SIP_CHALLENGE_LIST>( m_clsWwwAuthenticateList );
 
-	m_clsProxyAuthorizationList.clear();
-	m_clsProxyAuthenticateList.clear(); 
+	ClearList<SIP_CREDENTIAL_LIST>( m_clsProxyAuthorizationList );
+	ClearList<SIP_CHALLENGE_LIST>( m_clsProxyAuthenticateList ); 
 
 	m_clsHeaderList.clear();            
 
@@ -847,35 +848,35 @@ bool CSipMessage::AddIpPortToTopVia( const char * pszIp, int iPort, ESipTranspor
 
 	snprintf( szNum, sizeof(szNum), "%d", iPort );
 
-	for( itList = itViaList->m_clsParamList.begin(); itList != itViaList->m_clsParamList.end(); ++itList )
+	for( itList = (*itViaList)->m_clsParamList.begin(); itList != (*itViaList)->m_clsParamList.end(); ++itList )
 	{
-		if( !strcmp( itList->m_strName.c_str(), SIP_RPORT ) )
+		if( !strcmp( (*itList)->m_strName.c_str(), SIP_RPORT ) )
 		{
-			itList->m_strValue = szNum;
+			(*itList)->m_strValue = szNum;
 			bRport = true;
 		}
-		else if( !strcmp( itList->m_strName.c_str(), SIP_RECEIVED ) )
+		else if( !strcmp( (*itList)->m_strName.c_str(), SIP_RECEIVED ) )
 		{
-			itList->m_strValue = pszIp;
+			(*itList)->m_strValue = pszIp;
 			bReceived = true;
 		}
 
 		if( bRport && bReceived ) break;
 	}
 
-	if( bRport == false && itViaList->m_iPort != iPort )
+	if( bRport == false && (*itViaList)->m_iPort != iPort )
 	{
-		itViaList->InsertParam( SIP_RPORT, szNum );
+		(*itViaList)->InsertParam( SIP_RPORT, szNum );
 	}
 
-	if( bReceived == false && strcmp( itViaList->m_strHost.c_str(), pszIp ) )
+	if( bReceived == false && strcmp( (*itViaList)->m_strHost.c_str(), pszIp ) )
 	{
-		itViaList->InsertParam( SIP_RECEIVED, pszIp );
+		(*itViaList)->InsertParam( SIP_RECEIVED, pszIp );
 	}
 
-	if( eTransport == E_SIP_TCP && strcasecmp( itViaList->m_strTransport.c_str(), SIP_TRANSPORT_TCP ) )
+	if( eTransport == E_SIP_TCP && strcasecmp( (*itViaList)->m_strTransport.c_str(), SIP_TRANSPORT_TCP ) )
 	{
-		itViaList->InsertParam( SIP_TRANSPORT, SIP_TRANSPORT_TCP );
+		(*itViaList)->InsertParam( SIP_TRANSPORT, SIP_TRANSPORT_TCP );
 	}
 
 	return true;
@@ -895,30 +896,31 @@ bool CSipMessage::AddVia( const char * pszIp, int iPort, const char * pszBranch,
 	if( pszIp == NULL || strlen(pszIp) == 0 ) return false;
 	if( iPort <= 0 ) return false;
 
-	CSipVia clsVia;
+	CSipVia * pclsVia = new CSipVia();
+	if( pclsVia == NULL ) return false;
 
-	clsVia.m_strProtocolName = "SIP";
-	clsVia.m_strProtocolVersion = "2.0";
-	clsVia.m_strTransport = SipGetTransport( eTransport );
+	pclsVia->m_strProtocolName = "SIP";
+	pclsVia->m_strProtocolVersion = "2.0";
+	pclsVia->m_strTransport = SipGetTransport( eTransport );
 
-	clsVia.m_strHost = pszIp;
-	clsVia.m_iPort = iPort;
+	pclsVia->m_strHost = pszIp;
+	pclsVia->m_iPort = iPort;
 
-	clsVia.InsertParam( SIP_RPORT, NULL );
+	pclsVia->InsertParam( SIP_RPORT, NULL );
 
 	if( pszBranch == NULL || strlen(pszBranch) == 0 )
 	{
 		char	szBranch[SIP_BRANCH_MAX_SIZE];
 
 		SipMakeBranch( szBranch, sizeof(szBranch) );
-		clsVia.InsertParam( SIP_BRANCH, szBranch );
+		pclsVia->InsertParam( SIP_BRANCH, szBranch );
 	}
 	else
 	{
-		clsVia.InsertParam( SIP_BRANCH, pszBranch );
+		pclsVia->InsertParam( SIP_BRANCH, pszBranch );
 	}
 
-	m_clsViaList.push_front( clsVia );
+	m_clsViaList.push_front( pclsVia );
 
 	return true;
 }
@@ -936,16 +938,17 @@ bool CSipMessage::AddRoute( const char * pszIp, int iPort, ESipTransport eTransp
 	if( pszIp == NULL || strlen(pszIp) == 0 ) return false;
 	if( iPort <= 0 ) return false;
 
-	CSipFrom clsFrom;
+	CSipFrom * pclsFrom = new CSipFrom();
+	if( pclsFrom == NULL ) return false;
 
-	clsFrom.m_clsUri.m_strProtocol = SipGetProtocol( eTransport );
-	clsFrom.m_clsUri.m_strHost = pszIp;
-	clsFrom.m_clsUri.m_iPort = iPort;
+	pclsFrom->m_clsUri.m_strProtocol = SipGetProtocol( eTransport );
+	pclsFrom->m_clsUri.m_strHost = pszIp;
+	pclsFrom->m_clsUri.m_iPort = iPort;
 
-	clsFrom.m_clsUri.InsertParam( "lr", NULL );
-	clsFrom.m_clsUri.InsertTransport( eTransport );
+	pclsFrom->m_clsUri.InsertParam( "lr", NULL );
+	pclsFrom->m_clsUri.InsertTransport( eTransport );
 
-	m_clsRouteList.push_front( clsFrom );
+	m_clsRouteList.push_front( pclsFrom );
 
 	return true;
 }
@@ -963,16 +966,17 @@ bool CSipMessage::AddRecordRoute( const char * pszIp, int iPort, ESipTransport e
 	if( pszIp == NULL || strlen(pszIp) == 0 ) return false;
 	if( iPort <= 0 ) return false;
 
-	CSipFrom clsFrom;
+	CSipFrom * pclsFrom = new CSipFrom();
+	if( pclsFrom == NULL ) return false;
 
-	clsFrom.m_clsUri.m_strProtocol = SipGetProtocol( eTransport );
-	clsFrom.m_clsUri.m_strHost = pszIp;
-	clsFrom.m_clsUri.m_iPort = iPort;
+	pclsFrom->m_clsUri.m_strProtocol = SipGetProtocol( eTransport );
+	pclsFrom->m_clsUri.m_strHost = pszIp;
+	pclsFrom->m_clsUri.m_iPort = iPort;
 
-	clsFrom.m_clsUri.InsertParam( "lr", NULL );
-	clsFrom.m_clsUri.InsertTransport( eTransport );
+	pclsFrom->m_clsUri.InsertParam( "lr", NULL );
+	pclsFrom->m_clsUri.InsertTransport( eTransport );
 
-	m_clsRecordRouteList.push_front( clsFrom );
+	m_clsRecordRouteList.push_front( pclsFrom );
 
 	return true;
 }
@@ -1032,15 +1036,16 @@ CSipMessage * CSipMessage::CreateResponse( int iStatus, const char * pszToTag )
 	pclsResponse->m_iStatusCode = iStatus;
 	pclsResponse->m_clsTo = m_clsTo;
 	pclsResponse->m_clsFrom = m_clsFrom;
-	pclsResponse->m_clsViaList = m_clsViaList;
 	pclsResponse->m_clsCallId = m_clsCallId;
 	pclsResponse->m_clsCSeq = m_clsCSeq;
 	pclsResponse->m_eTransport = m_eTransport;
 
+	CopyList< SIP_VIA_LIST, CSipVia >( m_clsViaList, pclsResponse->m_clsViaList );
+
 	if( iStatus != SIP_TRYING )
 	{
 		// 100 Trying 은 SIP Record-Route 헤더를 포함하지 않아도 된다.
-		pclsResponse->m_clsRecordRouteList = m_clsRecordRouteList;
+		CopyList< SIP_FROM_LIST, CSipFrom >( m_clsRecordRouteList, pclsResponse->m_clsRecordRouteList );
 	}
 
 	if( pszToTag )
@@ -1067,10 +1072,11 @@ CSipMessage * CSipMessage::CreateResponseWithToTag( int iStatus )
 	pclsResponse->m_iStatusCode = iStatus;
 	pclsResponse->m_clsTo = m_clsTo;
 	pclsResponse->m_clsFrom = m_clsFrom;
-	pclsResponse->m_clsViaList = m_clsViaList;
 	pclsResponse->m_clsCallId = m_clsCallId;
 	pclsResponse->m_clsCSeq = m_clsCSeq;
 	pclsResponse->m_eTransport = m_eTransport;
+
+	CopyList< SIP_VIA_LIST, CSipVia >( m_clsViaList, pclsResponse->m_clsViaList );
 
 	if( pclsResponse->m_clsTo.SelectParam( SIP_TAG ) == false )
 	{
@@ -1078,6 +1084,50 @@ CSipMessage * CSipMessage::CreateResponseWithToTag( int iStatus )
 	}
 
 	return pclsResponse;
+}
+
+CSipMessage & CSipMessage::operator=( CSipMessage & clsOld )
+{
+	m_strSipMethod = clsOld.m_strSipMethod;
+	m_clsReqUri = clsOld.m_clsReqUri;
+	m_strSipVersion = clsOld.m_strSipVersion;
+	m_iStatusCode = clsOld.m_iStatusCode;
+	m_strReasonPhrase = clsOld.m_strReasonPhrase;
+	m_clsFrom = clsOld.m_clsFrom;
+	m_clsTo = clsOld.m_clsTo;
+
+	CopyList< SIP_VIA_LIST, CSipVia >( clsOld.m_clsViaList, m_clsViaList );
+	CopyList< SIP_FROM_LIST, CSipFrom >( clsOld.m_clsContactList, m_clsContactList );
+	CopyList< SIP_FROM_LIST, CSipFrom >( clsOld.m_clsRecordRouteList, m_clsRecordRouteList );
+	CopyList< SIP_FROM_LIST, CSipFrom >( clsOld.m_clsRouteList, m_clsRouteList );
+
+#ifdef USE_ACCEPT_HEADER
+	CopyList< SIP_CONTENT_TYPE_LIST, CSipContentType >( clsOld.m_clsAcceptList, m_clsAcceptList );
+	CopyList< SIP_ACCEPT_DATA_LIST, CSipAcceptData >( clsOld.m_clsAcceptEncodingList, m_clsAcceptEncodingList );
+	CopyList< SIP_ACCEPT_DATA_LIST, CSipAcceptData >( clsOld.m_clsAcceptLanguageList, m_clsAcceptLanguageList );
+#endif
+
+	CopyList< SIP_CREDENTIAL_LIST, CSipCredential >( clsOld.m_clsAuthorizationList, m_clsAuthorizationList );
+	CopyList< SIP_CHALLENGE_LIST, CSipChallenge >( clsOld.m_clsWwwAuthenticateList, m_clsWwwAuthenticateList );
+	CopyList< SIP_CREDENTIAL_LIST, CSipCredential >( clsOld.m_clsProxyAuthorizationList, m_clsProxyAuthorizationList );
+	CopyList< SIP_CHALLENGE_LIST, CSipChallenge >( clsOld.m_clsProxyAuthenticateList, m_clsProxyAuthenticateList );
+
+	m_clsHeaderList = clsOld.m_clsHeaderList;
+	m_clsCSeq = clsOld.m_clsCSeq;
+	m_clsCallId = clsOld.m_clsCallId;
+	m_clsContentType = clsOld.m_clsContentType;
+	m_iContentLength = clsOld.m_iContentLength;
+	m_iExpires = clsOld.m_iExpires;
+	m_iMaxForwards = clsOld.m_iMaxForwards;
+	m_strUserAgent = clsOld.m_strUserAgent;
+	m_strBody = clsOld.m_strBody;
+	m_strPacket = clsOld.m_strPacket;
+	m_eTransport = clsOld.m_eTransport;
+	m_strClientIp = clsOld.m_strClientIp;
+	m_iClientPort = clsOld.m_iClientPort;
+	m_bUseCompact = clsOld.m_bUseCompact;
+
+	return *this;
 }
 
 /**
@@ -1097,18 +1147,18 @@ bool CSipMessage::GetTopViaIpPort( std::string & strIp, int & iPort )
 
 	std::string strTemp;
 
-	if( itViaList->SelectParam( SIP_RPORT, strTemp ) )
+	if( (*itViaList)->SelectParam( SIP_RPORT, strTemp ) )
 	{
 		iPort = atoi( strTemp.c_str() );
 	}
 
-	if( itViaList->SelectParam( SIP_RECEIVED, strTemp ) )
+	if( (*itViaList)->SelectParam( SIP_RECEIVED, strTemp ) )
 	{
 		strIp = strTemp;
 	}
 
-	if( iPort == 0 ) iPort = itViaList->m_iPort;
-	if( strIp.empty() ) strIp = itViaList->m_strHost;
+	if( iPort == 0 ) iPort = (*itViaList)->m_iPort;
+	if( strIp.empty() ) strIp = (*itViaList)->m_strHost;
 
 	return true;
 }
@@ -1129,11 +1179,11 @@ bool CSipMessage::SetTopViaIpPort( const char * pszIp, int iPort, ESipTransport 
 
 	const char * pszTransport = SipGetTransport( eTransport );
 		
-	if( !strcmp( itViaList->m_strHost.c_str(), pszIp ) && itViaList->m_iPort == iPort && !strcmp( itViaList->m_strTransport.c_str(), pszTransport ) ) return false;
+	if( !strcmp( (*itViaList)->m_strHost.c_str(), pszIp ) && (*itViaList)->m_iPort == iPort && !strcmp( (*itViaList)->m_strTransport.c_str(), pszTransport ) ) return false;
 
-	itViaList->m_strHost = pszIp;
-	itViaList->m_iPort = iPort;
-	itViaList->m_strTransport = pszTransport;
+	(*itViaList)->m_strHost = pszIp;
+	(*itViaList)->m_iPort = iPort;
+	(*itViaList)->m_strTransport = pszTransport;
 
 	return true;
 }
@@ -1153,10 +1203,10 @@ bool CSipMessage::SetTopViaTransPort( ESipTransport eTransport, int iPort )
 
 	const char * pszTransport = SipGetTransport( eTransport );
 
-	if( !strcmp( itViaList->m_strTransport.c_str(), pszTransport ) && itViaList->m_iPort == iPort ) return false;
+	if( !strcmp( (*itViaList)->m_strTransport.c_str(), pszTransport ) && (*itViaList)->m_iPort == iPort ) return false;
 
-	itViaList->m_strTransport = pszTransport;
-	itViaList->m_iPort = iPort;
+	(*itViaList)->m_strTransport = pszTransport;
+	(*itViaList)->m_iPort = iPort;
 
 	return true;
 }
@@ -1175,10 +1225,10 @@ bool CSipMessage::SetTopContactIpPort( const char * pszIp, int iPort, ESipTransp
 	SIP_FROM_LIST::iterator	itList = m_clsContactList.begin();
 	if( itList == m_clsContactList.end() ) return false;
 
-	if( !strcmp( itList->m_clsUri.m_strHost.c_str(), pszIp) && itList->m_clsUri.m_iPort == iPort ) return false;
+	if( !strcmp( (*itList)->m_clsUri.m_strHost.c_str(), pszIp) && (*itList)->m_clsUri.m_iPort == iPort ) return false;
 
-	itList->m_clsUri.m_strHost = pszIp;
-	itList->m_clsUri.m_iPort = iPort;
+	(*itList)->m_clsUri.m_strHost = pszIp;
+	(*itList)->m_clsUri.m_iPort = iPort;
 
 	return true;
 }
@@ -1198,7 +1248,7 @@ int CSipMessage::GetExpires()
 
 	std::string	strExpires;
 
-	if( itContact->SelectParam( "EXPIRES", strExpires ) )
+	if( (*itContact)->SelectParam( "EXPIRES", strExpires ) )
 	{
 		return atoi( strExpires.c_str() );
 	}

@@ -18,6 +18,7 @@
 
 #include "SipParserDefine.h"
 #include "SipParameterList.h"
+#include "SipUtility.h"
 #include "MemoryDebug.h"
 
 CSipParameterList::CSipParameterList()
@@ -26,6 +27,7 @@ CSipParameterList::CSipParameterList()
 
 CSipParameterList::~CSipParameterList()
 {
+	ClearParam();
 }
 
 /**
@@ -68,12 +70,17 @@ int CSipParameterList::HeaderListParamParse( const char * pszText, int iTextLen 
  */
 int CSipParameterList::ParamParse( const char * pszText, int iTextLen )
 {
-	CSipParameter clsParam;
+	CSipParameter * pclsParam = new CSipParameter();
+	if( pclsParam == NULL ) return -1;
 
-	int iPos = clsParam.Parse( pszText, iTextLen );
-	if( iPos == -1 ) return -1;
+	int iPos = pclsParam->Parse( pszText, iTextLen );
+	if( iPos == -1 ) 
+	{
+		delete pclsParam;
+		return -1;
+	}
 
-	m_clsParamList.push_back( clsParam );
+	m_clsParamList.push_back( pclsParam );
 
 	return iPos;
 }
@@ -105,7 +112,7 @@ int CSipParameterList::ParamToString( char * pszText, int iTextSize, char cBegin
 			pszText[iLen++] = cSep;
 		}
 
-		iPos = itList->ToString( pszText + iLen, iTextSize - iLen );
+		iPos = (*itList)->ToString( pszText + iLen, iTextSize - iLen );
 		if( iPos == -1 ) return -1;
 		iLen += iPos;
 	}
@@ -124,12 +131,13 @@ bool CSipParameterList::InsertParam( const char * pszName, const char * pszValue
 {
 	if( pszName == NULL ) return false;
 
-	CSipParameter clsParam;
+	CSipParameter * pclsParam = new CSipParameter();
+	if( pclsParam == NULL ) return false;
 
-	clsParam.m_strName = pszName;
-	if( pszValue ) clsParam.m_strValue = pszValue;
+	pclsParam->m_strName = pszName;
+	if( pszValue ) pclsParam->m_strValue = pszValue;
 
-	m_clsParamList.push_back( clsParam );
+	m_clsParamList.push_back( pclsParam );
 
 	return true;
 }
@@ -147,9 +155,9 @@ bool CSipParameterList::UpdateParam( const char * pszName, const char * pszValue
 
 	for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
 	{
-		if( !strcasecmp( itList->m_strName.c_str(), pszName ) )
+		if( !strcasecmp( (*itList)->m_strName.c_str(), pszName ) )
 		{
-			itList->m_strValue = pszValue;
+			(*itList)->m_strValue = pszValue;
 			return true;
 		}
 	}
@@ -170,9 +178,9 @@ bool CSipParameterList::SelectParam( const char * pszName, std::string & strValu
 
 	for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
 	{
-		if( !strcasecmp( itList->m_strName.c_str(), pszName ) )
+		if( !strcasecmp( (*itList)->m_strName.c_str(), pszName ) )
 		{
-			strValue = itList->m_strValue;
+			strValue = (*itList)->m_strValue;
 			return true;
 		}
 	}
@@ -192,7 +200,7 @@ bool CSipParameterList::SelectParam( const char * pszName )
 
 	for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
 	{
-		if( !strcasecmp( itList->m_strName.c_str(), pszName ) )
+		if( !strcasecmp( (*itList)->m_strName.c_str(), pszName ) )
 		{
 			return true;
 		}
@@ -213,9 +221,9 @@ const char * CSipParameterList::SelectParamValue( const char * pszName )
 
 	for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
 	{
-		if( !strcasecmp( itList->m_strName.c_str(), pszName ) )
+		if( !strcasecmp( (*itList)->m_strName.c_str(), pszName ) )
 		{
-			return itList->m_strValue.c_str();
+			return (*itList)->m_strValue.c_str();
 		}
 	}
 
@@ -228,5 +236,22 @@ const char * CSipParameterList::SelectParamValue( const char * pszName )
  */
 void CSipParameterList::ClearParam()
 {
-	m_clsParamList.clear();
+	ClearList<SIP_PARAMETER_LIST>( m_clsParamList );
+}
+
+CSipParameterList & CSipParameterList::operator=( CSipParameterList & clsOld )
+{
+	SIP_PARAMETER_LIST::iterator	itList;
+
+	for( itList = clsOld.m_clsParamList.begin(); itList != clsOld.m_clsParamList.end(); ++itList )
+	{
+		CSipParameter * pclsParam = new CSipParameter();
+		if( pclsParam )
+		{
+			*pclsParam = **itList;
+			m_clsParamList.push_back( pclsParam );
+		}
+	}
+
+	return *this;
 }

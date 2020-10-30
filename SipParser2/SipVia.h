@@ -55,7 +55,7 @@ private:
 	int ParseSentBy( const char * pszText, int iTextLen );
 };
 
-typedef std::list< CSipVia > SIP_VIA_LIST;
+typedef std::list< CSipVia * > SIP_VIA_LIST;
 
 int ParseSipVia( SIP_VIA_LIST & clsList, const char * pszText, int iTextLen );
 

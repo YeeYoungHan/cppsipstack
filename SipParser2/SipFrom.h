@@ -47,7 +47,7 @@ public:
 };
 
 /** SIP From 헤더 리스트 */
-typedef std::list< CSipFrom > SIP_FROM_LIST;
+typedef std::list< CSipFrom * > SIP_FROM_LIST;
 
 int ParseSipFrom( SIP_FROM_LIST & clsList, const char * pszText, int iTextLen );
 

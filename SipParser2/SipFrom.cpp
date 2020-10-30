@@ -184,7 +184,6 @@ bool CSipFrom::Empty()
 int ParseSipFrom( SIP_FROM_LIST & clsList, const char * pszText, int iTextLen )
 {
 	int iPos, iCurPos = 0;
-	CSipFrom	clsFrom;
 
 	while( iCurPos < iTextLen )
 	{
@@ -194,11 +193,18 @@ int ParseSipFrom( SIP_FROM_LIST & clsList, const char * pszText, int iTextLen )
 			continue;
 		}
 
-		iPos = clsFrom.Parse( pszText + iCurPos, iTextLen - iCurPos );
-		if( iPos == -1 ) return -1;
+		CSipFrom * pclsFrom = new CSipFrom();
+		if( pclsFrom == NULL ) return -1;
+
+		iPos = pclsFrom->Parse( pszText + iCurPos, iTextLen - iCurPos );
+		if( iPos == -1 )
+		{
+			delete pclsFrom;
+			return -1;
+		}
 		iCurPos += iPos;
 
-		clsList.push_back( clsFrom );
+		clsList.push_back( pclsFrom );
 	}
 
 	return iCurPos;

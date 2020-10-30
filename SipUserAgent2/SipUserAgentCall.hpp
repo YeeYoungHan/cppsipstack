@@ -148,9 +148,13 @@ bool CSipUserAgent::StopCall( const char * pszCallId, const char * pszForward )
 
 	if( pclsMessage )
 	{
-		CSipFrom clsContact = pclsMessage->m_clsFrom;
-		clsContact.m_clsUri.m_strUser = pszForward;
-		pclsMessage->m_clsContactList.push_back( clsContact );
+		CSipFrom * pclsContact = new CSipFrom();
+		if( pclsContact )
+		{
+			*pclsContact = pclsMessage->m_clsFrom;
+			pclsContact->m_clsUri.m_strUser = pszForward;
+			pclsMessage->m_clsContactList.push_back( pclsContact );
+		}
 
 		m_clsSipStack.SendSipMessage( pclsMessage );
 		bRes = true;

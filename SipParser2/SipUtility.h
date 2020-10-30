@@ -31,4 +31,28 @@ void SipMd5String21( char * string, char result[22] );
 void SipIpv6Parse( std::string & strHost );
 int SipIpv6Print( std::string & strHost, char * pszText, int iTextSize, int iLen );
 
+template< class T >
+void ClearList( T & clsList )
+{
+	for( T::iterator itList = clsList.begin(); itList != clsList.end(); ++itList )
+	{
+		delete (*itList);
+	}
+	clsList.clear();
+}
+
+template< class TList, class T >
+void CopyList( TList & clsFrom, TList & clsTo )
+{
+	for( TList::iterator itList = clsFrom.begin(); itList != clsFrom.end(); ++itList )
+	{
+		T * pclsNew = new T();
+		if( pclsNew )
+		{
+			*pclsNew = **itList;
+			clsTo.push_back( pclsNew );
+		}
+	}
+}
+
 #endif

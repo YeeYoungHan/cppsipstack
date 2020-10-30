@@ -329,7 +329,7 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 				{
 					char	szUri[255];
 
-					itContact->m_clsUri.ToString( szUri, sizeof(szUri) );
+					(*itContact)->m_clsUri.ToString( szUri, sizeof(szUri) );
 					itMap->second->m_strContactUri = szUri;
 					bCreateAck = true;	
 				}
@@ -392,11 +392,11 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 							SIP_FROM_LIST::iterator	itContact = pclsMessage->m_clsContactList.begin();
 							if( itContact != pclsMessage->m_clsContactList.end() )
 							{
-								itMap->second->m_strToId = itContact->m_clsUri.m_strUser;
+								itMap->second->m_strToId = (*itContact)->m_clsUri.m_strUser;
 								pclsInvite = itMap->second->CreateInvite();
 								if( pclsInvite )
 								{
-									pclsInvite->m_clsReqUri = itContact->m_clsUri;
+									pclsInvite->m_clsReqUri = (*itContact)->m_clsUri;
 								}
 							}
 						}

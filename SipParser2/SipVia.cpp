@@ -20,6 +20,7 @@
 #include "SipVia.h"
 #include <stdlib.h>
 #include "SipUtility.h"
+#include "Log.h"
 #include "MemoryDebug.h"
 
 CSipVia::CSipVia() : m_iPort(-1)
@@ -238,7 +239,6 @@ int CSipVia::ParseSentBy( const char * pszText, int iTextLen )
 int ParseSipVia( SIP_VIA_LIST & clsList, const char * pszText, int iTextLen )
 {
 	int iPos, iCurPos = 0;
-	CSipVia	clsVia;
 
 	while( iCurPos < iTextLen )
 	{
@@ -248,11 +248,18 @@ int ParseSipVia( SIP_VIA_LIST & clsList, const char * pszText, int iTextLen )
 			continue;
 		}
 
-		iPos = clsVia.Parse( pszText + iCurPos, iTextLen - iCurPos );
-		if( iPos == -1 ) return -1;
+		CSipVia * pclsVia = new CSipVia();
+		if( pclsVia == NULL ) return -1;
+
+		iPos = pclsVia->Parse( pszText + iCurPos, iTextLen - iCurPos );
+		if( iPos == -1 )
+		{
+			delete pclsVia;
+			return -1;
+		}
 		iCurPos += iPos;
 
-		clsList.push_back( clsVia );
+		clsList.push_back( pclsVia );
 	}
 
 	return iCurPos;

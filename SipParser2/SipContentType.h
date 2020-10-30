@@ -47,7 +47,7 @@ public:
 	bool IsEqual( const char * pszType, const char * pszSubType );
 };
 
-typedef std::list< CSipContentType > SIP_CONTENT_TYPE_LIST;
+typedef std::list< CSipContentType * > SIP_CONTENT_TYPE_LIST;
 
 int ParseSipContentType( SIP_CONTENT_TYPE_LIST & clsList, const char * pszText, int iTextLen );
 

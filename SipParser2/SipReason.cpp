@@ -76,9 +76,9 @@ int CSipReason::Parse( const char * pszText, int iTextLen )
 
 		for( itList = m_clsParamList.begin(); itList != m_clsParamList.end(); ++itList )
 		{
-			if( itList->m_strValue.empty() == false && itList->m_strValue.at(0) == '"' )
+			if( (*itList)->m_strValue.empty() == false && (*itList)->m_strValue.at(0) == '"' )
 			{
-				ReplaceString( itList->m_strValue, "\"", "" );
+				ReplaceString( (*itList)->m_strValue, "\"", "" );
 			}
 		}
 	}

@@ -40,7 +40,7 @@ public:
 };
 
 /** Accept-Encoding/Accept-Language 헤더 리스트 */
-typedef std::list< CSipAcceptData > SIP_ACCEPT_DATA_LIST;
+typedef std::list< CSipAcceptData * > SIP_ACCEPT_DATA_LIST;
 
 int ParseSipAcceptData( SIP_ACCEPT_DATA_LIST & clsList, const char * pszText, int iTextLen );
 

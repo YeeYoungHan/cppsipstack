@@ -171,7 +171,6 @@ bool CSipContentType::IsEqual( const char * pszType, const char * pszSubType )
 int ParseSipContentType( SIP_CONTENT_TYPE_LIST & clsList, const char * pszText, int iTextLen )
 {
 	int iPos, iCurPos = 0;
-	CSipContentType	clsContentType;
 
 	while( iCurPos < iTextLen )
 	{
@@ -181,11 +180,18 @@ int ParseSipContentType( SIP_CONTENT_TYPE_LIST & clsList, const char * pszText, 
 			continue;
 		}
 
-		iPos = clsContentType.Parse( pszText + iCurPos, iTextLen - iCurPos );
-		if( iPos == -1 ) return -1;
+		CSipContentType * pclsContentType = new CSipContentType();
+		if( pclsContentType == NULL ) return -1;
+
+		iPos = pclsContentType->Parse( pszText + iCurPos, iTextLen - iCurPos );
+		if( iPos == -1 )
+		{
+			delete pclsContentType;
+			return -1;
+		}
 		iCurPos += iPos;
 
-		clsList.push_back( clsContentType );
+		clsList.push_back( pclsContentType );
 	}
 
 	return iCurPos;

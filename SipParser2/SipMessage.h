@@ -30,6 +30,8 @@
 #include "SipCallId.h"
 #include "SipContentType.h"
 
+#define USE_ACCEPT_HEADER
+
 /**
  * @ingroup SipParser
  * @brief SIP 메시지 정보를 저장하는 클래스
@@ -174,6 +176,8 @@ public:
 
 	CSipMessage * CreateResponse( int iStatus, const char * pszToTag = NULL );
 	CSipMessage * CreateResponseWithToTag( int iStatus );
+
+	CSipMessage & operator=( CSipMessage & clsOld );
 
 private:
 	int ParseStatusLine( const char * pszText, int iTextLen );

@@ -26,6 +26,7 @@ CSipAcceptData::CSipAcceptData()
 
 CSipAcceptData::~CSipAcceptData()
 {
+	Clear();
 }
 
 /**
@@ -117,7 +118,6 @@ void CSipAcceptData::Clear()
 int ParseSipAcceptData( SIP_ACCEPT_DATA_LIST & clsList, const char * pszText, int iTextLen )
 {
 	int iPos, iCurPos = 0;
-	CSipAcceptData	clsAccept;
 
 	while( iCurPos < iTextLen )
 	{
@@ -127,11 +127,18 @@ int ParseSipAcceptData( SIP_ACCEPT_DATA_LIST & clsList, const char * pszText, in
 			continue;
 		}
 
-		iPos = clsAccept.Parse( pszText + iCurPos, iTextLen - iCurPos );
-		if( iPos == -1 ) return -1;
+		CSipAcceptData * pclsAccept = new CSipAcceptData();
+		if( pclsAccept == NULL ) return -1;
+
+		iPos = pclsAccept->Parse( pszText + iCurPos, iTextLen - iCurPos );
+		if( iPos == -1 )
+		{
+			delete pclsAccept;
+			return -1;
+		}
 		iCurPos += iPos;
 
-		clsList.push_back( clsAccept );
+		clsList.push_back( pclsAccept );
 	}
 
 	return iCurPos;

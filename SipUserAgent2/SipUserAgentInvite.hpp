@@ -114,7 +114,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	{
 		char	szUri[255];
 
-		itContact->m_clsUri.ToString( szUri, sizeof(szUri) );
+		(*itContact)->m_clsUri.ToString( szUri, sizeof(szUri) );
 		pclsDialog->m_strContactUri = szUri;
 	}
 
@@ -128,7 +128,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 		if( pclsDialog->m_pclsInvite->m_clsRecordRouteList.size() > 0 )
 		{
-			pclsDialog->m_clsRouteList = pclsDialog->m_pclsInvite->m_clsRecordRouteList;
+			CopyList<SIP_FROM_LIST,CSipFrom>( pclsDialog->m_pclsInvite->m_clsRecordRouteList, pclsDialog->m_clsRouteList );
 		}
 	}
 	pclsDialog->m_bSendCall = false;

@@ -194,10 +194,10 @@ bool CSipServerInfo::SetChallenge( CSipMessage * pclsResponse )
 		itAT = pclsResponse->m_clsWwwAuthenticateList.begin();
 	}
 
-	if( itAT->m_strQop.empty() ) return false;
-	if( strncmp( itAT->m_strQop.c_str(), "auth", 4 ) ) return false;
+	if( (*itAT)->m_strQop.empty() ) return false;
+	if( strncmp( (*itAT)->m_strQop.c_str(), "auth", 4 ) ) return false;
 	
-	m_clsChallenge = *itAT;
+	m_clsChallenge = *(*itAT);
 	m_iChallengeStatusCode = pclsResponse->m_iStatusCode;
 
 	return true;
@@ -225,7 +225,7 @@ bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, CSipMessage * pclsRespo
 		itAT = pclsResponse->m_clsWwwAuthenticateList.begin();
 	}
 
-	return AddAuth( pclsRequest, &(*itAT), pclsResponse->m_iStatusCode, 1 );
+	return AddAuth( pclsRequest, *itAT, pclsResponse->m_iStatusCode, 1 );
 }
 
 /**
@@ -239,26 +239,27 @@ bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, CSipMessage * pclsRespo
  */
 bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, const CSipChallenge * pclsChallenge, int iStatusCode, int iNonceCount )
 {
-	CSipCredential clsCredential;
+	CSipCredential * pclsCredential = new CSipCredential();
+	if( pclsCredential == NULL ) return false;
 
-	clsCredential.m_strType = pclsChallenge->m_strType;
+	pclsCredential->m_strType = pclsChallenge->m_strType;
 
 	if( m_strAuthId.empty() )
 	{
-		clsCredential.m_strUserName = m_strUserId;
+		pclsCredential->m_strUserName = m_strUserId;
 	}
 	else
 	{
-		clsCredential.m_strUserName = m_strAuthId;
+		pclsCredential->m_strUserName = m_strAuthId;
 	}
 
-	clsCredential.m_strRealm = pclsChallenge->m_strRealm;
-	clsCredential.m_strNonce = pclsChallenge->m_strNonce;
-	clsCredential.m_strAlgorithm = pclsChallenge->m_strAlgorithm;
-	clsCredential.m_strOpaque = pclsChallenge->m_strOpaque;
+	pclsCredential->m_strRealm = pclsChallenge->m_strRealm;
+	pclsCredential->m_strNonce = pclsChallenge->m_strNonce;
+	pclsCredential->m_strAlgorithm = pclsChallenge->m_strAlgorithm;
+	pclsCredential->m_strOpaque = pclsChallenge->m_strOpaque;
 
-	clsCredential.m_strUri = "sip:";
-	clsCredential.m_strUri.append( m_strDomain );
+	pclsCredential->m_strUri = "sip:";
+	pclsCredential->m_strUri.append( m_strDomain );
 
 	char	szA1[1024], szA2[1024], szMd5[33], szResponse[1024];
 	const char * pszQop = pclsChallenge->m_strQop.c_str();
@@ -276,68 +277,68 @@ bool CSipServerInfo::AddAuth( CSipMessage * pclsRequest, const CSipChallenge * p
 
 			for( itSL = clsQopList.begin(); itSL != clsQopList.end(); ++itSL )
 			{
-				clsCredential.m_strQop = *itSL;
+				pclsCredential->m_strQop = *itSL;
 			}
 		}
 		else
 		{
-			clsCredential.m_strQop = pclsChallenge->m_strQop;
+			pclsCredential->m_strQop = pclsChallenge->m_strQop;
 		}
 
 		char szNonceCount[9];
 
 		snprintf( szNonceCount, sizeof(szNonceCount), "%08d", iNonceCount );
-		clsCredential.m_strNonceCount = szNonceCount;
-		clsCredential.m_strCnonce = "1";
+		pclsCredential->m_strNonceCount = szNonceCount;
+		pclsCredential->m_strCnonce = "1";
 
-		snprintf( szA1, sizeof(szA1), "%s:%s:%s", clsCredential.m_strUserName.c_str(), clsCredential.m_strRealm.c_str(), m_strPassWord.c_str() );
+		snprintf( szA1, sizeof(szA1), "%s:%s:%s", pclsCredential->m_strUserName.c_str(), pclsCredential->m_strRealm.c_str(), m_strPassWord.c_str() );
 		SipMd5String( szA1, szMd5 );
 		snprintf( szA1, sizeof(szA1), "%s", szMd5 );
 		
 		// http://qnimate.com/understanding-http-authentication-in-depth/
-		if( !strcmp( clsCredential.m_strQop.c_str(), "auth-int" ) )
+		if( !strcmp( pclsCredential->m_strQop.c_str(), "auth-int" ) )
 		{
 			SipMd5String( pclsRequest->m_strBody.c_str(), szMd5 );
-			snprintf( szA2, sizeof(szA2), "%s:%s:%s", pclsRequest->m_strSipMethod.c_str(), clsCredential.m_strUri.c_str(), szMd5 );
+			snprintf( szA2, sizeof(szA2), "%s:%s:%s", pclsRequest->m_strSipMethod.c_str(), pclsCredential->m_strUri.c_str(), szMd5 );
 		}
 		else
 		{
-			snprintf( szA2, sizeof(szA2), "%s:%s", pclsRequest->m_strSipMethod.c_str(), clsCredential.m_strUri.c_str() );
+			snprintf( szA2, sizeof(szA2), "%s:%s", pclsRequest->m_strSipMethod.c_str(), pclsCredential->m_strUri.c_str() );
 		}
 
 		SipMd5String( szA2, szMd5 );
 		snprintf( szA2, sizeof(szA2), "%s", szMd5 );
 		
-		snprintf( szResponse, sizeof(szResponse), "%s:%s:%s:%s:%s:%s", szA1, clsCredential.m_strNonce.c_str(), clsCredential.m_strNonceCount.c_str()
-			, clsCredential.m_strCnonce.c_str(), clsCredential.m_strQop.c_str(), szA2 );
+		snprintf( szResponse, sizeof(szResponse), "%s:%s:%s:%s:%s:%s", szA1, pclsCredential->m_strNonce.c_str(), pclsCredential->m_strNonceCount.c_str()
+			, pclsCredential->m_strCnonce.c_str(), pclsCredential->m_strQop.c_str(), szA2 );
 		SipMd5String( szResponse, szMd5 );
 		snprintf( szResponse, sizeof(szResponse), "%s", szMd5 );
 
-		clsCredential.m_strResponse = szMd5;
+		pclsCredential->m_strResponse = szMd5;
 	}
 	else
 	{
-		snprintf( szA1, sizeof(szA1), "%s:%s:%s", clsCredential.m_strUserName.c_str(), clsCredential.m_strRealm.c_str(), m_strPassWord.c_str() );
+		snprintf( szA1, sizeof(szA1), "%s:%s:%s", pclsCredential->m_strUserName.c_str(), pclsCredential->m_strRealm.c_str(), m_strPassWord.c_str() );
 		SipMd5String( szA1, szMd5 );
 		snprintf( szA1, sizeof(szA1), "%s", szMd5 );
 		
-		snprintf( szA2, sizeof(szA2), "%s:%s", pclsRequest->m_strSipMethod.c_str(), clsCredential.m_strUri.c_str() );
+		snprintf( szA2, sizeof(szA2), "%s:%s", pclsRequest->m_strSipMethod.c_str(), pclsCredential->m_strUri.c_str() );
 		SipMd5String( szA2, szMd5 );
 		snprintf( szA2, sizeof(szA2), "%s", szMd5 );
 		
-		snprintf( szResponse, sizeof(szResponse), "%s:%s:%s", szA1, clsCredential.m_strNonce.c_str(), szA2 );
+		snprintf( szResponse, sizeof(szResponse), "%s:%s:%s", szA1, pclsCredential->m_strNonce.c_str(), szA2 );
 		SipMd5String( szResponse, szMd5 );
 
-		clsCredential.m_strResponse = szMd5;
+		pclsCredential->m_strResponse = szMd5;
 	}
 
 	if( iStatusCode == SIP_PROXY_AUTHENTICATION_REQUIRED )
 	{
-		pclsRequest->m_clsProxyAuthorizationList.push_front( clsCredential );
+		pclsRequest->m_clsProxyAuthorizationList.push_front( pclsCredential );
 	}
 	else
 	{
-		pclsRequest->m_clsAuthorizationList.push_front( clsCredential );
+		pclsRequest->m_clsAuthorizationList.push_front( pclsCredential );
 	}
 
 	return true;
