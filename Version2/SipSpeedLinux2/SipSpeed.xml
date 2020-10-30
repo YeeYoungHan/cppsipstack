@@ -1,0 +1,19 @@
+<SipSpeed>
+	<SipServer>
+		<Ip>192.168.0.236</Ip>
+		<Port>5060</Port>
+		<Domain>192.168.0.236</Domain>
+	</SipServer>
+	<Caller>
+		<Id>1000</Id>
+		<PassWord>1234</PassWord>
+	</Caller>
+	<Callee>
+		<Id>1001</Id>
+		<PassWord>1234</PassWord>
+	</Callee>
+	<Test>
+		<TotalCount>1</TotalCount>
+		<ConcurrentCount>1</ConcurrentCount>
+	</Test>
+</SipSpeed>
