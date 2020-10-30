@@ -6,11 +6,11 @@
 
 include ../Makefile.mk
 
-INC=-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser -I../SipPlatform \
+INC=-I../SipUserAgent2 -I../SipStack2 -I../SipParser2 -I../SdpParser -I../SipPlatform \
 	-I../XmlParser -I../ServerPlatform $(OPENSSL_INC)
-LIB=-L../SipUserAgent -lsipuseragent \
-	-L../SipStack -lsipstack \
-	-L../SipParser -lsipparser \
+LIB=-L../SipUserAgent2 -lsipuseragent \
+	-L../SipStack2 -lsipstack \
+	-L../SipParser2 -lsipparser \
 	-L../SdpParser -lsdpparser \
 	-L../XmlParser -lxmlparser \
 	-L../ServerPlatform -lserverplatform \
