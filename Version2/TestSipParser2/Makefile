@@ -6,9 +6,9 @@
 
 include ../Makefile.mk
 
-INC=-I../SipParser -I../SdpParser -I../XmlParser -I../SipPlatform
-LIB=-L../SipParser -lsipparser -L../SdpParser -lsdpparser \
-	-L../XmlParser -lxmlparser -L../SipPlatform -lsipplatform
+INC=-I../SipParser2 -I../SdpParser2 -I../../XmlParser -I../../SipPlatform
+LIB=-L../SipParser2 -lsipparser -L../SdpParser2 -lsdpparser \
+	-L../../XmlParser -lxmlparser -L../../SipPlatform -lsipplatform
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
