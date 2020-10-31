@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipPlatform;../SipUserAgent2;../SipStack2;../SipParser;../SdpParser;../XmlParser;../openssl/include;../openssl/window/32bit/include"
+				AdditionalIncludeDirectories="../../SipPlatform;../SipUserAgent2;../SipStack2;../SipParser2;../SdpParser2;../../XmlParser;../../openssl/include;../../openssl/window/32bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../openssl/window/32bit/lib-debug"
+				AdditionalLibraryDirectories="../../openssl/window/32bit/lib-debug"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipPlatform;../SipUserAgent2;../SipStack2;../SipParser;../SdpParser;../XmlParser;../openssl/include;../openssl/window/32bit/include"
+				AdditionalIncludeDirectories="../../SipPlatform;../SipUserAgent2;../SipStack2;../SipParser2;../SdpParser2;../../XmlParser;../../openssl/include;../../openssl/window/32bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -138,7 +138,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../openssl/window/32bit/lib"
+				AdditionalLibraryDirectories="../../openssl/window/32bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -177,19 +177,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\SipSpeedLinux\SipClient.cpp"
+				RelativePath=".\SipClient.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\SipSpeedLinux\SipClient.h"
+				RelativePath=".\SipClient.h"
 				>
 			</File>
 			<File
-				RelativePath="..\SipSpeedLinux\SipSpeedLinux.cpp"
+				RelativePath=".\SipSpeedLinux.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\SipSpeedLinux\SipSpeedLinux.h"
+				RelativePath=".\SipSpeedLinux.h"
 				>
 			</File>
 		</Filter>
@@ -197,11 +197,11 @@
 			Name="설정파일"
 			>
 			<File
-				RelativePath="..\SipSpeedLinux\SipSpeedSetup.cpp"
+				RelativePath=".\SipSpeedSetup.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\SipSpeedLinux\SipSpeedSetup.h"
+				RelativePath=".\SipSpeedSetup.h"
 				>
 			</File>
 		</Filter>

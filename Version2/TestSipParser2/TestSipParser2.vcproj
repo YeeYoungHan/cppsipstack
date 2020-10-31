@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser2;../SdpParser;../XmlParser"
+				AdditionalIncludeDirectories="../../SipPlatform;../SipParser2;../SdpParser2;../../XmlParser"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -116,7 +116,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipPlatform;../SipParser2;../SdpParser;../XmlParser"
+				AdditionalIncludeDirectories="../../SipPlatform;../SipParser2;../SdpParser2;../../XmlParser"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -175,7 +175,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\TestSipParser\TestSipParser.cpp"
+				RelativePath=".\TestSipParser.cpp"
 				>
 			</File>
 		</Filter>
@@ -183,59 +183,59 @@
 			Name="Å×½ºÆ®"
 			>
 			<File
-				RelativePath="..\TestSipParser\TestFile.cpp"
+				RelativePath=".\TestFile.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipParser\TestInt.cpp"
+				RelativePath=".\TestInt.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipParser\TestMd5.cpp"
+				RelativePath=".\TestMd5.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipParser\TestSdp.cpp"
+				RelativePath=".\TestSdp.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipParser\TestSipCallId.cpp"
+				RelativePath=".\TestSipCallId.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipParser\TestSipFrom.cpp"
+				RelativePath=".\TestSipFrom.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipParser\TestSipHeader.cpp"
+				RelativePath=".\TestSipHeader.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipParser\TestSipMessage.cpp"
+				RelativePath=".\TestSipMessage.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipParser\TestSipReason.cpp"
+				RelativePath=".\TestSipReason.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipParser\TestSipUri.cpp"
+				RelativePath=".\TestSipUri.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipParser\TestSipVia.cpp"
+				RelativePath=".\TestSipVia.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipParser\TestSpeed.cpp"
+				RelativePath=".\TestSpeed.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipParser\TestString.cpp"
+				RelativePath=".\TestString.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipParser\TestTransactionSpeed.cpp"
+				RelativePath=".\TestTransactionSpeed.cpp"
 				>
 			</File>
 		</Filter>

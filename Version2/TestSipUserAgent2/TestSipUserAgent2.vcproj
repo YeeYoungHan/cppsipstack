@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipUserAgent2;../SipStack;../SipParser;../SdpParser;../SipPlatform;../openssl/include;../openssl/window/32bit/include"
+				AdditionalIncludeDirectories="../SipUserAgent2;../SipStack2;../SipParser2;../SdpParser2;../../SipPlatform;../../openssl/include;../../openssl/window/32bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../openssl/window/32bit/lib"
+				AdditionalLibraryDirectories="../../openssl/window/32bit/lib-debug"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipUserAgent2;../SipStack;../SipParser;../SdpParser;../SipPlatform;../openssl/include;../openssl/window/32bit/include"
+				AdditionalIncludeDirectories="../SipUserAgent2;../SipStack2;../SipParser2;../SdpParser2;../../SipPlatform;../../openssl/include;../../openssl/window/32bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -138,7 +138,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../openssl/window/32bit/lib"
+				AdditionalLibraryDirectories="../../openssl/window/32bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -177,15 +177,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\TestSipUserAgent\TestSipUserAgent.cpp"
+				RelativePath=".\TestSipUserAgent.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipUserAgent\TestSipUserAgent.h"
+				RelativePath=".\TestSipUserAgent.h"
 				>
 			</File>
 			<File
-				RelativePath="..\TestSipUserAgent\TestStartCallSpeed.cpp"
+				RelativePath=".\TestStartCallSpeed.cpp"
 				>
 			</File>
 		</Filter>

@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipStack2;../SipParser2;../SipPlatform;../openssl/include;../openssl/window/32bit/include"
+				AdditionalIncludeDirectories="../SipStack2;../SipParser2;../../SipPlatform;../../openssl/include;../../openssl/window/32bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -105,7 +105,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipStack2;../SipParser2;../SipPlatform;../openssl/include;../openssl/window/32bit/include"
+				AdditionalIncludeDirectories="../SipStack2;../SipParser2;../../SipPlatform;../../openssl/include;../../openssl/window/32bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -151,19 +151,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\ServerPlatform\InstallService.cpp"
+				RelativePath=".\InstallService.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\ServerPlatform\ServerMain.cpp"
+				RelativePath=".\ServerMain.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\ServerPlatform\ServerService.cpp"
+				RelativePath=".\ServerService.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\ServerPlatform\ServerSignal.cpp"
+				RelativePath=".\ServerSignal.cpp"
 				>
 			</File>
 		</Filter>
@@ -173,11 +173,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\ServerPlatform\ServerService.h"
+				RelativePath=".\ServerService.h"
 				>
 			</File>
 			<File
-				RelativePath="..\ServerPlatform\ServerServicePrivate.h"
+				RelativePath=".\ServerServicePrivate.h"
 				>
 			</File>
 		</Filter>
@@ -185,19 +185,19 @@
 			Name="모니터링"
 			>
 			<File
-				RelativePath="..\ServerPlatform\MonitorCallBack.h"
+				RelativePath=".\MonitorCallBack.h"
 				>
 			</File>
 			<File
-				RelativePath="..\ServerPlatform\MonitorThread.cpp"
+				RelativePath=".\MonitorThread.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\ServerPlatform\ServerThread.cpp"
+				RelativePath=".\ServerThread.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\ServerPlatform\ServerThread.h"
+				RelativePath=".\ServerThread.h"
 				>
 			</File>
 		</Filter>
