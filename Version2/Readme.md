@@ -19,3 +19,8 @@ C++ SIP stack API 문서는 아래의 홈페이지에서 확인하실 수 있습
 
 * https://yeeyounghan.github.io/doc/CppSipStack/html/index.html
 
+### 수정 내용
+
+* ICT, IST 에서 ACK 검색 속도를 향상시킴
+* std::list 에 포인터를 저장하여서 복사 연산을 줄임
+
