@@ -94,25 +94,25 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 		int iBufSize = 0;
 		int iIntSize = sizeof(iBufSize);
 
-		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, &iIntSize );
+		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, (socklen_t*)&iIntSize );
 		printf( "send buffer size = %d\n", iBufSize );
 
 		iBufSize = 1500 * 1000;
 		setsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, iIntSize );
 
 		iBufSize = 0;
-		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, &iIntSize );
+		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, (socklen_t*)&iIntSize );
 		printf( "send buffer size = %d\n", iBufSize );
 
 		iBufSize = 0;
-		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&iBufSize, &iIntSize );
+		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&iBufSize, (socklen_t*)&iIntSize );
 		printf( "recv buffer size = %d\n", iBufSize );
 
 		iBufSize = 1500 * 1000;
 		setsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&iBufSize, iIntSize );
 
 		iBufSize = 0;
-		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&iBufSize, &iIntSize );
+		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&iBufSize, (socklen_t*)&iIntSize );
 		printf( "recv buffer size = %d\n", iBufSize );
 	}
 
