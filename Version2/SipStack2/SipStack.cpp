@@ -90,6 +90,11 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	{
 		m_hUdpSocket = UdpListen( m_clsSetup.m_iLocalUdpPort, NULL, m_clsSetup.m_bIpv6 );
 		if( m_hUdpSocket == INVALID_SOCKET ) return false;
+
+		int iBufSize;
+		int iIntSize = sizeof(iBufSize);
+
+		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, &iIntSize );
 	}
 
 	if( m_clsSetup.m_iLocalTcpPort > 0 )
@@ -343,6 +348,11 @@ void CSipStack::DeleteAllTransaction()
 void CSipStack::GetICTMap( INVITE_TRANSACTION_MAP & clsMap )
 {
 	m_clsICT.GetTransactionMap( clsMap );
+}
+
+void CSipStack::PrintReSendCount()
+{
+	printf( "ReSendCount ICT(%u) IST(%u) NICT(%u) NIST(%u)\n", m_clsICT.GetReSendCount(), m_clsIST.GetReSendCount(), m_clsNICT.GetReSendCount(), m_clsNIST.GetReSendCount() ); 
 }
 
 /**

@@ -48,8 +48,11 @@ public:
 	virtual int GetSize( ) = 0;
 	virtual void GetString( CMonitorString & strBuf ) = 0;
 
+	uint32_t GetReSendCount( );
+
 	CSipStack * m_pclsSipStack;
 	CSipMutex		m_clsMutex;
+	uint32_t		m_iReSendCount;
 };
 
 typedef std::list< CSipMessage * > SIP_MESSAGE_LIST;
