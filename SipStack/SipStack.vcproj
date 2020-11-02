@@ -505,18 +505,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="모니터링"
-			>
-			<File
-				RelativePath=".\MonitorString.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MonitorString.h"
-				>
-			</File>
-		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

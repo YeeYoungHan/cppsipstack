@@ -18,7 +18,7 @@
 
 #ifdef WIN32
 
-#include "SipParserDefine.h"
+#include "SipPlatformDefine.h"
 #include "ServerServicePrivate.h"
 #include <windows.h>
 #include <stdio.h>

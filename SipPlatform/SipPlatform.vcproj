@@ -301,6 +301,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MonitorString.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Random.cpp"
 				>
 			</File>
@@ -376,6 +380,10 @@
 			</File>
 			<File
 				RelativePath=".\MemoryDebug.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MonitorString.h"
 				>
 			</File>
 			<File

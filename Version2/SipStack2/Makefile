@@ -24,8 +24,7 @@ LIB_OBJ=SipDeleteQueue.o \
 	SipTlsClientThread.o SipTlsMessage.o \
 	TcpSessionList.o TcpSocketMap.o TcpThreadList.o TcpConnectMap.o \
 	SipBuffer.o \
-	TlsFunction.o \
-	MonitorString.o
+	TlsFunction.o
 
 libsipstack.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)

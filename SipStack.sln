@@ -94,6 +94,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AndroidSipStack", "AndroidS
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerPlatform", "ServerPlatform\ServerPlatform.vcproj", "{4861DF07-69DC-4099-8F3D-1904FF720CAD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{59766094-16E8-4602-9621-6C1E5ED9AF5F} = {59766094-16E8-4602-9621-6C1E5ED9AF5F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SipClientMFC", "SipClientMFC\SipClientMFC.vcproj", "{025DD925-0064-4D7A-AF45-1FFF6F381D83}"
 	ProjectSection(ProjectDependencies) = postProject

@@ -22,6 +22,11 @@
 #include "SipPlatformDefine.h"
 #include <string>
 
+// 자료구조 모니터링
+#define MR_COL_SEP							"|"
+#define MR_ROW_SEP							"\n"
+
+
 /**
  * @ingroup SipStack
  * @brief 자료구조 모니터링을 위한 문자열 저장 및 생성 클래스
