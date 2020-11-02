@@ -20,6 +20,7 @@
 #define _SIP_UTILITY_H_
 
 #include <string>
+#include <list>
 
 void SipSetSystemId( const char * pszId );
 void SipMakeTag( char * pszTag, int iTagSize );
