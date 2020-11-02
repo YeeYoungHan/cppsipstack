@@ -125,7 +125,6 @@ static bool Test3( const char * pszText )
 	{
 		if( !strcmp( itAttr->m_strName.c_str(), "fmtp" ) )
 		{
-			/*
 			CSipParameterList clsParamList;
 
 			if( itAttr->GetParameterList( clsParamList ) == false ) return false;
@@ -135,7 +134,6 @@ static bool Test3( const char * pszText )
 				const char * pszValue = clsParamList.SelectParamValue( arrKey[i] );
 				if( pszValue == NULL || strcmp( pszValue, arrValue[i] ) ) return false;
 			}
-			*/
 		}
 	}
 
