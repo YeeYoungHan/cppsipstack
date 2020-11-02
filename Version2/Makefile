@@ -13,6 +13,9 @@ all:
 	cd SipUserAgent2 && make
 	cd ServerPlatform2 && make
 	cd KSipServer2 && make
+	cd SipSpeedLinux2 && make
+	cd TestSipParser2 && make
+	cd TestSipUserAgent2 && make
 
 clean:
 	cd ../SipPlatform && make clean
@@ -23,6 +26,9 @@ clean:
 	cd SipUserAgent2 && make clean
 	cd ServerPlatform2 && make clean
 	cd KSipServer2 && make clean
+	cd SipSpeedLinux2 && make clean
+	cd TestSipParser2 && make clean
+	cd TestSipUserAgent2 && make clean
 
 install:
 
