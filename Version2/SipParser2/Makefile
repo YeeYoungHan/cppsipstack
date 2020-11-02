@@ -18,7 +18,8 @@ LIB_OBJ=SipAcceptData.o SipCallId.o SipChallenge.o SipContentType.o \
 	SipCredential.o SipCSeq.o SipFrom.o SipHeader.o SipMessage.o \
 	SipParameter.o SipUri.o SipVia.o SipStatusCode.o SipReason.o \
 	SipUtility.o SipParameterList.o \
-	SipTransport.o
+	SipTransport.o \
+	SipDeleteQueue.o
 
 libsipparser.a: $(LIB_OBJ)
 	ar crv $@ $(LIB_OBJ)

@@ -20,6 +20,7 @@
 #include "SipDialog.h"
 #include "SipUserAgent.h"
 #include "SipUtility.h"
+#include "SipDeleteQueue.h"
 #include "MemoryDebug.h"
 
 /**
@@ -493,12 +494,12 @@ bool CSipDialog::IsUseCodec( int iCodec )
  */
 CSipMessage * CSipDialog::CreateMessage( const char * pszSipMethod )
 {
-	CSipMessage * pclsMessage = new CSipMessage();
+	CSipMessage * pclsMessage = gclsSipDeleteQueue.Get();
 	if( pclsMessage == NULL ) return NULL;
 
 	if( pclsMessage->m_clsCallId.Parse( m_strCallId.c_str(), (int)m_strCallId.length() ) == -1 )
 	{
-		delete pclsMessage;
+		gclsSipDeleteQueue.Insert( pclsMessage );
 		return NULL;
 	}
 

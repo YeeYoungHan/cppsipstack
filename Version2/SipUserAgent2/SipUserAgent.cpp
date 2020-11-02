@@ -19,6 +19,7 @@
 #include "SipUserAgent.h"
 #include "SipRegisterThread.h"
 #include "SipUtility.h"
+#include "SipDeleteQueue.h"
 #include "SdpMessage.h"
 #include "StringUtility.h"
 #include "TimeString.h"
@@ -253,7 +254,7 @@ void CSipUserAgent::Delete( SIP_DIALOG_MAP::iterator & itMap )
 {
 	if( itMap->second->m_pclsInvite )
 	{
-		delete itMap->second->m_pclsInvite;
+		gclsSipDeleteQueue.Insert( itMap->second->m_pclsInvite );
 		itMap->second->m_pclsInvite = NULL;
 	}
 
@@ -336,7 +337,7 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 
 				if( bCreateAck )
 				{
-					if( pclsAck ) delete pclsAck;
+					if( pclsAck ) gclsSipDeleteQueue.Insert( pclsAck );
 					pclsAck = itMap->second->CreateAck( pclsMessage->m_iStatusCode );
 				}
 

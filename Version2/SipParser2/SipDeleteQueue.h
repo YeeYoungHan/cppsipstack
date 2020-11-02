@@ -19,9 +19,11 @@
 #ifndef _SIP_DELETE_QUEUE_H_
 #define _SIP_DELETE_QUEUE_H_
 
-#include "SipStackDefine.h"
+#include "SipParserDefine.h"
 #include "SipMutex.h"
+#include "SipMessage.h"
 #include <list>
+#include <deque>
 
 #define SIP_DELETE_TIME	5
 
@@ -39,7 +41,8 @@ public:
 	time_t				 m_iDeleteTime;
 };
 
-typedef std::list< CSipDeleteInfo > SIP_DELETE_QUEUE;
+typedef std::deque< CSipDeleteInfo > SIP_DELETE_QUEUE;
+typedef std::deque< CSipMessage * > SIP_MESSAGE_QUEUE;
 
 /**
  * @ingroup SipStack
@@ -55,10 +58,18 @@ public:
 	void DeleteTimeout( );
 	void DeleteAll( );
 	int GetSize();
+	int GetCacheSize();
+	void SetQueueSize( int iQueueSize );
+
+	CSipMessage * Get( );
 
 private:
-	SIP_DELETE_QUEUE	m_clsList;
+	bool InsertCache( CSipMessage * pclsMessage, bool bUseMutex );
+
+	SIP_DELETE_QUEUE	m_clsDeleteQueue;
+	SIP_MESSAGE_QUEUE	m_clsCacheQueue;
 	CSipMutex					m_clsMutex;
+	int								m_iQueueSize;
 };
 
 extern CSipDeleteQueue gclsSipDeleteQueue;

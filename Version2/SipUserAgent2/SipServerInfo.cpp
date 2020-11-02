@@ -21,6 +21,7 @@
 #include "SipUtility.h"
 #include "SipMd5.h"
 #include "StringUtility.h"
+#include "SipDeleteQueue.h"
 #include "MemoryDebug.h"
 
 /**
@@ -110,7 +111,7 @@ void CSipServerInfo::ClearLogin()
  */
 CSipMessage * CSipServerInfo::CreateRegister( CSipStack * pclsSipStack, CSipMessage * pclsResponse )
 {
-	CSipMessage * pclsRequest = new CSipMessage();
+	CSipMessage * pclsRequest = gclsSipDeleteQueue.Get();
 	if( pclsRequest == NULL ) return NULL;
 
 	// REGISTER sip:127.0.0.1 SIP/2.0

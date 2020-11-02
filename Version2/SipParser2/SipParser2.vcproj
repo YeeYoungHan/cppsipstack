@@ -293,6 +293,14 @@
 			Name="유틸리티"
 			>
 			<File
+				RelativePath=".\SipDeleteQueue.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SipDeleteQueue.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SipUtility.cpp"
 				>
 			</File>

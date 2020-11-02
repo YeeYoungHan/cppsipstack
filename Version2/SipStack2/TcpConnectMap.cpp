@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipDeleteQueue.h"
 #include "TcpConnectMap.h"
 #include "TimeUtility.h"
 #include "Log.h"
@@ -76,7 +77,7 @@ bool CTcpConnectMap::Insert( const char * pszIp, int iPort )
 
 				if( m_bStateful == false && (*itList)->m_iUseCount == 0 )
 				{
-					delete *itList;
+					gclsSipDeleteQueue.Insert( *itList );
 				}
 			}
 			
@@ -175,7 +176,7 @@ bool CTcpConnectMap::Delete( const char * pszIp, int iPort )
 
 			if( m_bStateful == false && (*itList)->m_iUseCount == 0 )
 			{
-				delete *itList;
+				gclsSipDeleteQueue.Insert( *itList );
 			}
 		}
 

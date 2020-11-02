@@ -74,7 +74,8 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 			}
 		}
 
-		delete pclsMessage;
+		pclsMessage->m_iUseCount = 0;
+		gclsSipDeleteQueue.Insert( pclsMessage );
 	}
 	else
 	{
@@ -82,7 +83,7 @@ bool CSipStack::SendSipMessage( CSipMessage * pclsMessage )
 
 		if( pclsMessage->m_iUseCount == 0 )
 		{
-			delete pclsMessage;
+			gclsSipDeleteQueue.Insert( pclsMessage );
 		}
 
 		return true;
@@ -154,7 +155,8 @@ bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 			}
 		}
 
-		delete pclsMessage;
+		pclsMessage->m_iUseCount = 0;
+		gclsSipDeleteQueue.Insert( pclsMessage );
 	}
 	else
 	{
@@ -172,7 +174,7 @@ bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
 		--pclsMessage->m_iUseCount;
 		if( pclsMessage->m_iUseCount == 0 )
 		{
-			delete pclsMessage;
+			gclsSipDeleteQueue.Insert( pclsMessage );
 		}
 
 		return true;
@@ -193,12 +195,12 @@ bool CSipStack::RecvSipMessage( int iThreadId, CSipMessage * pclsMessage )
  */
 bool CSipStack::RecvSipMessage( int iThreadId, const char * pszBuf, int iBufLen, const char * pszIp, unsigned short iPort, ESipTransport eTransport )
 {
-	CSipMessage	* pclsMessage = new CSipMessage();
+	CSipMessage	* pclsMessage = gclsSipDeleteQueue.Get();
 	if( pclsMessage == NULL ) return false;
 
 	if( pclsMessage->Parse( pszBuf, iBufLen ) == -1 )
 	{
-		delete pclsMessage;
+		gclsSipDeleteQueue.Insert( pclsMessage );
 		return false;
 	}
 
@@ -217,7 +219,7 @@ bool CSipStack::RecvSipMessage( int iThreadId, const char * pszBuf, int iBufLen,
 
 		if( bDelete )
 		{
-			delete pclsMessage;
+			gclsSipDeleteQueue.Insert( pclsMessage );
 			return false;
 		}
 	}

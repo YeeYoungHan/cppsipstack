@@ -20,6 +20,7 @@
 #include "SipMessage.h"
 #include "SipStatusCode.h"
 #include "SipUtility.h"
+#include "SipDeleteQueue.h"
 #include <stdlib.h>
 #include "MemoryDebug.h"
 
@@ -1030,7 +1031,7 @@ CSipMessage * CSipMessage::CreateResponse( int iStatus, const char * pszToTag )
 {
 	if( IsRequest() == false ) return NULL;
 
-	CSipMessage * pclsResponse = new CSipMessage();
+	CSipMessage * pclsResponse = gclsSipDeleteQueue.Get();
 	if( pclsResponse == NULL ) return NULL;
 
 	pclsResponse->m_iStatusCode = iStatus;
@@ -1066,7 +1067,7 @@ CSipMessage * CSipMessage::CreateResponseWithToTag( int iStatus )
 {
 	if( IsRequest() == false ) return NULL;
 
-	CSipMessage * pclsResponse = new CSipMessage();
+	CSipMessage * pclsResponse = gclsSipDeleteQueue.Get();
 	if( pclsResponse == NULL ) return NULL;
 
 	pclsResponse->m_iStatusCode = iStatus;

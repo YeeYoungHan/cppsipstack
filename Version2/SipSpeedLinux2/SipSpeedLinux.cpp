@@ -19,6 +19,7 @@
 #include "SipSpeedLinux.h"
 #include "SipSpeedSetup.h"
 #include "SipClient.h"
+#include "SipDeleteQueue.h"
 #include "TimeUtility.h"
 
 CSipUserAgent		 gclsSipUserAgent;
@@ -61,6 +62,8 @@ int main( int argc, char * argv[] )
 	clsSetup.m_iStackExecutePeriod = 100;
 	clsSetup.m_iTimerD = 4000;
 	clsSetup.m_iTimerJ = 4000;
+
+	gclsSipDeleteQueue.SetQueueSize( 1000 );
 
 	for( int i = 0; i < 100; ++i )
 	{

@@ -26,7 +26,7 @@ extern time_t giTime;
  * @ingroup SipStack
  * @brief 생성자
  */
-CSipDeleteQueue::CSipDeleteQueue()
+CSipDeleteQueue::CSipDeleteQueue() : m_iQueueSize(0)
 {
 }
 
@@ -47,7 +47,11 @@ void CSipDeleteQueue::Insert( CSipMessage * pclsMessage )
 {
 	if( pclsMessage->m_iUseCount == 0 )
 	{
-		delete pclsMessage;
+		if( InsertCache( pclsMessage, true ) == false )
+		{
+			delete pclsMessage;
+		}
+
 		return;
 	}
 
@@ -57,7 +61,7 @@ void CSipDeleteQueue::Insert( CSipMessage * pclsMessage )
 	clsInfo.m_iDeleteTime = giTime + SIP_DELETE_TIME;
 
 	m_clsMutex.acquire();
-	m_clsList.push_back( clsInfo );
+	m_clsDeleteQueue.push_back( clsInfo );
 	m_clsMutex.release();
 }
 
@@ -67,23 +71,22 @@ void CSipDeleteQueue::Insert( CSipMessage * pclsMessage )
  */
 void CSipDeleteQueue::DeleteTimeout( )
 {
-	int			iCount;
 	time_t	iTime = giTime;
 
 	m_clsMutex.acquire();
-	iCount = (int)m_clsList.size();
-	if( iCount > 0 )
+	while( m_clsDeleteQueue.empty() == false )
 	{
-		for( int i = 0; i < iCount; ++i )
+		CSipDeleteInfo & clsInfo = m_clsDeleteQueue.front();
+
+		if( clsInfo.m_iDeleteTime > iTime ) break;
+		if( clsInfo.m_pclsMessage->m_iUseCount > 0 ) break;
+
+		if( InsertCache( clsInfo.m_pclsMessage, false ) == false )
 		{
-			CSipDeleteInfo & clsInfo = m_clsList.front();
-
-			if( clsInfo.m_iDeleteTime > iTime ) break;
-			if( clsInfo.m_pclsMessage->m_iUseCount > 0 ) break;
-
 			delete clsInfo.m_pclsMessage;
-			m_clsList.pop_front();
 		}
+
+		m_clsDeleteQueue.pop_front();
 	}
 	m_clsMutex.release();
 }
@@ -97,11 +100,18 @@ void CSipDeleteQueue::DeleteAll( )
 	SIP_DELETE_QUEUE::iterator	it;
 
 	m_clsMutex.acquire();
-	for( it = m_clsList.begin(); it != m_clsList.end(); ++it )
+	while( m_clsDeleteQueue.empty() == false )
 	{
-		delete it->m_pclsMessage;
+		CSipDeleteInfo & clsInfo = m_clsDeleteQueue.front();
+		delete clsInfo.m_pclsMessage;
+		m_clsDeleteQueue.pop_front();
 	}
-	m_clsList.clear();
+
+	while( m_clsCacheQueue.empty() == false )
+	{
+		delete m_clsCacheQueue.front();
+		m_clsCacheQueue.pop_front();
+	}
 	m_clsMutex.release();
 }
 
@@ -115,8 +125,72 @@ int CSipDeleteQueue::GetSize()
 	int iSize;
 
 	m_clsMutex.acquire();
-	iSize = (int)m_clsList.size();
+	iSize = (int)m_clsDeleteQueue.size();
 	m_clsMutex.release();
 
 	return iSize;
+}
+
+int CSipDeleteQueue::GetCacheSize()
+{
+	int iSize;
+
+	m_clsMutex.acquire();
+	iSize = (int)m_clsCacheQueue.size();
+	m_clsMutex.release();
+
+	return iSize;
+}
+
+/**
+ * @ingroup SipStack2
+ * @brief CSipMessage 를 큐잉하는 최대 크기를 설정한다.
+ * @param iQueueSize CSipMessage 를 큐잉하는 최대 크기
+ */
+void CSipDeleteQueue::SetQueueSize( int iQueueSize )
+{
+	m_iQueueSize = iQueueSize;
+}
+
+CSipMessage * CSipDeleteQueue::Get( )
+{
+	CSipMessage * pclsMessage = NULL;
+
+	if( m_iQueueSize > 0 )
+	{
+		m_clsMutex.acquire();
+		if( m_clsCacheQueue.empty() == false )
+		{
+			pclsMessage = m_clsCacheQueue.front();
+			m_clsCacheQueue.pop_front();
+		}
+		m_clsMutex.release();
+	}
+
+	if( pclsMessage == NULL )
+	{
+		pclsMessage = new CSipMessage();
+	}
+
+	return pclsMessage;
+}
+
+bool CSipDeleteQueue::InsertCache( CSipMessage * pclsMessage, bool bUseMutex )
+{
+	bool bRes = false;
+
+	if( m_iQueueSize > 0 )
+	{
+		pclsMessage->Clear();
+
+		if( bUseMutex ) m_clsMutex.acquire();
+		if( m_iQueueSize > (int)m_clsCacheQueue.size() )
+		{
+			m_clsCacheQueue.push_back( pclsMessage );
+			bRes = true;
+		}
+		if( bUseMutex ) m_clsMutex.release();
+	}
+
+	return bRes;
 }

@@ -20,6 +20,7 @@
 #include "KSipServerDefine.h"
 #include "SipServer.h"
 #include "SipServerSetup.h"
+#include "SipDeleteQueue.h"
 #include "Log.h"
 #include "NonceMap.h"
 #include "UserMap.h"
@@ -96,6 +97,8 @@ int ServiceMain( )
 	clsSetup.m_bIpv6 = gclsSetup.m_bIpv6;
 
 	clsSetup.m_bUseRegisterSession = gclsSetup.m_bUseRegisterSession;
+
+	gclsSipDeleteQueue.SetQueueSize( gclsSetup.m_iSipMessageQueueCount );
 
 	Fork( gbFork );
 	SetCoreDumpEnable();

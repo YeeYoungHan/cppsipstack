@@ -21,6 +21,7 @@
 #include "Log.h"
 #include "SipServerSetup.h"
 #include "SipServer.h"
+#include "SipDeleteQueue.h"
 #include "TimeString.h"
 #include "MemoryDebug.h"
 
@@ -303,7 +304,7 @@ void CUserMap::SendOptions(  )
 			continue;
 		}
 
-		CSipMessage * pclsMessage = new CSipMessage();
+		CSipMessage * pclsMessage = gclsSipDeleteQueue.Get();
 		if( pclsMessage == NULL ) break;
 
 		pclsMessage->m_strSipMethod = SIP_METHOD_OPTIONS;

@@ -16,6 +16,7 @@
 		<MinRegisterTimeout>300</MinRegisterTimeout>
 		<CallPickupId>**</CallPickupId>
 		<StackExecutePeriod>20</StackExecutePeriod>
+		<SipMessageQueueCount>1000</SipMessageQueueCount>
 	</Sip>
 	<RtpRelay>
 		<UseRtpRelay>true</UseRtpRelay>
@@ -32,7 +33,7 @@
 		<SipServer>c:\OpenProject\CppSipStack\trunk\KSipServer\SipServerXml</SipServer>
 	</XmlFolder>
 	<Cdr>
-		<Folder>c:\temp\cdr</Folder>
+		<!--<Folder>c:\temp\cdr</Folder>-->
 	</Cdr>
 	<Monitor>
 	  <Port>6000</Port>

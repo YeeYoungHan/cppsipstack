@@ -258,7 +258,7 @@ DELETE_TRANSACTION:
 	for( SIP_MESSAGE_LIST::iterator itList = clsResponseList.begin(); itList != clsResponseList.end(); ++itList )
 	{
 		m_pclsSipStack->RecvResponse( m_pclsSipStack->m_clsSetup.m_iUdpThreadCount, *itList );
-		delete *itList;
+		gclsSipDeleteQueue.Insert( *itList );
 	}
 
 	clsResponseList.clear();

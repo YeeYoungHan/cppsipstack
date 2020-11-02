@@ -149,14 +149,6 @@
 			Name="SipStack"
 			>
 			<File
-				RelativePath=".\SipDeleteQueue.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SipDeleteQueue.h"
-				>
-			</File>
-			<File
 				RelativePath=".\SipQueue.cpp"
 				>
 			</File>

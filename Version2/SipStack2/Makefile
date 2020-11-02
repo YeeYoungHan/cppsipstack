@@ -14,8 +14,7 @@ INC=-I../SipParser2 -I../../SipPlatform $(OPENSSL_INC)
 
 all: libsipstack.a
 
-LIB_OBJ=SipDeleteQueue.o \
-	SipICTList.o SipISTList.o SipNICTList.o SipNISTList.o \
+LIB_OBJ=SipICTList.o SipISTList.o SipNICTList.o SipNISTList.o \
 	SipInviteTransaction.o SipNonInviteTransaction.o SipTransactionList.o \
 	SipStack.o SipStackSetup.o \
 	SipStackThread.o SipUdpThread.o SipTcpThread.o SipTlsThread.o \

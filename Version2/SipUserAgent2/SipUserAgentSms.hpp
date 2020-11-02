@@ -27,7 +27,7 @@
  */
 bool CSipUserAgent::SendSms( const char * pszFrom, const char * pszTo, const char * pszText, CSipCallRoute * pclsRoute )
 {
-	CSipMessage * pclsRequest = new CSipMessage();
+	CSipMessage * pclsRequest = gclsSipDeleteQueue.Get();
 	if( pclsRequest == NULL ) return false;
 
 	pclsRequest->m_strSipMethod = SIP_METHOD_MESSAGE;

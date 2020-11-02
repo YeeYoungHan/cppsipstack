@@ -120,7 +120,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 	gettimeofday( &pclsDialog->m_sttInviteTime, NULL );
 
-	pclsDialog->m_pclsInvite = new CSipMessage();
+	pclsDialog->m_pclsInvite = gclsSipDeleteQueue.Get();
 	if( pclsDialog->m_pclsInvite )
 	{
 		*pclsDialog->m_pclsInvite = *pclsMessage;
@@ -150,7 +150,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 	{
 		if( pclsDialog->m_pclsInvite )
 		{
-			delete pclsDialog->m_pclsInvite;
+			gclsSipDeleteQueue.Insert( pclsDialog->m_pclsInvite );
 		}
 
 		delete pclsDialog;

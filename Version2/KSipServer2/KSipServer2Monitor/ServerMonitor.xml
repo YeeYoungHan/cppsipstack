@@ -63,6 +63,7 @@
 			<MonitorAttribute name="IST" />
 			<MonitorAttribute name="NIST" />
 			<MonitorAttribute name="Delete" />
+			<MonitorAttribute name="Cache" />
 			<MonitorAttribute name="ICT CallId" />
 			<MonitorAttribute name="IST CallId" />
 		</MonitorEntry>

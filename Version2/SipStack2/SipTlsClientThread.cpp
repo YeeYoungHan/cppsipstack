@@ -20,6 +20,7 @@
 #include "TcpSessionList.h"
 #include "ServerUtility.h"
 #include "SipTlsMessage.h"
+#include "SipDeleteQueue.h"
 #include "Log.h"
 #include "MemoryDebug.h"
 
@@ -82,7 +83,8 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 
 						if( bError )
 						{
-							delete (*itList);
+							(*itList)->m_iUseCount = 0;
+							gclsSipDeleteQueue.Insert( *itList );
 						}
 						else
 						{
@@ -90,7 +92,7 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 
 							if( pclsArg->m_pclsSipStack->m_clsSetup.m_bStateful == false && (*itList)->m_iUseCount == 0 )
 							{
-								delete *itList;
+								gclsSipDeleteQueue.Insert( *itList );
 							}
 						}
 					}
@@ -164,7 +166,7 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 
 				if( pclsArg->m_pclsSipStack->m_clsSetup.m_bStateful == false && (*itList)->m_iUseCount == 0 )
 				{
-					delete *itList;
+					gclsSipDeleteQueue.Insert( *itList );
 				}
 			}
 		}
@@ -175,7 +177,7 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 	--pclsArg->m_pclsSipMessage->m_iUseCount;
 	if( pclsArg->m_pclsSipStack->m_clsSetup.m_bStateful == false && pclsArg->m_pclsSipMessage->m_iUseCount == 0 )
 	{
-		delete pclsArg->m_pclsSipMessage;
+		gclsSipDeleteQueue.Insert( pclsArg->m_pclsSipMessage );
 	}
 
 	CLog::Print( LOG_DEBUG, "%s(%s:%d) end", __FUNCTION__, pclsArg->m_strIp.c_str(), pclsArg->m_iPort );

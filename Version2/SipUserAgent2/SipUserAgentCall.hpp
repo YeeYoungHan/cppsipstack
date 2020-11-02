@@ -296,7 +296,7 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 				itMap->second->AddSdp( pclsMessage );
 
-				delete itMap->second->m_pclsInvite;
+				gclsSipDeleteQueue.Insert( itMap->second->m_pclsInvite );
 				itMap->second->m_pclsInvite = NULL;
 
 				bRes = true;
