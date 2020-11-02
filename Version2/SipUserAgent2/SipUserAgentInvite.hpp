@@ -128,7 +128,7 @@ bool CSipUserAgent::RecvInviteRequest( int iThreadId, CSipMessage * pclsMessage 
 
 		if( pclsDialog->m_pclsInvite->m_clsRecordRouteList.size() > 0 )
 		{
-			CopyList<SIP_FROM_LIST,CSipFrom>( pclsDialog->m_pclsInvite->m_clsRecordRouteList, pclsDialog->m_clsRouteList );
+			CopyList< SIP_FROM_LIST, CSipFrom, SIP_FROM_LIST::iterator >( pclsDialog->m_pclsInvite->m_clsRecordRouteList, pclsDialog->m_clsRouteList );
 		}
 	}
 	pclsDialog->m_bSendCall = false;

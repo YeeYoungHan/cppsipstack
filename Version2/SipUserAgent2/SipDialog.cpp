@@ -44,7 +44,7 @@ CSipDialog::CSipDialog( CSipStack * pclsSipStack ) : m_iSeq(0), m_iNextSeq(0), m
  */
 CSipDialog::~CSipDialog()
 {
-	ClearList<SIP_FROM_LIST>( m_clsRouteList );
+	ClearList< SIP_FROM_LIST, SIP_FROM_LIST::iterator >( m_clsRouteList );
 }
 
 /**
