@@ -91,29 +91,30 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 		m_hUdpSocket = UdpListen( m_clsSetup.m_iLocalUdpPort, NULL, m_clsSetup.m_bIpv6 );
 		if( m_hUdpSocket == INVALID_SOCKET ) return false;
 
-		int iBufSize = 0;
-		int iIntSize = sizeof(iBufSize);
+		if( m_clsSetup.m_iUdpBufSize > 0 )
+		{
+			int iBufSize = 0;
+			int iIntSize = sizeof(iBufSize);
 
-		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, (socklen_t*)&iIntSize );
-		printf( "send buffer size = %d\n", iBufSize );
+			getsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, (socklen_t*)&iIntSize );
+			CLog::Print( LOG_DEBUG, "UDP SendBufferSize = %d", iBufSize );
 
-		iBufSize = 1500 * 1000;
-		setsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, iIntSize );
+			setsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&m_clsSetup.m_iUdpBufSize, iIntSize );
 
-		iBufSize = 0;
-		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, (socklen_t*)&iIntSize );
-		printf( "send buffer size = %d\n", iBufSize );
+			iBufSize = 0;
+			getsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, (socklen_t*)&iIntSize );
+			CLog::Print( LOG_SYSTEM, "UDP SendBufferSize = %d", iBufSize );
 
-		iBufSize = 0;
-		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&iBufSize, (socklen_t*)&iIntSize );
-		printf( "recv buffer size = %d\n", iBufSize );
+			iBufSize = 0;
+			getsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&iBufSize, (socklen_t*)&iIntSize );
+			CLog::Print( LOG_DEBUG, "UDP RecvBufferSize = %d", iBufSize );
 
-		iBufSize = 1500 * 1000;
-		setsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&iBufSize, iIntSize );
+			setsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&m_clsSetup.m_iUdpBufSize, iIntSize );
 
-		iBufSize = 0;
-		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&iBufSize, (socklen_t*)&iIntSize );
-		printf( "recv buffer size = %d\n", iBufSize );
+			iBufSize = 0;
+			getsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&iBufSize, (socklen_t*)&iIntSize );
+			CLog::Print( LOG_SYSTEM, "UDP RecvBufferSize = %d", iBufSize );
+		}
 	}
 
 	if( m_clsSetup.m_iLocalTcpPort > 0 )

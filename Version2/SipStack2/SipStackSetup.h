@@ -104,6 +104,9 @@ public:
 
 	/** CSipMessage 객체를 큐잉하는 최대 개수 */
 	int					m_iSipMessageQueueSize;
+
+	/** UDP 전송/수신 버퍼 최대 크기 */
+	int					m_iUdpBufSize;
 };
 
 #endif

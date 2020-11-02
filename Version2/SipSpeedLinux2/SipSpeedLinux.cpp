@@ -62,6 +62,7 @@ int main( int argc, char * argv[] )
 	clsSetup.m_iStackExecutePeriod = 100;
 	clsSetup.m_iTimerD = 4000;
 	clsSetup.m_iTimerJ = 4000;
+	clsSetup.m_iUdpBufSize = 1500000;
 
 	gclsSipDeleteQueue.SetQueueSize( 1000 );
 

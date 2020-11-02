@@ -95,6 +95,7 @@ int ServiceMain( )
 	clsSetup.m_iTimerD = gclsSetup.m_iTimerD;
 	clsSetup.m_iTimerJ = gclsSetup.m_iTimerJ;
 	clsSetup.m_bIpv6 = gclsSetup.m_bIpv6;
+	clsSetup.m_iUdpBufSize = gclsSetup.m_iUdpBufSize;
 
 	clsSetup.m_bUseRegisterSession = gclsSetup.m_bUseRegisterSession;
 

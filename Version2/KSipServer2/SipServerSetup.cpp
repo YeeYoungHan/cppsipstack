@@ -118,6 +118,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "Ipv6", m_bIpv6 );
 	pclsElement->SelectElementData( "UseRegisterSession", m_bUseRegisterSession );
 	pclsElement->SelectElementData( "SipMessageQueueCount", m_iSipMessageQueueCount );
+	pclsElement->SelectElementData( "UdpBufSize", m_iUdpBufSize );
 
 	// ·Î±×
 	pclsElement = clsXml.SelectElement( "Log" );
