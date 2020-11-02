@@ -20,7 +20,7 @@
 #include "MemoryDebug.h"
 
 CSipDeleteQueue gclsSipDeleteQueue;
-extern time_t giTime;
+time_t giTime = 0;
 
 /**
  * @ingroup SipStack

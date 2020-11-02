@@ -22,7 +22,7 @@
 #include "ServerUtility.h"
 #include "MemoryDebug.h"
 
-time_t giTime = 0;
+extern time_t giTime;
 
 /**
  * @ingroup SipStack
