@@ -670,23 +670,23 @@ void CSipMessage::Clear()
 	m_clsFrom.Clear();
 	m_clsTo.Clear();
 
-	ClearList< SIP_VIA_LIST, CSipVia >( m_clsViaList );
-	ClearList< SIP_FROM_LIST, CSipFrom >( m_clsContactList );
-	ClearList< SIP_FROM_LIST, CSipFrom >( m_clsRecordRouteList );
-	ClearList< SIP_FROM_LIST, CSipFrom >( m_clsRouteList ); 
+	ClearList< SIP_VIA_LIST, SIP_VIA_LIST::iterator >( m_clsViaList );
+	ClearList< SIP_FROM_LIST, SIP_FROM_LIST::iterator >( m_clsContactList );
+	ClearList< SIP_FROM_LIST, SIP_FROM_LIST::iterator >( m_clsRecordRouteList );
+	ClearList< SIP_FROM_LIST, SIP_FROM_LIST::iterator >( m_clsRouteList ); 
 
 #ifdef USE_ACCEPT_HEADER
-	ClearList< SIP_CONTENT_TYPE_LIST, CSipContentType >( m_clsAcceptList );
+	ClearList< SIP_CONTENT_TYPE_LIST, SIP_CONTENT_TYPE_LIST::iterator >( m_clsAcceptList );
                             
-	ClearList< SIP_ACCEPT_DATA_LIST, CSipAcceptData >( m_clsAcceptEncodingList );
-	ClearList< SIP_ACCEPT_DATA_LIST, CSipAcceptData >( m_clsAcceptLanguageList );
+	ClearList< SIP_ACCEPT_DATA_LIST, SIP_ACCEPT_DATA_LIST::iterator >( m_clsAcceptEncodingList );
+	ClearList< SIP_ACCEPT_DATA_LIST, SIP_ACCEPT_DATA_LIST::iterator >( m_clsAcceptLanguageList );
 #endif
 
-	ClearList< SIP_CREDENTIAL_LIST, CSipCredential >( m_clsAuthorizationList );
-	ClearList< SIP_CHALLENGE_LIST, CSipChallenge >( m_clsWwwAuthenticateList );
+	ClearList< SIP_CREDENTIAL_LIST, SIP_CREDENTIAL_LIST::iterator >( m_clsAuthorizationList );
+	ClearList< SIP_CHALLENGE_LIST, SIP_CHALLENGE_LIST::iterator >( m_clsWwwAuthenticateList );
 
-	ClearList< SIP_CREDENTIAL_LIST, CSipCredential >( m_clsProxyAuthorizationList );
-	ClearList< SIP_CHALLENGE_LIST, CSipChallenge >( m_clsProxyAuthenticateList ); 
+	ClearList< SIP_CREDENTIAL_LIST, SIP_CREDENTIAL_LIST::iterator >( m_clsProxyAuthorizationList );
+	ClearList< SIP_CHALLENGE_LIST, SIP_CHALLENGE_LIST::iterator >( m_clsProxyAuthenticateList ); 
 
 	m_clsHeaderList.clear();            
 
@@ -1040,12 +1040,12 @@ CSipMessage * CSipMessage::CreateResponse( int iStatus, const char * pszToTag )
 	pclsResponse->m_clsCSeq = m_clsCSeq;
 	pclsResponse->m_eTransport = m_eTransport;
 
-	CopyList< SIP_VIA_LIST, CSipVia >( m_clsViaList, pclsResponse->m_clsViaList );
+	CopyList< SIP_VIA_LIST, CSipVia, SIP_VIA_LIST::iterator >( m_clsViaList, pclsResponse->m_clsViaList );
 
 	if( iStatus != SIP_TRYING )
 	{
 		// 100 Trying 은 SIP Record-Route 헤더를 포함하지 않아도 된다.
-		CopyList< SIP_FROM_LIST, CSipFrom >( m_clsRecordRouteList, pclsResponse->m_clsRecordRouteList );
+		CopyList< SIP_FROM_LIST, CSipFrom, SIP_FROM_LIST::iterator >( m_clsRecordRouteList, pclsResponse->m_clsRecordRouteList );
 	}
 
 	if( pszToTag )
@@ -1076,7 +1076,7 @@ CSipMessage * CSipMessage::CreateResponseWithToTag( int iStatus )
 	pclsResponse->m_clsCSeq = m_clsCSeq;
 	pclsResponse->m_eTransport = m_eTransport;
 
-	CopyList< SIP_VIA_LIST, CSipVia >( m_clsViaList, pclsResponse->m_clsViaList );
+	CopyList< SIP_VIA_LIST, CSipVia, SIP_VIA_LIST::iterator >( m_clsViaList, pclsResponse->m_clsViaList );
 
 	if( pclsResponse->m_clsTo.SelectParam( SIP_TAG ) == false )
 	{
@@ -1096,21 +1096,21 @@ CSipMessage & CSipMessage::operator=( CSipMessage & clsOld )
 	m_clsFrom = clsOld.m_clsFrom;
 	m_clsTo = clsOld.m_clsTo;
 
-	CopyList< SIP_VIA_LIST, CSipVia >( clsOld.m_clsViaList, m_clsViaList );
-	CopyList< SIP_FROM_LIST, CSipFrom >( clsOld.m_clsContactList, m_clsContactList );
-	CopyList< SIP_FROM_LIST, CSipFrom >( clsOld.m_clsRecordRouteList, m_clsRecordRouteList );
-	CopyList< SIP_FROM_LIST, CSipFrom >( clsOld.m_clsRouteList, m_clsRouteList );
+	CopyList< SIP_VIA_LIST, CSipVia, SIP_VIA_LIST::iterator >( clsOld.m_clsViaList, m_clsViaList );
+	CopyList< SIP_FROM_LIST, CSipFrom, SIP_FROM_LIST::iterator >( clsOld.m_clsContactList, m_clsContactList );
+	CopyList< SIP_FROM_LIST, CSipFrom, SIP_FROM_LIST::iterator >( clsOld.m_clsRecordRouteList, m_clsRecordRouteList );
+	CopyList< SIP_FROM_LIST, CSipFrom, SIP_FROM_LIST::iterator >( clsOld.m_clsRouteList, m_clsRouteList );
 
 #ifdef USE_ACCEPT_HEADER
-	CopyList< SIP_CONTENT_TYPE_LIST, CSipContentType >( clsOld.m_clsAcceptList, m_clsAcceptList );
-	CopyList< SIP_ACCEPT_DATA_LIST, CSipAcceptData >( clsOld.m_clsAcceptEncodingList, m_clsAcceptEncodingList );
-	CopyList< SIP_ACCEPT_DATA_LIST, CSipAcceptData >( clsOld.m_clsAcceptLanguageList, m_clsAcceptLanguageList );
+	CopyList< SIP_CONTENT_TYPE_LIST, CSipContentType, SIP_CONTENT_TYPE_LIST::iterator >( clsOld.m_clsAcceptList, m_clsAcceptList );
+	CopyList< SIP_ACCEPT_DATA_LIST, CSipAcceptData, SIP_ACCEPT_DATA_LIST::iterator >( clsOld.m_clsAcceptEncodingList, m_clsAcceptEncodingList );
+	CopyList< SIP_ACCEPT_DATA_LIST, CSipAcceptData, SIP_ACCEPT_DATA_LIST::iterator >( clsOld.m_clsAcceptLanguageList, m_clsAcceptLanguageList );
 #endif
 
-	CopyList< SIP_CREDENTIAL_LIST, CSipCredential >( clsOld.m_clsAuthorizationList, m_clsAuthorizationList );
-	CopyList< SIP_CHALLENGE_LIST, CSipChallenge >( clsOld.m_clsWwwAuthenticateList, m_clsWwwAuthenticateList );
-	CopyList< SIP_CREDENTIAL_LIST, CSipCredential >( clsOld.m_clsProxyAuthorizationList, m_clsProxyAuthorizationList );
-	CopyList< SIP_CHALLENGE_LIST, CSipChallenge >( clsOld.m_clsProxyAuthenticateList, m_clsProxyAuthenticateList );
+	CopyList< SIP_CREDENTIAL_LIST, CSipCredential, SIP_CREDENTIAL_LIST::iterator >( clsOld.m_clsAuthorizationList, m_clsAuthorizationList );
+	CopyList< SIP_CHALLENGE_LIST, CSipChallenge, SIP_CHALLENGE_LIST::iterator >( clsOld.m_clsWwwAuthenticateList, m_clsWwwAuthenticateList );
+	CopyList< SIP_CREDENTIAL_LIST, CSipCredential, SIP_CREDENTIAL_LIST::iterator >( clsOld.m_clsProxyAuthorizationList, m_clsProxyAuthorizationList );
+	CopyList< SIP_CHALLENGE_LIST, CSipChallenge, SIP_CHALLENGE_LIST::iterator >( clsOld.m_clsProxyAuthenticateList, m_clsProxyAuthenticateList );
 
 	m_clsHeaderList = clsOld.m_clsHeaderList;
 	m_clsCSeq = clsOld.m_clsCSeq;
