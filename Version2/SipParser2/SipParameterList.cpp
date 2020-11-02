@@ -236,7 +236,7 @@ const char * CSipParameterList::SelectParamValue( const char * pszName )
  */
 void CSipParameterList::ClearParam()
 {
-	ClearList<SIP_PARAMETER_LIST>( m_clsParamList );
+	ClearList< SIP_PARAMETER_LIST, CSipParameter >( m_clsParamList );
 }
 
 CSipParameterList & CSipParameterList::operator=( CSipParameterList & clsOld )

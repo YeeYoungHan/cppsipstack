@@ -670,23 +670,23 @@ void CSipMessage::Clear()
 	m_clsFrom.Clear();
 	m_clsTo.Clear();
 
-	ClearList<SIP_VIA_LIST>( m_clsViaList );
-	ClearList<SIP_FROM_LIST>( m_clsContactList );
-	ClearList<SIP_FROM_LIST>( m_clsRecordRouteList );
-	ClearList<SIP_FROM_LIST>( m_clsRouteList ); 
+	ClearList< SIP_VIA_LIST, CSipVia >( m_clsViaList );
+	ClearList< SIP_FROM_LIST, CSipFrom >( m_clsContactList );
+	ClearList< SIP_FROM_LIST, CSipFrom >( m_clsRecordRouteList );
+	ClearList< SIP_FROM_LIST, CSipFrom >( m_clsRouteList ); 
 
 #ifdef USE_ACCEPT_HEADER
-	ClearList<SIP_CONTENT_TYPE_LIST>( m_clsAcceptList );
+	ClearList< SIP_CONTENT_TYPE_LIST, CSipContentType >( m_clsAcceptList );
                             
-	ClearList<SIP_ACCEPT_DATA_LIST>( m_clsAcceptEncodingList );
-	ClearList<SIP_ACCEPT_DATA_LIST>( m_clsAcceptLanguageList );
+	ClearList< SIP_ACCEPT_DATA_LIST, CSipAcceptData >( m_clsAcceptEncodingList );
+	ClearList< SIP_ACCEPT_DATA_LIST, CSipAcceptData >( m_clsAcceptLanguageList );
 #endif
 
-	ClearList<SIP_CREDENTIAL_LIST>( m_clsAuthorizationList );
-	ClearList<SIP_CHALLENGE_LIST>( m_clsWwwAuthenticateList );
+	ClearList< SIP_CREDENTIAL_LIST, CSipCredential >( m_clsAuthorizationList );
+	ClearList< SIP_CHALLENGE_LIST, CSipChallenge >( m_clsWwwAuthenticateList );
 
-	ClearList<SIP_CREDENTIAL_LIST>( m_clsProxyAuthorizationList );
-	ClearList<SIP_CHALLENGE_LIST>( m_clsProxyAuthenticateList ); 
+	ClearList< SIP_CREDENTIAL_LIST, CSipCredential >( m_clsProxyAuthorizationList );
+	ClearList< SIP_CHALLENGE_LIST, CSipChallenge >( m_clsProxyAuthenticateList ); 
 
 	m_clsHeaderList.clear();            
 
