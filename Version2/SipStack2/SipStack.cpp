@@ -91,10 +91,29 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 		m_hUdpSocket = UdpListen( m_clsSetup.m_iLocalUdpPort, NULL, m_clsSetup.m_bIpv6 );
 		if( m_hUdpSocket == INVALID_SOCKET ) return false;
 
-		int iBufSize;
+		int iBufSize = 0;
 		int iIntSize = sizeof(iBufSize);
 
 		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, &iIntSize );
+		printf( "send buffer size = %d\n", iBufSize );
+
+		iBufSize = 1500 * 1000;
+		setsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, iIntSize );
+
+		iBufSize = 0;
+		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_SNDBUF, (char *)&iBufSize, &iIntSize );
+		printf( "send buffer size = %d\n", iBufSize );
+
+		iBufSize = 0;
+		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&iBufSize, &iIntSize );
+		printf( "recv buffer size = %d\n", iBufSize );
+
+		iBufSize = 1500 * 1000;
+		setsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&iBufSize, iIntSize );
+
+		iBufSize = 0;
+		getsockopt( m_hUdpSocket, SOL_SOCKET, SO_RCVBUF, (char *)&iBufSize, &iIntSize );
+		printf( "recv buffer size = %d\n", iBufSize );
 	}
 
 	if( m_clsSetup.m_iLocalTcpPort > 0 )
