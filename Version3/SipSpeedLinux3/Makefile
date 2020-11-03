@@ -2,18 +2,18 @@
 #
 # programmer : yee young han ( websearch@naver.com )
 #            : http://blog.naver.com/websearch
-# start date : 2014/08/18
+# start date : 2020/11/03
 
 include ../Makefile.mk
 
-INC=-I../SipUserAgent -I../SipStack -I../SipParser -I../SdpParser \
-	-I../XmlParser -I../SipPlatform $(OPENSSL_INC)
-LIB=-L../SipUserAgent -lsipuseragent \
-	-L../SipStack -lsipstack \
-	-L../SipParser -lsipparser \
-	-L../SdpParser -lsdpparser \
-	-L../XmlParser -lxmlparser \
-	-L../SipPlatform -lsipplatform \
+INC=-I../SipUserAgent3 -I../SipStack3 -I../../SipParser -I../../SdpParser \
+	-I../../XmlParser -I../../SipPlatform $(OPENSSL_INC)
+LIB=-L../SipUserAgent3 -lsipuseragent \
+	-L../SipStack3 -lsipstack \
+	-L../../SipParser -lsipparser \
+	-L../../SdpParser -lsdpparser \
+	-L../../XmlParser -lxmlparser \
+	-L../../SipPlatform -lsipplatform \
 	$(OPENSSL_LIB) -lssl -lcrypto -lpthread
 
 .SUFFIXES: .o .cpp

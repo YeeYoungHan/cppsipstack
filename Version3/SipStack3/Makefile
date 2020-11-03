@@ -2,11 +2,11 @@
 #
 # programmer : yee young han ( websearch@naver.com )
 #            : http://blog.naver.com/websearch
-# start date : 2012/07/12
+# start date : 2020/11/03
 
 include ../Makefile.mk
 
-INC=-I../SipParser -I../SipPlatform $(OPENSSL_INC)
+INC=-I../../SipParser -I../../SipPlatform $(OPENSSL_INC)
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
