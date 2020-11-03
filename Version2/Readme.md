@@ -1,4 +1,4 @@
-# C++ SIP stack 튜닝 프로젝트
+# C++ SIP stack 2차 튜닝 프로젝트
 C++ STL 기반으로 SIP stack 을 튜닝하는 프로젝트입니다.
 
 ### 개발자 정보
