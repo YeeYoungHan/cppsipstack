@@ -66,7 +66,7 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact, CXmlUs
 	if( pclsMessage->GetTopViaIpPort( clsInfo.m_strIp, clsInfo.m_iPort ) == false ) return false;
 	clsInfo.m_iLoginTimeout = pclsMessage->GetExpires();
 
-	if( clsInfo.m_iLoginTimeout == 0 && pclsMessage->IsMethod( "REGISTER" ) )
+	if( clsInfo.m_iLoginTimeout == 0 && pclsMessage->IsMethod( SIP_METHOD_REGISTER ) )
 	{
 		return false;
 	}
@@ -86,7 +86,12 @@ bool CUserMap::Insert( CSipMessage * pclsMessage, CSipFrom * pclsContact, CXmlUs
 	}
 	else
 	{
-		itMap->second = clsInfo;
+		// SIP REGISTER 를 제외한 요청에서 IP 주소 또는 포트 번호가 변경된 경우, m_iLoginTimeout 를 0 으로 저장하지 않기 위해서 각 멤버별로 저장함
+		itMap->second.m_strIp = clsInfo.m_strIp;
+		itMap->second.m_iPort = clsInfo.m_iPort;
+		itMap->second.m_eTransport = clsInfo.m_eTransport;
+		itMap->second.m_strGroupId = clsInfo.m_strGroupId;
+
 		CLog::Print( LOG_DEBUG, "user(%s) is updated (%s:%d:%d) group(%s)"
 			, strUserId.c_str(), clsInfo.m_strIp.c_str(), clsInfo.m_iPort, clsInfo.m_eTransport, clsInfo.m_strGroupId.c_str() );
 	}
