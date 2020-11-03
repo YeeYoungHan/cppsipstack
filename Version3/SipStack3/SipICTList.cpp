@@ -64,9 +64,16 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 		{
 			if( pclsMessage->IsMethod( SIP_METHOD_ACK ) )
 			{
-				for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
+				INVITE_CALL_ID_MAP::iterator itCIM;
+				std::string strCallId;
+
+				pclsMessage->GetCallId( strCallId );
+
+				itCIM = m_clsCallIdMap.find( strCallId );
+				if( itCIM != m_clsCallIdMap.end() )
 				{
-					if( itMap->second->m_pclsRequest->IsEqualCallId( pclsMessage ) )
+					itMap = m_clsMap.find( itCIM->second );
+					if( itMap != m_clsMap.end() )
 					{
 						if( itMap->second->m_pclsAck == NULL )
 						{
@@ -75,6 +82,7 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 								// INVITE 에 대한 응답 메시지가 401 인 ACK 메시지를 수신하면 Transaction 을 바로 삭제한다.
 								delete itMap->second;
 								m_clsMap.erase( itMap );
+								m_clsCallIdMap.erase( itCIM );
 							}
 							else
 							{
@@ -83,7 +91,6 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 							}
 							
 							bRes = true;
-							break;
 						}
 					}
 				}
@@ -98,6 +105,17 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 
 					m_clsMap.insert( INVITE_TRANSACTION_MAP::value_type( strKey, psttTransaction ) );
 					bRes = true;
+
+					INVITE_CALL_ID_MAP::iterator itCIM;
+					std::string strCallId;
+
+					pclsMessage->GetCallId( strCallId );
+
+					itCIM = m_clsCallIdMap.find( strCallId );
+					if( itCIM == m_clsCallIdMap.end() )
+					{
+						m_clsCallIdMap.insert( INVITE_CALL_ID_MAP::value_type( strCallId, strKey ) );
+					}
 				}
 			}
 		}
@@ -165,7 +183,9 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 void CSipICTList::Execute( struct timeval * psttTime )
 {
 	INVITE_TRANSACTION_MAP::iterator	itMap, itNext;
+	INVITE_CALL_ID_MAP::iterator	itCIM;
 	SIP_MESSAGE_LIST	clsResponseList;
+	std::string strCallId;
 
 	m_clsMutex.acquire();
 	for( itMap = m_clsMap.begin(); itMap != m_clsMap.end(); ++itMap )
@@ -179,8 +199,16 @@ DELETE_TRANSACTION:
 				itNext = itMap;
 				++itNext;
 
+				itMap->second->m_pclsRequest->GetCallId( strCallId );
+
 				delete itMap->second;
 				m_clsMap.erase( itMap );
+
+				itCIM = m_clsCallIdMap.find( strCallId );
+				if( itCIM != m_clsCallIdMap.end() )
+				{
+					m_clsCallIdMap.erase( itCIM );
+				}
 
 				if( itNext == m_clsMap.end() ) break;
 				itMap = itNext;
@@ -251,6 +279,7 @@ void CSipICTList::DeleteAll( )
 	}
 
 	m_clsMap.clear();
+	m_clsCallIdMap.clear();
 	m_clsMutex.release();
 }
 
@@ -272,8 +301,8 @@ int CSipICTList::GetSize( )
 
 /**
  * @ingroup SipStack
- * @brief ICT 에 저장된 SIP Call-ID 들을 문자열에 저장한다.
- * @param strBuf SIP Call-ID 들을 저장할 변수
+ * @brief ICT 에 저장된 KEY 들을 문자열에 저장한다.
+ * @param strBuf KEY 들을 저장할 변수
  */
 void CSipICTList::GetString( CMonitorString & strBuf )
 {
@@ -309,4 +338,20 @@ void CSipICTList::GetTransactionMap( INVITE_TRANSACTION_MAP & clsMap )
 	m_clsMutex.acquire();
 	clsMap = m_clsMap;
 	m_clsMutex.release();
+}
+
+/**
+ * @ingroup SipStack3
+ * @brief SIP Call-ID 자료구조에 저장된 개수를 리턴한다.
+ * @returns SIP Call-ID 자료구조에 저장된 개수를 리턴한다.
+ */
+int CSipICTList::GetCallIdCount( )
+{
+	int iCount = 0;
+
+	m_clsMutex.acquire();
+	iCount = (int)m_clsCallIdMap.size();
+	m_clsMutex.release();
+
+	return iCount;
 }

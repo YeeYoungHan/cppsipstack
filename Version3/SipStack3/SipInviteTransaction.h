@@ -58,5 +58,6 @@ public:
 };
 
 typedef MAP< std::string, CSipInviteTransaction * > INVITE_TRANSACTION_MAP;
+typedef MAP< std::string, std::string > INVITE_CALL_ID_MAP;
 
 #endif

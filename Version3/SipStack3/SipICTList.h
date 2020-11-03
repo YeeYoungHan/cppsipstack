@@ -41,8 +41,11 @@ public:
 	void SetTimerD( int iMiliSecond );
 	void GetTransactionMap( INVITE_TRANSACTION_MAP & clsMap );
 
+	int GetCallIdCount( );
+
 private:
 	INVITE_TRANSACTION_MAP	m_clsMap;
+	INVITE_CALL_ID_MAP			m_clsCallIdMap;
 	int m_iTimerD;
 };
 
