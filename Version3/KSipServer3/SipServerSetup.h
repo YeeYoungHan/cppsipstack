@@ -113,6 +113,9 @@ public:
 	/** SIP REGISTER 를 전송한 후, 수신한 401 응답의 Authenticate 를 저장하여서 다음 주기의 SIP REGISTER 메시지를 생성할 때에 사용하는 경우 true 로 설정한다. */
 	bool				m_bUseRegisterSession;
 
+	/** UDP 전송/수신 버퍼 크기 */
+	int					m_iUdpBufSize;
+
 	// ================================================================
 	// 로그 기능
 

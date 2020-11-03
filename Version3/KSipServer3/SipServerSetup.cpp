@@ -116,6 +116,7 @@ bool CSipServerSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "TimerJ", m_iTimerJ );
 	pclsElement->SelectElementData( "Ipv6", m_bIpv6 );
 	pclsElement->SelectElementData( "UseRegisterSession", m_bUseRegisterSession );
+	pclsElement->SelectElementData( "UdpBufSize", m_iUdpBufSize );
 
 	// ·Î±×
 	pclsElement = clsXml.SelectElement( "Log" );

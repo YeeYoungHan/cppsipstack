@@ -96,6 +96,7 @@ int ServiceMain( )
 	clsSetup.m_bIpv6 = gclsSetup.m_bIpv6;
 
 	clsSetup.m_bUseRegisterSession = gclsSetup.m_bUseRegisterSession;
+	clsSetup.m_iUdpBufSize = gclsSetup.m_iUdpBufSize;
 
 	Fork( gbFork );
 	SetCoreDumpEnable();
