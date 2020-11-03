@@ -135,6 +135,7 @@ int main( int argc, char * argv[] )
 
 	printf( "call success(%d) / error(%d) / cps(%.3f) / time(%d ms)\n", clsCallBack.m_iCallSuccess, clsCallBack.m_iCallError, fCps, iDiff );
 
+	gclsSipUserAgent.m_clsSipStack.PrintReSendCount();
 	gclsSipUserAgent.Stop();
 
 	return 0;

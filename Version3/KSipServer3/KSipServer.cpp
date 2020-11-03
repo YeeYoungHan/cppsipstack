@@ -163,6 +163,7 @@ int ServiceMain( )
 		sleep( 1 );
 	}
 
+	gclsUserAgent.m_clsSipStack.PrintReSendCount();
 	gclsUserAgent.Stop();
 	gclsUserAgent.Final();
 

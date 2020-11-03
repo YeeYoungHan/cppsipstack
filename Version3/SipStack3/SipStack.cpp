@@ -319,7 +319,9 @@ void CSipStack::GetString( CMonitorString & strBuf )
 	strBuf.AddCol( m_clsNICT.GetSize() );
 	strBuf.AddCol( m_clsIST.GetSize() );
 	strBuf.AddCol( m_clsNIST.GetSize() );
-	strBuf.AddRow( gclsSipDeleteQueue.GetSize() );
+	strBuf.AddCol( gclsSipDeleteQueue.GetSize() );
+	strBuf.AddCol( m_clsICT.GetCallIdCount() );
+	strBuf.AddRow( m_clsIST.GetCallIdCount() );
 }
 
 /**
@@ -365,6 +367,11 @@ void CSipStack::DeleteAllTransaction()
 void CSipStack::GetICTMap( INVITE_TRANSACTION_MAP & clsMap )
 {
 	m_clsICT.GetTransactionMap( clsMap );
+}
+
+void CSipStack::PrintReSendCount()
+{
+	printf( "ReSendCount ICT(%u) IST(%u) NICT(%u) NIST(%u)\n", m_clsICT.GetReSendCount(), m_clsIST.GetReSendCount(), m_clsNICT.GetReSendCount(), m_clsNIST.GetReSendCount() ); 
 }
 
 /**

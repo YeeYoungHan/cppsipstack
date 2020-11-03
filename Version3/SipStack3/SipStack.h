@@ -68,6 +68,8 @@ public:
 	void DeleteAllTransaction();
 	void GetICTMap( INVITE_TRANSACTION_MAP & clsMap );
 
+	void PrintReSendCount();
+
 	// SipStackCallBack.hpp
 	bool AddCallBack( ISipStackCallBack * pclsCallBack );
 	bool DeleteCallBack( ISipStackCallBack * pclsCallBack );

@@ -19,9 +19,14 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.31"
+#define SIP_STACK_VERSION "3.32"
 
 /* 버전 정보
+
+= 버전 3.32 ( 2020년 11월 3일 ) =
+ * transaction list 에서 ACK 검색 성능 향상
+ * UDP 전송/수신 버퍼 크기 설정 기능 추가
+ * SIP 재전송 횟수 출력 기능 추가
 
 = 버전 0.31 ( 2010년 10월 24일 ) =
  * m_bUseRegisterSession 설정 기능을 추가함

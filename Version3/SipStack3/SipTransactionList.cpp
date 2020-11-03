@@ -31,7 +31,7 @@ int CSipTransactionList::m_arrICTReSendTime[MAX_ICT_RESEND_COUNT] = { 500
 	, 31500
 	, 32000 };
 
-CSipTransactionList::CSipTransactionList() : m_pclsSipStack(NULL)
+CSipTransactionList::CSipTransactionList() : m_pclsSipStack(NULL), m_iReSendCount(0)
 {
 
 }
@@ -144,4 +144,9 @@ bool CSipTransactionList::GetKey( CSipMessage * pclsMessage, const char * pszMet
 	}
 
 	return true;
+}
+
+uint32_t CSipTransactionList::GetReSendCount( )
+{
+	return m_iReSendCount;
 }

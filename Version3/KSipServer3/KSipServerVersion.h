@@ -19,9 +19,14 @@
 #ifndef _K_SIP_SERVER_VERSION_H_
 #define _K_SIP_SERVER_VERSION_H_
 
-#define KSIP_SERVER_VERSION	"0.25"
+#define KSIP_SERVER_VERSION	"3.26"
 
 /* 버전 정보 
+
+= 버전 3.26 ( 2020년 11월 3일 ) =
+ * transaction list 에서 ACK 검색 성능 향상
+ * UDP 전송/수신 버퍼 크기 설정 기능 추가
+ * SIP 재전송 횟수 출력 기능 추가
 
 = 버전 0.25 ( 2020년 10월 7일 ) =
  * SIP 클라이언트의 IP/Port 가 변경된 경우, 인증 정보가 정확한지 확인한다.

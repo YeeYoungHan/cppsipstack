@@ -167,6 +167,7 @@ bool CSipICTList::Insert( CSipMessage * pclsMessage )
 			if( itMap->second->m_pclsAck )
 			{
 				m_pclsSipStack->Send( itMap->second->m_pclsAck, false );
+				++m_iReSendCount;
 			}
 		}
 		m_clsMutex.release();
@@ -236,6 +237,7 @@ DELETE_TRANSACTION:
 				else if( itMap->second->m_pclsRequest->m_eTransport == E_SIP_UDP )
 				{
 					m_pclsSipStack->Send( itMap->second->m_pclsRequest, false );
+					++m_iReSendCount;
 				}
 			}
 		}

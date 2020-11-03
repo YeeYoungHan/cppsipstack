@@ -170,6 +170,7 @@ DELETE_TRANSACTION:
 				else if( itMap->second->m_pclsRequest->m_eTransport == E_SIP_UDP )
 				{
 					m_pclsSipStack->Send( itMap->second->m_pclsRequest, false );
+					++m_iReSendCount;
 				}
 			}
 		}
