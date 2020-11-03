@@ -61,6 +61,7 @@ int main( int argc, char * argv[] )
 	clsSetup.m_iStackExecutePeriod = 100;
 	clsSetup.m_iTimerD = 4000;
 	clsSetup.m_iTimerJ = 4000;
+	clsSetup.m_iUdpBufSize = 1500000;
 
 	for( int i = 0; i < 100; ++i )
 	{
