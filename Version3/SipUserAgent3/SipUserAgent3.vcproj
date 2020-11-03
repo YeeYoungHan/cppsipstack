@@ -149,19 +149,19 @@
 			Name="Dialog"
 			>
 			<File
-				RelativePath="..\..\SipUserAgent\SipCdr.cpp"
+				RelativePath=".\SipCdr.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipCdr.h"
+				RelativePath=".\SipCdr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipDialog.cpp"
+				RelativePath=".\SipDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipDialog.h"
+				RelativePath=".\SipDialog.h"
 				>
 			</File>
 		</Filter>
@@ -169,19 +169,19 @@
 			Name="Register"
 			>
 			<File
-				RelativePath="..\..\SipUserAgent\SipRegisterThread.cpp"
+				RelativePath=".\SipRegisterThread.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipRegisterThread.h"
+				RelativePath=".\SipRegisterThread.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipServerInfo.cpp"
+				RelativePath=".\SipServerInfo.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipServerInfo.h"
+				RelativePath=".\SipServerInfo.h"
 				>
 			</File>
 		</Filter>
@@ -189,59 +189,59 @@
 			Name="UserAgent"
 			>
 			<File
-				RelativePath="..\..\SipUserAgent\RtpDirection.cpp"
+				RelativePath=".\RtpDirection.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\RtpDirection.h"
+				RelativePath=".\RtpDirection.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgent.cpp"
+				RelativePath=".\SipUserAgent.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgent.h"
+				RelativePath=".\SipUserAgent.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentCall.hpp"
+				RelativePath=".\SipUserAgentCall.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentCallBack.cpp"
+				RelativePath=".\SipUserAgentCallBack.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentCallBack.h"
+				RelativePath=".\SipUserAgentCallBack.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentLogin.hpp"
+				RelativePath=".\SipUserAgentLogin.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentMonitor.hpp"
+				RelativePath=".\SipUserAgentMonitor.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentSend.hpp"
+				RelativePath=".\SipUserAgentSend.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentSipStack.hpp"
+				RelativePath=".\SipUserAgentSipStack.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentSms.hpp"
+				RelativePath=".\SipUserAgentSms.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentUtil.hpp"
+				RelativePath=".\SipUserAgentUtil.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentVersion.h"
+				RelativePath=".\SipUserAgentVersion.h"
 				>
 			</File>
 		</Filter>
@@ -249,39 +249,39 @@
 			Name="UserAgentSip"
 			>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentBye.hpp"
+				RelativePath=".\SipUserAgentBye.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentCancel.hpp"
+				RelativePath=".\SipUserAgentCancel.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentInvite.hpp"
+				RelativePath=".\SipUserAgentInvite.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentMessage.hpp"
+				RelativePath=".\SipUserAgentMessage.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentNotify.hpp"
+				RelativePath=".\SipUserAgentNotify.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentOptions.hpp"
+				RelativePath=".\SipUserAgentOptions.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentPrack.hpp"
+				RelativePath=".\SipUserAgentPrack.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentRefer.hpp"
+				RelativePath=".\SipUserAgentRefer.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\SipUserAgent\SipUserAgentRegister.hpp"
+				RelativePath=".\SipUserAgentRegister.hpp"
 				>
 			</File>
 		</Filter>
