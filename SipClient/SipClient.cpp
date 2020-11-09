@@ -120,6 +120,7 @@ void CSipClient::EventReInvite( const char * pszCallId, CSipCallRtp * pclsRemote
 	if( pclsRemoteRtp )
 	{
 		printf( "=> RTP(%s:%d) codec(%d)\n", pclsRemoteRtp->m_strIp.c_str(), pclsRemoteRtp->m_iPort, pclsRemoteRtp->m_iCodec );
+		gclsRtpThread.Start( pclsRemoteRtp->m_strIp.c_str(), pclsRemoteRtp->m_iPort );
 	}
 }
 
