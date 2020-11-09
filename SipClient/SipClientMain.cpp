@@ -19,6 +19,7 @@
 #include "SipClient.h"
 #include "Log.h"
 #include "SipUtility.h"
+#include "RtpThread.h"
 #include "MemoryDebug.h"
 
 extern std::string	gstrInviteId;
@@ -135,6 +136,12 @@ int main( int argc, char * argv[] )
 		return 0;
 	}
 
+	if( gclsRtpThread.Create() == false )
+	{
+		printf( "rtp thread create error\n" );
+		return 0;
+	}
+
 	char	szCommand[1024];
 	int		iLen;
 
@@ -160,7 +167,7 @@ int main( int argc, char * argv[] )
 
 			// QQQ: RTP 수신 IP/Port/Codec 를 넣어 주세요.
 			clsRtp.m_strIp = clsSetup.m_strLocalIp;
-			clsRtp.m_iPort = 2000;
+			clsRtp.m_iPort = gclsRtpThread.m_iPort;
 			clsRtp.m_iCodec = 0;
 
 			clsRoute.m_strDestIp = pszServerIp;
@@ -172,6 +179,7 @@ int main( int argc, char * argv[] )
 		else if( szCommand[0] == 'e' || szCommand[0] == 's' )
 		{
 			clsUserAgent.StopCall( gstrInviteId.c_str() );
+			gclsRtpThread.Stop( );
 			gstrInviteId.clear();
 		}
 		else if( szCommand[0] == 'a' )
@@ -180,10 +188,11 @@ int main( int argc, char * argv[] )
 
 			// QQQ: RTP 수신 IP/Port/Codec 를 넣어 주세요.
 			clsRtp.m_strIp = clsSetup.m_strLocalIp;
-			clsRtp.m_iPort = 2000;
+			clsRtp.m_iPort = gclsRtpThread.m_iPort;
 			clsRtp.m_iCodec = 0;
 
 			clsUserAgent.AcceptCall( gstrInviteId.c_str(), &clsRtp );
+			gclsRtpThread.Start( clsSipClient.m_clsDestRtp.m_strIp.c_str(), clsSipClient.m_clsDestRtp.m_iPort );
 		}
 		else if( szCommand[0] == 'm' )
 		{
@@ -250,6 +259,8 @@ int main( int argc, char * argv[] )
 	{
 		clsUserAgent.StopCall( gstrInviteId.c_str() );
 	}
+
+	gclsRtpThread.Stop( );
 
 	sleep(2);
 

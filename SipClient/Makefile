@@ -12,7 +12,7 @@ LIB=-L../SipUserAgent -lsipuseragent \
 	-L../SipStack -lsipstack \
 	-L../SipParser -lsipparser \
 	-L../SdpParser -lsdpparser -L../SipPlatform -lsipplatform \
-	$(OPENSSL_LIB) -lssl -lcrypto -lpthread
+	$(OPENSSL_LIB) -lssl -lcrypto -lasound -lpthread
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
@@ -20,7 +20,8 @@ LIB=-L../SipUserAgent -lsipuseragent \
 
 all: SipClient.exe
 
-SRV_OBJ=SipClient.o SipClientMain.o
+SRV_OBJ=SipClient.o SipClientMain.o \
+	G711.o RtpThread.o
 
 SipClient.exe: $(SRV_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)

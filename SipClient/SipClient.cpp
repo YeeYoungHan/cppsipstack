@@ -19,6 +19,7 @@
 #include "SipClient.h"
 #include <time.h>
 #include "Log.h"
+#include "RtpThread.h"
 #include "MemoryDebug.h"
 
 std::string	gstrInviteId;
@@ -52,6 +53,8 @@ void CSipClient::EventIncomingCall( const char * pszCallId, const char * pszFrom
 	if( pclsRtp )
 	{
 		printf( "=> RTP(%s:%d) codec(%d)\n", pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort, pclsRtp->m_iCodec );
+
+		m_clsDestRtp = *pclsRtp;
 	}
 }
 
@@ -85,6 +88,8 @@ void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 	if( pclsRtp )
 	{
 		printf( "=> RTP(%s:%d) codec(%d)\n", pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort, pclsRtp->m_iCodec );
+
+		gclsRtpThread.Start( pclsRtp->m_strIp.c_str(), pclsRtp->m_iPort );
 	}
 }
 
@@ -97,6 +102,8 @@ void CSipClient::EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp )
 void CSipClient::EventCallEnd( const char * pszCallId, int iSipStatus )
 {
 	printf( "EventCallEnd(%s,%d)\n", pszCallId, iSipStatus );
+
+	gclsRtpThread.Stop( );
 }
 
 /**

@@ -345,6 +345,38 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="RTP"
+			>
+			<File
+				RelativePath=".\G711.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\G711.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RtpHeader.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RtpThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RtpThread.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RtpThreadRecv.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RtpThreadSend.hpp"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
