@@ -76,7 +76,11 @@ THREAD_API RtpThreadRecv( LPVOID lpParameter )
 
 #ifndef WIN32
 			n = snd_pcm_writei( psttSound, szPCM, sizeof(szPCM) / 2 );
-			if( CheckError( n, "snd_pcm_writei" ) ) break;
+			if( n == -EPIPE )
+			{
+				snd_pcm_prepare(handle);
+			}
+			else if( CheckError( n, "snd_pcm_writei" ) ) break;
 #endif
 		}
 	}
