@@ -21,6 +21,10 @@
 #include "DeadLockDetectMutex.h"
 #include <map>
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 #define TEST_COUNT 10
 
 static CSipMutexSignal gclsMutexSignal;
