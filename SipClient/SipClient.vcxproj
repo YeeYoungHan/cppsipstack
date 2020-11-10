@@ -178,10 +178,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="G711.cpp" />
+    <ClCompile Include="RtpThread.cpp" />
     <ClCompile Include="SipClient.cpp" />
     <ClCompile Include="SipClientMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="G711.h" />
+    <ClInclude Include="RtpHeader.h" />
+    <ClInclude Include="RtpThread.h" />
+    <ClInclude Include="RtpThreadRecv.hpp" />
+    <ClInclude Include="RtpThreadSend.hpp" />
     <ClInclude Include="SipClient.h" />
   </ItemGroup>
   <ItemGroup>

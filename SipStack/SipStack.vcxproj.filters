@@ -19,9 +19,6 @@
     <Filter Include="TLS">
       <UniqueIdentifier>{614cc1a7-fb79-4dac-9d1d-db9ef904cd88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="모니터링">
-      <UniqueIdentifier>{e416561b-377a-468d-a0e8-2a730bffed61}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SipInviteTransaction.cpp">
@@ -102,9 +99,6 @@
     <ClCompile Include="TlsFunction.cpp">
       <Filter>TLS</Filter>
     </ClCompile>
-    <ClCompile Include="MonitorString.cpp">
-      <Filter>모니터링</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SipInviteTransaction.h">
@@ -181,9 +175,6 @@
     </ClInclude>
     <ClInclude Include="TlsFunction.h">
       <Filter>TLS</Filter>
-    </ClInclude>
-    <ClInclude Include="MonitorString.h">
-      <Filter>모니터링</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

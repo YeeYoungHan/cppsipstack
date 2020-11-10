@@ -143,6 +143,7 @@
     <ClCompile Include="FileLog.cpp" />
     <ClCompile Include="FileUtility.cpp" />
     <ClCompile Include="Log.cpp" />
+    <ClCompile Include="MonitorString.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="ServerUtility.cpp" />
     <ClCompile Include="SipMd5.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="FileUtility.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="MemoryDebug.h" />
+    <ClInclude Include="MonitorString.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="ServerUtility.h" />
     <ClInclude Include="SipMd5.h" />

@@ -13,9 +13,30 @@
     <ClCompile Include="SipClientMain.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="G711.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="RtpThread.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SipClient.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="G711.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RtpHeader.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RtpThread.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RtpThreadRecv.hpp">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RtpThreadSend.hpp">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>

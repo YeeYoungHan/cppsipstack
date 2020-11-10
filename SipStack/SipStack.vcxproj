@@ -147,7 +147,6 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="MonitorString.cpp" />
     <ClCompile Include="SipBuffer.cpp" />
     <ClCompile Include="SipDeleteQueue.cpp" />
     <ClCompile Include="SipICTList.cpp" />
@@ -176,7 +175,6 @@
     <ClCompile Include="TlsFunction.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MonitorString.h" />
     <ClInclude Include="SipBuffer.h" />
     <ClInclude Include="SipDeleteQueue.h" />
     <ClInclude Include="SipICTList.h" />

@@ -59,6 +59,9 @@
     <ClCompile Include="DeadLockDetectMutex.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="MonitorString.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base64.h">
@@ -113,6 +116,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="DeadLockDetectMutex.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MonitorString.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
