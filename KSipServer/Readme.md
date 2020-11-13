@@ -46,6 +46,9 @@ KSipServer 0.06 버전의 주요 기능은 다음과 같습니다.
 
 ### 관련 포스트
 
+* https://blog.naver.com/websearch/70147577937 : KSipServer 설정 파일 설명
+* https://blog.naver.com/websearch/70148992602 : KSipServer 사용자 XML 파일 설명
+* https://blog.naver.com/websearch/70149037102 : KSipServer 외부 IP-PBX XML 파일 설명
 * https://blog.naver.com/websearch/221377762416 : KSipServer 성능 측정 결과 - 다섯번째 이야기 : 3,100cps 달성
 * https://blog.naver.com/websearch/221338166564 : KSipServer 가 RTP relay 하지 않도록 설정하는 방법
 * https://blog.naver.com/websearch/221335748185 : 패킷 덤프에는 SIP 메시지가 수신되는데 KSipServer 로그에는 수신된 SIP 메시지가 존재하지 않는 경우 해결 방법

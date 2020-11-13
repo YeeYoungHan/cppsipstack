@@ -172,8 +172,9 @@ KSipServer 에서 지정된 음성 코덱만 사용하고 싶고 음성 통신�
  #define USE_MEDIA_LIST
 ```
 
-### C++ SIP stack 관련 포스트 리스트
+### 관련 포스트
 
+* https://blog.naver.com/websearch/222139819992 : 라즈베리파이 & 우분투16 에서 실행할 수 있는 SIP 클라이언트 1차 개발 완료
 * https://blog.naver.com/websearch/222134325097 : C++ SIP stack 3차 성능 튜닝
 * https://blog.naver.com/websearch/222133591199 : C++ SIP stack 2차 성능 튜닝 - 1차 성능 튜닝 대비 47% 성능 향상
 * https://blog.naver.com/websearch/222129253727 : C++ SIP stack 1차 성능 튜닝

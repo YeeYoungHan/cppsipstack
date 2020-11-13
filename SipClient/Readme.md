@@ -19,3 +19,7 @@
 ### 라이선스
 
 * 본 프로젝트의 라이선스는 GPLv3 이고 기업용 라이선스는 websearch@naver.com 으로 문의해 주세요.
+
+### C++ SIP stack 관련 포스트 리스트
+
+* https://blog.naver.com/websearch/222139819992 : 라즈베리파이 & 우분투16 에서 실행할 수 있는 SIP 클라이언트 1차 개발 완료

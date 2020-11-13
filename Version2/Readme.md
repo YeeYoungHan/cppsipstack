@@ -26,3 +26,11 @@ C++ SIP stack API 문서는 아래의 홈페이지에서 확인하실 수 있습
 * CSipMessage 객체를 재활용하는 기능을 추가함
 * UDP 수신/전송 버퍼 크기 설정 기능을 추가
 
+### 테스트 결과
+
+* 50% 정도 성능 향상
+
+### 관련 포스트
+
+* https://blog.naver.com/websearch/222134325097 : C++ SIP stack 3차 성능 튜닝
+

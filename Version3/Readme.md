@@ -24,3 +24,10 @@ C++ SIP stack API 문서는 아래의 홈페이지에서 확인하실 수 있습
 * ICT, IST 에서 ACK 검색 속도를 향상시킴
 * UDP 수신/전송 버퍼 크기 설정 기능을 추가
 
+### 테스트 결과
+
+* 50% 정도 성능 향상
+
+### 관련 포스트
+
+* https://blog.naver.com/websearch/222133591199 : C++ SIP stack 2차 성능 튜닝
