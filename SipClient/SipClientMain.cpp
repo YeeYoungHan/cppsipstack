@@ -35,7 +35,7 @@ int main( int argc, char * argv[] )
 {
 	if( argc < 4 )
 	{
-		printf( "[Usage] %s {sip server ip} {user id} {password} {local port} {tcp}\n", argv[0] );
+		printf( "[Usage] %s {sip server ip} {user id} {password} {local port} {tcp|tls} {domain}\n", argv[0] );
 		return 0;
 	}
 
