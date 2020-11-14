@@ -33,7 +33,7 @@ THREAD_API RtpThreadRecv( LPVOID lpParameter )
   snd_pcm_hw_params_t * psttParam;
   unsigned int iValue;
 
-	n = snd_pcm_open( &psttSound, "default", SND_PCM_STREAM_PLAYBACK, 0 );
+	n = snd_pcm_open( &psttSound, gclsSetupFile.m_strSpeaker.c_str(), SND_PCM_STREAM_PLAYBACK, 0 );
   if( CheckError( n, "snd_pcm_open" ) ) goto FUNC_END;
 
   snd_pcm_hw_params_alloca( &psttParam );

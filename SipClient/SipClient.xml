@@ -1,0 +1,16 @@
+<SipClient>
+  <Sip>
+    <LocalIp>192.168.0.94</LocalIp>
+    <UdpPort>5080</UdpPort>
+  </Sip>
+  <SipServer>
+    <Ip>192.168.0.94</Ip>
+    <Port>5060</Port>
+    <UserId>1010</UserId>
+    <PassWord>1234</PassWord>
+  </SipServer>
+  <Audio>
+    <Speaker>plughw:1,0</Speaker>
+    <Mic>plughw:1,0</Mic>
+  </Audio>
+</SipClient>

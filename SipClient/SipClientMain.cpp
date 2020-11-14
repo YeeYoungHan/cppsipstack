@@ -17,6 +17,7 @@
  */
 
 #include "SipClient.h"
+#include "SipClientSetup.h"
 #include "Log.h"
 #include "SipUtility.h"
 #include "RtpThread.h"
@@ -26,58 +27,33 @@ extern std::string	gstrInviteId;
 
 /**
  * @ingroup SipClient
- * @brief 
+ * @brief SIP 클라이언트
  * @param argc 
  * @param argv 
- * @returns 
+ * @returns 0 을 리턴한다.
  */
 int main( int argc, char * argv[] )
 {
-	if( argc < 4 )
+	if( argc != 2 )
 	{
-		printf( "[Usage] %s {sip server ip} {user id} {password} {local port} {tcp|tls} {domain}\n", argv[0] );
+		printf( "[Usage] %s {xml file}\n", argv[0] );
 		return 0;
 	}
 
-	char * pszServerIp = argv[1];
-	char * pszUserId = argv[2];
-	char * pszPassWord = argv[3];
-	char * pszDomain = NULL;
-	int iLocalPort = 10000;
-	ESipTransport eTransport = E_SIP_UDP;
-	int iServerPort = SIP_UDP_PORT;
+	char * pszFileName = argv[1];
 
-	if( argc >= 5 )
+	if( gclsSetupFile.Read( pszFileName ) == false )
 	{
-		iLocalPort = atoi( argv[4] );
-	}
-
-	if( argc >= 6 )
-	{
-		if( !strcasecmp( argv[5], "tcp" ) )
-		{
-			eTransport = E_SIP_TCP;
-		}
-		else if( !strcasecmp( argv[5], "tls" ) )
-		{
-#ifndef USE_TLS
-			printf( "TLS function is not supported. please compile with USE_TLS define\n" );
-			return 0;
-#endif
-			eTransport = E_SIP_TLS;
-			iServerPort = SIP_TLS_PORT;
-		}
-	}
-
-	if( argc >= 7 )
-	{
-		pszDomain = argv[6];
+		printf( "Setup file error\n" );
+		return 0;
 	}
 
 #ifdef WIN32
+#ifdef _DEBUG
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF );
 	CLog::SetDirectory( "c:\\temp\\sipclient" );
 	CLog::SetLevel( LOG_NETWORK | LOG_DEBUG | LOG_INFO );
+#endif
 #endif
 	
 	CSipUserAgent clsUserAgent;
@@ -85,18 +61,14 @@ int main( int argc, char * argv[] )
 	CSipStackSetup clsSetup;
 	CSipClient clsSipClient;
 
-	clsServerInfo.m_strIp = pszServerIp;
-	clsServerInfo.m_strUserId = pszUserId;
-	clsServerInfo.m_strPassWord = pszPassWord;
-	clsServerInfo.m_eTransport = eTransport;
-	clsServerInfo.m_iPort = iServerPort;
+	clsServerInfo.m_strIp = gclsSetupFile.m_strSipServerIp;
+	clsServerInfo.m_strDomain = gclsSetupFile.m_strSipDomain;
+	clsServerInfo.m_strUserId = gclsSetupFile.m_strSipUserId;
+	clsServerInfo.m_strPassWord = gclsSetupFile.m_strSipPassWord;
+	clsServerInfo.m_eTransport = gclsSetupFile.m_eSipTransport;
+	clsServerInfo.m_iPort = gclsSetupFile.m_iSipServerPort;
 	clsServerInfo.m_iLoginTimeout = 600;
 	//clsServerInfo.m_iNatTimeout = 10;
-
-	if( pszDomain )
-	{
-		clsServerInfo.m_strDomain = pszDomain;
-	}
 
 	// 삼성 070 서비스 로그인시 User-Agent 헤더에 특수한 문자열이 포함되지 않으면 480 응답이 수신된다.
 	// 아래와 같이 Acrobits 으로 User-Agent 헤더가 시작하면 정상적으로 401 응답을 수신한다.
@@ -105,22 +77,18 @@ int main( int argc, char * argv[] )
 	// Expires 헤더에 300 을 입력하고 싶으면 아래와 같이 설정하면 된다.
 	// clsServerInfo.m_iLoginTimeout = 300;
 
-	// N개의 IP주소를 사용하는 호스트에서는 SIP 프로토콜로 사용할 IP주소를 직접 입력해 주세요.
-	// Vmware 등을 사용하는 경우 N개의 IP주소가 호스트에 존재합니다.
-	GetLocalIp( clsSetup.m_strLocalIp );
+	clsSetup.m_iLocalUdpPort = gclsSetupFile.m_iUdpPort;
+	clsSetup.m_strLocalIp = gclsSetupFile.m_strLocalIp;
 
-	// 클라이언트가 SIP 통신에 사용할 포트 번호를 넣어 주세요.
-	clsSetup.m_iLocalUdpPort = iLocalPort;
-
-	if( eTransport == E_SIP_TCP )
+	if( gclsSetupFile.m_eSipTransport == E_SIP_TCP )
 	{
-		clsSetup.m_iLocalTcpPort = iLocalPort;
-		clsSetup.m_iTcpCallBackThreadCount = 2;
+		clsSetup.m_iLocalTcpPort = gclsSetupFile.m_iUdpPort;
+		clsSetup.m_iTcpCallBackThreadCount = 1;
 	}
-	else if( eTransport == E_SIP_TLS )
+	else if( gclsSetupFile.m_eSipTransport == E_SIP_TLS )
 	{
-		clsSetup.m_iLocalTlsPort = iLocalPort;
-		clsSetup.m_strCertFile = "C:\\OpenProject\\CppSipStack\\trunk\\SipClient\\SipServer.pem";
+		clsSetup.m_iLocalTlsPort = gclsSetupFile.m_iUdpPort;
+		clsSetup.m_strCertFile = gclsSetupFile.m_strPemFile;
 	}
 
 	// Via 헤더 및 Contact 헤더에 로컬 수신 포트 번호를 설정하고 싶으면 아래와 같이 설정하면 된다.
@@ -165,16 +133,15 @@ int main( int argc, char * argv[] )
 			CSipCallRtp clsRtp;
 			CSipCallRoute	clsRoute;
 
-			// QQQ: RTP 수신 IP/Port/Codec 를 넣어 주세요.
 			clsRtp.m_strIp = clsSetup.m_strLocalIp;
 			clsRtp.m_iPort = gclsRtpThread.m_iPort;
 			clsRtp.m_iCodec = 0;
 
-			clsRoute.m_strDestIp = pszServerIp;
-			clsRoute.m_iDestPort = iServerPort;
-			clsRoute.m_eTransport = eTransport;
+			clsRoute.m_strDestIp = gclsSetupFile.m_strSipServerIp;
+			clsRoute.m_iDestPort = gclsSetupFile.m_iSipServerPort;
+			clsRoute.m_eTransport = gclsSetupFile.m_eSipTransport;
 
-			clsUserAgent.StartCall( pszUserId, szCommand + 2, &clsRtp, &clsRoute, gstrInviteId );
+			clsUserAgent.StartCall( gclsSetupFile.m_strSipUserId.c_str(), szCommand + 2, &clsRtp, &clsRoute, gstrInviteId );
 		}
 		else if( szCommand[0] == 'e' || szCommand[0] == 's' )
 		{
@@ -186,7 +153,6 @@ int main( int argc, char * argv[] )
 		{
 			CSipCallRtp clsRtp;
 
-			// QQQ: RTP 수신 IP/Port/Codec 를 넣어 주세요.
 			clsRtp.m_strIp = clsSetup.m_strLocalIp;
 			clsRtp.m_iPort = gclsRtpThread.m_iPort;
 			clsRtp.m_iCodec = 0;
@@ -198,11 +164,11 @@ int main( int argc, char * argv[] )
 		{
 			CSipCallRoute	clsRoute;
 
-			clsRoute.m_strDestIp = pszServerIp;
-			clsRoute.m_iDestPort = 5060;
-			clsRoute.m_eTransport = eTransport;
+			clsRoute.m_strDestIp = gclsSetupFile.m_strSipServerIp;
+			clsRoute.m_iDestPort = gclsSetupFile.m_iSipServerPort;
+			clsRoute.m_eTransport = gclsSetupFile.m_eSipTransport;
 
-			clsUserAgent.SendSms( pszUserId, szCommand + 2, "hello", &clsRoute );
+			clsUserAgent.SendSms( gclsSetupFile.m_strSipUserId.c_str(), szCommand + 2, "hello", &clsRoute );
 		}
 		else if( szCommand[0] == 'i' )
 		{

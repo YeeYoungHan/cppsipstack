@@ -53,7 +53,7 @@ THREAD_API RtpThreadSend( LPVOID lpParameter )
   snd_pcm_hw_params_t * psttParam;
   unsigned int iValue;
 
-	n = snd_pcm_open( &psttSound, "plughw:1,0", SND_PCM_STREAM_CAPTURE, 0 );
+	n = snd_pcm_open( &psttSound, gclsSetupFile.m_strMic.c_str(), SND_PCM_STREAM_CAPTURE, 0 );
   if( CheckError( n, "snd_pcm_open" ) ) goto FUNC_END;
 
 	snd_pcm_hw_params_alloca( &psttParam );

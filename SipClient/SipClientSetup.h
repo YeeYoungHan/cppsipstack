@@ -37,6 +37,9 @@ public:
 	/** SIP 서버 IP 주소 */
 	std::string	m_strSipServerIp;
 
+	/** SIP 서버 포트 번호 */
+	int					m_iSipServerPort;
+
 	/** SIP 도메인 */
 	std::string	m_strSipDomain;
 
@@ -46,9 +49,21 @@ public:
 	/** SIP 비밀번호 */
 	std::string	m_strSipPassWord;
 
+	/** SIP 통신 프로토콜 */
 	ESipTransport	m_eSipTransport;
+
+	/** TLS SIP 통신을 위한 인증서와 개인키를 저장한 PEM 파일 경로 */
+	std::string		m_strPemFile;
+
+	/** 스피커 디바이스 이름 */
+	std::string		m_strSpeaker;
+
+	/** 마이크 디바이스 이름 */
+	std::string		m_strMic;
 
 	bool Read( const char * pszFileName );
 };
+
+extern CSipClientSetup gclsSetupFile;
 
 #endif
