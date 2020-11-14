@@ -118,17 +118,31 @@ int CStunMessage::ToString( char * pszText, int iTextSize )
 			m_clsHeader.m_sMessageLength = iLen - STUN_HEADER_SIZE + 24;
 			m_clsHeader.ToString( pszText, iTextSize );
 
-			HMAC_CTX		sttCtx;
+			
 			uint8_t			szDigest[EVP_MAX_MD_SIZE];
 			uint32_t		iDigestLen;
 
 			memset( szDigest, 0, sizeof(szDigest) );
+
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+			HMAC_CTX * psttCtx = HMAC_CTX_new();
+			if( psttCtx )
+			{
+				HMAC_CTX_reset( psttCtx );
+				HMAC_Init_ex( psttCtx, m_strPassword.c_str(), m_strPassword.length(), EVP_sha1(), NULL );
+				HMAC_Update( psttCtx, (unsigned char *)pszText, iLen );
+				HMAC_Final( psttCtx, szDigest, &iDigestLen );
+				HMAC_CTX_free( psttCtx );
+			}
+#else
+			HMAC_CTX		sttCtx;
 
 			HMAC_CTX_init( &sttCtx );
 			HMAC_Init_ex( &sttCtx, m_strPassword.c_str(), m_strPassword.length(), EVP_sha1(), NULL );
 			HMAC_Update( &sttCtx, (unsigned char *)pszText, iLen );
 			HMAC_Final( &sttCtx, szDigest, &iDigestLen );
 			HMAC_CTX_cleanup( &sttCtx );
+#endif
 
 			itSAL->m_sLength = iDigestLen;
 			itSAL->m_strValue.clear();

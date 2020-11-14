@@ -355,9 +355,7 @@ bool CHttpStack::MakeWebSocketResponse( CHttpMessage * pclsRecv, CHttpMessage * 
 	memset( szOutput, 0, sizeof(szOutput) );
 
 #if OPENSSL_VERSION_NUMBER >= 0x10100000L
-	EVP_MD_CTX * psttCtx;
-
-	psttCtx = EVP_MD_CTX_new();
+	EVP_MD_CTX * psttCtx = EVP_MD_CTX_new();
 	if( psttCtx )
 	{
 		EVP_DigestInit_ex( psttCtx, m_psttMd, NULL );
