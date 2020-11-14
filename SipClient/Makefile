@@ -22,7 +22,7 @@ LIB=-L../SipUserAgent -lsipuseragent \
 
 all: SipClient.exe
 
-SRV_OBJ=SipClient.o SipClientMain.o \
+SRV_OBJ=SipClient.o SipClientMain.o SipClientSetup.o \
 	G711.o RtpThread.o
 
 SipClient.exe: $(SRV_OBJ)
