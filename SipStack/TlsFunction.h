@@ -45,8 +45,10 @@ int SSLSend( SSL * ssl, const char * szBuf, int iBufLen );
 int SSLRecv( SSL * ssl, char * szBuf, int iBufLen );
 bool SSLClose( SSL * ssl );
 
+#ifdef WIN32
 void SSLPrintLogServerCipherList( );
 void SSLPrintLogClientCipherList( );
+#endif
 
 #else
 

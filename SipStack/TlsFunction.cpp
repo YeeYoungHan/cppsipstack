@@ -481,6 +481,7 @@ bool SSLClose( SSL * ssl )
 	return true;
 }
 
+#ifdef WIN32
 /**
  * @ingroup SipStack
  * @brief SSL 서버에서 사용되는 cipher list 를 로그로 출력한다.
@@ -520,5 +521,6 @@ void SSLPrintLogClientCipherList( )
 		CLog::Print( LOG_DEBUG, "[%s] [%s] [0x%04X] (%d)", SSL_CIPHER_get_version(c), SSL_CIPHER_get_name(c), c->id - 0x3000000, i );
 	}
 }
+#endif
 
 #endif
