@@ -19,6 +19,9 @@
     <ClCompile Include="RtpThread.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SipClientSetup.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SipClient.h">
@@ -37,6 +40,9 @@
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="RtpThreadSend.hpp">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SipClientSetup.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>

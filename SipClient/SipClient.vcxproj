@@ -89,7 +89,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SdpParser;../openssl/include;../openssl/window/32bit/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SdpParser;../XmlParser;../openssl/include;../openssl/window/32bit/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -134,7 +134,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SdpParser;../openssl/include;../openssl/window/32bit/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SdpParser;../XmlParser;../openssl/include;../openssl/window/32bit/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -182,6 +182,7 @@
     <ClCompile Include="RtpThread.cpp" />
     <ClCompile Include="SipClient.cpp" />
     <ClCompile Include="SipClientMain.cpp" />
+    <ClCompile Include="SipClientSetup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="G711.h" />
@@ -190,6 +191,7 @@
     <ClInclude Include="RtpThreadRecv.hpp" />
     <ClInclude Include="RtpThreadSend.hpp" />
     <ClInclude Include="SipClient.h" />
+    <ClInclude Include="SipClientSetup.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SdpParser\SdpParser.vcxproj">
@@ -211,6 +213,9 @@
     <ProjectReference Include="..\SipUserAgent\SipUserAgent.vcxproj">
       <Project>{372b4708-6047-480e-8a4e-98e80cc8ac66}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\XmlParser\XmlParser.vcxproj">
+      <Project>{af551bc2-1af3-419b-9b54-04c2ef4fac72}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
