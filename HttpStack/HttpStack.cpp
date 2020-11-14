@@ -347,7 +347,6 @@ bool CHttpStack::MakeWebSocketResponse( CHttpMessage * pclsRecv, CHttpMessage * 
 	pclsSend->AddHeader( "Upgrade", "websocket" );
 	pclsSend->AddHeader( "Connection", "Upgrade" );
 
-	EVP_MD_CTX	sttCtx;
 	uint8_t			szDigest[EVP_MAX_MD_SIZE];
 	char				szOutput[EVP_MAX_MD_SIZE*2+1];
 	uint32_t		iDigestLen;
@@ -355,10 +354,26 @@ bool CHttpStack::MakeWebSocketResponse( CHttpMessage * pclsRecv, CHttpMessage * 
 	memset( szDigest, 0, sizeof(szDigest) );
 	memset( szOutput, 0, sizeof(szOutput) );
 
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+	EVP_MD_CTX * psttCtx;
+
+	psttCtx = EVP_MD_CTX_new();
+	if( psttCtx )
+	{
+		EVP_DigestInit_ex( psttCtx, m_psttMd, NULL );
+		EVP_DigestUpdate( psttCtx, strKey.c_str(), strKey.length() );
+		EVP_DigestUpdate( psttCtx, "258EAFA5-E914-47DA-95CA-C5AB0DC85B11", 36 );
+		EVP_DigestFinal( psttCtx, szDigest, &iDigestLen );
+		EVP_MD_CTX_free( psttCtx );
+	}
+#else
+	EVP_MD_CTX	sttCtx;
+
 	EVP_DigestInit( &sttCtx, m_psttMd );
 	EVP_DigestUpdate( &sttCtx, strKey.c_str(), strKey.length() );
 	EVP_DigestUpdate( &sttCtx, "258EAFA5-E914-47DA-95CA-C5AB0DC85B11", 36 );
 	EVP_DigestFinal( &sttCtx, szDigest, &iDigestLen );
+#endif
 
 	Base64Encode( (char *)szDigest, iDigestLen, szOutput, sizeof(szOutput) );
 
