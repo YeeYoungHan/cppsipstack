@@ -206,8 +206,7 @@ void CSipSendDlg::OnBnClickedStartSipStack()
 {
 	UpdateData(TRUE);
 
-	if( CheckInput( m_strSipServerIp, "SIP Server IP" ) == false ||
-			CheckInput( m_strCallerId, "SIP User" ) == false ) 
+	if( CheckInput( m_strSipServerIp, "SIP Server IP" ) ) 
 	{
 		return;
 	}
@@ -228,17 +227,21 @@ void CSipSendDlg::OnBnClickedStartSipStack()
 
 	// SipStack 을 시작한다.
 	CSipStackSetup clsSetup;
-	CSipServerInfo clsInfo;
-
+	
 	GetLocalIp( clsSetup.m_strLocalIp );
 
-	clsInfo.m_strIp = m_strSipServerIp;
-	clsInfo.m_iPort = m_iSipServerPort;
-	clsInfo.m_strDomain = m_strSipDomain;
-	clsInfo.m_strUserId = m_strCallerId;
-	clsInfo.m_strPassWord = m_strCallerPassWord;
+	if( gclsSetup.m_strCallerId.empty() == false && gclsSetup.m_strCallerPassWord.empty() == false )
+	{
+		CSipServerInfo clsInfo;
 
-	gclsSipUserAgent.InsertRegisterInfo( clsInfo );
+		clsInfo.m_strIp = m_strSipServerIp;
+		clsInfo.m_iPort = m_iSipServerPort;
+		clsInfo.m_strDomain = m_strSipDomain;
+		clsInfo.m_strUserId = m_strCallerId;
+		clsInfo.m_strPassWord = m_strCallerPassWord;
+
+		gclsSipUserAgent.InsertRegisterInfo( clsInfo );
+	}
 
 	bool bSuccess = false;
 
