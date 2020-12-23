@@ -206,7 +206,7 @@ void CSipSendDlg::OnBnClickedStartSipStack()
 {
 	UpdateData(TRUE);
 
-	if( CheckInput( m_strSipServerIp, "SIP Server IP" ) ) 
+	if( CheckInput( m_strSipServerIp, "SIP Server IP" ) == false ) 
 	{
 		return;
 	}
