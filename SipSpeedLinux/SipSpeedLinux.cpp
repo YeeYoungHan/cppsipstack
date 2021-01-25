@@ -48,12 +48,18 @@ int main( int argc, char * argv[] )
 	clsInfo.m_strUserId = gclsSetup.m_strCallerId;
 	clsInfo.m_strPassWord = gclsSetup.m_strCallerPassWord;
 
-	gclsSipUserAgent.InsertRegisterInfo( clsInfo );
+	if( gclsSetup.m_strCallerPassWord.empty() == false )
+	{
+		gclsSipUserAgent.InsertRegisterInfo( clsInfo );
+	}
 
 	clsInfo.m_strUserId = gclsSetup.m_strCalleeId;
 	clsInfo.m_strPassWord = gclsSetup.m_strCalleePassWord;
 
-	gclsSipUserAgent.InsertRegisterInfo( clsInfo );
+	if( gclsSetup.m_strCalleePassWord.empty() == false )
+	{
+		gclsSipUserAgent.InsertRegisterInfo( clsInfo );
+	}
 
 	bool bSuccess = false;
 
@@ -79,7 +85,8 @@ int main( int argc, char * argv[] )
 		return 0;
 	}
 
-	while( clsCallBack.m_bCallerLogin == false || clsCallBack.m_bCalleeLogin == false )
+	while( ( gclsSetup.m_strCallerPassWord.empty() == false && clsCallBack.m_bCallerLogin == false ) ||
+				 ( gclsSetup.m_strCalleePassWord.empty() == false && clsCallBack.m_bCalleeLogin == false ) )
 	{
 		MiliSleep(20);
 	}
