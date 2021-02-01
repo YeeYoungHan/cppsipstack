@@ -23,11 +23,13 @@
 
 #define SETUP_FILENAME	"SipSend.ini"
 
-#define ST_SIP_SERVER_IP		"sip_server_ip"
-#define ST_SIP_SERVER_PORT	"sip_server_port"
-#define ST_SIP_DOMAIN				"sip_domain"
-#define ST_CALLER_ID				"caller_id"
-#define ST_CALLER_PW				"caller_pw"
+#define ST_SIP_SERVER_IP			"sip_server_ip"
+#define ST_SIP_SERVER_PORT		"sip_server_port"
+#define ST_SIP_DOMAIN					"sip_domain"
+#define ST_CALLER_ID					"caller_id"
+#define ST_CALLER_PW					"caller_pw"
+#define ST_CHANGE_CALLID			"change_callid"
+#define ST_CHANGE_VIA_BRANCH	"change_via_branch"
 
 typedef std::map< std::string, std::string > SETUP_MAP;
 
@@ -49,6 +51,8 @@ public:
 	std::string m_strSipDomain;
 	std::string m_strCallerId;
 	std::string m_strCallerPassWord;
+	bool				m_bChangeCallId;
+	bool				m_bChangeViaBranch;
 
 private:
 	bool GetFile();
@@ -56,10 +60,12 @@ private:
 
 	int GetInt( const char * pszName, int iIndex, int iDefaultValue );
 	int GetInt( const char * pszName, int iDefaultValue );
+	bool GetBool( const char * pszName, bool bDefaultValue );
 	bool GetString( const char * pszName, std::string & strValue );
 
 	bool PutInt( const char * pszName, int iIndex, int iValue );
 	bool PutInt( const char * pszName, int iValue );
+	bool PutBool( const char * pszName, bool bValue );
 	bool PutString( const char * pszName, const char * pszValue );
 
 	SETUP_MAP	m_clsMap;

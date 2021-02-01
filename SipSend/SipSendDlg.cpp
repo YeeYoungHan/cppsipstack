@@ -73,6 +73,8 @@ CSipSendDlg::CSipSendDlg(CWnd* pParent /*=NULL*/)
 	, m_strCallerId(_T(""))
 	, m_strCallerPassWord(_T(""))
 	, m_strSip(_T(""))
+	, m_bChangeCallId(FALSE)
+	, m_bChangeViaBranch(FALSE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -88,6 +90,8 @@ void CSipSendDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_START_SIP_STACK, m_btnStartSipStack);
 	DDX_Control(pDX, IDC_STOP_SIP_STACK, m_btnStopSipStack);
 	DDX_Text(pDX, IDC_SIP, m_strSip);
+	DDX_Check(pDX, IDC_CHANGE_CALL_ID, m_bChangeCallId);
+	DDX_Check(pDX, IDC_CHANGE_VIA_BRANCH, m_bChangeViaBranch);
 }
 
 BEGIN_MESSAGE_MAP(CSipSendDlg, CDialog)
@@ -140,6 +144,8 @@ BOOL CSipSendDlg::OnInitDialog()
 	m_strSipDomain = gclsSetup.m_strSipDomain.c_str();
 	m_strCallerId = gclsSetup.m_strCallerId.c_str();
 	m_strCallerPassWord = gclsSetup.m_strCallerPassWord.c_str();
+	m_bChangeCallId = gclsSetup.m_bChangeCallId ? TRUE : FALSE;
+	m_bChangeViaBranch = gclsSetup.m_bChangeViaBranch ? TRUE : FALSE;
 
 	UpdateData(FALSE);
 
@@ -223,6 +229,8 @@ void CSipSendDlg::OnBnClickedStartSipStack()
 	gclsSetup.m_strSipDomain = m_strSipDomain;
 	gclsSetup.m_strCallerId = m_strCallerId;
 	gclsSetup.m_strCallerPassWord = m_strCallerPassWord;
+	gclsSetup.m_bChangeCallId = m_bChangeCallId ? true : false;
+	gclsSetup.m_bChangeViaBranch = m_bChangeViaBranch ? true : false;
 	gclsSetup.Put();
 
 	// SipStack 을 시작한다.
@@ -261,6 +269,8 @@ void CSipSendDlg::OnBnClickedStartSipStack()
 		MessageBox( "sip stack start error", "Error", MB_OK );
 		return;
 	}
+
+	srand( (unsigned int)time(NULL) );
 
 	m_btnStartSipStack.EnableWindow( FALSE );
 	m_btnStopSipStack.EnableWindow( TRUE );
@@ -313,6 +323,29 @@ void CSipSendDlg::OnBnClickedSend()
 		clsMessage.m_strBody.clear();
 		clsMessage.m_strBody.append( pszPos + 4 );
 		clsMessage.m_iContentLength = clsMessage.m_strBody.length();
+	}
+
+	int iRand = rand();
+	char szRand[11];
+
+	snprintf( szRand, sizeof(szRand), "%d", iRand );
+
+	if( m_bChangeCallId )
+	{
+		// Call-ID 를 수정한다.
+		clsMessage.m_clsCallId.m_strName.append( szRand );
+	}
+
+	if( m_bChangeViaBranch )
+	{
+		// Via top branch 를 수정한다.
+		SIP_VIA_LIST::iterator itVL = clsMessage.m_clsViaList.begin();
+		if( itVL != clsMessage.m_clsViaList.end() )
+		{
+			std::string strBranch = itVL->SelectParamValue( SIP_BRANCH );
+			strBranch.append( szRand );
+			itVL->UpdateParam( SIP_BRANCH, strBranch.c_str() );
+		}
 	}
 
 	memset( szText, 0, sizeof(szText) );

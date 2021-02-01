@@ -74,4 +74,6 @@ public:
 
 	bool CheckInput( CString & strInput, const char * pszName );
 	CString m_strSip;
+	BOOL m_bChangeCallId;
+	BOOL m_bChangeViaBranch;
 };

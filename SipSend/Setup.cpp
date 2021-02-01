@@ -21,7 +21,7 @@
 
 CSetup gclsSetup;
 
-CSetup::CSetup() : m_iSipServerPort(5060)
+CSetup::CSetup() : m_iSipServerPort(5060), m_bChangeCallId(true), m_bChangeViaBranch(true)
 {
 }
 
@@ -43,6 +43,8 @@ bool CSetup::Get()
 	GetString( ST_SIP_DOMAIN, m_strSipDomain );
 	GetString( ST_CALLER_ID, m_strCallerId );
 	GetString( ST_CALLER_PW, m_strCallerPassWord );
+	m_bChangeCallId = GetBool( ST_CHANGE_CALLID, true );
+	m_bChangeViaBranch = GetBool( ST_CHANGE_VIA_BRANCH, true );
 
 	m_clsMap.clear();
 
@@ -61,6 +63,8 @@ bool CSetup::Put()
 	PutString( ST_SIP_DOMAIN, m_strSipDomain.c_str() );
 	PutString( ST_CALLER_ID, m_strCallerId.c_str() );
 	PutString( ST_CALLER_PW, m_strCallerPassWord.c_str() );
+	PutBool( ST_CHANGE_CALLID, m_bChangeCallId );
+	PutBool( ST_CHANGE_VIA_BRANCH, m_bChangeViaBranch );
 
 	bool bRes = PutFile();
 
@@ -181,6 +185,17 @@ int CSetup::GetInt( const char * pszName, int iDefaultValue )
 	return iInt;
 }
 
+bool CSetup::GetBool( const char * pszName, bool bDefaultValue )
+{
+	std::string	strValue;
+
+	if( GetString( pszName, strValue ) == false ) return bDefaultValue;
+
+	if( !strcmp( strValue.c_str(), "true" ) ) return true;
+
+	return false;
+}
+
 bool CSetup::GetString( const char * pszName, std::string & strValue )
 {
 	SETUP_MAP::iterator	it;
@@ -216,6 +231,15 @@ bool CSetup::PutInt( const char * pszName, int iValue )
 	char	szValue[11];
 
 	_snprintf( szValue, sizeof(szValue), "%d", iValue );
+
+	return PutString( pszName, szValue );
+}
+
+bool CSetup::PutBool( const char * pszName, bool bValue )
+{
+	char	szValue[11];
+
+	_snprintf( szValue, sizeof(szValue), "%s", bValue ? "true" : "false" );
 
 	return PutString( pszName, szValue );
 }

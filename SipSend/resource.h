@@ -15,6 +15,9 @@
 #define IDC_SIP                         1004
 #define IDC_SEND                        1005
 #define IDC_SIP_DOMAIN                  1006
+#define IDC_CHANGE_CALL_ID              1007
+#define IDC_CHECK2                      1008
+#define IDC_CHANGE_VIA_BRANCH           1008
 #define IDC_START_SIP_STACK             1010
 #define IDC_STOP_SIP_STACK              1011
 
@@ -24,7 +27,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        129
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_CONTROL_VALUE         1009
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
