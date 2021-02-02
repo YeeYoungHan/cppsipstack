@@ -138,7 +138,9 @@ THREAD_API TcpClientThread( LPVOID lpParameter )
 #ifdef USE_TLS
 	if( pclsArg->m_pclsStack->m_clsSetup.m_bUseTls )
 	{
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 		ERR_remove_thread_state( NULL );
+#endif
 	}
 #endif
 	
