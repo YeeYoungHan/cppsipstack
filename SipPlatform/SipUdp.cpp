@@ -538,7 +538,8 @@ bool GetLocalIp( std::string & strIp )
 		e = ioctl( hSocket, SIOCGIFADDR, &ifr2 );
 		if( e == -1 )
 		{
-			printf( "ioctl error(%d) - %s\n", errno, strerror_r( errno, szError, sizeof(szError) ) );
+			strerror_r( errno, szError, sizeof(szError) );
+			CLog::Print( LOG_DEBUG, "ioctl error(%d) - %s\n", errno, szError );
 			continue;
 		}
 		
