@@ -165,7 +165,9 @@ FUNC_END:
 	pclsSipStack->ThreadEnd( iThreadId );
 	pclsSipStack->DecreateTcpThreadCount();
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 	ERR_remove_thread_state( NULL );
+#endif
 
 	return 0;
 }
