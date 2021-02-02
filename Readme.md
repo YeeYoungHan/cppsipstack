@@ -176,7 +176,8 @@ KSipServer 에서 지정된 음성 코덱만 사용하고 싶고 음성 통신�
 
 ### 관련 포스트
 
-* https://blog.naver.com/websearch/222227808347 : SipClient 를 CentOS 에서 빌드할 때에 오류 해결하는 방법
+* https://blog.naver.com/websearch/222228978505 : OSX 에서 빌드하는 방
+* https://blog.naver.com/websearch/222227808347 : SipClient 를 리눅스에서 빌드할 때에 오류 해결하는 방법
 * https://blog.naver.com/websearch/222143127802 : 라즈베리파이3 에서 오픈소스 C++ SIP stack 성능 테스트
 * https://blog.naver.com/websearch/222143118529 : 오픈소스 C++ SIP stack 버전별 차이점
 * https://blog.naver.com/websearch/222139819992 : 라즈베리파이 & 우분투16 에서 실행할 수 있는 SIP 클라이언트 1차 개발 완료
