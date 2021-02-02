@@ -156,7 +156,9 @@ C++ SIP stack API 문서는 아래의 홈페이지에서 확인하실 수 있습
   * SipStack-vs2017.sln 더블클릭한 후, 빌드한다.
 
 * 리눅스 / OSX
-  * make 를 실행한다.
+  * openssl 개발 라이브러리를 설치한다.
+  * alsa 개발 라이브러리를 설치한다.
+  * make 를 실행하여서 빌드한다.
 
 ### TLS 없이 빌드하고 싶은 경우
 SipStack/SipStackDefine.h 에서 아래의 소스 코드를 주석 처리한 후, 컴파일합니다.
