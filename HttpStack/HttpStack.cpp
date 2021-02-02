@@ -349,7 +349,7 @@ bool CHttpStack::MakeWebSocketResponse( CHttpMessage * pclsRecv, CHttpMessage * 
 
 	uint8_t			szDigest[EVP_MAX_MD_SIZE];
 	char				szOutput[EVP_MAX_MD_SIZE*2+1];
-	uint32_t		iDigestLen;
+	uint32_t		iDigestLen = 0;
 
 	memset( szDigest, 0, sizeof(szDigest) );
 	memset( szOutput, 0, sizeof(szOutput) );
@@ -373,7 +373,10 @@ bool CHttpStack::MakeWebSocketResponse( CHttpMessage * pclsRecv, CHttpMessage * 
 	EVP_DigestFinal( &sttCtx, szDigest, &iDigestLen );
 #endif
 
-	Base64Encode( (char *)szDigest, iDigestLen, szOutput, sizeof(szOutput) );
+	if( iDigestLen > 0 )
+	{
+		Base64Encode( (char *)szDigest, iDigestLen, szOutput, sizeof(szOutput) );
+	}
 
 	pclsSend->AddHeader( "Sec-WebSocket-Accept", szOutput );
 
