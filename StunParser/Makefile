@@ -6,7 +6,7 @@
 
 include ../Makefile.mk
 
-INC=-I../SipPlatform
+INC=-I../SipPlatform $(OPENSSL_INC)
 
 .SUFFIXES: .o .cpp
 %.o : %.cpp
