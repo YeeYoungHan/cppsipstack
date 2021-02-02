@@ -120,7 +120,7 @@ int CStunMessage::ToString( char * pszText, int iTextSize )
 
 			
 			uint8_t			szDigest[EVP_MAX_MD_SIZE];
-			uint32_t		iDigestLen;
+			uint32_t		iDigestLen = 0;
 
 			memset( szDigest, 0, sizeof(szDigest) );
 
@@ -146,7 +146,11 @@ int CStunMessage::ToString( char * pszText, int iTextSize )
 
 			itSAL->m_sLength = iDigestLen;
 			itSAL->m_strValue.clear();
-			itSAL->m_strValue.append( (char *)szDigest, iDigestLen );
+
+			if( iDigestLen > 0 )
+			{
+				itSAL->m_strValue.append( (char *)szDigest, iDigestLen );
+			}
 		}
 		else if( itSAL->m_sType == STUN_AT_FINGER_PRINT )
 		{
