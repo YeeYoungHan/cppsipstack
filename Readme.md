@@ -143,7 +143,7 @@ C++ SIP stack API 문서는 아래의 홈페이지에서 확인하실 수 있습
   * 영상 디바이스 연동 테스트용으로 개발됨.
 
 * TestWebRtc
-  * WebRTC 테스트 프로그
+  * WebRTC 테스트 프로그램
 
 ### 컴파일 방법
 본 프로젝트의 컴파일 방법은 다음과 같습니다.
@@ -176,7 +176,7 @@ KSipServer 에서 지정된 음성 코덱만 사용하고 싶고 음성 통신�
 
 ### 관련 포스트
 
-* https://blog.naver.com/websearch/222228978505 : OSX 에서 빌드하는 방
+* https://blog.naver.com/websearch/222228978505 : OSX 에서 빌드하는 방법
 * https://blog.naver.com/websearch/222227808347 : SipClient 를 리눅스에서 빌드할 때에 오류 해결하는 방법
 * https://blog.naver.com/websearch/222143127802 : 라즈베리파이3 에서 오픈소스 C++ SIP stack 성능 테스트
 * https://blog.naver.com/websearch/222143118529 : 오픈소스 C++ SIP stack 버전별 차이점
