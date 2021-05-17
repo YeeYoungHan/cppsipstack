@@ -89,7 +89,11 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	if( m_clsSetup.m_iLocalUdpPort > 0 )
 	{
 		m_hUdpSocket = UdpListen( m_clsSetup.m_iLocalUdpPort, NULL, m_clsSetup.m_bIpv6 );
-		if( m_hUdpSocket == INVALID_SOCKET ) return false;
+		if( m_hUdpSocket == INVALID_SOCKET )
+		{
+			CLog::Print( LOG_ERROR, "UdpListen(%d) error", m_clsSetup.m_iLocalUdpPort );
+			return false;
+		}
 	}
 
 	if( m_clsSetup.m_iLocalTcpPort > 0 )
@@ -105,12 +109,14 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 		m_clsTcpThreadList.SetMaxSocketPerThread( m_clsSetup.m_iTcpMaxSocketPerThread );
 		if( m_clsTcpThreadList.Init( m_clsSetup.m_iTcpThreadCount, m_clsSetup.m_iTcpThreadCount, SipTcpThread, this ) == false )
 		{
+			CLog::Print( LOG_ERROR, "m_clsTcpThreadList.Init() error" );
 			_Stop();
 			return false;
 		}
 
 		if( StartSipTcpListenThread( this ) == false )
 		{
+			CLog::Print( LOG_ERROR, "StartSipTcpListenThread() error" );
 			_Stop();
 			return false;
 		}
@@ -121,6 +127,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	{
 		if( SSLServerStart( m_clsSetup.m_strCertFile.c_str(), m_clsSetup.m_strCaCertFile.c_str() ) == false )
 		{
+			CLog::Print( LOG_ERROR, "SSLServerStart() error" );
 			_Stop();
 			return false;
 		}
@@ -136,12 +143,14 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 		m_clsTlsThreadList.SetMaxSocketPerThread( m_clsSetup.m_iTcpMaxSocketPerThread );
 		if( m_clsTlsThreadList.Init( m_clsSetup.m_iTcpThreadCount, m_clsSetup.m_iTcpThreadCount, SipTlsThread, this ) == false )
 		{
+			CLog::Print( LOG_ERROR, "m_clsTlsThreadList.Init() error" );
 			_Stop();
 			return false;
 		}
 
 		if( StartSipTlsListenThread( this ) == false )
 		{
+			CLog::Print( LOG_ERROR, "StartSipTlsListenThread() error" );
 			_Stop();
 			return false;
 		}
@@ -150,6 +159,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	{
 		if( SSLClientStart( ) == false )
 		{
+			CLog::Print( LOG_ERROR, "SSLClientStart() error" );
 			_Stop();
 			return false;
 		}
@@ -157,6 +167,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 		m_clsTlsThreadList.SetMaxSocketPerThread( m_clsSetup.m_iTcpMaxSocketPerThread );
 		if( m_clsTlsThreadList.Init( m_clsSetup.m_iTcpThreadCount, m_clsSetup.m_iTcpThreadCount, SipTlsThread, this ) == false )
 		{
+			CLog::Print( LOG_ERROR, "m_clsTlsThreadList.Init() error" );
 			_Stop();
 			return false;
 		}
@@ -167,6 +178,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	{
 		if( StartSipUdpThread( this ) == false )
 		{
+			CLog::Print( LOG_ERROR, "StartSipUdpThread() error" );
 			_Stop();
 			return false;
 		}
@@ -176,6 +188,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 	{
 		if( StartSipStackThread( this ) == false )
 		{
+			CLog::Print( LOG_ERROR, "StartSipStackThread() error" );
 			_Stop();
 			return false;
 		}
@@ -187,6 +200,7 @@ bool CSipStack::Start( CSipStackSetup & clsSetup )
 		{
 			if( StartSipQueueThread( this ) == false )
 			{
+				CLog::Print( LOG_ERROR, "StartSipQueueThread() error" );
 				_Stop();
 				return false;
 			}
