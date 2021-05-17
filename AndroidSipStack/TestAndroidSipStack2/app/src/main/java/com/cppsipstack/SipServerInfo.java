@@ -42,4 +42,7 @@ public class SipServerInfo implements Serializable
 	
 	/** 로그인 비밀번호 */
 	public String m_strPassWord;
+
+	/** SIP 연결 프로토콜 */
+	public String m_strTransport = "tls";
 }
