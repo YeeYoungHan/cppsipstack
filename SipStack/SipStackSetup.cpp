@@ -120,6 +120,20 @@ bool CSipStackSetup::Check( )
 	// TLS 관련 설정 점검
 	if( m_iTlsAcceptTimeout < 0 ) m_iTlsAcceptTimeout = 0;
 
+	if( m_bTlsClient )
+	{
+		if( m_iTcpThreadCount == 0 )
+		{
+			CLog::Print( LOG_ERROR, "%s m_iTcpThreadCount(%d) is invalid because m_clsSetup.m_bTlsClient is true", __FUNCTION__, m_iTcpThreadCount );
+			return false;
+		}
+
+		if( m_iTcpMaxSocketPerThread < 0 )
+		{
+			m_iTcpMaxSocketPerThread = SIP_TCP_MAX_SOCKET_PER_THREAD;
+		}
+	}
+
 	if( m_strUserAgent.empty() == false )
 	{
 		m_strUserAgent.append( "_" );
