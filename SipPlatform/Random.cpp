@@ -47,7 +47,13 @@ int CRandom::Get()
 #ifdef WIN32
 	rand_s( &iRand );
 #else
+
+#ifdef ANDROID
+	iRand = rand();
+#else
 	iRand = rand_r( &m_iSeed );
+#endif
+
 #endif
 
 	if( iRand > 2000000000 )

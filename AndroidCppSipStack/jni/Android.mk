@@ -24,12 +24,12 @@ LOCAL_PATH := ../../SipPlatform
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := libsipplatform
-LOCAL_SRC_FILES := Directory.cpp Log.cpp ServerUtility.cpp \
+LOCAL_SRC_FILES := Directory.cpp Log.cpp MonitorString.cpp ServerUtility.cpp \
 	SipMd5.cpp SipMutex.cpp \
 	SipTcp.cpp SipUdp.cpp \
 	StringUtility.cpp StringMap.cpp \
 	TimeString.cpp TimeUtility.cpp \
-	FileUtility.cpp
+	FileUtility.cpp Random.cpp
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -65,10 +65,10 @@ LOCAL_SRC_FILES := SipDeleteQueue.cpp \
 	SipStackThread.cpp SipUdpThread.cpp SipTcpThread.cpp SipTlsThread.cpp \
 	SipTcpClientThread.cpp SipTcpMessage.cpp \
 	SipTlsClientThread.cpp SipTlsMessage.cpp \
+	SipQueueThread.cpp \
 	TcpSessionList.cpp TcpSocketMap.cpp TcpThreadList.cpp TcpConnectMap.cpp \
-	SipBuffer.cpp \
-	TlsFunction.cpp \
-	MonitorString.cpp
+	SipBuffer.cpp SipQueue.cpp \
+	TlsFunction.cpp
 LOCAL_C_INCLUDES := ../../SipPlatform ../../SipParser include
 
 include $(BUILD_STATIC_LIBRARY)

@@ -93,6 +93,8 @@ bool Fork( bool bIsFork )
 bool ChangeExecuteUser( const char * pszUserId )
 {
 #ifndef WIN32
+#ifndef ANDROID
+
 	struct passwd sttPassWord, *psttPassWord = NULL;
 	char szError[255], szPassWord[1024];
 
@@ -118,6 +120,8 @@ bool ChangeExecuteUser( const char * pszUserId )
 		prctl(PR_SET_DUMPABLE, 1);
 #endif
 	}
+
+#endif
 #endif
 	
 	return true;

@@ -26,7 +26,11 @@
 #ifdef WIN32
 #include <time.h>
 #else
+
+#ifndef ANDROID
 #include <execinfo.h>
+#endif
+
 #include <sys/time.h>
 #include <unistd.h>
 #endif
@@ -483,6 +487,8 @@ void CLog::PrintCallStack( EnumLogLevel iLevel )
 #ifdef WIN32
 
 #else
+
+#ifndef ANDROID
 	void * arrData[50];
 	int iSize = backtrace( arrData, 50 );
 
@@ -496,5 +502,7 @@ void CLog::PrintCallStack( EnumLogLevel iLevel )
 
 		free( ppszText );
 	}
+#endif
+
 #endif
 }
