@@ -44,5 +44,5 @@ public class SipServerInfo implements Serializable
 	public String m_strPassWord;
 
 	/** SIP 연결 프로토콜 */
-	public String m_strTransport = "tls";
+	public String m_strTransport = "udp";
 }
