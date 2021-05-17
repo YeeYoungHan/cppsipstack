@@ -25,7 +25,7 @@ package com.cppsipstack;
 public class SipStackSetup
 {
 	/** SIP 메시지에 저장되는 로컬 IP 주소 */
-	public String m_strLocalIp;
+	public String m_strLocalIp = "";
 
 	/** SIP 메시지 전송/수신용 UDP 포트 번호 */
 	public int	m_iLocalUdpPort = 5060;
@@ -52,11 +52,14 @@ public class SipStackSetup
 	public int	m_iTlsAcceptTimeout = 0;
 
 	/** TLS 세션을 위한 서버 인증서 + 개인키를 포함한 PEM 파일 */
-	public String	m_strCertFile = null;
+	public String	m_strCertFile = "";
 
 	/** SIP UserAgent 헤더에 저장될 문자열 */
 	public String	m_strUserAgent = "";
 
 	/** SIP 메시지를 생성할 때에 compact form 으로 생성할지 설정 */
 	public boolean	m_bUseSipCompactForm = false;
+	
+	/** SIP 메시지를 TLS 로 전송하고 싶으면 true 로 저장하고 그렇지 않으면 false 로 저장한다. */
+	public boolean m_bTlsClient = false;
 }

@@ -15,6 +15,11 @@
 * 이메일: websearch@naver.com
 * 블로그: http://blog.naver.com/websearch
 
+### 폴더 설명
+
+* TestAndroidSipStack : 이클리스 프로젝트
+* TestAndroidSipStack2 : 안드로이드 스튜디오 프로젝트
+
 ### AndroidSipStack NDK 컴파일 방법
 
 * cygwin 의 아래의 폴더에 android-ndk-r8d 를 설치한다.

@@ -38,11 +38,19 @@ bool GetSipServerInfo( JNIEnv * env, jobject joSipServerInfo, CSipServerInfo & c
 		return false;
 	}
 
+	std::string strTransport;
+
 	if( GetString( env, joSipServerInfo, jc, "m_strIp", clsOutput.m_strIp ) == false ) return false;
 	if( GetInt( env, joSipServerInfo, jc, "m_iPort", clsOutput.m_iPort ) == false ) return false;
 	if( GetString( env, joSipServerInfo, jc, "m_strDomain", clsOutput.m_strDomain ) == false ) return false;
 	if( GetString( env, joSipServerInfo, jc, "m_strUserId", clsOutput.m_strUserId ) == false ) return false;
 	if( GetString( env, joSipServerInfo, jc, "m_strPassWord", clsOutput.m_strPassWord ) == false ) return false;
+	if( GetString( env, joSipServerInfo, jc, "m_strTransport", strTransport ) == false ) return false;
+
+	if( !strcasecmp( strTransport.c_str(), "tls" ) )
+	{
+		clsOutput.m_eTransport = E_SIP_TLS;
+	}
 
 	if( gbAndroidDebug )
 	{
@@ -109,6 +117,7 @@ bool GetSipStackSetup( JNIEnv * env, jobject joSipStackSetup, CSipStackSetup & c
 	if( GetString( env, joSipStackSetup, jc, "m_strCertFile", clsOutput.m_strCertFile ) == false ) return false;
 	if( GetString( env, joSipStackSetup, jc, "m_strUserAgent", clsOutput.m_strUserAgent ) == false ) return false;
 	if( GetBool( env, joSipStackSetup, jc, "m_bUseSipCompactForm", clsOutput.m_bUseSipCompactForm ) == false ) return false;
+	if( GetBool( env, joSipStackSetup, jc, "m_bTlsClient", clsOutput.m_bTlsClient ) == false ) return false;
 	
 	return true;
 }
