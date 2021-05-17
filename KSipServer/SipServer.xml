@@ -8,11 +8,9 @@
 		<TcpRecvTimeout>600</TcpRecvTimeout>
 		<Realm>ksipserver</Realm>
 		<!--<SendOptionsPeriod>30</SendOptionsPeriod>-->
-		<!--
 		<TlsPort>5061</TlsPort>
 		<TlsAcceptTimeout>10</TlsAcceptTimeout>
 		<CertFile>c:\OpenProject\CppSipStack\trunk\KSipServer\SipServer.pem</CertFile>
-		-->
 		<MinRegisterTimeout>300</MinRegisterTimeout>
 		<CallPickupId>**</CallPickupId>
 		<StackExecutePeriod>20</StackExecutePeriod>
