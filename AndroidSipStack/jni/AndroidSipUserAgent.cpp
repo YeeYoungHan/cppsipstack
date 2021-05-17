@@ -307,9 +307,9 @@ JNIEXPORT jboolean JNICALL Java_com_cppsipstack_SipUserAgent_SendSms( JNIEnv * e
 	CSipCallRtp clsRtp;
 	CSipCallRoute clsRoute;
 
-	if( GetString( env, jsFrom, strFrom ) == false ) return NULL;
-	if( GetString( env, jsTo, strTo ) == false ) return NULL;
-	if( GetString( env, jsTo, strText ) == false ) return NULL;
+	if( GetString( env, jsFrom, strFrom ) == false ) return JNI_FALSE;
+	if( GetString( env, jsTo, strTo ) == false ) return JNI_FALSE;
+	if( GetString( env, jsTo, strText ) == false ) return JNI_FALSE;
 
 	if( GetSipCallRoute( clsRoute ) == false )
 	{
