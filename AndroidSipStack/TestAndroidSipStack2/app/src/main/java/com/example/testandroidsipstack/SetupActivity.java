@@ -29,7 +29,7 @@ import android.widget.EditText;
  */
 public class SetupActivity extends Activity implements OnClickListener
 {
-	EditText m_txtSipServerIp, m_txtSipServerPort, m_txtSipDomain, m_txtSipUserId, m_txtSipPassWord;
+	EditText m_txtSipServerIp, m_txtSipServerPort, m_txtSipDomain, m_txtSipUserId, m_txtSipPassWord, m_txtSipTransport;
 	
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
@@ -42,6 +42,7 @@ public class SetupActivity extends Activity implements OnClickListener
 		m_txtSipDomain = (EditText)findViewById( R.id.txtSipDomain );
 		m_txtSipUserId = (EditText)findViewById( R.id.txtSipUserId );
 		m_txtSipPassWord = (EditText)findViewById( R.id.txtSipPassWord );
+		m_txtSipTransport = (EditText)findViewById( R.id.txtSipTransport );
 		
 		findViewById( R.id.btnOk ).setOnClickListener( this );
 		findViewById( R.id.btnCancel ).setOnClickListener( this );
@@ -51,6 +52,7 @@ public class SetupActivity extends Activity implements OnClickListener
 		m_txtSipDomain.setText( Setup.m_strSipDomain );
 		m_txtSipUserId.setText( Setup.m_strSipUserId );
 		m_txtSipPassWord.setText( Setup.m_strSipPassWord );
+		m_txtSipTransport.setText( Setup.m_strSipTransport );
 	}
 
 	@Override
@@ -94,12 +96,14 @@ public class SetupActivity extends Activity implements OnClickListener
 				}
 				
 				String strSipPassWord = m_txtSipPassWord.getText( ).toString( );
+				String strSipTransport = m_txtSipTransport.getText().toString();
 				
 				Setup.m_strSipServerIp = strSipServerIp;
 				Setup.m_iSipServerPort = iSipServerPort;
 				Setup.m_strSipDomain = strSipDomain;
 				Setup.m_strSipUserId = strSipUserId;
 				Setup.m_strSipPassWord = strSipPassWord;
+				Setup.m_strSipTransport = strSipTransport;
 				
 				Setup.Put( this );
 				

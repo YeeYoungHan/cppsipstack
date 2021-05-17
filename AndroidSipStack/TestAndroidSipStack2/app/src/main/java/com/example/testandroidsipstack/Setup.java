@@ -44,6 +44,7 @@ public class Setup
 	private static final String m_strSipDomainKey = "SipDomain";
 	private static final String m_strSipUserIdKey = "SipUserId";
 	private static final String m_strSipPassWordKey = "SipPassWord";
+	private static final String m_strSipTransportKey = "SipTransport";
 	
 	// 설정 항목 저장 변수
 	public static String m_strSipServerIp = "";
@@ -51,6 +52,7 @@ public class Setup
 	public static String m_strSipDomain = "";
 	public static String m_strSipUserId = "";
 	public static String m_strSipPassWord = "";
+	public static String m_strSipTransport = "udp";
 	
 	// 전역변수
 	public static String m_strLocalIp = "";
@@ -102,6 +104,10 @@ public class Setup
         {
         	m_strSipPassWord = arrData[1];
         }
+				else if( arrData[0].equals( m_strSipTransportKey ) )
+				{
+					m_strSipTransport = arrData[1];
+				}
       }
       
       clsInput.close( );
@@ -138,6 +144,7 @@ public class Setup
 			Write( clsOutput, m_strSipDomainKey, m_strSipDomain );
 			Write( clsOutput, m_strSipUserIdKey, m_strSipUserId );
 			Write( clsOutput, m_strSipPassWordKey, m_strSipPassWord );
+			Write( clsOutput, m_strSipTransportKey, m_strSipTransport );
 			
 			clsOutput.close( );
 			bRes = true;

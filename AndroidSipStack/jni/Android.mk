@@ -23,20 +23,20 @@ LOCAL_PATH := .
 
 include $(CLEAR_VARS)
 
+LOCAL_DISABLE_FATAL_LINKER_WARNINGS := true
 LOCAL_MODULE    := CppSipStack
-#LOCAL_STATIC_LIBRARIES := libsipuseragent libsdpparser libsipstack libsipparser libsipplatform
 LOCAL_SRC_FILES := AndroidSipStack.cpp AndroidSipUserAgent.cpp \
 									AndroidGet.cpp AndroidPut.cpp AndroidLog.cpp \
 									AndroidClass.cpp AndroidClassConvert.cpp \
 									SipClient.cpp
 LOCAL_C_INCLUDES := ../../SipPlatform ../../SipParser ../../SipStack ../../SdpParser ../../SipUserAgent include
-LOCAL_LDLIBS    := lib/libsipuseragent.a \
-									lib/libsdpparser.a \
-									lib/libsipstack.a \
-									lib/libsipparser.a \
-									lib/libsipplatform.a \
-									lib/libgnustl_static.a \
-									lib/libssl.a lib/libcrypto.a \
+LOCAL_LDLIBS    := lib/$(TARGET_ARCH_ABI)/libsipuseragent.a \
+									lib/$(TARGET_ARCH_ABI)/libsdpparser.a \
+									lib/$(TARGET_ARCH_ABI)/libsipstack.a \
+									lib/$(TARGET_ARCH_ABI)/libsipparser.a \
+									lib/$(TARGET_ARCH_ABI)/libsipplatform.a \
+									lib/$(TARGET_ARCH_ABI)/libgnustl_static.a \
+									lib/$(TARGET_ARCH_ABI)/libssl.a lib/$(TARGET_ARCH_ABI)/libcrypto.a \
 									-llog -ldl
 
 include $(BUILD_SHARED_LIBRARY)

@@ -169,11 +169,17 @@ public class MainActivity extends Activity implements OnClickListener, SipUserAg
 				clsInfo.m_strDomain = Setup.m_strSipDomain;
 				clsInfo.m_strUserId = Setup.m_strSipUserId;
 				clsInfo.m_strPassWord = Setup.m_strSipPassWord;
+				clsInfo.m_strTransport = Setup.m_strSipTransport;
 			
 				SipUserAgent.InsertRegisterInfo( clsInfo );
 				SipUserAgent.SetCallBack( m_clsHandler );
 				
 				SipStackSetup clsSetup = new SipStackSetup();
+
+				if( Setup.m_strSipTransport.equals( "tls" ) )
+				{
+					clsSetup.m_bTlsClient = true;
+				}
 
 				if( SipUserAgent.Start( clsSetup ) )
 				{
