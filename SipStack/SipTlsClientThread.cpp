@@ -108,6 +108,7 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 
 					if( pclsArg->m_pclsSipStack->m_clsTlsThreadList.SendCommand( (char *)&clsTcpComm, sizeof(clsTcpComm) ) == false )
 					{
+						CLog::Print( LOG_ERROR, "%s(%s:%d) SSL closed - SendCommand error", __FUNCTION__, pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
 						SSLClose( psttSsl );
 						closesocket( hSocket );
 					}
@@ -118,12 +119,14 @@ THREAD_API SipTlsClientThread( LPVOID lpParameter )
 				}
 				else
 				{
+					CLog::Print( LOG_ERROR, "%s(%s:%d) SSL closed - bError", __FUNCTION__, pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
 					SSLClose( psttSsl );
 					closesocket( hSocket );
 				}
 			}
 			else
 			{
+				CLog::Print( LOG_ERROR, "%s(%s:%d) SSL closed - SipTlsSend error", __FUNCTION__, pclsArg->m_strIp.c_str(), pclsArg->m_iPort );
 				SSLClose( psttSsl );
 				closesocket( hSocket );
 			}
