@@ -221,10 +221,10 @@ OPEN_FILE:
 		int iWrite;
 
 #ifdef WIN32
-		iWrite = fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%u] %s\r\n"
+		iWrite = fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%X] %s\r\n"
 			, sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec, sttTime.tv_usec, szHeader, GetCurrentThreadId(), szBuf );
 #else
-		iWrite = fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%lu] %s\n"
+		iWrite = fprintf( m_sttFd, "[%02d:%02d:%02d.%06u] %s[%lX] %s\n"
 			, sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec, (unsigned int)sttTime.tv_usec, szHeader, (unsigned long)pthread_self(), szBuf );
 #endif
 		fflush( m_sttFd );
