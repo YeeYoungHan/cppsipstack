@@ -1,0 +1,283 @@
+
+
+
+
+
+
+Network Working Group                                         G. Parsons
+Request for Comments: 3362                               Nortel Networks
+Category: Standards Track                                    August 2002
+
+
+                Real-time Facsimile (T.38) - image/t38
+                      MIME Sub-type Registration
+
+Status of this Memo
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+Copyright Notice
+
+   Copyright (C) The Internet Society (2002).  All Rights Reserved.
+
+Abstract
+
+   This document describes the registration of the MIME sub-type
+   image/t38.  The encoding is defined by ITU Recommendation T.38 and is
+   intended for use as an Session Description Protocol (SDP) media
+   descriptor.
+
+1.  Conventions used in this document
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in BCP 14, RFC 2119
+   [REQ].
+
+2.  Overview
+
+   This document describes the registration of the MIME sub-type
+   image/t38.  The encoding is defined by [T.38] and is intended for use
+   as an SDP media descriptor.
+
+3.  T.38 Definition
+
+   ITU-T Recommendation T.38 [T.38] describes the technical features
+   necessary to transfer facsimile documents in real-time between two
+   standard Group 3 facsimile terminals over the Internet or other
+   networks using IP protocols.  The Recommendation allows the use of
+   either TCP or UDP depending on the service environment.
+
+
+
+
+Parsons                     Standards Track                     [Page 1]
+
+RFC 3362                MIME Sub-type image/t38              August 2002
+
+
+   ITU-T Recommendation T.38 [T.38] Annex D describes system level
+   requirements and procedures for internet aware facsimile
+   implementations and internet aware facsimile gateways conforming to
+   ITU-T T.38 to establish calls with other ITU-T T.38 implementations
+   using the procedures defined in IETF RFC 2543 [SIP-99] and IETF RFC
+   2327 [SDP].
+
+   Note that ITU-T T.38 Recommendation T.38 (04/02) [T.38] is an
+   aggregation of the original ITU-T Recommendation T.38 (06/98) [T.38-
+   98] and all of the subsequent Amendments and Corrigendum including
+   [T.38D-00].  While [T.38] and [T.38D-00] describe SIP procedures per
+   [SIP-99], the procedures can also be applied to the revised Session
+   Initiation Protocol specification [SIP].
+
+3.1  image/t38 Usage
+
+   Annex D of [T.38] describes that the image/t38 media type is intended
+   to indicate a T.38 media stream in SDP.
+
+   This media type registration is not intended for email usage.
+
+4.  IANA Registration
+
+      To: ietf-types@iana.org
+      Subject: Registration of Standard MIME media type image/t38
+
+      MIME media type name: image
+
+      MIME subtype name: t38
+
+      Required parameters: none
+
+      Optional parameters: none
+
+      Encoding considerations: Binary
+
+      Security considerations:
+
+         This content denotes a facsimile bit stream that may or
+         may not be encrypted.
+
+      Interoperability considerations :
+
+         This MIME media subtype is intended to be used as a
+         parameter by SDP in SIP call setup for T.38 as described in
+         ITU-T Rec. T.38 Annex D.  Any use of this media type by
+         email applications is not defined and as a result is not
+         guaranteed to interoperate with a T.38 stream.
+
+
+
+Parsons                     Standards Track                     [Page 2]
+
+RFC 3362                MIME Sub-type image/t38              August 2002
+
+
+
+      Published specification:
+
+         ITU-T Recommendation T.38, 'Procedures for real-time
+         Group 3 facsimile communication over IP networks', April
+         2002.
+
+         A copy of the T.38 specifications can be found at:
+
+         http://www.itu.int/rec/recommendation.asp?type=folders&
+         lang=e&parent=T-REC-T.38
+
+      Applications which use this media type:
+
+         Real-time facsimile (fax)
+
+      Additional information:
+
+         Magic number(s):
+              II (little-endian):
+              MM (big-endian):
+         File extension(s): .T38
+         Macintosh File Type Code(s): T38
+
+      Person & email address to contact for further information:
+
+         Glenn W. Parsons
+         gparsons@nortelnetworks.com
+
+      Intended usage: COMMON
+
+      Change controller: Glenn Parsons
+
+5. Security Considerations
+
+   Security considerations for this media type are discussed in the MIME
+   type registration that appears in section 4.
+
+6. References
+
+   [REQ]      Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+   [MIME4]    Freed, N. and N. Borenstein, "Multipurpose Internet Mail
+              Extensions (MIME) Part Four: Registration Procedures", BCP
+              13, RFC 2048, November 1996.
+
+
+
+
+
+Parsons                     Standards Track                     [Page 3]
+
+RFC 3362                MIME Sub-type image/t38              August 2002
+
+
+   [SDP]      Handley, M. and V. Jacobson, "SDP: Session Description
+              Protocol", RFC 2327, April 1998.
+
+   [SIP]      Rosenberg, J., Schulzrinne, H., Camarillo, G., Johnston,
+              A., Peterson, J., Sparks, R., Handley, M. and E. Schooler,
+              "SIP: Session Initiation Protocol", RFC 3261, June 2002.
+
+   [SIP-99]   Handley, M., Schulzrinne, H., Schooler, E. and J.
+              Rosenberg, "SIP: Session Initiation Protocol", RFC 2543,
+              March 1999.
+
+   [T.38]     ITU-T Recommendation T.38, 'Procedures for real-time Group
+              3 facsimile communication over IP networks', April 2002.
+
+   [T.38-98]  ITU-T Recommendation T.38, 'Procedures for real-time Group
+              3 facsimile communication over IP networks', June 1998.
+
+   [T.38D-00] ITU-T Recommendation T.38 Amendment 2 Annex D, 'SIP/SDP
+              Call Establishment Procedures', February 2000.
+
+7. Authors' Address
+
+   Glenn W. Parsons
+   Nortel Networks
+   P.O. Box 3511, Station C
+   Ottawa, ON  K1Y 4H7
+   Canada
+
+   Phone: +1-613-763-7582
+   Fax:   +1-613-763-2697
+   EMail: gparsons@nortelnetworks.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Parsons                     Standards Track                     [Page 4]
+
+RFC 3362                MIME Sub-type image/t38              August 2002
+
+
+8. Full Copyright Statement
+
+   Copyright (C) The Internet Society (2002).  All Rights Reserved.
+
+   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Parsons                     Standards Track                     [Page 5]
+
