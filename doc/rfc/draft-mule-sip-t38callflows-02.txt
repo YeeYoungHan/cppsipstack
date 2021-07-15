@@ -1,0 +1,3116 @@
+
+
+Internet Engineering Task Force                      Jean-Francois Mule 
+Internet Draft                                                          
+Document: <draft-mule-sip-t38callflows-02.txt>               Jieying Li 
+Category: Informational                                    Clarent Corp 
+Expires: April 2002                                        October 2001 
+ 
+                   SIP Real-time Fax Call Flow Examples 
+                                    And 
+                          Best Current Practices 
+ 
+Status of this Memo 
+ 
+   This document is an Internet-Draft and is in full conformance with 
+   all provisions of Section 10 of RFC2026 [1].  
+    
+   Internet-Drafts are working documents of the Internet Engineering 
+   Task Force (IETF), its areas, and its working groups.  Note that 
+   other groups may also distribute working documents as Internet-
+   Drafts.  
+    
+   Internet-Drafts are draft documents valid for a maximum of six 
+   months and may be updated, replaced, or obsoleted by other documents 
+   at any time.  It is inappropriate to use Internet- Drafts as 
+   reference material or to cite them other than as "work in progress."  
+    
+   The list of current Internet-Drafts can be accessed at 
+   http://www.ietf.org/ietf/1id-abstracts.txt  
+   The list of Internet-Draft Shadow Directories can be accessed at 
+   http://www.ietf.org/shadow.html. 
+    
+    
+1. Abstract 
+    
+   The Session Initiation Protocol (SIP) allows the establishment of 
+   real-time Internet fax communications.  Real-time facsimile 
+   communications over IP may follow 2 modes of operation: T.38 fax 
+   relay as defined by the ITU-T T.38 recommendation or fax pass-
+   through.  
+   This document clarifies the options available to Internet telephony 
+   gateway vendors to handle real-time fax calls using SIP.  While our 
+   primary focus is to address the more reliable real-time T.38 Group 3 
+   fax mode, we briefly cover the fax pass-through mode to enable 
+   fallback operations and super G3 fax communications using SIP.  We 
+   also give examples of SIP call flows for real-time Internet fax 
+   gateways or SIP proxy redirect servers.  Elements in these call 
+   flows include SIP User Agents, SIP Proxy Servers, and Gateways to 
+   the PSTN (Public Switch Telephone Network). 
+   This document introduces best current practices for SIP T.38 fax and 
+   SIP fax pass-through sessions.  A session starts with audio 
+   capabilities, and, upon fax tone detection, T.38 fax capabilities 
+   are negotiated; upon successful negotiation, the session continues 
+   with fax capabilities and the media termination hosts exchange T.38 
+   Internet fax packets.  The T.38 fax call scenarios include various 
+   aspects of the call sequence: the detection of fax transmission, the 
+  
+Li, Mule                        SIP WG                               1 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+   usage of the T.38 session description attributes, the optional 
+   fallback into fax pass-through mode and the session termination. The 
+   fax pass-through call scenarios involve some specific SDP media 
+   attributes to enable proper fax transmission. 
+   Fax transmission can be detected by the receiving side, the emitting 
+   side or both (in the latter case, a 'glare' effect may appear).  
+   This document only covers the case when the fax transmission is 
+   detected by the receiving side: it is the most common practice and 
+   the other cases do not represent any particular challenges and are 
+   therefore left for future discussions).  Call flow diagrams and 
+   message details are shown.  A list of IANA defined SDP attribute 
+   names for T.38 is summarized in section 7. 
+    
+    
+                             Table of Contents 
+    
+Status of this Memo...................................................1 
+1. Abstract...........................................................1 
+2. Conventions used in this document..................................3 
+3. Overview...........................................................3 
+3.1.  General Assumptions.............................................3 
+3.2 Legend for Message Flows..........................................4 
+3.3 Changes to previous drafts........................................4 
+4 Handling of real-time fax communication using SIP...................5 
+4.1 Internet telephony gateways and fax detection.....................5 
+4.2 Internet telephony gateways and T.38 fax media connections........5 
+4.3 SIP session and fax termination...................................6 
+4.4 Internet telephony gateways and fax pass-through mode.............6 
+4.5 Responses to OPTIONS request......................................7 
+4.6 Beyond Internet telephony gateways................................7 
+5 Successful SIP T.38 fax Call Scenarios..............................7 
+5.1 Internet fax device û fax only support............................7 
+5.1.1 Sequence Diagram................................................7 
+5.1.2 Message Details.................................................8 
+5.2 SIP T.38 fax call û fax stream replaces voice stream.............13 
+5.2.1 Sequence Diagram...............................................14 
+5.2.2 Message Details................................................15 
+5.3 SIP T.38 fax call û fax stream added to voice stream.............25 
+5.3.1 Sequence Diagram...............................................26 
+5.3.2 Message Details................................................27 
+5.4 SIP T.38 fax call û fax stream forced to replace voice stream....37 
+5.4.1 Sequence Diagram...............................................37 
+5.4.2 Message Details................................................38 
+6. Unsuccessful Scenarios............................................41 
+6.1. Unsuccessful T.38 fax scenario û no support for T.38............41 
+6.1.1. Sequence Diagram..............................................41 
+6.1.2. Message Details...............................................42 
+6.2. Unsuccessful T.38 fax scenario û 606 response and G.711 fallback44 
+
+  
+Li/Mule                                                              2 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+6.2.1. Sequence Diagram..............................................44 
+6.2.2. Message Details...............................................45 
+7. SDP Attribute Table for T.38 sessions.............................50 
+8. Considerations....................................................51 
+8.1. Level of requirements û solved, see section 4.2:................51 
+8.2. Negotiation of UDP ports for T.38 transmission..................51 
+8.3. Adding a fax stream to SIP session vs. Replacing audio stream...51 
+8.4. Adding text to make use of SIP OPTIONS: in progress in draft-02.51 
+8.5. Use of IP addresses in SDP connection information...............52 
+8.6. Unsuccessful scenario: 606 or 488...............................52 
+9. Security Considerations...........................................52 
+10. References.......................................................52 
+11. Acknowledgments..................................................53 
+12. Author's Addresses...............................................53 
+Full Copyright Statement.............................................53 
+    
+    
+2. Conventions used in this document 
+    
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", 
+   "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in 
+   this document are to be interpreted as described in RFC-2119 [2]. 
+    
+    
+3. Overview 
+    
+   The Session Initiation Protocol (SIP) is defined by RFC2543 [3] and 
+   T.38 is the ITU-T Recommendation defining the procedures for real-
+   time Group 3 facsimile communications over IP networks [4].  This 
+   document deals with the handling of real-time fax communications 
+   using the SIP protocol for T.38 fax and fax pass-through modes.   
+   For T.38, this document deals primarily with one transport protocol 
+   for the media: T.38 over UDP/UDPTL; T.38 fax packet transport over 
+   TCP using SIP session establishment can easily be extrapolated. 
+   These T.38 call flows were developed in the design of carrier-class 
+   SIP Telephony products supporting voice and real-time fax traffic. 
+   It is the hope of the authors that this document will be useful for 
+   the SIP community, SIP implementors of T.38 fax products, designers. 
+   Call flows shown in this document complement the main SIP call flow 
+   Internet-Draft [5].  These call flows are based on the current 
+   version 2.0 of SIP in RFC2543[3], the ITU-T T.38 Amendment 2 [6] and 
+   an ITU-T SG8 liaison to IANA.  Note: IANA registration of the T.38 
+   SDP attributes is currently a work in progress. 
+    
+    
+3.1.  General Assumptions 
+    
+   Internet telephony gateways with T.38 support MAY pass various fax 
+   tones (T.30 CNG, CED, etc.) or flag sequence (like V.21 Preamble) in 
+   the RTP audio streams before those tones or flag sequence are 
+   detected.  Once detected by the DSP resources, T.38 fax-capable 
+  
+Li/Mule                                                              3 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+   devices switch from audio to fax mode and initiate a T.38 fax packet 
+   transmission. 
+   These best current practices MAY apply to "Network Gateway", 
+   "Enterprise Gateway" and Internet-aware fax devices or terminals. 
+    
+    
+3.2 Legend for Message Flows 
+    
+   The legend defined [5] also applies in this document.  
+   Dashed lines (---) represent control messages that are mandatory to   
+   the call scenario.  These control messages can be SIP or PSTN 
+   signaling. Double dashed lines (===) represent media paths between 
+   network elements. Messages with parenthesis around name represent 
+   optional control messages.  Messages are identified in the Figures 
+   as F1, F2, etc.  This references the message details in the table 
+   that follows the Figure.  Comments in the message details are shown 
+   in the following form:    /* Comments. */ 
+    
+    
+3.3 Changes to previous drafts 
+    
+   o  Changes to draft-01 
+   The changes between the current draft and draft-01 are: 
+      - Major updates:  
+            + additions based on SIPit fax testing event 8/2001: added 
+              text regarding the negotiation of T38MaxBitRate in 4.2, 
+            + added more general text for the handling of real-time 
+              fax pass-through, 
+            + added of echo cancellation & silence suppression SDP 
+              attributes and usage recommendations in 6.2, 
+            + correction of the session version number in SDP when 
+              issuing re-INVITE with updated SDP information as per 
+              draft-ietf-sip-rfc2543bis-05, 
+            + started a section on the use of the OPTIONS method to  
+              determine the support of T.38 capabilities (work-in- 
+              progress), 
+      - Minor editorial updates (added tag fields in To and From header 
+   lines as well as Contact header lines as per draft-ietf-sip-
+   rfc2543bis-05, added proper reference to T.38 Amendment 2 pre-
+   published version, exact case matching for T38MaxBitRate, etc.) 
+    
+   o  Changes to draft-00 
+   The major changes between draft-01 and draft-00 are listed below: 
+      - Major updates:  
+            + new text in fax handling section 4.2 based on sip list:  
+              clarified text for fax detection, capability negotiation  
+              and termination 
+            + additions of new successful call flows in section 5 
+            + additions of unsuccessful call flows in section 6             
+      - Added Record-Route header, modified Cseq numbers,  
+      - Added T38FaxMaxDatagram attribute in SDP and corrected  
+        the sample value for T38FaxMaxBuffer, 
+      - Minor editorial changes (e.g. removed references in Abstract). 
+  
+Li/Mule                                                              4 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+4 Handling of real-time fax communication using SIP 
+    
+   The handling of real-time fax sessions using SIP involves the 
+   initial session establishment, the modification or negotiation of 
+   session capabilities upon fax detection, the optional fallback into 
+   fax pass-through mode and the session termination. 
+    
+   Some variants of these best current practices MAY apply depending on 
+   the nature or the configuration of Internet telephony gateways.  Two 
+   distinct cases are considered in this document: 
+         o The Internet telephony gateway only supports T.38 real-time 
+   fax communications (by design or by configuration).  In this case, 
+   the Internet fax gateway SHOULD initiate the SIP session with T.38 
+   SDP capabilities (this is typically the case of Internet fax 
+   terminals, also called Internet-aware fax devices or the case of 
+   gateways statically configured to support T.38 fax calls only); 
+         o The Internet telephony gateway supports voice and real-time 
+   fax communications.  In this case, the Internet telephony gateway 
+   initiates the SIP session with audio capabilities, and, upon fax 
+   detection, the switchover to T.38 fax capabilities is triggered.  
+   The fax media connection may replace or be added to the audio 
+   connection depending on the target applications. 
+    
+ 
+4.1 Internet telephony gateways and fax detection 
+    
+   Two possible ways exist for an Internet telephony gateway to detect 
+   a facsimile communication: 
+    
+   1. On the emitting gateway (the one sending the facsimile document), 
+   the T.30 calling tone (CNG) is detected.  The CNG tone is however an 
+   optional signal [7]; 
+   2. On the receiving gateway, the V.21 Preamble flag sequence is 
+   detected.  The Preamble is always present and follows the called 
+   station identification tone (CED) when CED is present. 
+   Note that even though the CED tone may be detected on the receiving 
+   gateway, since the fax CED tone is similar to V.25 ANS modem tones, 
+   it SHOULD NOT be used to trigger the fax switchover. 
+    
+   In conclusion, several conditions can trigger fax detection. 
+   Internet telephony gateways supporting T.38 real-time facsimile MUST 
+   support the detection of fax transmission on the V.21 Preamble flag 
+   sequence; Internet telephony gateways MAY support the detection of 
+   fax on CNG tone.  The authors recommend that a facsimile 
+   transmission SHOULD be detected on the receiving Internet telephony 
+   gateway.   
+    
+    
+4.2 Internet telephony gateways and T.38 fax media connections 
+    
+   Upon successful fax detection, the description of the media 
+   connection(s) is modified using the SDP protocol [8] as described in 
+   SIP (see sections in chapter 5). 
+  
+Li/Mule                                                              5 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+    
+   Several cases should be considered: 
+   - In the case of Internet fax devices (supporting T.38 fax only 
+   communications), the SIP session is established with SDP description 
+   containing the T.38 media attributes; refer to section 5.1 for a 
+   sample call flow for Internet fax devices. 
+   - In the case of Internet telephony gateways, the SIP/SDP session is 
+   modified and the T.38 fax media connection SHOULD replace the 
+   existing audio media connection.  The SIP UAC triggering the 
+   modification of the session description MUST indicate all of its 
+   T.38 media attributes in SDP.  This is the recommended behavior for 
+   gateways; refer to section 5.2 for a sample call flow illustrating 
+   this scenario.  
+   Some implementations MAY choose to add the fax media connection to 
+   the existing audio connection and in that case, they SHOULD mute the 
+   audio connection while fax is transmitted.  Refer to section 5.3 for 
+   a sample call flow illustrating this optional scenario. 
+    
+   Note: 
+   Among the SDP T.38 media attributes being exchanged after fax 
+   detection, implementors should particularly pay attention to 
+   T38MaxBitRate, the maximum T.38 bit rate for the media connection.  
+   It is recommended to implement the following rule when responding to 
+   a maximum bit rate proposal.  If the remote peer's SDP description 
+   contains a maximum fax bit rate of X and the local host is set to a 
+   maximum bit rate of Y (either by fax protocol detection or 
+   configuration), the local host MUST propose a maximum fax rate of 
+   min (X,Y) in the SIP response to the re-INVITE in order to 
+   facilitate the negotiation.  This note is exemplified in section 
+   5.2.1. in messages F11-F14.  Failures to implement this rule MAY 
+   imply call teardown in some cases. 
+    
+    
+4.3 SIP session and fax termination 
+    
+   Upon completion of the fax transmission, any audio connection 
+   successfully established prior to fax detection SHOULD be restored 
+   or the session MUST be terminated. 
+    
+    
+4.4 Internet telephony gateways and fax pass-through mode 
+    
+   This section deals real-time facsimile communications over IP using 
+   fax pass-through instead of T.38 fax relay.  In this mode, the 
+   facsimile communication is handled as a PCM audio call (PCMA/PCMU as 
+   specified in ITU-T recommendation G.711).  
+    
+   The fax pass-through mode is important to prevent call failures, for 
+   example in cases when one of the SIP communication peers does not 
+   support T.38.  For Internet telephony gateways with support for 
+   PCM/G.711 audio but no support for T.38 real-time fax, it is 
+   recommended to switch the session to fax pass-through mode.  
+   Internet telephony gateways SHOULD handle the fall back mode to fax 
+  
+Li/Mule                                                              6 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+   pass-through by recognizing the SDP T.38 connection and proposing to 
+   switch to a new audio connection.  The new audio connection SHOULD 
+   have the following characteristics: at a minimum, specify PCM G.711 
+   codec, silence suppression OFF, echo cancellation ON.  The telephony 
+   gateway that originated the failed T.38 re-INVITE SHOULD initiate 
+   the subsequent re-INVITE to fax pass-through mode.  
+   Refer to section 6.2 for a sample call flow illustrating this 
+   scenario. 
+    
+    
+4.5 Responses to SIP OPTIONS request 
+   Suggestion currently logged in section 8.4, just a placeholder for 
+   now; <<work in progress >> 
+    
+    
+4.6 Beyond Internet telephony gateways 
+    
+   This document may also serve to vendors of SIP redirect servers or 
+   other SIP UA types like SIP phones.  Such SIP entities may recognize 
+   the fax nature of the sessions and redirect the flows to the proper 
+   real-time fax-capable devices or to other fax service providers. 
+    
+    
+5 Successful SIP T.38 fax Call Scenarios 
+    
+    
+5.1 Internet fax device û fax only support 
+ 
+   This section represents a SIP call flow for a T.38 fax session 
+   between 2 Internet fax terminals.  It is also applicable to Internet 
+   telephony gateways when telephony ports are statically configured to 
+   support fax only (case of analog IP telephony gateways where a 
+   specific port is connected to a fax terminal). 
+   A session starts with fax capabilities (t.38/udptl).  The mechanism 
+   for supporting T.38 in SIP & SDP is detailed in T.38 Annex D [9], a 
+   temporary document that proposes an amendment to T.38 describing SIP 
+   call establishment procedures.  
+    
+    
+5.1.1 Sequence Diagram 
+    
+     Internet Fax UA           Proxy               IFTGW UA 
+    
+      Fax  |                    |                    | 
+   ------->|   F1 INVITE        |                    | 
+   emitted |------------------->|                    | 
+           |                    |   F2 INVITE        | 
+           |                    |------------------->| 
+           |   F3  100 Trying   |                    | 
+           |<-------------------|   F4  100 Trying   | 
+           |                    |<-------------------| 
+           |                    |                    | 
+
+  
+Li/Mule                                                              7 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+           |                    |   F5  180 Ringing  | 
+           |   F6  180 Ringing  |<-------------------| 
+           |<-------------------|                    | 
+           |                    |   F7  200 OK       | 
+           |   F8  200 OK       |<-------------------| 
+           |<-------------------|                    | 
+           |   F9  ACK          |                    | 
+           |------------------->|   F10 ACK          | 
+           |                    |------------------->| 
+           |                                         | 
+           |         T.38/UDPTL Fax Flow Established | 
+           |<=======================================>| 
+   End of  |                                         | 
+   fax     |                    |                    | 
+   detected|                    |                    | 
+   ------->|                    |                    | 
+           |   F11 BYE          |                    | 
+           |------------------->|                    | 
+           |                    |   F12 BYE          | 
+           |                    |------------------->| 
+           |                    |   F13  200 OK      | 
+           |                    |<-------------------| 
+           |   F14  200 OK      |                    | 
+           |<-------------------|                    | 
+ 
+ 
+5.1.2 Message Details 
+    
+   F1 INVITE  I.FAX UA -> PROXY 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab111 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-303-555-1111@ifax.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 320 
+    
+      v=0 
+      o=ifaxgw1 2890846527 2890846527 IN IP4 ifax.here.com 
+      s=Session SDP 
+      c=IN IP4 ifaxmg.here.com 
+      t=0 0 
+      m=image 15002 udptl t38 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:14400 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+  
+Li/Mule                                                              8 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPFEC 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+    
+    
+   F2 INVITE  PROXY -> IFTGW UA 
+    
+      INVITE sip:+1-650-555-2222@iftgw.there.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@iftgw.there.com;  
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab111 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-303-555-1111@ifax.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 320 
+    
+      v=0 
+      o=ifaxgw1 2890846527 2890846527 IN IP4 ifax.here.com 
+      s=Session SDP 
+      c=IN IP4 ifaxmg.here.com 
+      t=0 0 
+      m=image 15002 udptl t38 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:14400 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPFEC 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+    
+    
+   F3 (100 Trying) PROXY -> I.FAX UA 
+    
+      SIP/2.0 100 Trying 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab111 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 17 INVITE 
+      Content-Length: 0 
+    
+    
+    
+    
+    
+  
+Li/Mule                                                              9 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+   F4 (100 Trying) IFTGW UA -> PROXY 
+    
+      SIP/2.0 100 Trying 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Length: 0 
+    
+    
+   F5 180 Ringing IFTGW UA -> PROXY 
+    
+      SIP/2.0 180 Ringing 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Length: 0 
+     
+    
+   F6 180 Ringing PROXY -> I.FAX UA 
+    
+      SIP/2.0 180 Ringing 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Length: 0 
+    
+    
+   F7 200 OK   IFTGW UA -> PROXY 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 320 
+    
+      v=0 
+      o=faxgw1 2890844527 2890844527 IN IP4 iftgw.there.com 
+  
+Li/Mule                                                             10 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      s=Session SDP 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=image 49172 udptl t38 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:14400 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+    
+    
+   F8 200 OK   PROXY -> I.FAX UA 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@iftgw.there.com;  
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 320 
+    
+      v=0 
+      o=faxgw1 2890844527 2890844527 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=image 49172 udptl t38 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:14400 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+    
+    
+   F9 ACK I.FAX UA -> PROXY 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      Route: <sip:+1-650-555-2222@iftgw.there.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab11 
+  
+Li/Mule                                                             11 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 17 ACK 
+      Content-Length: 0 
+    
+    
+   F10 ACK PROXY -> IFTGW UA 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@iftgw.there.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 17 ACK 
+      Content-Length: 0 
+    
+    
+   /* T.38 fax streams are established. */ 
+     
+    
+   F11 BYE I.FAX UA -> PROXY 
+    
+      BYE sip:+1-650-555-2222@obelix.wcom.com SIP/2.0 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 18 BYE 
+      Content-Length: 0 
+    
+    
+   F12 BYE PROXY -> IFTGW UA 
+    
+      BYE sip:+1-650-555-2222@obelix.wcom.com SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d009.1 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 18 BYE 
+      Content-Length: 0 
+    
+    
+    
+    
+    
+  
+Li/Mule                                                             12 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+   F13 200 OK IFTGW UA -> PROXY 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde34 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 18 BYE 
+      Content-Type: application/sdp 
+      Content-Length: 0 
+    
+    
+   F14 200 OK  PROXY -> I.FAX UA 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP ifax.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ifax.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde34 
+      Call-ID: 1717@ifax.here.com 
+      CSeq: 18 BYE 
+      Content-Type: application/sdp 
+      Content-Length: 0 
+    
+    
+5.2 SIP T.38 fax call û fax stream replaces voice stream 
+ 
+   This section represents the SIP call flow for a T.38 fax session 
+   between 2 Internet telephony gateways (fax detection on terminating 
+   side).  
+   A session starts with audio capabilities, and then the session is 
+   modified to switch to t38 fax mode (t.38/udptl). 
+    
+   Scenario: 
+   1. A SIP INVITE is sent to the called party requesting a voice 
+   connection per RFC2543; our scenario involves 1 SIP proxy.  An audio 
+   connection is established, 
+   2. Upon detection of Preamble by the terminating gateway, a SIP re-
+   INVITE request is sent to the emitting gateway to modify the 
+   parameters of the session to allow a T.38 fax media connection.  
+   This INVITE request contains new SDP information detailing T.38 
+   capabilities, 
+   3. Upon successful acknowledgments, T.38 IFP fax packets are 
+   sent/received on UDP ports, which may be the same UDP ports used for 
+   audio RTP, 
+   4. Once the fax transmission is terminated, audio capabilities are 
+   ôrestoredö or the call is terminated. 
+    
+    
+    
+    
+  
+Li/Mule                                                             13 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+5.2.1 Sequence Diagram 
+   In our example, we illustrate the fact that Internet telephony 
+   gateways may use multiple network interfaces for signaling and/or 
+   media streaming or one network interface with multiple IP addresses.   
+   Typically, our example shows: 
+      - one interface for SIP signaling  
+   (ingress gateway = ift.here.com, egress gateway = iftgw.there.com) 
+      - one or multiple interface(s) for media transport: 
+   (ingress gateway = iftmg.here.com, egress gateway = iftmg.there.com) 
+   A proxy is acting as a pure SIP signaling proxy (obelix.wcom.com). 
+    
+         IFT UA                 Proxy              IFTGW UA 
+           |                    |                    | 
+           |   F1 INVITE        |                    | 
+           |------------------->|                    | 
+           |                    |   F2 INVITE        | 
+           |                    |------------------->| 
+           |   F3  100 Trying   |                    | 
+           |<-------------------|   F4  100 Trying   | 
+           |                    |<-------------------| 
+           |                    |                    | 
+           |                    |   F5  180 Ringing  | 
+           |   F6  180 Ringing  |<-------------------| 
+           |<-------------------|                    | 
+           |                    |   F7  200 OK       | 
+           |   F8  200 OK       |<-------------------| 
+           |<-------------------|                    | 
+           |                    |                    | 
+           |   F9  ACK          |                    | 
+           |------------------->|   F10 ACK          | 
+           |                     ------------------->| 
+           |                                         | 
+           |      Both Way RTP Media Established     | 
+      Fax  |<=======================================>| 
+   ------->|                                         | 
+   emitted |                    |                    |  
+           |                    |                    | Preamble 
+           |                    |                    |<--------- 
+           |                    |   F11 INVITE       | detected 
+           |                    |<-------------------| 
+           |   F12 INVITE       |                    | 
+           |<-------------------|                    | 
+           |                    |                    | 
+           |   F13 200 OK       |                    | 
+           |------------------->|                    | 
+           |                    |   F14 200 OK       | 
+           |                    |------------------->| 
+           |                    |                    | 
+           |                    |   F15  ACK         | 
+           |                    |<-------------------| 
+           |   F16  ACK         |                    | 
+           |<-------------------|                    | 
+
+  
+Li/Mule                                                             14 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+           |                                         | 
+           |          T.38/UDPT Fax Flow Established | 
+           |<=======================================>| 
+   End of  |                                         | 
+   fax     |                    |                    | 
+   detected|                    |                    | 
+   ------->|                    |                    | 
+           |                    |                    | End of fax 
+           |                    |                    |<---------- 
+           |                    |                    |   detected 
+    
+           |                    |   F17 INVITE       |    
+           |                    |<-------------------| 
+           |   F18 INVITE       |                    | 
+           |<-------------------|                    | 
+           |                    |                    | 
+           |   F19 200 OK       |                    | 
+           |------------------->|                    | 
+           |                    |   F20 200 OK       | 
+           |                    |------------------->| 
+           |                    |                    | 
+           |                    |   F21  ACK         | 
+           |                    |<-------------------| 
+           |   F22  ACK         |                    | 
+           |<-------------------|                    | 
+    
+           |      Both Way RTP Media Re-Established  | 
+           |<=======================================>| 
+           |   F23 BYE          |                    | 
+           |------------------->|                    | 
+           |                    |   F24 BYE          | 
+           |                    |------------------->| 
+           |                    |                    | 
+           |                    |   F25  200 OK      | 
+           |                    |<-------------------| 
+           |   F26  200 OK      |                    | 
+           |<-------------------|                    | 
+    
+    
+5.2.2 Message Details 
+    
+   F1 INVITE  IFT UA -> PROXY 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 146 
+  
+Li/Mule                                                             15 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+    
+      v=0 
+      o=IFAXTERMINAL01 2890844527 2890844527 IN IP4 ift.here.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.here.com 
+      t=0 0 
+      m=audio 3456 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+   F2 INVITE  PROXY -> IFTGW UA 
+    
+      INVITE sip:+1-650-555-2222@iftgw.there.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@iftgw.there.com;  
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 146 
+    
+      v=0 
+      o=IFAXTERMINAL01 2890844527 2890844527 IN IP4 ift.here.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.here.com 
+      t=0 0 
+      m=audio 3456 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+   F3 (100 Trying) PROXY -> IFT UA 
+    
+      SIP/2.0 100 Trying 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Content-Length: 0 
+    
+    
+   F4 100 Trying IFTGW UA -> PROXY 
+    
+      SIP/2.0 100 Trying 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+  
+Li/Mule                                                             16 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Length: 0 
+    
+    
+   F5 180 Ringing IFTGW UA -> PROXY 
+    
+      SIP/2.0 180 Ringing 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Length: 0 
+     
+    
+   F6 180 Ringing PROXY -> IFT UA 
+    
+      SIP/2.0 180 Ringing 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Length: 0 
+    
+    
+   F7 200 OK   IFTGW UA -> PROXY 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 150 
+    
+      v=0 
+      o=IFAXTERMINAL01 2890844527 171089 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+    
+  
+Li/Mule                                                             17 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+   F8 200 OK   PROXY -> IFT UA 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@iftgw.there.com;  
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 150 
+    
+      v=0 
+      o=IFAXTERMINAL01 2890844527 171089 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+   F9 ACK IFT UA -> PROXY 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Route: <sip:+1-650-555-2222@iftgw.there.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 ACK 
+      Content-Length: 0 
+    
+    
+   F10 ACK PROXY -> IFTGW UA 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@iftgw.there.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 ACK 
+      Content-Length: 0 
+    
+    
+    
+    
+    
+  
+Li/Mule                                                             18 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+   /* RTP streams are established.  The CNG fax tone is sent in-band if 
+   it is present.  The receiving side IFT gateway DSP detects the 
+   Preamble sequence.  A new UDP port is open on IFTGW for T.38 IFP 
+   packets and the IFTGW signals the switch over to fax mode by send a 
+   re-INVITE with the new UDP port in the SDP. 
+   Note: the IFTGW has a T38MaxBitRate configured to 9600 */ 
+     
+    
+   F11 INVITE  IFTGW UA -> PROXY 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 320 
+    
+      v=0 
+      o=faxgw1 2890844527 171090 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=image 49172 udptl t38 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:9600 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPFEC 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+    
+    
+   F12 INVITE  PROXY -> IFT UA 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d008.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com;  
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+  
+Li/Mule                                                             19 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      Content-Length: 320 
+    
+      v=0 
+      o=faxgw1 2890844527 171090 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=image 49172 udptl t38 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:9600 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPFEC 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+    
+   /* Note: the IFT has a T38MaxBitRate configured to 14400 but since 
+   it received a T38MaxBitRate proposal of 9600, it replies with 
+   T38MaxBitRate = min (9600,14400) */ 
+    
+   F13 200 OK IFT UA -> PROXY 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d008.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 320 
+    
+      v=0 
+      o=faxgw1 2890846527 2890846528 IN IP4 ift.here.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.here.com 
+      t=0 0 
+      m=image 15002 udptl t38 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:9600 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+    
+    
+  
+Li/Mule                                                             20 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+   F14 200 OK  PROXY -> IFT UA 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com;  
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 320 
+    
+      v=0 
+      o=faxgw1 2890846527 2890846528 IN IP4 ift.here.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.here.com 
+      t=0 0 
+      m=image 15002 udptl t38 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:9600 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+    
+    
+   F15 ACK IFTGW UA -> PROXY 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 ACK 
+      Content-Length: 0 
+    
+    
+   F16 ACK  PROXY -> IFT UA 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d008.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com;  
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+  
+Li/Mule                                                             21 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 ACK 
+      Content-Length: 0 
+    
+    
+   /* T.38 fax transmission established both ways */ 
+    
+   /* Then, the end of the fax transmission is detected on ingress side 
+   and sent to the egress side (IFTGW).  IFTGW initiates the switch 
+   back to voice communication */ 
+    
+    
+   F17 INVITE  IFTGW UA -> PROXY 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 181 
+    
+      v=0 
+      o=faxgw1 2890844527 171091 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+   F18 INVITE  PROXY -> IFT UA 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d009.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 181 
+    
+      v=0 
+      o=faxgw1 2890844527 171091 IN IP4 iftgw.there.com 
+      s=Session SDP 
+  
+Li/Mule                                                             22 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+   F19 200 OK IFT UA -> PROXY 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d008.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 150 
+    
+      v=0 
+      o=faxgw1 2890844527 2890844529 IN IP4 ift.here.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.here.com 
+      t=0 0 
+      m=audio 3456 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+   F20 200 OK  PROXY -> IFTGW UA 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 150 
+    
+      v=0 
+      o=faxgw1 2890844527 2890844529 IN IP4 ift.here.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.here.com 
+      t=0 0 
+      m=audio 3456 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+    
+    
+  
+Li/Mule                                                             23 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+   F21 ACK IFTGW UA -> PROXY 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 ACK 
+      Content-Length: 0 
+    
+    
+   F22 ACK  PROXY -> IFT UA 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d009.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 ACK 
+      Content-Length: 0 
+    
+    
+   /* Voice streams re-established both ways */ 
+    
+    
+   F23 BYE IFT UA -> PROXY 
+    
+      BYE sip:+1-650-555-2222@obelix.wcom.com SIP/2.0 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 20 BYE 
+      Content-Length: 0 
+    
+    
+   F24 BYE PROXY -> IFTGW UA 
+    
+      BYE sip:+1-650-555-2222@obelix.wcom.com SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d009.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ift.here.com 
+  
+Li/Mule                                                             24 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      CSeq: 20 BYE 
+      Content-Length: 0 
+    
+    
+   F25 200 OK IFTGW UA -> PROXY 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde24 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 20 BYE 
+      Content-Type: application/sdp 
+      Content-Length: 0 
+    
+    
+   F26 200 OK  PROXY -> IFT UA 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde24 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 20 BYE 
+      Content-Type: application/sdp 
+      Content-Length: 0 
+    
+    
+5.3 SIP T.38 fax call û fax stream added to voice stream 
+    
+   This section represents the SIP call flow for a T.38 fax session 
+   between 2 Internet telephony gateways.  It shows the detection of 
+   the fax communication on terminating or receiving side.  
+   A session starts with one audio stream in SDP, and, upon detection 
+   of fax, an additional fax stream is added to the session while the 
+   voice stream is muted.  After the fax communication is terminated, 
+   the fax stream is terminated and the voice stream is restored. 
+    
+   Scenario: 
+   1. A SIP INVITE is sent to the called party requesting a voice 
+   connection per RFC2543; our scenario involves 1 SIP proxy.  An audio 
+   connection is established, 
+   2. Upon detection of Preamble by the terminating gateway, a SIP 
+   re¡INVITE request is sent to the emitting gateway to modify the 
+   parameters of the session to add a T.38 fax connection.  The 
+   connection data is specified per media description and not at the 
+   session-level.  This allows the audio stream and t.38 fax stream to 
+   be controlled independently (i.e., placing the audio on hold while 
+   the t.38 fax transmission is active).  Also note that the t.38 fax 
+
+  
+Li/Mule                                                             25 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+   media stream has been added to the session.  This re-INVITE request 
+   contains SDP information detailing the additional T.38 capabilities, 
+   3. It is suggested that the voice pipe be muted while the fax 
+   session is in progress.  Upon successful acknowledgments, T.38 IFP 
+   fax packets are sent/received on different UDP ports than the one 
+   used for audio RTP, 
+   4. Once the fax transmission is terminated, audio capabilities are 
+   ôrestoredö or the call is terminated. 
+    
+ 
+5.3.1 Sequence Diagram 
+    
+         IFT UA                 Proxy              IFTGW UA 
+           |                    |                    | 
+           |   F1 INVITE        |                    | 
+           |------------------->|                    | 
+           |                    |   F2 INVITE        | 
+           |                    |------------------->| 
+           |   F3  100 Trying   |                    | 
+           |<-------------------|   F4  100 Trying   | 
+           |                    |<-------------------| 
+           |                    |                    | 
+           |                    |   F5  180 Ringing  | 
+           |   F6  180 Ringing  |<-------------------| 
+           |<-------------------|                    | 
+           |                    |   F7  200 OK       | 
+           |   F8  200 OK       |<-------------------| 
+           |<-------------------|                    | 
+           |                    |                    | 
+           |   F9  ACK          |                    | 
+           |------------------->|   F10 ACK          | 
+           |                     ------------------->| 
+           |                                         | 
+           |      Both Way RTP Media Established     | 
+      Fax  |<=======================================>| 
+   ------->|                                         | 
+   emitted |                    |                    |  
+           |                    |                    | Preamble 
+           |                    |                    |<--------- 
+           |                    |   F11 INVITE       | detected 
+           |                    |<-------------------| 
+           |   F12 INVITE       |                    | 
+           |<-------------------|                    | 
+           |                    |                    | 
+           |   F13 200 OK       |                    | 
+           |------------------->|                    | 
+           |                    |   F14 200 OK       | 
+           |                    |------------------->| 
+           |                    |   F15  ACK         | 
+           |                    |<-------------------| 
+           |   F16  ACK         |                    | 
+           |<-------------------|                    | 
+
+  
+Li/Mule                                                             26 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+           |                                         | 
+           |     T.38/UDPT Fax Flow Established      | 
+           |     Voice connection muted              | 
+           |<=======================================>| 
+   End of  |                                         | 
+   fax     |                    |                    | 
+   detected|                    |                    | 
+   ------->|                    |                    | 
+           |                                         | 
+           |                    |                    | End of fax 
+           |                    |                    |<---------- 
+           |                    |                    |   detected 
+           |                    |   F17 INVITE       |    
+           |                    |<-------------------| 
+           |   F18 INVITE       |                    | 
+           |<-------------------|                    | 
+           |                    |                    | 
+           |   F19 200 OK       |                    | 
+           |------------------->|                    | 
+           |                    |   F20 200 OK       | 
+           |                    |------------------->| 
+           |                    |                    | 
+           |                    |   F21  ACK         | 
+           |                    |<-------------------| 
+           |   F22  ACK         |                    | 
+           |<-------------------|                    | 
+           |                                         | 
+           |     Both way RTP Flow restored          | 
+           |<=======================================>| 
+           |                                         | 
+           |   F23 BYE          |                    | 
+           |------------------->|                    | 
+           |                    |   F24 BYE          | 
+           |                    |------------------->| 
+           |                    |                    | 
+           |                    |   F25  200 OK      | 
+           |                    |<-------------------| 
+           |   F26  200 OK      |                    | 
+           |<-------------------|                    | 
+ 
+    
+5.3.2 Message Details 
+ 
+   F1 INVITE  IFT UA -> PROXY 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+  
+Li/Mule                                                             27 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      Content-Type: application/sdp 
+      Content-Length: 146 
+    
+      v=0 
+      o=IFAXTERMINAL01 2890844527 2890844527 IN IP4 ift.here.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.here.com 
+      t=0 0 
+      m=audio 3456 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+    
+   F2 INVITE  PROXY -> IFTGW UA 
+    
+      INVITE sip:+1-650-555-2222@iftgw.there.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@iftgw.there.com;  
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 146 
+    
+      v=0 
+      o=IFAXTERMINAL01 2890844527 2890844527 IN IP4 ift.here.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.here.com 
+      t=0 0 
+      m=audio 3456 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+   F3 (100 Trying) PROXY -> IFT UA 
+    
+      SIP/2.0 100 Trying 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Content-Length: 0 
+    
+    
+   F4 100 Trying IFTGW UA -> PROXY 
+    
+      SIP/2.0 100 Trying 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+  
+Li/Mule                                                             28 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Length: 0 
+    
+    
+   F5 180 Ringing IFTGW UA -> PROXY 
+    
+      SIP/2.0 180 Ringing 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Length: 0 
+     
+    
+   F6 180 Ringing PROXY -> IFT UA 
+    
+      SIP/2.0 180 Ringing 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Length: 0 
+    
+    
+   F7 200 OK   IFTGW UA -> PROXY 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 150 
+    
+      v=0 
+      o=IFAXTERMINAL01 2890844527 171089 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+  
+Li/Mule                                                             29 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+    
+    
+   F8 200 OK   PROXY -> IFT UA 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@iftgw.there.com;  
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 150 
+    
+      v=0 
+      o=IFAXTERMINAL01 2890844527 171089 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+    
+   F9 ACK IFT UA -> PROXY 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Route: <sip:+1-650-555-2222@iftgw.there.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 ACK 
+      Content-Length: 0 
+    
+    
+   F10 ACK PROXY -> IFTGW UA 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@iftgw.there.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 17 ACK 
+      Content-Length: 0 
+    
+
+  
+Li/Mule                                                             30 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+   /* RTP streams are established.  The CNG fax tone is sent in-band if 
+   it is present.  The receiving side IFT gateway DSP detects the 
+   Preamble.  A new UDP port is open on IFTGW for T.38 IFP packets and 
+   the IFTGW signals the switch over to fax mode by send a re-INVITE 
+   with the new UDP port in the SDP */ 
+    
+    
+   F11 INVITE  IFTGW UA -> PROXY 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 320 
+    
+      v=0 
+      o=faxgw1 2890844527 171090 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      c=IN IP4 0.0.0.0 
+      m=image 49172 udptl t38 
+      c=IN IP4 iftmg.there.com 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:14400 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPFEC 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+    
+    
+   F12 INVITE  PROXY -> IFT UA 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d008.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com;  
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+  
+Li/Mule                                                             31 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      Content-Type: application/sdp 
+      Content-Length: 320 
+    
+      v=0 
+      o=faxgw1 2890844527 171090 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      c=IN IP4 0.0.0.0 
+      m=image 49172 udptl t38 
+      c=IN IP4 iftmg.there.com 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:14400 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPFEC 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+    
+    
+   F13 200 OK IFT UA -> PROXY 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d008.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 320 
+    
+      v=0 
+      o=faxgw1 2890846527 2890846528 IN IP4 ift.here.com 
+      s=Session SDP 
+      t=0 0 
+      m=audio 3456 RTP/AVP 0 
+      c=IN IP4 0.0.0.0 
+      m=image 15002 udptl t38 
+      c=IN IP4 iftmg.here.com 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:14400 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+  
+Li/Mule                                                             32 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+    
+    
+   F14 200 OK  PROXY -> IFT UA 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com;  
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 320 
+    
+      v=0 
+      o=faxgw1 2890846527 2890846528 IN IP4 ift.here.com 
+      s=Session SDP 
+      t=0 0 
+      m=audio 3456 RTP/AVP 0 
+      c=IN IP4 0.0.0.0 
+      m=image 15002 udptl t38 
+      c=IN IP4 iftmg.here.com 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:14400 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+    
+    
+   F15 ACK IFTGW UA -> PROXY 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 ACK 
+      Content-Length: 0 
+    
+    
+   F16 ACK  PROXY -> IFT UA 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d008.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+  
+Li/Mule                                                             33 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com;  
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 ACK 
+      Content-Length: 0 
+    
+    
+   /* T.38 fax transmission established both ways and the voice stream 
+   is muted */ 
+   /* Then, the end of the fax transmission is detected on ingress side 
+   and sent to the egress side (IFTGW). IFTGW initiates the switch back 
+   to voice communication */ 
+    
+    
+   F17 INVITE  IFTGW UA -> PROXY 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 181 
+    
+      v=0 
+      o=faxgw1 2890844527 171091 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+   F18 INVITE  PROXY -> IFT UA 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d009.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 181 
+  
+Li/Mule                                                             34 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+    
+      v=0 
+      o=faxgw1 2890844527 171091 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+   F19 200 OK IFT UA -> PROXY 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d008.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 150 
+    
+      v=0 
+      o=faxgw1 2890844527 2890844529 IN IP4 ift.here.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.here.com 
+      t=0 0 
+      m=audio 3456 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+    
+    
+   F20 200 OK  PROXY -> IFTGW UA 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 150 
+    
+      v=0 
+      o=faxgw1 2890844527 2890844529 IN IP4 ift.here.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.here.com 
+      t=0 0 
+      m=audio 3456 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+  
+Li/Mule                                                             35 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+    
+   F21 ACK IFTGW UA -> PROXY 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 ACK 
+      Content-Length: 0 
+    
+    
+   F22 ACK  PROXY -> IFT UA 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d009.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 ACK 
+      Content-Length: 0 
+    
+    
+   F23 BYE IFT UA -> PROXY 
+    
+      BYE sip:+1-650-555-2222@obelix.wcom.com SIP/2.0 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 20 BYE 
+      Content-Length: 0 
+    
+    
+   F24 BYE PROXY -> IFTGW UA 
+    
+      BYE sip:+1-650-555-2222@obelix.wcom.com SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d009.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 20 BYE 
+      Content-Length: 0 
+  
+Li/Mule                                                             36 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+    
+   F25 200 OK IFTGW UA -> PROXY 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde24 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 20 BYE 
+      Content-Type: application/sdp 
+      Content-Length: 0 
+    
+    
+   F26 200 OK  PROXY -> IFT UA 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde24 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 20 BYE 
+      Content-Type: application/sdp 
+      Content-Length: 0 
+ 
+    
+5.4 SIP T.38 fax call û fax stream forced to replace voice stream 
+    
+   This section illustrates the following scenario: 
+   1. A SIP INVITE is sent to the called party requesting a voice 
+   connection per RFC2543; our scenario involves 1 SIP proxy.  An audio 
+   connection is established, 
+   2. Upon detection of Preamble by the terminating gateway, a SIP 
+   re¡INVITE request is sent to the emitting gateway to modify the 
+   parameters of the session to add a T.38 fax connection.  This re-
+   INVITE request contains SDP information detailing the additional 
+   T.38 capabilities.  It is also suggested that the voice pipe be 
+   muted while the fax session is in progress.   
+   3. The emitting gateway does not have the resources to maintain both 
+   the audio & fax streams and replies by allowing the fax media 
+   stream.  Upon successful acknowledgments, the audio stream is 
+   terminated and T.38 IFP fax packets are exchanged, 
+   4. Once the fax transmission is terminated, audio capabilities are 
+   ôre-negotiatedö and the call is terminated. 
+    
+5.4.1 Sequence Diagram 
+   Refer to section 5.3.1; sequence diagram is unchanged. 
+    
+    
+    
+    
+  
+Li/Mule                                                             37 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+5.4.2 Message Details 
+   See section 5.3.2 for the complete set of messages.  We only 
+   indicate the changed messages based on the emitting gatewayÆs 
+   decline to support both voice and fax streams. 
+    
+   ... 
+   F11 INVITE  IFTGW UA -> PROXY 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 320 
+    
+      v=0 
+      o=faxgw1 2890844527 171090 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      c=IN IP4 0.0.0.0 
+      m=image 49172 udptl t38 
+      c=IN IP4 iftmg.there.com 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:14400 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPFEC 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+    
+    
+   F12 INVITE  PROXY -> IFT UA 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d008.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com;  
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+  
+Li/Mule                                                             38 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      Content-Length: 320 
+    
+      v=0 
+      o=faxgw1 2890844527 171090 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      c=IN IP4 0.0.0.0 
+      m=image 49172 udptl t38 
+      c=IN IP4 iftmg.there.com 
+      a=T38FaxVersion:0 
+      a=T38MaxBitRate:14400 
+      a=T38FaxFillBitRemoval:0 
+      a=T38FaxTranscodingMMR:0 
+      a=T38FaxTranscodingJBIG:0 
+      a=T38FaxRateManagement:transferredTCF 
+      a=T38FaxMaxBuffer:72 
+      a=T38FaxMaxDatagram:316 
+      a=T38FaxUdpEC:t38UDPFEC 
+      a=T38FaxUdpEC:t38UDPRedundancy 
+    
+    
+    
+      F13 200 OK IFT UA -> PROXY  
+        
+         SIP/2.0 200 OK  
+         Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d008.1  
+         Via: SIP/2.0/UDP iftgw.there.com:5060  
+         From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+         To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+         Call-ID: 1717@ift.here.com  
+         CSeq: 18 INVITE 
+         Contact: <sip:+1-303-555-1111@ift.here.com> 
+         Content-Type: application/sdp  
+         Content-Length: 320  
+        
+         v=0  
+         o=faxgw1 2890846527 2890846528 IN IP4 ift.here.com  
+         s=Session SDP  
+         t=0 0  
+         m=audio 0 RTP/AVP 0 
+         c=IN IP4 0.0.0.0  
+         m=image 15002 udptl t38  
+         c=IN IP4 iftmg.here.com  
+         a=T38FaxVersion:0  
+         a=T38MaxBitRate:14400  
+         a=T38FaxFillBitRemoval:0  
+         a=T38FaxTranscodingMMR:0  
+         a=T38FaxTranscodingJBIG:0  
+         a=T38FaxRateManagement:transferredTCF  
+         a=T38FaxMaxBuffer:72  
+         a=T38FaxMaxDatagram:316  
+         a=T38FaxUdpEC:t38UDPRedundancy  
+  
+Li/Mule                                                             39 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+        
+        
+      F14 200 OK  PROXY -> IFT UA  
+        
+         SIP/2.0 200 OK  
+         Via: SIP/2.0/UDP iftgw.there.com:5060  
+         Record-Route: <sip:+1-650-555-2222@obelix.wcom.com;   
+                       maddr=obelix.wcom.com>  
+         From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+         To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+         Call-ID: 1717@ift.here.com  
+         CSeq: 18 INVITE  
+         Contact: <sip:+1-303-555-1111@ift.here.com> 
+         Content-Type: application/sdp  
+         Content-Length: 320  
+        
+         v=0  
+         o=faxgw1 2890846527 2890846528 IN IP4 ift.here.com  
+         s=Session SDP  
+         t=0 0  
+         m=audio 0 RTP/AVP 0 
+         c=IN IP4 0.0.0.0  
+         m=image 15002 udptl t38  
+         c=IN IP4 iftmg.here.com  
+         a=T38FaxVersion:0  
+         a=T38MaxBitRate:14400  
+         a=T38FaxFillBitRemoval:0  
+         a=T38FaxTranscodingMMR:0  
+         a=T38FaxTranscodingJBIG:0  
+         a=T38FaxRateManagement:transferredTCF  
+         a=T38FaxMaxBuffer:72  
+         a=T38FaxMaxDatagram:316  
+         a=T38FaxUdpEC:t38UDPRedundancy  
+        
+        
+      F15 ACK IFTGW UA -> PROXY  
+        
+         ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0  
+         Via: SIP/2.0/UDP iftgw.there.com:5060  
+         Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                 maddr=obelix.wcom.com>  
+         From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+         To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+         Call-ID: 1717@ift.here.com  
+         CSeq: 18 ACK  
+         Content-Length: 0  
+            
+        
+      F16 ACK  PROXY -> IFT UA  
+        
+         ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0  
+         Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d008.1  
+         Via: SIP/2.0/UDP iftgw.there.com:5060  
+  
+Li/Mule                                                             40 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+         Record-Route: <sip:+1-650-555-2222@obelix.wcom.com;   
+                        maddr=obelix.wcom.com>  
+         From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+         To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+         Call-ID: 1717@ift.here.com  
+         CSeq: 18 ACK  
+         Content-Length: 0  
+ 
+ 
+6. Unsuccessful Scenarios 
+    
+6.1. Unsuccessful T.38 fax scenario û no support for T.38 
+   This section represents a SIP T.38 call failure because the emitting 
+   gateway does not support T.38. 
+    
+   Scenario: 
+   1. A SIP INVITE is sent to the called party requesting a voice 
+   connection per RFC2543; our scenario involves 1 SIP proxy.  An audio 
+   connection is established, 
+   2. Upon detection of Preamble by the terminating gateway, a SIP 
+   re¡INVITE request is sent to the emitting gateway to modify the 
+   parameters of the session to allow a T.38 fax connection.  This re-
+   INVITE request contains SDP information detailing T.38 capabilities, 
+   3. The emitting gateway rejects the re¡INVITE with a 415 Unsupported 
+   Media Type response.     
+   4. Upon reception of the reject, the call is terminated. 
+    
+6.1.1. Sequence Diagram 
+    
+   The messages F1 to F12 are identical to section 5.2. 
+    
+    
+         IFT UA                 Proxy              IFTGW UA 
+           |                    |                    | 
+           |   F1 INVITE        |                    | 
+           |------------------->|                    | 
+           |                    |   F2 INVITE        | 
+           |                    |------------------->| 
+           |   F3  100 Trying   |                    | 
+           |<-------------------|   F4  100 Trying   | 
+           |                    |<-------------------| 
+           |                    |                    | 
+           |                    |   F5  180 Ringing  | 
+           |   F6  180 Ringing  |<-------------------| 
+           |<-------------------|                    | 
+           |                    |   F7  200 OK       | 
+           |   F8  200 OK       |<-------------------| 
+           |<-------------------|                    | 
+           |   F9  ACK          |                    | 
+           |------------------->|   F10 ACK          | 
+           |                     ------------------->| 
+           |                                         | 
+
+  
+Li/Mule                                                             41 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+           |      Both Way RTP Media Established     | 
+      Fax  |<=======================================>| 
+   ------->|                                         | 
+   emitted |                    |                    |  
+           |                    |                    | Preamble 
+           |                    |                    |<--------- 
+           |                    |   F11 INVITE       | detected 
+           |                    |<-------------------| 
+           |   F12 INVITE       |                    | 
+           |<-------------------|                    | 
+           |                    |                    | 
+           |   F13 415          |                    | 
+           |------------------->|                    | 
+           |                    |   F14 415          | 
+           |                    |------------------->| 
+           |                    |                    | 
+           |                    |   F15  BYE         | 
+           |                    |<-------------------| 
+           |   F16  BYE         |                    | 
+           |<-------------------|                    | 
+           |                    |                    | 
+           |   F17 200 OK       |                    | 
+           |------------------->|                    | 
+           |                    |   F18 200 OK       | 
+           |                    |------------------->| 
+    
+    
+6.1.2. Message Details 
+    
+   Messages F1 to F12 are identical to section 5.2; refer to 5.2. 
+    
+   F13 415 Unsupported Media Type  IFT UA -> PROXY 
+    
+      SIP/2.0 415 Unsupported Media Type 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Length: 0 
+    
+    
+   F14 415 Unsupported Media Type  PROXY -> IFTGW UA 
+    
+      SIP/2.0 415 Unsupported Media Type 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d010.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+  
+Li/Mule                                                             42 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Length: 0 
+    
+    
+   F15 BYE IFTGW UA -> PROXY 
+    
+      BYE sip:+1-650-555-2222@obelix.wcom.com SIP/2.0 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde34 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 BYE 
+      Content-Length: 0 
+    
+    
+   F16 BYE PROXY -> IFT UA 
+    
+      BYE sip:+1-650-555-2222@obelix.wcom.com SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d010.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde34 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 BYE 
+      Content-Length: 0 
+    
+    
+   F17 200 OK IFT UA -> PROXY 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde34 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 BYE 
+      Content-Type: application/sdp 
+      Content-Length: 0 
+    
+    
+   F18 200 OK  PROXY -> IFTGW UA 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde34 
+      Call-ID: 1717@ift.here.com 
+  
+Li/Mule                                                             43 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      CSeq: 19 BYE 
+      Content-Type: application/sdp 
+      Content-Length: 0 
+    
+    
+6.2. Unsuccessful T.38 fax scenario û 606 response and G.711 fallback 
+ 
+   This section represents am unsuccessful SIP T.38 fax call:  the 
+   emitting gateway does not support T.38 and responds with a 606 Not 
+   Acceptable to indicate that some aspects of the session description 
+   are not acceptable.  The terminating gateway may react by proposing 
+   a fallback to G.711 fax pass-through with special codec 
+   characteristics û echo cancellation ON, silence suppression OFF.  
+   The message details in this section make use of the generic SDP 
+   attributes ecan and silenceSupp, defined in RFC3108 [10].  
+    
+   Scenario: 
+   1. A SIP INVITE is sent to the called party requesting a voice 
+   connection per RFC2543; our scenario involves 1 SIP proxy.  An audio 
+   connection is established, 
+   2. Upon detection of Preamble by the terminating gateway, a SIP 
+   re¡INVITE request is sent to the emitting gateway to modify the 
+   parameters of the session to allow a T.38 fax connection.  This re-
+   INVITE request contains SDP information detailing T.38 capabilities, 
+   3. The emitting gateway rejects the re-INVITE with a 606 Not 
+   Acceptable response.  Upon reception of the reject, the terminating 
+   gateway proposes to use plain G.711 to carry the fax stream.   
+   4. The call is terminated. 
+    
+6.2.1. Sequence Diagram 
+   The messages F1 to F12 are identical to section 5.2. 
+    
+         IFT UA                 Proxy              IFTGW UA 
+           |                    |                    | 
+           |   F1 INVITE        |                    | 
+           |------------------->|                    | 
+           |                    |   F2 INVITE        | 
+           |                    |------------------->| 
+           |   F3  100 Trying   |                    | 
+           |<-------------------|   F4  100 Trying   | 
+           |                    |<-------------------| 
+           |                    |                    | 
+           |                    |   F5  180 Ringing  | 
+           |   F6  180 Ringing  |<-------------------| 
+           |<-------------------|                    | 
+           |                    |   F7  200 OK       | 
+           |   F8  200 OK       |<-------------------| 
+           |<-------------------|                    | 
+           |   F9  ACK          |                    | 
+           |------------------->|   F10 ACK          | 
+           |                     ------------------->| 
+           |                                         | 
+
+  
+Li/Mule                                                             44 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+           |      Both Way RTP Media Established     | 
+      Fax  |<=======================================>| 
+   ------->|                                         | 
+   emitted |                    |                    |  
+           |                    |                    | Preamble 
+           |                    |                    |<--------- 
+           |                    |   F11 INVITE       | detected 
+           |                    |<-------------------| 
+           |   F12 INVITE       |                    | 
+           |<-------------------|                    | 
+           |                    |                    | 
+           |   F13 606          |                    | 
+           |------------------->|                    | 
+           |                    |   F14 606          | 
+           |                    |------------------->| 
+           |                    |   F15 INVITE       | 
+           |                    |<-------------------| 
+           |   F16 INVITE       |                    | 
+           |<-------------------|                    | 
+           |   F17 200 OK       |                    | 
+           |------------------->|                    | 
+           |                    |   F18 200 OK       | 
+           |                    |------------------->| 
+           |                    |                    | 
+           |                    |   F19  ACK         | 
+           |                    |<-------------------| 
+           |   F20  ACK         |                    | 
+           |<-------------------|                    | 
+           |                                         | 
+           | G.711 RTP Flow Established              | 
+           |<=======================================>| 
+           |          for fax pass-through           | 
+           |                                         | 
+           |   F21 BYE          |                    | 
+           |------------------->|                    | 
+           |                    |   F22 BYE          | 
+           |                    |------------------->| 
+           |                    |                    | 
+           |                    |   F23  200 OK      | 
+           |                    |<-------------------| 
+           |   F24  200 OK      |                    | 
+           |<-------------------|                    | 
+    
+    
+6.2.2. Message Details 
+    
+   Messages F1 to F12 are identical to section 5.2; refer to 5.2. 
+    
+   F13 606 Not Acceptable    IFT UA -> PROXY 
+    
+      SIP/2.0 606 Not Acceptable 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+  
+Li/Mule                                                             45 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      Warning: 304 Media type not available: One or more media types 
+               contained in the session description are not available. 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+      Content-Length: 0 
+    
+    
+   F14 606 Not Acceptable    PROXY -> IFTGW UA 
+    
+      SIP/2.0 606 Not Acceptable 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d010.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Warning: 304 Media type not available: One or more media types 
+               contained in the session description are not available. 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 18 INVITE 
+      Content-Length: 0 
+    
+    
+   F15 INVITE  IFTGW UA -> PROXY 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 181 
+    
+      v=0 
+      o=faxgw1 2890844527 171091 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+      a=ecan:fb on - 
+      a=silenceSupp:off - - -  
+    
+   F16 INVITE  PROXY -> IFT UA 
+    
+      INVITE sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d009.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+  
+Li/Mule                                                             46 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 INVITE 
+      Contact: <sip:+1-650-555-2222@iftgw.there.com> 
+      Content-Type: application/sdp 
+      Content-Length: 181 
+    
+      v=0 
+      o=faxgw1 2890844527 171091 IN IP4 iftgw.there.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.there.com 
+      t=0 0 
+      m=audio 12322 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+      a=ecan:fb on - 
+      a=silenceSupp:off - - -  
+    
+    
+   F17 200 OK IFT UA -> PROXY 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d008.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 150 
+    
+      v=0 
+      o=faxgw1 2890844527 2890844528 IN IP4 ift.here.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.here.com 
+      t=0 0 
+      m=audio 3456 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+      a=ecan:fb on - 
+      a=silenceSupp:off - - -  
+    
+    
+   F18 200 OK  PROXY -> IFTGW UA 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+  
+Li/Mule                                                             47 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      CSeq: 19 INVITE 
+      Contact: <sip:+1-303-555-1111@ift.here.com> 
+      Content-Type: application/sdp 
+      Content-Length: 150 
+    
+      v=0 
+      o=faxgw1 2890844527 2890844528 IN IP4 ift.here.com 
+      s=Session SDP 
+      c=IN IP4 iftmg.here.com 
+      t=0 0 
+      m=audio 3456 RTP/AVP 0 
+      a=rtpmap:0 PCMU/8000 
+      a=ecan:fb on - 
+      a=silenceSupp:off - - -  
+    
+    
+   F19 ACK IFTGW UA -> PROXY 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 ACK 
+      Content-Length: 0 
+    
+    
+   F20 ACK  PROXY -> IFT UA 
+    
+      ACK sip:+1-650-555-2222@obelix.wcom.com;user=phone SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d009.1 
+      Via: SIP/2.0/UDP iftgw.there.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                     maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab11 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde17 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 19 ACK 
+      Content-Length: 0 
+    
+    
+   /* G.711 audio streams established both ways for fax pass through */ 
+    
+    
+   F21 BYE IFT UA -> PROXY 
+    
+      BYE sip:+1-650-555-2222@obelix.wcom.com SIP/2.0 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+              maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+  
+Li/Mule                                                             48 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde34 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 20 BYE 
+      Content-Length: 0 
+    
+    
+   F22 BYE PROXY -> IFTGW UA 
+    
+      BYE sip:+1-650-555-2222@obelix.wcom.com SIP/2.0 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d009.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde34 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 20 BYE 
+      Content-Length: 0 
+    
+    
+   F23 200 OK IFTGW UA -> PROXY 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP obelix.wcom.com:5060; branch=2d007.1 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde34 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 20 BYE 
+      Content-Type: application/sdp 
+      Content-Length: 0 
+    
+    
+   F24 200 OK  PROXY -> IFT UA 
+    
+      SIP/2.0 200 OK 
+      Via: SIP/2.0/UDP ift.here.com:5060 
+      Record-Route: <sip:+1-650-555-2222@obelix.wcom.com; 
+                    maddr=obelix.wcom.com> 
+      From: sip:+1-303-555-1111@ift.here.com;user=phone;tag=ab22 
+      To: sip:+1-650-555-2222@obelix.wcom.com;user=phone;tag=cde34 
+      Call-ID: 1717@ift.here.com 
+      CSeq: 20 BYE 
+      Content-Type: application/sdp 
+      Content-Length: 0 
+    
+    
+    
+    
+    
+
+
+
+  
+Li/Mule                                                             49 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+7. SDP Attribute Table for T.38 sessions 
+   For a detailed description of these attributes, refer to IANA.  The 
+   tables below are replicated here for reference only.  
+    
+   +-----------------------+---------------------+--------------+ 
+   |  SDP Attribute Name   | Appropriate values  |   Example    | 
+   |     ("att-field")     |                     |              | 
+   +-----------------------+---------------------+--------------+ 
+   |                       |                     |              | 
+   |     T38FaxVersion     |       1*DIGIT       |      0       | 
+   |                       |                     |              | 
+   |     T38MaxBitRate     |      1*(DIGIT)      |    14400     | 
+   |                       |                     |              | 
+   | T38FaxFillBitRemoval  |       boolean       |      0       | 
+   |                       |                     |              | 
+   | T38FaxTranscodingMMR  |       boolean       |      0       | 
+   |                       |                     |              | 
+   | T38FaxTranscodingJBIG |       boolean       |      0       | 
+   |                       |                     |              | 
+   | T38FaxRateManagement  |     localTCF |      |transferredTCF| 
+   |                       |   transferredTCF    |              | 
+   |                       |                     |              | 
+   |    T38FaxMaxBuffer    | 1*(DIGIT); optional |     72       | 
+   |                       |                     |   (bytes)    | 
+   |                       |                     |              | 
+   |   T38FaxMaxDatagram   |     1*(DIGIT);      |  Depends on  | 
+   |                       |     optional        |  redundancy; | 
+   |                       |                     |   316 (bytes)| 
+   |                       |                     |              | 
+   |      T38FaxUdpEC      |     t38UDPFEC |     | T38UDPRedund | 
+   |                       |  t38UDPRedundancy   |     ancy     | 
+   +-----------------------+---------------------+--------------+ 
+    
+   Registered SDP Protocol ôprotoö for T.38: 
+    
+   +-----------------+ 
+   |      Name       | 
+   |                 | 
+   +-----------------+ 
+   |                 | 
+   |     UDPTL       | 
+   |                 | 
+   |     TCP         | 
+   |                 | 
+   +-----------------+ 
+    
+   Registered SDP Protocol ôfmtö, MIME media type image/t38: 
+      MIME media type name: image 
+      MIME subtype name: t38 
+    
+    
+    
+    
+  
+Li/Mule                                                             50 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+8. Considerations 
+    
+   In this temporary section, we log the open items for discussion as 
+   well as issues that have been solved on the mailing list: 
+    
+8.1. Level of requirements for Internet gateways 
+   --- Status: closed, solved by draft01 text in section 4.2 
+   Based on the comments received on draft-00, the authors recommend 
+   that:  T.38 Internet fax gateways MUST trigger a SIP re-INVITE upon 
+   detection of the V.21 Preamble flag sequence on the receiving side.   
+   Emitting gateways MAY trigger session modification upon CNG. 
+    
+8.2. Negotiation of UDP ports for T.38 transmission 
+   --- Status: not an issue, just logged here 
+   When switching to T.38 mode, Internet fax gateways specify a new set 
+   of parameters for the media connection in SDP.  Some gateways may 
+   choose the UDP/RTP port used in audio mode for UDP/UDPTL/T.38 
+   traffic.  Some gateways may choose to open a new UDP port for 
+   UDPTL/T.38 fax (and keep the previous UDP/RTP port open for the 
+   switch back to audio). 
+   SDP provides the mechanism to precisely define in SIP all cases: 
+   - if an Internet Fax gateway desires to re-use the UDP/RTP port for 
+   UDP/UDPTL/T.38, put 1 ôm=ö line in the re-INVITE. 
+          m=image <original_RTP_port> udptl t38 
+   - if an Internet Fax gateway desires to release the RTP port and 
+   open a new UDP port for T.38:  
+          m=image <new_UDP_port> udptl t38 
+   - if an Internet Fax gateway desires to keep the RTP port for future 
+   use in the session and open a new UDP port for T.38, we need to 
+   repeat the RTP/AVP port:  
+          m=audio <original_RTP_port> RTP/AVP 0 
+          m=image <new_UDP_port> udptl t38 
+ 
+8.3. Adding a fax stream to SIP session vs. Replacing audio stream 
+   --- Status: closed,see flows 5.2 and 5.3 
+   Based on the mailing list discussion, it is recommended in section 
+   5.2 to replace an existing audio media connection with a fax one.   
+   We however kept section 5.3 to illustrate what adding a fax stream 
+   would entail. 
+    
+    
+8.4. Adding text to make use of SIP OPTIONS: in progress in draft-02 
+   --- Status: Open for discussion 
+   As discussed with Bill Sulzen, the SIP OPTIONS response could be 
+   used to assert that real-time fax communications using either T.38 
+   or fax-passthrough are supported.  This could certainly improve the 
+   negotiation phases and reduce the number of SIP messages.  It is 
+   also key to get the capabilities of the Internet-aware fax device or 
+   gateway other than on a per call basis. 
+   What needs to be added: 
+       - add text in sub-section in section 4.5 
+       - specify how the Accept header line should be populated (do we 
+   want to specify t.38 and/or fax pass-through (meaning ability to 
+  
+Li/Mule                                                             51 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+   support ecan and silencesuppression), and within t.38, do we want to 
+   specify whether it is t.38 over tcp, udptl, both, etc. 
+    
+8.5. Use of IP addresses in SDP connection information 
+   --- Status: Open for discussion 
+   Comment from Christer Holmberg: SDP connection information should 
+   use IP addresses instead of domain names (as per draft-ietf-mmusic-
+   sdp-new-03) 
+    
+8.6. Unsuccessful scenario: 606 or 488 
+   --- Status: Open for discussion 
+   Comment from Bill Sulzen: it is acceptable or even preferable to 
+   reject with a 488 Not Acceptable Media? 
+    
+    
+9. Security Considerations 
+ 
+   The security mechanisms provided in RFC2543 apply: message 
+   authentication can be performed on SIP INVITEs and also BYE. 
+    
+    
+10. References 
+ 
+   1  S. Bradner, "The Internet Standards Process -- Revision 3", BCP 
+      9, RFC 2026, October 1996. 
+    
+   2  S. Bradner, "Key words for use in RFCs to Indicate Requirement 
+      Levels", BCP 14, RFC 2119, March 1997. 
+    
+   3  M. Handley, H. Schulzrinne, E. Schooler, and J. Rosenberg, "SIP: 
+          Session Initiation Protocol", RFC 2543, March 1999. 
+    
+   4  ITU-T Recommendation T.38, ôProcedures for real-time Group 3 
+      facsimile communication over IP networksö, June 1998. 
+    
+   5  Johnston, et al, ôSIP Telephony Call Flow Examplesö, Internet-
+      Draft draft-ietf-sip-call-flows-05.txt, June 2001. 
+    
+   6  ITU-T Recommendation T.38 Amendment 2, ôProcedures for real-time 
+      Group 3 facsimile communication over IP networksö, February 2000. 
+    
+   7  ITU-T Recommendation T.30, ôProcedures for document facsimile 
+      transmission in the general switched telephone networkö, March 
+      1993. 
+    
+   8  M. Handley, V. Jacobson, "SDP: session description protocol", 
+      RFC 2327, April 1998. 
+                          
+   9  ITU-T Recommendation T.38 Amendment 2 Annex D, ôSIP/SDP Call 
+      Establishment Proceduresö, February 2000. 
+    
+ 
+
+  
+Li/Mule                                                             52 
+
+                         SIP T.38 Call Flows             October 2001 
+ 
+ 
+ 
+   10 R. Kumar, M. Mostafa, ôConventions for the use of the Session 
+      Description Protocol (SDP) for ATM Bearer Connectionsö, RFC3108, 
+      May 2001. 
+ 
+ 
+11. Acknowledgments 
+    
+   This document would not have been possible without the help of the 
+   following development engineers and fax experts, in particular 
+   Stanley Khouw, Bill Michalek, and George Maphis of Clarent 
+   Corporation. 
+    
+   The authors would like to thank Bill Sulzen of Cisco Systems for his 
+   continued support and critical comments.  We also acknowledge the 
+   valuable contributions from Flemming Andreasen of Cisco Systems, 
+   Christer Holmberg of Ericsson, and Bert Culpepper of InterVoice-
+   Brite. 
+   Many thanks to the reviewers of the previous document for their 
+   comments: Jim Renkel of 3COM, Sudipto Mukherjee of Cisco Systems, 
+   Arjun Roychowdhury of Hughes Software Systems. 
+    
+    
+12. Author's Addresses 
+    
+   Jieying Li 
+   Clarent Corporation  
+   700 Chesapeake Drive MS 101 
+   Redwood City, CA 94063 
+   email: jieying.li@clarent.com 
+    
+   Jean-Francois MuleÆ 
+   email: jfmule@packetizer.com  
+    
+    
+    
+Full Copyright Statement 
+ 
+   "Copyright (C) The Internet Society (2001). All Rights Reserved. 
+   This document and translations of it may be copied and furnished to 
+   others, and derivative works that comment on or otherwise explain it 
+   or assist in its implementation may be prepared, copied, published 
+   and distributed, in whole or in part, without restriction of any 
+   kind, provided that the above copyright notice and this paragraph 
+   are included on all such copies and derivative works. However, this 
+   document itself may not be modified in any way, such as by removing 
+   the copyright notice or references to the Internet Society or other 
+   Internet organizations, except as needed for the purpose of 
+   developing Internet standards in which case the procedures for 
+   copyrights defined in the Internet Standards process must be 
+   followed, or as required to translate it into 
+
+
+  
+Li/Mule                                                             53 
+
