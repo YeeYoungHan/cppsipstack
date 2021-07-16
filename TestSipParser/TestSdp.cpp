@@ -616,5 +616,22 @@ bool TestSdp()
 					"a=rtpmap:101 telephone-event/8000\r\n"
 					"a=fmtp:101 0-15\r\n", 300 ) == false ) return false;
 
+	CSdpMessage clsSdp;
+	const char * pszT38 = "v=0\r\n"
+		"o=iPECSCM 27404766 27404766 IN IP4 192.168.0.1\r\n"
+		"s=iPECSCM Call\r\n"
+		"c=IN IP4 192.168.0.1\r\n"
+		"t=0 0\r\n"
+		"m=image 8042 udptl t38\r\n"
+		"a=T38FaxVersion:0\r\n"
+		"a=T38MaxBitRate:14400\r\n"
+		"a=T38FaxFillBitRemoval:0\r\n"
+		"a=T38FaxTranscodingMMR:0\r\n"
+		"a=T38FaxTranscodingJBIG:0\r\n"
+		"a=T38FaxRateManagement:transferredTCF\r\n"
+		"a=T38FaxUdpEC:t38UDPRedundancy\r\n";
+
+	clsSdp.Parse( pszT38, strlen(pszT38) );
+
 	return true;
 }
