@@ -266,10 +266,11 @@ bool CDirectory::List( const char * pszDirName, FILE_LIST & clsFileList )
  * @ingroup SipPlatform
  * @brief 폴더에 존재하는 모든 파일/폴더 리스트를 가져온다.
  * @param pszDirName	폴더 경로
+ * @param pclsData		FetchFile 함수의 첫번째 인자로 전달될 포인터
  * @param FetchFile		1개의 파일마다 실행되는 함수
  * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
  */
-bool CDirectory::List( const char * pszDirName, bool (*FetchFile)( const char * pszFileName ) )
+bool CDirectory::List( const char * pszDirName, void * pclsData, bool (*FetchFile)( void *, const char * pszFileName ) )
 {
 #ifdef WIN32
 	WIN32_FIND_DATA	sttFindData;
@@ -282,14 +283,14 @@ bool CDirectory::List( const char * pszDirName, bool (*FetchFile)( const char * 
 	hFind = FindFirstFile( strPath.c_str(), &sttFindData );
 	if( hFind == INVALID_HANDLE_VALUE )
 	{
-		CLog::Print( LOG_ERROR, "FindFirstFile(%s) error(%d)", pszDirName, GetLastError() );
+		CLog::Print( LOG_DEBUG, "FindFirstFile(%s) error(%d)", pszDirName, GetLastError() );
 		return false;
 	}
 
 	for( ; bNext == TRUE; bNext = FindNextFile( hFind, &sttFindData ) )
 	{
 		if( !strcmp( sttFindData.cFileName, "." ) || !strcmp( sttFindData.cFileName, ".." ) ) continue;
-		if( FetchFile( sttFindData.cFileName ) == false ) break;
+		if( FetchFile( pclsData, sttFindData.cFileName ) == false ) break;
 	}
 
 	FindClose( hFind );
@@ -301,14 +302,14 @@ bool CDirectory::List( const char * pszDirName, bool (*FetchFile)( const char * 
 	psttDir = opendir( pszDirName );
 	if( psttDir == NULL )
 	{
-		CLog::Print( LOG_ERROR, "opendir(%s) error(%d)", pszDirName, errno );
+		CLog::Print( LOG_DEBUG, "opendir(%s) error(%d)", pszDirName, errno );
 		return false;
 	}
 
 	for( n = readdir_r( psttDir, &sttDirent, &psttDirent ); psttDirent && n == 0; n = readdir_r( psttDir, &sttDirent, &psttDirent ) )
 	{
 		if( !strcmp( psttDirent->d_name, "." ) || !strcmp( psttDirent->d_name, ".." ) ) continue;
-		if( FetchFile( psttDirent->d_name ) == false ) break;
+		if( FetchFile( pclsData, psttDirent->d_name ) == false ) break;
 	}
 
 	closedir( psttDir );
@@ -376,6 +377,72 @@ bool CDirectory::FileList( const char * pszDirName, FILE_LIST & clsFileList )
 		if( S_ISDIR( sttStat.st_mode ) ) continue;
 
 		clsFileList.push_back( psttDirent->d_name );
+	}
+
+	closedir( psttDir );
+#endif
+
+	return true;
+}
+
+/**
+ * @ingroup SipPlatform
+ * @brief 폴더에 존재하는 모든 파일 리스트를 가져온다.
+ * @param pszDirName	폴더 경로
+ * @param pclsData		FetchFile 함수의 첫번째 인자로 전달될 포인터
+ * @param FetchFile		1개의 파일마다 실행되는 함수
+ * @returns 성공하면 true 를 리턴하고 실패하면 false 를 리턴한다.
+ */
+bool CDirectory::FileList( const char * pszDirName, void * pclsData, bool (*FetchFile)( void *, const char * pszFileName ) )
+{
+#ifdef WIN32
+	WIN32_FIND_DATA	sttFindData;
+	HANDLE			hFind;
+	BOOL				bNext = TRUE;
+	std::string	strPath = pszDirName;
+
+	strPath.append( "\\*.*" );
+
+	hFind = FindFirstFile( strPath.c_str(), &sttFindData );
+	if( hFind == INVALID_HANDLE_VALUE )
+	{
+		CLog::Print( LOG_DEBUG, "FindFirstFile(%s) error(%d)", pszDirName, GetLastError() );
+		return false;
+	}
+
+	for( ; bNext == TRUE; bNext = FindNextFile( hFind, &sttFindData ) )
+	{
+		if( !strcmp( sttFindData.cFileName, "." ) || !strcmp( sttFindData.cFileName, ".." ) ) continue;
+		if( sttFindData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) continue;
+
+		if( FetchFile( pclsData, sttFindData.cFileName ) == false ) break;
+	}
+
+	FindClose( hFind );
+#else
+	DIR						* psttDir;
+	struct dirent	* psttDirent, sttDirent;
+	struct stat		sttStat;
+	int		n;
+	std::string		strFileName;
+
+	psttDir = opendir( pszDirName );
+	if( psttDir == NULL )
+	{
+		CLog::Print( LOG_DEBUG, "opendir(%s) error(%d)", pszDirName, errno );
+		return false;
+	}
+
+	for( n = readdir_r( psttDir, &sttDirent, &psttDirent ); psttDirent && n == 0; n = readdir_r( psttDir, &sttDirent, &psttDirent ) )
+	{
+		if( !strcmp( psttDirent->d_name, "." ) || !strcmp( psttDirent->d_name, ".." ) ) continue;
+		strFileName = pszDirName;
+		AppendName( strFileName, psttDirent->d_name );
+
+		if( lstat( strFileName.c_str(), &sttStat ) < 0 ) continue;
+		if( S_ISDIR( sttStat.st_mode ) ) continue;
+
+		if( FetchFile( pclsData, psttDirent->d_name ) == false ) break;
 	}
 
 	closedir( psttDir );
