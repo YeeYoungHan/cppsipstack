@@ -35,8 +35,12 @@ void PrintHex( const char * pszName, const uint8_t * pszData, int iDataLen )
 	printf( "]\n" );
 }
 
+bool gbDtlClientRun = false;
+
 THREAD_API DtlsClient( LPVOID lpParameter )
 {
+	gbDtlClientRun = true;
+
 	Socket hSocket = UdpListen( 2000, NULL );
 
 	// DTLS 연결
@@ -57,7 +61,6 @@ THREAD_API DtlsClient( LPVOID lpParameter )
 	}
 	else
 	{
-		// QQQ: 여기서 12, 400 byte 메모리 누수가 발생하는 것 같다.
 		SSL_set_fd( psttSsl, (int)hSocket );
 		SSL_set_tlsext_use_srtp( psttSsl, "SRTP_AES128_CM_SHA1_80" );
 
@@ -87,6 +90,9 @@ THREAD_API DtlsClient( LPVOID lpParameter )
 		SSL_free( psttSsl );
 	}
 
+	closesocket( hSocket );
+	gbDtlClientRun = false;
+
 	return 0;
 }
 
@@ -112,7 +118,6 @@ THREAD_API DtlsServer( LPVOID lpParameter )
 	}
 	else
 	{
-		// QQQ: 여기서 12, 400 byte 메모리 누수가 발생하는 것 같다.
 		SSL_set_fd( psttSsl, (int)hSocket );
 		SSL_set_tlsext_use_srtp( psttSsl, "SRTP_AES128_CM_SHA1_80" );
 
@@ -142,6 +147,8 @@ THREAD_API DtlsServer( LPVOID lpParameter )
 		SSL_free( psttSsl );
 	}
 
+	closesocket( hSocket );
+
 	return 0;
 }
 
@@ -166,6 +173,14 @@ int main( int argc, char * argv[] )
 
 	StartThread( "DtlsClient", DtlsClient, NULL );
 	DtlsServer( NULL );
+
+	while( gbDtlClientRun )
+	{
+		sleep(1);
+	}
+	
+	FinalDtls();
+	SSLFinal();
 
 	return 0;
 }

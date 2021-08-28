@@ -32,6 +32,11 @@ public:
 	CRSAKeyCert() : m_psttKey(NULL), m_psttCert(NULL)
 	{}
 
+	~CRSAKeyCert()
+	{
+		Clear();
+	}
+
 	void Clear()
 	{
 		if( m_psttKey )
