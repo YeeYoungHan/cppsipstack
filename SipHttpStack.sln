@@ -77,6 +77,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestWebRtcVideo", "TestWebR
 		{FDC90DE9-6824-47BE-B089-2B22CF515D7F} = {FDC90DE9-6824-47BE-B089-2B22CF515D7F}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestDtls", "TestDtls\TestDtls.vcproj", "{4566C8CA-DEA6-48F1-9C0C-49718E645EAA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A74D7687-3A0C-46C8-AC3D-304A68C7C635} = {A74D7687-3A0C-46C8-AC3D-304A68C7C635}
+		{59766094-16E8-4602-9621-6C1E5ED9AF5F} = {59766094-16E8-4602-9621-6C1E5ED9AF5F}
+		{11E19CA3-F409-41E3-BD62-E1CEA134B7DB} = {11E19CA3-F409-41E3-BD62-E1CEA134B7DB}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -175,6 +182,12 @@ Global
 		{45B09155-581A-4695-90C0-01C8D7C7ED36}.Release|Win32.ActiveCfg = Release|Win32
 		{45B09155-581A-4695-90C0-01C8D7C7ED36}.Release|Win32.Build.0 = Release|Win32
 		{45B09155-581A-4695-90C0-01C8D7C7ED36}.Release|x64.ActiveCfg = Release|Win32
+		{4566C8CA-DEA6-48F1-9C0C-49718E645EAA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4566C8CA-DEA6-48F1-9C0C-49718E645EAA}.Debug|Win32.Build.0 = Debug|Win32
+		{4566C8CA-DEA6-48F1-9C0C-49718E645EAA}.Debug|x64.ActiveCfg = Debug|Win32
+		{4566C8CA-DEA6-48F1-9C0C-49718E645EAA}.Release|Win32.ActiveCfg = Release|Win32
+		{4566C8CA-DEA6-48F1-9C0C-49718E645EAA}.Release|Win32.Build.0 = Release|Win32
+		{4566C8CA-DEA6-48F1-9C0C-49718E645EAA}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
