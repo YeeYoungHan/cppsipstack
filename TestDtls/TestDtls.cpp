@@ -99,6 +99,10 @@ THREAD_API DtlsClient( LPVOID lpParameter )
 	closesocket( hSocket );
 	gbDtlClientRun = false;
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+	ERR_remove_thread_state( NULL );
+#endif
+
 	return 0;
 }
 
@@ -158,6 +162,10 @@ THREAD_API DtlsServer( LPVOID lpParameter )
 	}
 
 	closesocket( hSocket );
+
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+	ERR_remove_thread_state( NULL );
+#endif
 
 	return 0;
 }
