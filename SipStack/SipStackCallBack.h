@@ -31,7 +31,7 @@ public:
 	virtual ~ISipStackCallBack(){};
 
 	/**
-   * @ingroup SipStack
+	 * @ingroup SipStack
 	 * @brief SIP 요청 메시지 수신 이벤트 핸들러
 	 * @param iThreadId		UDP 쓰레드 번호
 	 * @param pclsMessage SIP 요청 메시지
@@ -40,7 +40,7 @@ public:
 	virtual bool RecvRequest( int iThreadId, CSipMessage * pclsMessage ) = 0;
 
 	/**
-   * @ingroup SipStack
+	 * @ingroup SipStack
 	 * @brief SIP 응답 메시지 수신 이벤트 핸들러
 	 * @param iThreadId		UDP 쓰레드 번호
 	 * @param pclsMessage SIP 응답 메시지
@@ -49,7 +49,7 @@ public:
 	virtual bool RecvResponse( int iThreadId, CSipMessage * pclsMessage ) = 0;
 
 	/**
-   * @ingroup SipStack
+	 * @ingroup SipStack
 	 * @brief SIP 메시지 전송 timeout 이벤트 핸들러
 	 * @param iThreadId		UDP 쓰레드 번호
 	 * @param pclsMessage SIP 응답 메시지
@@ -58,7 +58,7 @@ public:
 	virtual bool SendTimeout( int iThreadId, CSipMessage * pclsMessage ) = 0;
 
 	/**
-   * @ingroup SipStack
+	 * @ingroup SipStack
 	 * @brief TCP/TLS 세션 종료 이벤트 핸들러
 	 * @param pszIp IP 주소
 	 * @param iPort 포트 번호

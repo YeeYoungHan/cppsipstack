@@ -76,7 +76,7 @@ public:
 	virtual ~ISipUserAgentCallBack(){};
 
 	/**
-   * @ingroup SipUserAgent
+	 * @ingroup SipUserAgent
 	 * @brief SIP REGISTER 응답 메시지 수신 이벤트 핸들러
 	 * @param pclsInfo	SIP REGISTER 응답 메시지를 전송한 IP-PBX 정보 저장 객체
 	 * @param iStatus		SIP REGISTER 응답 코드
@@ -84,7 +84,7 @@ public:
 	virtual void EventRegister( CSipServerInfo * pclsInfo, int iStatus ) = 0;
 
 	/**
-   * @ingroup SipUserAgent
+	 * @ingroup SipUserAgent
 	 * @brief SIP 통화 요청 수신에 대한 인증 확인 이벤트 핸들러
 	 * @param pclsMessage	SIP INVITE 요청 메시지
 	 * @return 인증에 성공하면 true 를 리턴하고 그렇지 않으면 false 를 리턴한다.
@@ -92,7 +92,7 @@ public:
 	virtual bool EventIncomingRequestAuth( CSipMessage * pclsMessage ){ return true; };
 
 	/**
-   * @ingroup SipUserAgent
+	 * @ingroup SipUserAgent
 	 * @brief SIP 통화 요청 수신 이벤트 핸들러
 	 * @param	pszCallId	SIP Call-ID
 	 * @param pszFrom		SIP From 사용자 아이디
@@ -102,7 +102,7 @@ public:
 	virtual void EventIncomingCall( const char * pszCallId, const char * pszFrom, const char * pszTo, CSipCallRtp * pclsRtp ) = 0;
 
 	/**
-   * @ingroup SipUserAgent
+	 * @ingroup SipUserAgent
 	 * @brief SIP Ring / Session Progress 수신 이벤트 핸들러
 	 * @param	pszCallId		SIP Call-ID
 	 * @param iSipStatus	SIP 응답 코드
@@ -111,7 +111,7 @@ public:
 	virtual void EventCallRing( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRtp ) = 0;
 
 	/**
-   * @ingroup SipUserAgent
+	 * @ingroup SipUserAgent
 	 * @brief SIP 통화 연결 이벤트 핸들러
 	 * @param	pszCallId	SIP Call-ID
 	 * @param pclsRtp		RTP 정보 저장 객체
@@ -119,7 +119,7 @@ public:
 	virtual void EventCallStart( const char * pszCallId, CSipCallRtp * pclsRtp ) = 0;
 
 	/**
-   * @ingroup SipUserAgent
+	 * @ingroup SipUserAgent
 	 * @brief SIP 통화 종료 이벤트 핸들러
 	 * @param	pszCallId		SIP Call-ID
 	 * @param iSipStatus	SIP 응답 코드. INVITE 에 대한 오류 응답으로 전화가 종료된 경우, INVITE 의 응답 코드를 저장한다.
@@ -127,7 +127,7 @@ public:
 	virtual void EventCallEnd( const char * pszCallId, int iSipStatus ) = 0;
 
 	/**
-   * @ingroup SipUserAgent
+	 * @ingroup SipUserAgent
 	 * @brief SIP ReINVITE 수신 이벤트 핸들러
 	 * @param pszCallId				SIP Call-ID
 	 * @param pclsRemoteRtp		상대방 RTP 정보 저장 객체
@@ -136,7 +136,7 @@ public:
 	virtual void EventReInvite( const char * pszCallId, CSipCallRtp * pclsRemoteRtp, CSipCallRtp * pclsLocalRtp ){};
 
 	/**
-   * @ingroup SipUserAgent
+	 * @ingroup SipUserAgent
 	 * @brief SIP ReINVITE 응답 메시지 수신 이벤트 핸들러
 	 * @param	pszCallId	SIP Call-ID
 	 * @param iSipStatus	SIP 응답 코드
@@ -145,7 +145,7 @@ public:
 	virtual void EventReInviteResponse( const char * pszCallId, int iSipStatus, CSipCallRtp * pclsRemoteRtp ){};
 
 	/**
-   * @ingroup SipUserAgent
+	 * @ingroup SipUserAgent
 	 * @brief SIP PRACK 수신 이벤트 핸들러
 	 * @param	pszCallId	SIP Call-ID
 	 * @param pclsRtp		RTP 정보 저장 객체
@@ -153,7 +153,7 @@ public:
 	virtual void EventPrack( const char * pszCallId, CSipCallRtp * pclsRtp ){};
 
 	/**
-   * @ingroup SipUserAgent
+	 * @ingroup SipUserAgent
 	 * @brief Screened / Unscreened Transfer 요청 수신 이벤트 핸들러
 	 * @param pszCallId					SIP Call-ID
 	 * @param pszReferToCallId	전화가 전달될 SIP Call-ID
@@ -163,7 +163,7 @@ public:
 	virtual bool EventTransfer( const char * pszCallId, const char * pszReferToCallId, bool bScreenedTransfer ){ return false; };
 
 	/**
-   * @ingroup SipUserAgent
+	 * @ingroup SipUserAgent
 	 * @brief Blind Transfer 요청 수신 이벤트 핸들러
 	 * @param pszCallId			SIP Call-ID
 	 * @param pszReferToId	전화가 전달될 사용자 아이디
@@ -172,7 +172,7 @@ public:
 	virtual bool EventBlindTransfer( const char * pszCallId, const char * pszReferToId ){ return false; };
 
 	/**
-   * @ingroup SipUserAgent
+	 * @ingroup SipUserAgent
 	 * @brief SIP 통화 전달 응답 수신 이벤트 핸들러
 	 * @param	pszCallId		SIP Call-ID
 	 * @param iSipStatus	SIP 응답 코드.
@@ -180,7 +180,7 @@ public:
 	virtual void EventTransferResponse( const char * pszCallId, int iSipStatus ){};
 
 	/**
-   * @ingroup SipUserAgent
+	 * @ingroup SipUserAgent
 	 * @brief SIP MESSAGE 수신 이벤트 핸들러
 	 * @param pszFrom		SIP From 사용자 아이디
 	 * @param pszTo			SIP To 사용자 아이디
