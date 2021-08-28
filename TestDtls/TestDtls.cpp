@@ -36,19 +36,25 @@ void PrintHex( const char * pszName, const uint8_t * pszData, int iDataLen )
 }
 
 bool gbDtlClientRun = false;
+int giUdpPort = 2000;
 
 THREAD_API DtlsClient( LPVOID lpParameter )
 {
 	gbDtlClientRun = true;
 
-	Socket hSocket = UdpListen( 2000, NULL );
+	Socket hSocket = UdpListen( giUdpPort, NULL );
+	if( hSocket == INVALID_SOCKET )
+	{
+		printf( "%s UdpListen(%d) error(%d)", __FUNCTION__, giUdpPort, GetError() );
+		gbDtlClientRun = false;
+		return 0;
+	}
 
-	// DTLS 연결
 	SSL * psttSsl;
 	struct	sockaddr_in	addr;
 
 	addr.sin_family = AF_INET;
-	addr.sin_port   = htons(2001);
+	addr.sin_port   = htons(giUdpPort+1);
 
 	inet_pton( AF_INET, "127.0.0.1", &addr.sin_addr.s_addr );
 	if( connect( hSocket, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR )
@@ -98,14 +104,18 @@ THREAD_API DtlsClient( LPVOID lpParameter )
 
 THREAD_API DtlsServer( LPVOID lpParameter )
 {
-	Socket hSocket = UdpListen( 2001, NULL );
+	Socket hSocket = UdpListen( giUdpPort + 1, NULL );
+	if( hSocket == INVALID_SOCKET )
+	{
+		printf( "%s UdpListen(%d) error(%d)", __FUNCTION__, giUdpPort + 1, GetError() );
+		return 0;
+	}
 
-	// DTLS 연결
 	SSL * psttSsl;
 	struct	sockaddr_in	addr;
 
 	addr.sin_family = AF_INET;
-	addr.sin_port   = htons(2000);
+	addr.sin_port   = htons(giUdpPort);
 
 	inet_pton( AF_INET, "127.0.0.1", &addr.sin_addr.s_addr );
 	if( connect( hSocket, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR )
@@ -158,29 +168,25 @@ int main( int argc, char * argv[] )
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF );
 #endif
 
-#ifdef WIN32
-	CLog::SetDirectory( "c:\\temp\\dtls" );
-#ifdef _DEBUG
-	CLog::SetLevel( LOG_INFO | LOG_DEBUG | LOG_NETWORK );
-#endif
-#else
-	CLog::SetDirectory( "/tmp/dtls" );
-	CLog::SetLevel( LOG_INFO | LOG_DEBUG | LOG_NETWORK );
-#endif
-
 	InitNetwork();
 	InitDtls();
 
-	StartThread( "DtlsClient", DtlsClient, NULL );
-	DtlsServer( NULL );
-
-	while( gbDtlClientRun )
+	for( int i = 0; i < 1; ++i )
 	{
-		sleep(1);
+		giUdpPort += i * 2;
+
+		StartThread( "DtlsClient", DtlsClient, NULL );
+		DtlsServer( NULL );
+
+		while( gbDtlClientRun )
+		{
+			sleep(1);
+		}
 	}
 	
 	FinalDtls();
 	SSLFinal();
+	CLog::Release();
 
 	return 0;
 }

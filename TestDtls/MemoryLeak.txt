@@ -1,0 +1,10 @@
+Dumping objects ->
+{8044} normal block at 0x0325FE98, 12 bytes long.
+ Data: <  %     |   > C8 FC 25 03 00 00 00 00 7C 1A 02 00 
+{8043} normal block at 0x0325FCC8, 400 bytes long.
+ Data: <    l)          > 00 00 00 00 6C 29 00 00 00 00 00 00 00 00 00 00 
+{8000} normal block at 0x0325B9A0, 64 bytes long.
+ Data: <                > 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+{7999} normal block at 0x03259E30, 96 bytes long.
+ Data: <  %  Z   Z      > A0 B9 25 03 E0 5A E1 00 A0 5A E1 00 08 00 00 00 
+Object dump complete.
