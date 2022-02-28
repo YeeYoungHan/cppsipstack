@@ -19,9 +19,12 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "3.32"
+#define SIP_STACK_VERSION "3.33"
 
 /* 버전 정보
+
+= 버전 3.33 ( 2022년 2월 28일 ) =
+ * TCP/TLS 연결 오류로 SIP_CONNECT_ERROR 응답 메시지를 응용으로 전달할 때에 m_strClientIp 에 IP 주소를 저장한다.
 
 = 버전 3.32 ( 2020년 11월 3일 ) =
  * transaction list 에서 ACK 검색 성능 향상

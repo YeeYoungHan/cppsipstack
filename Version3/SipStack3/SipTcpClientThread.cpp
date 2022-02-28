@@ -96,6 +96,7 @@ THREAD_API SipTcpClientThread( LPVOID lpParameter )
 		CSipMessage * pclsResponse = pclsArg->m_pclsSipMessage->CreateResponse( SIP_CONNECT_ERROR );
 		if( pclsResponse )
 		{
+			pclsResponse->m_strClientIp = pclsArg->m_strIp;
 			pclsArg->m_pclsSipStack->RecvSipMessage( 0, pclsResponse );
 		}
 
@@ -110,6 +111,7 @@ THREAD_API SipTcpClientThread( LPVOID lpParameter )
 				pclsResponse = (*itList)->CreateResponse( SIP_CONNECT_ERROR );
 				if( pclsResponse )
 				{
+					pclsResponse->m_strClientIp = pclsArg->m_strIp;
 					pclsArg->m_pclsSipStack->RecvSipMessage( 0, pclsResponse );
 				}
 				--(*itList)->m_iUseCount;
