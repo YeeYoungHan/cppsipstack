@@ -19,9 +19,12 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.34"
+#define SIP_USER_AGENT_VERSION "0.36"
 
 /* 버전 정보
+
+= 버전 0.36 ( 2022년 3월 11일 ) =
+ * INVITE 와 CANCEL 에 동시에 수신되어서 CANCEL 처리가 완료된 경우, AcceptCall() 을 호출하면 에러 리턴한다.
 
 = 버전 0.34 ( 2020년 10월 7일 ) =
  * SipUserAgent 종료할 때에 Dialog 자료구조를 초기화시킨다.

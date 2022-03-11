@@ -302,7 +302,7 @@ bool CSipUserAgent::AcceptCall( const char * pszCallId, CSipCallRtp * pclsRtp )
 
 	if( pclsMessage )
 	{
-		m_clsSipStack.SendSipMessage( pclsMessage );
+		return m_clsSipStack.SendSipMessage( pclsMessage );
 	}
 
 	return bRes;

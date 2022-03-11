@@ -19,9 +19,12 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.35"
+#define SIP_USER_AGENT_VERSION "0.36"
 
 /* 버전 정보
+
+= 버전 0.36 ( 2022년 3월 11일 ) =
+ * INVITE 와 CANCEL 메시지가 동시에 수신되어서 CANCEL 처리가 완료된 후, AcceptCall() 을 호출하면 에러 리턴한다.
 
 = 버전 0.35 ( 2021년 4월 27일 ) =
  * INVITE 에 대한 302 응답 수신후, 다시 전송하는 INVITE 메시지의 To 헤더에 tag 를 추가하지 않는다. (알카텔 IP-PBX 연동 오류 수정)
