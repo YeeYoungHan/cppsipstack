@@ -394,6 +394,7 @@ bool CSipUserAgent::SetInviteResponse( std::string & strCallId, CSipMessage * pc
 							if( itContact != pclsMessage->m_clsContactList.end() )
 							{
 								itMap->second->m_strToId = (*itContact)->m_clsUri.m_strUser;
+								itMap->second.m_strToTag.clear();
 								pclsInvite = itMap->second->CreateInvite();
 								if( pclsInvite )
 								{
