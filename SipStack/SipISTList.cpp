@@ -101,11 +101,14 @@ bool CSipISTList::Insert( CSipMessage * pclsMessage )
 					itMap = m_clsMap.find( strKey );
 					bRes = true;
 
-					CSipMessage * psttResponse = itMap->second->m_pclsRequest->CreateResponse( SIP_TRYING );
-					if( psttResponse )
+					if( m_pclsSipStack->m_clsSetup.m_bSendTrying )
 					{
-						itMap->second->m_pclsResponse = psttResponse;
-						m_pclsSipStack->Send( psttResponse );
+						CSipMessage * psttResponse = itMap->second->m_pclsRequest->CreateResponse( SIP_TRYING );
+						if( psttResponse )
+						{
+							itMap->second->m_pclsResponse = psttResponse;
+							m_pclsSipStack->Send( psttResponse );
+						}
 					}
 				}
 			}

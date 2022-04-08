@@ -19,9 +19,13 @@
 #ifndef _SIP_STACK_VERSION_H_
 #define _SIP_STACK_VERSION_H_
 
-#define SIP_STACK_VERSION "0.32"
+#define SIP_STACK_VERSION "0.33"
 
 /* 버전 정보
+
+= 버전 0.33 ( 2022년 4월 8일 ) =
+ * CSipStackSetup 에 m_bSendTrying 를 추가함
+ * m_bSendTrying 에 false 를 저장하면 INVITE 수신에 대한 100 Trying 응답을 전송하지 않는다.
 
 = 버전 0.32 ( 2022년 2월 28일 ) =
  * TCP/TLS 연결 오류로 SIP_CONNECT_ERROR 응답 메시지를 응용으로 전달할 때에 m_strClientIp 에 IP 주소를 저장한다.
