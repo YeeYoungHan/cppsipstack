@@ -292,6 +292,10 @@ bool CSipCallMap::InsertInvite( pcap_t * psttPcap, struct pcap_pkthdr * psttHead
 		strFileName.append( strCallId );
 		strFileName.append( ".pcap" );
 
+		ReplaceString( strCallId, ":", "-" );
+		ReplaceString( strCallId, "*", "-" );
+		ReplaceString( strCallId, "?", "-" );
+
 		itMap = m_clsMap.find( strCallId );
 		itMap->second.m_psttPcap = pcap_dump_open( psttPcap, strFileName.c_str() );
 		if( itMap->second.m_psttPcap == NULL )
