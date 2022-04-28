@@ -282,6 +282,12 @@ bool CSipCallMap::InsertInvite( pcap_t * psttPcap, struct pcap_pkthdr * psttHead
 
 		LocalTime( iTime, sttTm );
 
+		std::string strCallIdTemp = strCallId;
+
+		ReplaceString( strCallIdTemp, ":", "-" );
+		ReplaceString( strCallIdTemp, "*", "-" );
+		ReplaceString( strCallIdTemp, "?", "-" );
+
 		std::string strFileName = gclsSetup.m_strPacketFolder;
 		snprintf( szTemp, sizeof(szTemp), "%04d%02d%02d", sttTm.tm_year + 1900, sttTm.tm_mon + 1, sttTm.tm_mday );
 		CDirectory::AppendName( strFileName, szTemp );
@@ -289,12 +295,10 @@ bool CSipCallMap::InsertInvite( pcap_t * psttPcap, struct pcap_pkthdr * psttHead
 		
 		snprintf( szTemp, sizeof(szTemp), "%02d%02d%02d_", sttTm.tm_hour, sttTm.tm_min, sttTm.tm_sec );
 		CDirectory::AppendName( strFileName, szTemp );
-		strFileName.append( strCallId );
+		strFileName.append( strCallIdTemp );
 		strFileName.append( ".pcap" );
 
-		ReplaceString( strCallId, ":", "-" );
-		ReplaceString( strCallId, "*", "-" );
-		ReplaceString( strCallId, "?", "-" );
+		
 
 		itMap = m_clsMap.find( strCallId );
 		itMap->second.m_psttPcap = pcap_dump_open( psttPcap, strFileName.c_str() );
