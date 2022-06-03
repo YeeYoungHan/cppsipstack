@@ -357,6 +357,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestSipCallInfo.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestSipFrom.cpp"
 				>
 			</File>
