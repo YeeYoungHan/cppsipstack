@@ -24,8 +24,6 @@
 #include "MemoryDebug.h"
 
 std::string	gstrInviteId;
-extern CSipUserAgent gclsUserAgent;
-extern int giCodec;
 
 /**
  * @ingroup SipClient

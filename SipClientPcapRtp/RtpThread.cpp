@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "SipClient.h"
 #include "SipClientSetup.h"
 #include "RtpThread.h"
 #include "TimeUtility.h"
@@ -26,7 +27,6 @@
 #include <pcap.h>
 
 CRtpThread gclsRtpThread;
-extern int giCodec;
 
 #include "RtpThreadSend.hpp"
 #include "RtpThreadRecv.hpp"

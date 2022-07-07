@@ -49,4 +49,10 @@ public:
 	CSipCallRtp m_clsDestRtp;
 };
 
+void StopCall();
+
+extern CSipUserAgent gclsUserAgent;
+extern int giCodec;
+extern std::string	gstrInviteId;
+
 #endif

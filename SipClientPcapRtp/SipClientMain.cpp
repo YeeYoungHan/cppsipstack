@@ -23,7 +23,6 @@
 #include "RtpThread.h"
 #include "MemoryDebug.h"
 
-extern std::string	gstrInviteId;
 CSipUserAgent gclsUserAgent;
 int giCodec;
 

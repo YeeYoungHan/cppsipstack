@@ -16,8 +16,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-void StopCall();
-
 bool GetRtpPacket( pcap_t * psttPcap, char * pszRtpPacket, int * piRtpPacketLen )
 {
 	char		szIp[21];
