@@ -22,6 +22,7 @@ SRV_OBJ=TestSipFrom.o TestSipMessage.o TestSipUri.o TestSipVia.o \
 	TestInt.o \
 	TestMd5.o \
 	TestString.o TestSipHeader.o TestSipReason.o TestSipCallId.o \
+	TestSipCallInfo.o \
 	TestSpeed.o TestTransactionSpeed.o TestFile.o
 
 TestSipParser.exe: $(SRV_OBJ)
