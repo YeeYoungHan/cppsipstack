@@ -1,0 +1,17 @@
+<SipClient>
+  <Sip>
+    <LocalIp>192.168.0.5</LocalIp>
+    <UdpPort>5080</UdpPort>
+  </Sip>
+  <SipServer>
+    <Ip>127.0.0.1</Ip>
+    <Port>5060</Port>
+    <UserId>1010</UserId>
+    <PassWord></PassWord>
+  </SipServer>
+  <Pcap>
+  	<PcapFile>C:\Temp\test\DTMF\1.pcap</PcapFile>
+  	<RtpDestIp>172.16.220.22</RtpDestIp>
+  	<RtpDestPort>20022</RtpDestPort>
+  </Pcap>
+</SipClient>
