@@ -19,9 +19,12 @@
 #ifndef _SIP_USER_AGENT_VERSION_H_
 #define _SIP_USER_AGENT_VERSION_H_
 
-#define SIP_USER_AGENT_VERSION "0.36"
+#define SIP_USER_AGENT_VERSION "0.37"
 
 /* 버전 정보
+
+= 버전 0.37 ( 2022년 7월 7일 ) =
+ * CSipServerInfo 의 m_strPassWord 가 공백이면 SIP REGISTER 메시지를 전송하지 않는다. ( trunk 방식으로 동작한다. )
 
 = 버전 0.36 ( 2022년 3월 11일 ) =
  * INVITE 와 CANCEL 메시지가 동시에 수신되어서 CANCEL 처리가 완료된 후, AcceptCall() 을 호출하면 에러 리턴한다.

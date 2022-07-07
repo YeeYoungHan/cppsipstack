@@ -40,6 +40,8 @@ THREAD_API SipRegisterThread( LPVOID lpParameter )
 		pclsSipUserAgent->m_clsRegisterMutex.acquire();
 		for( itList = pclsSipUserAgent->m_clsRegisterList.begin(); itList != pclsSipUserAgent->m_clsRegisterList.end(); ++itList )
 		{
+			if( itList->m_strPassWord.empty() ) continue;
+
 			if( itList->m_bLogin == false )
 			{
 				if( itList->m_iSendTime == 0 )
