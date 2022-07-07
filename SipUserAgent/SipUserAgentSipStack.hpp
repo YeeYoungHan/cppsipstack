@@ -57,6 +57,12 @@ bool CSipUserAgent::RecvRequest( int iThreadId, CSipMessage * pclsMessage )
 	{
 		return RecvOptionsRequest( iThreadId, pclsMessage );
 	}
+#ifdef _DEBUG
+	else if( pclsMessage->IsMethod( SIP_METHOD_REGISTER ) )
+	{
+		return RecvOptionsRequest( iThreadId, pclsMessage );
+	}
+#endif
 
 	return false;
 }
