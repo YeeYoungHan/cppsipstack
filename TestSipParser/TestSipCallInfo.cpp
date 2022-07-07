@@ -17,6 +17,7 @@
  */
 
 #include "SipFrom.h"
+#include <string.h>
 
 bool TestSipCallInfo()
 {
