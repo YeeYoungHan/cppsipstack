@@ -23,7 +23,7 @@ LIB=-L../SipUserAgent -lsipuseragent \
 all: SipClientPcapRtp.exe
 
 SRV_OBJ=SipClient.o SipClientMain.o SipClientSetup.o \
-	G711.o RtpThread.o PacketHeader.o
+	RtpThread.o PacketHeader.o
 
 SipClientPcapRtp.exe: $(SRV_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)
