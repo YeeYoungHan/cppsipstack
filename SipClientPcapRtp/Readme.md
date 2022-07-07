@@ -21,3 +21,5 @@
 
 ### C++ SIP stack 관련 포스트 리스트
 
+* https://blog.naver.com/websearch/222803514561 : 오픈소스  C++ SIP stack 기반으로 통화 연결된 후, pcap 파일에서 RTP 패킷을 읽어서 전송하는 프로그램
+
