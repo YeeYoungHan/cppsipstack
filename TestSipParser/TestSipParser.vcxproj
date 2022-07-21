@@ -179,6 +179,7 @@
     <ClCompile Include="TestMd5.cpp" />
     <ClCompile Include="TestSdp.cpp" />
     <ClCompile Include="TestSipCallId.cpp" />
+    <ClCompile Include="TestSipCallInfo.cpp" />
     <ClCompile Include="TestSipFrom.cpp" />
     <ClCompile Include="TestSipHeader.cpp" />
     <ClCompile Include="TestSipMessage.cpp" />

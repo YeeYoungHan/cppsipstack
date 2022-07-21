@@ -55,5 +55,8 @@
     <ClCompile Include="TestFile.cpp">
       <Filter>테스트</Filter>
     </ClCompile>
+    <ClCompile Include="TestSipCallInfo.cpp">
+      <Filter>테스트</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
