@@ -92,6 +92,7 @@ void CSipSendDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_SIP, m_strSip);
 	DDX_Check(pDX, IDC_CHANGE_CALL_ID, m_bChangeCallId);
 	DDX_Check(pDX, IDC_CHANGE_VIA_BRANCH, m_bChangeViaBranch);
+	DDX_Control(pDX, IDC_SIP, m_txtSip);
 }
 
 BEGIN_MESSAGE_MAP(CSipSendDlg, CDialog)
@@ -367,4 +368,17 @@ bool CSipSendDlg::CheckInput( CString & strInput, const char * pszName )
 	}
 
 	return true;
+}
+
+BOOL CSipSendDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if( pMsg->hwnd == m_txtSip )
+	{
+		if( ::GetKeyState( VK_CONTROL ) < 0 && pMsg->wParam == 65 )
+		{
+			m_txtSip.SetSel( 0, -1 );
+		}
+	}
+
+	return __super::PreTranslateMessage(pMsg);
 }

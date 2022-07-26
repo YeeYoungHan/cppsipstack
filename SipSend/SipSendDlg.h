@@ -19,6 +19,7 @@
 #pragma once
 
 #include "SipUserAgent.h"
+#include "afxwin.h"
 
 // CSipSendDlg dialog
 class CSipSendDlg : public CDialog, ISipUserAgentCallBack, ISipStackCallBack
@@ -51,6 +52,10 @@ public:
 	CString m_strSipDomain;
 	CString m_strCallerId;
 	CString m_strCallerPassWord;
+	CString m_strSip;
+
+	BOOL m_bChangeCallId;
+	BOOL m_bChangeViaBranch;
 
 	CButton m_btnStartSipStack;
 	CButton m_btnStopSipStack;
@@ -73,7 +78,7 @@ public:
 	afx_msg void OnBnClickedSend();
 
 	bool CheckInput( CString & strInput, const char * pszName );
-	CString m_strSip;
-	BOOL m_bChangeCallId;
-	BOOL m_bChangeViaBranch;
+
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	CEdit m_txtSip;
 };
