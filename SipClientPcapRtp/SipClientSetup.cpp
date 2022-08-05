@@ -95,6 +95,8 @@ bool CSipClientSetup::Read( const char * pszFileName )
 	pclsElement->SelectElementData( "PcapFile", m_strPcapFile );
 	pclsElement->SelectElementData( "RtpDestIp", m_strPcapRtpDestIp );
 	pclsElement->SelectElementData( "RtpDestPort", m_iPcapRtpDestPort );
+	pclsElement->SelectElementData( "SrtpCrypto", m_strPcapSrtpCrypto );
+	pclsElement->SelectElementData( "SrtpKey", m_strPcapSrtpKey );
 
 	if( m_strPcapFile.empty() )
 	{

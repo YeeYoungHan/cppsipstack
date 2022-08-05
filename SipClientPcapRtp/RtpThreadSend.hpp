@@ -77,16 +77,83 @@ bool GetRtpPacket( pcap_t * psttPcap, char * pszRtpPacket, int * piRtpPacketLen 
 	return false;
 }
 
+bool SrtpCreate( const char * pszAlgorithm, const char * pszKey, srtp_t * psttSrtp )
+{
+	srtp_policy_t sttPolicy;
+	err_status_t	eError;
+	char		szKey[100];
+	int			iKeyLen = (int)strlen( pszKey );
+
+	// RX
+	memset( szKey, 0, sizeof(szKey) );
+	if( Base64Decode( pszKey, (int)iKeyLen, szKey, sizeof(szKey) ) == -1 )
+	{
+		CLog::Print( LOG_ERROR, "%s Base64Decode error", __FUNCTION__ );
+		return false;
+	}
+	
+	if( !strcmp( pszAlgorithm, "AES_CM_128_HMAC_SHA1_80" ) )
+	{
+    crypto_policy_set_aes_cm_128_hmac_sha1_80( &sttPolicy.rtp );
+  	crypto_policy_set_aes_cm_128_hmac_sha1_80( &sttPolicy.rtcp );
+  }
+	else if( !strcmp( pszAlgorithm, "AES_CM_128_HMAC_SHA1_32" ) )
+	{
+    crypto_policy_set_aes_cm_128_hmac_sha1_32( &sttPolicy.rtp );
+  	crypto_policy_set_aes_cm_128_hmac_sha1_32( &sttPolicy.rtcp );
+  }
+	else
+	{
+		CLog::Print( LOG_ERROR, "%s error - algorithm(%s) is not defined", __FUNCTION__, pszAlgorithm );
+	  return false;
+	}
+	
+	sttPolicy.key = (uint8_t *)szKey;
+	sttPolicy.ssrc.type = ssrc_any_inbound;
+	sttPolicy.ssrc.value = 0;
+	sttPolicy.next = NULL;
+
+	eError = srtp_create( psttSrtp, &sttPolicy );
+	if( eError != err_status_ok )
+	{
+		CLog::Print( LOG_ERROR, "%s srtp_create error(%d) - key(%s)", __FUNCTION__, eError, szKey );
+		return false;
+	}
+  
+	return true;
+}
+
+static bool gbSrtpInit = false;
+
 THREAD_API RtpThreadSend( LPVOID lpParameter )
 {
 	char	szErrBuf[PCAP_ERRBUF_SIZE], szRtpPacket[1600];
 	int		iMiliSecond, iRtpPacketLen, iRtpPayloadLen, iSleepMiliSecond = 20;
 
 	struct timeval	sttTime, sttSendTime;
+	srtp_t psttSrtp = NULL;
+	err_status_t iRet;
 
 	gettimeofday( &sttSendTime, NULL );
 
 	gclsRtpThread.m_bSendThreadRun = true;
+
+	if( gclsSetupFile.m_strPcapSrtpCrypto.empty() == false && gclsSetupFile.m_strPcapSrtpKey.empty() == false )
+	{
+		if( gbSrtpInit == false )
+		{
+			if( srtp_init() != err_status_ok )
+			{
+				CLog::Print( LOG_ERROR, "%s srtp_init error", __FUNCTION__ );
+			}
+			else
+			{
+				gbSrtpInit = true;
+			}
+		}
+
+		SrtpCreate( gclsSetupFile.m_strPcapSrtpCrypto.c_str(), gclsSetupFile.m_strPcapSrtpKey.c_str(), &psttSrtp );
+	}
 
 	pcap_t * psttPcap = pcap_open_offline( gclsSetupFile.m_strPcapFile.c_str(), szErrBuf );
 	if( psttPcap == NULL )
@@ -98,6 +165,16 @@ THREAD_API RtpThreadSend( LPVOID lpParameter )
 		while( gclsRtpThread.m_bStopEvent == false )
 		{
 			if( GetRtpPacket( psttPcap, szRtpPacket, &iRtpPacketLen ) == false ) break;
+
+			if( psttSrtp )
+			{
+				iRet = srtp_unprotect( psttSrtp, szRtpPacket, &iRtpPacketLen );
+				if( iRet != err_status_ok ) 
+				{
+					CLog::Print( LOG_ERROR, "srtp_unprotect error" );
+					break;
+				}
+			}
 
 			gettimeofday( &sttTime, NULL );
 			iMiliSecond = DiffTimeval( &sttSendTime, &sttTime );
@@ -119,6 +196,11 @@ THREAD_API RtpThreadSend( LPVOID lpParameter )
 		}
 
 		pcap_close( psttPcap );
+	}
+
+	if( psttSrtp )
+	{
+		srtp_dealloc( psttSrtp );
 	}
 
 	CLog::Print( LOG_DEBUG, "%s terminated", __FUNCTION__ );

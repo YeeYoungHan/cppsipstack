@@ -64,6 +64,12 @@ public:
 	/** pcap 파일에서 읽을 RTP 목적지 포트 번호 */
 	int						m_iPcapRtpDestPort;
 
+	/** pcap 파일에서 읽은 SRTP 를 복호화하기 위한 암호화 알고리즘 (예: AES_CM_128_HMAC_SHA1_80 ) */
+	std::string		m_strPcapSrtpCrypto;
+
+	/** pcap 파일에서 읽은 SRTP 를 복호화하기 위한 암호화 키 */
+	std::string		m_strPcapSrtpKey;
+
 	bool Read( const char * pszFileName );
 };
 

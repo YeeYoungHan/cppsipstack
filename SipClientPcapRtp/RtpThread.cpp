@@ -24,7 +24,9 @@
 #include "RtpHeader.h"
 #include "PacketHeader.h"
 #include "Log.h"
-#include <pcap.h>
+#include "Base64.h"
+#include "pcap.h"
+#include "srtp.h"
 
 CRtpThread gclsRtpThread;
 

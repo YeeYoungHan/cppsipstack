@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SdpParser;../XmlParser;../openssl/include;../openssl/window/32bit/include;../WpdPack/include"
+				AdditionalIncludeDirectories="../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SdpParser;../XmlParser;../openssl/include;../openssl/window/32bit/include;../WpdPack/include;../opensrtp/lib/include;../opensrtp/lib/window/32bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib wpcap.lib"
+				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib wpcap.lib libSRTP.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories=";../openssl/window/32bit/lib;../WpdPack/32bit"
+				AdditionalLibraryDirectories=";../openssl/window/32bit/lib;../WpdPack/32bit;../opensrtp/lib/window/32bit/lib-debug"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SdpParser;../XmlParser;../openssl/include;../openssl/window/32bit/include;../WpdPack/include"
+				AdditionalIncludeDirectories="../SipPlatform;../SipUserAgent;../SipStack;../SipParser;../SdpParser;../XmlParser;../openssl/include;../openssl/window/32bit/include;../WpdPack/include;../opensrtp/lib/include;../opensrtp/lib/window/32bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -136,9 +136,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib wpcap.lib"
+				AdditionalDependencies="ws2_32.lib libeay32.lib ssleay32.lib wpcap.lib libSRTP.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories=";../openssl/window/32bit/lib;../WpdPack/32bit"
+				AdditionalLibraryDirectories=";../openssl/window/32bit/lib;../WpdPack/32bit;../opensrtp/lib/window/32bit/lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
