@@ -94,6 +94,10 @@ C++ SIP stack API 문서는 아래의 홈페이지에서 확인하실 수 있습
   * C++ SIP stack 을 테스트하기 위한 MFC 기반 SIP 클라이언트 프로그램
   * MFC 기반으로 SIP 클라이언트를 개발하시려면 본 소스 코드를 참고하세요.
 
+* SipClientPcapRtp
+  * C++ SIP stack / SipUserAgent 을 이용하여서 통화 연결한 후, pcap 파일에 존재하는 RTP 패킷을 전송하는 SIP 클라이언트
+  * pcap 파일에 존재하는 RTP 패킷을 전송하는 시뮬레이션 프로그램
+
 * SipLoadBalancer
   * SIP 로드밸런서 프로그램
 
