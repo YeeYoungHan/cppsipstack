@@ -26,6 +26,7 @@
  */
 
 bool TestFile( const char * pszFileName );
+void TestAuthResponse();
 
 /**
  * @ingroup TestSipParser
@@ -43,6 +44,15 @@ int main( int argc, char * argv[] )
 			const char * pszFileName = argv[2];
 
 			TestFile( pszFileName );
+
+			return 0;
+		}
+	}
+	else if( argc == 2 )
+	{
+		if( !strcmp( argv[1], "auth" ) )
+		{
+			TestAuthResponse( );
 
 			return 0;
 		}
