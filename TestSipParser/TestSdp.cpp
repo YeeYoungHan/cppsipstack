@@ -633,5 +633,12 @@ bool TestSdp()
 
 	clsSdp.Parse( pszT38, strlen(pszT38) );
 
+	const char * pszAbnormalV = "v\r\n"
+		"o==0\r\n"
+		"o=- 1665110595 2 IN IP4 1.1.1.1\r\n"
+		"s=-\r\n";
+	
+	clsSdp.Parse( pszAbnormalV, strlen(pszAbnormalV) );
+
 	return true;
 }

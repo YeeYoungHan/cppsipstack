@@ -55,122 +55,125 @@ int CSdpMessage::Parse( const char * pszText, int iTextLen )
 	{
 		if( pszText[iPos] == '\r' )
 		{
-			switch( pszText[iStartPos] )
+			if( iPos > ( iStartPos + 2 ) )
 			{
-			case 'v':
-				m_strVersion.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
-				break;
-			case 'o':
-				if( m_clsOrigin.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
-				break;
-			case 's':
-				m_strSessionName.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
-				break;
-			case 'i':
-				if( pclsMedia )
+				switch( pszText[iStartPos] )
 				{
-
-				}
-				else
-				{
-					m_strSessionInformation.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
-				}
-				break;
-			case 'u':
-				m_strUri.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
-				break;
-			case 'e':
-				{
-					std::string	strTemp;
-
-					strTemp.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
-					m_clsEmailList.push_back( strTemp );
-				}
-				break;
-			case 'p':
-				{
-					std::string	strTemp;
-
-					strTemp.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
-					m_clsPhoneList.push_back( strTemp );
-				}
-				break;
-			case 'c':
-				if( pclsMedia )
-				{
-					if( pclsMedia->m_clsConnection.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
-				}
-				else
-				{
-					if( m_clsConnection.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
-				}
-				break;
-			case 'b':
-				{
-					CSdpBandWidth clsBandWidth;
-
-					if( clsBandWidth.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
-
+				case 'v':
+					m_strVersion.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
+					break;
+				case 'o':
+					if( m_clsOrigin.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
+					break;
+				case 's':
+					m_strSessionName.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
+					break;
+				case 'i':
 					if( pclsMedia )
 					{
-						pclsMedia->m_clsBandWidthList.push_back( clsBandWidth );
+
 					}
 					else
 					{
-						m_clsBandWidthList.push_back( clsBandWidth );
+						m_strSessionInformation.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
 					}
-				}
-				break;
-			case 't':
-				{
-					CSdpTime	clsTime;
-
-					if( clsTime.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
-					m_clsTimeList.push_back( clsTime );
-				}
-				break;
-			case 'r':
-				{
-					SDP_TIME_LIST::reverse_iterator itTime = m_clsTimeList.rbegin();
-					if( itTime != m_clsTimeList.rend() )
+					break;
+				case 'u':
+					m_strUri.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
+					break;
+				case 'e':
 					{
 						std::string	strTemp;
 
 						strTemp.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
-						itTime->m_clsRepeatTimeList.push_back( strTemp );
+						m_clsEmailList.push_back( strTemp );
 					}
-				}
-				break;
-			case 'z':
-				m_strTimeZone.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
-				break;
-			case 'a':
-				{
-					CSdpAttribute	clsAttribute;
+					break;
+				case 'p':
+					{
+						std::string	strTemp;
 
-					if( clsAttribute.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
-
+						strTemp.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
+						m_clsPhoneList.push_back( strTemp );
+					}
+					break;
+				case 'c':
 					if( pclsMedia )
 					{
-						pclsMedia->m_clsAttributeList.push_back( clsAttribute );
+						if( pclsMedia->m_clsConnection.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
 					}
 					else
 					{
-						m_clsAttributeList.push_back( clsAttribute );
+						if( m_clsConnection.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
 					}
-				}
-				break;
-			case 'm':
-				{
-					CSdpMedia clsMedia;
+					break;
+				case 'b':
+					{
+						CSdpBandWidth clsBandWidth;
 
-					if( clsMedia.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
-					m_clsMediaList.push_back( clsMedia );
+						if( clsBandWidth.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
 
-					SDP_MEDIA_LIST::reverse_iterator itML = m_clsMediaList.rbegin();
-					pclsMedia = &(*itML);
+						if( pclsMedia )
+						{
+							pclsMedia->m_clsBandWidthList.push_back( clsBandWidth );
+						}
+						else
+						{
+							m_clsBandWidthList.push_back( clsBandWidth );
+						}
+					}
+					break;
+				case 't':
+					{
+						CSdpTime	clsTime;
+
+						if( clsTime.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
+						m_clsTimeList.push_back( clsTime );
+					}
+					break;
+				case 'r':
+					{
+						SDP_TIME_LIST::reverse_iterator itTime = m_clsTimeList.rbegin();
+						if( itTime != m_clsTimeList.rend() )
+						{
+							std::string	strTemp;
+
+							strTemp.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
+							itTime->m_clsRepeatTimeList.push_back( strTemp );
+						}
+					}
+					break;
+				case 'z':
+					m_strTimeZone.append( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) );
+					break;
+				case 'a':
+					{
+						CSdpAttribute	clsAttribute;
+
+						if( clsAttribute.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
+
+						if( pclsMedia )
+						{
+							pclsMedia->m_clsAttributeList.push_back( clsAttribute );
+						}
+						else
+						{
+							m_clsAttributeList.push_back( clsAttribute );
+						}
+					}
+					break;
+				case 'm':
+					{
+						CSdpMedia clsMedia;
+
+						if( clsMedia.Parse( pszText + iStartPos + 2, iPos - ( iStartPos + 2 ) ) == -1 ) return -1;
+						m_clsMediaList.push_back( clsMedia );
+
+						SDP_MEDIA_LIST::reverse_iterator itML = m_clsMediaList.rbegin();
+						pclsMedia = &(*itML);
+					}
+					break;
 				}
-				break;
 			}
 
 			++iPos;
