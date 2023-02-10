@@ -59,7 +59,7 @@ void TestFileFd()
 			return;
 		}
 
-		printf( "fd = %d\n" );
+		printf( "fd = %d\n", iFd );
 		close( iFd );
 
 		iFd = open( pszFileName, OPEN_READ_FLAG, OPEN_READ_MODE );
@@ -69,7 +69,7 @@ void TestFileFd()
 			return;
 		}
 
-		printf( "fd = %d\n" );
+		printf( "fd = %d\n", iFd );
 		close( iFd );
 	}
 }
@@ -80,7 +80,7 @@ THREAD_API ConnectThread( LPVOID lpParameter )
 {
 	for( int i = 0; i < 10; ++i )
 	{
-		SOCKET hConn = TcpConnect( "127.0.0.1", TCP_PORT );
+		Socket hConn = TcpConnect( "127.0.0.1", TCP_PORT );
 		if( hConn == INVALID_SOCKET ) break;
 
 		printf( "connected fd = %d\n", hConn );
@@ -93,7 +93,7 @@ THREAD_API ConnectThread( LPVOID lpParameter )
 
 void TestSocketFd()
 {
-	SOCKET hListen = TcpListen( TCP_PORT, 255 );
+	Socket hListen = TcpListen( TCP_PORT, 255 );
 	if( hListen == INVALID_SOCKET )
 	{
 		printf( "TcpListen() error\n" );
@@ -109,7 +109,7 @@ void TestSocketFd()
 
 	for( int i = 0; i < 10; ++i )
 	{
-		SOCKET hConn = TcpAccept( hListen, szIp, sizeof(szIp), &iPort );
+		Socket hConn = TcpAccept( hListen, szIp, sizeof(szIp), &iPort );
 
 		printf( "accept fd = %d\n", hConn );
 
