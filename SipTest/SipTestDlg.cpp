@@ -230,7 +230,7 @@ LRESULT CSipTestDlg::OnTestMessage( WPARAM wParam, LPARAM lParam )
 		SetLog( "%s", lParam );
 		break;
 	case WM_TEST_PERCENT:
-		SetPercent( lParam );
+		SetPercent( (int)lParam );
 		break;
 	}
 

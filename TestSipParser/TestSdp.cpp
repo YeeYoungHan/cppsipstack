@@ -631,14 +631,14 @@ bool TestSdp()
 		"a=T38FaxRateManagement:transferredTCF\r\n"
 		"a=T38FaxUdpEC:t38UDPRedundancy\r\n";
 
-	clsSdp.Parse( pszT38, strlen(pszT38) );
+	clsSdp.Parse( pszT38, (int)strlen(pszT38) );
 
 	const char * pszAbnormalV = "v\r\n"
 		"o==0\r\n"
 		"o=- 1665110595 2 IN IP4 1.1.1.1\r\n"
 		"s=-\r\n";
 	
-	clsSdp.Parse( pszAbnormalV, strlen(pszAbnormalV) );
+	clsSdp.Parse( pszAbnormalV, (int)strlen(pszAbnormalV) );
 
 	return true;
 }

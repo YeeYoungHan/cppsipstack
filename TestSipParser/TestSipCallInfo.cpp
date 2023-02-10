@@ -25,7 +25,7 @@ bool TestSipCallInfo()
 
 	CSipFrom clsFrom;
 
-	if( clsFrom.Parse( pszCallInfo, strlen(pszCallInfo) ) == -1 )
+	if( clsFrom.Parse( pszCallInfo, (int)strlen(pszCallInfo) ) == -1 )
 	{
 		return false;
 	}

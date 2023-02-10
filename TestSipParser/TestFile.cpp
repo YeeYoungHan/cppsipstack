@@ -35,7 +35,7 @@ bool TestFile( const char * pszFileName )
 
 	while( 1 )
 	{
-		n = fread( szBuf, 1, sizeof(szBuf), fd );
+		n = (int)fread( szBuf, 1, sizeof(szBuf), fd );
 		if( n <= 0 ) break;
 
 		strBuf.append( szBuf, n );
@@ -46,7 +46,7 @@ bool TestFile( const char * pszFileName )
 	for( int j = 0; j < 1000; ++j )
 	{
 		const char * pszBuf = strBuf.c_str();
-		int iBufLen = strBuf.length();
+		int iBufLen = (int)strBuf.length();
 		int iPos = 0;
 
 		for( int i = 0; i < 100; ++i )

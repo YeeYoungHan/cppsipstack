@@ -90,7 +90,7 @@ bool TestSipUri()
 void TestSipUriSpeed( int iLoopCount )
 {
 	const char * pszText = "sip:1000@192.168.0.1:5060";
-	int iTextLen = strlen(pszText);
+	int iTextLen = (int)strlen(pszText);
 	int iPos;
 	uint64_t iStartTime, iEndTime;
 
