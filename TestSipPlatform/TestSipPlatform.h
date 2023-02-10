@@ -38,6 +38,8 @@ bool TestLogMacro();
 bool TestStringUtility();
 bool TestRandom();
 bool TestFileUtility();
+void TestFileFd();
+void TestSocketFd();
 
 #define Check(x)	if( !(x) ){ printf( "%s %d error\n", __FILE__, __LINE__ ); return false; }
 

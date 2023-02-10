@@ -17,7 +17,7 @@ all: TestSipPlatform.exe
 
 SRV_OBJ=TestSipPlatform.o TestSipMutex.o TestDirectory.o TestStringSort.o \
 	TestServerUtility.o TestStringUtility.o TestLog.o TestRandom.o \
-	TestFileUtility.o
+	TestFileUtility.o TestFileFd.o
 
 TestSipPlatform.exe: $(SRV_OBJ)
 	$(CC) -rdynamic $(CFLAGS) -o $@ $(SRV_OBJ) $(INC) $(LIB)

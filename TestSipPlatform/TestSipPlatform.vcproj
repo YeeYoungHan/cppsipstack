@@ -179,6 +179,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestFileFd.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestFileUtility.cpp"
 				>
 			</File>

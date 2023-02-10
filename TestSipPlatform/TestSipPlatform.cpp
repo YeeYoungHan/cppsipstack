@@ -59,6 +59,14 @@ int main( int argc, char * argv[] )
 			TestFileUtility();
 			return 0;
 		}
+#ifndef WIN32
+		else if( !strcmp( argv[1], "-fd" ) )
+		{
+			TestFileFd();
+			TestSocketFd();
+			return 0;
+		}
+#endif
 		else if( !strcmp( argv[1], "-t" ) )
 		{
 			TestThreadCount();
