@@ -23,3 +23,5 @@
 ### C++ SIP stack 관련 포스트 리스트
 
 * https://blog.naver.com/websearch/222139819992 : 라즈베리파이 & 우분투16 에서 실행할 수 있는 SIP 클라이언트 1차 개발 완료
+* https://blog.naver.com/websearch/222143973252 : CentOS 에서 error: alsa/asoundlib.h: No such file or directory 오류 해결하는 방법
+
