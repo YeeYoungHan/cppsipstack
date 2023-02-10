@@ -56,7 +56,6 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>C:\Program Files\Java\jdk1.8.0_131\include;C:\Program Files\Java\jdk1.8.0_131\include\win32;../../SipPlatform;../../SipParser;../../SipStack;../../SdpParser;../../SipUserAgent;../../openssl/window/32bit/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader />
