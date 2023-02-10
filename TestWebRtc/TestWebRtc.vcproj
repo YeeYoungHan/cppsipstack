@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../StunParser;../SipUserAgent;../SipStack;../SipParser;../SdpParser;../HttpStack;../TcpStack;../HttpParser;../XmlParser;../SipPlatform;../openssl/include;../openssl/window/32bit/include;../opensrtp/lib/include;../opensrtp/lib/window/32bit/include"
+				AdditionalIncludeDirectories="../StunParser;../SipUserAgent;../SipStack;../SipParser;../SdpParser;../HttpStack;../TcpStack;../HttpParser;../XmlParser;../SipPlatform;../openssl/window/32bit/include;../opensrtp/lib/include;../opensrtp/lib/window/32bit/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../StunParser;../SipUserAgent;../SipStack;../SipParser;../SdpParser;../HttpStack;../TcpStack;../HttpParser;../XmlParser;../SipPlatform;../openssl/include;../openssl/window/32bit/include;../opensrtp/lib/include;../opensrtp/lib/window/32bit/include"
+				AdditionalIncludeDirectories="../StunParser;../SipUserAgent;../SipStack;../SipParser;../SdpParser;../HttpStack;../TcpStack;../HttpParser;../XmlParser;../SipPlatform;../openssl/window/32bit/include;../opensrtp/lib/include;../opensrtp/lib/window/32bit/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
