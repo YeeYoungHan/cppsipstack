@@ -1,5 +1,6 @@
 #include "TestSipUserAgent.h"
 #include "Log.h"
+#include "CallBack.h"
 
 int main( int argc, char * argv[] )
 {
@@ -19,14 +20,17 @@ int main( int argc, char * argv[] )
 	CSipServerInfo clsServerInfo;
 
 	GetLocalIp( clsSetup.m_strLocalIp );
+	clsSetup.m_iLocalUdpPort = 5080;
 
-	clsServerInfo.m_strUserId = "1000";
-	clsServerInfo.m_strPassWord = "1234";
-	clsServerInfo.m_strIp = "192.168.150.10";
+	//clsServerInfo.m_strUserId = "1000";
+	//clsServerInfo.m_strPassWord = "1234";
+	//clsServerInfo.m_strIp = "192.168.150.10";
 
-	clsUserAgent.InsertRegisterInfo( clsServerInfo );
+	//clsUserAgent.InsertRegisterInfo( clsServerInfo );
 
-	if( clsUserAgent.Start( clsSetup, NULL ) == false )
+	gclsCallBack.m_pclsSipUserAgent = &clsUserAgent;
+
+	if( clsUserAgent.Start( clsSetup, &gclsCallBack ) == false )
 	{
 		printf( "clsUserAgent.Start() error\n" );
 		return 0;
