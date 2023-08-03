@@ -118,7 +118,14 @@ int CSipFrom::ToString( char * pszText, int iTextSize )
 
 	if( m_strDisplayName.empty() == false )
 	{
-		iLen += snprintf( pszText + iLen, iTextSize - iLen, "\"%s\" <", m_strDisplayName.c_str() );
+		if( m_strDisplayName.at(0) == '"' )
+		{
+			iLen += snprintf( pszText + iLen, iTextSize - iLen, "%s <", m_strDisplayName.c_str() );
+		}
+		else
+		{
+			iLen += snprintf( pszText + iLen, iTextSize - iLen, "\"%s\" <", m_strDisplayName.c_str() );
+		}
 	}
 	else
 	{

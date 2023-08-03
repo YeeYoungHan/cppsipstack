@@ -92,6 +92,7 @@ static bool TestDiversion( const char * pszText, const char * pszReason )
 
 bool TestSipFrom()
 {
+	if( Test( "\"\" <sips:bob@biloxi.com:5060> ;tag=a48s", "\"\" <sips:bob@biloxi.com:5060>;tag=a48s" ) == false ) return false;
 	if( Test( "<sip:1000@203.255.208.41:5062>;expires=300", "<sip:1000@203.255.208.41:5062>;expires=300" ) == false ) return false; 
 	if( Test( "\"Bob\" <sips:bob@biloxi.com:5060> ;tag=a48s", "\"Bob\" <sips:bob@biloxi.com:5060>;tag=a48s" ) == false ) return false;
 	if( Test( "\"Bob\" <sips:bob@biloxi.com> ;tag=a48s", "\"Bob\" <sips:bob@biloxi.com>;tag=a48s" ) == false ) return false;
