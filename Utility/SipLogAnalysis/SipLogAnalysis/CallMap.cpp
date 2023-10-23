@@ -22,12 +22,13 @@ CCallMap gclsCallMap;
 
 void CCallInfo::Print()
 {
-	printf( "Call-ID(%s) From(%s) To(%s) RTP(%s:%d=>%s:%d) result(%s) message(%s)\n"
+	printf( "Call-ID(%s) From(%s) To(%s) RTP(%s:%d=>%s:%d) result(%s) message(%s) send(%s)\n"
 		, m_strCallId.c_str(), m_strFrom.c_str(), m_strTo.c_str()
 		, m_clsFromRtp.m_strIp.c_str(), m_clsFromRtp.m_iPort
 		, m_clsToRtp.m_strIp.c_str(), m_clsToRtp.m_iPort
 		, m_bFaxError == false ? "ok" : "error"
-		, m_strFaxErrorMessage.c_str() );
+		, m_strFaxErrorMessage.c_str()
+		, m_bSend ? "true" : "false" );
 }
 
 bool CCallMap::Insert( CCallInfo & clsInfo )
