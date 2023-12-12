@@ -73,9 +73,6 @@ C++ SIP stack API 문서는 아래의 홈페이지에서 확인하실 수 있습
 * SdpParser
   * SDP 메시지 파서/생성 라이브러리
 
-* ServerMonitor
-  * 서버 자료구조 모니터링 프로그램
-
 * ServerPlatform
   * 서비스 서버에 공통적으로 사용되는 라이브러리
 
@@ -131,6 +128,9 @@ C++ SIP stack API 문서는 아래의 홈페이지에서 확인하실 수 있습
 * TcpStack
   * TCP 클라이언트/서버 라이브러리
   * HttpStack 에서 HTTP 서버 개발에 사용된다.
+
+* Utility
+  * 유틸리티 프로그램
 
 * WdpPack
   * winpcap 개발 라이브러리
