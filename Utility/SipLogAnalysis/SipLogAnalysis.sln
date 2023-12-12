@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SipLogAnalysis", "SipLogAnalysis\SipLogAnalysis.vcproj", "{F863AB31-D2EC-4B49-9F44-B906F80E7730}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SipLogSender", "SipLogSender\SipLogSender.vcproj", "{37DEE77C-3B67-4FCC-94FA-50CC09936119}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{F863AB31-D2EC-4B49-9F44-B906F80E7730}.Debug|Win32.Build.0 = Debug|Win32
 		{F863AB31-D2EC-4B49-9F44-B906F80E7730}.Release|Win32.ActiveCfg = Release|Win32
 		{F863AB31-D2EC-4B49-9F44-B906F80E7730}.Release|Win32.Build.0 = Release|Win32
+		{37DEE77C-3B67-4FCC-94FA-50CC09936119}.Debug|Win32.ActiveCfg = Debug|Win32
+		{37DEE77C-3B67-4FCC-94FA-50CC09936119}.Debug|Win32.Build.0 = Debug|Win32
+		{37DEE77C-3B67-4FCC-94FA-50CC09936119}.Release|Win32.ActiveCfg = Release|Win32
+		{37DEE77C-3B67-4FCC-94FA-50CC09936119}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
