@@ -16,39 +16,41 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "SipLogSender.h"
+#include "SipLogReassembly.h"
 
-Socket ghSocket;
-int giUdpPort;
-int giSipPort;
-
-void PrintHelp( int argc, char * argv[] )
-{
-	printf( "[Usage] %s {listen udp port} {sip port} {log file path}\n", argv[0] );
-}
+CStringMap gclsPhoneMap;
 
 int main( int argc, char * argv[] )
 {
-	if( argc != 4 )
+	if( argc <= 3 )
 	{
-		PrintHelp( argc, argv );
+		printf( "[Usage] %s {log fullpath} {output fullpath}\n", argv[0] );
 		return 0;
 	}
 
-	giUdpPort = atoi( argv[1] );
-	giSipPort = atoi( argv[2] );
-	const char * pszLogFileName = argv[3];
-
-	InitNetwork();
-
-	ghSocket = UdpListen( giUdpPort, NULL );
-	if( ghSocket == INVALID_SOCKET )
+	for( int i = 3; i < argc; ++i )
 	{
-		printf( "UdpListen(%d) error(%d)\n", giUdpPort, GetError() );
+		gclsPhoneMap.Insert( argv[i], "" );
+	}
+
+	FILE * in = fopen( argv[1], "r" );
+	if( in == NULL )
+	{
+		printf( "log file(%s) open error\n", argv[1] );
 		return 0;
 	}
 
-	ReadLogFile( pszLogFileName );
+	FILE * out = fopen( argv[2], "wb" );
+	if( out == NULL )
+	{
+		printf( "out file(%s) open error\n", argv[2] );
+		return 0;
+	}
+
+	ReadLogFile( in, out );
+
+	fclose( in );
+	fclose( out );
 
 	return 0;
 }

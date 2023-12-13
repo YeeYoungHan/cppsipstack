@@ -16,39 +16,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "SipLogSender.h"
+#ifndef _SIP_LOG_REASSEMBLY_H_
+#define _SIP_LOG_REASSEMBLY_H_
 
-Socket ghSocket;
-int giUdpPort;
-int giSipPort;
+#include "SipPlatformDefine.h"
+#include <stdio.h>
+#include "SipMessage.h"
+#include "StringMap.h"
 
-void PrintHelp( int argc, char * argv[] )
-{
-	printf( "[Usage] %s {listen udp port} {sip port} {log file path}\n", argv[0] );
-}
+extern CStringMap gclsPhoneMap;
 
-int main( int argc, char * argv[] )
-{
-	if( argc != 4 )
-	{
-		PrintHelp( argc, argv );
-		return 0;
-	}
+void ReadLogFile( FILE * in, FILE * out );
 
-	giUdpPort = atoi( argv[1] );
-	giSipPort = atoi( argv[2] );
-	const char * pszLogFileName = argv[3];
-
-	InitNetwork();
-
-	ghSocket = UdpListen( giUdpPort, NULL );
-	if( ghSocket == INVALID_SOCKET )
-	{
-		printf( "UdpListen(%d) error(%d)\n", giUdpPort, GetError() );
-		return 0;
-	}
-
-	ReadLogFile( pszLogFileName );
-
-	return 0;
-}
+#endif

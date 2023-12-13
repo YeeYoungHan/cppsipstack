@@ -25,7 +25,7 @@
 #include "SipMessage.h"
 
 extern Socket ghSocket;
-extern const char * gpszSipIp;
+extern int giUdpPort;
 extern int giSipPort;
 
 // ReadLogFile.cpp

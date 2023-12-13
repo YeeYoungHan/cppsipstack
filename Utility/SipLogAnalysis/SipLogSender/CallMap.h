@@ -19,11 +19,28 @@
 #ifndef _CALL_MAP_H_
 #define _CALL_MAP_H_
 
+#include "SipMessage.h"
+#include <map>
+
+class CCallInfo
+{
+public:
+	std::string m_strRecvCallId;
+	std::string m_strBranch;
+};
+
+// key = 로그 파일에서 읽은 SIP Call-ID
+typedef std::map< std::string, CCallInfo > CALL_MAP;
+
 class CCallMap
 {
 public:
-	CCallMap();
-	~CCallMap();
+	void Insert( std::string & strCallId, CSipMessage & clsMessage );
+	bool Select( std::string & strCallId, CCallInfo & clsCallInfo );
+
+	CALL_MAP m_clsMap;
 };
+
+extern CCallMap gclsCallMap;
 
 #endif

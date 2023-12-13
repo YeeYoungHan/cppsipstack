@@ -18,11 +18,42 @@
 
 #include "CallMap.h"
 
-CCallMap::CCallMap()
+CCallMap gclsCallMap;
+
+void CCallMap::Insert( std::string & strCallId, CSipMessage & clsMessage )
 {
+	CALL_MAP::iterator itMap;
+	SIP_VIA_LIST::iterator itVia;
+	CCallInfo clsCallInfo;
+
+	clsMessage.m_clsCallId.ToString( clsCallInfo.m_strRecvCallId );
+	itVia = clsMessage.m_clsViaList.begin();
+	if( itVia != clsMessage.m_clsViaList.end() )
+	{
+		const char * pszBranch = itVia->SelectParamValue( "branch" );
+		if( pszBranch )
+		{
+			clsCallInfo.m_strBranch = pszBranch;
+		}
+	}
+
+	itMap = m_clsMap.find( strCallId );
+	if( itMap == m_clsMap.end() )
+	{
+		m_clsMap.insert( CALL_MAP::value_type( strCallId, clsCallInfo ) );
+	}
 }
 
-CCallMap::~CCallMap()
+bool CCallMap::Select( std::string & strCallId, CCallInfo & clsCallInfo )
 {
-}
+	CALL_MAP::iterator itMap;
 
+	itMap = m_clsMap.find( strCallId );
+	if( itMap != m_clsMap.end() )
+	{
+		clsCallInfo = itMap->second;
+		return true;
+	}
+
+	return false;
+}

@@ -17,6 +17,7 @@
  */
 
 #include "SipLogSender.h"
+#include "CallMap.h"
 
 void ReadLogFile( const char * pszFileName )
 {
@@ -58,27 +59,73 @@ void ReadLogFile( const char * pszFileName )
 
 				if( bSend == false )
 				{
-					UdpSend( ghSocket, strSipMessage.c_str(), strSipMessage.length(), gpszSipIp, giSipPort );
+					CCallInfo clsCallInfo;
+
+					gclsCallMap.Select( strCallId, clsCallInfo );
+
+					if( clsCallInfo.m_strRecvCallId.empty() == false )
+					{
+						clsMessage.m_clsCallId.Parse( clsCallInfo.m_strRecvCallId.c_str(), clsCallInfo.m_strRecvCallId.length() );
+					}
+					
+					SIP_VIA_LIST::iterator itVia = clsMessage.m_clsViaList.begin();
+					if( itVia != clsMessage.m_clsViaList.end() )
+					{
+						itVia->m_strHost = "127.0.0.1";
+						itVia->m_iPort = giUdpPort;
+
+						if( clsCallInfo.m_strBranch.empty() == false )
+						{
+							itVia->UpdateParam( "branch", clsCallInfo.m_strBranch.c_str() );
+						}
+					}
+
+					SIP_FROM_LIST::iterator itContact = clsMessage.m_clsContactList.begin();
+					if( itContact != clsMessage.m_clsContactList.end() )
+					{
+						itContact->m_clsUri.m_strHost = "127.0.0.1";
+						itContact->m_clsUri.m_iPort = giUdpPort;
+					}
+
+					iBufSize = clsMessage.ToString( szBuf, sizeof(szBuf) );
+
+					if( UdpSend( ghSocket, szBuf, iBufSize, "127.0.0.1", giSipPort ) == false )
+					{
+						printf( "line(%d) UdpSend(%s) error\n", iLine, szBuf );
+						break;
+					}
 				}
 				else
 				{
-					iBufSize = sizeof(szBuf);
-					UdpRecv( ghSocket, szBuf, &iBufSize, szIp, sizeof(szIp), &sPort );
-
-					if( clsMessage.Parse( szBuf, iBufSize ) <= 0 )
+					while( 1 )
 					{
-						printf( "line(%d) recv clsMessage.Parse(%s) error\n", iLine, strSipMessage.c_str() );
-						break;
-					}
+						iBufSize = sizeof(szBuf);
+						if( UdpRecv( ghSocket, szBuf, &iBufSize, szIp, sizeof(szIp), &sPort ) == false )
+						{
+							printf( "line(%d) UdpRecv() error\n", iLine );
+							break;
+						}
 
-					std::string strRecvCallId;
+						if( clsMessage.Parse( szBuf, iBufSize ) <= 0 )
+						{
+							printf( "line(%d) recv clsMessage.Parse(%s) error\n", iLine, strSipMessage.c_str() );
+							break;
+						}
 
-					clsMessage.m_clsCallId.ToString( strRecvCallId );
-					clsMessage.m_clsCSeq.ToString( szRecvSeq, sizeof(szRecvSeq) );
+						std::string strRecvCallId;
 
-					if( strcmp( strCallId.c_str(), strRecvCallId.c_str() ) )
-					{
-						
+						clsMessage.m_clsCallId.ToString( strRecvCallId );
+						clsMessage.m_clsCSeq.ToString( szRecvSeq, sizeof(szRecvSeq) );
+
+						if( !strcmp( szSeq, szRecvSeq ) )
+						{
+							if( strcmp( strCallId.c_str(), strRecvCallId.c_str() ) )
+							{
+								gclsCallMap.Insert( strCallId, clsMessage );
+							}
+
+							break;
+						}
 					}
 				}
 
