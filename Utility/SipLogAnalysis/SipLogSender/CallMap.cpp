@@ -27,6 +27,7 @@ void CCallMap::Insert( std::string & strCallId, CSipMessage & clsMessage )
 	CCallInfo clsCallInfo;
 
 	clsMessage.m_clsCallId.ToString( clsCallInfo.m_strRecvCallId );
+
 	itVia = clsMessage.m_clsViaList.begin();
 	if( itVia != clsMessage.m_clsViaList.end() )
 	{
@@ -41,6 +42,10 @@ void CCallMap::Insert( std::string & strCallId, CSipMessage & clsMessage )
 	if( itMap == m_clsMap.end() )
 	{
 		m_clsMap.insert( CALL_MAP::value_type( strCallId, clsCallInfo ) );
+	}
+	else
+	{
+		itMap->second = clsCallInfo;
 	}
 }
 

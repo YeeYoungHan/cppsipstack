@@ -17,7 +17,10 @@
  */
 
 #include "SipLogSender.h"
+#include "TimeString.h"
 #include "CallMap.h"
+
+#define PRINT_LOG_LEN 100
 
 void ReadLogFile( const char * pszFileName )
 {
@@ -48,6 +51,8 @@ void ReadLogFile( const char * pszFileName )
 				CSipMessage clsMessage;
 				std::string strCallId;
 
+				clsMessage.Clear();
+
 				if( clsMessage.Parse( strSipMessage.c_str(), strSipMessage.length() ) <= 0 )
 				{
 					printf( "line(%d) clsMessage.Parse(%s) error\n", iLine, strSipMessage.c_str() );
@@ -59,9 +64,36 @@ void ReadLogFile( const char * pszFileName )
 
 				if( bSend == false )
 				{
+					// bSend = false 이면 SIP 서비스로 전송한다.
 					CCallInfo clsCallInfo;
 
-					gclsCallMap.Select( strCallId, clsCallInfo );
+					if( gclsCallMap.Select( strCallId, clsCallInfo ) == false )
+					{
+						// SIP 서버로 이미 전송한 후, 2번째 전송하면 transaction 때문에 응용으로 전달되지 않으므로 branch 를 수정한다.
+						SIP_VIA_LIST::iterator itVia = clsMessage.m_clsViaList.begin();
+						if( itVia != clsMessage.m_clsViaList.end() )
+						{
+							const char * pszBranch = itVia->SelectParamValue( "branch" );
+							if( pszBranch )
+							{
+								char szTime[21];
+
+								GetDateTimeString( szTime, sizeof(szTime) );
+
+								std::string strBranch = pszBranch;
+								strBranch.append( szTime );
+
+								strCallId.append( szTime );
+
+								clsMessage.m_clsCallId.Parse( strCallId.c_str(), strCallId.length() );
+
+								itVia->UpdateParam( "branch", strBranch.c_str() );
+
+								gclsCallMap.Insert( strCallId, clsMessage );
+								gclsCallMap.Select( strCallId, clsCallInfo );
+							}
+						}
+					}
 
 					if( clsCallInfo.m_strRecvCallId.empty() == false )
 					{
@@ -73,6 +105,7 @@ void ReadLogFile( const char * pszFileName )
 					{
 						itVia->m_strHost = "127.0.0.1";
 						itVia->m_iPort = giUdpPort;
+						itVia->m_strTransport = "UDP";
 
 						if( clsCallInfo.m_strBranch.empty() == false )
 						{
@@ -94,9 +127,14 @@ void ReadLogFile( const char * pszFileName )
 						printf( "line(%d) UdpSend(%s) error\n", iLine, szBuf );
 						break;
 					}
+
+					printf( "line(%d) UdpSend(%.*s)\n", iLine, PRINT_LOG_LEN, szBuf );
 				}
 				else
 				{
+					// bSend = true 이면 SIP 서비스에서 수신할 때까지 대기한다.
+					printf( "line(%d) UdpRecv(%.*s) standby\n", iLine, PRINT_LOG_LEN, strSipMessage.c_str() );
+
 					while( 1 )
 					{
 						iBufSize = sizeof(szBuf);
@@ -105,6 +143,10 @@ void ReadLogFile( const char * pszFileName )
 							printf( "line(%d) UdpRecv() error\n", iLine );
 							break;
 						}
+
+						printf( "line(%d) UdpRecv(%.*s)\n", iLine, PRINT_LOG_LEN, szBuf );
+
+						clsMessage.Clear();
 
 						if( clsMessage.Parse( szBuf, iBufSize ) <= 0 )
 						{
@@ -129,8 +171,6 @@ void ReadLogFile( const char * pszFileName )
 					}
 				}
 
-				// bSend = false 이면 SIP 서비스로 전송한다.
-				// bSend = true 이면 SIP 서비스에서 수신할 때까지 대기한다.
 				strSipMessage.clear();
 			}
 			else
@@ -148,6 +188,10 @@ void ReadLogFile( const char * pszFileName )
 		else
 		{
 			pszPos = strstr( szBuf, "UdpSend" );
+			if( pszPos == NULL )
+			{
+				pszPos = strstr( szBuf, "TcpSend" );
+			}
 
 			if( pszPos )
 			{
@@ -157,6 +201,10 @@ void ReadLogFile( const char * pszFileName )
 			{
 				bSend = false;
 				pszPos = strstr( szBuf, "UdpRecv" );
+				if( pszPos == NULL )
+				{
+					pszPos = strstr( szBuf, "TcpRecv" );
+				}
 			}
 
 			if( pszPos )
